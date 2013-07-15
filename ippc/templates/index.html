@@ -1,0 +1,27 @@
+{% extends "base.html" %}
+{% load i18n %}
+
+{% block meta_title %}{% trans "Home" %}{% endblock %}
+{# {% block title %}{% trans "Welcome to IPPC" %}{% endblock %} #}
+
+{% block breadcrumb_menu %}
+{# <li class="active">{% trans "Home" %}</li> #}
+{% endblock %}
+
+{% block main %}
+{% blocktrans %}
+<h2>Welcome to the IPPC homepage!</h2>
+<p>
+    The International Plant Protection Convention (IPPC) is an international agreement on plant health to which 179 signatories currently adhere. It aims to protect cultivated and wild plants by preventing the introduction and spread of pests. The Secretariat of the IPPC is provided by the Food and Agriculture Organization of the United Nations. Media Kit.
+</p>
+<ul>
+    <li><a href="/admin/">Log in to the admin interface</a></li>
+    <li><a href="http://mezzanine.jupo.org/docs/content-architecture.html">Creating custom page types</a></li>
+    <li><a href="http://mezzanine.jupo.org/docs/frequently-asked-questions.html#templates">Modifying HTML templates</a></li>
+    <li><a href="http://mezzanine.jupo.org/docs/frequently-asked-questions.html#why-isn-t-the-homepage-a-page-object-i-can-edit-via-the-admin">Changing this homepage</a></li>
+    <li><a href="http://mezzanine.jupo.org/docs/frequently-asked-questions.html">Other frequently asked questions</a></li>
+    <li><a href="http://mezzanine.jupo.org/docs/configuration.html#default-settings">Full list of settings</a></li>
+    <li><a href="http://mezzanine.jupo.org/docs/deployment.html">Deploying to a production server</a></li>
+</ul>
+{% endblocktrans %}
+{% endblock %}
