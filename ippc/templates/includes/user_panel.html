@@ -1,0 +1,10 @@
+{% load mezzanine_tags %}
+{% ifinstalled mezzanine.accounts %}
+{# <div class="panel"> #}
+    {% block trans %}
+    <a href="/sitemap/">Sitemap</a> | <a href="/faq/">FAQ</a> | 
+    {% endblock trans %}
+    {% include "accounts/includes/user_panel.html" %}
+{# </div> #}
+{% endifinstalled %}
+

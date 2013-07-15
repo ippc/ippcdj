@@ -64,7 +64,6 @@
       </a>{% endif %}
     {# {% if settings.SITE_TAGLINE %}<p class="navbar-text">{{ settings.SITE_TAGLINE }}</p>{% endif %} #}
     <div class="nav-collapse collapse">
-        
         {# login/logout #}
             <div class="span4 pull-right">
             {% nevercache %}
@@ -78,7 +77,6 @@
             {# {% endblock %} #}
             {# </div> #}
             </div>
-        
       {# {% search_form "all" %} #}
       {% search_form %}
       {% page_menu "pages/menus/dropdown.html" %}
@@ -98,14 +96,13 @@
 {% endfor %}
 {% endnevercache %}
 
-
-<h1>{% block title %}{% endblock %}</h1>
-
 <ul class="breadcrumb">
 {% spaceless %}
 {% block breadcrumb_menu %}{% page_menu "pages/menus/breadcrumb.html" %}{% endblock %}
 {% endspaceless %}
 </ul>
+
+<h1>{% block title %}{% endblock %}</h1>
 
 </div>
 
@@ -118,7 +115,14 @@
 
 <div class="span4 right">
     {% block left_panel %}
+    {% block trans %}
     <div class="panel tree">{% page_menu "pages/menus/tree.html" %}</div>
+    
+    <h3>Key Links &amp; Documents</h3>
+    <ul>
+        <li><a href="/sitemap/">Sitemap</a></li>
+    </ul>
+    {% endblock trans %}
     {% endblock %}
 </div>
 

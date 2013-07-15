@@ -55,7 +55,7 @@
     <li class="{% if on_home %} active{% endif %}" id="dropdown-menu-{{ page.html_id }}">
         <a href="{% url "home" %}">{% trans "Home" %}</a>
     </li>
-    <li class="divider-vertical"></li>
+    {# <li class="divider-vertical"></li> #}
     {% endif %}
     {% if page.in_menu %}
     {% if page.login_required and request.user.is_authenticated or not page.login_required %}
@@ -67,7 +67,7 @@
         </a>
         {% if page.has_children %}{% page_menu page %}{% endif %}
     </li>
-    <li class="divider-vertical"></li>
+    {# <li class="divider-vertical"></li> #}
     {% endif %}
     {% endif %}
     {% endfor %}

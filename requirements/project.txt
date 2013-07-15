@@ -1,2 +1,6 @@
 Mezzanine==1.4.8
 django-countries==1.5
+mezzanine-pagedown==0.5
+Pygments==1.6
+pygments-style-github==0.4
+mezzanine-file-collections==1.0.1

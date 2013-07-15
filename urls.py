@@ -3,7 +3,7 @@ from django.conf.urls import patterns, include, url
 from django.contrib import admin
 
 from mezzanine.core.views import direct_to_template
-
+import mezzanine_pagedown.urls
 
 admin.autodiscover()
 
@@ -12,7 +12,13 @@ admin.autodiscover()
 # to the project's homepage.
 
 urlpatterns = patterns("",
-
+    
+    # Sitemap
+    url("^sitemap/$", direct_to_template, {"template": "sitemap.html"}, name="sitemap"),
+    
+    # pagedown
+    ("^pagedown/", include(mezzanine_pagedown.urls)),
+    
     # Change the admin prefix here to use an alternate URL for the
     # admin interface, which would be marginally more secure.
     ("^admin/", include(admin.site.urls)),

@@ -1,0 +1,82 @@
+{% extends "base.html" %}
+{% load pages_tags mezzanine_tags i18n future staticfiles %}
+
+{% block meta_title %}{% trans "Home" %}{% endblock %}
+{# {% block title %}{% trans "Welcome to IPPC" %}{% endblock %} #}
+
+{% block breadcrumb_menu %}
+<li class="active">{% trans "Sitemap" %}</li>
+{% endblock %}
+
+{% block main %}
+{% blocktrans %}
+<h2>IPPC Sitemap</h2>
+{% endblocktrans %}
+    
+    {% load i18n future pages_tags %}
+
+    {% spaceless %}
+    {% if page_branch_in_menu %}
+
+    {% if branch_level == 0 %}
+    <ul>
+        {% for page in page_branch %}
+        {% if page.is_primary and forloop.first %}
+        <li>
+            <a href="{% url "home" %}">{% trans "Home" %}</a>
+        </li>
+        {# <li class="divider-vertical"></li> #}
+        {% endif %}
+        {% if page.in_menu %}
+        {% if page.login_required and request.user.is_authenticated or not page.login_required %}
+        <li>
+            <a href="{{ page.get_absolute_url }}">
+                {{ page.title }}
+            </a>
+            {% if page.has_children %}{% page_menu page %}{% endif %}
+            
+            {% if branch_level > 0 %}
+            <ul>
+                {% for page in page_branch %}
+                {% if page.in_menu %}
+                {% if page.login_required and request.user.is_authenticated or not page.login_required %}
+                <li>
+                    <a href="{{ page.get_absolute_url }}">{{ page.title }}</a>
+                    {% if page.has_children %}{% page_menu page %}{% endif %}
+                    
+                    {% if branch_level > 1 %}
+                    <ul>
+                        {% for page in page_branch %}
+                        {% if page.in_menu %}
+                        {% if page.login_required and request.user.is_authenticated or not page.login_required %}
+                        <li>
+                            <a href="{{ page.get_absolute_url }}">{{ page.title }}</a>
+                            {% if page.has_children %}{% page_menu page %}{% endif %}
+                        </li>
+                        {% endif %}
+                        {% endif %}
+                        {% endfor %}
+                    </ul>
+                    {% endif %}
+                    
+                </li>
+                {% endif %}
+                {% endif %}
+                {% endfor %}
+            </ul>
+            {% endif %}
+        </li>
+        {# <li class="divider-vertical"></li> #}
+        {% endif %}
+        {% endif %}
+        {% endfor %}
+    </ul>
+    {% endif %}
+
+    
+
+    {% endif %}
+    {% endspaceless %}
+    
+    
+{% endblock %}

@@ -251,6 +251,12 @@ INSTALLED_APPS = (
     # countries for user accounts
     "django_countries",
     
+    # markdown wysiwyg editor
+    "mezzanine_pagedown",
+    
+    # file collections for publications
+    "mezzanine_file_collections",
+    
     #"mezzanine.mobile",
 )
 
@@ -295,6 +301,12 @@ AUTH_PROFILE_MODULE = "ippc.IppcUserProfile"
 SITE_TITLE = "International Plant Protection Convention"
 SITE_TAGLINE = "Protecting the world's plant resources from pests"
 USE_SOUTH = True
+
+RICHTEXT_WIDGET_CLASS = 'mezzanine_pagedown.widgets.PageDownWidget'
+RICHTEXT_FILTER = 'mezzanine_pagedown.filters.extra'
+RICHTEXT_FILTER_LEVEL = 3
+PAGEDOWN_MARKDOWN_EXTENSIONS = ('extra','codehilite','toc')
+
 
 # Store these package names here as they may change in the future since
 # at the moment we are using custom forks of them.
