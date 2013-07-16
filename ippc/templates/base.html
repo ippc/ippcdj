@@ -51,21 +51,24 @@
 
 <div class="navbar-inner">
 <div class="container">
-    <a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
-        <span class="icon-bar"></span>
-        <span class="icon-bar"></span>
-        <span class="icon-bar"></span>
-    </a>
-    {% if settings.SITE_TITLE %}
-      <a class="brand" href="/">
-        <strong>{{ settings.SITE_TITLE }}</strong>
-        <br>
-        {% if settings.SITE_TAGLINE %}<em class="small">{{ settings.SITE_TAGLINE }}</em>{% endif %}
-      </a>{% endif %}
-    {# {% if settings.SITE_TAGLINE %}<p class="navbar-text">{{ settings.SITE_TAGLINE }}</p>{% endif %} #}
+
+
+    {# language bar #}
+    {# http://pythonhosted.org/django-localeurl/usage.html #}
+    {% load localeurl_tags %}
+        <ul class="nav nav-pills small pull-left">
+    {% for lang in LANGUAGES %}
+        {% ifequal lang.0 LANGUAGE_CODE %}
+            <li class="active"><a href="#">{{ lang.1 }}</a></li>
+        {% else %}
+            <li><a href="{{ request.path|chlocale:lang.0 }}">{{ lang.1 }}</a></li>
+        {% endifequal %}
+    {% endfor %}
+        </ul>
+
     <div class="nav-collapse collapse">
-        {# login/logout #}
-            <div class="span4 pull-right">
+        {# toolbar, user panel, login/logout #}
+        <div class="pull-right align-right">
             {% nevercache %}
             {% include "includes/user_panel.html" %}
             {% endnevercache %}
@@ -76,9 +79,28 @@
             {# {% endifinstalled %} #}
             {# {% endblock %} #}
             {# </div> #}
-            </div>
-      {# {% search_form "all" %} #}
-      {% search_form %}
+            <br>
+            {# {% search_form "all" %} #}
+            {% search_form %}
+        </div>
+    </div>
+        
+    <a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+    </a>
+    {% if settings.SITE_TITLE %}
+    <div class="pull-left" style="clear:left;">
+      <a class="brand" href="/">
+        <strong>{{ settings.SITE_TITLE }}</strong>
+        <br>
+        {% if settings.SITE_TAGLINE %}<em class="small">{{ settings.SITE_TAGLINE }}</em>{% endif %}
+      </a>
+    </div>
+    {% endif %}
+    
+    <div class="nav-collapse collapse">
       {% page_menu "pages/menus/dropdown.html" %}
     </div>
     

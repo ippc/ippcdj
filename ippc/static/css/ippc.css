@@ -17,6 +17,9 @@ ul.breadcrumb {margin:0;}
 .larger {font-size:1.2em;}
 .largerstill {font-size:1.4em;}
 .caps {text-transform: uppercase; font-size:0.9em;}
+.align-right {text-align:right;}
+
+input.search-query {width:20em !important;}
 
 /*ul.nav li.dropdown:hover ul.dropdown-menu {display:inline;}*/
 

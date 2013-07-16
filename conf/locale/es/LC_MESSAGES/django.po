@@ -1,0 +1,292 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2013-07-16 11:57+0200\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#: settings.py:318
+msgid "English"
+msgstr ""
+
+#: settings.py:319
+msgid "French"
+msgstr ""
+
+#: settings.py:320
+msgid "Spanish"
+msgstr ""
+
+#: settings.py:321
+msgid "Russian"
+msgstr ""
+
+#: settings.py:322
+msgid "Arabic"
+msgstr ""
+
+#: settings.py:323
+msgid "Chinese"
+msgstr ""
+
+#: ippc/models.py:9
+msgid "Male"
+msgstr ""
+
+#: ippc/models.py:10
+msgid "Female"
+msgstr ""
+
+#: ippc/models.py:14
+msgid "first name"
+msgstr ""
+
+#: ippc/models.py:15
+msgid "last name"
+msgstr ""
+
+#: ippc/models.py:17
+msgid "alternate email"
+msgstr ""
+
+#: ippc/models.py:19
+msgid "gender"
+msgstr ""
+
+#: ippc/models.py:20
+msgid "profile photo"
+msgstr ""
+
+#: ippc/models.py:23
+msgid "address1"
+msgstr ""
+
+#: ippc/models.py:24
+msgid "address2"
+msgstr ""
+
+#: ippc/models.py:25
+msgid "city"
+msgstr ""
+
+#: ippc/models.py:26
+msgid "state"
+msgstr ""
+
+#: ippc/models.py:27
+msgid "zipcode"
+msgstr ""
+
+#: ippc/models.py:29
+msgid "country"
+msgstr ""
+
+#: ippc/models.py:31
+msgid "phone"
+msgstr ""
+
+#: ippc/models.py:32
+msgid "fax"
+msgstr ""
+
+#: ippc/models.py:33
+msgid "mobile"
+msgstr ""
+
+#: ippc/models.py:56
+msgid "Translated Page"
+msgstr ""
+
+#: ippc/models.py:57
+msgid "Translated Pages"
+msgstr ""
+
+#: ippc/models.py:65
+msgid "Translated Link"
+msgstr ""
+
+#: ippc/models.py:66
+msgid "Translated Links"
+msgstr ""
+
+#: ippc/models.py:77
+msgid "Button text"
+msgstr ""
+
+#: ippc/models.py:77
+msgid "Submit"
+msgstr ""
+
+#: ippc/models.py:78
+msgid "Response"
+msgstr ""
+
+#: ippc/models.py:81
+msgid "Translated Form"
+msgstr ""
+
+#: ippc/models.py:82
+msgid "Translated Forms"
+msgstr ""
+
+#: ippc/models.py:88
+msgid "Label (Original)"
+msgstr ""
+
+#: ippc/models.py:89
+msgid "Label"
+msgstr ""
+
+#: ippc/models.py:91
+msgid "Choices"
+msgstr ""
+
+#: ippc/models.py:92
+msgid ""
+"Comma separated options where applicable. If an option itself contains "
+"commas, surround the option with `backticks`."
+msgstr ""
+
+#: ippc/models.py:94
+msgid "Default value"
+msgstr ""
+
+#: ippc/models.py:96
+msgid "Help text"
+msgstr ""
+
+#: ippc/models.py:99
+msgid "Translated Field"
+msgstr ""
+
+#: ippc/models.py:100
+msgid "Translated Fields"
+msgstr ""
+
+#: ippc/models.py:110
+msgid "Translated Gallery"
+msgstr ""
+
+#: ippc/models.py:111
+msgid "Translated Galleries"
+msgstr ""
+
+#: ippc/models.py:119
+msgid "Translated Image"
+msgstr ""
+
+#: ippc/models.py:120
+msgid "Translated Images"
+msgstr ""
+
+#: ippc/templates/base.html:158
+msgid "Powered by"
+msgstr ""
+
+#: ippc/templates/base.html:161
+msgid "and"
+msgstr ""
+
+#: ippc/templates/base.html:164
+msgid "Theme by"
+msgstr ""
+
+#: ippc/templates/base.html:167
+msgid "View Mobile Site"
+msgstr ""
+
+#: ippc/templates/index.html:4 ippc/templates/index.html.py:8
+#: ippc/templates/sitemap.html:4 ippc/templates/pages/menus/dropdown.html:56
+msgid "Home"
+msgstr ""
+
+#: ippc/templates/index.html:12
+msgid ""
+"\n"
+"<h2>Welcome to the IPPC homepage!</h2>\n"
+"<p>\n"
+"    The International Plant Protection Convention (IPPC) is an international "
+"agreement on plant health to which 179 signatories currently adhere. It aims "
+"to protect cultivated and wild plants by preventing the introduction and "
+"spread of pests. The Secretariat of the IPPC is provided by the Food and "
+"Agriculture Organization of the United Nations. Media Kit.\n"
+"</p>\n"
+"<ul>\n"
+"    <li><a href=\"/admin/\">Log in to the admin interface</a></li>\n"
+"    <li><a href=\"http://mezzanine.jupo.org/docs/content-architecture.html"
+"\">Creating custom page types</a></li>\n"
+"    <li><a href=\"http://mezzanine.jupo.org/docs/frequently-asked-questions."
+"html#templates\">Modifying HTML templates</a></li>\n"
+"    <li><a href=\"http://mezzanine.jupo.org/docs/frequently-asked-questions."
+"html#why-isn-t-the-homepage-a-page-object-i-can-edit-via-the-admin"
+"\">Changing this homepage</a></li>\n"
+"    <li><a href=\"http://mezzanine.jupo.org/docs/frequently-asked-questions."
+"html\">Other frequently asked questions</a></li>\n"
+"    <li><a href=\"http://mezzanine.jupo.org/docs/configuration.html#default-"
+"settings\">Full list of settings</a></li>\n"
+"    <li><a href=\"http://mezzanine.jupo.org/docs/deployment.html\">Deploying "
+"to a production server</a></li>\n"
+"</ul>\n"
+msgstr ""
+
+#: ippc/templates/sitemap.html:8 ippc/templates/includes/user_panel.html:4
+msgid "Sitemap"
+msgstr "Mapa del Sitio"
+
+#: ippc/templates/sitemap.html:12
+msgid ""
+"\n"
+"<h2>IPPC Sitemap</h2>\n"
+msgstr ""
+
+#: ippc/templates/accounts/includes/user_panel.html:4
+msgid "Hello, "
+msgstr ""
+
+#: ippc/templates/accounts/includes/user_panel.html:10
+msgid "Update profile"
+msgstr ""
+
+#: ippc/templates/accounts/includes/user_panel.html:15
+msgid "Log out"
+msgstr ""
+
+#: ippc/templates/accounts/includes/user_panel.html:18
+msgid "Log in"
+msgstr ""
+
+#: ippc/templates/accounts/includes/user_panel.html:19
+msgid "or"
+msgstr ""
+
+#: ippc/templates/accounts/includes/user_panel.html:21
+msgid "Sign up"
+msgstr ""
+
+#: ippc/templates/includes/search_form.html:4
+msgid "Search"
+msgstr ""
+
+#: ippc/templates/includes/search_form.html:11
+msgid "Everything"
+msgstr ""
+
+#: ippc/templates/includes/search_form.html:22
+msgid "Go"
+msgstr ""
+
+#: ippc/templates/includes/user_panel.html:4
+msgid "FAQ"
+msgstr ""

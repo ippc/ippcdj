@@ -119,10 +119,7 @@ SITE_ID = 1
 
 # If you set this to False, Django will make some optimizations so as not
 # to load the internationalization machinery.
-USE_I18N = False
-
-# Make this unique, and don't share it with anybody.
-SECRET_KEY = "6d671e3a-42f1-47d4-bdc6-55aa8033253da900d323-4c9e-4a2b-a24e-120d74e83f4e3e3016d2-952e-40d6-a01d-7ce6a0957b8c"
+USE_I18N = True
 
 # Tuple of IP addresses, as strings, that:
 #   * See debug comments, when DEBUG is true
@@ -223,6 +220,10 @@ TEMPLATE_DIRS = (os.path.join(PROJECT_ROOT, "templates"),)
 ################
 
 INSTALLED_APPS = (
+    
+    # /en/, /es/ etc in urls
+    "localeurl",
+    
     "django.contrib.admin",
     "django.contrib.auth",
     "django.contrib.contenttypes",
@@ -257,6 +258,9 @@ INSTALLED_APPS = (
     # file collections for publications
     "mezzanine_file_collections",
     
+    # south for database data migrations
+    "south",
+    
     #"mezzanine.mobile",
 )
 
@@ -281,6 +285,13 @@ TEMPLATE_CONTEXT_PROCESSORS = (
 MIDDLEWARE_CLASSES = (
     "mezzanine.core.middleware.UpdateCacheMiddleware",
     "django.contrib.sessions.middleware.SessionMiddleware",
+    
+    # localization for multi-lingual site
+    # http://www.djangobook.com/en/2.0/chapter19.html
+    # "django.middleware.locale.LocaleMiddleware",
+    # https://bitbucket.org/carljm/django-localeurl/src/764caf7a412d77aca8cc929988f333ee808719e6/docs/setup.rst?at=default
+    "localeurl.middleware.LocaleURLMiddleware",
+    
     "django.contrib.auth.middleware.AuthenticationMiddleware",
     "django.middleware.common.CommonMiddleware",
     "django.middleware.csrf.CsrfViewMiddleware",
@@ -297,10 +308,25 @@ MIDDLEWARE_CLASSES = (
     "mezzanine.core.middleware.FetchFromCacheMiddleware",
 )
 
+
+LANGUAGE_CODE == 'en'
+# https://docs.djangoproject.com/en/1.3/ref/settings/#std:setting-LANGUAGES
+# http://pythonhosted.org/django-localeurl/usage.html
+
+ugettext = lambda s: s
+LANGUAGES = (
+    ('en', ugettext('English')),
+    ('fr', ugettext('French')),
+    ('es', ugettext('Spanish')),
+    ('ru', ugettext('Russian')),
+    ('ar', ugettext('Arabic')),
+    ('zh', ugettext('Chinese')),
+)
+
 AUTH_PROFILE_MODULE = "ippc.IppcUserProfile"
 SITE_TITLE = "International Plant Protection Convention"
 SITE_TAGLINE = "Protecting the world's plant resources from pests"
-USE_SOUTH = True
+ALLOWED_HOSTS = "127.0.0.1:8000"
 
 RICHTEXT_WIDGET_CLASS = 'mezzanine_pagedown.widgets.PageDownWidget'
 RICHTEXT_FILTER = 'mezzanine_pagedown.filters.extra'

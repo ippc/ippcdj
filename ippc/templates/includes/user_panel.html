@@ -1,9 +1,7 @@
-{% load mezzanine_tags %}
+{% load mezzanine_tags i18n %}
 {% ifinstalled mezzanine.accounts %}
 {# <div class="panel"> #}
-    {% block trans %}
-    <a href="/sitemap/">Sitemap</a> | <a href="/faq/">FAQ</a> | 
-    {% endblock trans %}
+    <a href="{% url 'sitemap' %}">{% trans "Sitemap" %}</a> | <a href="{% url 'page' 'faq' %}">{% trans "FAQ" %}</a> | 
     {% include "accounts/includes/user_panel.html" %}
 {# </div> #}
 {% endifinstalled %}

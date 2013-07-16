@@ -13,8 +13,8 @@ admin.autodiscover()
 
 urlpatterns = patterns("",
     
-    # Sitemap
     url("^sitemap/$", direct_to_template, {"template": "sitemap.html"}, name="sitemap"),
+    # url("^faq/$", direct_to_template, {"template": "sitemap.html"}, name="sitemap"),
     
     # pagedown
     ("^pagedown/", include(mezzanine_pagedown.urls)),
