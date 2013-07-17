@@ -1,18 +1,17 @@
 {% extends "base.html" %}
 {% load pages_tags mezzanine_tags i18n future staticfiles %}
 
-{% block meta_title %}{% trans "Sitemap" %}{% endblock %}
+{% block meta_title %}{% trans "Feeds" %}{% endblock %}
 {# {% block title %}{% trans "Welcome to IPPC" %}{% endblock %} #}
 
 {% block breadcrumb_menu %}
-<li class="active">{% trans "Sitemap" %}</li>
+<li class="active">{% trans "Feeds" %}</li>
 {% endblock %}
 
 {% block main %}
-<h2>{% trans "IPPC Sitemap" %}</h2>
+<h2>{% trans "Feeds" %}</h2>
+    
 
-    {% spaceless %}
-    {% page_menu %}
-    {% endspaceless %}
+    
     
 {% endblock %}

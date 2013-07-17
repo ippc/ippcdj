@@ -1,4 +1,4 @@
-
+# -*- coding: utf-8 -*-
 ######################
 # MEZZANINE SETTINGS #
 ######################
@@ -261,6 +261,9 @@ INSTALLED_APPS = (
     # south for database data migrations
     "south",
     
+    # debug toolbar
+    # "debug_toolbar",
+    
     #"mezzanine.mobile",
 )
 
@@ -283,6 +286,10 @@ TEMPLATE_CONTEXT_PROCESSORS = (
 # these middleware classes will be applied in the order given, and in the
 # response phase the middleware will be applied in reverse order.
 MIDDLEWARE_CLASSES = (
+    
+    # debug toolbar
+    # "debug_toolbar.middleware.DebugToolbarMiddleware",
+
     "mezzanine.core.middleware.UpdateCacheMiddleware",
     "django.contrib.sessions.middleware.SessionMiddleware",
     
@@ -308,6 +315,10 @@ MIDDLEWARE_CLASSES = (
     "mezzanine.core.middleware.FetchFromCacheMiddleware",
 )
 
+# DEBUG_TOOLBAR_CONFIG = {
+#     'SHOW_TEMPLATE_CONTEXT': True,
+#     'INTERCEPT_REDIRECTS': False,
+# }
 
 LANGUAGE_CODE == 'en'
 # https://docs.djangoproject.com/en/1.3/ref/settings/#std:setting-LANGUAGES
@@ -316,20 +327,27 @@ LANGUAGE_CODE == 'en'
 ugettext = lambda s: s
 LANGUAGES = (
     ('en', ugettext('English')),
-    ('fr', ugettext('French')),
-    ('es', ugettext('Spanish')),
-    ('ru', ugettext('Russian')),
-    ('ar', ugettext('Arabic')),
-    ('zh', ugettext('Chinese')),
+    ('fr', ugettext('Français')),
+    ('es', ugettext('Español')),
+    ('ru', ugettext('Русский')),
+    ('ar', ugettext('العربية')),
+    ('zh', ugettext('简体中文')),
 )
 
+# https://docs.djangoproject.com/en/dev/ref/settings/#locale-paths
+LOCALE_PATHS = (os.path.join(PROJECT_ROOT, "conf/locale"),)
+
+BLOG_SLUG = 'news'
+# SITE_TITLE = ugettext("International Plant Protection Convention")
+# SITE_TAGLINE = ugettext("Protecting the world's plant resources from pests")
+
 AUTH_PROFILE_MODULE = "ippc.IppcUserProfile"
-SITE_TITLE = "International Plant Protection Convention"
-SITE_TAGLINE = "Protecting the world's plant resources from pests"
+
 ALLOWED_HOSTS = "127.0.0.1:8000"
 
 RICHTEXT_WIDGET_CLASS = 'mezzanine_pagedown.widgets.PageDownWidget'
-RICHTEXT_FILTER = 'mezzanine_pagedown.filters.extra'
+# RICHTEXT_WIDGET_CLASS = 'mezzanine.core.forms.TinyMceWidget'
+RICHTEXT_FILTER = 'mezzanine_pagedown.filters.custom'
 RICHTEXT_FILTER_LEVEL = 3
 PAGEDOWN_MARKDOWN_EXTENSIONS = ('extra','codehilite','toc')
 
@@ -345,7 +363,7 @@ PACKAGE_NAME_GRAPPELLI = "grappelli_safe"
 
 # These will be added to ``INSTALLED_APPS``, only if available.
 OPTIONAL_APPS = (
-    "debug_toolbar",
+    # "debug_toolbar",
     "django_extensions",
     "compressor",
     PACKAGE_NAME_FILEBROWSER,

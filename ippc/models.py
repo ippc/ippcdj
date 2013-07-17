@@ -33,7 +33,7 @@ class IppcUserProfile(models.Model):
     mobile = models.CharField(_("mobile"), blank=True, max_length=30)
 
 
-
+# Translations of site pages content
 # https://gist.github.com/renyi/3596248
 from mezzanine.conf import settings
 from mezzanine.core.models import Slugged, MetaData, Displayable, Orderable, RichText

@@ -1,17 +1,3 @@
-{# {% extends "pages/page.html" %} #}
-{#  #}
-{# {% load mezzanine_tags %} #}
-{#  #}
-{# {% block main %}{{ block.super }} #}
-{#  #}
-{# {% editable page.richtextpage.content %} #}
-{# {{ page.richtextpage.content|richtext_filter|safe }} #}
-{# {% endeditable %} #}
-{#  #}
-{# {% endblock %} #}
-
-
-
 {# https://gist.github.com/renyi/3596248 #}
 {# richtextpage.html #}
 
@@ -21,16 +7,8 @@
 {% block main %}
     {{ block.super }}
 
-    {% with translated_page=page|get_object_translation %}
-        {# {{ translated_page.richtextpage.content|safe }} #}
+    {% with page.richtextpage|get_object_translation as translated_page %}
+        {{ translated_page.content|richtext_filter|safe }}
     {% endwith %}
-    
-    {# {{ page.title|get_object_translation }} #}
-
-    {# why is this outputting title: #}
-    {{ page.richtextpage|get_object_translation|safe }}
-    
-    {# =todo: output translatable content #}
-    {{ page.richtextpage.content|get_object_translation|safe }}
 
 {% endblock %}

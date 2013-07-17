@@ -10,8 +10,6 @@ register = template.Library()
 def get_object_translation(obj):
     # get current language
     lang = translation.get_language()
-    # path = request.path
-    # lang = translation.get_language_from_path('path')
 
     try:
         # returns object with current translation

@@ -14,6 +14,11 @@ admin.autodiscover()
 urlpatterns = patterns("",
     
     url("^sitemap/$", direct_to_template, {"template": "sitemap.html"}, name="sitemap"),
+    url("^contact/$", direct_to_template, {"template": "contact.html"}, name="contact"),
+    url("^feeds/$", direct_to_template, {"template": "feeds.html"}, name="feeds"),
+    url("^legal/$", direct_to_template, {"template": "legal.html"}, name="legal"),
+    url("^colophon/$", direct_to_template, {"template": "colophon.html"}, name="colophon"),
+
     # url("^faq/$", direct_to_template, {"template": "sitemap.html"}, name="sitemap"),
     
     # pagedown

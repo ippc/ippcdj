@@ -18,7 +18,19 @@
              {% if not page.is_primary and forloop.first %} first{% endif %}
              {% if forloop.last %} last{% endif %}"
       id="tree-menu-{{ page.html_id }}">
-    <a href="{{ page.get_absolute_url }}">{{ page.title }}</a>
+      
+      {% load translate_tags %}
+    <a href="{{ page.get_absolute_url }}">
+        {# {% with page.richtextpage|get_object_translation as translated_page %}{{ translated_page.title|safe }}{% endwith %} #}
+        
+        {% with page.richtextpage|get_object_translation as translated_page %}
+        {% if translated_page.title %}
+            {{ translated_page.title|safe }}
+            {% else %}
+            {{ page.title }}
+        {% endif %}
+        {% endwith %}
+    </a>
     {# wrap the next line with 'if page.is_current_or_ascendant' #}
     {# to only show child pages in the menu for the current page #}
     {% if page.is_current_or_ascendant %}

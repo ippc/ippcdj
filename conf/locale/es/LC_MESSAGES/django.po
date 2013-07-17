@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2013-07-16 11:57+0200\n"
+"POT-Creation-Date: 2013-07-17 14:26+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -17,28 +17,28 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: settings.py:318
+#: settings.py:329
 msgid "English"
 msgstr ""
 
-#: settings.py:319
-msgid "French"
+#: settings.py:330
+msgid "Français"
 msgstr ""
 
-#: settings.py:320
-msgid "Spanish"
+#: settings.py:331
+msgid "Español"
 msgstr ""
 
-#: settings.py:321
-msgid "Russian"
+#: settings.py:332
+msgid "Русский"
 msgstr ""
 
-#: settings.py:322
-msgid "Arabic"
+#: settings.py:333
+msgid "العربية"
 msgstr ""
 
-#: settings.py:323
-msgid "Chinese"
+#: settings.py:334
+msgid "简体中文"
 msgstr ""
 
 #: ippc/models.py:9
@@ -191,25 +191,75 @@ msgstr ""
 msgid "Translated Images"
 msgstr ""
 
-#: ippc/templates/base.html:158
-msgid "Powered by"
+#: ippc/templates/base.html:97
+msgid "International Plant Protection Convention"
+msgstr "Convención Internacional de Protección Fitosanitaria"
+
+#: ippc/templates/base.html:100
+msgid "Protecting the world's plant resources from pests"
+msgstr "Protégér de las plagas los recursos vegetales del mundo"
+
+#: ippc/templates/base.html:143
+msgid "Key Links &amp; Documents"
+msgstr ""
+
+#: ippc/templates/base.html:145 ippc/templates/sitemap.html:4
+#: ippc/templates/sitemap.html.py:8 ippc/templates/includes/user_panel.html:4
+msgid "Sitemap"
+msgstr "Mapa del Sitio"
+
+#: ippc/templates/base.html:160 ippc/templates/index.html:4
+#: ippc/templates/index.html.py:8 ippc/templates/pages/menus/breadcrumb.html:4
+#: ippc/templates/pages/menus/breadcrumb.html:10
+#: ippc/templates/pages/menus/dropdown.html:56
+msgid "Home"
 msgstr ""
 
 #: ippc/templates/base.html:161
-msgid "and"
+msgid "Contact us"
+msgstr ""
+
+#: ippc/templates/base.html:162
+msgid "RSS feeds"
+msgstr ""
+
+#: ippc/templates/base.html:163 ippc/templates/legal.html:4
+#: ippc/templates/legal.html.py:8 ippc/templates/legal.html:12
+msgid "Legal"
 msgstr ""
 
 #: ippc/templates/base.html:164
-msgid "Theme by"
+msgid "About this site"
 msgstr ""
 
 #: ippc/templates/base.html:167
-msgid "View Mobile Site"
+msgid "IPPC on Social Media:"
 msgstr ""
 
-#: ippc/templates/index.html:4 ippc/templates/index.html.py:8
-#: ippc/templates/sitemap.html:4 ippc/templates/pages/menus/dropdown.html:56
-msgid "Home"
+#: ippc/templates/base.html:171
+msgid "The IPPC Secretariat is hosted &amp; provided by"
+msgstr ""
+
+#: ippc/templates/base.html:172
+msgid "Food and Agriculture Organization Logo"
+msgstr ""
+
+#: ippc/templates/colophon.html:4 ippc/templates/colophon.html.py:7
+#: ippc/templates/colophon.html:11
+msgid "Colophon"
+msgstr ""
+
+#: ippc/templates/contact.html:4 ippc/templates/contact.html.py:8
+msgid "Contact"
+msgstr ""
+
+#: ippc/templates/contact.html:12
+msgid "Contact IPPC"
+msgstr ""
+
+#: ippc/templates/feeds.html:4 ippc/templates/feeds.html.py:8
+#: ippc/templates/feeds.html:12
+msgid "Feeds"
 msgstr ""
 
 #: ippc/templates/index.html:12
@@ -241,15 +291,9 @@ msgid ""
 "</ul>\n"
 msgstr ""
 
-#: ippc/templates/sitemap.html:8 ippc/templates/includes/user_panel.html:4
-msgid "Sitemap"
-msgstr "Mapa del Sitio"
-
 #: ippc/templates/sitemap.html:12
-msgid ""
-"\n"
-"<h2>IPPC Sitemap</h2>\n"
-msgstr ""
+msgid "IPPC Sitemap"
+msgstr "Mapa del Sitio"
 
 #: ippc/templates/accounts/includes/user_panel.html:4
 msgid "Hello, "
