@@ -47,3 +47,4 @@
 - Forums
 - Email utility
 - Contact form
+- Polls
