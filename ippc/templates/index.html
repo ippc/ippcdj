@@ -11,6 +11,17 @@
 {% block local_nav %}
 <div class="panel">
   <h4><a href="{% url 'page' 'news' %}">{% trans "Latest News" %}</a></h4>
+  {% load ippc_tags %}
+  {% get_latest blog.BlogPost 10 as latest_news %}
+  
+  <ul>
+  {% for entry in latest_news %}
+  <li>
+  <a href="{{ entry.get_absolute_url }}">{{ entry.title }}</a>{# , posted {{ entry.pub_date|timesince }} ago. #}
+  </li>
+  {% endfor %}
+  </ul>
+  
 </div>
 {% endblock local_nav %}
 

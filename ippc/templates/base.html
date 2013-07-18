@@ -143,12 +143,23 @@
     <div class="panel tree">{% page_menu "pages/menus/tree.html" %}</div>
     {% endblock trans %}
     {% endblock local_nav %}
+    
+    {% block pageinfo %}
     <div class="panel">
         <h4>{% trans "Key Links &amp; Documents" %}</h4>
-        <ul>
-            <li><a href="{% url 'sitemap' %}">{% trans "Sitemap" %}</a></li>
-        </ul>
+        {# <ul> #}
+        {#     <li><a href="{% url 'sitemap' %}">{% trans "Sitemap" %}</a></li> #}
+        {# </ul> #}
+        
+        {% load translate_tags ippc_tags %}
+        {# {% with page.richtextpage|get_object_translation as translated_page %} #}
+        {#     {{ translated_page.content|richtext_filter|safe }} #}
+        {# {% endwith %} #}
+        
+        {% get_page "22" "content" %}
+        
     </div>
+    {% endblock pageinfo %}
 </div>
 
 </div>
@@ -162,9 +173,9 @@
     <ul class="nav nav-pills small">
         <li><a href="{% url 'home' %}">{% trans "Home" %}</a></li>
         <li><a href="{% url 'contact' %}">{% trans "Contact us" %}</a></li>
-        <li><a href="{% url 'feeds' %}">{% trans "RSS feeds" %}</a></li>
-        <li><a href="{% url 'legal' %}">{% trans "Legal" %}</a></li>
-        <li><a href="{% url 'colophon' %}">{% trans "About this site" %}</a>
+        <li><a href="{% url 'page' 'feeds' %}">{% trans "RSS feeds" %}</a></li>
+        <li><a href="{% url 'page' 'legal' %}">{% trans "Legal" %}</a></li>
+        <li><a href="{% url 'page' 'colophon' %}">{% trans "About this site" %}</a>
     </ul>
         <p class="text-left">{% trans "IPPC on Social Media:" %} <a href="http://www.facebook.com/pages/IPPC-Protecting-the-worlds-plant-resources-from-pests/113230338690380" class="icn-facebook">Facebook</a> | <a href="https://twitter.com/ippcnews" class="icn-twitter">Twitter</a></p>
 </div>

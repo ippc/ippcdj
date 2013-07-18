@@ -10,7 +10,7 @@
     - Pest report upload form
 
 - Restricted Work Area
-    - Lists pages accessible to each user according to his permissions
+    - Lists pages accessible to each user [according to his permissions](http://stackoverflow.com/a/16016717)
     - Permissions groups to be created: 
         - Anonymous User
         - Logged In User
