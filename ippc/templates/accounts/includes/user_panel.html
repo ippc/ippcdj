@@ -4,10 +4,10 @@
     {% trans "Hello, " %}
     {% url "profile" request.user.username as profile_url %}
     {% if profile_url %}
-        <a href="{{ profile_url }}">{{ request.user|username_or:"email" }}</a>
-        <br>
-        <a href="{% url "profile_update" %}"
-            class="btn btn-small btn-account">{% trans "Update profile" %}</a>
+        <a href="{{ profile_url }}">{{ request.user|username_or:"email" }}</a>!
+        {# <br> #}
+        {# <a href="{% url "profile_update" %}" #}
+        {#     class="btn btn-small btn-account">{% trans "Update profile" %}</a> #}
     {% else %}
         <a href="{% url "profile_update" %}">{{ request.user|username_or:"email"|capfirst }}</a>!
     {% endif %}
