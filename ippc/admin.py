@@ -3,6 +3,8 @@ from django.contrib import admin
 from mezzanine.conf import settings
 from mezzanine.core.admin import TabularDynamicInlineAdmin
 
+from .models import PestReport
+
 if "mezzanine.pages" in settings.INSTALLED_APPS:
     from mezzanine.pages.models import RichTextPage, Link
     from mezzanine.pages.admin import PageAdmin, LinkAdmin
@@ -78,3 +80,9 @@ if "mezzanine.galleries" in settings.INSTALLED_APPS:
 
     admin.site.unregister(Gallery)
     admin.site.register(Gallery, TransGalleryAdmin)
+
+#
+# Pest Reports
+#
+
+admin.site.register(PestReport)

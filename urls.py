@@ -2,7 +2,7 @@
 from django.conf.urls import patterns, include, url
 from django.contrib import admin
 
-import .ippc.views
+from .ippc.views import PestReportListView, PestReportDetailView
 
 from mezzanine.core.views import direct_to_template
 import mezzanine_pagedown.urls
@@ -23,8 +23,15 @@ urlpatterns = patterns("",
     # url("^faq/$", direct_to_template, {"template": "sitemap.html"}, name="sitemap"),
     
     # countries
-    (r'^countries/$', views.latest_pest_reports),
+    # pest report list
+    url(r'^countries/pestreports/$',
+        view=PestReportListView.as_view(),
+        name='pest-reports'),
     
+    # pest report detail
+    url(r'^countries/pestreports/(?P<year>\d+)/(?P<month>\d{2})/(?P<slug>[\w-]+)/$',
+        view=PestReportDetailView.as_view(),
+        name="pest-report-detail"),
     # pagedown
     ("^pagedown/", include(mezzanine_pagedown.urls)),
     

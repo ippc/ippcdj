@@ -1,9 +1,9 @@
-<html><head><title>Books</title></head>
+<html><head><title>Latest Pest Reports</title></head>
 <body>
-<h1>Pest</h1>
+<h1>Latest Pest Reports</h1>
 <ul>
-{% for book in book_list %}
-<li>{{ book.name }}</li>
+{% for object in latest %}
+<li><a href="{{ object.get_absolute_url }}">{{ object.title }}</a></li>
 {% endfor %}
 </ul>
 </body></html>

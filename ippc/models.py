@@ -2,6 +2,10 @@ from django.db import models
 from django.utils.translation import ugettext_lazy as _
 from django_countries.fields import CountryField
 
+from django.template.defaultfilters import slugify
+
+import datetime
+
 from mezzanine.pages.models import Page
 
 from mezzanine.conf import settings
@@ -40,8 +44,8 @@ class IppcUserProfile(models.Model):
 
 
 
-class CountryPage(Page):
-    country = CountryField(_("Country"))
+# class CountryPage(Page):
+#     country = CountryField(_("Country"))
 
 # do we need a table for this? or do http://djangosnippets.org/snippets/2753/ ?
 class PestStatus(models.Model):
@@ -54,17 +58,20 @@ REPORT_STATUS_FINAL = 3
 REPORT_STATUS_CHOICES = (
     (REPORT_STATUS_NA, _("N/A")),
     (REPORT_STATUS_PRELIMINARY, _("Preliminary")),
-    (REPORT_STATUS_FINAL, _("Preliminary")),
+    (REPORT_STATUS_FINAL, _("Final")),
 )
 
 class PestReport(models.Model):
-    country = models.ForeignKey("CountryPage")
+    country = CountryField(_("Country"))
     title = models.CharField(_("Title"), max_length=500)
     slug = models.CharField(_("URL"), max_length=2000, blank=True, null=True,
+            unique_for_date='publish_date',
             help_text=_("Leave blank to have the URL auto-generated from "
                         "the title."))
     publish_date = models.DateTimeField(_("Published date"),
         blank=True, null=True)
+    modify_date = models.DateTimeField(_("Modified date"),
+        blank=True, null=True, editable=False)
     report_status = models.IntegerField(_("Report Status"),
         choices=REPORT_STATUS_CHOICES, default=REPORT_STATUS_FINAL)
     files = models.FileField(_("Pest Report Document"), upload_to="profile_photos", blank=True)
@@ -86,15 +93,28 @@ class PestReport(models.Model):
     # =todo:
     # commodity_groups = 
     # keywords = 
-    
+
+    def __unicode__(self):
+        return self.title
+
+    # http://devwiki.beloblotskiy.com/index.php5/Django:_Decoupling_the_URLs  
+    @models.permalink # or: get_absolute_url = models.permalink(get_absolute_url) below
+    def get_absolute_url(self): # "view on site" link will be visible in admin interface
+        """Construct the absolute URL for a Pest Report."""
+        return ('pest-report-detail', (), {
+                            'year': self.publish_date.strftime("%Y"),
+                            'month': self.publish_date.strftime("%m"),
+                            # 'day': self.pub_date.strftime("%d"),
+                            'slug': self.slug})
             
     def save(self, *args, **kwargs):
-        """
-        Set default for ``publish_date``.
-        """
-        if self.publish_date is None:
-            self.publish_date = now()
-        super(Displayable, self).save(*args, **kwargs)
+        ''' On save, update timestamps '''
+        if not self.id:
+            self.publish_date = datetime.datetime.today()
+            # Newly created object, so set slug
+            self.slug = slugify(self.title)
+        self.modify_date = datetime.datetime.now()
+        super(PestReport, self).save(*args, **kwargs)
 
 
 

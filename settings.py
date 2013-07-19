@@ -359,6 +359,12 @@ RICHTEXT_FILTER_LEVEL = 3
 PAGEDOWN_MARKDOWN_EXTENSIONS = ('extra','codehilite','toc')
 
 
+# http://codespatter.com/2009/04/10/how-to-add-locations-to-python-path-for-reusable-django-apps/
+# import sys
+# sys.path.insert(0, os.path.join(PROJECT_ROOT, "apps"))
+
+
+
 # Store these package names here as they may change in the future since
 # at the moment we are using custom forks of them.
 PACKAGE_NAME_FILEBROWSER = "filebrowser_safe"

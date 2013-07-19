@@ -1,0 +1,21 @@
+<html><head><title>Latest Pest Reports</title></head>
+<body>
+<h1>Latest Pest Reports</h1>
+<p><a href="/countries/pestreports/">back to pest reports list</a>
+  
+  <p><b>Title:</b> {{ report.title }}</p>
+  <p><b>Published:</b> {{ report.publish_date }}</p>
+  <p><b>Modified:</b> {{ report.modify_date }}</p>
+
+  {# http://stackoverflow.com/a/1106201 #}
+  <p><b>Report Status:</b> {{ report.get_report_status_display }}</p>
+  <p><b>Files:</b> {{ report.files }}</p>
+  <p><b>Pest Status:</b> {{ report.pest_status }}</p>
+  <p><b>Pest Id:</b> {{ report.pest_identity }}</p>
+  <p><b>Hosts:</b> {{ report.hosts }}</p>
+  <p><b>Geo:</b> {{ report.geographical_distribution }}</p>
+  <p><b>Danger:</b> {{ report.nature_of_danger }}</p>
+  <p><b>Contact for more info:</b> {{ report.contact_for_more_information }}</p>
+  <p><b>URL for more info:</b> {{ report.url_for_more_information }}</p>
+  
+</body></html>
