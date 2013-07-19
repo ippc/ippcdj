@@ -20,6 +20,7 @@ img {box-shadow:none;}
 .larger {font-size:1.2em;}
 .largerstill {font-size:1.4em;}
 .caps {text-transform: uppercase; font-size:0.9em;}
+.normal {font-weight:normal;}
 
 input.search-query {width:20em !important;}
 

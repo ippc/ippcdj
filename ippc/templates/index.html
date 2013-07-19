@@ -17,7 +17,7 @@
   <ul>
   {% for entry in latest_news %}
   <li>
-  <a href="{{ entry.get_absolute_url }}">{{ entry.title }}</a>, posted {{ entry.publish_date|timesince }} ago.
+  <a href="{{ entry.get_absolute_url }}">{{ entry.title }}</a><small> {{ entry.publish_date|timesince }} {% trans "ago" %}.</small>
   </li>
   {% endfor %}
   </ul>

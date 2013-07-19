@@ -2,6 +2,8 @@
 from django.conf.urls import patterns, include, url
 from django.contrib import admin
 
+import .ippc.views
+
 from mezzanine.core.views import direct_to_template
 import mezzanine_pagedown.urls
 
@@ -18,8 +20,10 @@ urlpatterns = patterns("",
     # url("^feeds/$", direct_to_template, {"template": "feeds.html"}, name="feeds"),
     # url("^legal/$", direct_to_template, {"template": "legal.html"}, name="legal"),
     # url("^colophon/$", direct_to_template, {"template": "colophon.html"}, name="colophon"),
-
     # url("^faq/$", direct_to_template, {"template": "sitemap.html"}, name="sitemap"),
+    
+    # countries
+    (r'^countries/$', views.latest_pest_reports),
     
     # pagedown
     ("^pagedown/", include(mezzanine_pagedown.urls)),

@@ -257,6 +257,8 @@ INSTALLED_APPS = (
     
     # file collections for publications
     "mezzanine_file_collections",
+    # or, a probably better alternative, fileuploads for publications
+    "fileupload",
     
     # south for database data migrations
     "south",
