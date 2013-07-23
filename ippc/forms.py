@@ -7,7 +7,7 @@ class PestReportForm(forms.ModelForm):
     class Meta:
         model = PestReport
         fields = [
-            # 'country',
+            'country',
             'title', 
             'summary',
             'is_public',
@@ -23,7 +23,7 @@ class PestReportForm(forms.ModelForm):
             'contact_for_more_information',
             'url_for_more_information'
             ]
-        exclude = ('country', 'author', 'slug', 'publish_date', 'modify_date')
+        exclude = ('author', 'slug', 'publish_date', 'modify_date')
 
     def __init__(self, request, *args, **kwargs):
         

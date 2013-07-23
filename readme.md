@@ -9,6 +9,7 @@
     /countries/country/pest-reports/add
     ```
 - Country editor permissions. Can only edit/upload to their own country page
+  - <http://www.b-list.org/weblog/2006/nov/02/django-tips-auto-populated-fields/>
 - File/publication uploads
 
 - Restricted Work Area

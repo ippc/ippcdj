@@ -49,17 +49,15 @@ class PestReportDetailView(DetailView):
 #     model = PestReport
 
 # @login_required
-def PestReportCreateView(request, country, form_class=PestReportForm, template_name="countries/pest_report_add.html"):
-    # u = request.GET.get('u', '')
-    # t = request.GET.get('t', '')
-    country = request.GET.get('country', '')
+def PestReportCreateView(request, country=None, form_class=PestReportForm, template_name="countries/pest_report_add.html"):
     pest_report_form = form_class(request)
     if request.method == "POST" and pest_report_form.is_valid():
         pest_report = pest_report_form.save(commit=False)
         pest_report.author = request.user
-        pest_report.country = request.user.get_profile.country
+        # pest_report.country = request.GET.get('country', '')
+        # pest_report.country = request.POST.country
         pest_report_form.save()
-        # pest_report.country = profile_user.get_profile.country.name
+        
         pest_report.id = pest_report.id
         pest_report.title = pest_report.title
         pest_report.slug = slugify(pest_report.title)
