@@ -2,7 +2,7 @@
 {% load pages_tags mezzanine_tags i18n future staticfiles %}
 
 {% block meta_title %}
-  {% trans "Pest Reports" %}: {% with latest|first as first_object %}{{ first_object.country.name }}{% endwith %}
+  {% trans "Pest Reports" %}: {{ country|capfirst }}
 {% endblock %}
 
 {% block body_class %}wide{% endblock %}
@@ -14,9 +14,7 @@
 </li>
 <li>
   <a href="/countries/{{ country }}/">
-    {% with latest|first as first_object %}
-      {{ first_object.country.name }}
-    {% endwith %}
+    {{ country|capfirst }}
   </a>
   <span class="divider">/</span>
 </li>
@@ -31,15 +29,14 @@
 
 {% block main %}
 
-<p class="pull-right"><a href="/countries/{{ country }}/">« {% trans "Back to" %} {% with latest|first as first_object %}{{ first_object.country.name }}{% endwith %}</a></p>
+<p class="pull-right"><a href="/countries/{{ country }}/">« {% trans "Back to" %} {{ country|capfirst }}</a></p>
 
 <h1>
   <small class="normal">{% trans "Pest Reports from" %}</small>
-  {% with latest|first as first_object %}
-    {{ first_object.country.name }}
-  {% endwith %}
+  {{ country|capfirst }}
 </h1> 
 
+{% if latest %}
 <table class="table table-condensed table-striped">
   <thead>
     <tr>
@@ -60,5 +57,8 @@
 </table>
 
 {% pagination_for latest %}
+{% else %}
+<p>No pest reports available.</p>
+{% endif %}
 
 {% endblock %}

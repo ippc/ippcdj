@@ -29,6 +29,7 @@ class PestReportListView(ArchiveIndexView):
     template_name = 'countries/pest_report_list.html'
     queryset = PestReport.objects.all().order_by('-publish_date', 'title')
     allow_future = False
+    allow_empty = True
     
     def get_context_data(self, **kwargs): # http://stackoverflow.com/a/15515220
         context = super(PestReportListView, self).get_context_data(**kwargs)
