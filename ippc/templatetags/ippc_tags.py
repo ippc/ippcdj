@@ -49,7 +49,7 @@ from ippc.models import TransRichTextPage
 # http://stackoverflow.com/a/13927772
 # show specific page in template
 @register.simple_tag
-def get_page(pk, attr):
+def get_page(slug, attr):
     # page = richtext_filter(get_object_translation(getattr(RichTextPage.objects.get(pk=int(pk)), attr)))
-    page = get_object_translation(RichTextPage.objects.get(pk=int(pk)))
+    page = get_object_translation(RichTextPage.objects.get(slug=slug))
     return richtext_filter(page.content)
