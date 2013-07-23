@@ -2,7 +2,7 @@
 from django.conf.urls import patterns, include, url
 from django.contrib import admin
 
-from .ippc.views import PestReportListView, PestReportDetailView, CountryView, PestReportCreateView
+from .ippc.views import PestReportListView, PestReportDetailView, CountryView, pest_report_create
 
 from mezzanine.core.views import direct_to_template
 import mezzanine_pagedown.urls
@@ -40,9 +40,9 @@ urlpatterns = patterns("",
         name="pest-report-detail"),
         
     # pest report add
-    url(r'^countries/(?P<country>[\w-]+)/pestreports/add/$',
+    url(r'^countries/(?P<country>[\w-]+)/pestreports/create/$',
     # url(r'^countries/pestreports/add/$',
-        view=PestReportCreateView,
+        view=pest_report_create,
         name='pest-report-create'),
 
     # pagedown
