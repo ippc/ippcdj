@@ -370,6 +370,9 @@ PAGEDOWN_MARKDOWN_EXTENSIONS = ('extra','codehilite','toc')
 PACKAGE_NAME_FILEBROWSER = "filebrowser_safe"
 PACKAGE_NAME_GRAPPELLI = "grappelli_safe"
 
+# GRAPPELLI_ADMIN_HEADLINE = ""
+GRAPPELLI_ADMIN_TITLE = "IPPC Administration - click to view site"
+
 #########################
 # OPTIONAL APPLICATIONS #
 #########################

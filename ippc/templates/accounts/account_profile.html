@@ -26,11 +26,12 @@
 {% for field, value in profile_user|profile_fields %}
 <li><b class="small">{{ field }}:</b> {{ value|linebreaksbr }}</li>
 {% endfor %}
+<li><strong>Country Name:</strong> {{ profile_user.get_profile.country.name }}</li>
 </ul>
 
 {% if profile_user == request.user %}
 <p class="text-right">
-<a class="btn btn-large btn-primary" style="" href="{% url "profile_update" %}">{% trans "Update profile" %}</a>
+<a class="btn btn-large btn-info" style="" href="{% url "profile_update" %}">{% trans "Update profile" %}</a>
 </p>
 {% endif %}
 

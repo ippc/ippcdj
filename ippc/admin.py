@@ -3,7 +3,36 @@ from django.contrib import admin
 from mezzanine.conf import settings
 from mezzanine.core.admin import TabularDynamicInlineAdmin
 
-from .models import PestReport
+from .models import PestStatus, PestReport
+
+#
+# Pest Reports
+#
+
+class PestStatusAdmin(admin.ModelAdmin):
+    """Options for the pest status field of Pest Reports"""
+    save_on_top = True
+        
+
+class PestReportAdmin(admin.ModelAdmin):
+    # http://stackoverflow.com/a/8393130
+    # def has_add_permission(self, request):
+    #     return request.user.groups.filter(name='Developers').exists()
+    # 
+    # def has_change_permission(self, request, obj=None):
+    #     return request.user.groups.filter(name='Developers').exists()
+    # 
+    # def has_delete_permission(self, request, obj=None):
+    #     return request.user.groups.filter(name='Developers').exists()
+    save_on_top = True
+    list_display = ('title', 'publish_date', 'modify_date', 'is_public', 'country')
+    list_filter = ('title', 'publish_date', 'modify_date', 'is_public', 'country')
+    search_fields = ('title', 'summary')
+    prepopulated_fields = { 'slug': ['title'] }
+
+admin.site.register(PestStatus, PestStatusAdmin)
+admin.site.register(PestReport, PestReportAdmin)
+
 
 if "mezzanine.pages" in settings.INSTALLED_APPS:
     from mezzanine.pages.models import RichTextPage, Link
@@ -80,9 +109,3 @@ if "mezzanine.galleries" in settings.INSTALLED_APPS:
 
     admin.site.unregister(Gallery)
     admin.site.register(Gallery, TransGalleryAdmin)
-
-#
-# Pest Reports
-#
-
-admin.site.register(PestReport)

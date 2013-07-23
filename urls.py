@@ -2,7 +2,7 @@
 from django.conf.urls import patterns, include, url
 from django.contrib import admin
 
-from .ippc.views import PestReportListView, PestReportDetailView
+from .ippc.views import PestReportListView, PestReportDetailView, CountryView, PestReportCreateView
 
 from mezzanine.core.views import direct_to_template
 import mezzanine_pagedown.urls
@@ -23,15 +23,28 @@ urlpatterns = patterns("",
     # url("^faq/$", direct_to_template, {"template": "sitemap.html"}, name="sitemap"),
     
     # countries
-    # pest report list
-    url(r'^countries/pestreports/$',
-        view=PestReportListView.as_view(),
-        name='pest-reports'),
+
+    # individual country home
+    url(r'^countries/(?P<country>[\w-]+)/$',
+        view=CountryView.as_view(),
+        name='country'),
     
+    # pest report list
+    url(r'^countries/(?P<country>[\w-]+)/pestreports/$',
+        view=PestReportListView.as_view(),
+        name='pest-report-list'),
+
     # pest report detail
-    url(r'^countries/pestreports/(?P<year>\d+)/(?P<month>\d{2})/(?P<slug>[\w-]+)/$',
+    url(r'^countries/(?P<country>[\w-]+)/pestreports/(?P<year>\d+)/(?P<month>\d{2})/(?P<slug>[\w-]+)/$',
         view=PestReportDetailView.as_view(),
         name="pest-report-detail"),
+        
+    # pest report add
+    url(r'^countries/(?P<country>[\w-]+)/pestreports/add/$',
+    # url(r'^countries/pestreports/add/$',
+        view=PestReportCreateView,
+        name='pest-report-create'),
+
     # pagedown
     ("^pagedown/", include(mezzanine_pagedown.urls)),
     

@@ -6,9 +6,7 @@
 
 {% block main %}
     {{ block.super }}
-
     {% with page.richtextpage|get_object_translation as translated_page %}
         {{ translated_page.content|richtext_filter|safe }}
     {% endwith %}
-
 {% endblock %}

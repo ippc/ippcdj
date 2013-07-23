@@ -1,9 +1,64 @@
-<html><head><title>Latest Pest Reports</title></head>
-<body>
-<h1>Latest Pest Reports</h1>
-<ul>
-{% for object in latest %}
-<li><a href="{{ object.get_absolute_url }}">{{ object.title }}</a></li>
-{% endfor %}
-</ul>
-</body></html>
+{% extends "base.html" %}
+{% load pages_tags mezzanine_tags i18n future staticfiles %}
+
+{% block meta_title %}
+  {% trans "Pest Reports" %}: {% with latest|first as first_object %}{{ first_object.country.name }}{% endwith %}
+{% endblock %}
+
+{% block body_class %}wide{% endblock %}
+
+{% block breadcrumb_menu %}
+<li>
+  <a href="/countries/">Countries</a>
+  <span class="divider">/</span>
+</li>
+<li>
+  <a href="/countries/{{ country }}/">
+    {% with latest|first as first_object %}
+      {{ first_object.country.name }}
+    {% endwith %}
+  </a>
+  <span class="divider">/</span>
+</li>
+<li class="active">{% trans "Pest Reports" %}</li>
+{% endblock %}
+
+{% block local_nav %}
+{% endblock local_nav %}
+
+{% block pageinfo %}
+{% endblock pageinfo %}
+
+{% block main %}
+
+<p class="pull-right"><a href="/countries/{{ country }}/">« {% trans "Back to" %} {% with latest|first as first_object %}{{ first_object.country.name }}{% endwith %}</a></p>
+
+<h1>
+  <small class="normal">{% trans "Pest Reports from" %}</small>
+  {% with latest|first as first_object %}
+    {{ first_object.country.name }}
+  {% endwith %}
+</h1> 
+
+<table class="table table-condensed table-striped">
+  <thead>
+    <tr>
+      <th>{% trans "Title" %}</th>
+      <th>{% trans "Date Published" %}</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for object in latest %}
+    <tr>
+      <td><a href="{% url 'pest-report-detail' object.country.name|slugify object.publish_date|date:'Y' object.publish_date|date:'m'  object.slug %}">{{ object.title }}</a></td>
+      <td><a href="{% url 'pest-report-detail' object.country.name|slugify object.publish_date|date:'Y' object.publish_date|date:'m'  object.slug %}">{{ object.publish_date|date:"d M Y" }}</a></td>
+      {# <li><a href="{% url 'pest-report-detail' %}">{{ object.title }}</a></li> #}
+      
+    </tr>
+    {% endfor %}
+  </tbody>
+</table>
+
+{% pagination_for latest %}
+
+{% endblock %}

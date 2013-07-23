@@ -8,7 +8,7 @@
 <meta name="robots" content="noindex,nofollow"> {# =todo: CHANGE TO ALL FOR PRODUCTION #}
 <meta name="keywords" content="{% block meta_keywords %}{% endblock %}">
 <meta name="description" content="{% block meta_description %}{% endblock %}">
-<title>{% block meta_title %}{% endblock %}{% if settings.SITE_TITLE %} | {{ settings.SITE_TITLE }}{% endif %}</title>
+<title>{% block meta_title %}{% endblock %} - {% trans "International Plant Protection Convention" %}</title>
 <link rel="shortcut icon" href="{% static "img/favicon.ico" %}">
 
 {% ifinstalled mezzanine.blog %}
@@ -46,11 +46,11 @@
 {% block extra_head %}{% endblock %}
 
 </head>
-<body id="{% block body_id %}body{% endblock %}">
+<body id="{% block body_id %}body{% endblock %}" class="{% block body_class %}{% endblock %}">
 
 <div class="navbar navbar-fixed-top">
 <div class="navbar-inner">
-<div class="container">
+<div class="container-fluid">
 
 
     {# language bar #}
@@ -100,6 +100,7 @@
             <em class="small">{% blocktrans %}Protecting the world's plant resources from pests{% endblocktrans %}</em>
       </a>
     </div>
+    
     <div class="nav-collapse collapse">
       {% page_menu "pages/menus/dropdown.html" %}
     </div>
@@ -108,7 +109,7 @@
 </div>
 </div>
 
-<div class="container">
+<div class="container-fluid">
 
 {% nevercache %}
 {% for message in messages %}
@@ -130,8 +131,8 @@
 
 </div>
 
-<div class="container">
-<div class="row">
+<div class="container-fluid">
+<div class="row-fluid">
 
 <div class="span8 middle">
     {% block main %}{% endblock %}
@@ -166,7 +167,7 @@
 </div>
 
 <footer>
-<div class="container">
+<div class="container-fluid">
 {% page_menu "pages/menus/footer.html" %}
 
 <div class="span6 muted">

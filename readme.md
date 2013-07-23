@@ -1,14 +1,15 @@
 # Todo:
 
-- File/publication uploads
+
 - Country pages:
     ```
     /countries
     /countries/country/pest-reports
     /countries/country/pest-reports/pest-report
+    /countries/country/pest-reports/add
     ```
-    
-    - Pest report upload form
+- Country editor permissions. Can only edit/upload to their own country page
+- File/publication uploads
 
 - Restricted Work Area
     - Lists pages accessible to each user [according to his permissions](http://stackoverflow.com/a/16016717)
