@@ -4,7 +4,7 @@
 {% block main %}
 
 {% if request.user.is_authenticated %}
-    <p>{% trans "You're already logged in." %}</p>
+    <p>{% trans "You're already logged in, but do not have permission to do anything in this page." %}</p>
 {% else %}
     {{ block.super }}
     {% url "signup" as signup_url %}

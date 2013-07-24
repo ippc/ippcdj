@@ -264,7 +264,7 @@ INSTALLED_APPS = (
     "south",
     
     # debug toolbar
-    # "debug_toolbar",
+    "debug_toolbar",
     
     #"mezzanine.mobile",
 )
@@ -290,7 +290,7 @@ TEMPLATE_CONTEXT_PROCESSORS = (
 MIDDLEWARE_CLASSES = (
     
     # debug toolbar
-    # "debug_toolbar.middleware.DebugToolbarMiddleware",
+    "debug_toolbar.middleware.DebugToolbarMiddleware",
 
     "mezzanine.core.middleware.UpdateCacheMiddleware",
     "django.contrib.sessions.middleware.SessionMiddleware",
@@ -317,11 +317,6 @@ MIDDLEWARE_CLASSES = (
     "mezzanine.core.middleware.FetchFromCacheMiddleware",
 )
 
-# DEBUG_TOOLBAR_CONFIG = {
-#     'SHOW_TEMPLATE_CONTEXT': True,
-#     'INTERCEPT_REDIRECTS': False,
-# }
-
 LANGUAGE_CODE == 'en'
 # https://docs.djangoproject.com/en/1.3/ref/settings/#std:setting-LANGUAGES
 # http://pythonhosted.org/django-localeurl/usage.html
@@ -347,7 +342,11 @@ AUTH_PROFILE_MODULE = "ippc.IppcUserProfile"
 ACCOUNTS_PROFILE_VIEWS_ENABLED = True
 ACCOUNTS_MIN_PASSWORD_LENGTH = 8
 ACCOUNTS_VERIFICATION_REQUIRED = True
-# ACCOUNTS_PROFILE_FORM_EXCLUDE_FIELDS = ()
+ACCOUNTS_PROFILE_FORM_EXCLUDE_FIELDS = (
+    "date_account_created",
+    "country",
+    "title",
+)
 
 
 ALLOWED_HOSTS = "127.0.0.1:8000"
@@ -386,7 +385,10 @@ OPTIONAL_APPS = (
     PACKAGE_NAME_GRAPPELLI,
 )
 
-DEBUG_TOOLBAR_CONFIG = {"INTERCEPT_REDIRECTS": False}
+DEBUG_TOOLBAR_CONFIG = {
+    'SHOW_TEMPLATE_CONTEXT': True,
+    'INTERCEPT_REDIRECTS': False,
+}
 
 ###################
 # DEPLOY SETTINGS #

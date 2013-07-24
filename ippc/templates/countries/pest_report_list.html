@@ -29,7 +29,14 @@
 
 {% block main %}
 
-<p class="pull-right"><a href="/countries/{{ country }}/">« {% trans "Back to" %} {{ country|capfirst }}</a></p>
+<p class="pull-right">
+  <a href="/countries/{{ country }}/">« {% trans "Back to" %} {{ country|capfirst }}</a>
+  {% if perms.ippc.add_pestreport %}
+  <br>
+  <small><a class="btn btn-small btn-info" href="{% url 'pest-report-create' page.title|slugify %}">+ {% trans "Add new pest report" %}</a></small>
+  {% else %}
+  {% endif %}
+</p>
 
 <h1>
   <small class="normal">{% trans "Pest Reports from" %}</small>

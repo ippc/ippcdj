@@ -1,5 +1,5 @@
 {% extends "base.html" %}
-{% load pages_tags translate_tags mezzanine_tags i18n future staticfiles %}
+{% load pages_tags translate_tags mezzanine_tags i18n future staticfiles accounts_tags %}
 
 {% block meta_title %}
   {{ page.title }}
@@ -15,6 +15,47 @@
 </li>
 {% endblock %}
 
+{% block main %}
+
+{# <div class="span8 middle"> #}
+{% if user.is_staff %} 
+<div class="pull-right">
+    <a class="btn btn-small btn-info" href="/admin/pages/richtextpage/{{ page.id }}">Edit as Admin</a><br>
+</div>
+{% endif %}
+
+{# =todo: only country editors, including chief editor/nppo, of course, can edit: #}
+
+{# https://docs.djangoproject.com/en/dev/topics/auth/default/#permissions #}
+{# https://www.djangopackages.com/grids/g/perms/ #}
+
+
+
+<h1>
+    {{ page.title }}
+</h1> 
+
+<h2>{% trans "Contact Point" %}</h2>
+{% if request.user.get_profile.country.name == page.title and perms.ippc.add_pestreport and not request.user.is_staff %}
+  {# =todo: country chief editor contact info here #}
+  {% include "accounts/account_profile_details.html" %}
+  {# {{ user.get_profile.first_name}} #}
+  {# show contact details #}
+  {% else %}
+  {# {{ user.get_profile.country.name }} #}
+  {# {{page.title}} #}
+  <p>{% trans "No Contact Point yet. Can you help us find one?" %} <a href="/contact/">{% trans "Contact us" %}</a>!</p>
+{% endif %}
+
+<h2>Description of NPPO</h2>
+{# =todo: description of nppo here #}
+{% with page.richtextpage|get_object_translation as translated_page %}
+    {{ translated_page.content|richtext_filter|safe }}
+{% endwith %}
+{# </div> #}
+{% endblock %}
+
+
 {% block local_nav %}
   {# =todo: navbar of country's report types. #}
   {#  #}
@@ -23,7 +64,14 @@
 <div class="well">    
     <ul class="nav nav-list">
       <li class="nav-header">{{ page.title }}</li>
-      <li><a href="{% url 'pest-report-list' page.title|slugify %}">Official Pest Reports</a> <small><a href="{% url 'pest-report-create' page.title|slugify %}">+ {% trans "Add new" %}</a></small></li>
+      <li><a href="{% url 'pest-report-list' page.title|slugify %}">Official Pest Reports</a> 
+        
+        {% if profile_user.get_profile.country.name == 'request.country' and perms.ippc.add_pestreport %}
+          <small><a class="btn btn-small btn-info" href="{% url 'pest-report-create' page.title|slugify %}">+ {% trans "Add new" %}</a></small>
+        {% else %}
+        {% endif %}
+      
+      </li>
       <li class="divider"></li>
       <li><a href="#">Reporting Obligations</a> <small class="muted">Legislations, Entry points, Regulated pests, Emergency actions, Phytosanitary restrictions, requirements and prohibitions</small></li>
       <li class="divider"></li>
@@ -45,35 +93,3 @@
 
 {% block pageinfo %}
 {% endblock pageinfo %}
-
-{% block main %}
-{# <div class="span8 middle"> #}
-{% if user.is_staff %} 
-<div class="pull-right">
-    <a class="btn btn-small btn-info" href="/admin/pages/richtextpage/{{ page.id }}">Edit as Admin</a><br>
-</div>
-{% endif %}
-
-{# =todo: only country editors, including chief editor/nppo, of course, can edit: #}
-
-{# https://docs.djangoproject.com/en/dev/topics/auth/default/#permissions #}
-{# https://www.djangopackages.com/grids/g/perms/ #}
-
-{# {% if perms.ippc %} #}
-{#     <p>You have permission to do something in the IPPC app.</p> #}
-{#     {% if perms.ippc.pest_report_can_edit %} #}
-{#         <a class="btn" href="{% url pest_report_edit report.id %}"><i class="icon-edit"></i> Edit</a> #}
-{#     {% endif %} #}
-{# {% else %} #}
-{#     <p>You don't have permission to do anything in the IPPC app.</p> #}
-{# {% endif %} #}
-
-<h1>
-    {{ page.title }}
-</h1> 
-
-{% with page.richtextpage|get_object_translation as translated_page %}
-    {{ translated_page.content|richtext_filter|safe }}
-{% endwith %}
-{# </div> #}
-{% endblock %}

@@ -15,27 +15,13 @@
 {# <h2>{{ profile_user.get_full_name }}</h2> #}
 {# <img style="margin:0 0 20px 10px;" src="{% gravatar_url profile_user.email 128 %}"> #}
 
-<div class="panel">
-  <img class="pull-right" style="margin:0 0 20px 10px;" src="{{ MEDIA_URL }}{% thumbnail profile_user.get_profile.profile_photo 128 128 %}">
-<p>
-  <b class="small">{% trans "Username:" %}</b> {{ profile_user.username }}<br>
-  <b class="small">{% trans "Email:" %}</b> {{ profile_user.email }}
-</p>
-
-<ul class="unstyled">
-{% for field, value in profile_user|profile_fields %}
-<li><b class="small">{{ field }}:</b> {{ value|linebreaksbr }}</li>
-{% endfor %}
-<li><strong>Country Name:</strong> {{ profile_user.get_profile.country.name }}</li>
-</ul>
+{% include "accounts/account_profile_details.html" %}
 
 {% if profile_user == request.user %}
-<p class="text-right">
+<p class="form-actions">
 <a class="btn btn-large btn-info" style="" href="{% url "profile_update" %}">{% trans "Update profile" %}</a>
 </p>
 {% endif %}
-
-</div>
 
 {% endblock %}
 

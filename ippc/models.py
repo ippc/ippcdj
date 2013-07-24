@@ -6,7 +6,7 @@ from django.contrib.auth.models import User
 
 from django.template.defaultfilters import slugify
 
-import datetime
+from datetime import datetime
 
 import os.path
 
@@ -20,31 +20,35 @@ class IppcUserProfile(models.Model):
     """ User profiles for IPPC"""
     
     GENDER_CHOICES = (
-        (1, _("Male")),
-        (2, _("Female")),
+        (1, _("Mr")),
+        (2, _("Ms")),
     )
     
     user = models.OneToOneField("auth.User")
+    title = models.CharField(_("Title"), blank=True, null=True, max_length=100)
     first_name = models.CharField(_("First Name"), max_length=30)
     last_name = models.CharField(_("Last Name"), max_length=30)
     # main email address already provided by auth.User
-    email_address_alt = models.EmailField(_("Alternate Email"), max_length=75, blank=True, null=True)
+    email_address_alt = models.EmailField(_("Alternate Email"), default="", max_length=75, blank=True, null=True)
 
     gender = models.PositiveSmallIntegerField(_("Gender"), choices=GENDER_CHOICES, blank=True, null=True)
     profile_photo = models.FileField(_("Profile Photo"), upload_to="profile_photos", blank=True)
-    bio = models.TextField(_("Brief Biography"), blank=True, null=True)
+    bio = models.TextField(_("Brief Biography"), default="", blank=True, null=True)
 
     address1 = models.CharField(_("Address 1"), blank=True, max_length=100)
     address2 = models.CharField(_("Address 2"), blank=True, max_length=100)
     city = models.CharField(_("City"), blank=True, max_length=100)
     state = models.CharField(_("State"), blank=True, max_length=100, help_text="or Province")
     zipcode = models.CharField(_("Zip Code"), blank=True, max_length=20)
+    address_country = CountryField(_("Address Country"), blank=True, null=True)
     # country will be the 'tag' to mark permissions for Country Main Contact Points and Country Editors
-    country = CountryField(_("Country"))
+    country = CountryField(_("IPPC Country"))
 
     phone = models.CharField(_("Phone"), blank=True, max_length=30)
     fax = models.CharField(_("Fax"), blank=True, max_length=30)
     mobile = models.CharField(_("Mobile"), blank=True, max_length=30)
+    
+    date_account_created = models.DateTimeField(_("Member Since"), default=datetime.now, editable=False)
 
     # def country(self):
     #     return self.country
@@ -129,7 +133,10 @@ class PestReport(models.Model):
 
     def filename(self):
         return os.path.basename(self.file.name)
-
+        
+    def country_name(self):
+        return self.country.name
+        
     # http://devwiki.beloblotskiy.com/index.php5/Django:_Decoupling_the_URLs  
     @models.permalink # or: get_absolute_url = models.permalink(get_absolute_url) below
     def get_absolute_url(self): # "view on site" link will be visible in admin interface
@@ -256,7 +263,7 @@ class PestReportForm(forms.ModelForm):
     class Meta:
         model = PestReport
         fields = [
-            # 'country',
+            'country',
             'title', 
             'summary',
             'is_public',
@@ -279,10 +286,11 @@ class PestReportForm(forms.ModelForm):
         self.author = request.user
         self.author.id = request.user.id
 
-
         super(PestReportForm, self).__init__(request.POST or None, *args, **kwargs)
+        # self.country = forms.IntegerField(widget=forms.HiddenInput(), initial=123)
+        # self.fields['country'].widget = forms.HiddenInput()
         # self.fields['country'].required = True
-        self.fields["country"].queryset = IppcUserProfile.objects.filter(country=country)
+        # self.fields["country"].queryset = IppcUserProfile.objects.filter(country=country)
         
         # country should be set automatically to logged-in country editor's country
         # report = kwargs["instance"]
@@ -294,7 +302,7 @@ class PestReportForm(forms.ModelForm):
         # self.country = profile_user.get_profile.country.name
         # self.fields['country'].widget
         # self.fields['country'].queryset = IppcUserProfile.objects.filter(country=country)
-        # self.fields['content_markdown'].widget.attrs['class'] = 'wmd-input'
+
         # self.fields['content_markdown'].widget.attrs['id'] = 'wmd-input'
         # only active users should appear in observers field
         # self.fields['observers'].queryset = User.objects.filter(is_active=True).order_by('username')

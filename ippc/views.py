@@ -8,13 +8,21 @@ from django.template.defaultfilters import slugify
 from django.template import RequestContext
 from django.shortcuts import render_to_response, get_object_or_404, redirect
 
-from django.contrib.auth.decorators import login_required
+from django.contrib.auth.decorators import login_required, permission_required
 
 class CountryView(TemplateView):
     """ 
     Individual country homepage 
     """
     template_name = 'countries/country_page.html'
+    
+    def get_context_data(self, **kwargs): # http://stackoverflow.com/a/15515220
+        context = super(TemplateView, self).get_context_data(**kwargs)
+        context.update({
+            'country': self.kwargs['country']
+            # 'profile_user': self.kwargs['profile_user']
+        })
+        return context
 
 class PestReportListView(ArchiveIndexView):
     """
@@ -47,55 +55,69 @@ class PestReportDetailView(DetailView):
     context_object_name = 'report'
     template_name = 'countries/pest_report_detail.html'
 
-# class PestReportCreateView(CreateView):
-#     model = PestReport
 
 
 
+def get_profiles():
+    return IppcUserProfile.objects.all()
 
+def pest_report_form_country():
+    return IppcUserProfile.objects.filter(country=country)
 
-
-
-# def manage_books(request, country_id):
-#     country = Author.objects.get(pk=country_id)
-#     BookInlineFormSet = inlineformset_factory(Author, Book)
-#     if request.method == "POST":
-#         formset = BookInlineFormSet(request.POST, request.FILES, instance=author)
-#         if formset.is_valid():
-#             formset.save()
-#             # Do something. Should generally end with a redirect. For example:
-#             return HttpResponseRedirect(author.get_absolute_url())
-#     else:
-#         formset = BookInlineFormSet(instance=author)
-#     return render_to_response("manage_books.html", {
-#         "formset": formset,
+# def get_context_data(self, **kwargs): # http://stackoverflow.com/a/15515220
+#     context = super(pest_report_create, self).get_context_data(**kwargs)
+#     context.update({
+#         'country': self.kwargs['country']
 #     })
+#     return context
 
 
+@login_required
+@permission_required('ippc.change_pestreport', login_url="/accounts/login/")
+def pest_report_edit(request, id, form_class=PestReportForm, template_name="countries/pest_report_create.html"):
+    pest_report = get_object_or_404(PestReport, id=id)
+    # if pest_report.author != request.user:
+    #     request.user.message_set.create(message="You can't edit items that aren't yours")
+    #     return redirect("/")
+    pest_report_form = form_class(request, instance=pest_report)
+    if request.method == "POST" and pest_report_form.is_valid():
+        pest_report = pest_report_form.save(commit=False)
+        pest_report.modify_date = datetime.now()
+        pest_report_form.save()
+        # request.user.message_set.create(message=_("Successfully updated pest_report '%s'") % pest_report.title)
+        # http://stackoverflow.com/a/11728475/412329
+        # messages.add_message(request, messages.SUCCESS, message=_("Successfully updated pest_report '%s'") % pest_report.title)
+        return redirect("pest-report-detail", username=request.user.username, slug=pest_report.slug)
+    return render_to_response(template_name, {"pest_report_form": pest_report_form, "pest_report": pest_report}, context_instance=RequestContext(request))
+    
 
-
-
-
-def pest_report_create(request):
+@login_required
+@permission_required('ippc.add_pestreport', login_url="/accounts/login/")
+def pest_report_create(request, **kwargs):
+        
     if request.method == "POST":
-
-        form = form(request.POST, instance=PestReport())
         
         user = request.user
         # profile_user = request.profile_user
         author_id = user.id
-        # country = request.user.get_profile.country
+        country = country
         
         if form.is_valid():
             new_pest_report = form.save(commit=False)
             new_pest_report.author_id = author_id
-            # new_pest_report.country = country
+            new_pest_report.country = country
             form.save()
-            return HttpResponseRedirect('/countries/italy/pestreports/')
+            return HttpResponseRedirect('/countries/')
     else:
-        form = form(instance=PestReport())
+        form = PestReportForm(request, instance=PestReport())
     return render_to_response('countries/pest_report_create.html', {'form': form},
         context_instance=RequestContext(request))
+
+
+
+
+
+
 
 
 
@@ -108,12 +130,9 @@ def pest_report_create(request):
 #     if request.method == "POST" and form.is_valid():
 #         pest_report = form.save(commit=False)
 #         pest_report.author = request.user
-#         
-#         pest_report.country = 'Italy'
-#         # pest_report.country = request.POST.country
-#         form.save()
-#         
-#         pest_report.id = pest_report.id
+#         # profile = IppcUserProfile.objects.all()
+#         country = country
+#         # pest_report.id = pest_report.id
 #         pest_report.title = pest_report.title
 #         pest_report.slug = slugify(pest_report.title)
 #         # need to call save again so notification gets sent to observers 
@@ -122,6 +141,7 @@ def pest_report_create(request):
 #         form.save()
 #         # messages.add_message(request, messages.SUCCESS, message=_("Successfully created pest report '%s'") % pest_report.title)
 #         # return redirect("pest-report-detail", country=pest_report.country.name, year=pest_report.publish_date.strftime("%Y"), month=pest_report.publish_date.strftime("%m"), slug=pest_report.slug)
+#         
 #         return redirect("/countries/")
 #     return render_to_response(template_name, {"form": form}, context_instance=RequestContext(request))
 
