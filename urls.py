@@ -27,6 +27,7 @@ urlpatterns = patterns("",
     # individual country home
     url(r'^countries/(?P<country>[\w-]+)/$',
         view=CountryView.as_view(),
+        # view=country_view(),
         name='country'),
     
     # pest report list

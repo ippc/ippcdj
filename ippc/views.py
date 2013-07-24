@@ -10,6 +10,18 @@ from django.shortcuts import render_to_response, get_object_or_404, redirect
 
 from django.contrib.auth.decorators import login_required, permission_required
 
+# from mezzanine.utils.models import get_user_model
+# User = get_user_model()
+# 
+# def country_view(request, country, template="countries/country_page.html"):
+#     """
+#     Display a country homepage with user info.
+#     """
+#     country = {"country__iexact": country}
+#     context = {"user": get_object_or_404(User, **country)}
+#     return render(request, country, template, context)
+
+
 class CountryView(TemplateView):
     """ 
     Individual country homepage 
@@ -20,6 +32,7 @@ class CountryView(TemplateView):
         context = super(TemplateView, self).get_context_data(**kwargs)
         context.update({
             'country': self.kwargs['country']
+            # 'editors': self.kwargs['editors']
             # 'profile_user': self.kwargs['profile_user']
         })
         return context
@@ -58,7 +71,7 @@ class PestReportDetailView(DetailView):
 
 
 
-def get_profiles():
+def get_profile():
     return IppcUserProfile.objects.all()
 
 def pest_report_form_country():
@@ -76,21 +89,22 @@ def pest_report_form_country():
 
 @login_required
 @permission_required('ippc.add_pestreport', login_url="/accounts/login/")
-def pest_report_create(request, **kwargs):
+def pest_report_create(request, country=None):
         
     if request.method == "POST":
         
+        form = PestReportForm(request)
         user = request.user
         # profile_user = request.profile_user
         author_id = user.id
-        country = country
+        country = request.user.get_profile.country.name
         
         if form.is_valid():
             new_pest_report = form.save(commit=False)
             new_pest_report.author_id = author_id
             new_pest_report.country = country
             form.save()
-            return HttpResponseRedirect('/countries/')
+            return redirect('/countries/')
     else:
         form = PestReportForm(request, instance=PestReport())
     return render_to_response('countries/pest_report_create.html', {'form': form},

@@ -10,7 +10,9 @@
 {# {% block body_class %}entryform{% endblock %} #}
 
 {% block main %}
-{{ request.country }}
+
+{{ country }}
+
 {# {% debug %} #}
 <form class="customform" method="POST" action="">
     {% csrf_token %}

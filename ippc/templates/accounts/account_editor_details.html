@@ -1,0 +1,96 @@
+{% load i18n future mezzanine_tags accounts_tags %}
+{# <div class="panel contact-info"> #}
+  {% if editor.get_profile.profile_photo %}
+  <a href="{% url "profile_update" %}" title="Click to update your profile and add a picture."><img class="pull-right profile-picture" style="margin:0 0 20px 10px;" src="{{ MEDIA_URL }}{% thumbnail editor.get_profile.profile_photo 128 128 %}"></a>
+  {% else %}
+  <a class="pull-right profile-picture" style="height:128px; width:128px; background:#eee;" href="{% url "profile_update" %}" title="Click to update your profile and add a picture."></a>
+  {% endif %}
+
+{# <ul class="unstyled"> #}
+{# {% for field, value in user|profile_fields %} #}
+{# <li><b class="small">{{ field }}:</b> {{ value|linebreaksbr }}</li> #}
+{# {% endfor %} #}
+{# </ul> #}
+
+<dl class="dl-horizontal">
+  <dt>{% trans "Username" %}</dt> 
+  <dd>{{ editor.username }}</dd>
+  
+  <dt>{% trans "Email" %}</dt>
+  <dd>{{ editor.email }}</dd>
+  
+  {% if editor.get_profile.title %}
+  <dt>{% trans "Title" %}</dt>
+  <dd>
+    {{ editor.get_profile.title }} 
+  </dd>
+  {% endif %}
+
+  <dt>{% trans "Name" %}</dt>
+  <dd>
+    {{ editor.get_profile.get_gender_display }}
+    {# {{ editor.get_full_name }}  #}
+    {{ editor.get_profile.first_name }} 
+    <span class="caps">{{ editor.get_profile.last_name }}</span>
+  </dd>
+  
+  <dt>{% trans "Member Since" %}</dt>
+  <dd>
+        {% blocktrans with sometime=editor.get_profile.date_account_created|date:"d M Y" %}{{ sometime }}{% endblocktrans %}
+  </dd>
+  
+  {% if editor.get_profile.email_address_alt %}
+  <dt>{% trans "Alternate Email" %}</dt>
+  <dd>
+    {{ editor.get_profile.email_address_alt }} 
+  </dd>
+  {% endif %}
+  
+  {% if editor.get_profile.bio %}
+  <dt>{% trans "Brief Biography" %}</dt>
+  <dd>
+    {{ editor.get_profile.bio }} 
+  </dd>
+  {% endif %}
+  
+
+  <dt>{% trans "Address" %}</dt>
+  <dd>
+    {% if user_get_profile.address1 %}{{ editor.get_profile.address1 }}<br>{% endif %}
+    {% if editor.get_profile.address2 %}{{ editor.get_profile.address2 }}<br>{% endif %}
+    {% if editor.get_profile.city %}{{ editor.get_profile.city }}<br>{% endif %}
+    {% if editor.get_profile.city %}{{ editor.get_profile.city }}<br>{% endif %}
+    {% if editor.get_profile.state %}{{ editor.get_profile.state }}<br>{% endif %}
+    {% if editor.get_profile.zipcode %}{{ editor.get_profile.zipcode }}<br>{% endif %}
+    {% if editor.get_profile.address_country.name %}{{ editor.get_profile.address_country.name }}{% endif %}
+  </dd>
+  
+  {% if editor.get_profile.country %}
+  <dt>{% trans "IPPC Country" %}</dt>
+  <dd>
+    <b>{{ editor.get_profile.country.name }}</b>
+  </dd>
+  {% endif %}
+
+  
+  {% if editor.get_profile.phone %}
+  <dt>{% trans "Phone" %}</dt>
+  <dd>
+    {{ editor.get_profile.phone }} 
+  </dd>
+  {% endif %}
+  
+  {% if editor.get_profile.fax %}
+  <dt>{% trans "Fax" %}</dt>
+  <dd>
+    {{ editor.get_profile.fax }} 
+  </dd>
+  {% endif %}
+  
+  {% if editor.get_profile.mobile %}
+  <dt>{% trans "Mobile" %}</dt>
+  <dd>
+    {{ editor.get_profile.mobile }} 
+  </dd>
+  {% endif %}
+{# </div> #}

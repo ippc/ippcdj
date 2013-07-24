@@ -15,6 +15,12 @@
 {# <h2>{{ profile_user.get_full_name }}</h2> #}
 {# <img style="margin:0 0 20px 10px;" src="{% gravatar_url profile_user.email 128 %}"> #}
 
+{% if user.is_superuser %}
+
+    <a class="btn btn-small btn-info" href="/admin/auth/user/{{ profile_user.id }}">Edit</a>
+
+{% endif %}
+
 {% include "accounts/account_profile_details.html" %}
 
 {% if profile_user == request.user %}

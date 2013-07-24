@@ -1,9 +1,14 @@
 # https://gist.github.com/renyi/3596248
 from django.contrib import admin
+from mezzanine.pages.admin import PageAdmin
 from mezzanine.conf import settings
 from mezzanine.core.admin import TabularDynamicInlineAdmin
 
-from .models import PestStatus, PestReport
+from .models import PestStatus, PestReport, CountryPage
+
+# Country Pages - http://mezzanine.jupo.org/docs/content-architecture.html#creating-custom-content-types
+
+admin.site.register(CountryPage, PageAdmin)
 
 #
 # Pest Reports
@@ -13,6 +18,9 @@ class PestStatusAdmin(admin.ModelAdmin):
     """Options for the pest status field of Pest Reports"""
     save_on_top = True
         
+
+
+
 
 class PestReportAdmin(admin.ModelAdmin):
     # http://stackoverflow.com/a/8393130

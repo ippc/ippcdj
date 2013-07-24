@@ -42,7 +42,7 @@ class IppcUserProfile(models.Model):
     zipcode = models.CharField(_("Zip Code"), blank=True, max_length=20)
     address_country = CountryField(_("Address Country"), blank=True, null=True)
     # country will be the 'tag' to mark permissions for Country Main Contact Points and Country Editors
-    country = CountryField(_("IPPC Country"))
+    country = CountryField(_("IPPC Country"), blank=True, null=True)
 
     phone = models.CharField(_("Phone"), blank=True, max_length=30)
     fax = models.CharField(_("Fax"), blank=True, max_length=30)
@@ -54,8 +54,10 @@ class IppcUserProfile(models.Model):
     #     return self.country
 
 
-# class CountryPage(Page):
-#     country = CountryField(_("Country"))
+class CountryPage(Page):
+    # editor = CountryField(_("Country"))
+    editors = models.ManyToManyField(User, verbose_name=_("Country Editors"), 
+        related_name='countryeditors+', blank=True, null=True)
 
 # do we need a table for this? or do http://djangosnippets.org/snippets/2753/ ?
 class PestStatus(models.Model):
@@ -151,10 +153,10 @@ class PestReport(models.Model):
     def save(self, *args, **kwargs):
         ''' On save, update timestamps '''
         if not self.id:
-            self.publish_date = datetime.datetime.today()
+            self.publish_date = datetime.today()
             # Newly created object, so set slug
             self.slug = slugify(self.title)
-        self.modify_date = datetime.datetime.now()
+        self.modify_date = datetime.now()
         super(PestReport, self).save(*args, **kwargs)
 
 
