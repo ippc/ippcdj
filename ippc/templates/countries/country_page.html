@@ -35,17 +35,19 @@
     {{ page.title }}
 </h1> 
 
+<div class="panel contact-info">
 <h2>{% trans "Contact Point" %}</h2>
 {% if request.user.get_profile.country.name == page.title and perms.ippc.add_pestreport and not request.user.is_staff %}
   {# =todo: country chief editor contact info here #}
-  {% include "accounts/account_profile_details.html" %}
+  {% include "accounts/account_user_details.html" %}
   {# {{ user.get_profile.first_name}} #}
   {# show contact details #}
   {% else %}
   {# {{ user.get_profile.country.name }} #}
   {# {{page.title}} #}
-  <p>{% trans "No Contact Point yet. Can you help us find one?" %} <a href="/contact/">{% trans "Contact us" %}</a>!</p>
+  <p>{% trans "No Contact Point yet. Can you help us find one?" %} <a href="/contact/">{% trans "Contact us" %}</a>! Or <a href="/faq#ContactPointNomination">read more about official contact points</a> and <a href="/faq#AdherenceToIppc">how to become an IPPC contracting party</a>.</p>
 {% endif %}
+</div>
 
 <h2>Description of NPPO</h2>
 {# =todo: description of nppo here #}
@@ -66,7 +68,7 @@
       <li class="nav-header">{{ page.title }}</li>
       <li><a href="{% url 'pest-report-list' page.title|slugify %}">Official Pest Reports</a> 
         
-        {% if profile_user.get_profile.country.name == 'request.country' and perms.ippc.add_pestreport %}
+        {% if request.user.get_profile.country.name == page.title and perms.ippc.add_pestreport and not request.user.is_staff %}
           <small><a class="btn btn-small btn-info" href="{% url 'pest-report-create' page.title|slugify %}">+ {% trans "Add new" %}</a></small>
         {% else %}
         {% endif %}

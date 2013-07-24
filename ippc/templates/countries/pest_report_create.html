@@ -1,7 +1,7 @@
 {% extends "base.html" %}
 {% load pages_tags translate_tags mezzanine_tags i18n future staticfiles %}
 
-{% block head_title %}{% trans "New Pest Report" %} - {{ page.title }}{% endblock %}
+{% block meta_title %}{% trans "New Pest Report" %} - {{ country }}{% endblock %}
 
 {# {% block extra_style %} #}
 {#     <link href="{% static "css/Markdown.Editor.css" %}" rel="stylesheet"> #}
@@ -10,6 +10,7 @@
 {# {% block body_class %}entryform{% endblock %} #}
 
 {% block main %}
+{{ request.country }}
 {# {% debug %} #}
 <form class="customform" method="POST" action="">
     {% csrf_token %}

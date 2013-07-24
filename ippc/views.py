@@ -72,24 +72,7 @@ def pest_report_form_country():
 #     return context
 
 
-@login_required
-@permission_required('ippc.change_pestreport', login_url="/accounts/login/")
-def pest_report_edit(request, id, form_class=PestReportForm, template_name="countries/pest_report_create.html"):
-    pest_report = get_object_or_404(PestReport, id=id)
-    # if pest_report.author != request.user:
-    #     request.user.message_set.create(message="You can't edit items that aren't yours")
-    #     return redirect("/")
-    pest_report_form = form_class(request, instance=pest_report)
-    if request.method == "POST" and pest_report_form.is_valid():
-        pest_report = pest_report_form.save(commit=False)
-        pest_report.modify_date = datetime.now()
-        pest_report_form.save()
-        # request.user.message_set.create(message=_("Successfully updated pest_report '%s'") % pest_report.title)
-        # http://stackoverflow.com/a/11728475/412329
-        # messages.add_message(request, messages.SUCCESS, message=_("Successfully updated pest_report '%s'") % pest_report.title)
-        return redirect("pest-report-detail", username=request.user.username, slug=pest_report.slug)
-    return render_to_response(template_name, {"pest_report_form": pest_report_form, "pest_report": pest_report}, context_instance=RequestContext(request))
-    
+
 
 @login_required
 @permission_required('ippc.add_pestreport', login_url="/accounts/login/")
@@ -112,8 +95,32 @@ def pest_report_create(request, **kwargs):
         form = PestReportForm(request, instance=PestReport())
     return render_to_response('countries/pest_report_create.html', {'form': form},
         context_instance=RequestContext(request))
+        
+    def get_context_data(self, **kwargs): # http://stackoverflow.com/a/15515220
+        context = super(PestReportListView, self).get_context_data(**kwargs)
+        context.update({
+            'country': self.kwargs['country']
+        })
+        return context
 
 
+@login_required
+@permission_required('ippc.change_pestreport', login_url="/accounts/login/")
+def pest_report_edit(request, id, form_class=PestReportForm, template_name="countries/pest_report_create.html"):
+    pest_report = get_object_or_404(PestReport, id=id)
+    # if pest_report.author != request.user:
+    #     request.user.message_set.create(message="You can't edit items that aren't yours")
+    #     return redirect("/")
+    pest_report_form = form_class(request, instance=pest_report)
+    if request.method == "POST" and pest_report_form.is_valid():
+        pest_report = pest_report_form.save(commit=False)
+        pest_report.modify_date = datetime.now()
+        pest_report_form.save()
+        # request.user.message_set.create(message=_("Successfully updated pest_report '%s'") % pest_report.title)
+        # http://stackoverflow.com/a/11728475/412329
+        # messages.add_message(request, messages.SUCCESS, message=_("Successfully updated pest_report '%s'") % pest_report.title)
+        return redirect("pest-report-detail", username=request.user.username, slug=pest_report.slug)
+    return render_to_response(template_name, {"pest_report_form": pest_report_form, "pest_report": pest_report}, context_instance=RequestContext(request))
 
 
 

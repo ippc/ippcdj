@@ -1,7 +1,7 @@
 {% load i18n future mezzanine_tags accounts_tags %}
-<div class="panel contact-info">
-  {% if user.get_profile.profile_photo %}
-  <a href="{% url "profile_update" %}" title="Click to update your profile and add a picture."><img class="pull-right profile-picture" style="margin:0 0 20px 10px;" src="{{ MEDIA_URL }}{% thumbnail user.get_profile.profile_photo 128 128 %}"></a>
+{# <div class="panel contact-info"> #}
+  {% if profile_user.get_profile.profile_photo %}
+  <a href="{% url "profile_update" %}" title="Click to update your profile and add a picture."><img class="pull-right profile-picture" style="margin:0 0 20px 10px;" src="{{ MEDIA_URL }}{% thumbnail profile_user.get_profile.profile_photo 128 128 %}"></a>
   {% else %}
   <a class="pull-right profile-picture" style="height:128px; width:128px; background:#eee;" href="{% url "profile_update" %}" title="Click to update your profile and add a picture."></a>
   {% endif %}
@@ -14,82 +14,83 @@
 
 <dl class="dl-horizontal">
   <dt>{% trans "Username" %}</dt> 
-  <dd>{{ user.username }}</dd>
+  <dd>{{ profile_user.username }}</dd>
   
   <dt>{% trans "Email" %}</dt>
-  <dd>{{ user.email }}</dd>
+  <dd>{{ profile_user.email }}</dd>
   
-  {% if user.get_profile.title %}
+  {% if profile_user.get_profile.title %}
   <dt>{% trans "Title" %}</dt>
   <dd>
-    {{ user.get_profile.title }} 
+    {{ profile_user.get_profile.title }} 
   </dd>
   {% endif %}
 
   <dt>{% trans "Name" %}</dt>
   <dd>
-    {{ user.get_profile.get_gender_display }} 
-    {{ user.get_profile.first_name }} 
-    <span class="caps">{{ user.get_profile.last_name }}</span>
+    {{ profile_user.get_profile.get_gender_display }}
+    {# {{ profile_user.get_full_name }}  #}
+    {{ profile_user.get_profile.first_name }} 
+    <span class="caps">{{ profile_user.get_profile.last_name }}</span>
   </dd>
   
   <dt>{% trans "Member Since" %}</dt>
   <dd>
-        {% blocktrans with sometime=user.get_profile.date_account_created|date:"d M Y" %}{{ sometime }}{% endblocktrans %}
+        {% blocktrans with sometime=profile_user.get_profile.date_account_created|date:"d M Y" %}{{ sometime }}{% endblocktrans %}
   </dd>
   
-  {% if user.get_profile.email_address_alt %}
+  {% if profile_user.get_profile.email_address_alt %}
   <dt>{% trans "Alternate Email" %}</dt>
   <dd>
-    {{ user.get_profile.email_address_alt }} 
+    {{ profile_user.get_profile.email_address_alt }} 
   </dd>
   {% endif %}
   
-  {% if user.get_profile.bio %}
+  {% if profile_user.get_profile.bio %}
   <dt>{% trans "Brief Biography" %}</dt>
   <dd>
-    {{ user.get_profile.bio }} 
+    {{ profile_user.get_profile.bio }} 
   </dd>
   {% endif %}
   
 
   <dt>{% trans "Address" %}</dt>
   <dd>
-    {% if user_get_profile.address1 %}{{ user.get_profile.address1 }}<br>{% endif %}
-    {% if user.get_profile.address2 %}{{ user.get_profile.address2 }}<br>{% endif %}
-    {% if user.get_profile.city %}{{ user.get_profile.city }}<br>{% endif %}
-    {% if user.get_profile.city %}{{ user.get_profile.city }}<br>{% endif %}
-    {% if user.get_profile.state %}{{ user.get_profile.state }}<br>{% endif %}
-    {% if user.get_profile.zipcode %}{{ user.get_profile.zipcode }}<br>{% endif %}
-    {% if user.get_profile.address_country.name %}{{ user.get_profile.address_country.name }}{% endif %}
+    {% if user_get_profile.address1 %}{{ profile_user.get_profile.address1 }}<br>{% endif %}
+    {% if profile_user.get_profile.address2 %}{{ profile_user.get_profile.address2 }}<br>{% endif %}
+    {% if profile_user.get_profile.city %}{{ profile_user.get_profile.city }}<br>{% endif %}
+    {% if profile_user.get_profile.city %}{{ profile_user.get_profile.city }}<br>{% endif %}
+    {% if profile_user.get_profile.state %}{{ profile_user.get_profile.state }}<br>{% endif %}
+    {% if profile_user.get_profile.zipcode %}{{ profile_user.get_profile.zipcode }}<br>{% endif %}
+    {% if profile_user.get_profile.address_country.name %}{{ profile_user.get_profile.address_country.name }}{% endif %}
   </dd>
   
-  {% if user.get_profile.country %}
+  {% if profile_user.get_profile.country %}
   <dt>{% trans "IPPC Country" %}</dt>
   <dd>
-    <b>{{ user.get_profile.country.name }}</b>
+    <b>{{ profile_user.get_profile.country.name }}</b>
   </dd>
   {% endif %}
 
   
-  {% if user.get_profile.phone %}
+  {% if profile_user.get_profile.phone %}
   <dt>{% trans "Phone" %}</dt>
   <dd>
-    {{ user.get_profile.phone }} 
+    {{ profile_user.get_profile.phone }} 
   </dd>
   {% endif %}
   
-  {% if user.get_profile.fax %}
+  {% if profile_user.get_profile.fax %}
   <dt>{% trans "Fax" %}</dt>
   <dd>
-    {{ user.get_profile.fax }} 
+    {{ profile_user.get_profile.fax }} 
   </dd>
   {% endif %}
   
-  {% if user.get_profile.mobile %}
+  {% if profile_user.get_profile.mobile %}
   <dt>{% trans "Mobile" %}</dt>
   <dd>
-    {{ user.get_profile.mobile }} 
+    {{ profile_user.get_profile.mobile }} 
   </dd>
   {% endif %}
-</div>
+{# </div> #}
