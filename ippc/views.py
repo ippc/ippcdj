@@ -51,7 +51,7 @@ class PestReportListView(ArchiveIndexView):
     queryset = PestReport.objects.all().order_by('-publish_date', 'title')
     allow_future = False
     allow_empty = True
-    paginate_by = 2
+    paginate_by = 10
     queryset = PestReport.objects.all()
     
     def get_context_data(self, **kwargs): # http://stackoverflow.com/a/15515220
@@ -95,23 +95,23 @@ def pest_report_form_country():
 def pest_report_create(request, country):
 
     user = request.user
+    author = user
     # print('>>>>>>>>>>>>>>>')
     # print(user.get_profile().country)
     var1=user.get_profile().country
-    
-    # form = PestReportForm(request.POST, instance=PestReport(), initial={'country': var1})
+
+    form = PestReportForm(request.POST or None)
     
     if request.method == "POST":
-
         if form.is_valid():
             new_pest_report = form.save(commit=False)
-            new_pest_report.author = author_id
+            new_pest_report.author = request.user
+            new_pest_report.author_id = author.id
             form.save()
-            
-            return redirect('/countries/')
+            return redirect("pest-report-detail", country=country, year=new_pest_report.publish_date.strftime("%Y"), month=new_pest_report.publish_date.strftime("%m"), slug=new_pest_report.slug)
     else:
 
-        form = PestReportForm(request, initial={'country': var1}, instance=PestReport(), )
+        form = PestReportForm(initial={'country': var1}, instance=PestReport())
 
     return render_to_response('countries/pest_report_create.html', {'form': form},
         context_instance=RequestContext(request))
@@ -119,7 +119,7 @@ def pest_report_create(request, country):
 
 @login_required
 @permission_required('ippc.change_pestreport', login_url="/accounts/login/")
-def pest_report_edit(request, id, form_class=PestReportForm, template_name="countries/pest_report_create.html"):
+def pest_report_edit(request, id, form_class=PestReportForm, template_name="countries/pest_report_edit.html"):
     pest_report = get_object_or_404(PestReport, id=id)
     # if pest_report.author != request.user:
     #     request.user.message_set.create(message="You can't edit items that aren't yours")

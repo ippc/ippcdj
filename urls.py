@@ -40,7 +40,7 @@ urlpatterns = patterns("",
         view=PestReportDetailView.as_view(),
         name="pest-report-detail"),
         
-    # pest report add
+    # pest report create
     url(r'^countries/(?P<country>[\w-]+)/pestreports/create/$',
         view=pest_report_create,
         name='pest-report-create'),

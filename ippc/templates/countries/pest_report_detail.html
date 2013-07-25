@@ -40,10 +40,14 @@
 {% block main %}
 <h1>{{ report.title }}</h1> 
 
-{% if perms.ippc.change_pestreport %}
-  <p><small><a class="btn btn-small btn-info" href="{% url 'pest-report-edit' page.title|slugify %}"><i class="icon-pencil icon-white"></i> {% trans "Edit" %}</a></small></p>
-{% else %}
-{% endif %}
+{# {% if perms.ippc.change_pestreport %} #}
+{#   <p> #}
+{#     <small> #}
+{#       <a class="btn btn-small btn-info" href="{% url 'pest-report-edit' page.title|slugify %}"><i class="icon-pencil icon-white"></i> {% trans "Edit" %}</a> #}
+{#     </small> #}
+{#   </p> #}
+{# {% else %} #}
+{# {% endif %} #}
 
 <dl class="dl-horizontal">
   <dt>{% trans "Published" %}</dt>

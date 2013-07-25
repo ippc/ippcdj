@@ -29,17 +29,22 @@ class PestReportForm(forms.ModelForm):
             'url_for_more_information'
             ]
         exclude = ('author', 'slug', 'publish_date', 'modify_date')
+        widgets = {
+            'country': forms.HiddenInput()
+        }
+            
 
-    # def __init__(self, country, *args, **kwargs):
 
-        # self.author = request.user
-        # self.author.id = request.user.id
-        # self.author = request.User.username
-        # self.country = self.country.code
-        
-        # super(PestReportForm, self).__init__(country, *args, **kwargs)
-        # 
-        # self.fields['country'].initial = country
+    # def __init__(self, request, *args, **kwargs):
+    #     author=request.user
+    #     self.country=author.get_profile().country
+    #     # self.author = request.user
+    #     # self.author.id = request.user.id
+    #     # self.author = request.User.username
+    #     
+    #     super(PestReportForm, self).__init__(request, *args, **kwargs)
+    #     # 
+    #     self.fields['country'].initial = request.country
         
         # self.fields['country'].queryset = IppcUserProfile.objects.filter(country=country)
         

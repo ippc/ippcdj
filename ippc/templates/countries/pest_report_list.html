@@ -59,11 +59,13 @@
       {# <li><a href="{% url 'pest-report-detail' %}">{{ object.title }}</a></li> #}
       
     </tr>
+
     {% endfor %}
   </tbody>
 </table>
+    
+    {% pagination_for latest %}
 
-{% pagination_for latest %}
 {% else %}
 <p>No pest reports available.</p>
 {% endif %}
