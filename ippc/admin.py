@@ -1,18 +1,37 @@
 # https://gist.github.com/renyi/3596248
+from copy import deepcopy
 from django.contrib import admin
 from mezzanine.pages.admin import PageAdmin
 from mezzanine.conf import settings
 from mezzanine.core.admin import TabularDynamicInlineAdmin
 
-from .models import PestStatus, PestReport, CountryPage
+from .models import PestStatus, PestReport, CountryPage, WorkAreaPage
+
+from fileupload.models import File
+
 
 # Country Pages - http://mezzanine.jupo.org/docs/content-architecture.html#creating-custom-content-types
 
 admin.site.register(CountryPage, PageAdmin)
 
-#
+
+
+# Work Area Pages
+
+workareapages_extra_fieldsets = ((None, {"fields": ("users", "groups", "content")}),)
+
+# class WorkAreaFileInline(admin.TabularInline):
+#     model = WorkAreaPage
+
+class WorkAreaPageAdmin(PageAdmin):
+    # inlines = (WorkAreaFileInline,)
+    fieldsets = deepcopy(PageAdmin.fieldsets) + workareapages_extra_fieldsets
+
+admin.site.register(WorkAreaPage, WorkAreaPageAdmin)
+
+
+
 # Pest Reports
-#
 
 class PestStatusAdmin(admin.ModelAdmin):
     """Options for the pest status field of Pest Reports"""

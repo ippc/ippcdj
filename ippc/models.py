@@ -2,7 +2,7 @@ from django.db import models
 from django.utils.translation import ugettext_lazy as _
 from django_countries.fields import CountryField
 
-from django.contrib.auth.models import User
+from django.contrib.auth.models import User, Group
 
 from django.template.defaultfilters import slugify
 
@@ -10,7 +10,7 @@ from datetime import datetime
 
 import os.path
 
-from mezzanine.pages.models import Page
+from mezzanine.pages.models import Page, RichTextPage
 
 from mezzanine.conf import settings
 from mezzanine.core.models import Slugged, MetaData, Displayable, Orderable, RichText
@@ -54,10 +54,25 @@ class IppcUserProfile(models.Model):
     #     return self.country
 
 
+class WorkAreaPage(Page, RichText):
+    # editor = CountryField(_("Country"))
+    users = models.ManyToManyField(User, verbose_name=_("Work Area Page Users"), 
+        related_name='workareapageusers+', blank=True, null=True)
+    groups = models.ManyToManyField(Group, verbose_name=_("Work Area Page Groups"), 
+        related_name='workareapagegroups+', blank=True, null=True)
+
+    class Meta:
+        verbose_name = "Work Area Page"
+        verbose_name_plural = "Work Area Pages"
+
 class CountryPage(Page):
     # editor = CountryField(_("Country"))
     editors = models.ManyToManyField(User, verbose_name=_("Country Editors"), 
         related_name='countryeditors+', blank=True, null=True)
+
+    class Meta:
+        verbose_name = "Country Page"
+        verbose_name_plural = "Country Pages"
 
 # do we need a table for this? or do http://djangosnippets.org/snippets/2753/ ?
 class PestStatus(models.Model):
@@ -92,8 +107,7 @@ class PestReport(models.Model):
     title = models.CharField(_("Title"), max_length=500)
     is_public = models.IntegerField(_("Visibility"), 
         choices=PUBLISHING_CHOICES, default=IS_PUBLIC,
-        help_text=_("Choose 'Hidden' instead of deleting reports.")
-        )
+        help_text=_("Choose 'Hidden' instead of deleting reports."))
     slug = models.CharField(_("URL"), max_length=2000, blank=True, null=True,
             unique_for_date='publish_date',
             help_text=_("Leave blank to have the URL auto-generated from "
@@ -244,76 +258,3 @@ if "mezzanine.galleries" in settings.INSTALLED_APPS:
             verbose_name = _("Translated Image")
             verbose_name_plural = _("Translated Images")
             ordering = ("lang",)
-
-
-
-
-
-
-
-
-
-from django import forms
-from .models import IppcUserProfile, PestStatus, PestReport
-from django.contrib.auth.models import User
-
-class PestReportForm(forms.ModelForm):
-
-    # country = forms.ChoiceField(widget=forms.Select(), initial='country')
-    # =todo: https://docs.djangoproject.com/en/dev/ref/forms/api/#dynamic-initial-values
-
-    class Meta:
-        model = PestReport
-        fields = [
-            'country',
-            'title', 
-            'summary',
-            'is_public',
-            # 'slug', 
-            # 'publish_date', 
-            'report_status', 
-            'file',
-            'pest_status',
-            'pest_identity',
-            'hosts',
-            'geographical_distribution',
-            'nature_of_danger',
-            'contact_for_more_information',
-            'url_for_more_information'
-            ]
-        exclude = ('author', 'slug', 'publish_date', 'modify_date')
-
-    def __init__(self, request, *args, **kwargs):
-
-        self.author = request.user
-        self.author.id = request.user.id
-
-        super(PestReportForm, self).__init__(request.POST or None, *args, **kwargs)
-        # self.country = forms.IntegerField(widget=forms.HiddenInput(), initial=123)
-        # self.fields['country'].widget = forms.HiddenInput()
-        # self.fields['country'].required = True
-        # self.fields["country"].queryset = IppcUserProfile.objects.filter(country=country)
-        
-        # country should be set automatically to logged-in country editor's country
-        # report = kwargs["instance"]
-        # value = report.value
-        # content_object = report.content_object
-        # queryset = Profile.objects.filter(user=content_object.user)
-        # self.country = IppcUserProfile.objects.filter(country="country")
-        # self.country = request.user.get_profile().country
-        # self.country = profile_user.get_profile.country.name
-        # self.fields['country'].widget
-        # self.fields['country'].queryset = IppcUserProfile.objects.filter(country=country)
-
-        # self.fields['content_markdown'].widget.attrs['id'] = 'wmd-input'
-        # only active users should appear in observers field
-        # self.fields['observers'].queryset = User.objects.filter(is_active=True).order_by('username')
-
-        # @receiver(post_save, sender=Rating)
-        # def karma(sender, **kwargs):
-        #     report = kwargs["instance"]
-        #     value = report.value
-        # 
-        #     content_object = report.content_object
-        #     queryset = Profile.objects.filter(user=content_object.user)
-        #     queryset.update(karma=models.F("karma") + value)

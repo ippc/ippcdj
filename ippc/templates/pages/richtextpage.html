@@ -5,6 +5,11 @@
 {% load i18n mezzanine_tags translate_tags %}
 
 {% block main %}
+    {% if user.is_staff %} 
+    <div class="pull-right">
+        <a class="btn btn-info btn-small" href="/admin/pages/richtextpage/{{ page.id }}">Edit as Admin</a><br>
+    </div>
+    {% endif %}
     {{ block.super }}
     {% with page.richtextpage|get_object_translation as translated_page %}
         {{ translated_page.content|richtext_filter|safe }}

@@ -29,9 +29,4 @@
 {% endblock %}
 
 {% block main %}
-{% if user.is_staff %} 
-<div class="pull-right">
-    <a class="btn btn-info btn-small" href="/admin/pages/richtextpage/{{ page.id }}">Edit as Admin</a><br>
-</div>
-{% endif %}
 {% endblock %}

@@ -1,0 +1,27 @@
+{# https://gist.github.com/renyi/3596248 #}
+{# richtextpage.html #}
+
+{% extends "pages/page.html" %}
+{% load i18n mezzanine_tags translate_tags %}
+
+{% block meta_title %}
+  {{ page.get_content_model.title }}
+{% endblock %}
+
+
+{% block title %}
+  {{ page.get_content_model.title }}
+{% endblock %}
+
+{% block main %}
+    {% if user.is_staff %} 
+    <div class="pull-right">
+        <a class="btn btn-info btn-small" href="/admin/ippc/workareapage/{{ page.id }}">Edit as Admin</a><br>
+    </div>
+    {% endif %}
+    {{ block.super }}
+    {# {% with page.richtextpage|get_object_translation as translated_page %} #}
+    {#     {{ translated_page.content|richtext_filter|safe }} #}
+    {# {% endwith %} #}
+    {{ page.get_content_model.content|richtext_filter|safe }}
+{% endblock %}

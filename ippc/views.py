@@ -1,5 +1,6 @@
 from django.shortcuts import render
-from .models import IppcUserProfile, PestStatus, PestReport, PestReportForm
+from .models import IppcUserProfile, PestStatus, PestReport
+from .forms import PestReportForm
 
 from django.views.generic import ArchiveIndexView, MonthArchiveView, YearArchiveView, DetailView, TemplateView, CreateView
 from django.core.urlresolvers import reverse
@@ -87,35 +88,33 @@ def pest_report_form_country():
 
 
 
+
+
 @login_required
 @permission_required('ippc.add_pestreport', login_url="/accounts/login/")
-def pest_report_create(request, country=None):
-        
+def pest_report_create(request, country):
+
+    user = request.user
+    # print('>>>>>>>>>>>>>>>')
+    # print(user.get_profile().country)
+    var1=user.get_profile().country
+    
+    # form = PestReportForm(request.POST, instance=PestReport(), initial={'country': var1})
+    
     if request.method == "POST":
-        
-        form = PestReportForm(request)
-        user = request.user
-        # profile_user = request.profile_user
-        author_id = user.id
-        country = request.user.get_profile.country.name
-        
+
         if form.is_valid():
             new_pest_report = form.save(commit=False)
-            new_pest_report.author_id = author_id
-            new_pest_report.country = country
+            new_pest_report.author = author_id
             form.save()
+            
             return redirect('/countries/')
     else:
-        form = PestReportForm(request, instance=PestReport())
+
+        form = PestReportForm(request, initial={'country': var1}, instance=PestReport(), )
+
     return render_to_response('countries/pest_report_create.html', {'form': form},
         context_instance=RequestContext(request))
-        
-    def get_context_data(self, **kwargs): # http://stackoverflow.com/a/15515220
-        context = super(PestReportListView, self).get_context_data(**kwargs)
-        context.update({
-            'country': self.kwargs['country']
-        })
-        return context
 
 
 @login_required
