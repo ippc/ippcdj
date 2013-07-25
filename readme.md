@@ -8,19 +8,21 @@
     /countries/country/pest-reports/pest-report
     /countries/country/pest-reports/add
     ```
-- Country editor permissions. Can only edit/upload to their own country page
-  - <http://www.b-list.org/weblog/2006/nov/02/django-tips-auto-populated-fields/>
-- File/publication uploads
+
+- Fix country pest report upload form 
+- User registration open but behind login-required and super-user required so only admins can add new users.
 
 - Restricted Work Area
-    - Lists pages accessible to each user [according to his permissions](http://stackoverflow.com/a/16016717)
-    - Permissions groups to be created: 
-        - Anonymous User
-        - Logged In User
-        - Administrator
+   - Restricted area working group pages and working group view/add permissions.
+    - File/publication uploads tied to pages and restricted pages
+    - Lists pages accessible to each user [according to permissions](http://stackoverflow.com/a/16016717)
+    - Permissions groups: 
+        - Anonymous User - AUTO
+        - Logged In User - AUTO
+        - Administrator - AUTO
         - Secretariat
         - Country Chief Editor
-        - Country Editor
+        - Country Editor - DONE
         - Partners/RPPO Editor
         - Working Groups
             - Standards Committee 
@@ -44,7 +46,7 @@
             - FaoPlantProtectionOfficers 
             - FrameworkforStandards
 
-- Fix media upload button not displaying in Firefox (is it dependent on Flash? If so, get rid of this dependency.)
+- Fix media upload button not displaying in Firefox (is it dependent on Flash? If so, get rid of this dependency.) Or use new file upload app.
 - Sitemap
 - [Calendar](https://github.com/shurik/mezzanine.calendar)
 - Forums
