@@ -1,20 +1,14 @@
 # Todo:
 
-
 - Country pages:
     ```
-    /countries
-    /countries/country/pest-reports
-    /countries/country/pest-reports/pest-report
-    /countries/country/pest-reports/add
+    /countries/country/pest-reports/edit
     ```
-
-- Fix country pest report upload form 
-- User registration open but behind login-required and super-user required so only admins can add new users.
 
 - Restricted Work Area
    - Restricted area working group pages and working group view/add permissions.
     - File/publication uploads tied to pages and restricted pages
+      - Fix media upload button not displaying in Firefox (is it dependent on Flash? If so, get rid of this dependency.) Or use new file upload app.
     - Lists pages accessible to each user [according to permissions](http://stackoverflow.com/a/16016717)
     - Permissions groups: 
         - Anonymous User - AUTO
@@ -46,7 +40,11 @@
             - FaoPlantProtectionOfficers 
             - FrameworkforStandards
 
-- Fix media upload button not displaying in Firefox (is it dependent on Flash? If so, get rid of this dependency.) Or use new file upload app.
+- User registration open but behind login-required and super-user required so only admins can add new users.
+
+- Versioning of Pest Reports. Report number: GBR-32/1. When edited: GBR-32/2.
+- Versioning of all page content.
+
 - Sitemap
 - [Calendar](https://github.com/shurik/mezzanine.calendar)
 - Forums
