@@ -87,7 +87,8 @@ def pest_report_form_country():
 
 
 
-
+# print('>>>>>>>>>>>>>>>')
+# print(user.get_profile().country)
 
 
 @login_required
@@ -96,9 +97,7 @@ def pest_report_create(request, country):
 
     user = request.user
     author = user
-    # print('>>>>>>>>>>>>>>>')
-    # print(user.get_profile().country)
-    var1=user.get_profile().country
+    country=user.get_profile().country
 
     form = PestReportForm(request.POST or None)
     
@@ -111,7 +110,7 @@ def pest_report_create(request, country):
             return redirect("pest-report-detail", country=country, year=new_pest_report.publish_date.strftime("%Y"), month=new_pest_report.publish_date.strftime("%m"), slug=new_pest_report.slug)
     else:
 
-        form = PestReportForm(initial={'country': var1}, instance=PestReport())
+        form = PestReportForm(initial={'country': country}, instance=PestReport())
 
     return render_to_response('countries/pest_report_create.html', {'form': form},
         context_instance=RequestContext(request))
