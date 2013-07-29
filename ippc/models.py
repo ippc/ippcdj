@@ -66,13 +66,18 @@ class WorkAreaPage(Page, RichText):
         verbose_name_plural = "Work Area Pages"
 
 class CountryPage(Page):
-    # editor = CountryField(_("Country"))
+    country = CountryField(_("Country"))
     editors = models.ManyToManyField(User, verbose_name=_("Country Editors"), 
         related_name='countryeditors+', blank=True, null=True)
+
+    def country_name(self):
+        return self.country.name
 
     class Meta:
         verbose_name = "Country Page"
         verbose_name_plural = "Country Pages"
+
+
 
 # do we need a table for this? or do http://djangosnippets.org/snippets/2753/ ?
 class PestStatus(models.Model):
@@ -150,8 +155,6 @@ class PestReport(models.Model):
     def filename(self):
         return os.path.basename(self.file.name)
         
-    def country_name(self):
-        return self.country.name
         
     # http://devwiki.beloblotskiy.com/index.php5/Django:_Decoupling_the_URLs  
     @models.permalink # or: get_absolute_url = models.permalink(get_absolute_url) below

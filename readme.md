@@ -4,10 +4,11 @@
     ```
     /countries/country/pest-reports/edit
     ```
+- [Pest Report mapping](http://leafletjs.com/examples/choropleth.html)
 
 - Restricted Work Area
-   - Restricted area working group pages and working group view/add permissions.
-    - File/publication uploads tied to pages and restricted pages
+   - [Restricted area working group pages and working group view/add permissions](http://djangosnippets.org/snippets/2736/).
+    - [File/publication uploads tied to pages and restricted pages](https://github.com/sigurdga/django-jquery-file-upload)
       - Fix media upload button not displaying in Firefox (is it dependent on Flash? If so, get rid of this dependency.) Or use new file upload app.
     - Lists pages accessible to each user [according to permissions](http://stackoverflow.com/a/16016717)
     - Permissions groups: 

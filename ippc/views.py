@@ -22,7 +22,12 @@ from django.contrib.auth.decorators import login_required, permission_required
 #     context = {"user": get_object_or_404(User, **country)}
 #     return render(request, country, template, context)
 
+def get_profile():
+    return IppcUserProfile.objects.all()
 
+# def get_pest_report_country():
+#     return PestReport.objects.get(pk=1)
+    
 class CountryView(TemplateView):
     """ 
     Individual country homepage 
@@ -39,6 +44,7 @@ class CountryView(TemplateView):
         return context
 
 class PestReportListView(ArchiveIndexView):
+    
     """
     Pest reports
         http://stackoverflow.com/questions/8547880/listing-object-with-specific-tag-using-django-taggit
@@ -48,17 +54,31 @@ class PestReportListView(ArchiveIndexView):
     model = PestReport
     date_field = 'publish_date'
     template_name = 'countries/pest_report_list.html'
-    queryset = PestReport.objects.all().order_by('-publish_date', 'title')
+    # =todo: How the hell do I pass the country code 'IT' to this automatically?
+    queryset = PestReport.objects.filter(country='IT').order_by('-publish_date', 'title')
     allow_future = False
     allow_empty = True
     paginate_by = 10
-    queryset = PestReport.objects.all()
+    
+    # def get_queryset(self):
+    #     # self.country = get_object_or_404(CountryPage, country=self.kwargs['country'])
+    #     self.country = self.kwargs['country']
+    #     return PestReport.objects.filter(country__istartswith=self.country.code)
+        
+    # def get_context_data(self, **kwargs): # http://stackoverflow.com/a/15515220
+    #     context = super(PestReportListView, self).get_context_data(**kwargs)
+    #     context['country'] = self.kwargs['country']
+    #     # context.update({
+    #     #     'country': self.kwargs['country']
+    #     # })
+    #     return context
     
     def get_context_data(self, **kwargs): # http://stackoverflow.com/a/15515220
         context = super(PestReportListView, self).get_context_data(**kwargs)
-        context.update({
-            'country': self.kwargs['country']
-        })
+        context['country'] = self.kwargs['country']
+        # context.update({
+        #     'country': self.kwargs['country']
+        # })
         return context
 
 class PestReportDetailView(DetailView):
@@ -74,9 +94,6 @@ class PestReportDetailView(DetailView):
 
 def get_profile():
     return IppcUserProfile.objects.all()
-
-def pest_report_form_country():
-    return IppcUserProfile.objects.filter(country=country)
 
 # def get_context_data(self, **kwargs): # http://stackoverflow.com/a/15515220
 #     context = super(pest_report_create, self).get_context_data(**kwargs)
@@ -107,7 +124,7 @@ def pest_report_create(request, country):
             new_pest_report.author = request.user
             new_pest_report.author_id = author.id
             form.save()
-            return redirect("pest-report-detail", country=country, year=new_pest_report.publish_date.strftime("%Y"), month=new_pest_report.publish_date.strftime("%m"), slug=new_pest_report.slug)
+            return redirect("pest-report-detail", country=country.name, year=new_pest_report.publish_date.strftime("%Y"), month=new_pest_report.publish_date.strftime("%m"), slug=new_pest_report.slug)
     else:
 
         form = PestReportForm(initial={'country': country}, instance=PestReport())

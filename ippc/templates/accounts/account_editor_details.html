@@ -1,5 +1,25 @@
 {% load i18n future mezzanine_tags accounts_tags %}
 {# <div class="panel contact-info"> #}
+  
+  {% if user.is_staff %} 
+  <div>
+      <a class="btn btn-small btn-info" href="/admin/auth/user/{{ editor.get_profile.id }}">Edit User as Admin</a><br>
+  </div>
+  {% endif %}
+  
+  {% if editor.username == request.user.username %} 
+  <div>
+        <a class="btn btn-large btn-info" style="" href="{% url "profile_update" %}">{% trans "Update your profile" %}</a>
+  </div>
+  {% endif %}
+  
+  {# {% if editor.get_profile.username == request.user %} #}
+  {# <p class="form-actions"> #}
+  {# <a class="btn btn-large btn-info" style="" href="{% url "profile_update" %}">{% trans "Update profile" %}</a> #}
+  {# </p> #}
+  {# {% endif %} #}
+  
+  
   {% if editor.get_profile.profile_photo %}
   <a href="{% url "profile_update" %}" title="Click to update your profile and add a picture."><img class="pull-right profile-picture" style="margin:0 0 20px 10px;" src="{{ MEDIA_URL }}{% thumbnail editor.get_profile.profile_photo 128 128 %}"></a>
   {% else %}

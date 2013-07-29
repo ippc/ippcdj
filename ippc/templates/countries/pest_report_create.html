@@ -1,17 +1,44 @@
 {% extends "base.html" %}
-{% load pages_tags translate_tags mezzanine_tags i18n future staticfiles %}
+{% load pages_tags translate_tags mezzanine_tags i18n future staticfiles accounts_tags %}
 
-{% block meta_title %}{% trans "New Pest Report" %} - {{ country }}{% endblock %}
+{% block meta_title %}{% trans "New Pest Report" %} - {{ user.get_profile.country.name}} {% endblock %}
 
 {# {% block extra_style %} #}
 {#     <link href="{% static "css/Markdown.Editor.css" %}" rel="stylesheet"> #}
 {# {% endblock extra_style %} #}
 
-{# {% block body_class %}entryform{% endblock %} #}
+{% block body_class %}wide{% endblock %}
+
+{% block breadcrumb_menu %}
+<li>
+  <a href="/countries/">Countries</a>
+  <span class="divider">/</span>
+</li>
+<li>
+  <a href="/countries/{{ user.get_profile.country.name|slugify }}/">
+    {# {% with latest|first as first_object %} #}
+    {#   {{ first_object.country.name }} #}
+    {# {% endwith %} #}
+    {{ user.get_profile.country.name }}
+  </a>
+  <span class="divider">/</span>
+</li>
+<li class="active">{% trans "Pest Reports" %}</li>
+{% endblock %}
+
+{% block local_nav %}
+{% endblock local_nav %}
+
+{% block pageinfo %}
+{% endblock pageinfo %}
 
 {% block main %}
 
-{{ country }}
+<p class="pull-right">
+  <a href="javascript:history.go(-1)">« Cancel and go back</a>
+</p>
+
+<h1><span class="normal">Create New Pest Report for</span> {{ user.get_profile.country.name }}</h1>
 
 {# {% debug %} #}
 <form class="customform" method="POST" action="">

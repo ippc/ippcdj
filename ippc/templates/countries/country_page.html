@@ -20,7 +20,7 @@
 {# <div class="span8 middle"> #}
 {% if user.is_staff %} 
 <div class="pull-right">
-    <a class="btn btn-small btn-info" href="/admin/ippc/countrypage/{{ page.id }}">Edit as Admin</a><br>
+    <a class="btn btn-small btn-info" href="/admin/ippc/countrypage/{{ page.id }}">Edit page as Admin</a><br>
 </div>
 {% endif %}
 
@@ -32,7 +32,7 @@
 
 
 <h1>
-    {{ page.title }}
+    {{ page.title }} <img src="{{page.get_content_model.country.flag}}">
 </h1> 
 
 <div class="panel contact-info">
@@ -76,7 +76,7 @@
       <li class="nav-header">{{ page.title }}</li>
       <li><a href="{% url 'pest-report-list' page.title|slugify %}">Official Pest Reports</a> 
         
-        {% if perms.ippc.add_pestreport %}
+        {% if perms.ippc.add_pestreport and request.user.get_profile.country.name == page.title or user.is_staff %}
           <small><a class="btn btn-small btn-info" href="{% url 'pest-report-create' page.title|slugify %}">+ {% trans "Add new" %}</a></small>
         {% else %}
         {% endif %}

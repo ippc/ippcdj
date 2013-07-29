@@ -1,11 +1,12 @@
 {% extends "base.html" %}
-{% load pages_tags mezzanine_tags i18n future staticfiles %}
+{% load pages_tags mezzanine_tags i18n future staticfiles accounts_tags %}
 
 {% block meta_title %}
   {% trans "Pest Reports" %}: 
-  {% with latest|first as first_object %}
-    {{ first_object.country.name }}
-  {% endwith %}
+  {# {% with latest|first as first_object %} #}
+  {#   {{ first_object.country.name }} #}
+  {# {% endwith %} #}
+  {{ page.title }}
 {% endblock %}
 
 {% block body_class %}wide{% endblock %}
@@ -16,10 +17,11 @@
   <span class="divider">/</span>
 </li>
 <li>
-  <a href="/countries/{{ country }}/">
-    {% with latest|first as first_object %}
-      {{ first_object.country.name }}
-    {% endwith %}
+  <a href="{{ page.get_absolute_url }}">
+    {# {% with latest|first as first_object %} #}
+    {#   {{ first_object.country.name }} #}
+    {# {% endwith %} #}
+    {{ page.title }}
   </a>
   <span class="divider">/</span>
 </li>
@@ -35,8 +37,8 @@
 {% block main %}
 
 <p class="pull-right">
-  <a href="/countries/{{ country }}/">« {% trans "Back to" %} {{ country|capfirst }}</a>
-  {% if perms.ippc.add_pestreport %}
+  <a href="{{ page.get_absolute_url }}">« {% trans "Back to" %} {{ page.title }}</a>
+  {% if perms.ippc.add_pestreport and request.user.get_profile.country.name == page.title %}
   <br>
   <small><a class="btn btn-small btn-info" href="{% url 'pest-report-create' page.title|slugify %}">+ {% trans "Add new pest report" %}</a></small>
   {% else %}
@@ -45,9 +47,12 @@
 
 <h1>
   <small class="normal">{% trans "Pest Reports from" %}</small>
-  {% with latest|first as first_object %}
-    {{ first_object.country.name }}
-  {% endwith %}
+  {# {% with latest|first as first_object %} #}
+  {#   {{ first_object.country.name }} #}
+  {# {% endwith %} #}
+  {# {{ country }} #}
+  {# {{ country }} {{ country_name }} #}
+  {{ page.title }}
 </h1> 
 
 {% if latest %}
