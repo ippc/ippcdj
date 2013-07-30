@@ -2,7 +2,7 @@ from django.shortcuts import render
 from .models import IppcUserProfile, PestStatus, PestReport
 from .forms import PestReportForm
 
-from django.views.generic import ArchiveIndexView, MonthArchiveView, YearArchiveView, DetailView, TemplateView, CreateView
+from django.views.generic import ListView, MonthArchiveView, YearArchiveView, DetailView, TemplateView, CreateView
 from django.core.urlresolvers import reverse
 
 from django.template.defaultfilters import slugify
@@ -25,8 +25,8 @@ from django.contrib.auth.decorators import login_required, permission_required
 def get_profile():
     return IppcUserProfile.objects.all()
 
-# def get_pest_report_country():
-#     return PestReport.objects.get(pk=1)
+# def pest_report_country():
+#     return PestReport.objects.all()
     
 class CountryView(TemplateView):
     """ 
@@ -43,35 +43,37 @@ class CountryView(TemplateView):
         })
         return context
 
-class PestReportListView(ArchiveIndexView):
+
+from django_countries.fields import Country
+from django.db.models import F
+
+class PestReportListView(ListView):
     
     """
     Pest reports
         http://stackoverflow.com/questions/8547880/listing-object-with-specific-tag-using-django-taggit
         http://stackoverflow.com/a/7382708/412329
     """
+    
     context_object_name = 'latest'
     model = PestReport
     date_field = 'publish_date'
     template_name = 'countries/pest_report_list.html'
-    # =todo: How the hell do I pass the country code 'IT' to this automatically?
-    queryset = PestReport.objects.filter(country='IT').order_by('-publish_date', 'title')
+    # =todo: How the hell do I pass the country code 'IT' to this automatically?     
+    cc = PestReport.country_code()
+    queryset = PestReport.objects.filter(country=cc).order_by('-publish_date', 'title')
     allow_future = False
     allow_empty = True
     paginate_by = 10
-    
+
+    # country_field = 'country'    
+    # 
     # def get_queryset(self):
+    #     """ only return pest reports from the specific country """
     #     # self.country = get_object_or_404(CountryPage, country=self.kwargs['country'])
     #     self.country = self.kwargs['country']
-    #     return PestReport.objects.filter(country__istartswith=self.country.code)
-        
-    # def get_context_data(self, **kwargs): # http://stackoverflow.com/a/15515220
-    #     context = super(PestReportListView, self).get_context_data(**kwargs)
-    #     context['country'] = self.kwargs['country']
-    #     # context.update({
-    #     #     'country': self.kwargs['country']
-    #     # })
-    #     return context
+    #     # self.country = self.country.code
+    #     return PestReport.objects.filter(country=self.country)
     
     def get_context_data(self, **kwargs): # http://stackoverflow.com/a/15515220
         context = super(PestReportListView, self).get_context_data(**kwargs)
@@ -81,6 +83,12 @@ class PestReportListView(ArchiveIndexView):
         # })
         return context
 
+
+
+
+
+
+
 class PestReportDetailView(DetailView):
     """ 
     Pest report permalink page 
@@ -88,21 +96,6 @@ class PestReportDetailView(DetailView):
     model = PestReport
     context_object_name = 'report'
     template_name = 'countries/pest_report_detail.html'
-
-
-
-
-def get_profile():
-    return IppcUserProfile.objects.all()
-
-# def get_context_data(self, **kwargs): # http://stackoverflow.com/a/15515220
-#     context = super(pest_report_create, self).get_context_data(**kwargs)
-#     context.update({
-#         'country': self.kwargs['country']
-#     })
-#     return context
-
-
 
 # print('>>>>>>>>>>>>>>>')
 # print(user.get_profile().country)

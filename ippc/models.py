@@ -152,8 +152,8 @@ class PestReport(models.Model):
     def __unicode__(self):
         return self.title
 
-    def filename(self):
-        return os.path.basename(self.file.name)
+    def country_code(self):
+        return self.country
         
         
     # http://devwiki.beloblotskiy.com/index.php5/Django:_Decoupling_the_URLs  
