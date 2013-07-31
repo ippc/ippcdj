@@ -17,7 +17,6 @@ from mezzanine.core.models import Slugged, MetaData, Displayable, Orderable, Ric
 from mezzanine.core.fields import RichTextField
 
 class WorkAreaPage(Page, RichText):
-    # editor = CountryField(_("Country"))
     users = models.ManyToManyField(User, verbose_name=_("Work Area Page Users"), 
         related_name='workareapageusers+', blank=True, null=True)
     groups = models.ManyToManyField(Group, verbose_name=_("Work Area Page Groups"), 
@@ -65,24 +64,12 @@ class PestStatus(models.Model):
         verbose_name_plural = _("Pest Statuses")
     pass
 
-IS_HIDDEN = 1
-IS_PUBLIC = 2
-PUBLISHING_CHOICES = (
-    (IS_HIDDEN, _("Hidden - does not appear publically on ippc.int. Choose this instead of deleting.")), 
-    (IS_PUBLIC, _("Public - visible on ippc.int")),
-)
 
-REPORT_STATUS_NA = 1
-REPORT_STATUS_PRELIMINARY = 2
-REPORT_STATUS_FINAL = 3
-REPORT_STATUS_CHOICES = (
-    (REPORT_STATUS_NA, _("N/A")),
-    (REPORT_STATUS_PRELIMINARY, _("Preliminary")),
-    (REPORT_STATUS_FINAL, _("Final")),
-)
+
+
 
 class IppcUserProfile(models.Model):
-    """ User profiles for IPPC"""
+    """ User Profiles for IPPC"""
     
     GENDER_CHOICES = (
         (1, _("Mr")),
@@ -116,10 +103,30 @@ class IppcUserProfile(models.Model):
     
     date_account_created = models.DateTimeField(_("Member Since"), default=datetime.now, editable=False)
 
-    # def country(self):
-    #     return self.country
+
+
+
+
 
 class PestReport(models.Model):
+    """ Pest Reports"""
+    
+    IS_HIDDEN = 1
+    IS_PUBLIC = 2
+    PUBLISHING_CHOICES = (
+        (IS_HIDDEN, _("Hidden - does not appear publically on ippc.int. Choose this instead of deleting.")), 
+        (IS_PUBLIC, _("Public - visible on ippc.int")),
+    )
+
+    REPORT_STATUS_NA = 1
+    REPORT_STATUS_PRELIMINARY = 2
+    REPORT_STATUS_FINAL = 3
+    REPORT_STATUS_CHOICES = (
+        (REPORT_STATUS_NA, _("N/A")),
+        (REPORT_STATUS_PRELIMINARY, _("Preliminary")),
+        (REPORT_STATUS_FINAL, _("Final")),
+    )
+    
     # country = CountryField(_("Country"))
     country = models.ForeignKey(CountryPage, related_name="pest_report_country_page")
     author = models.ForeignKey(User, related_name="pest_report_author")

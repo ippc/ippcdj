@@ -46,7 +46,7 @@ urlpatterns = patterns("",
         name='pest-report-create'),
     
     # pest report edit
-    url(r'^countries/(?P<country>[\w-]+)/pestreports/edit/$',
+    url(r'^countries/(?P<country>[\w-]+)/pestreports/edit/(?P<id>\d+)$',
         view=pest_report_edit,
         name='pest-report-edit'),
 

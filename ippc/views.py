@@ -48,26 +48,20 @@ from django_countries.fields import Country
 from django.db.models import F
 
 class PestReportListView(ListView):
-    
     """
     Pest reports
         http://stackoverflow.com/questions/8547880/listing-object-with-specific-tag-using-django-taggit
         http://stackoverflow.com/a/7382708/412329
     """
-    
     context_object_name = 'latest'
     model = PestReport
     date_field = 'publish_date'
     template_name = 'countries/pest_report_list.html'
-    # =todo: How the hell do I pass the country code 'IT' to this automatically?     
-    # cc = PestReport.country_code()
     queryset = PestReport.objects.all().order_by('-publish_date', 'title')
     allow_future = False
     allow_empty = True
     paginate_by = 30
 
-    # country_field = 'country'    
-    # 
     def get_queryset(self):
         """ only return pest reports from the specific country """
         # self.country = get_object_or_404(CountryPage, country=self.kwargs['country'])
@@ -83,28 +77,18 @@ class PestReportListView(ListView):
         # })
         return context
 
-
-
-
-
-
-
 class PestReportDetailView(DetailView):
-    """ 
-    Pest report permalink page 
-    """
+    """ Pest report detail page """
     model = PestReport
     context_object_name = 'report'
     template_name = 'countries/pest_report_detail.html'
-
-# print('>>>>>>>>>>>>>>>')
-# print(user.get_profile().country)
-
+    # print('>>>>>>>>>>>>>>>')
+    # print(user.get_profile().country)
 
 @login_required
 @permission_required('ippc.add_pestreport', login_url="/accounts/login/")
 def pest_report_create(request, country):
-
+    """ Create Pest Report """
     user = request.user
     author = user
     country=user.get_profile().country
@@ -126,10 +110,14 @@ def pest_report_create(request, country):
     return render_to_response('countries/pest_report_create.html', {'form': form},
         context_instance=RequestContext(request))
 
-
 @login_required
 @permission_required('ippc.change_pestreport', login_url="/accounts/login/")
-def pest_report_edit(request, id, form_class=PestReportForm, template_name="countries/pest_report_edit.html"):
+def pest_report_edit(request, country, id, form_class=PestReportForm, template_name="countries/pest_report_edit.html"):
+    """ Edit Pest Report """
+    user = request.user
+    author = user
+    country=user.get_profile().country
+    user_country_slug = lower(slugify(country))
     pest_report = get_object_or_404(PestReport, id=id)
     # if pest_report.author != request.user:
     #     request.user.message_set.create(message="You can't edit items that aren't yours")
@@ -142,39 +130,5 @@ def pest_report_edit(request, id, form_class=PestReportForm, template_name="coun
         # request.user.message_set.create(message=_("Successfully updated pest_report '%s'") % pest_report.title)
         # http://stackoverflow.com/a/11728475/412329
         # messages.add_message(request, messages.SUCCESS, message=_("Successfully updated pest_report '%s'") % pest_report.title)
-        return redirect("pest-report-detail", username=request.user.username, slug=pest_report.slug)
+        return redirect("pest-report-detail", country=user_country_slug, year=new_pest_report.publish_date.strftime("%Y"), month=new_pest_report.publish_date.strftime("%m"), slug=new_pest_report.slug)
     return render_to_response(template_name, {"pest_report_form": pest_report_form, "pest_report": pest_report}, context_instance=RequestContext(request))
-
-
-
-
-
-
-
-
-# @login_required
-# def PestReportCreateView(request, country=None, template_name="countries/pest_report_create.html"):
-# 
-#     form = PestReportForm(request)
-#     
-#     if request.method == "POST" and form.is_valid():
-#         pest_report = form.save(commit=False)
-#         pest_report.author = request.user
-#         # profile = IppcUserProfile.objects.all()
-#         country = country
-#         # pest_report.id = pest_report.id
-#         pest_report.title = pest_report.title
-#         pest_report.slug = slugify(pest_report.title)
-#         # need to call save again so notification gets sent to observers 
-#         # https://docs.djangoproject.com/en/dev/ref/models/instances/#saving-objects
-#         
-#         form.save()
-#         # messages.add_message(request, messages.SUCCESS, message=_("Successfully created pest report '%s'") % pest_report.title)
-#         # return redirect("pest-report-detail", country=pest_report.country.name, year=pest_report.publish_date.strftime("%Y"), month=pest_report.publish_date.strftime("%m"), slug=pest_report.slug)
-#         
-#         return redirect("/countries/")
-#     return render_to_response(template_name, {"form": form}, context_instance=RequestContext(request))
-
-
-
-# http://stackoverflow.com/questions/907858/how-to-let-djangos-generic-view-use-a-form-with-initial-values

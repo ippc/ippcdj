@@ -66,8 +66,8 @@
   <tbody>
     {% for object in latest %}
     <tr>
-      <td><a href="{% url 'pest-report-detail' object.country.name object.publish_date|date:'Y' object.publish_date|date:'m'  object.slug %}">{{ object.title }}</a></td>
-      <td><a href="{% url 'pest-report-detail' object.country.name object.publish_date|date:'Y' object.publish_date|date:'m'  object.slug %}">{{ object.publish_date|date:"d M Y" }}</a></td>
+      <td><a href="{% url 'pest-report-detail' object.country.country_slug object.publish_date|date:'Y' object.publish_date|date:'m'  object.slug %}">{{ object.title }}</a></td>
+      <td><a href="{% url 'pest-report-detail' object.country.country_slug object.publish_date|date:'Y' object.publish_date|date:'m'  object.slug %}">{{ object.publish_date|date:"d M Y" }}</a></td>
       {# <li><a href="{% url 'pest-report-detail' %}">{{ object.title }}</a></li> #}
       
     </tr>
