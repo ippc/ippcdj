@@ -110,19 +110,30 @@ def pest_report_create(request, country):
     return render_to_response('countries/pest_report_create.html', {'form': form},
         context_instance=RequestContext(request))
 
+
+
+
+
+
+
 @login_required
 @permission_required('ippc.change_pestreport', login_url="/accounts/login/")
 def pest_report_edit(request, country, id, form_class=PestReportForm, template_name="countries/pest_report_edit.html"):
     """ Edit Pest Report """
+
     user = request.user
     author = user
     country=user.get_profile().country
     user_country_slug = lower(slugify(country))
+
     pest_report = get_object_or_404(PestReport, id=id)
+    
     # if pest_report.author != request.user:
     #     request.user.message_set.create(message="You can't edit items that aren't yours")
     #     return redirect("/")
-    pest_report_form = form_class(request, instance=pest_report)
+    
+    pest_report_form = form_class(request, instance=PestReport())
+    
     if request.method == "POST" and pest_report_form.is_valid():
         pest_report = pest_report_form.save(commit=False)
         pest_report.modify_date = datetime.now()

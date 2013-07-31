@@ -1,7 +1,7 @@
 {% extends "base.html" %}
 {% load pages_tags translate_tags mezzanine_tags i18n future staticfiles accounts_tags %}
 
-{% block meta_title %}{% trans "Edit Pest Report" %} - {{ user.get_profile.country.name}} {% endblock %}
+{% block meta_title %}{% trans "Edit Pest Report" %} - {{ pest_report.country}} {% endblock %}
 
 {# {% block extra_style %} #}
 {#     <link href="{% static "css/Markdown.Editor.css" %}" rel="stylesheet"> #}
@@ -15,15 +15,15 @@
   <span class="divider">/</span>
 </li>
 <li>
-  <a href="/countries/{{ user.get_profile.country.name|slugify }}/">
+  <a href="/countries/{{ pest_report.country.country_slug }}/">
     {# {% with latest|first as first_object %} #}
     {#   {{ first_object.country.name }} #}
     {# {% endwith %} #}
-    {{ user.get_profile.country.name }}
+    {{ pest_report.country }}
   </a>
   <span class="divider">/</span>
 </li>
-<li class="active">{{ report.title }}</li>
+<li class="active">{{ pest_report.title }}</li>
 {% endblock %}
 
 {% block local_nav %}
@@ -38,10 +38,11 @@
   <a href="javascript:history.go(-1)">« Cancel and go back</a>
 </p>
 
-<h1><span class="normal">Editing Pest Report titled</span> {{ report.title }}, last updated on {{report.modify_date}}</h1>
+<h1><span class="normal">Editing Pest Report titled</span> {{ pest_report.title }}, last updated on {{pest_report.modify_date}}</h1>
 
 {# {% debug %} #}
-<form class="customform" method="POST" action="{% url 'pest-report-edit' report.country|slugify report.id %}">
+{# <form class="customform" method="POST" action="/countries/{{pest_report.country.country_slug}}/pestreports/edit/{{pest_report.id}}"> #}
+<form class="customform" method="POST" action="{% url 'pest-report-edit' pest_report.country.country_slug pest_report.id %}">
     {% csrf_token %}
     <fieldset>
         {% include "countries/pest_report_form.html" %}
