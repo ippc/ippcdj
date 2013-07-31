@@ -12,7 +12,7 @@
 
 {% block main %}
 <fieldset>
-    <legend>{{ title }}</legend>
+    {# <legend>{{ title }}</legend> #}
     <form method="post"{% if form.is_multipart %} enctype="multipart/form-data"{% endif %}>
     {% fields_for form %}
     <div class="form-actions">

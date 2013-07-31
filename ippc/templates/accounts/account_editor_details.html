@@ -74,6 +74,7 @@
   {% endif %}
   
 
+  {% if editor.get_profile.address_country.name %}
   <dt>{% trans "Address" %}</dt>
   <dd>
     {% if user_get_profile.address1 %}{{ editor.get_profile.address1 }}<br>{% endif %}
@@ -82,13 +83,14 @@
     {% if editor.get_profile.city %}{{ editor.get_profile.city }}<br>{% endif %}
     {% if editor.get_profile.state %}{{ editor.get_profile.state }}<br>{% endif %}
     {% if editor.get_profile.zipcode %}{{ editor.get_profile.zipcode }}<br>{% endif %}
-    {% if editor.get_profile.address_country.name %}{{ editor.get_profile.address_country.name }}{% endif %}
+    {{ editor.get_profile.address_country.name }}
   </dd>
+  {% endif %}
   
   {% if editor.get_profile.country %}
   <dt>{% trans "IPPC Country" %}</dt>
   <dd>
-    <b>{{ editor.get_profile.country.name }}</b>
+    {% if editor.get_profile.country.name %}<b>{{ editor.get_profile.country.name }}</b>{% endif %}
   </dd>
   {% endif %}
 

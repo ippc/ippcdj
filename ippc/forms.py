@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 
 from django import forms
-from .models import IppcUserProfile, PestStatus, PestReport
+from .models import IppcUserProfile, PestStatus, PestReport, CountryPage
 from django.contrib.auth.models import User
 
 class PestReportForm(forms.ModelForm):

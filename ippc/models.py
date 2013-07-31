@@ -16,44 +16,6 @@ from mezzanine.conf import settings
 from mezzanine.core.models import Slugged, MetaData, Displayable, Orderable, RichText
 from mezzanine.core.fields import RichTextField
 
-class IppcUserProfile(models.Model):
-    """ User profiles for IPPC"""
-    
-    GENDER_CHOICES = (
-        (1, _("Mr")),
-        (2, _("Ms")),
-    )
-    
-    user = models.OneToOneField("auth.User")
-    title = models.CharField(_("Title"), blank=True, null=True, max_length=100)
-    first_name = models.CharField(_("First Name"), max_length=30)
-    last_name = models.CharField(_("Last Name"), max_length=30)
-    # main email address already provided by auth.User
-    email_address_alt = models.EmailField(_("Alternate Email"), default="", max_length=75, blank=True, null=True)
-
-    gender = models.PositiveSmallIntegerField(_("Gender"), choices=GENDER_CHOICES, blank=True, null=True)
-    profile_photo = models.FileField(_("Profile Photo"), upload_to="profile_photos", blank=True)
-    bio = models.TextField(_("Brief Biography"), default="", blank=True, null=True)
-
-    address1 = models.CharField(_("Address 1"), blank=True, max_length=100)
-    address2 = models.CharField(_("Address 2"), blank=True, max_length=100)
-    city = models.CharField(_("City"), blank=True, max_length=100)
-    state = models.CharField(_("State"), blank=True, max_length=100, help_text="or Province")
-    zipcode = models.CharField(_("Zip Code"), blank=True, max_length=20)
-    address_country = CountryField(_("Address Country"), blank=True, null=True)
-    # country will be the 'tag' to mark permissions for Country Main Contact Points and Country Editors
-    country = CountryField(_("IPPC Country"), blank=True, null=True)
-
-    phone = models.CharField(_("Phone"), blank=True, max_length=30)
-    fax = models.CharField(_("Fax"), blank=True, max_length=30)
-    mobile = models.CharField(_("Mobile"), blank=True, max_length=30)
-    
-    date_account_created = models.DateTimeField(_("Member Since"), default=datetime.now, editable=False)
-
-    # def country(self):
-    #     return self.country
-
-
 class WorkAreaPage(Page, RichText):
     # editor = CountryField(_("Country"))
     users = models.ManyToManyField(User, verbose_name=_("Work Area Page Users"), 
@@ -66,16 +28,29 @@ class WorkAreaPage(Page, RichText):
         verbose_name_plural = "Work Area Pages"
 
 class CountryPage(Page):
-    country = CountryField(_("Country"))
+
+    class Meta:
+        verbose_name = _('Country Page')
+        verbose_name_plural = _('Country Pages')
+        ordering = ['name']
+    
+    # =todo: 
+    # contracting_party
+    # territory
+    # flag
+    
+    iso = models.CharField(max_length=2, unique=True, blank=True, null=True)
+    iso3 = models.CharField(max_length=3, unique=True, blank=True, null=True)
+    name = models.CharField(max_length=50, unique=True, blank=True, null=True)
+    country_slug = models.CharField(_("Country URL Slug"), max_length=100, 
+            unique=True, blank=True, null=True,
+            help_text=_("Leave blank to have the URL auto-generated from "
+                        "the title."))
     editors = models.ManyToManyField(User, verbose_name=_("Country Editors"), 
         related_name='countryeditors+', blank=True, null=True)
 
-    def country_name(self):
-        return self.country.name
-
-    class Meta:
-        verbose_name = "Country Page"
-        verbose_name_plural = "Country Pages"
+    def __unicode__(self):
+        return u'%s' % (self.name,)
 
 
 
@@ -106,8 +81,47 @@ REPORT_STATUS_CHOICES = (
     (REPORT_STATUS_FINAL, _("Final")),
 )
 
+class IppcUserProfile(models.Model):
+    """ User profiles for IPPC"""
+    
+    GENDER_CHOICES = (
+        (1, _("Mr")),
+        (2, _("Ms")),
+    )
+    
+    user = models.OneToOneField("auth.User")
+    title = models.CharField(_("Title"), blank=True, null=True, max_length=100)
+    first_name = models.CharField(_("First Name"), max_length=30)
+    last_name = models.CharField(_("Last Name"), max_length=30)
+    # main email address already provided by auth.User
+    email_address_alt = models.EmailField(_("Alternate Email"), default="", max_length=75, blank=True, null=True)
+
+    gender = models.PositiveSmallIntegerField(_("Gender"), choices=GENDER_CHOICES, blank=True, null=True)
+    profile_photo = models.FileField(_("Profile Photo"), upload_to="profile_photos", blank=True)
+    bio = models.TextField(_("Brief Biography"), default="", blank=True, null=True)
+
+    address1 = models.CharField(_("Address 1"), blank=True, max_length=100)
+    address2 = models.CharField(_("Address 2"), blank=True, max_length=100)
+    city = models.CharField(_("City"), blank=True, max_length=100)
+    state = models.CharField(_("State"), blank=True, max_length=100, help_text="or Province")
+    zipcode = models.CharField(_("Zip Code"), blank=True, max_length=20)
+    address_country = CountryField(_("Address Country"), blank=True, null=True)
+    # country will be the 'tag' to mark permissions for Country Main Contact Points and Country Editors
+    # country = CountryField(_("IPPC Country"), blank=True, null=True)
+    country = models.ForeignKey(CountryPage, related_name="user_country_page", blank=True, null=True)
+
+    phone = models.CharField(_("Phone"), blank=True, max_length=30)
+    fax = models.CharField(_("Fax"), blank=True, max_length=30)
+    mobile = models.CharField(_("Mobile"), blank=True, max_length=30)
+    
+    date_account_created = models.DateTimeField(_("Member Since"), default=datetime.now, editable=False)
+
+    # def country(self):
+    #     return self.country
+
 class PestReport(models.Model):
-    country = CountryField(_("Country"))
+    # country = CountryField(_("Country"))
+    country = models.ForeignKey(CountryPage, related_name="pest_report_country_page")
     author = models.ForeignKey(User, related_name="pest_report_author")
     title = models.CharField(_("Title"), max_length=500)
     is_public = models.IntegerField(_("Visibility"), 
@@ -130,7 +144,7 @@ class PestReport(models.Model):
     pest_status = models.ManyToManyField(PestStatus,
         verbose_name=_("Pest Status"),
         related_name='pest_status+', blank=True, null=True,
-        help_text=_("Under <a href='#'>ISPM 8</a> -"))
+        help_text=_("Under ISPM 8 -"))
     pest_identity = models.TextField(_("Identity of Pest"),
         blank=True, null=True)
     hosts = models.TextField(_("Hosts or Articles concerned"),

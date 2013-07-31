@@ -5,7 +5,7 @@ from .forms import PestReportForm
 from django.views.generic import ListView, MonthArchiveView, YearArchiveView, DetailView, TemplateView, CreateView
 from django.core.urlresolvers import reverse
 
-from django.template.defaultfilters import slugify
+from django.template.defaultfilters import slugify, lower
 from django.template import RequestContext
 from django.shortcuts import render_to_response, get_object_or_404, redirect
 
@@ -60,20 +60,20 @@ class PestReportListView(ListView):
     date_field = 'publish_date'
     template_name = 'countries/pest_report_list.html'
     # =todo: How the hell do I pass the country code 'IT' to this automatically?     
-    cc = PestReport.country_code()
-    queryset = PestReport.objects.filter(country=cc).order_by('-publish_date', 'title')
+    # cc = PestReport.country_code()
+    queryset = PestReport.objects.all().order_by('-publish_date', 'title')
     allow_future = False
     allow_empty = True
-    paginate_by = 10
+    paginate_by = 30
 
     # country_field = 'country'    
     # 
-    # def get_queryset(self):
-    #     """ only return pest reports from the specific country """
-    #     # self.country = get_object_or_404(CountryPage, country=self.kwargs['country'])
-    #     self.country = self.kwargs['country']
-    #     # self.country = self.country.code
-    #     return PestReport.objects.filter(country=self.country)
+    def get_queryset(self):
+        """ only return pest reports from the specific country """
+        # self.country = get_object_or_404(CountryPage, country=self.kwargs['country'])
+        self.country = self.kwargs['country']
+        # CountryPage country_slug == country URL parameter keyword argument
+        return PestReport.objects.filter(country__country_slug=self.country)
     
     def get_context_data(self, **kwargs): # http://stackoverflow.com/a/15515220
         context = super(PestReportListView, self).get_context_data(**kwargs)
@@ -108,6 +108,7 @@ def pest_report_create(request, country):
     user = request.user
     author = user
     country=user.get_profile().country
+    user_country_slug = lower(slugify(country))
 
     form = PestReportForm(request.POST or None)
     
@@ -117,7 +118,7 @@ def pest_report_create(request, country):
             new_pest_report.author = request.user
             new_pest_report.author_id = author.id
             form.save()
-            return redirect("pest-report-detail", country=country.name, year=new_pest_report.publish_date.strftime("%Y"), month=new_pest_report.publish_date.strftime("%m"), slug=new_pest_report.slug)
+            return redirect("pest-report-detail", country=user_country_slug, year=new_pest_report.publish_date.strftime("%Y"), month=new_pest_report.publish_date.strftime("%m"), slug=new_pest_report.slug)
     else:
 
         form = PestReportForm(initial={'country': country}, instance=PestReport())

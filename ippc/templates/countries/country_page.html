@@ -37,7 +37,7 @@
 
 <div class="panel contact-info">
 <h2>{% trans "Contact Point" %}</h2>
-
+{# {{ page.get_content_model.name }} #}
 {% for editor in page.get_content_model.editors.all %}
   {# {{ editor.get_profile.first_name }} #}
   {# {{ editor.get_profile.last_name }} #}

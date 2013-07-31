@@ -7,27 +7,37 @@ from mezzanine.core.admin import TabularDynamicInlineAdmin
 
 from .models import PestStatus, PestReport, CountryPage, WorkAreaPage
 
-from fileupload.models import File
+# from fileupload.models import File
+
 
 
 # Country Pages - http://mezzanine.jupo.org/docs/content-architecture.html#creating-custom-content-types
+countrypages_extra_fieldsets = ((None, {"fields": ("name", "country_slug", "iso", "iso3", "editors", )}),)
 
-admin.site.register(CountryPage, PageAdmin)
+class CountryPageAdmin(PageAdmin):
+    fieldsets = deepcopy(PageAdmin.fieldsets) + countrypages_extra_fieldsets
+    prepopulated_fields = { 'country_slug': ['name'] }
+    # list_display = ('continent','name','iso','iso3', 'languages', 'currency_name')
+    # list_display_links = ('name',)
+
+admin.site.register(CountryPage, CountryPageAdmin)
+
+
 
 
 
 # Work Area Pages
 
 workareapages_extra_fieldsets = ((None, {"fields": ("users", "groups", "content")}),)
-
 # class WorkAreaFileInline(admin.TabularInline):
 #     model = WorkAreaPage
-
 class WorkAreaPageAdmin(PageAdmin):
     # inlines = (WorkAreaFileInline,)
     fieldsets = deepcopy(PageAdmin.fieldsets) + workareapages_extra_fieldsets
 
 admin.site.register(WorkAreaPage, WorkAreaPageAdmin)
+
+
 
 
 
