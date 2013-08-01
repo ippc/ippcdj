@@ -72,7 +72,7 @@
         
         
         {% if user.is_staff %} 
-            <a class="btn btn-small btn-info" href="/admin/ippc/pestreport/{{ report.id }}">Edit as Admin</a><br>
+            <a class="small pull-right" href="/admin/ippc/pestreport/{{ object.id }}"><i class="icon-edit"></i> Edit as Admin</a><br>
         {% endif %}
 
         {% if perms.ippc.change_pestreport and request.user.get_profile.country.name == page.title %}
