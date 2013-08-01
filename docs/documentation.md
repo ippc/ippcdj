@@ -41,5 +41,5 @@ If you add new fields or change certain values of existing ones such as blank or
 
 2. Everytime you make a change in your models do the following:
 
-    `./manage.py schemamigration ippc --auto`
+    `./manage.py schemamigration ippc --auto`  
     `./manage.py migrate ippc`
