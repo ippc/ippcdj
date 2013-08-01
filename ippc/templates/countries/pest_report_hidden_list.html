@@ -25,7 +25,11 @@
   </a>
   <span class="divider">/</span>
 </li>
-<li class="active">{% trans "Pest Reports" %}</li>
+<li>
+  <a href="{% url 'pest-report-list' page.title|slugify %}">{% trans "Pest Reports" %}</a>
+  <span class="divider">/</span>
+</li>
+<li class="active">{% trans "Hidden Pest Reports" %}</li>
 {% endblock %}
 
 {% block local_nav %}
@@ -41,14 +45,12 @@
   {% if perms.ippc.add_pestreport and request.user.get_profile.country.name == page.title %}
   <br>
   <small><a class="btn btn-small btn-info" href="{% url 'pest-report-create' page.title|slugify %}">+ {% trans "Add new pest report" %}</a></small>
-  <br>
-  <small><a href="{% url 'pest-report-hidden-list' page.title|slugify %}"><i class="icon-eye-close"></i> {% trans "See hidden pest reports" %}</a></small>
   {% else %}
   {% endif %}
 </p>
 
 <h1>
-  <small class="normal">{% trans "Pest Reports from" %}</small>
+  <small class="normal">{% trans "Hidden Pest Reports from" %}</small>
   {# {% with latest|first as first_object %} #}
   {#   {{ first_object.country.name }} #}
   {# {% endwith %} #}
@@ -56,6 +58,8 @@
   {# {{ country }} {{ country_name }} #}
   {{ page.title }}
 </h1> 
+
+<p class="quiet">{% trans "To publish a report click on the 'edit' button and change Visibility field to Public." %}</p>
 
 {% if latest %}
 <table class="table table-condensed table-striped">
@@ -68,8 +72,8 @@
   <tbody>
     {% for object in latest %}
     <tr>
-      <td><a href="{% url 'pest-report-detail' object.country.country_slug object.publish_date|date:'Y' object.publish_date|date:'m'  object.slug %}">{{ object.title }}</a></td>
-      <td><a href="{% url 'pest-report-detail' object.country.country_slug object.publish_date|date:'Y' object.publish_date|date:'m'  object.slug %}">{{ object.publish_date|date:"d M Y" }}</a>
+      <td class="quiet">{{ object.title }}</td>
+      <td class="quiet">{{ object.publish_date|date:"d M Y" }}
         
         
         

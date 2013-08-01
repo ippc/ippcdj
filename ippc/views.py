@@ -1,7 +1,7 @@
 from django.shortcuts import render
 from django.utils.translation import ugettext_lazy as _
 from django.contrib.messages import info, error
-from .models import IppcUserProfile, PestStatus, PestReport, IS_PUBLIC
+from .models import IppcUserProfile, PestStatus, PestReport, IS_PUBLIC, IS_HIDDEN
 from .forms import PestReportForm
 
 from django.views.generic import ListView, MonthArchiveView, YearArchiveView, DetailView, TemplateView, CreateView
@@ -12,6 +12,7 @@ from django.template import RequestContext
 from django.shortcuts import render_to_response, get_object_or_404, redirect
 
 from django.contrib.auth.decorators import login_required, permission_required
+from django.utils.decorators import method_decorator
 
 # from mezzanine.utils.models import get_user_model
 # User = get_user_model()
@@ -46,9 +47,6 @@ class CountryView(TemplateView):
         return context
 
 
-from django_countries.fields import Country
-from django.db.models import F
-
 class PestReportListView(ListView):
     """
     Pest reports
@@ -78,6 +76,45 @@ class PestReportListView(ListView):
         #     'country': self.kwargs['country']
         # })
         return context
+
+# @login_required
+# @permission_required('ippc.add_pestreport', login_url="/accounts/login/")
+
+class PestReportHiddenListView(ListView):
+    """
+    Hidden Pest reports so editors can still edit them
+    """
+    context_object_name = 'latest'
+    model = PestReport
+    date_field = 'publish_date'
+    template_name = 'countries/pest_report_hidden_list.html'
+    queryset = PestReport.objects.all().order_by('-publish_date', 'title')
+    allow_future = False
+    allow_empty = True
+    paginate_by = 30
+
+    def get_queryset(self):
+        """ only return pest reports from the specific country """
+        # self.country = get_object_or_404(CountryPage, country=self.kwargs['country'])
+        self.country = self.kwargs['country']
+        # CountryPage country_slug == country URL parameter keyword argument
+        return PestReport.objects.filter(country__country_slug=self.country, is_public=IS_HIDDEN)
+    
+    def get_context_data(self, **kwargs): # http://stackoverflow.com/a/15515220
+        context = super(PestReportHiddenListView, self).get_context_data(**kwargs)
+        context['country'] = self.kwargs['country']
+        # context.update({
+        #     'country': self.kwargs['country']
+        # })
+        return context
+
+    # put class-based generic view behind login
+    # https://docs.djangoproject.com/en/dev/topics/class-based-views/intro/#decorating-the-class
+    @method_decorator(login_required)
+    @method_decorator(permission_required('ippc.add_pestreport', login_url="/accounts/login/"))
+    def dispatch(self, *args, **kwargs):
+        return super(PestReportHiddenListView, self).dispatch(*args, **kwargs)
+
 
 class PestReportDetailView(DetailView):
     """ Pest report detail page """
@@ -139,8 +176,11 @@ def pest_report_edit(request, country, id=None, template_name='countries/pest_re
             form.save()
 
             # If the save was successful, success message and redirect to another page
-            info(request, _("Successfully updated pest report."))
-            return redirect("pest-report-detail", country=user_country_slug, year=pest_report.publish_date.strftime("%Y"), month=pest_report.publish_date.strftime("%m"), slug=pest_report.slug)
+            # info(request, _("Successfully updated pest report."))
+            if pest_report.is_public == IS_HIDDEN:
+                return redirect("pest-report-hidden-list", country=user_country_slug)
+            else:
+                return redirect("pest-report-detail", country=user_country_slug, year=pest_report.publish_date.strftime("%Y"), month=pest_report.publish_date.strftime("%m"), slug=pest_report.slug)
 
     else:
         form = PestReportForm(instance=pest_report)

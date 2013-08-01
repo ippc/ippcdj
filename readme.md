@@ -4,7 +4,7 @@
     ```
     /countries/country/pest-reports/edit
     ```
-    - Page listing pest reports that are marked as hidden so users can edit them.
+    - Pagination of reports
     
 - [Pest Report mapping](http://leafletjs.com/examples/choropleth.html)
 

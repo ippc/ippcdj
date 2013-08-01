@@ -2,7 +2,7 @@
 from django.conf.urls import patterns, include, url
 from django.contrib import admin
 
-from .ippc.views import PestReportListView, PestReportDetailView, CountryView, pest_report_create, pest_report_edit
+from .ippc.views import PestReportListView, PestReportHiddenListView, PestReportDetailView, CountryView, pest_report_create, pest_report_edit
 
 from mezzanine.core.views import direct_to_template
 import mezzanine_pagedown.urls
@@ -34,6 +34,11 @@ urlpatterns = patterns("",
     url(r'^countries/(?P<country>[\w-]+)/pestreports/$',
         view=PestReportListView.as_view(),
         name='pest-report-list'),
+
+    # pest list showing hidden reports 
+    url(r'^countries/(?P<country>[\w-]+)/pestreports/hidden/$',
+        view=PestReportHiddenListView.as_view(),
+        name='pest-report-hidden-list'),
 
     # pest report detail
     url(r'^countries/(?P<country>[\w-]+)/pestreports/(?P<year>\d+)/(?P<month>\d{2})/(?P<slug>[\w-]+)/$',
