@@ -15,6 +15,7 @@ from mezzanine.pages.models import Page, RichTextPage
 from mezzanine.conf import settings
 from mezzanine.core.models import Slugged, MetaData, Displayable, Orderable, RichText
 from mezzanine.core.fields import RichTextField
+from mezzanine.core.managers import SearchableManager
 
 class WorkAreaPage(Page, RichText):
     users = models.ManyToManyField(User, verbose_name=_("Work Area Page Users"), 
@@ -165,8 +166,13 @@ class PestReport(models.Model):
     # commodity_groups = 
     # keywords = 
 
+    # objects = models.Manager()
+    objects = SearchableManager()
+    search_fields = ("title", "summary")
+
     class Meta:
         verbose_name_plural = _("Pest Reports")
+        # abstract = True
 
     def __unicode__(self):
         return self.title

@@ -56,6 +56,9 @@ urlpatterns = patterns("",
         view=pest_report_edit,
         name='pest-report-edit'),
 
+    # custom search?
+    # url("^search/$", "search", name="search"),
+
     # pagedown
     ("^pagedown/", include(mezzanine_pagedown.urls)),
     

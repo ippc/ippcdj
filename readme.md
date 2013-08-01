@@ -4,7 +4,7 @@
     ```
     /countries/country/pest-reports/edit
     ```
-    - Make reports searchable
+    - Make reports [searchable](http://mezzanine.jupo.org/docs/search-engine.html#search-api)
     
 - [Pest Report mapping](http://leafletjs.com/examples/choropleth.html)
 

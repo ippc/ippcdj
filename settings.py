@@ -334,6 +334,8 @@ LANGUAGES = (
 # https://docs.djangoproject.com/en/dev/ref/settings/#locale-paths
 LOCALE_PATHS = (os.path.join(PROJECT_ROOT, "conf/locale"),)
 
+SEARCH_MODEL_CHOICES = ("pages.Page", "blog.BlogPost", "ippc.PestReport")
+
 BLOG_SLUG = 'news'
 SITE_TITLE = ugettext("International Plant Protection Convention")
 SITE_TAGLINE = ugettext("Protecting the world's plant resources from pests")
