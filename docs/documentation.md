@@ -37,9 +37,9 @@ If you add new fields or change certain values of existing ones such as blank or
 
 1. If you followed the Installation / Setup steps above go to step 2. Otherwise run the following in the terminal:
 
-    ./manage.py convert_to_south ippc
+    `./manage.py convert_to_south ippc`
 
 2. Everytime you make a change in your models do the following:
 
-    ./manage.py schemamigration ippc --auto
-    ./manage.py migrate ippc
+    `./manage.py schemamigration ippc --auto`
+    `./manage.py migrate ippc`
