@@ -4,7 +4,7 @@
 
 1. Install [Python](http://python.org) and [virtualenv](https://pypi.python.org/pypi/virtualenv), then open a terminal session and go to your projects directory, such as `~/projects`, and type the following command:
 
-    virtualenv ippcdj-env
+    `virtualenv ippcdj-env`
     
 2. Add the following to the bottom of the `~/projects/ippcdj-env/bin/activate`  (in windows may `~/projects/ippcdj-env/Script/activate`) file then save the file:
 
@@ -13,9 +13,10 @@
     
 3. Back in the Terminal, activate the virtual environment:
 
+    ````
     . bin/activate
     # in windows: . Scripts/activate
-    
+        
     git clone https://github.com/hypertexthero/ippcdj.git ippcdj_repo
     cd ippcdj_repo
     pip install -r requirements/project.txt
@@ -23,6 +24,8 @@
     python manage.py createdb
     # Accept the defaults, say 'Yes' to 'fake initial migrations'
     python manage.py runserver
+    
+    ````
 
 4. Go to 127.0.0.1:8000 to see the app running. go to 127.0.0.1:8000/admin to log in to the admin interface. To stop the server press Ctrl-C in the terminal.
     
@@ -34,9 +37,9 @@ If you add new fields or change certain values of existing ones such as blank or
 
 1. If you followed the Installation / Setup steps above go to step 2. Otherwise run the following in the terminal:
 
-  ./manage.py convert_to_south ippc
+    ./manage.py convert_to_south ippc
 
 2. Everytime you make a change in your models do the following:
 
-  ./manage.py schemamigration ippc --auto
-  ./manage.py migrate ippc
+    ./manage.py schemamigration ippc --auto
+    ./manage.py migrate ippc
