@@ -23,7 +23,11 @@
   </a>
   <span class="divider">/</span>
 </li>
-<li class="active">{% trans "Pest Reports: Create New" %}</li>
+<li>
+  <a href="/countries/{{ user.get_profile.country.name|slugify }}/pestreports/">{% trans "Pest Reports" %}</a>
+  <span class="divider">/</span>
+</li>
+<li class="active">{% trans "Create New" %}</li>
 {% endblock %}
 
 {% block local_nav %}
