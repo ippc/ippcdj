@@ -106,26 +106,24 @@ class IppcUserProfile(models.Model):
 
 
 
+IS_HIDDEN = 1
+IS_PUBLIC = 2
+PUBLISHING_CHOICES = (
+    (IS_HIDDEN, _("Hidden - does not appear publically on ippc.int. Choose this instead of deleting.")), 
+    (IS_PUBLIC, _("Public - visible on ippc.int")),
+)
 
+REPORT_STATUS_NA = 1
+REPORT_STATUS_PRELIMINARY = 2
+REPORT_STATUS_FINAL = 3
+REPORT_STATUS_CHOICES = (
+    (REPORT_STATUS_NA, _("N/A")),
+    (REPORT_STATUS_PRELIMINARY, _("Preliminary")),
+    (REPORT_STATUS_FINAL, _("Final")),
+)
 
 class PestReport(models.Model):
     """ Pest Reports"""
-    
-    IS_HIDDEN = 1
-    IS_PUBLIC = 2
-    PUBLISHING_CHOICES = (
-        (IS_HIDDEN, _("Hidden - does not appear publically on ippc.int. Choose this instead of deleting.")), 
-        (IS_PUBLIC, _("Public - visible on ippc.int")),
-    )
-
-    REPORT_STATUS_NA = 1
-    REPORT_STATUS_PRELIMINARY = 2
-    REPORT_STATUS_FINAL = 3
-    REPORT_STATUS_CHOICES = (
-        (REPORT_STATUS_NA, _("N/A")),
-        (REPORT_STATUS_PRELIMINARY, _("Preliminary")),
-        (REPORT_STATUS_FINAL, _("Final")),
-    )
     
     # country = CountryField(_("Country"))
     country = models.ForeignKey(CountryPage, related_name="pest_report_country_page")

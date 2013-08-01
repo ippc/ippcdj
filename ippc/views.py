@@ -1,5 +1,5 @@
 from django.shortcuts import render
-from .models import IppcUserProfile, PestStatus, PestReport
+from .models import IppcUserProfile, PestStatus, PestReport, IS_PUBLIC
 from .forms import PestReportForm
 
 from django.views.generic import ListView, MonthArchiveView, YearArchiveView, DetailView, TemplateView, CreateView
@@ -67,7 +67,7 @@ class PestReportListView(ListView):
         # self.country = get_object_or_404(CountryPage, country=self.kwargs['country'])
         self.country = self.kwargs['country']
         # CountryPage country_slug == country URL parameter keyword argument
-        return PestReport.objects.filter(country__country_slug=self.country)
+        return PestReport.objects.filter(country__country_slug=self.country, is_public=IS_PUBLIC)
     
     def get_context_data(self, **kwargs): # http://stackoverflow.com/a/15515220
         context = super(PestReportListView, self).get_context_data(**kwargs)
@@ -82,6 +82,7 @@ class PestReportDetailView(DetailView):
     model = PestReport
     context_object_name = 'report'
     template_name = 'countries/pest_report_detail.html'
+    queryset = PestReport.objects.filter(is_public=IS_PUBLIC)
     # print('>>>>>>>>>>>>>>>')
     # print(user.get_profile().country)
 
