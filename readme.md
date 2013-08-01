@@ -4,7 +4,7 @@
     ```
     /countries/country/pest-reports/edit
     ```
-    - Pagination of reports
+    - Make reports searchable
     
 - [Pest Report mapping](http://leafletjs.com/examples/choropleth.html)
 

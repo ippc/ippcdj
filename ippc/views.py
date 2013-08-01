@@ -14,17 +14,6 @@ from django.shortcuts import render_to_response, get_object_or_404, redirect
 from django.contrib.auth.decorators import login_required, permission_required
 from django.utils.decorators import method_decorator
 
-# from mezzanine.utils.models import get_user_model
-# User = get_user_model()
-# 
-# def country_view(request, country, template="countries/country_page.html"):
-#     """
-#     Display a country homepage with user info.
-#     """
-#     country = {"country__iexact": country}
-#     context = {"user": get_object_or_404(User, **country)}
-#     return render(request, country, template, context)
-
 def get_profile():
     return IppcUserProfile.objects.all()
 

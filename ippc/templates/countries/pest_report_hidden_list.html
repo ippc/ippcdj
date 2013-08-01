@@ -100,7 +100,31 @@
   </tbody>
 </table>
     
-    {% pagination_for latest %}
+{% if is_paginated %}
+  {% if page_obj.has_other_pages %}
+    <div class="pagination">
+    <ul>
+    <li class="disabled page-info">
+        <a>{% trans "Page" %} {{ page_obj.number }} {% trans "of" %} {{ page_obj.paginator.num_pages }}</a>
+    </li>
+    <li class="prev previous{% if not page_obj.has_previous %} disabled{% endif %}">
+        <a{% if page_obj.has_previous %} href="{% url 'pest-report-hidden-list' page.title|slugify %}?page={{ page_obj.previous_page_number }}"{% endif %}>&larr;</a>
+    </li>
+    {% for page in page_obj.paginator.page_range %}
+        {% if page %}
+            <li class="{% ifequal page page_obj.number %}active{% endifequal %}"><a href="?page={{ page }}">{{ page }}</a></li>
+        {% else %}
+            <li class="disabled"><a href="#">…</a></li>
+        {% endif %}
+    {% endfor %}
+    <li class="next{% if not page_obj.has_next %} disabled{% endif %}">
+        <a{% if page_obj.has_next %} href="{% url 'pest-report-hidden-list' page.title|slugify %}?page={{ page_obj.next_page_number }}"{% endif %}>&rarr;</a>
+    </li>
+    </ul>
+    </div>
+  {% endif %}
+{% endif %}
+
 
 {% else %}
 <p>No pest reports available.</p>
