@@ -41,7 +41,7 @@
 {% block main %}
 
 <p class="pull-right">
-  <a href="{{ page.get_absolute_url }}">« {% trans "Back to" %} {{ page.title }}</a>
+  <a href="javascript:history.go(-1)">{% trans "« Go back" %}</a>
   {% if perms.ippc.add_pestreport and request.user.get_profile.country.name == page.title %}
   <br>
   <small><a class="btn btn-small btn-info" href="{% url 'pest-report-create' page.title|slugify %}">+ {% trans "Add new pest report" %}</a></small>
@@ -59,21 +59,28 @@
   {{ page.title }}
 </h1> 
 
-<p class="quiet">{% trans "To publish a report click on the 'edit' button and change Visibility field to Public." %}</p>
+<p class="quiet">{% trans "To publish a report click on its title, change Visibility field to Public and click Update Repor." %}</p>
 
 {% if latest %}
 <table class="table table-condensed table-striped">
   <thead>
     <tr>
       <th>{% trans "Title" %}</th>
-      <th>{% trans "Date Published" %}</th>
+      <th>{% trans "Date Modified" %}</th>
     </tr>
   </thead>
   <tbody>
     {% for object in latest %}
     <tr>
-      <td class="quiet">{{ object.title }}</td>
-      <td class="quiet">{{ object.publish_date|date:"d M Y" }}
+      <td class="quiet">
+        {% if perms.ippc.change_pestreport and request.user.get_profile.country.name == page.title %}
+            <a href="{% url 'pest-report-edit' object.country.country_slug object.id %}"><i class="icon-eye-close"></i> {{ object.title }}</a> <small>{% trans "Click to edit" %}</small>
+            {# <a class="btn" href="{% url 'pest-report-edit' report.id %}"><i class="icon-edit"></i> Edit</a> #}
+        {% else %}
+        {% endif %}
+        
+        </td>
+      <td class="quiet">{{ object.modify_date|date:"d M Y" }}
         
         
         
@@ -81,11 +88,6 @@
             <a class="small pull-right" href="/admin/ippc/pestreport/{{ object.id }}"><i class="icon-edit"></i> Edit as Admin</a><br>
         {% endif %}
 
-        {% if perms.ippc.change_pestreport and request.user.get_profile.country.name == page.title %}
-            <a class="small pull-right" href="{% url 'pest-report-edit' object.country.country_slug object.id %}"><i class="icon-edit"></i> Edit</a>
-            {# <a class="btn" href="{% url 'pest-report-edit' report.id %}"><i class="icon-edit"></i> Edit</a> #}
-        {% else %}
-        {% endif %}
         
         
         

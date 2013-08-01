@@ -37,7 +37,7 @@
 {% block main %}
 
 <p class="pull-right">
-  <a href="{{ page.get_absolute_url }}">« {% trans "Back to" %} {{ page.title }}</a>
+  <a href="javascript:history.go(-1)">{% trans "« Go back" %}</a>
   {% if perms.ippc.add_pestreport and request.user.get_profile.country.name == page.title %}
   <br>
   <small><a class="btn btn-small btn-info" href="{% url 'pest-report-create' page.title|slugify %}">+ {% trans "Add new pest report" %}</a></small>
