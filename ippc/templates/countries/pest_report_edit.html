@@ -11,7 +11,7 @@
 
 {% block breadcrumb_menu %}
 <li>
-  <a href="/countries/">Countries</a>
+  <a href="/countries/">{% trans "Countries" %}</a>
   <span class="divider">/</span>
 </li>
 <li>
@@ -23,7 +23,11 @@
   </a>
   <span class="divider">/</span>
 </li>
-<li class="active">{{ pest_report.title }}</li>
+<li>
+  <a href="/countries/{{ pest_report.country.country_slug }}/pestreports/">{% trans "Pest Reports" %}</a>
+  <span class="divider">/</span>
+</li>
+<li class="active">{% trans "Editing" %} {{ pest_report.title }}</li>
 {% endblock %}
 
 {% block local_nav %}
@@ -35,19 +39,22 @@
 {% block main %}
 
 <p class="pull-right">
-  <a href="javascript:history.go(-1)">« Cancel and go back</a>
+  <a href="javascript:history.go(-1)">{% trans "« Cancel and go back" %}</a>
 </p>
 
-<h1><span class="normal">Editing Pest Report titled</span> {{ pest_report.title }}, last updated on {{pest_report.modify_date}}</h1>
+<h1><small class="normal">{% trans "Editing" %}</small> {{ pest_report.title }} <br><small class="normal">{% trans "Last updated on" %} {{pest_report.modify_date}}</small></h1>
 
 {# {% debug %} #}
 {# <form class="customform" method="POST" action="/countries/{{pest_report.country.country_slug}}/pestreports/edit/{{pest_report.id}}"> #}
 <form class="customform" method="POST" action="{% url 'pest-report-edit' pest_report.country.country_slug pest_report.id %}">
     {% csrf_token %}
     <fieldset>
+      <div class="form-actions">
+          <button type="submit" class="btn btn-info btn-large">{% trans "Update Report" %}</button> {% trans "or" %} <a href="javascript:history.go(-1)">{% trans "Cancel" %}</a>
+      </div>
         {% include "countries/pest_report_form.html" %}
         <div class="form-actions">
-            <button type="submit" class="btn btn-info btn-large" tabindex="7">Submit</button> or <a href="javascript:history.go(-1)">Cancel</a>
+            <button type="submit" class="btn btn-info btn-large">{% trans "Update Report" %}</button> {% trans "or" %} <a href="javascript:history.go(-1)">{% trans "Cancel" %}</a>
         </div>
     </fieldset>
 </form>

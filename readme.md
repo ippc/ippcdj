@@ -4,6 +4,9 @@
     ```
     /countries/country/pest-reports/edit
     ```
+    - Filter reports so hidden ones don't appear
+    - Pest report post / update success message
+    
 - [Pest Report mapping](http://leafletjs.com/examples/choropleth.html)
 
 - Restricted Work Area

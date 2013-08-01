@@ -111,35 +111,35 @@ def pest_report_create(request, country):
         context_instance=RequestContext(request))
 
 
-
-
-
-
-
+# http://stackoverflow.com/a/1854453/412329
 @login_required
 @permission_required('ippc.change_pestreport', login_url="/accounts/login/")
-def pest_report_edit(request, country, id, form_class=PestReportForm, template_name="countries/pest_report_edit.html"):
+def pest_report_edit(request, country, id=None, template_name='countries/pest_report_edit.html'):
     """ Edit Pest Report """
-
     user = request.user
     author = user
-    country=user.get_profile().country
+    country = user.get_profile().country
+    # country_id = PestReport.objects.filter(country__country_id=country.id)
     user_country_slug = lower(slugify(country))
+    
+    if id:
+        pest_report = get_object_or_404(PestReport, country=country, pk=id)
+        # if pest_report.author != request.user:
+        #     return HttpResponseForbidden()
+    else:
+        pest_report = PestReport(author=request.user)
 
-    pest_report = get_object_or_404(PestReport, id=id)
-    
-    # if pest_report.author != request.user:
-    #     request.user.message_set.create(message="You can't edit items that aren't yours")
-    #     return redirect("/")
-    
-    pest_report_form = form_class(request, instance=PestReport())
-    
-    if request.method == "POST" and pest_report_form.is_valid():
-        pest_report = pest_report_form.save(commit=False)
-        pest_report.modify_date = datetime.now()
-        pest_report_form.save()
-        # request.user.message_set.create(message=_("Successfully updated pest_report '%s'") % pest_report.title)
-        # http://stackoverflow.com/a/11728475/412329
-        # messages.add_message(request, messages.SUCCESS, message=_("Successfully updated pest_report '%s'") % pest_report.title)
-        return redirect("pest-report-detail", country=user_country_slug, year=new_pest_report.publish_date.strftime("%Y"), month=new_pest_report.publish_date.strftime("%m"), slug=new_pest_report.slug)
-    return render_to_response(template_name, {"pest_report_form": pest_report_form, "pest_report": pest_report}, context_instance=RequestContext(request))
+    if request.POST:
+        form = PestReportForm(request.POST, instance=pest_report)
+        if form.is_valid():
+            form.save()
+
+            # If the save was successful, redirect to another page
+            return redirect("pest-report-detail", country=user_country_slug, year=pest_report.publish_date.strftime("%Y"), month=pest_report.publish_date.strftime("%m"), slug=pest_report.slug)
+
+    else:
+        form = PestReportForm(instance=pest_report)
+
+    return render_to_response(template_name, {
+        'form': form, "pest_report": pest_report
+    }, context_instance=RequestContext(request))

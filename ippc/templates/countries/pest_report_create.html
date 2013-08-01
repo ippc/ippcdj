@@ -11,7 +11,7 @@
 
 {% block breadcrumb_menu %}
 <li>
-  <a href="/countries/">Countries</a>
+  <a href="/countries/">{% trans "Countries" %}</a>
   <span class="divider">/</span>
 </li>
 <li>
@@ -23,7 +23,7 @@
   </a>
   <span class="divider">/</span>
 </li>
-<li class="active">{% trans "Pest Reports" %}</li>
+<li class="active">{% trans "Pest Reports: Create New" %}</li>
 {% endblock %}
 
 {% block local_nav %}
@@ -35,10 +35,10 @@
 {% block main %}
 
 <p class="pull-right">
-  <a href="javascript:history.go(-1)">« Cancel and go back</a>
+  <a href="javascript:history.go(-1)">{% trans "« Cancel and go back" %}</a>
 </p>
 
-<h1><span class="normal">Create New Pest Report for</span> {{ user.get_profile.country.name }}</h1>
+<h1><span class="normal">{% trans "Create New Pest Report for" %}</span> {{ user.get_profile.country.name }}</h1>
 
 {# {% debug %} #}
 <form class="customform" method="POST" action="">
@@ -46,7 +46,7 @@
     <fieldset>
         {% include "countries/pest_report_form.html" %}
         <div class="form-actions">
-            <button type="submit" class="btn btn-info btn-large" tabindex="7">Submit</button> or <a href="javascript:history.go(-1)">Cancel</a>
+            <button type="submit" class="btn btn-info btn-large" tabindex="7">{% trans "Submit" %}</button> or <a href="javascript:history.go(-1)">{% trans "Cancel" %}</a>
         </div>
     </fieldset>
 </form>
