@@ -1,4 +1,6 @@
 from django.shortcuts import render
+from django.utils.translation import ugettext_lazy as _
+from django.contrib.messages import info, error
 from .models import IppcUserProfile, PestStatus, PestReport, IS_PUBLIC
 from .forms import PestReportForm
 
@@ -103,11 +105,12 @@ def pest_report_create(request, country):
             new_pest_report.author = request.user
             new_pest_report.author_id = author.id
             form.save()
+            info(request, _("Successfully created pest report."))
             return redirect("pest-report-detail", country=user_country_slug, year=new_pest_report.publish_date.strftime("%Y"), month=new_pest_report.publish_date.strftime("%m"), slug=new_pest_report.slug)
     else:
 
         form = PestReportForm(initial={'country': country}, instance=PestReport())
-
+    
     return render_to_response('countries/pest_report_create.html', {'form': form},
         context_instance=RequestContext(request))
 
@@ -135,7 +138,8 @@ def pest_report_edit(request, country, id=None, template_name='countries/pest_re
         if form.is_valid():
             form.save()
 
-            # If the save was successful, redirect to another page
+            # If the save was successful, success message and redirect to another page
+            info(request, _("Successfully updated pest report."))
             return redirect("pest-report-detail", country=user_country_slug, year=pest_report.publish_date.strftime("%Y"), month=pest_report.publish_date.strftime("%m"), slug=pest_report.slug)
 
     else:

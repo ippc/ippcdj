@@ -105,7 +105,7 @@ class IppcUserProfile(models.Model):
 
 
 
-
+# Keeping this outside PestReport class so we can call IS_PUBLIC in view
 IS_HIDDEN = 1
 IS_PUBLIC = 2
 PUBLISHING_CHOICES = (

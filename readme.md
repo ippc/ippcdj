@@ -4,7 +4,7 @@
     ```
     /countries/country/pest-reports/edit
     ```
-    - Pest report post / update success message
+    - Page listing pest reports that are marked as hidden so users can edit them.
     
 - [Pest Report mapping](http://leafletjs.com/examples/choropleth.html)
 
