@@ -62,8 +62,8 @@ class PestReportAdmin(admin.ModelAdmin):
     # def has_delete_permission(self, request, obj=None):
     #     return request.user.groups.filter(name='Developers').exists()
     save_on_top = True
-    list_display = ('title', 'publish_date', 'modify_date', 'is_public', 'country')
-    list_filter = ('title', 'publish_date', 'modify_date', 'is_public', 'country')
+    list_display = ('title', 'publish_date', 'modify_date', 'status', 'country')
+    list_filter = ('title', 'publish_date', 'modify_date', 'status', 'country')
     search_fields = ('title', 'summary')
     prepopulated_fields = { 'slug': ['title'] }
 

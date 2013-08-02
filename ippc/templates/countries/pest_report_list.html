@@ -70,10 +70,8 @@
     <tr>
       <td><a href="{% url 'pest-report-detail' object.country.country_slug object.publish_date|date:'Y' object.publish_date|date:'m'  object.slug %}">{{ object.title }}</a></td>
       <td><a href="{% url 'pest-report-detail' object.country.country_slug object.publish_date|date:'Y' object.publish_date|date:'m'  object.slug %}">{{ object.publish_date|date:"d M Y" }}</a>
-        
-        
-        
-        {% if user.is_staff %} 
+
+        {% if user.is_superuser %} 
             <a class="small pull-right" href="/admin/ippc/pestreport/{{ object.id }}"><i class="icon-edit"></i> Edit as Admin</a><br>
         {% endif %}
 
@@ -82,12 +80,7 @@
             {# <a class="btn" href="{% url 'pest-report-edit' report.id %}"><i class="icon-edit"></i> Edit</a> #}
         {% else %}
         {% endif %}
-        
-        
-        
         </td>
-      {# <li><a href="{% url 'pest-report-detail' %}">{{ object.title }}</a></li> #}
-      
     </tr>
 
     {% endfor %}

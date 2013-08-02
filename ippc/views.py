@@ -2,6 +2,7 @@ from django.shortcuts import render
 from django.utils.translation import ugettext_lazy as _
 from django.contrib.messages import info, error
 from .models import IppcUserProfile, PestStatus, PestReport, IS_PUBLIC, IS_HIDDEN
+from mezzanine.core.models import Displayable, CONTENT_STATUS_DRAFT, CONTENT_STATUS_PUBLISHED
 from .forms import PestReportForm
 
 from django.views.generic import ListView, MonthArchiveView, YearArchiveView, DetailView, TemplateView, CreateView
@@ -56,7 +57,7 @@ class PestReportListView(ListView):
         # self.country = get_object_or_404(CountryPage, country=self.kwargs['country'])
         self.country = self.kwargs['country']
         # CountryPage country_slug == country URL parameter keyword argument
-        return PestReport.objects.filter(country__country_slug=self.country, is_public=IS_PUBLIC)
+        return PestReport.objects.filter(country__country_slug=self.country, status=CONTENT_STATUS_PUBLISHED)
     
     def get_context_data(self, **kwargs): # http://stackoverflow.com/a/15515220
         context = super(PestReportListView, self).get_context_data(**kwargs)
@@ -87,7 +88,7 @@ class PestReportHiddenListView(ListView):
         # self.country = get_object_or_404(CountryPage, country=self.kwargs['country'])
         self.country = self.kwargs['country']
         # CountryPage country_slug == country URL parameter keyword argument
-        return PestReport.objects.filter(country__country_slug=self.country, is_public=IS_HIDDEN)
+        return PestReport.objects.filter(country__country_slug=self.country, status=CONTENT_STATUS_DRAFT)
     
     def get_context_data(self, **kwargs): # http://stackoverflow.com/a/15515220
         context = super(PestReportHiddenListView, self).get_context_data(**kwargs)
@@ -110,7 +111,7 @@ class PestReportDetailView(DetailView):
     model = PestReport
     context_object_name = 'report'
     template_name = 'countries/pest_report_detail.html'
-    queryset = PestReport.objects.filter(is_public=IS_PUBLIC)
+    queryset = PestReport.objects.filter(status=CONTENT_STATUS_PUBLISHED)
     # print('>>>>>>>>>>>>>>>')
     # print(user.get_profile().country)
 
@@ -132,7 +133,11 @@ def pest_report_create(request, country):
             new_pest_report.author_id = author.id
             form.save()
             info(request, _("Successfully created pest report."))
-            return redirect("pest-report-detail", country=user_country_slug, year=new_pest_report.publish_date.strftime("%Y"), month=new_pest_report.publish_date.strftime("%m"), slug=new_pest_report.slug)
+            
+            if new_pest_report.status == CONTENT_STATUS_DRAFT:
+                return redirect("pest-report-hidden-list", country=user_country_slug)
+            else:
+                return redirect("pest-report-detail", country=user_country_slug, year=new_pest_report.publish_date.strftime("%Y"), month=new_pest_report.publish_date.strftime("%m"), slug=new_pest_report.slug)
     else:
 
         form = PestReportForm(initial={'country': country}, instance=PestReport())
@@ -166,7 +171,7 @@ def pest_report_edit(request, country, id=None, template_name='countries/pest_re
 
             # If the save was successful, success message and redirect to another page
             # info(request, _("Successfully updated pest report."))
-            if pest_report.is_public == IS_HIDDEN:
+            if pest_report.status == CONTENT_STATUS_DRAFT:
                 return redirect("pest-report-hidden-list", country=user_country_slug)
             else:
                 return redirect("pest-report-detail", country=user_country_slug, year=pest_report.publish_date.strftime("%Y"), month=pest_report.publish_date.strftime("%m"), slug=pest_report.slug)

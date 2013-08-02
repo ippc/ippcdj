@@ -3,9 +3,24 @@
 
 {% load pages_tags translate_tags mezzanine_tags ippc_tags i18n future staticfiles accounts_tags %} {# accounts_tags #}
 
-{{ form.non_field_errors }}
+{% if form.non_field_errors or form.errors %}
+<div class="alert alert-error">{% trans "Please correct the errors below." %}
+<ul>
+{% for error in form.non_field_errors %}
+<li>{{ error }}</li>
+{% endfor %}
+{% for error in form.errors %}
+<li>{{ error }}</li>
+{% endfor %}
+</ul>
+</div>
+{% endif %}
 
-{{ form.as_p }}
+{% fields_for form %}
+{# {{ form.non_field_errors }} #}
+{# {{ form.errors }} #}
+{#  #}
+{# {{ form.as_p }} #}
 
 {# <label for="id_title">{{ post_form.title.label }}</label> #}
 {# <div class="input{% if post_form.title.errors %} alert alert-error{% endif %}"> #}

@@ -123,23 +123,28 @@ REPORT_STATUS_CHOICES = (
     (REPORT_STATUS_FINAL, _("Final")),
 )
 
-class PestReport(models.Model):
+class PestReport(Displayable, models.Model):
     """ Pest Reports"""
-    
-    # country = CountryField(_("Country"))
     country = models.ForeignKey(CountryPage, related_name="pest_report_country_page")
     author = models.ForeignKey(User, related_name="pest_report_author")
-    title = models.CharField(_("Title"), max_length=500)
-    is_public = models.IntegerField(_("Visibility"), 
-        choices=PUBLISHING_CHOICES, default=IS_PUBLIC,
-        help_text=_("Choose 'Hidden' instead of deleting reports."))
-    slug = models.CharField(_("URL"), max_length=2000, blank=True, null=True,
-            unique_for_date='publish_date',
-            help_text=_("Leave blank to have the URL auto-generated from "
-                        "the title."))
-    publish_date = models.DateTimeField(_("Published date"),
-        help_text=_("Leave blank to have date set for today."),
-        blank=True, null=True)
+    
+    # slug - provided by mezzanine.core.models.slugged (subclassed by displayable)
+    # title - provided by mezzanine.core.models.slugged (subclassed by displayable)
+    # status - provided by mezzanine.core.models.displayable
+    # publish_date - provided by mezzanine.core.models.displayable
+    
+    # report_title = models.CharField(_("Title"), max_length=500)
+    # is_public = models.IntegerField(_("Visibility"), 
+    #     choices=PUBLISHING_CHOICES, default=IS_PUBLIC,
+    #     help_text=_("Choose 'Hidden' instead of deleting reports."))
+    # slug = models.CharField(_("URL"), max_length=2000, blank=True, null=True,
+    #         unique_for_date='publish_date',
+    #         help_text=_("Leave blank to have the URL auto-generated from "
+    #                     "the title."))
+    # publish_date = models.DateTimeField(_("Published date"),
+    #     help_text=_("Leave blank to have date set for today."),
+    #     blank=True, null=True)
+    
     modify_date = models.DateTimeField(_("Modified date"),
         blank=True, null=True, editable=False)
     summary = models.TextField(_("Summary or Short Description"),

@@ -71,7 +71,7 @@
   {#  #}
   {# if user is logged in and is country editor and country == request.country: #}
   {#   display ADD button next to each list item links to report types #}
-<div class="well">    
+<div class="panel">    
     <ul class="nav nav-list">
       <li class="nav-header">{{ page.title }}</li>
       <li><a href="{% url 'pest-report-list' page.title|slugify %}">Official Pest Reports</a> 

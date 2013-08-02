@@ -67,15 +67,20 @@
   <dt>{% trans "Author" %}</dt>
   <dd>{{ report.author.get_profile.first_name }} {{ report.author.get_profile.last_name }}</dd>
   
+  {% if report.summary %}
   <dt>{% trans "Summary" %}</dt>
   <dd>{{ report.summary }}</dd>
-
+  {% endif %}
+  
   <dt>{% trans "Report Status" %}</dt>
   <dd>{{ report.get_report_status_display }}</dd>{# http://stackoverflow.com/a/1106201 #}
 
+  {% if report.filename %}
   <dt>{% trans "File" %}</dt>
   <dd><a href="{{MEDIA_URL}}{{ report.files }}">{{ report.filename }}</a></dd>
+  {% endif %}
 
+  {% if report.pest_status.all %}
   <dt>{% trans "Pest Status" %}</dt>
   <dd>
     <ul class="unstyled nomargin">
@@ -85,24 +90,38 @@
     {% endfor %}
     </ul>
   </dd>
-
+  {% endif %}
+  
+  {% if report.pest_identity %}
   <dt>{% trans "Pest Id" %}</dt>
   <dd>{{ report.pest_identity }}</dd>
+  {% endif %}
 
+  {% if report.hosts %}
   <dt>{% trans "Hosts" %}</dt>
   <dd>{{ report.hosts }}</dd>
-
+  {% endif %}
+  
+  {% if report.geographical_distribution %}
   <dt>{% trans "Geographical Distribution" %}</dt>
   <dd>{{ report.geographical_distribution }}</dd>
+  {% endif %}
 
+  {% if report.nature_of_danger %}
   <dt>{% trans "Danger" %}</dt>
   <dd>{{ report.nature_of_danger }}</dd>
-  
+  {% endif %}
+
+  {% if report.contact_for_more_information %}
   <dt>{% trans "Contact for more information" %}</dt>
   <dd>{{ report.contact_for_more_information }}</dd>
+  {% endif %}
   
-  <dt>{% trans "URL for more information" %}</dt>
-  <dd>{{ report.url_for_more_information }}</dd>
+  {% if report.url_for_more_information %}
+  <dt>{% trans "URL for more info" %}</dt>
+  <dd><a href="{{ report.url_for_more_information }}">{{ report.url_for_more_information }}</a></dd>
+  {% endif %}
+  
 </dl>
 
 {% endblock %}

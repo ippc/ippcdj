@@ -49,9 +49,6 @@
 <form class="customform" method="POST" action="{% url 'pest-report-edit' pest_report.country.country_slug pest_report.id %}">
     {% csrf_token %}
     <fieldset>
-      <div class="form-actions">
-          <button type="submit" class="btn btn-info btn-large">{% trans "Update Report" %}</button> {% trans "or" %} <a href="javascript:history.go(-1)">{% trans "Cancel" %}</a>
-      </div>
         {% include "countries/pest_report_form.html" %}
         <div class="form-actions">
             <button type="submit" class="btn btn-info btn-large">{% trans "Update Report" %}</button> {% trans "or" %} <a href="javascript:history.go(-1)">{% trans "Cancel" %}</a>
