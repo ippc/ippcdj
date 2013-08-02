@@ -27,6 +27,7 @@
     
     {# {% if perms.ippc.view_workareapage and request.user.get_profile.country.name == page.title or user.is_superuser %} #}
 
+    {# http://stackoverflow.com/questions/4577513/how-do-i-change-a-django-template-based-on-the-users-group#answer-8826722 #}
     {# {% regroup workareapublication_list|dictsort:"groups" by groups as workareapublications_by_groups %} #}
     {# {% for workareapublication_list in workareapublications_by_groups %} #}
     {#   <h2 class="normal clearboth">{{ post_list.list.0.get_status_display }}</h2> #}
@@ -36,6 +37,7 @@
     {#   {% endwith %} #}
     {# {% endfor %} #}
       
+    
       
     {% for group in request.user.groups.all %}
       {% if group.name == 'SC' %}
