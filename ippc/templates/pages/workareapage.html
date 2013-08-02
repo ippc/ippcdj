@@ -13,15 +13,42 @@
   {{ page.get_content_model.title }}
 {% endblock %}
 
+{# {% block local_nav %} #}
+{# {% endblock local_nav %} #}
+{% block pageinfo %}
+{% endblock pageinfo %}
+
 {% block main %}
-    {% if user.is_staff %} 
+    {% if user.is_superuser %} 
     <div class="pull-right">
         <a class="btn btn-info btn-small" href="/admin/ippc/workareapage/{{ page.id }}">Edit as Admin</a><br>
     </div>
     {% endif %}
-    {{ block.super }}
-    {# {% with page.richtextpage|get_object_translation as translated_page %} #}
-    {#     {{ translated_page.content|richtext_filter|safe }} #}
-    {# {% endwith %} #}
-    {{ page.get_content_model.content|richtext_filter|safe }}
+    
+    {# {% if perms.ippc.view_workareapage and request.user.get_profile.country.name == page.title or user.is_superuser %} #}
+
+    {# {% regroup workareapublication_list|dictsort:"groups" by groups as workareapublications_by_groups %} #}
+    {# {% for workareapublication_list in workareapublications_by_groups %} #}
+    {#   <h2 class="normal clearboth">{{ post_list.list.0.get_status_display }}</h2> #}
+    {#   {% with workareapublication_list.list|dictsortreversed:"created_at" as publications %} #}
+    {#     {% for publication in publications %} #}
+    {#     {% endfor %} #}
+    {#   {% endwith %} #}
+    {# {% endfor %} #}
+      
+      
+    {% for group in request.user.groups.all %}
+      {% if group.name == 'SC' %}
+        SC Group stuff!
+        {{ block.super }}
+        {# {% with page.richtextpage|get_object_translation as translated_page %} #}
+        {#   {{ translated_page.content|richtext_filter|safe }} #}
+        {# {% endwith %} #}
+        {{ page.get_content_model.content|richtext_filter|safe }}
+
+      {% endif %}
+    {% endfor %}
+
+    {# {% else %} #}
+    {# {% endif %} #}
 {% endblock %}
