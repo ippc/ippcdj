@@ -19,6 +19,7 @@
                     - author
                     - language
                     - agenda
+                - Need [nested](https://github.com/Soaa-/django-nested-inlines) [inline](http://stackoverflow.com/questions/14308050/django-admin-nested-inline) [admins](http://stackoverflow.com/questions/3681258/nested-inlines-in-the-django-admin) - (also [this](http://stackoverflow.com/questions/702637/django-admin-inline-inlines-or-three-model-editing-at-once))
       - [Upload multiple files](https://github.com/sigurdga/django-jquery-file-upload)
       - [Download multiple files](http://stackoverflow.com/a/12951557/412329)
       - Fix media upload button [not displaying in Firefox](https://groups.google.com/forum/#!msg/mezzanine-users/hhUlm8zXt54/7R3nNC57rq8J) (is it dependent on Flash? If so, get rid of this dependency.) **Or** use file upload app above.

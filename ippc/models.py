@@ -40,6 +40,15 @@ from mezzanine.utils.models import upload_to
 # 
 #     library = models.ForeignKey("PublicationLibrary", related_name="publication_libraries")
 #     author = models.ForeignKey(User, related_name="publication_author")
+
+#      # another option is to just set six file options here:
+#      # file_en
+#      # file_es
+#      # file_fr
+#      # file_ru
+#      # file_ar
+#      # file_zh
+
 #     # slug - provided by mezzanine.core.models.slugged (subclassed by displayable)
 #     # title - provided by mezzanine.core.models.slugged (subclassed by displayable)
 #     # status - provided by mezzanine.core.models.displayable
