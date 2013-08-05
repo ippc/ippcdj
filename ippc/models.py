@@ -46,6 +46,8 @@ class CountryPage(Page):
             unique=True, blank=True, null=True,
             help_text=_("Leave blank to have the URL auto-generated from "
                         "the title."))
+    contact_point = models.OneToOneField("auth.User", 
+            verbose_name=_("Chief Contact Point"), blank=True, null=True)
     editors = models.ManyToManyField(User, verbose_name=_("Country Editors"), 
         related_name='countryeditors+', blank=True, null=True)
 

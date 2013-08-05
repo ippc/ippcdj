@@ -16,61 +16,49 @@
 {% endblock %}
 
 {% block main %}
+  {% if user.is_superuser %} 
+  <div class="pull-right">
+      <a class="btn btn-small btn-info" href="/admin/ippc/countrypage/{{ page.id }}">Edit page as Admin <small>(also contact point &amp; editors relation)</a><br>
+  </div>
+  {% endif %}
 
-{# <div class="span8 middle"> #}
-{% if user.is_superuser %} 
-<div class="pull-right">
-    <a class="btn btn-small btn-info" href="/admin/ippc/countrypage/{{ page.id }}">Edit page as Admin</a><br>
-</div>
-{% endif %}
+  <h1>
+      {{ page.title }} <img src="{{page.get_content_model.country.flag}}">
+  </h1> 
 
-{# =todo: only country editors, including chief editor/nppo, of course, can edit: #}
+  <div class="panel contact-info">
+  <h2>{% trans "Contact Point" %}</h2>
+    {% include "accounts/account_contactpoint_details.html" %}
+  </div>
 
-{# https://docs.djangoproject.com/en/dev/topics/auth/default/#permissions #}
-{# https://www.djangopackages.com/grids/g/perms/ #}
-
-
-
-<h1>
-    {{ page.title }} <img src="{{page.get_content_model.country.flag}}">
-</h1> 
-
-<div class="panel contact-info">
-<h2>{% trans "Contact Point" %}</h2>
-{# {{ page.get_content_model.name }} #}
-{% for editor in page.get_content_model.editors.all %}
-  {# {{ editor.get_profile.first_name }} #}
-  {# {{ editor.get_profile.last_name }} #}
-  {% include "accounts/account_editor_details.html" %}
-{% endfor %}
-
-{# {% if request.user.get_profile.country.name == page.title and perms.ippc.add_pestreport %} #}
+  {# =todo: description of nppo here #}
+  {# <h2>Description of NPPO</h2> #}
+  {# {% with page.richtextpage|get_object_translation as translated_page %} #}
+  {#     {{ translated_page.content|richtext_filter|safe }} #}
+  {# {% endwith %} #}
 
 
-  {# {{ user.get_profile.first_name}} #}
-  {# show contact details #}
-  {# {% else %} #}
-  {# {{ user.get_profile.country.name }} #}
-  {# {{page.title}} #}
-  {# <p>{% trans "No Contact Point yet. Can you help us find one?" %} <a href="/contact/">{% trans "Contact us" %}</a>! Or <a href="/faq#ContactPointNomination">read more about official contact points</a> and <a href="/faq#AdherenceToIppc">how to become an IPPC contracting party</a>.</p> #}
-  
-{# {% endif %} #}
-</div>
-
-<h2>Description of NPPO</h2>
-{# =todo: description of nppo here #}
-{% with page.richtextpage|get_object_translation as translated_page %}
-    {{ translated_page.content|richtext_filter|safe }}
-{% endwith %}
-{# </div> #}
+  {# if there are any editors defined for this country page, only admins can see them here #}
+  {% if page.get_content_model.editors.all and user.is_superuser %} 
+  <h3>Editors</h3>
+  <table class="table table-condensed table-striped">
+    <thead>
+      <tr>
+        <th>{% trans "Name" %}</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for editor in page.get_content_model.editors.all %}
+        <tr>
+          <td>{{ editor.get_profile.first_name }} {{ editor.get_profile.last_name }} <a class="btn btn-small btn-info pull-right" href="/admin/auth/user/{{ editor.get_profile.id }}">Edit User as Admin</a><br></td>
+        </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+  {% endif %}
 {% endblock %}
 
-
 {% block local_nav %}
-  {# =todo: navbar of country's report types. #}
-  {#  #}
-  {# if user is logged in and is country editor and country == request.country: #}
-  {#   display ADD button next to each list item links to report types #}
 <div class="panel">    
     <ul class="nav nav-list">
       <li class="nav-header">{{ page.title }}</li>

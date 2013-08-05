@@ -12,7 +12,7 @@ from .models import PestStatus, PestReport, CountryPage, WorkAreaPage
 
 
 # Country Pages - http://mezzanine.jupo.org/docs/content-architecture.html#creating-custom-content-types
-countrypages_extra_fieldsets = ((None, {"fields": ("name", "country_slug", "iso", "iso3", "editors", )}),)
+countrypages_extra_fieldsets = ((None, {"fields": ("name", "country_slug", "iso", "iso3", "contact_point", "editors", )}),)
 
 class CountryPageAdmin(PageAdmin):
     fieldsets = deepcopy(PageAdmin.fieldsets) + countrypages_extra_fieldsets

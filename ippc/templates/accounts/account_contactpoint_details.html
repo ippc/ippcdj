@@ -1,0 +1,120 @@
+{% load i18n future mezzanine_tags accounts_tags %}
+{# <div class="panel contact-info"> #}
+  
+  {% if user.is_superuser %} 
+  <div>
+      <a class="btn btn-small btn-info" href="/admin/auth/user/{{ page.get_content_model.contact_point.get_profile.id }}">Edit User as Admin</a><br>
+  </div>
+  {% endif %}
+  
+  {% if page.get_content_model.contact_point.username == request.user.username %} 
+  <div>
+        <a class="btn btn-large btn-info" style="" href="{% url "profile_update" %}">{% trans "Update your profile" %}</a>
+  </div>
+  {% endif %}
+  
+  {# {% if page.get_content_model.contact_point.get_profile.username == request.user %} #}
+  {# <p class="form-actions"> #}
+  {# <a class="btn btn-large btn-info" style="" href="{% url "profile_update" %}">{% trans "Update profile" %}</a> #}
+  {# </p> #}
+  {# {% endif %} #}
+  
+  
+  {% if page.get_content_model.contact_point.get_profile.profile_photo %}
+  <a href="{% url "profile_update" %}" title="Click to update your profile and add a picture."><img class="pull-right profile-picture" style="margin:0 0 20px 10px;" src="{{ MEDIA_URL }}{% thumbnail page.get_content_model.contact_point.get_profile.profile_photo 128 128 %}"></a>
+  {% else %}
+  <a class="pull-right profile-picture" style="height:128px; width:128px; background:#eee;" href="{% url "profile_update" %}" title="Click to update your profile and add a picture."></a>
+  {% endif %}
+
+{# <ul class="unstyled"> #}
+{# {% for field, value in user|profile_fields %} #}
+{# <li><b class="small">{{ field }}:</b> {{ value|linebreaksbr }}</li> #}
+{# {% endfor %} #}
+{# </ul> #}
+
+<dl class="dl-horizontal">
+  <dt>{% trans "Username" %}</dt> 
+  <dd>{{ page.get_content_model.contact_point.username }}</dd>
+  
+  <dt>{% trans "Email" %}</dt>
+  <dd>{{ page.get_content_model.contact_point.email }}</dd>
+  
+  {% if page.get_content_model.contact_point.get_profile.title %}
+  <dt>{% trans "Title" %}</dt>
+  <dd>
+    {{ page.get_content_model.contact_point.get_profile.title }} 
+  </dd>
+  {% endif %}
+
+  <dt>{% trans "Name" %}</dt>
+  <dd>
+    {% if page.get_content_model.contact_point.get_profile.get_gender_display %}
+    {{ page.get_content_model.contact_point.get_profile.get_gender_display }}
+    {% endif %}
+    {# {{ page.get_content_model.contact_point.get_full_name }}  #}
+    {{ page.get_content_model.contact_point.get_profile.first_name }} 
+    <span class="caps">{{ page.get_content_model.contact_point.get_profile.last_name }}</span>
+  </dd>
+  
+  <dt>{% trans "Member Since" %}</dt>
+  <dd>
+        {% blocktrans with sometime=page.get_content_model.contact_point.get_profile.date_account_created|date:"d M Y" %}{{ sometime }}{% endblocktrans %}
+  </dd>
+  
+  {% if page.get_content_model.contact_point.get_profile.email_address_alt %}
+  <dt>{% trans "Alternate Email" %}</dt>
+  <dd>
+    {{ page.get_content_model.contact_point.get_profile.email_address_alt }} 
+  </dd>
+  {% endif %}
+  
+  {% if page.get_content_model.contact_point.get_profile.bio %}
+  <dt>{% trans "Brief Biography" %}</dt>
+  <dd>
+    {{ page.get_content_model.contact_point.get_profile.bio }} 
+  </dd>
+  {% endif %}
+  
+
+  {% if page.get_content_model.contact_point.get_profile.address_country.name %}
+  <dt>{% trans "Address" %}</dt>
+  <dd>
+    {% if user_get_profile.address1 %}{{ page.get_content_model.contact_point.get_profile.address1 }}<br>{% endif %}
+    {% if page.get_content_model.contact_point.get_profile.address2 %}{{ page.get_content_model.contact_point.get_profile.address2 }}<br>{% endif %}
+    {% if page.get_content_model.contact_point.get_profile.city %}{{ page.get_content_model.contact_point.get_profile.city }}<br>{% endif %}
+    {% if page.get_content_model.contact_point.get_profile.city %}{{ page.get_content_model.contact_point.get_profile.city }}<br>{% endif %}
+    {% if page.get_content_model.contact_point.get_profile.state %}{{ page.get_content_model.contact_point.get_profile.state }}<br>{% endif %}
+    {% if page.get_content_model.contact_point.get_profile.zipcode %}{{ page.get_content_model.contact_point.get_profile.zipcode }}<br>{% endif %}
+    {{ page.get_content_model.contact_point.get_profile.address_country.name }}
+  </dd>
+  {% endif %}
+  
+  {% if page.get_content_model.contact_point.get_profile.country %}
+  <dt>{% trans "IPPC Country" %}</dt>
+  <dd>
+    {% if page.get_content_model.contact_point.get_profile.country.name %}<b>{{ page.get_content_model.contact_point.get_profile.country.name }}</b>{% endif %}
+  </dd>
+  {% endif %}
+
+  
+  {% if page.get_content_model.contact_point.get_profile.phone %}
+  <dt>{% trans "Phone" %}</dt>
+  <dd>
+    {{ page.get_content_model.contact_point.get_profile.phone }} 
+  </dd>
+  {% endif %}
+  
+  {% if page.get_content_model.contact_point.get_profile.fax %}
+  <dt>{% trans "Fax" %}</dt>
+  <dd>
+    {{ page.get_content_model.contact_point.get_profile.fax }} 
+  </dd>
+  {% endif %}
+  
+  {% if page.get_content_model.contact_point.get_profile.mobile %}
+  <dt>{% trans "Mobile" %}</dt>
+  <dd>
+    {{ page.get_content_model.contact_point.get_profile.mobile }} 
+  </dd>
+  {% endif %}
+{# </div> #}

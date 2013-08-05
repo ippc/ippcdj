@@ -40,7 +40,7 @@
     
       
     {% for group in request.user.groups.all %}
-      {% if group.name == 'SC' %}
+      {% if group.name == 'something' %}
         SC Group stuff!
         {{ block.super }}
         {# {% with page.richtextpage|get_object_translation as translated_page %} #}
