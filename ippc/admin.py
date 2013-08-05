@@ -5,13 +5,27 @@ from mezzanine.pages.admin import PageAdmin
 from mezzanine.conf import settings
 from mezzanine.core.admin import TabularDynamicInlineAdmin
 
-from .models import PestStatus, PestReport, CountryPage, WorkAreaPage
-
-# from fileupload.models import File
+from .models import PestStatus, PestReport, CountryPage, WorkAreaPage#, PublicationLibrary, Publication, File
 
 
+# Publications -----------------
 
-# Country Pages - http://mezzanine.jupo.org/docs/content-architecture.html#creating-custom-content-types
+# class FileInline(TabularDynamicInlineAdmin):
+#     model = File
+#     
+# class PublicationInline(TabularDynamicInlineAdmin):
+#     model = Publication
+# 
+# class PublicationLibraryAdmin(PageAdmin):
+#     inlines = (PublicationInline,)
+# 
+# admin.site.register(PublicationLibrary, PublicationLibraryAdmin)
+
+
+
+
+# Country Pages ----------------- 
+# http://mezzanine.jupo.org/docs/content-architecture.html#creating-custom-content-types
 countrypages_extra_fieldsets = ((None, {"fields": ("name", "country_slug", "iso", "iso3", "contact_point", "editors", )}),)
 
 class CountryPageAdmin(PageAdmin):
@@ -26,7 +40,7 @@ admin.site.register(CountryPage, CountryPageAdmin)
 
 
 
-# Work Area Pages
+# Work Area Pages -----------------
 
 workareapages_extra_fieldsets = ((None, {"fields": ("users", "groups", "content")}),)
 # class WorkAreaFileInline(admin.TabularInline):
@@ -41,16 +55,12 @@ admin.site.register(WorkAreaPage, WorkAreaPageAdmin)
 
 
 
-# Pest Reports
+# Pest Reports -----------------
 
 class PestStatusAdmin(admin.ModelAdmin):
     """Options for the pest status field of Pest Reports"""
     save_on_top = True
         
-
-
-
-
 class PestReportAdmin(admin.ModelAdmin):
     # http://stackoverflow.com/a/8393130
     # def has_add_permission(self, request):
@@ -71,6 +81,9 @@ admin.site.register(PestStatus, PestStatusAdmin)
 admin.site.register(PestReport, PestReportAdmin)
 
 
+
+
+# Translatable user-content  -----------------
 if "mezzanine.pages" in settings.INSTALLED_APPS:
     from mezzanine.pages.models import RichTextPage, Link
     from mezzanine.pages.admin import PageAdmin, LinkAdmin
@@ -129,9 +142,9 @@ if "mezzanine.forms" in settings.INSTALLED_APPS:
         fields = ("label", "choices", "default", "help_text")
     admin.site.register(Field, TransFieldAdmin)
 
-#
-# Gallery
-#
+    #
+    # Gallery
+    #
 if "mezzanine.galleries" in settings.INSTALLED_APPS:
     from mezzanine.galleries.models import Gallery, GalleryImage
     from mezzanine.galleries.admin import GalleryAdmin, GalleryImageInline

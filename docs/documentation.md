@@ -43,3 +43,7 @@ If you add new fields or change certain values of existing ones such as blank or
 
     `./manage.py schemamigration ippc --auto`  
     `./manage.py migrate ippc`
+
+3. If you want to rever to a previous migration, look for the previous migration number in ippc/migrations and replace #### with the migration number in the following command:
+
+    `manage.py migrate your_app ####`

@@ -1,3 +1,6 @@
+from string import punctuation
+from urllib import unquote
+
 from django.db import models
 from django.utils.translation import ugettext_lazy as _
 from django_countries.fields import CountryField
@@ -5,19 +8,107 @@ from django_countries.fields import CountryField
 from django.contrib.auth.models import User, Group
 
 from django.template.defaultfilters import slugify
-
 from datetime import datetime
-
 import os.path
 
 from mezzanine.pages.models import Page, RichTextPage
-
 from mezzanine.conf import settings
 from mezzanine.core.models import Slugged, MetaData, Displayable, Orderable, RichText
-from mezzanine.core.fields import RichTextField
+from mezzanine.core.fields import RichTextField, FileField
 from mezzanine.core.managers import SearchableManager
 
+from mezzanine.utils.importing import import_dotted_path
+from mezzanine.utils.models import upload_to
+
+
+# class PublicationLibrary(Page, RichText):
+#     """
+#         Page bucket for publications. Here's the expect folder layout:
+#         - WorkAreaPage or Page
+#             - PublicationLibrary
+#                 - Table listing multiple Publications which contain...
+#                     ...multiple Files
+#     """
+# 
+#     class Meta:
+#         verbose_name = _("Publication Library")
+#         verbose_name_plural = _("Publication Libraries")
+# 
+# 
+# class Publication(Displayable, models.Model):
+#     """Single publication to add in a publication library."""
+# 
+#     library = models.ForeignKey("PublicationLibrary", related_name="publication_libraries")
+#     author = models.ForeignKey(User, related_name="publication_author")
+#     # slug - provided by mezzanine.core.models.slugged (subclassed by displayable)
+#     # title - provided by mezzanine.core.models.slugged (subclassed by displayable)
+#     # status - provided by mezzanine.core.models.displayable
+#     # publish_date - provided by mezzanine.core.models.displayable
+#     modify_date = models.DateTimeField(_("Modified date"),
+#         blank=True, null=True, editable=False, auto_now=True)
+#     agenda_number = models.CharField(_("Description"), max_length=100,
+#                                    blank=True)
+#     document_number = models.CharField(_("Description"), max_length=100,
+#                                   blank=True)
+# 
+#     class Meta:
+#         verbose_name = _("Publication")
+#         verbose_name_plural = _("Publications")
+# 
+#     def __unicode__(self):
+#         return self.title
+# 
+# 
+# class File(models.Model):
+#     """Single file to add in a publication."""
+# 
+#     publication = models.ForeignKey("Publication", related_name="publications")
+#     # file = FileField(_("File"), max_length=200,
+#     #         upload_to=upload_to("galleries.GalleryImage.file", "galleries"))
+#     # http://reinout.vanrees.org/weblog/2012/04/13/django-filefield-limitation.html
+#     file = models.FileField(_("File"), 
+#             upload_to=upload_to("galleries.GalleryImage.file", "galleries"),
+#             unique_for_date='last_change', max_length=204)
+#     # file = models.ImageField(upload_to="pictures")
+#     slug = models.SlugField(max_length=200, blank=True, 
+#             unique_for_date='last_change')
+#     lang = models.CharField(max_length=5, choices=settings.LANGUAGES)
+#     last_change = models.DateTimeField(auto_now=True)
+# 
+#     class Meta:
+#         verbose_name = _("File")
+#         verbose_name_plural = _("Files")
+# 
+#     def __unicode__(self):
+#         return self.file.name
+# 
+#     def filename(self):
+#             return os.path.basename(self.file.name)
+# 
+#     def save(self, *args, **kwargs):
+#         self.id = self.id
+#         self.slug = self.file.name
+#         # self.uploaded_by = self.request.user
+#         if not self.id:
+#             # Newly created object, so set slug
+#             self.slug = slugify(self.file.name)
+#         self.last_change = datetime.datetime.now()
+#         super(File, self).save(*args, **kwargs)
+
+
+
+
+
+
+
+
+
+
+
+
+
 class WorkAreaPage(Page, RichText):
+    """ Work Area Pages with definable users and groups """
     users = models.ManyToManyField(User, verbose_name=_("Work Area Page Users"), 
         related_name='workareapageusers+', blank=True, null=True)
     groups = models.ManyToManyField(Group, verbose_name=_("Work Area Page Groups"), 
@@ -28,17 +119,12 @@ class WorkAreaPage(Page, RichText):
         verbose_name_plural = "Work Area Pages"
 
 class CountryPage(Page):
-
+    """ Country Pages with definable names, slugs, editors and contact point"""
     class Meta:
         verbose_name = _('Country Page')
         verbose_name_plural = _('Country Pages')
         ordering = ['name']
-    
-    # =todo: 
-    # contracting_party
-    # territory
-    # flag
-    
+
     iso = models.CharField(max_length=2, unique=True, blank=True, null=True)
     iso3 = models.CharField(max_length=3, unique=True, blank=True, null=True)
     name = models.CharField(max_length=50, unique=True, blank=True, null=True)
@@ -50,14 +136,17 @@ class CountryPage(Page):
             verbose_name=_("Chief Contact Point"), blank=True, null=True)
     editors = models.ManyToManyField(User, verbose_name=_("Country Editors"), 
         related_name='countryeditors+', blank=True, null=True)
+    # =todo: 
+    # contracting_party = boolean
+    # territory_of = foreignkey to other country
+    # flag
 
     def __unicode__(self):
         return u'%s' % (self.name,)
 
-
-
 # do we need a table for this? or do http://djangosnippets.org/snippets/2753/ ?
 class PestStatus(models.Model):
+    """ Pest Statuses """
     status = models.CharField(_("Pest Status"), max_length=500)
 
     def __unicode__(self):
@@ -66,10 +155,6 @@ class PestStatus(models.Model):
     class Meta:
         verbose_name_plural = _("Pest Statuses")
     pass
-
-
-
-
 
 class IppcUserProfile(models.Model):
     """ User Profiles for IPPC"""
@@ -96,8 +181,7 @@ class IppcUserProfile(models.Model):
     state = models.CharField(_("State"), blank=True, max_length=100, help_text="or Province")
     zipcode = models.CharField(_("Zip Code"), blank=True, max_length=20)
     address_country = CountryField(_("Address Country"), blank=True, null=True)
-    # country will be the 'tag' to mark permissions for Country Main Contact Points and Country Editors
-    # country = CountryField(_("IPPC Country"), blank=True, null=True)
+    # country is the 'tag' marking permissions for Contact Point and Editors
     country = models.ForeignKey(CountryPage, related_name="user_country_page", blank=True, null=True)
 
     phone = models.CharField(_("Phone"), blank=True, max_length=30)
@@ -105,7 +189,6 @@ class IppcUserProfile(models.Model):
     mobile = models.CharField(_("Mobile"), blank=True, max_length=30)
     
     date_account_created = models.DateTimeField(_("Member Since"), default=datetime.now, editable=False)
-
 
 
 # Keeping this outside PestReport class so we can call IS_PUBLIC in view
@@ -135,18 +218,6 @@ class PestReport(Displayable, models.Model):
     # status - provided by mezzanine.core.models.displayable
     # publish_date - provided by mezzanine.core.models.displayable
     
-    # report_title = models.CharField(_("Title"), max_length=500)
-    # is_public = models.IntegerField(_("Visibility"), 
-    #     choices=PUBLISHING_CHOICES, default=IS_PUBLIC,
-    #     help_text=_("Choose 'Hidden' instead of deleting reports."))
-    # slug = models.CharField(_("URL"), max_length=2000, blank=True, null=True,
-    #         unique_for_date='publish_date',
-    #         help_text=_("Leave blank to have the URL auto-generated from "
-    #                     "the title."))
-    # publish_date = models.DateTimeField(_("Published date"),
-    #     help_text=_("Leave blank to have date set for today."),
-    #     blank=True, null=True)
-    
     modify_date = models.DateTimeField(_("Modified date"),
         blank=True, null=True, editable=False)
     summary = models.TextField(_("Summary or Short Description"),
@@ -169,10 +240,10 @@ class PestReport(Displayable, models.Model):
     contact_for_more_information = models.TextField(_("Contact for more information"),
         blank=True, null=True)
     url_for_more_information = models.URLField(blank=True, null=True)
+
     # =todo:
     # commodity_groups = 
-    # keywords = 
-
+    # keywords / tags = 
     # objects = models.Manager()
     objects = SearchableManager()
     search_fields = ("title", "summary")
@@ -212,8 +283,16 @@ class PestReport(Displayable, models.Model):
 
 
 
-# Translations of user-generated content - https://gist.github.com/renyi/3596248
+
+
+
+
+
+
+
+
 class Translatable(models.Model):
+    """ Translations of user-generated content - https://gist.github.com/renyi/3596248"""
     lang = models.CharField(max_length=5, choices=settings.LANGUAGES)
 
     class Meta:

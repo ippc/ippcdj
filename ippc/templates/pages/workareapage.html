@@ -13,11 +13,6 @@
   {{ page.get_content_model.title }}
 {% endblock %}
 
-{# {% block local_nav %} #}
-{# {% endblock local_nav %} #}
-{% block pageinfo %}
-{% endblock pageinfo %}
-
 {% block main %}
     {% if user.is_superuser %} 
     <div class="pull-right">
@@ -40,7 +35,8 @@
     
       
     {% for group in request.user.groups.all %}
-      {% if group.name == 'something' %}
+    {# create variable here for use in group name assignment? #}
+      {% if group.name == 'SC' %}
         SC Group stuff!
         {{ block.super }}
         {# {% with page.richtextpage|get_object_translation as translated_page %} #}
@@ -54,3 +50,8 @@
     {# {% else %} #}
     {# {% endif %} #}
 {% endblock %}
+
+{# {% block local_nav %} #}
+{# {% endblock local_nav %} #}
+{% block pageinfo %}
+{% endblock pageinfo %}
