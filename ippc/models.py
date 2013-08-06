@@ -21,6 +21,16 @@ from mezzanine.utils.importing import import_dotted_path
 from mezzanine.utils.models import upload_to
 
 
+# create permissions
+
+# from django.contrib.auth.models import Group, Permission
+# from django.contrib.contenttypes.models import ContentType
+# 
+# content_type = ContentType.objects.get_for_model(PublicationLibrary)
+# permission = Permission.objects.create(codename='view_publicationlibrary',
+#                                        name='View Publication Library',
+#                                        content_type=content_type)
+
 class PublicationLibrary(Page, RichText):
     """
         Page bucket for publications. Here's the expect folder layout:
@@ -33,6 +43,12 @@ class PublicationLibrary(Page, RichText):
     class Meta:
         verbose_name = _("Publication Library")
         verbose_name_plural = _("Publication Libraries")
+        # south overrides syncdb, so the following perms are not created
+        # unless we are starting the project from scratch.
+        # solution: python manage.py syncdb --all
+        permissions = ( 
+            ("can_view", "View Publication Library"),
+        )
 
 
 class Publication(Orderable):
@@ -108,66 +124,19 @@ class Publication(Orderable):
     #                         # 'day': self.pub_date.strftime("%d"),
     #                         'slug': self.slug})
 
-
-
-# class File(models.Model):
-#     """Single file to add in a publication."""
-# 
-#     publication = models.ForeignKey("Publication", related_name="publications")
-#     # file = FileField(_("File"), max_length=200,
-#     #         upload_to=upload_to("galleries.GalleryImage.file", "galleries"))
-#     # http://reinout.vanrees.org/weblog/2012/04/13/django-filefield-limitation.html
-#     file = models.FileField(_("File"), 
-#             upload_to=upload_to("galleries.GalleryImage.file", "galleries"),
-#             unique_for_date='last_change', max_length=204)
-#     # file = models.ImageField(upload_to="pictures")
-#     slug = models.SlugField(max_length=200, blank=True, 
-#             unique_for_date='last_change')
-#     lang = models.CharField(max_length=5, choices=settings.LANGUAGES)
-#     last_change = models.DateTimeField(auto_now=True)
-# 
-#     class Meta:
-#         verbose_name = _("File")
-#         verbose_name_plural = _("Files")
-# 
-#     def __unicode__(self):
-#         return self.file.name
-# 
-#     def filename(self):
-#             return os.path.basename(self.file.name)
-# 
-#     def save(self, *args, **kwargs):
-#         self.id = self.id
-#         self.slug = self.file.name
-#         # self.uploaded_by = self.request.user
-#         if not self.id:
-#             # Newly created object, so set slug
-#             self.slug = slugify(self.file.name)
-#         self.last_change = datetime.datetime.now()
-#         super(File, self).save(*args, **kwargs)
-
-
-
-
-
-
-
-
-
-
-
-
-
 class WorkAreaPage(Page, RichText):
     """ Work Area Pages with definable users and groups """
     users = models.ManyToManyField(User, verbose_name=_("Work Area Page Users"), 
-        related_name='workareapageusers+', blank=True, null=True)
+        related_name='workareapageusers', blank=True, null=True)
     groups = models.ManyToManyField(Group, verbose_name=_("Work Area Page Groups"), 
-        related_name='workareapagegroups+', blank=True, null=True)
+        related_name='workareapagegroups', blank=True, null=True)
 
     class Meta:
         verbose_name = "Work Area Page"
         verbose_name_plural = "Work Area Pages"
+        permissions = (
+            ("can_view", "View Work Area Page"),
+        )
 
 class CountryPage(Page):
     """ Country Pages with definable names, slugs, editors and contact point"""

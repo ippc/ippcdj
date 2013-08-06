@@ -132,7 +132,12 @@ TEMPLATE_LOADERS = (
     "django.template.loaders.app_directories.Loader",
 )
 
-AUTHENTICATION_BACKENDS = ("mezzanine.core.auth_backends.MezzanineBackend",)
+AUTHENTICATION_BACKENDS = (
+    "mezzanine.core.auth_backends.MezzanineBackend",
+    "guardian.backends.ObjectPermissionBackend",
+)
+
+ANONYMOUS_USER_ID = -1
 
 # List of finder classes that know how to find static files in
 # various locations.
@@ -262,6 +267,9 @@ INSTALLED_APPS = (
     
     # south for database data migrations
     "south",
+    
+    # guardian for view permissions
+    'guardian',
     
     # debug toolbar
     "debug_toolbar",

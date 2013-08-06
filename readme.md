@@ -3,7 +3,8 @@
 - In sidebar only list pages that are in current section
 - Restricted Work Area
     - Permalink for individual publications
-    - [Restricted area working group pages and working group view/add permissions](http://djangosnippets.org/snippets/2736/).
+    - [Restricted area working group pages and working group view/add permissions](http://mezzanine.jupo.org/docs/content-architecture.html#page-permissions). **Look up Alex Martelli's example from EuroPython for one possible way to do this elegantly.** Looks like we need a [can_view](https://groups.google.com/forum/#!topic/mezzanine-users/UJsHUtv8FUg) permission to be used with [django-guardian](https://github.com/lukaszb/django-guardian).
+    - [Create can_view permission](http://andrewingram.net/2012/dec/common-pitfalls-django-south/): `python manage.py syncdb --all`
         - In sidebar list pages accessible to each user [according to permissions](http://stackoverflow.com/a/16016717), and only display page content if user is in the page's permission group.
             - Permissions groups: 
                 - Anonymous User - AUTO
@@ -34,6 +35,8 @@
                     - EwgUsedEquipment 
                     - FaoPlantProtectionOfficers 
                     - FrameworkforStandards
+- [Download multiple files](http://stackoverflow.com/a/12951557/412329)
+- Use [Chosen](http://harvesthq.github.io/chosen/) to make globalnav dropdowns friedly. Also in admin.
 - Country pages:
     - Versioning of Pest Reports. Report number: GBR-32/1. When edited: GBR-32/2.
     - Other country forms

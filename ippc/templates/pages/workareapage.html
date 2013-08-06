@@ -33,19 +33,22 @@
     {# {% endfor %} #}
       
     
-      
+    {% with page.workareapage.workareapagegroups.all as workareapagegroups %}
+    {# {% if request.user.group in workareapagegroups %} #}
     {% for group in request.user.groups.all %}
     {# create variable here for use in group name assignment? #}
-      {% if group.name == 'SC' %}
-        SC Group stuff!
+      {% if group in page.get_content_model.groups.all %}
+        you are in a group related to this page, so you can view the contents!
         {{ block.super }}
         {# {% with page.richtextpage|get_object_translation as translated_page %} #}
         {#   {{ translated_page.content|richtext_filter|safe }} #}
         {# {% endwith %} #}
-        {{ page.get_content_model.content|richtext_filter|safe }}
+        {{ page.get_content_model.content|richtext_filter|safe }} {# =todo: |can_view filter #}
 
-      {% endif %}
+    {% endif %}
     {% endfor %}
+    {% endwith %}
+
 
     {# {% else %} #}
     {# {% endif %} #}

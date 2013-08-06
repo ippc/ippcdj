@@ -1,6 +1,6 @@
 {% extends "pages/page.html" %}
 
-{% load mezzanine_tags staticfiles i18n staticfiles %}
+{% load mezzanine_tags staticfiles i18n %}
 
 {% block extra_css %}
   <link rel="stylesheet" href="{% static "css/DT_bootstrap.css" %}">
@@ -15,10 +15,17 @@
 {% endblock %}
 
 {% block main %}
+{# {% for group in request.user.groups.all %} #}
+{# create variable here for use in group name assignment? #}
+  {# {% if group.name == 'SC' %} #}
 {{ block.super }}
 
+
+
+
 {# {% editable page.publicationlibrary.content %} #}
-{{ page.publicationlibrary.content|richtext_filter|safe }}
+{{ page.publicationlibrary.content|richtext_filter|safe }} {# =todo: |can_view filter #}
+
 {# {% endeditable %} #}
 
 <table class="table table-condensed table-striped table-bordered" id="publications">
@@ -34,7 +41,7 @@
    <tbody>
 
 {% block publicationlibrary %}
-{% with page.publicationlibrary.publications.all as publications %}
+{% with page.publicationlibrary.publications.all as publications %} {# =todo: |can_view filter #}
 {% for publication in publications %}
 
 <tr id="media-file-{{ publication.id }}">
@@ -104,7 +111,10 @@
 
 {% endwith %}
 {% endblock %}
-{% endblock %}
+
+{# {% endif %} #}
+{# {% endfor %} #}
+{% endblock main %}
 
 
 {% block extra_js %}

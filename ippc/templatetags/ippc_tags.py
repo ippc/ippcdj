@@ -53,3 +53,11 @@ def get_page(slug, attr):
     # page = richtext_filter(get_object_translation(getattr(RichTextPage.objects.get(pk=int(pk)), attr)))
     page = get_object_translation(RichTextPage.objects.get(slug=slug))
     return richtext_filter(page.content)
+
+# https://groups.google.com/forum/#!topic/mezzanine-users/UJsHUtv8FUg
+# http://stackoverflow.com/questions/4577513/how-do-i-change-a-django-template-based-on-the-users-group#answer-8826722
+# https://github.com/lukaszb/django-guardian
+# @register.filter
+# def can_view(user, page):
+#     content_model = page.get_content_model()
+#     return user.has_perm('can_view', content_model)
