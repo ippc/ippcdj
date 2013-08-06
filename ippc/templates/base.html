@@ -37,7 +37,7 @@
 <script src="{% static "mezzanine/js/"|add:settings.JQUERY_FILENAME %}"></script>
 <script src="{% static "js/bootstrap.js" %}"></script>
 <script src="{% static "js/bootstrap-extras.js" %}"></script>
-{% block extra_js %}{% endblock %}
+{# {% block extra_js %}{% endblock %} #} {# MOVED TO BOTTOM #}
 {% endcompress %}
 <!--[if lt IE 9]>
 <script src="{% static "js/html5shiv.js" %}"></script>
@@ -200,6 +200,8 @@
 </footer>
 
 {% include "includes/footer_scripts.html" %}
-
+{% compress js %}
+{% block extra_js %}{% endblock %}
+{% endcompress %}
 </body>
 </html>

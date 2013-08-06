@@ -3,23 +3,33 @@ from copy import deepcopy
 from django.contrib import admin
 from mezzanine.pages.admin import PageAdmin
 from mezzanine.conf import settings
-from mezzanine.core.admin import TabularDynamicInlineAdmin
+from mezzanine.core.admin import TabularDynamicInlineAdmin, StackedDynamicInlineAdmin
 
-from .models import PestStatus, PestReport, CountryPage, WorkAreaPage#, PublicationLibrary, Publication, File
-
+from .models import PestStatus, PestReport, CountryPage, WorkAreaPage, PublicationLibrary, Publication#, File
+from django.contrib.auth.models import User
 
 # Publications -----------------
 
 # class FileInline(TabularDynamicInlineAdmin):
 #     model = File
-#     
-# class PublicationInline(TabularDynamicInlineAdmin):
-#     model = Publication
-# 
-# class PublicationLibraryAdmin(PageAdmin):
-#     inlines = (PublicationInline,)
-# 
-# admin.site.register(PublicationLibrary, PublicationLibraryAdmin)
+    
+class PublicationInline(StackedDynamicInlineAdmin):
+    model = Publication
+    prepopulated_fields = { 'slug': ['title'] }
+    # exclude = ('author',) # http://stackoverflow.com/a/7588194/412329
+    
+    # def queryset(self, request):
+    #     return Publication.objects.filter(author=request.user)
+    # 
+    # def save_model(self, request, obj, form, change):
+    #     obj.author = request.user
+    #     obj.author_id = request.user.id
+    #     obj.save()
+
+class PublicationLibraryAdmin(PageAdmin):
+    inlines = (PublicationInline,)
+
+admin.site.register(PublicationLibrary, PublicationLibraryAdmin)
 
 
 

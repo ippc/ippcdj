@@ -21,53 +21,95 @@ from mezzanine.utils.importing import import_dotted_path
 from mezzanine.utils.models import upload_to
 
 
-# class PublicationLibrary(Page, RichText):
-#     """
-#         Page bucket for publications. Here's the expect folder layout:
-#         - WorkAreaPage or Page
-#             - PublicationLibrary
-#                 - Table listing multiple Publications which contain...
-#                     ...multiple Files
-#     """
-# 
-#     class Meta:
-#         verbose_name = _("Publication Library")
-#         verbose_name_plural = _("Publication Libraries")
-# 
-# 
-# class Publication(Displayable, models.Model):
-#     """Single publication to add in a publication library."""
-# 
-#     library = models.ForeignKey("PublicationLibrary", related_name="publication_libraries")
-#     author = models.ForeignKey(User, related_name="publication_author")
+class PublicationLibrary(Page, RichText):
+    """
+        Page bucket for publications. Here's the expect folder layout:
+        - WorkAreaPage or Page
+            - PublicationLibrary
+                - Table listing multiple Publications which contain...
+                    ...multiple Files
+    """
 
-#      # another option is to just set six file options here:
-#      # file_en
-#      # file_es
-#      # file_fr
-#      # file_ru
-#      # file_ar
-#      # file_zh
+    class Meta:
+        verbose_name = _("Publication Library")
+        verbose_name_plural = _("Publication Libraries")
 
-#     # slug - provided by mezzanine.core.models.slugged (subclassed by displayable)
-#     # title - provided by mezzanine.core.models.slugged (subclassed by displayable)
-#     # status - provided by mezzanine.core.models.displayable
-#     # publish_date - provided by mezzanine.core.models.displayable
-#     modify_date = models.DateTimeField(_("Modified date"),
-#         blank=True, null=True, editable=False, auto_now=True)
-#     agenda_number = models.CharField(_("Description"), max_length=100,
-#                                    blank=True)
-#     document_number = models.CharField(_("Description"), max_length=100,
-#                                   blank=True)
-# 
-#     class Meta:
-#         verbose_name = _("Publication")
-#         verbose_name_plural = _("Publications")
-# 
-#     def __unicode__(self):
-#         return self.title
-# 
-# 
+
+class Publication(Orderable):
+    """Single publication to add in a publication library."""
+
+    class Meta:
+        verbose_name = _("Publication")
+        verbose_name_plural = _("Publications")
+        
+    library = models.ForeignKey("PublicationLibrary", 
+        related_name="publications") # related_name=publications...
+        # ..is used in publicationlibrary template
+    title = models.CharField(_("Title"), blank=True, null=True, max_length=100)
+    # author = models.ForeignKey(User, related_name="publication_author")
+    file_en = models.FileField(_("File - English"), 
+            upload_to=upload_to("galleries.GalleryImage.file", "files/en/%Y/%m/"),
+            unique_for_date='modify_date', max_length=204, 
+            blank=True, null=True)        
+    file_es = models.FileField(_("File - Spanish"), 
+            upload_to=upload_to("galleries.GalleryImage.file", "files/es/%Y/%m/"),
+            unique_for_date='modify_date', max_length=204, 
+            blank=True, null=True)        
+    file_fr = models.FileField(_("File - French"), 
+            upload_to=upload_to("galleries.GalleryImage.file", "files/fr/%Y/%m/"),
+            unique_for_date='modify_date', max_length=204, 
+            blank=True, null=True)        
+    file_ru = models.FileField(_("File - Russian"), 
+            upload_to=upload_to("galleries.GalleryImage.file", "files/ru/%Y/%m/"),
+            unique_for_date='modify_date', max_length=204, 
+            blank=True, null=True)        
+    file_ar = models.FileField(_("File - Arabic"), 
+            upload_to=upload_to("galleries.GalleryImage.file", "files/ar/%Y/%m/"),
+            unique_for_date='modify_date', max_length=204, 
+            blank=True, null=True)        
+    file_zh = models.FileField(_("File - Chinese"), 
+            upload_to=upload_to("galleries.GalleryImage.file", "files/zh/%Y/%m/"),
+            unique_for_date='modify_date', max_length=204, 
+            blank=True, null=True)        
+    slug = models.SlugField(max_length=200, blank=True, null=True,
+            unique_for_date='modify_date')
+    modify_date = models.DateTimeField(_("Modified date"),
+        blank=True, null=True, editable=False, auto_now=True)
+    agenda_number = models.CharField(_("Agenda Item Number"), max_length=100,
+                                   blank=True)
+    document_number = models.CharField(_("Document Number"), max_length=100,
+                                  blank=True)
+    def __unicode__(self):
+        return self.title
+
+    def save(self, *args, **kwargs):
+        """
+        If no title is given when created, create one from the
+        file name.
+        """
+        if not self.id and not self.title:
+            name = unquote(self.file.url).split("/")[-1].rsplit(".", 1)[0]
+            name = name.replace("'", "")
+            name = "".join([c if c not in punctuation else " " for c in name])
+            # str.title() doesn't deal with unicode very well.
+            # http://bugs.python.org/issue6412
+            name = "".join([s.upper() if i == 0 or name[i - 1] == " " else s
+                            for i, s in enumerate(name)])
+            self.title = name
+        super(Publication, self).save(*args, **kwargs)
+
+    # @models.permalink # or: get_absolute_url = models.permalink(get_absolute_url) below
+    # def get_absolute_url(self): # "view on site" link will be visible in admin interface
+    #     """Construct the absolute URL for a Publication."""
+    #     return ('publication-detail', (), {
+    #                         'country': self.country.name, # =todo: get self.country.name working
+    #                         'year': self.publish_date.strftime("%Y"),
+    #                         'month': self.publish_date.strftime("%m"),
+    #                         # 'day': self.pub_date.strftime("%d"),
+    #                         'slug': self.slug})
+
+
+
 # class File(models.Model):
 #     """Single file to add in a publication."""
 # 

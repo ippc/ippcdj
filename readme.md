@@ -3,6 +3,7 @@
 - Restricted Work Area
    - [Restricted area working group pages and working group view/add permissions](http://djangosnippets.org/snippets/2736/).
    - In sidebar only list pages that are available to the user
+   - Permalink for individual publications
     - [Publication uploads tied to pages and restricted pages](https://github.com/sigurdga/django-jquery-file-upload)
         - **¿Should publications be own content-type, or is a Page/WorkAreaPage good enough?**
             - If Page/WorkAreaPage *is* good enough, then we can use the existing jQuery multi-file-upload functionality for uploading any file and train users to place link to files on page manually, or [have additional fields for each file](https://github.com/blueimp/jQuery-File-Upload/wiki/How-to-submit-additional-form-data).
