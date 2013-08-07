@@ -1,0 +1,122 @@
+{% extends "base.html" %}
+{% load pages_tags mezzanine_tags i18n future staticfiles accounts_tags %}
+
+{% block meta_title %}{{ publication.title }}{% endblock %}
+
+{% block breadcrumb_menu %}
+<li><a href="/publications/">{% trans "Publications" %}</a><span class="divider">/</span></li>
+<li class="active">{{ publication.title }}</li>
+{% endblock %}
+
+{% block local_nav %}
+<div class="well">
+  <p><a href="javascript:history.go(-1)">{% trans "« Go back" %}</a></p>
+    {% if user.is_superuser %} 
+        <a class="btn btn-small btn-info" href="/admin/ippc/pestreport/{{ publication.id }}">Edit as Admin</a><br>
+    {% endif %}
+        
+    {# {% if perms.ippc.change_pestreport and request.user.get_profile.country.name == page.title %} #}
+    {#     <a class="btn btn-small btn-info" href="{% url 'pest-report-edit' publication.country.name|slugify publication.id %}"><i class="icon-edit icon-white"></i> Edit</a> #}
+    {# {% else %} #}
+    {# {% endif %} #}
+</div>
+{% endblock local_nav %}
+
+{% block pageinfo %}
+
+{% endblock pageinfo %}
+
+{% block main %}
+
+<h1>{{ publication.title }}</h1> 
+
+{# {% if perms.ippc.change_pestreport %} #}
+{#   <p> #}
+{#     <small> #}
+{#       <a class="btn btn-small btn-info" href="{% url 'pest-report-edit' page.title|slugify %}"><i class="icon-pencil icon-white"></i> {% trans "Edit" %}</a> #}
+{#     </small> #}
+{#   </p> #}
+{# {% else %} #}
+{# {% endif %} #}
+
+<dl class="dl-horizontal">
+  {# <dt>{% trans "Published" %}</dt> #}
+  {# <dd>{% blocktrans with sometime=publication.publish_date|date:"D, d M Y, H:i" %}{{ sometime }}{% endblocktrans %}</dd> #}
+  
+  {# <dt>{% trans "Last Modified" %}</dt> #}
+  {# <dd>{{ publication.modify_date }}</dd> #}
+  
+  {# <dt>{% trans "Author" %}</dt> #}
+  {# <dd>{{ publication.author.get_profile.first_name }} {{ publication.author.get_profile.last_name }}</dd> #}
+  {% if publication.document_number %}
+  <dt>{% trans "Doc #" %}</dt>
+  <dd>{{ publication.document_number }}</dd>
+  {% endif %}
+  
+  {% if publication.agenda_number %}
+  <dt>{% trans "Agenda #" %}</dt>
+  <dd>{{ publication.agenda_number }}</dd>
+  {% endif %}
+  
+  <dt>{% trans "Files" %}</dt>
+  <dd>
+    <b>
+    {% if publication.file_en %}
+    <a href="{{ MEDIA_URL }}{{ publication.file_en }}">
+      <i class="icon-file"></i> 
+        {# {% if file.file.filetype == 'Image' %} #}
+        {#     <img class="media-object" src="{{ MEDIA_URL }}{% thumbnail file.file 64 64 %}"> #}
+        {# {% else %} #}
+        {#     <img class="media-object" src="{{ STATIC_URL }}img/file_icon.png" /> #}
+        {# {% endif %} #}
+      En
+    </a>
+    {% endif %}
+
+    {% if publication.file_es %}
+    <a href="{{ MEDIA_URL }}{{ publication.file_es }}">
+      <i class="icon-file"></i> 
+      Es
+    </a>
+    {% endif %}
+
+    {% if publication.file_fr %}
+    <a href="{{ MEDIA_URL }}{{ publication.file_fr }}">
+      <i class="icon-file"></i> 
+      Fr
+    </a>
+    {% endif %}
+
+    {% if publication.file_ru %}
+    <a href="{{ MEDIA_URL }}{{ publication.file_ru }}">
+      <i class="icon-file"></i> 
+      Ru
+    </a>
+    {% endif %}
+
+    {% if publication.file_ar %}
+    <a href="{{ MEDIA_URL }}{{ publication.file_ar }}">
+      <i class="icon-file"></i> 
+      Ar
+    </a>
+    {% endif %}
+
+    {% if publication.file_zh %}
+    <a href="{{ MEDIA_URL }}{{ publication.file_zh }}">
+      <i class="icon-file"></i> 
+      Zh
+    </a>
+    {% endif %}
+    {# <div class="media-body"> #}
+    {#     <strong><a href="{{ MEDIA_URL }}{{ file.file }}"> #}
+    {#         {{ file.title|default:file.file.filename }} #}
+    {#     </a></strong> #}
+    {#     <p>{{ file.description }}</strong> #}
+    {# </div> #}
+    </b>
+  </dd>
+
+</dl>
+
+{% endblock %}
+

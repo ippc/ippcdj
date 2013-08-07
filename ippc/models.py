@@ -20,17 +20,6 @@ from mezzanine.core.managers import SearchableManager
 from mezzanine.utils.importing import import_dotted_path
 from mezzanine.utils.models import upload_to
 
-
-# create permissions
-
-# from django.contrib.auth.models import Group, Permission
-# from django.contrib.contenttypes.models import ContentType
-# 
-# content_type = ContentType.objects.get_for_model(PublicationLibrary)
-# permission = Permission.objects.create(codename='view_publicationlibrary',
-#                                        name='View Publication Library',
-#                                        content_type=content_type)
-
 class PublicationLibrary(Page, RichText):
     """
         Page bucket for publications. Here's the expect folder layout:
@@ -39,6 +28,12 @@ class PublicationLibrary(Page, RichText):
                 - Table listing multiple Publications which contain...
                     ...multiple Files
     """
+    users = models.ManyToManyField(User, 
+        verbose_name=_("Users this library is accessible to"), 
+        related_name='publicationlibraryusers', blank=True, null=True)
+    groups = models.ManyToManyField(Group, 
+        verbose_name=_("Groups this library is accessible to"), 
+        related_name='publicationlibrarygroups', blank=True, null=True)
 
     class Meta:
         verbose_name = _("Publication Library")
@@ -46,10 +41,20 @@ class PublicationLibrary(Page, RichText):
         # south overrides syncdb, so the following perms are not created
         # unless we are starting the project from scratch.
         # solution: python manage.py syncdb --all
+        # or
+        # manage.py datamigration myapp add_perm_foo --freeze=contenttypes --freeze=auth
+        # http://stackoverflow.com/questions/1742021/adding-new-custom-permissions-in-django
         permissions = ( 
             ("can_view", "View Publication Library"),
         )
 
+# used by Publications
+IS_HIDDEN = 1
+IS_PUBLIC = 2
+PUBLICATION_STATUS_CHOICES = (
+    (IS_HIDDEN, _("Hidden - does not appear publically on ippc.int. Choose this instead of deleting.")), 
+    (IS_PUBLIC, _("Public - visible on ippc.int")),
+)
 
 class Publication(Orderable):
     """Single publication to add in a publication library."""
@@ -89,6 +94,7 @@ class Publication(Orderable):
             blank=True, null=True)        
     slug = models.SlugField(max_length=200, blank=True, null=True,
             unique_for_date='modify_date')
+    status = models.IntegerField(_("Status"), choices=PUBLICATION_STATUS_CHOICES, default=IS_PUBLIC)
     modify_date = models.DateTimeField(_("Modified date"),
         blank=True, null=True, editable=False, auto_now=True)
     agenda_number = models.CharField(_("Agenda Item Number"), max_length=100,
@@ -114,21 +120,24 @@ class Publication(Orderable):
             self.title = name
         super(Publication, self).save(*args, **kwargs)
 
-    # @models.permalink # or: get_absolute_url = models.permalink(get_absolute_url) below
-    # def get_absolute_url(self): # "view on site" link will be visible in admin interface
-    #     """Construct the absolute URL for a Publication."""
-    #     return ('publication-detail', (), {
-    #                         'country': self.country.name, # =todo: get self.country.name working
-    #                         'year': self.publish_date.strftime("%Y"),
-    #                         'month': self.publish_date.strftime("%m"),
-    #                         # 'day': self.pub_date.strftime("%d"),
-    #                         'slug': self.slug})
+    @models.permalink # or: get_absolute_url = models.permalink(get_absolute_url) below
+    def get_absolute_url(self): # "view on site" link will be visible in admin interface
+        """Construct the absolute URL for a Publication."""
+        return ('publication-detail', (), {
+                            # 'country': self.country.name, # =todo: get self.country.name working
+                            # 'year': self.publish_date.strftime("%Y"),
+                            # 'month': self.publish_date.strftime("%m"),
+                            # 'day': self.pub_date.strftime("%d"),
+                            'pk': self.pk})
+
 
 class WorkAreaPage(Page, RichText):
     """ Work Area Pages with definable users and groups """
-    users = models.ManyToManyField(User, verbose_name=_("Work Area Page Users"), 
+    users = models.ManyToManyField(User, 
+        verbose_name=_("Users this page is accessible to"), 
         related_name='workareapageusers', blank=True, null=True)
-    groups = models.ManyToManyField(Group, verbose_name=_("Work Area Page Groups"), 
+    groups = models.ManyToManyField(Group, 
+        verbose_name=_("Groups this page is accessible to"), 
         related_name='workareapagegroups', blank=True, null=True)
 
     class Meta:
@@ -153,7 +162,7 @@ class CountryPage(Page):
             help_text=_("Leave blank to have the URL auto-generated from "
                         "the title."))
     contact_point = models.OneToOneField("auth.User", 
-            verbose_name=_("Chief Contact Point"), blank=True, null=True)
+            verbose_name=_("Country Chief Contact Point"), blank=True, null=True)
     editors = models.ManyToManyField(User, verbose_name=_("Country Editors"), 
         related_name='countryeditors+', blank=True, null=True)
     # =todo: 
@@ -185,7 +194,7 @@ class IppcUserProfile(models.Model):
     )
     
     user = models.OneToOneField("auth.User")
-    title = models.CharField(_("Title"), blank=True, null=True, max_length=100)
+    title = models.CharField(_("Professional Title"), blank=True, null=True, max_length=100)
     first_name = models.CharField(_("First Name"), max_length=30)
     last_name = models.CharField(_("Last Name"), max_length=30)
     # main email address already provided by auth.User
@@ -211,13 +220,13 @@ class IppcUserProfile(models.Model):
     date_account_created = models.DateTimeField(_("Member Since"), default=datetime.now, editable=False)
 
 
-# Keeping this outside PestReport class so we can call IS_PUBLIC in view
-IS_HIDDEN = 1
-IS_PUBLIC = 2
-PUBLISHING_CHOICES = (
-    (IS_HIDDEN, _("Hidden - does not appear publically on ippc.int. Choose this instead of deleting.")), 
-    (IS_PUBLIC, _("Public - visible on ippc.int")),
-)
+# this is in mezzanine.core.models.displayable
+# CONTENT_STATUS_DRAFT = 1
+# CONTENT_STATUS_PUBLISHED = 2
+# CONTENT_STATUS_CHOICES = (
+#     (CONTENT_STATUS_DRAFT, _("Draft")),
+#     (CONTENT_STATUS_PUBLISHED, _("Published")),
+# )
 
 REPORT_STATUS_NA = 1
 REPORT_STATUS_PRELIMINARY = 2

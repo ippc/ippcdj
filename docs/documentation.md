@@ -47,3 +47,7 @@ If you add new fields or change certain values of existing ones such as blank or
 3. If you want to rever to a previous migration, look for the previous migration number in ippc/migrations and replace #### with the migration number in the following command:
 
     `manage.py migrate your_app ####`
+
+## Dumpdata
+
+    `python manage.py dumpdata --indent 2 > initial_data.json`

@@ -17,7 +17,8 @@
 
 {% block title %}
 {% if page %}
-{% editable page.title %}{{ page.title }}{% endeditable %}
+{# {% editable page.title %}{{ page.title }}{% endeditable %} #}
+{{ page.title }}
 {% else %}
 {% trans "Blog" %}
 {% endif %}
@@ -47,12 +48,12 @@
     {% block blog_post_list_filterinfo %}
     <p>
     {% if tag %}
-        {% trans "Viewing posts tagged" %} {{ tag }}
+        {% trans "Viewing posts tagged" %} <strong>{{ tag }}</strong>
     {% else %}{% if category %}
-        {% trans "Viewing posts for the category" %} {{ category }}
+        {% trans "Viewing posts for the category" %} <strong>{{ category }}</strong>
     {% else %}{% if year or month %}
-        {% trans "Viewing posts from" %} {% if month %}{{ month }}, {% endif %}
-        {{ year }}
+        {% trans "Viewing posts from" %} <strong>{% if month %}{{ month }}, {% endif %}
+        {{ year }}</strong>
     {% else %}{% if author %}
         {% trans "Viewing posts by" %}
         {{ author.get_full_name|default:author.username }}

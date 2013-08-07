@@ -13,8 +13,10 @@
 {# </ul> #}
 
 <dl class="dl-horizontal">
+  {% if user.is_superuser %} 
   <dt>{% trans "Username" %}</dt> 
   <dd>{{ profile_user.username }}</dd>
+  {% endif %}
   
   <dt>{% trans "Email" %}</dt>
   <dd>{{ profile_user.email }}</dd>
@@ -28,7 +30,9 @@
 
   <dt>{% trans "Name" %}</dt>
   <dd>
+    {% if profile_user.get_profile.get_gender_display %}
     {{ profile_user.get_profile.get_gender_display }}
+    {% endif %}
     {# {{ profile_user.get_full_name }}  #}
     {{ profile_user.get_profile.first_name }} 
     <span class="caps">{{ profile_user.get_profile.last_name }}</span>

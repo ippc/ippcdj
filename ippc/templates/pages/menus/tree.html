@@ -16,10 +16,31 @@
   
   
   
+  
+  {# =todo: #}
+  {# In workarea sidebar list pages accessible to each user [according to his permissions](http://stackoverflow.com/a/16016717) #}
+  {# and only display page content if he is in the page's permission group. #}
+  {# {% if page.login_required %} #}
+  {#  #}
+  {#   {% for group in request.user.groups.all %} #}
+  {#     {% if group in page.get_content_model.groups.all %} #}
+  {#  #}
+  {#       list of pages accessible to user #}
+  {#        #}
+  {#     {% endif %}  #}
+  {#   {% endfor %}  #}
+  {#  #}
+  {#   {% else %} #}
+  {#  #}
+  {#     nothing #}
+  {#  #}
+  {# {% endif %} #} 
+  
+  
+  
+  
+  {# only show pages in current section #}
   {% if page.is_current_or_ascendant or not page.is_primary %}
-  
-  
-  
   <li class="
              {% if page.is_current %} active{% endif %}
              {% if not page.is_primary and forloop.first %} first{% endif %}
@@ -44,8 +65,6 @@
         {% if page.has_children_in_menu %}{% page_menu page %}{% endif %}
     {% endif %}
   </li>
-  
-  
   {% endif %} {# page.is_current_or_ascendant or not page.is_primary #}
   
   

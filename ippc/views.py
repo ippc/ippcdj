@@ -1,7 +1,7 @@
 from django.shortcuts import render
 from django.utils.translation import ugettext_lazy as _
 from django.contrib.messages import info, error
-from .models import IppcUserProfile, PestStatus, PestReport, IS_PUBLIC, IS_HIDDEN
+from .models import IppcUserProfile, PestStatus, PestReport, IS_PUBLIC, IS_HIDDEN, Publication
 from mezzanine.core.models import Displayable, CONTENT_STATUS_DRAFT, CONTENT_STATUS_PUBLISHED
 from .forms import PestReportForm
 
@@ -114,6 +114,15 @@ class PestReportDetailView(DetailView):
     queryset = PestReport.objects.filter(status=CONTENT_STATUS_PUBLISHED)
     # print('>>>>>>>>>>>>>>>')
     # print(user.get_profile().country)
+
+
+class PublicationDetailView(DetailView):
+    """ Publication detail page """
+    model = Publication
+    context_object_name = 'publication'
+    template_name = 'pages/publication_detail.html'
+    queryset = Publication.objects.filter(status=IS_PUBLIC)
+
 
 @login_required
 @permission_required('ippc.add_pestreport', login_url="/accounts/login/")

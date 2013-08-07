@@ -33,8 +33,10 @@
 {# </ul> #}
 
 <dl class="dl-horizontal">
+  {% if user.is_superuser or page.get_content_model.contact_point.username == request.user.username %} 
   <dt>{% trans "Username" %}</dt> 
   <dd>{{ page.get_content_model.contact_point.username }}</dd>
+  {% endif %}
   
   <dt>{% trans "Email" %}</dt>
   <dd>{{ page.get_content_model.contact_point.email }}</dd>

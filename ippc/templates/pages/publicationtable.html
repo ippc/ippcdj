@@ -1,0 +1,74 @@
+{% load mezzanine_tags staticfiles i18n %}
+
+<table class="table table-condensed table-striped table-bordered" id="publications">
+  {# http://datatables.net/blog/Twitter_Bootstrap_2 #}
+   <thead>
+     <tr>
+       <th style="width:15%;">{% trans "Doc #" %}</th>
+       <th style="width:15%;">{% trans "Agenda #" %}</th>
+       <th>{% trans "Title" %}</th>
+       <th>{% trans "Files" %}</th>
+     </tr>
+   </thead>
+   <tbody>
+
+{% with page.publicationlibrary.publications.all as publications %}
+  {% for publication in publications %}
+    <tr id="media-file-{{ publication.id }}">
+      <td>{{ publication.document_number }}</td>
+      <td>{{ publication.agenda_number }}</td>
+      <td><a href="{% url 'publication-detail' publication.pk %}">{{ publication.title }}</a></td>
+
+      <td>
+        {% if publication.file_en %}
+        <a href="{{ MEDIA_URL }}{{ publication.file_en }}">
+            {# {% if file.file.filetype == 'Image' %} #}
+            {#     <img class="media-object" src="{{ MEDIA_URL }}{% thumbnail file.file 64 64 %}"> #}
+            {# {% else %} #}
+            {#     <img class="media-object" src="{{ STATIC_URL }}img/file_icon.png" /> #}
+            {# {% endif %} #}
+          En
+        </a>
+        {% endif %}
+
+        {% if publication.file_es %}
+        <a href="{{ MEDIA_URL }}{{ publication.file_es }}">
+          Es
+        </a>
+        {% endif %}
+
+        {% if publication.file_fr %}
+        <a href="{{ MEDIA_URL }}{{ publication.file_fr }}">
+          Fr
+        </a>
+        {% endif %}
+
+        {% if publication.file_ru %}
+        <a href="{{ MEDIA_URL }}{{ publication.file_ru }}">
+          Ru
+        </a>
+        {% endif %}
+
+        {% if publication.file_ar %}
+        <a href="{{ MEDIA_URL }}{{ publication.file_ar }}">
+          Ar
+        </a>
+        {% endif %}
+
+        {% if publication.file_zh %}
+        <a href="{{ MEDIA_URL }}{{ publication.file_zh }}">
+          Zh
+        </a>
+        {% endif %}
+        {# <div class="media-body"> #}
+        {#     <strong><a href="{{ MEDIA_URL }}{{ file.file }}"> #}
+        {#         {{ file.title|default:file.file.filename }} #}
+        {#     </a></strong> #}
+        {#     <p>{{ file.description }}</strong> #}
+        {# </div> #}
+      </td>
+    </tr>
+  {% endfor %} {# publication in publications #}
+  </tbody>
+</table>
+{% endwith %} {# page.publicationlibrary.publications.all as publications #}

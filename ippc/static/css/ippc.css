@@ -36,6 +36,8 @@ img {box-shadow:none;}
 .normal {font-weight:normal;}
 .quiet, .helptext {color:#999;}
 .helptext {font-size:0.9em; vertical-align:top;}
+.tright {text-align:right;}
+.tleft {text-align:left;}
 
 input.search-query {width:20em !important;}
 select#id_pest_status {min-height:30em; height:auto;}

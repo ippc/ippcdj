@@ -1,6 +1,7 @@
 # https://gist.github.com/renyi/3596248
 from copy import deepcopy
 from django.contrib import admin
+from mezzanine.pages.models import Page, RichTextPage
 from mezzanine.pages.admin import PageAdmin
 from mezzanine.conf import settings
 from mezzanine.core.admin import TabularDynamicInlineAdmin, StackedDynamicInlineAdmin
@@ -61,6 +62,22 @@ class WorkAreaPageAdmin(PageAdmin):
 
 admin.site.register(WorkAreaPage, WorkAreaPageAdmin)
 
+
+
+
+
+# Pages -----------------
+# =todo: get this to work
+
+admin.site.unregister(Page)
+
+class CustomPageAdmin(PageAdmin):
+    save_on_top = True
+    list_display = ('title', 'publish_date', 'status')
+    list_filter = ('title', 'publish_date', 'status')
+    search_fields = ('title', 'content')
+
+admin.site.register(Page, CustomPageAdmin)
 
 
 

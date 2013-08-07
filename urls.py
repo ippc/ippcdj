@@ -2,7 +2,7 @@
 from django.conf.urls import patterns, include, url
 from django.contrib import admin
 
-from .ippc.views import PestReportListView, PestReportHiddenListView, PestReportDetailView, CountryView, pest_report_create, pest_report_edit
+from .ippc.views import PestReportListView, PestReportHiddenListView, PestReportDetailView, CountryView, pest_report_create, pest_report_edit, PublicationDetailView
 
 from mezzanine.core.views import direct_to_template
 import mezzanine_pagedown.urls
@@ -56,10 +56,11 @@ urlpatterns = patterns("",
         view=pest_report_edit,
         name='pest-report-edit'),
 
-    # custom search?
-    # url("^search/$", "search", name="search"),
+    url(r'^publications/(?P<pk>\d+)/$',
+        view=PublicationDetailView.as_view(),
+        name='publication-detail'),
 
-    # pagedown
+    # pagedown for markdown wysiwyg
     ("^pagedown/", include(mezzanine_pagedown.urls)),
     
     # Change the admin prefix here to use an alternate URL for the

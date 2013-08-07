@@ -49,7 +49,7 @@
 {% if page_branch_in_menu %}
 
 {% if branch_level == 0 %}
-<ul class="nav nav-collapse pull-left">
+<ul class="nav nav-collapse pull-left" style="clear:both;">
     {% for page in page_branch %}
     {% if page.is_primary and forloop.first %}
     <li class="{% if on_home %} active{% endif %}" id="dropdown-menu-{{ page.html_id }}">

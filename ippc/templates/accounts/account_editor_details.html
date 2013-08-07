@@ -33,8 +33,10 @@
 {# </ul> #}
 
 <dl class="dl-horizontal">
+  {% if user.is_superuser %} 
   <dt>{% trans "Username" %}</dt> 
-  <dd>{{ editor.username }}</dd>
+  <dd>{{ user.username }}</dd>
+  {% endif %}
   
   <dt>{% trans "Email" %}</dt>
   <dd>{{ editor.email }}</dd>
