@@ -3,23 +3,25 @@
 
 {% block meta_title %}{{ publication.title }}{% endblock %}
 
+{% block body_class %}wide{% endblock %}
+
 {% block breadcrumb_menu %}
-<li><a href="/publications/">{% trans "Publications" %}</a><span class="divider">/</span></li>
+<li><a href="javascript:history.go(-1)">{% trans "« Go back" %}</a> <span class="divider">/</span> <a href="/publications/">{% trans "Publications" %}</a><span class="divider">/</span></li>
 <li class="active">{{ publication.title }}</li>
 {% endblock %}
 
 {% block local_nav %}
-<div class="well">
-  <p><a href="javascript:history.go(-1)">{% trans "« Go back" %}</a></p>
-    {% if user.is_superuser %} 
-        <a class="btn btn-small btn-info" href="/admin/ippc/pestreport/{{ publication.id }}">Edit as Admin</a><br>
-    {% endif %}
+{# <div class="well"> #}
+  {# <p><a href="javascript:history.go(-1)">{% trans "« Go back" %}</a></p> #}
+    {# {% if user.is_superuser %}  #}
+    {#     <a class="btn btn-small btn-info" href="/admin/ippc/pestreport/{{ publication.id }}">Edit as Admin</a><br> #}
+    {# {% endif %} #}
         
     {# {% if perms.ippc.change_pestreport and request.user.get_profile.country.name == page.title %} #}
     {#     <a class="btn btn-small btn-info" href="{% url 'pest-report-edit' publication.country.name|slugify publication.id %}"><i class="icon-edit icon-white"></i> Edit</a> #}
     {# {% else %} #}
     {# {% endif %} #}
-</div>
+{# </div> #}
 {% endblock local_nav %}
 
 {% block pageinfo %}
