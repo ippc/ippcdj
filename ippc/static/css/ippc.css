@@ -41,6 +41,7 @@ img {box-shadow:none;}
 
 input.search-query {width:20em !important;}
 select#id_pest_status {min-height:30em; height:auto;}
+select#selectcountry {max-width:350px;}
 /*ul.nav li.dropdown:hover ul.dropdown-menu {display:inline;}*/
 
 

@@ -21,6 +21,7 @@
 <link rel="stylesheet" href="{% static "css/mezzanine.css" %}">
 <link rel="stylesheet" href="{% static "css/bootstrap-responsive.css" %}">
 <link rel="stylesheet" href="{% static "css/ippc.css" %}">
+<link rel="stylesheet" href="{% static "css/chosen.css" %}">
 {% if LANGUAGE_BIDI %}
 <link rel="stylesheet" href="{% static "css/rtl.css" %}">
 {% endif %}
@@ -37,6 +38,7 @@
 <script src="{% static "mezzanine/js/"|add:settings.JQUERY_FILENAME %}"></script>
 <script src="{% static "js/bootstrap.js" %}"></script>
 <script src="{% static "js/bootstrap-extras.js" %}"></script>
+<script src="{% static "js/chosen.jquery.min.js" %}"></script>
 {# {% block extra_js %}{% endblock %} #} {# MOVED TO BOTTOM #}
 {% endcompress %}
 <!--[if lt IE 9]>
@@ -201,6 +203,12 @@
 
 {% include "includes/footer_scripts.html" %}
 {% compress js %}
+
+{# better country selector using chosen - http://harvesthq.github.io/chosen/ #}
+<script type="text/javascript" charset="utf-8">
+  $(".chosen-select").chosen()  
+</script>
+
 {% block extra_js %}{% endblock %}
 {% endcompress %}
 </body>

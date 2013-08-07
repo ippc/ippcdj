@@ -15,7 +15,7 @@
 - Last modified date for pages and publications
 - Versioning of all page content?
 - [Download multiple files](http://stackoverflow.com/a/12951557/412329)
-- Use [Chosen](http://harvesthq.github.io/chosen/) to make globalnav dropdowns friedly. Also in admin.
+- Use [Chosen](http://harvesthq.github.io/chosen/) to make globalnav dropdowns friedly. Also in admin. There's a [Django app](https://github.com/theatlantic/django-chosen), too.
 - Order permission groups alphabetically in admin
 - Country pages:
     - Versioning of Pest Reports. Report number: GBR-32/1. When edited: GBR-32/2.

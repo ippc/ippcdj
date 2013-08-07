@@ -1,7 +1,7 @@
 {% extends "base.html" %}
 {% load i18n %}
 
-{% block meta_title %}{% trans "Home" %}{% endblock %}
+{% block meta_title %}{% trans "IPPC" %}{% endblock %}
 {# {% block title %}{% trans "Welcome to IPPC" %}{% endblock %} #}
 
 {% block breadcrumb_menu %}
@@ -27,15 +27,15 @@
 
 {% block main %}
 
-
 <div class="row-fluid">
   <div class="span6">
     <h4><a href="{% url 'page' 'about' %}">{% trans "About" %}</a></h4>
     <p>{% blocktrans %}The International Plant Protection Convention (IPPC) is an international agreement on plant health to which 179 signatories currently adhere. It aims to protect cultivated and wild plants by preventing the introduction and spread of pests. The Secretariat of the IPPC is provided by the Food and Agriculture Organization of the United Nations. See our Media Kit.{% endblocktrans %}</p>
   </div>
   <div class="span6">
-    <h4>Donors</h4>
-    <p>{% blocktrans %}Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.{% endblocktrans %}</p>
+    <h4>Countries</h4>
+    <p>{% blocktrans %}Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.{% endblocktrans %}</p>
+    {% include "countries/country_selector.html" %}
   </div>
 </div>
 

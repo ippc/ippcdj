@@ -1,0 +1,21 @@
+{% load ippc_tags pages_tags translate_tags mezzanine_tags i18n future staticfiles accounts_tags %}
+
+<form action="">
+<select data-placeholder="Choose a Country..." tabindex="3" class="chosen-select" id="selectcountry">
+  <option value="">-- {% trans "Choose a Country" %} --</option>
+  {% get_latest ippc.CountryPage 250 as country_pages %}
+  {% for page in country_pages %}
+  <option value="/countries/{{ page.countrypage.get_content_model.country_slug }}">{{ page.countrypage.get_content_model.name }}</option>    
+  {% endfor %}
+</select>
+{# <p><input type="submit" value="{% trans "Go" %} &rarr;"></p> #}
+</form>
+  
+{# http://forum.jquery.com/topic/how-to-window-location-href-parameter-from-the-select-field#14737000001684949 #}
+<script type="text/javascript" charset="utf-8">
+$(function() {
+      $('#selectcountry').change(function() {
+            window.location.href = $(this).val();
+      });
+});
+</script>
