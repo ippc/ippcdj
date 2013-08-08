@@ -43,11 +43,11 @@ msgstr ""
 
 #: settings.py:348 ippc/templates/base.html:11 ippc/templates/base.html.py:99
 msgid "International Plant Protection Convention"
-msgstr "Convención Internacional de Protección Fitosanitaria"
+msgstr ""
 
 #: settings.py:349 ippc/templates/base.html:102
 msgid "Protecting the world's plant resources from pests"
-msgstr "Protégér de las plagas los recursos vegetales del mundo"
+msgstr ""
 
 #: ippc/models.py:32
 msgid "Users this library is accessible to"
@@ -556,11 +556,11 @@ msgstr ""
 #: ippc/templates/sitemap.html:4 ippc/templates/sitemap.html.py:8
 #: ippc/templates/includes/user_panel.html:4
 msgid "Sitemap"
-msgstr "Mapa del Sitio"
+msgstr ""
 
 #: ippc/templates/sitemap.html:16
 msgid "IPPC Sitemap"
-msgstr "Mapa del Sitio"
+msgstr ""
 
 #: ippc/templates/accounts/account_contactpoint_details.html:12
 #: ippc/templates/accounts/account_editor_details.html:12

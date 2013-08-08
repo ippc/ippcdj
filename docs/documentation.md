@@ -51,3 +51,10 @@ If you add new fields or change certain values of existing ones such as blank or
 ## Dumpdata
 
     `python manage.py dumpdata --indent 2 > initial_data.json`
+
+## Update translations for non-user-generated site content
+
+<https://docs.djangoproject.com/en/dev/topics/i18n/translation/>
+
+    `python manage.py makemessages --all`
+    `python manage.py compilemessages`

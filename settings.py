@@ -272,7 +272,7 @@ INSTALLED_APPS = (
     'guardian',
     
     # debug toolbar
-    "debug_toolbar",
+    # "debug_toolbar",
     
     #"mezzanine.mobile",
 )
@@ -298,7 +298,7 @@ TEMPLATE_CONTEXT_PROCESSORS = (
 MIDDLEWARE_CLASSES = (
     
     # debug toolbar
-    "debug_toolbar.middleware.DebugToolbarMiddleware",
+    # "debug_toolbar.middleware.DebugToolbarMiddleware",
 
     "mezzanine.core.middleware.UpdateCacheMiddleware",
     "django.contrib.sessions.middleware.SessionMiddleware",
@@ -388,7 +388,7 @@ GRAPPELLI_ADMIN_TITLE = "IPPC Administration - click to view site"
 
 # These will be added to ``INSTALLED_APPS``, only if available.
 OPTIONAL_APPS = (
-    "debug_toolbar",
+    # "debug_toolbar",
     "django_extensions",
     "compressor",
     PACKAGE_NAME_FILEBROWSER,
