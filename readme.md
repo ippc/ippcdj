@@ -1,8 +1,7 @@
-# Needed:
+# Todo:
 
 - [Pest Report mapping](http://leafletjs.com/examples/choropleth.html)
 - Homepage design
-
 - Publications list page
 - [Calendar](https://github.com/shurik/mezzanine.calendar) (or [Events](https://github.com/stbarnabas/mezzanine-events)?)
 - Forums
