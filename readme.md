@@ -1,4 +1,4 @@
-# Better Content Management System for IPPC 3.0
+# Better content management system for IPPC
 
 Based on [Django](https://www.djangoproject.com/) and [Mezzanine](http://mezzanine.jupo.org).
 
