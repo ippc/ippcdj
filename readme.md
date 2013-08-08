@@ -1,6 +1,11 @@
+# Better Content Management System for IPPC 3.0
+
+Based on [Django](https://www.djangoproject.com/) and [Mezzanine](http://mezzanine.jupo.org).
+
 # Todo:
 
 - [Pest Report mapping](http://leafletjs.com/examples/choropleth.html)
+    - [Eg](http://humangeo.github.io/leaflet-dvf/examples/html/incomelevels.html)
 - Homepage design
 - Publications list page
 - [Calendar](https://github.com/shurik/mezzanine.calendar) (or [Events](https://github.com/stbarnabas/mezzanine-events)?)
