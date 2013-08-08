@@ -21,7 +21,4 @@
     - Other country forms
     - Prevent hidden report titles from appearing in search results
     - Country RSS feeds
-
-# Desirable:
-
-- User registration open but behind login-required and super-user required so only admins can add new users, OR, user registration open to all, but need approval by admins.
+- User registration open but behind login-required and super-user required so only admins can add new users, who get notification emails to confirm account and set own password. OR, user registration open to all, but need approval by admins.
