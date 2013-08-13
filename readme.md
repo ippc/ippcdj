@@ -4,13 +4,20 @@ Based on [Django](https://www.djangoproject.com/) and [Mezzanine](http://mezzani
 
 # Todo:
 
+- Ability to authenticate against external user database
+    - [Drupal 7 password hasher for Django](http://stackoverflow.com/q/9876700/412329)
 - [Pest Report mapping](http://leafletjs.com/examples/choropleth.html)
-    - [Eg](http://humangeo.github.io/leaflet-dvf/examples/html/incomelevels.html)
+    - <http://blog.thematicmapping.org/2008/04/thematic-mapping-with-geojson.html>
+    - <http://blog.thematicmapping.org/2012/11/how-to-minify-geojson-files.html>
+    - Examples:
+        - [Geochart](https://developers.google.com/chart/interactive/docs/gallery/geochart)
+        - [Income levels example](http://humangeo.github.io/leaflet-dvf/examples/html/incomelevels.html)
+        - [Top Cities](http://techslides.com/leaflet-map-with-utfgrid-and-php-served-mbtiles/)
 - Homepage design
-- Publications list page
+- Email utility
 - [Calendar](https://github.com/shurik/mezzanine.calendar) (or [Events](https://github.com/stbarnabas/mezzanine-events)?)
 - Forums
-- Email utility
+- Publications list page
 - Contact form
 - Sitemap
 - Use jQuery [multi-file-upload](https://github.com/sigurdga/django-jquery-file-upload) functionality for uploading images and files to be inserted in pages and blog posts, [with additional fields for each file](https://github.com/blueimp/jQuery-File-Upload/wiki/How-to-submit-additional-form-data) if required.
