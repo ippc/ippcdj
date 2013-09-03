@@ -19,6 +19,7 @@ Based on [Django](https://www.djangoproject.com/) and [Mezzanine](http://mezzani
 - [Calendar](https://github.com/shurik/mezzanine.calendar) (or [Events](https://github.com/stbarnabas/mezzanine-events)?)
 - Forums
 - Contact form
+- FAQ
 - Sitemap
 - Author field for publications
 - Versioning of all page content?
