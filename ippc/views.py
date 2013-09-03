@@ -116,6 +116,19 @@ class PestReportDetailView(DetailView):
     # print(user.get_profile().country)
 
 
+class PublicationListView(ListView):
+    """
+    Publications List
+    """
+    context_object_name = 'latest'
+    model = Publication
+    date_field = 'modify_date'
+    template_name = 'pages/publication_list.html'
+    queryset = Publication.objects.filter(status=IS_PUBLIC).order_by('-modify_date', 'title')
+    allow_future = False
+    allow_empty = True
+    paginate_by = 30
+
 class PublicationDetailView(DetailView):
     """ Publication detail page """
     model = Publication

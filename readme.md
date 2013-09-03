@@ -5,6 +5,7 @@ Based on [Django](https://www.djangoproject.com/) and [Mezzanine](http://mezzani
 # Todo:
 
 - Ability to authenticate against external user database
+    - [Identity Authentication on the Internet](http://hypertexthero.com/logbook/2013/08/identity-internet/)
     - [Drupal 7 password hasher for Django](http://stackoverflow.com/q/9876700/412329)
 - [Pest Report mapping](http://leafletjs.com/examples/choropleth.html)
     - <http://blog.thematicmapping.org/2008/04/thematic-mapping-with-geojson.html>
