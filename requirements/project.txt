@@ -10,6 +10,7 @@ django-countries-plus==0.1.5
 django-debug-toolbar==0.9.4
 django-guardian==1.1.1
 django-localeurl==1.5
+django-mailer==0.1.0
 filebrowser-safe==0.2.28
 grappelli-safe==0.2.22
 html5lib==0.95

@@ -269,13 +269,19 @@ INSTALLED_APPS = (
     "south",
     
     # guardian for view permissions
-    'guardian',
+    "guardian",
+    
+    # for email utility
+    # http://stackoverflow.com/a/1823193/412329
+    "mailer",
     
     # debug toolbar
     # "debug_toolbar",
     
     #"mezzanine.mobile",
 )
+
+# NEWSLETTER_CONFIRM_EMAIL = False
 
 # List of processors used by RequestContext to populate the context.
 # Each one should be a callable that takes the request object as its

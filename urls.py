@@ -56,6 +56,7 @@ urlpatterns = patterns("",
         view=pest_report_edit,
         name='pest-report-edit'),
 
+    # publication list
     url(r'^publications/$',
         view=PublicationListView.as_view(),
         name='publication-list'),
@@ -64,6 +65,9 @@ urlpatterns = patterns("",
     url(r'^publications/(?P<pk>\d+)/$',
         view=PublicationDetailView.as_view(),
         name='publication-detail'),
+    
+    # newsletter for email utility
+    # url(r'^newsletter/', include('newsletter.urls')),
 
     # pagedown for markdown wysiwyg
     ("^pagedown/", include(mezzanine_pagedown.urls)),

@@ -15,7 +15,8 @@ Based on [Django](https://www.djangoproject.com/) and [Mezzanine](http://mezzani
         - [Income levels example](http://humangeo.github.io/leaflet-dvf/examples/html/incomelevels.html)
         - [Top Cities](http://techslides.com/leaflet-map-with-utfgrid-and-php-served-mbtiles/)
 - Homepage design
-- Email utility
+- [Email utility](https://github.com/pinax/django-mailer)
+    - Ability to add user groups, as well as individual users, in `To:`, `Cc:` and `Bcc:` fields
 - [Calendar](https://github.com/shurik/mezzanine.calendar) (or [Events](https://github.com/stbarnabas/mezzanine-events)?)
 - Forums
 - Contact form
