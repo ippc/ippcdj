@@ -56,5 +56,7 @@ If you add new fields or change certain values of existing ones such as blank or
 
 <https://docs.djangoproject.com/en/dev/topics/i18n/translation/>
 
+Edit the django.po file for each language in `ippcdj_repo/conf/locale/` and then run the following commands in the terminal to compile the translation files: 
+
     `python manage.py makemessages --all`
     `python manage.py compilemessages`

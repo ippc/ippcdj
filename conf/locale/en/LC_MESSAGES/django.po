@@ -43,11 +43,11 @@ msgstr ""
 
 #: settings.py:354 ippc/templates/base.html:11 ippc/templates/base.html.py:99
 msgid "International Plant Protection Convention"
-msgstr "Convention internationale pour la protection des végétaux"
+msgstr ""
 
 #: settings.py:355 ippc/templates/base.html:102
 msgid "Protecting the world's plant resources from pests"
-msgstr "Protéger les ressources végétales contre les organismes nuisibles"
+msgstr ""
 
 #: ippc/models.py:32
 msgid "Users this library is accessible to"

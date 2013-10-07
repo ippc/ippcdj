@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2013-08-08 09:33+0200\n"
+"POT-Creation-Date: 2013-10-07 10:21+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -17,37 +17,37 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: settings.py:334
+#: settings.py:340
 msgid "English"
 msgstr ""
 
-#: settings.py:335
+#: settings.py:341
 msgid "Français"
 msgstr ""
 
-#: settings.py:336
+#: settings.py:342
 msgid "Español"
 msgstr ""
 
-#: settings.py:337
+#: settings.py:343
 msgid "Русский"
 msgstr ""
 
-#: settings.py:338
+#: settings.py:344
 msgid "العربية"
 msgstr ""
 
-#: settings.py:339
+#: settings.py:345
 msgid "简体中文"
 msgstr ""
 
-#: settings.py:348 ippc/templates/base.html:11 ippc/templates/base.html.py:99
+#: settings.py:354 ippc/templates/base.html:11 ippc/templates/base.html.py:99
 msgid "International Plant Protection Convention"
-msgstr ""
+msgstr "Международная конвенция по карантину и защите растений"
 
-#: settings.py:349 ippc/templates/base.html:102
+#: settings.py:355 ippc/templates/base.html:102
 msgid "Protecting the world's plant resources from pests"
-msgstr ""
+msgstr "Защита растительных ресурсов мира от вредных организмов"
 
 #: ippc/models.py:32
 msgid "Users this library is accessible to"
@@ -80,6 +80,9 @@ msgid "Publication"
 msgstr ""
 
 #: ippc/models.py:64 ippc/templates/pages/publication_detail.html:9
+#: ippc/templates/pages/publication_list.html:5
+#: ippc/templates/pages/publication_list.html:20
+#: ippc/templates/pages/publication_list.html:36
 msgid "Publications"
 msgstr ""
 
@@ -90,6 +93,7 @@ msgstr ""
 #: ippc/templates/accounts/account_user_details.html:25
 #: ippc/templates/countries/pest_report_hidden_list.html:62
 #: ippc/templates/countries/pest_report_list.html:64
+#: ippc/templates/pages/publication_list.html:43
 #: ippc/templates/pages/publicationtable.html:9
 msgid "Title"
 msgstr ""
@@ -419,7 +423,7 @@ msgstr ""
 msgid "Translated Images"
 msgstr ""
 
-#: ippc/views.py:144
+#: ippc/views.py:157
 msgid "Successfully created pest report."
 msgstr ""
 
@@ -429,6 +433,7 @@ msgstr ""
 
 #: ippc/templates/base.html:177 ippc/templates/index.html:8
 #: ippc/templates/search_results.html:10
+#: ippc/templates/countries/country_page.html:10
 #: ippc/templates/pages/menus/breadcrumb.html:4
 #: ippc/templates/pages/menus/breadcrumb.html:10
 #: ippc/templates/pages/menus/dropdown.html:56
@@ -586,7 +591,7 @@ msgstr ""
 #: ippc/templates/accounts/account_editor_details.html:51
 #: ippc/templates/accounts/account_profile_details.html:31
 #: ippc/templates/accounts/account_user_details.html:31
-#: ippc/templates/countries/country_page.html:50
+#: ippc/templates/countries/country_page.html:54
 msgid "Name"
 msgstr ""
 
@@ -796,11 +801,17 @@ msgstr ""
 msgid "Atom"
 msgstr ""
 
-#: ippc/templates/countries/country_page.html:33
+#: ippc/templates/countries/country_page.html:14
+#: ippc/templates/countries/pest_report_create.html:14
+#: ippc/templates/countries/pest_report_edit.html:14
+msgid "Countries"
+msgstr ""
+
+#: ippc/templates/countries/country_page.html:37
 msgid "Contact Point"
 msgstr ""
 
-#: ippc/templates/countries/country_page.html:71
+#: ippc/templates/countries/country_page.html:75
 msgid "Add new"
 msgstr ""
 
@@ -811,11 +822,6 @@ msgstr ""
 #: ippc/templates/countries/pest_report_add.html:4
 #: ippc/templates/countries/pest_report_create.html:4
 msgid "New Pest Report"
-msgstr ""
-
-#: ippc/templates/countries/pest_report_create.html:14
-#: ippc/templates/countries/pest_report_edit.html:14
-msgid "Countries"
 msgstr ""
 
 #: ippc/templates/countries/pest_report_create.html:30
@@ -909,6 +915,8 @@ msgstr ""
 #: ippc/templates/countries/pest_report_hidden_list.html:44
 #: ippc/templates/countries/pest_report_list.html:40
 #: ippc/templates/pages/publication_detail.html:9
+#: ippc/templates/pages/publication_list.html:17
+#: ippc/templates/pages/publication_list.html:32
 msgid "« Go back"
 msgstr ""
 
@@ -928,6 +936,7 @@ msgid ""
 msgstr ""
 
 #: ippc/templates/countries/pest_report_hidden_list.html:63
+#: ippc/templates/pages/publication_list.html:44
 msgid "Date Modified"
 msgstr ""
 
@@ -938,12 +947,14 @@ msgstr ""
 #: ippc/templates/countries/pest_report_hidden_list.html:91
 #: ippc/templates/countries/pest_report_list.html:96
 #: ippc/templates/includes/pagination.html:8
+#: ippc/templates/pages/publication_list.html:72
 msgid "Page"
 msgstr ""
 
 #: ippc/templates/countries/pest_report_hidden_list.html:91
 #: ippc/templates/countries/pest_report_list.html:96
 #: ippc/templates/includes/pagination.html:8
+#: ippc/templates/pages/publication_list.html:72
 msgid "of"
 msgstr ""
 
