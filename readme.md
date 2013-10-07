@@ -2,7 +2,9 @@
 
 Based on [Django](https://www.djangoproject.com/) and [Mezzanine](http://mezzanine.jupo.org).
 
-# Todo:
+Here's [some documentation to get started](https://github.com/hypertexthero/ippcdj/blob/master/docs/documentation.md).
+
+## Things to do
 
 - Ability to authenticate against external user database
     - [Identity Authentication on the Internet](http://hypertexthero.com/logbook/2013/08/identity-internet/)
