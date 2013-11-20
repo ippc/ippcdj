@@ -6,6 +6,11 @@ Here's [some documentation to get started](https://github.com/hypertexthero/ippc
 
 ## Things to do
 
+- [Email utility](https://github.com/pinax/django-mailer)
+    - Ability to insert user groups as well as individual users in `To:` field in `/admin/mailer/message/add/`
+        - Use [admin actions](https://docs.djangoproject.com/en/1.5/ref/contrib/admin/actions/)?
+        - [Custom admin form](http://stackoverflow.com/a/6099360/412329) overriding mailer's default form? Also see [this](http://djangosnippets.org/snippets/1650/) and [this](https://gist.github.com/luzfcb/1712348)
+        - Custom email utility app and admin form calling django-mailer and groups?
 - Ability to authenticate against external user database
     - [Identity Authentication on the Internet](http://hypertexthero.com/logbook/2013/08/identity-internet/)
     - [Drupal 7 password hasher for Django](http://stackoverflow.com/q/9876700/412329)
@@ -17,12 +22,8 @@ Here's [some documentation to get started](https://github.com/hypertexthero/ippc
         - [Income levels example](http://humangeo.github.io/leaflet-dvf/examples/html/incomelevels.html)
         - [Top Cities](http://techslides.com/leaflet-map-with-utfgrid-and-php-served-mbtiles/)
 - Homepage design
-- [Email utility](https://github.com/pinax/django-mailer)
-    - Ability to insert user groups as well as individual users in `To:` field in `/admin/mailer/message/add/`
-        - Use [admin actions](https://docs.djangoproject.com/en/1.5/ref/contrib/admin/actions/)?
-        - [Custom admin form](http://stackoverflow.com/a/6099360/412329) overriding mailer's default form? Also see [this](http://djangosnippets.org/snippets/1650/) and [this](https://gist.github.com/luzfcb/1712348)
-        - Custom email utility app and admin form calling django-mailer and groups?
 - [Calendar](https://github.com/shurik/mezzanine.calendar) (or [Events](https://github.com/stbarnabas/mezzanine-events)?)
+- Account registration & [activation](http://mezzanine.jupo.org/docs/user-accounts.html#account-approval) system?
 - Forums
 - Contact form
 - FAQ
