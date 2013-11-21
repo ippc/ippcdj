@@ -21,6 +21,7 @@
     cd ippcdj_repo
     pip install -r requirements/project.txt
     # if you see errors related to PIL, see: <http://www.hypertexthero.com/logbook/2013/07/pil-pillow-libjpeg-ldconfig/>
+    mv local_settings_example.py local_settings.py
     python manage.py createdb
     # Accept the defaults, say 'Yes' to 'fake initial migrations'
     python manage.py runserver
