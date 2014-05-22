@@ -17,7 +17,7 @@
     . bin/activate
     # in windows: . Scripts/activate
         
-    git clone https://github.com/hypertexthero/ippcdj.git ippcdj_repo
+    git clone git@github.com:hypertexthero/ippcdj.git ippcdj_repo
     cd ippcdj_repo
     pip install -r requirements/project.txt
     # if you see errors related to PIL, see: <http://www.hypertexthero.com/logbook/2013/07/pil-pillow-libjpeg-ldconfig/>
