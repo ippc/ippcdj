@@ -22,6 +22,7 @@ Here's [some documentation to get started](https://github.com/hypertexthero/ippc
         - [Income levels example](http://humangeo.github.io/leaflet-dvf/examples/html/incomelevels.html)
         - [Top Cities](http://techslides.com/leaflet-map-with-utfgrid-and-php-served-mbtiles/)
 - Homepage design
+    - ¿'Add Pest Report' button in countries for NPPOs, visible even when user is logged out. Once user logs in, if they're an NPPO, they are redirected to the pest report form for their country?
 - [Calendar](https://github.com/shurik/mezzanine.calendar) (or [Events](https://github.com/stbarnabas/mezzanine-events)?)
 - Account registration & [activation](http://mezzanine.jupo.org/docs/user-accounts.html#account-approval) system?
 - Forums
