@@ -29,15 +29,49 @@
     
 ## Workflow
 
-=TODO
+GitHub accounts are for codebase repository. Copies of codebase repository are also available in: 
 
-1. GitHub or Git on Dev server?
-2. Git workflow
+1. Each developer's computer
+2. dev.ippc.int server
+3. ippc.int server
 
-    a. [Branching](http://git-scm.com/book/en/Git-Branching-Basic-Branching-and-Merging)?
-    b. Etc.
-    
-2. Dev > Production deployment
+[**Fork & Pull Model** or **Shared Repository** model](https://help.github.com/articles/what-is-a-good-git-workflow)?
+
+## GitHub Flow (how to work on www.ippc.int code):
+
+1. [Fork Hypertexthero GitHub repository into own GitHub account, then clone it into your computer and add the original as upstream remote](https://help.github.com/articles/fork-a-repo):
+
+2. To work on something new, [create a descriptively named branch](http://git-scm.com/book/en/Git-Branching-Basic-Branching-and-Merging) off of master (ie: iss53 - to resolve an example [issue](https://guides.github.com/features/issues/) #53).
+
+        :::bash
+        git checkout -b iss53
+
+3. Commit to that branch locally and regularly push your work to the same named branch on your account.
+
+        :::bash
+        git commit -a -m 'fixed [issue 53]'
+        git push origin
+
+4. When you need feedback or help, or you think the branch is ready for merging, [open a pull request](https://help.github.com/articles/using-pull-requests).
+
+5. After someone else has reviewed and signed off on the feature, you can merge it into master.
+
+        git merge iss53
+        git push upstream
+
+If there's a conflict (two people edited the same lines on a file in a different way), you [can resolve it](http://git-scm.com/book/en/Git-Branching-Basic-Branching-and-Merging#Basic-Merge-Conflicts). 
+
+6. Once it is merged and pushed to ‘master’, you can and should deploy immediately to dev/production server, either using a Fabric script to push to dev.ippc.int or www.ippc.int. Example: `fab push dev` or `fab push prod`, or a continuous integration server setup such as Jenkins (ideal — I don't know how to set this up yet), or manually logging into prod/dev server repo and doing a `git pull`.  
+
+### More information
+
+- [Understanding the GitHub Flow](https://guides.github.com/introduction/flow/) (brief visual overview)
+- [GitHub Flow in the Browser](https://help.github.com/articles/github-flow-in-the-browser) (In-browser GitHub features)
+- [GitHub Flow](http://scottchacon.com/2011/08/31/github-flow.html) (detailed overview)
+- [Pull new updates from original Github repository into forked Github repository](http://stackoverflow.com/a/3903835)
+- [Git for beginners](http://stackoverflow.com/questions/315911/git-for-beginners-the-definitive-practical-guide)
+
+**IPPC Repository:** <https://github.com/hypertexthero/ippcdj> - The master branch that should eventually be the same code that is live at production website. Another, likely better, option is to create an IPPC Organization page and move this there. 
 
 ## Data migrations using South app after changing models
 
