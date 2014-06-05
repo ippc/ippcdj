@@ -2,34 +2,43 @@
 
 ## Installation / Setup
 
-1. Install [Python](http://python.org) and [virtualenv](https://pypi.python.org/pypi/virtualenv), then open a terminal session and go to your projects directory, such as `~/projects`, and type the [following command](http://stackoverflow.com/a/1534343):
 
-    `virtualenv -p /usr/local/bin/python2.7 ippcdj-env`
-    
-<!-- 2. Add the following to the bottom of the `~/projects/ippcdj-env/bin/activate`  (in windows may `~/projects/ippcdj-env/Script/activate`) file then save the file:
+1. Install Django development environment on your computer and follow instructions to get it running: <http://wiki.bitnami.com/Infrastructure_Stacks/BitNami_Django_Stack>
 
-    export DJANGO_SETTINGS_MODULE="ippcdj_repo.settings"
-    echo $DJANGO_SETTINGS_MODULE -->
-    
-2. Back in the Terminal, activate the virtual environment:
+2. Clone code repository (currently on GitHub), move into it and install third-party libraries for the project:
 
     ````
-    . bin/activate
-    # in windows: . Scripts/activate
-        
     git clone https://github.com/hypertexthero/ippcdj.git ippcdj_repo
     cd ippcdj_repo
     pip install -r requirements/project.txt
     # if you see errors related to PIL, see: <http://www.hypertexthero.com/logbook/2013/07/pil-pillow-libjpeg-ldconfig/>
-    mv local_settings_example.py local_settings.py
+    # if you're on Windows install Pillow for your computer from <http://www.lfd.uci.edu/~gohlke/pythonlibs/> (see <https://bitnami.com/forums/forums/djangostack/topics/i-was-running-through-the-djangobook-tutorials-and-now-i-need-a-python-imaging-library>)
+    
+    # rename local_settings_example.py to local_settings.py 
+    mv local_settings_example.py local_settings.py 
+    
+    # create database (or rename existing test one dev.dbcopy > dev.db)
     python manage.py createdb
+    
     # Accept the defaults, say 'Yes' to 'fake initial migrations'
     python manage.py runserver
     
     ````
 
-3. Go to 127.0.0.1:8000 to see the app running. go to 127.0.0.1:8000/admin to log in to the admin interface. To stop the server press Ctrl-C in the terminal.
+3. Go to 127.0.0.1:8000 to see the app running. go to 127.0.0.1:8000/admin to log in to the admin interface. To stop the server press Ctrl-C (Ctrl-Z and Enter in Windows) in the terminal.
     
+## Workflow
+
+=TODO
+
+1. GitHub or Git on Dev server?
+2. Git workflow
+
+    a. [Branching](http://git-scm.com/book/en/Git-Branching-Basic-Branching-and-Merging)?
+    b. Etc.
+    
+2. Dev > Production deployment
+
 ## Data migrations using South app after changing models
 
 Make sure 'south' is present in your INSTALLED_APPS IN settings.py.

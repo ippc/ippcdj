@@ -1,0 +1,8 @@
+{% load mezzanine_tags i18n %}
+{% ifinstalled mezzanine.accounts %}
+<div class="muted small">
+  <a href="{% url 'page' 'faq' %}">{% trans "Frequently Asked Questions" %}</a> |
+  {% include "accounts/includes/user_panel.html" %}
+</div>
+{% endifinstalled %}
+

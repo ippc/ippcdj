@@ -1,0 +1,205 @@
+<!doctype html>
+<html lang="{{ LANGUAGE_CODE }}"{% if LANGUAGE_BIDI %} dir="rtl"{% endif %}>
+{% load pages_tags mezzanine_tags i18n future staticfiles %}
+<head>
+
+<meta http-equiv="Content-type" content="text/html; charset=utf-8">
+<meta name="viewport" content="width=device-width">
+<meta name="robots" content="noindex,nofollow"> {# =todo: CHANGE TO ALL FOR PRODUCTION #}
+<meta name="keywords" content="{% block meta_keywords %}{% endblock %}">
+<meta name="description" content="{% block meta_description %}{% endblock %}">
+<title>{% block meta_title %}{% endblock %} - {% trans "Online Comments System (OCS)" %}</title>
+<link rel="shortcut icon" href="{% static "img/favicon.ico" %}">
+
+{% compress css %}
+<link rel="stylesheet" href="{% static "css/bootstrap.css" %}">
+<link rel="stylesheet" href="{% static "css/mezzanine.css" %}">
+<link rel="stylesheet" href="{% static "css/bootstrap-responsive.css" %}">
+<link rel="stylesheet" href="{% static "css/ippc.css" %}">
+<link rel="stylesheet" href="{% static "css/chosen.css" %}">
+{% if LANGUAGE_BIDI %}
+<link rel="stylesheet" href="{% static "css/rtl.css" %}">
+{% endif %}
+{% ifinstalled cartridge.shop %}
+<link rel="stylesheet" href="{% static "css/cartridge.css" %}">
+{% if LANGUAGE_BIDI %}
+<link rel="stylesheet" href="{% static "css/cartridge.rtl.css" %}">
+{% endif %}
+{% endifinstalled %}
+{% block extra_css %}{% endblock %}
+{% endcompress %}
+
+{% compress js %}
+<script src="{% static "mezzanine/js/"|add:settings.JQUERY_FILENAME %}"></script>
+<script src="{% static "js/bootstrap.js" %}"></script>
+<script src="{% static "js/bootstrap-extras.js" %}"></script>
+<script src="{% static "js/chosen.jquery.min.js" %}"></script>
+{# {% block extra_js %}{% endblock %} #} {# MOVED TO BOTTOM #}
+{% endcompress %}
+<!--[if lt IE 9]>
+<script src="{% static "js/html5shiv.js" %}"></script>
+<![endif]-->
+
+{% block extra_head %}{% endblock %}
+
+</head>
+<body id="{% block body_id %}body{% endblock %}" class="{% block body_class %}{% endblock %}">
+
+<div class="navbar navbar-fixed-top">
+<div class="navbar-inner">
+<div class="container-fluid">
+
+
+    {# language bar #}
+    {# http://pythonhosted.org/django-localeurl/usage.html #}
+    {# {% load localeurl_tags %} #}
+    {#     <ul class="nav nav-pills small pull-left languagebar"> #}
+    {# {% for lang in LANGUAGES %} #}
+    {#     {% ifequal lang.0 LANGUAGE_CODE %} #}
+    {#         <li class="active"><a href="#">{{ lang.1 }}</a></li> #}
+    {#     {% else %} #}
+    {#         <li><a href="{{ request.path|chlocale:lang.0 }}">{{ lang.1 }}</a></li> #}
+    {#     {% endifequal %} #}
+    {# {% endfor %} #}
+    {#     </ul> #}
+
+    <div class="nav-collapse collapse">
+        {# toolbar, user panel, login/logout #}
+        <div class="pull-right text-right">
+            {% nevercache %}
+            {% include "includes/ocs_user_panel.html" %}
+            {% endnevercache %}
+            {# <div class="panel"> #}
+            {# {% block right_panel %} #}
+            {# {% ifinstalled mezzanine.twitter %} #}
+            {# {% include "twitter/tweets.html" %} #}
+            {# {% endifinstalled %} #}
+            {# {% endblock %} #}
+            {# </div> #}
+            {# <br> #}
+            {# {% search_form "all" %} #}
+            {# {% search_form %} #}
+        </div>
+    </div>
+        
+    <a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+    </a>
+    
+    <div class="pull-left" style="clear:left;">
+      <h3 class="normal">
+        <a class="brand-ocs" href="/">
+          {% trans "Online Comments System (OCS)" %}
+        </a>
+        {# <br> #}
+        {#     <em class="small">{% blocktrans %}Protecting the world's plant resources from pests{% endblocktrans %}</em> #}
+      </h3>
+    </div>
+    
+    <div class="nav-collapse collapse">
+      {# {% page_menu "pages/menus/dropdown.html" %} #}
+
+      {# =globalnav ************ #}
+      {# <ul class="nav nav-collapse pull-left" style="clear:both;"> #}
+      {#   <li class="{% if on_home %} active{% endif %}" id="dropdown-menu-{{ page.html_id }}"> #}
+      {#     <a href="{% url "home" %}">{% trans "Home" %}</a> #}
+      {#   </li> #}
+      {# </ul> #}
+    </div>
+    
+</div>
+</div>
+</div>
+
+<div class="container-fluid">
+
+{% nevercache %}
+{% for message in messages %}
+<div class="alert alert-{{ message.tags }}" data-alert="alert">
+    <a class="close" href="#" onclick="$(this).parent().fadeOut('fast'); return false;">×</a>{{ message }}
+</div>
+{% endfor %}
+{% endnevercache %}
+
+{% block bread %}
+<ul class="breadcrumb">
+{% spaceless %}
+{% block breadcrumb_menu %}{% page_menu "pages/menus/breadcrumb.html" %}{% endblock %}
+{% endspaceless %}
+</ul>
+{% endblock bread %}
+
+<h1>{% block title %}{% endblock %}</h1>
+
+</div>
+
+<div class="container-fluid">
+<div class="row-fluid">
+
+<div class="span8 middle">
+    {% block main %}{% endblock %}
+</div>
+
+<div class="span4 right">
+    {% block local_nav %}
+    {% block trans %}
+    <div class="panel tree">{% page_menu "pages/menus/tree.html" %}</div>
+    {% endblock trans %}
+    {% endblock local_nav %}
+    
+    {% block pageinfo %}
+    <div class="panel">
+        <h4>{% trans "Key Links &amp; Documents" %}</h4>
+        {# <ul> #}
+        {#     <li><a href="{% url 'sitemap' %}">{% trans "Sitemap" %}</a></li> #}
+        {# </ul> #}
+        
+        {% load translate_tags ippc_tags %}
+        {# {% with page.richtextpage|get_object_translation as translated_page %} #}
+        {#     {{ translated_page.content|richtext_filter|safe }} #}
+        {# {% endwith %} #}
+        
+        {% get_page "key-documents" "content" %}
+        
+    </div>
+    {% endblock pageinfo %}
+</div>
+
+</div>
+</div>
+
+<footer>
+<div class="container-fluid">
+{# {% page_menu "pages/menus/footer.html" %} #}
+
+{# <div class="span6 muted"> #}
+{#     <ul class="nav nav-pills small"> #}
+{#         <li><a href="{% url 'home' %}">{% trans "Home" %}</a></li> #}
+{#         <li><a href="{% url 'contact' %}">{% trans "Contact us" %}</a></li> #}
+{#         <li><a href="{% url 'page' 'feeds' %}">{% trans "RSS feeds" %}</a></li> #}
+{#         <li><a href="{% url 'page' 'legal' %}">{% trans "Legal" %}</a></li> #}
+{#         <li><a href="{% url 'page' 'colophon' %}">{% trans "About this site" %}</a> #}
+{#     </ul> #}
+{#         <p class="text-left">{% trans "IPPC on Social Media:" %} <a href="http://www.facebook.com/pages/IPPC-Protecting-the-worlds-plant-resources-from-pests/113230338690380" class="icn-facebook">Facebook</a> | <a href="https://twitter.com/ippcnews" class="icn-twitter">Twitter</a></p> #}
+{# </div> #}
+    
+<div class="span12 text-right muted small">
+    {% trans "The IPPC Secretariat is hosted &amp; provided by" %} <a href="http://www.fao.org">FAO</a>. <a style="vertical-align:middle;" class="imglink" href="http://www.fao.org"><img class="faologo" src="{% static "img/fao-logo.gif" %}" alt="{% trans "Food and Agriculture Organization Logo" %}" height="58" width="58"></a>
+</div>
+
+</footer>
+
+{% include "includes/footer_scripts.html" %}
+{% compress js %}
+
+{# better country selector using chosen - http://harvesthq.github.io/chosen/ #}
+<script type="text/javascript" charset="utf-8">
+  $(".chosen-select").chosen()  
+</script>
+
+{% block extra_js %}{% endblock %}
+{% endcompress %}
+</body>
+</html>

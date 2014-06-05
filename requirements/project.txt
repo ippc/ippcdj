@@ -1,7 +1,7 @@
 Django==1.5.1
 Markdown==2.3.1
 Mezzanine==1.4.8
-Pillow==2.1.0
+Pillow==2.1.0 # For Windows needed to install Pillow from http://www.lfd.uci.edu/~gohlke/pythonlibs/
 Pygments==1.6
 South==0.8.1
 bleach==1.2.2
