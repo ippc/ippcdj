@@ -44,6 +44,7 @@ Here's [some documentation to get started](https://github.com/hypertexthero/ippc
         - Use [admin actions](https://docs.djangoproject.com/en/1.5/ref/contrib/admin/actions/)?
         - [Custom admin form](http://stackoverflow.com/a/6099360/412329) overriding mailer's default form? Also see [this](http://djangosnippets.org/snippets/1650/) and [this](https://gist.github.com/luzfcb/1712348)
         - Custom email utility app and admin form calling django-mailer and groups?
+- Add [blog category management page to admin](http://127.0.0.1:8000/en/admin/blog/blogcategory/)
 - Homepage design
     - ¿'Add Pest Report' button in countries for NPPOs, visible even when user is logged out. Once user logs in, if they're an NPPO, they are redirected to the pest report form for their country?
 - [Calendar](https://github.com/shurik/mezzanine.calendar) (or [Events](https://github.com/stbarnabas/mezzanine-events)?)
