@@ -14,19 +14,104 @@
 
 {% block main %}
 
+    {% if user.is_superuser %} 
+        <p class="pull-right"><a class="btn btn-small btn-info" href="upload">Upload New Document</a></p>
+    {% endif %}
+
+
   <h1>
-      Documents
+      Documents Open for Commenting <br><small>Closed documents are in the <a href="#">archive</a></small>
   </h1> 
+
+{# {% if latest %} #}
+
+
+<table class="table table-condensed table-striped" id="publications">
+  <thead>
+    <tr>
+      <th style="font-weight:normal;">{% trans "Title" %}</th>
+      <th style="font-weight:normal;">{% trans "Doc Number" %}</th>
+      <th style="font-weight:normal;">{% trans "Agenda Number" %}</th>      
+      <th style="font-weight:normal;">{% trans "Open Date" %}</th>
+      <th><i class="icon-chevron-down"></i> {% trans "Close Date" %}</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><a href="001-test-document-detail" class="text-success">Test Document</a> {% if user.is_superuser %} <small><a class="btn btn-small btn-info" href="edit">Edit</a></small>
+    {% endif %}</td>
+      <td>K123</td>
+      <td>456</td>
+      <td>June 9, 2014</td>
+      <td>September 5, 2014</td>
+    </tr>
+    <tr>
+      <td><a href="test-document">Ut enim ad minim veniam, quis nostrud</a> {% if user.is_superuser %} <small><a class="btn btn-small btn-info" href="edit">Edit</a></small>
+    {% endif %}</td>
+      <td>K146</td>
+      <td>39</td>
+      <td>July 5, 2014</td>
+      <td>November 31, 2014</td>
+    </tr>
+    <tr>
+      <td><a href="test-document">Lorem ipsum dolor sit amet, consectetur adipisicing elit</a> {% if user.is_superuser %} <small><a class="btn btn-small btn-info" href="edit">Edit</a></small>
+    {% endif %}</td>
+      <td>K054</td>
+      <td>14</td>
+      <td>June 2, 2014</td>
+      <td>December 4, 2014</td>
+    </tr>
+    <tr>
+      <td><a href="test-document">Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua</a> {% if user.is_superuser %} <small><a class="btn btn-small btn-info" href="edit">Edit</a></small>
+    {% endif %}</td>
+      <td>K98</td>
+      <td>244</td>
+      <td>April, 2014</td>
+      <td>December 15, 2014</td>
+    </tr>
+    <tr>
+      <td><a href="test-document">Fugiat nulla pariatur</a> {% if user.is_superuser %} <small><a class="btn btn-small btn-info" href="edit">Edit</a></small>
+    {% endif %}</td>
+      <td>K55</td>
+      <td>42</td>
+      <td>September 4, 2014</td>
+      <td>December 31, 2014</td>
+    </tr>
+    <tr>
+      <td><a href="test-document">Kaboris nisi ut aliquip ex ea commodo consequat</a> {% if user.is_superuser %} <small><a class="btn btn-small btn-info" href="edit">Edit</a></small>
+    {% endif %}</td>
+      <td>K45</td>
+      <td>33</td>
+      <td>June 9, 2014</td>
+      <td>December 31, 2014</td>
+    </tr>
+    {# {% for object in latest %} #}
+    {# <tr> #}
+      {# <td><a href="{% url 'pest-report-detail' object.country.country_slug object.publish_date|date:'Y' object.publish_date|date:'m'  object.slug %}">{{ object.title }}</a></td> #}
+{#       <td><a href="{% url 'pest-report-detail' object.country.country_slug object.publish_date|date:'Y' object.publish_date|date:'m'  object.slug %}">{{ object.publish_date|date:"d M Y" }}</a> #}
+{#  #}
+{#         {% if user.is_superuser %}  #}
+{#             <a class="small pull-right" href="/admin/ippc/pestreport/{{ object.id }}"><i class="icon-edit"></i> Edit as Admin</a><br> #}
+{#         {% endif %} #}
+{#  #}
+{#         {% if perms.ippc.change_pestreport and request.user.get_profile.country.name == page.title %} #}
+{#             <a class="small pull-right" href="{% url 'pest-report-edit' object.country.country_slug object.id %}"><i class="icon-edit"></i> Edit</a> #}
+{#              <a class="btn" href="{% url 'pest-report-edit' report.id %}"><i class="icon-edit"></i> Edit</a> #}
+{#         {% else %} #}
+{#         {% endif %} #}
+{#         </td> #}
+    {# </tr> #}
+
+    {# {% endfor %} #}
+  </tbody>
+</table>
 
 {% endblock main %}
 
 {% block local_nav %}
 <div class="panel">    
-    <ul class="nav nav-list">
-      <li class="nav-header">About <abbr title="Online Comments System">OCS</abbr></li>
-      <li class="divider"></li>
-      <li>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</li>
-    </ul>
+  <h3>About <abbr title="Online Comments System">OCS</abbr></h3>
+  <p>The Online Comments System lets authorized users comment on documents. <a href="/faq#ocs">More information »</a></p>
 </div>  
 {% endblock local_nav %}
 

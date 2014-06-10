@@ -1,0 +1,23 @@
+{% extends "ocs/base_ocs.html" %}
+{% load pages_tags translate_tags mezzanine_tags i18n future staticfiles accounts_tags %}
+
+{% block meta_title %}
+  {% trans "Upload Document" %}
+{% endblock %}
+
+{% block breadcrumb_menu %}
+<li>
+  <a href="/ocs/">{% trans "Home" %}</a>
+  <span class="divider">/</span>
+</li>
+<li class="active">Upload Document</li>
+{% endblock %}
+
+{% block main %}
+
+<h1>Upload Document for Commenting</h1>
+  <form class="customform" method="POST" action="">
+    {% csrf_token %}
+    {% include "ocs/upload_form.html" %}
+  </form>
+{% endblock main %}

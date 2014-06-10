@@ -138,36 +138,26 @@
 <div class="container-fluid">
 <div class="row-fluid">
 
-<div class="span8 middle">
+<div class="span12 middle">
     {% block main %}{% endblock %}
-</div>
 
-<div class="span4 right">
+
+
     {% block local_nav %}
     {% block trans %}
     <div class="panel tree">{% page_menu "pages/menus/tree.html" %}</div>
     {% endblock trans %}
     {% endblock local_nav %}
     
-    {% block pageinfo %}
-    <div class="panel">
-        <h4>{% trans "Key Links &amp; Documents" %}</h4>
-        {# <ul> #}
-        {#     <li><a href="{% url 'sitemap' %}">{% trans "Sitemap" %}</a></li> #}
-        {# </ul> #}
-        
-        {% load translate_tags ippc_tags %}
-        {# {% with page.richtextpage|get_object_translation as translated_page %} #}
-        {#     {{ translated_page.content|richtext_filter|safe }} #}
-        {# {% endwith %} #}
-        
-        {% get_page "key-documents" "content" %}
-        
-    </div>
-    {% endblock pageinfo %}
+    {# {% block pageinfo %} #}
+    {# <div class="panel"> #}
+    {#     <h4>{% trans "Key Links &amp; Documents" %}</h4> #}
+    {#     {% load translate_tags ippc_tags %} #}
+    {#     {% get_page "key-documents" "content" %}         #}
+    {# </div> #}
+    {# {% endblock pageinfo %} #}
 </div>
 
-</div>
 </div>
 
 <footer>

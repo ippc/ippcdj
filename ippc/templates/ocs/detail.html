@@ -1,0 +1,159 @@
+{% extends "ocs/base_ocs.html" %}
+{% load pages_tags translate_tags mezzanine_tags i18n future staticfiles accounts_tags %}
+
+{% block meta_title %}
+  {% trans "Test Document" %}
+{% endblock %}
+
+{% block breadcrumb_menu %}
+<li>
+  <a href="/ocs/">{% trans "Home" %}</a>
+  <span class="divider">/</span>
+</li>
+<li class="active">Test Document</li>
+{% endblock %}
+
+{% block main %}
+
+{# {% if latest %} #}
+<table class="table table-condensed table-striped" id="publications">
+  <thead>
+    <tr>
+      <th style="width:2em;">{% trans "Item" %}</th>
+      <th class="normal" style="width:50%;">{% trans "Document" %}</th>
+      <th style="width:40%;">{% trans "History" %}</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+    </tr>
+    <tr>
+      <td>
+        {# {{ forloop.counter0|add:page_obj.start_index }} #}
+        1
+      </td>
+      <td>
+        <h1>Test Document</h1>
+        
+        <!-- Button to trigger modal -->
+        {# <a href="#myModal" role="button" class="btn" data-toggle="modal">Launch demo modal</a> #}
+     
+        <!-- Modal -->
+        {# <div id="myModal" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true"> #}
+        {# <div class="modal-header"> #}
+        {# <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button> #}
+        {# <h3 id="myModalLabel">Modal header</h3> #}
+        {# </div> #}
+        {# <div class="modal-body"> #}
+        {# <p>One fine body…</p> #}
+        {# </div> #}
+        {# <div class="modal-footer"> #}
+        {# <button class="btn" data-dismiss="modal" aria-hidden="true">Close</button> #}
+        {# <button class="btn btn-primary">Save changes</button> #}
+        {# </div> #}
+        {# </div> #}
+
+        <fieldset>
+          <legend>Comments</legend><form class="customform" method="POST" action="">
+          {% csrf_token %}
+          {% include "ocs/comment_form.html" %}
+        </form></fieldset>
+        
+      </td>
+      <td>
+        <ul>
+          <li><a href="#">List</a></li>
+          <li><a href="#">Of</a></li>
+          <li><a href="#">Changes</a></li>
+        </ul>
+      </td>
+    </tr>
+    <tr>
+      <td>
+        {# {{ forloop.counter0|add:page_obj.start_index }} #}
+        2
+      </td>
+      <td>
+        <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
+     <fieldset>
+       <legend>Comments</legend><form class="customform" method="POST" action="">
+       {% csrf_token %}
+       {% include "ocs/comment_form.html" %}
+     </form></fieldset>
+     
+   </td>
+   <td>
+     <ul>
+       <li><a href="#">List</a></li>
+       <li><a href="#">Of</a></li>
+       <li><a href="#">Changes</a></li>
+     </ul>
+   </td>
+ </tr>
+    <tr>
+      <td>
+        {# {{ forloop.counter0|add:page_obj.start_index }} #}
+        3
+      </td>
+      <td>
+        <ul>
+          <li>Here's a bulleted list</li>
+          <li>With three or</li>
+          <li>Four items</li>
+        </ul>
+        <fieldset>
+          <legend>Comments</legend><form class="customform" method="POST" action="">
+          {% csrf_token %}
+          {% include "ocs/comment_form.html" %}
+        </form></fieldset>
+        
+      </td>
+      <td>
+        <ul>
+          <li><a href="#">List</a></li>
+          <li><a href="#">Of</a></li>
+          <li><a href="#">Changes</a></li>
+        </ul>
+      </td>
+    </tr>
+    <tr>
+      <td>
+        {# {{ forloop.counter0|add:page_obj.start_index }} #}
+        4
+      </td>
+      <td>
+          <table border="0" cellspacing="5" cellpadding="5">
+            <tr>
+              <th>Table Header</th>
+              <th>Header Again</th>
+              <th>Another One</th>
+            </tr>
+            <tr>
+              <td>Laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</td>
+              <td>Velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</td>
+              <td>Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</td>
+            </tr>
+          </table>
+        <fieldset>
+          <legend>Comments</legend>
+          <form class="customform" method="POST" action="">
+          {% csrf_token %}
+          {% include "ocs/comment_form.html" %}
+        </form></fieldset>
+        
+      </td>
+      <td>
+        <ul>
+          <li><a href="#">List</a></li>
+          <li><a href="#">Of</a></li>
+          <li><a href="#">Changes</a></li>
+        </ul>
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+{% endblock main %}
+
+{% block pageinfo %}
+{% endblock pageinfo %}
