@@ -14,7 +14,7 @@
 
 {% block main %}
 
-    {% if user.is_superuser %} 
+    {% if user.is_staff %} 
         <p class="pull-right"><a class="btn btn-small btn-info" href="upload">Upload New Document</a></p>
     {% endif %}
 

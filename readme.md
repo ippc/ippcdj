@@ -237,8 +237,12 @@ Dev server exlqaippc2.ext.fao.org setup and configuration for IPPC 4.0 prototype
         python manage.py makemessages --all
         python manage.py compilemessages
 
-8. Kill gunicorn process `pkill gunicorn` then restart it `gunicorn_django -b 0.0.0.0:8000`
+8. Kill [gunicorn](http://gunicorn-docs.readthedocs.org/en/latest/run.html) process `pkill gunicorn` then restart it `gunicorn_django --daemon -b 0.0.0.0:8000`
 9. Stop nginx `service nginx stop` then restart `service nginx start`
+
+## Permissions System
+
+- Implemented using [django-guardian](https://github.com/lukaszb/django-guardian)
 
 **Server Architecture**
 
