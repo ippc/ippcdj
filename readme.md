@@ -197,29 +197,26 @@ If you add new fields or change certain values of existing ones such as blank or
 
 1. If you followed the Installation / Setup steps above go to step 2. Otherwise run the following in the terminal:
 
-    `./manage.py convert_to_south ippc`
+        python manage.py convert_to_south ippc
 
 2. Everytime you make a change in your models do the following:
 
-    `./manage.py schemamigration ippc --auto`  
-    `./manage.py migrate ippc`
+        python manage.py schemamigration ippc --auto
+        python manage.py migrate ippc
 
 3. If you want to revert to a previous migration, look for the previous migration number in ippc/migrations and replace #### with the migration number in the following command:
 
-    `manage.py migrate your_app ####`
+        manage.py migrate your_app ####
 
-## Dumpdata
 
-    `python manage.py dumpdata --indent 2 > initial_data.json`
-
-## Update translations for non-user-generated site content
+## Translation updates for non-user-generated site content
 
 <https://docs.djangoproject.com/en/dev/topics/i18n/translation/>
 
 Edit the django.po file for each language in `ippcdj_repo/conf/locale/` and then run the following commands in the terminal to compile the translation files: 
 
-    `python manage.py makemessages --all`
-    `python manage.py compilemessages`
+    python manage.py makemessages --all
+    python manage.py compilemessages
 
 ## Deployment
 
@@ -232,16 +229,19 @@ Dev server exlqaippc2.ext.fao.org setup and configuration for IPPC 4.0 prototype
 5. move any static media to proper serving location `python manage.py collectstatic`
 6. run any data migrations on the database:
 
-    :::bash
-    `./manage.py schemamigration ippc --auto`  
-    `./manage.py migrate ippc`
+        python manage.py schemamigration ippc --auto
+        python  manage.py migrate ippc
 
-7. Kill gunicorn process `pkill gunicorn` then restart it `gunicorn_django -b 0.0.0.0:8000`
-8. Stop nginx `service nginx stop` then restart `service nginx start`
+7. Compile translations
+
+        python manage.py makemessages --all
+        python manage.py compilemessages
+
+8. Kill gunicorn process `pkill gunicorn` then restart it `gunicorn_django -b 0.0.0.0:8000`
+9. Stop nginx `service nginx stop` then restart `service nginx start`
 
 **Server Architecture**
 
-    :::text
     Request ----> Reverse-Proxy Server (Nginx)
                      |
                       \                           
@@ -254,6 +254,4 @@ Dev server exlqaippc2.ext.fao.org setup and configuration for IPPC 4.0 prototype
 - [Gunicorn](https://www.digitalocean.com/community/articles/how-to-deploy-python-wsgi-apps-using-gunicorn-http-server-behind-nginx) _web application WSGI server_
 
 The main web application is built with [Django](https://www.djangoproject.com/) and [Mezzanine](http://mezzanine.jupo.org).
-
-[^1]: [More info](http://www.unixmen.com/install-nginx-with-php-and-mysql-in-centos-6-4-rhel-6-4/)
 
