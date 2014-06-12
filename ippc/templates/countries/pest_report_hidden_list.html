@@ -55,7 +55,7 @@
   {% if perms.ippc.change_pestreport and request.user.get_profile.country.name == page.title or user.is_superuser %}
   
   <h1><small class="normal">{% trans "Hidden Pest Reports from" %}</small> {{ page.title }}</h1> 
-  <p class="quiet">{% trans "To publish a report click on its title, change Visibility field to Public and click Update Repor." %}</p>
+  <p class="quiet">{% trans "To publish a report click on its title, change Visibility field to Public and click Update Report." %}</p>
 <table class="table table-condensed table-striped">
   <thead>
     <tr>
