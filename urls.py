@@ -2,7 +2,9 @@
 from django.conf.urls import patterns, include, url
 from django.contrib import admin
 
-from .ippc.views import PestReportListView, PestReportHiddenListView, PestReportDetailView, CountryView, pest_report_create, pest_report_edit, PublicationDetailView, PublicationListView
+from .ippc.views import PestReportListView, PestReportHiddenListView, \
+PestReportDetailView, CountryView, pest_report_create, pest_report_edit, PublicationDetailView,\
+PublicationListView,BasicReportingListView, BasicReportingDetailView,basic_reporting_create, basic_reporting_edit
 
 from mezzanine.core.views import direct_to_template
 import mezzanine_pagedown.urls
@@ -68,6 +70,31 @@ urlpatterns = patterns("",
         view=PublicationDetailView.as_view(),
         name='publication-detail'),
     
+    # basic reporting list
+    url(r'^countries/(?P<country>[\w-]+)/basicreportings/$',
+        view=BasicReportingListView.as_view(),
+        name='basic-reporting-list'),
+
+    # basic reporting list showing hidden reports 
+    #url(r'^countries/(?P<country>[\w-]+)/basicreportings/hidden/$',
+    #    view=BasicReportingHiddenListView.as_view(),
+    #    name='pest-report-hidden-list'),
+
+    # basic reporting detail
+    url(r'^countries/(?P<country>[\w-]+)/basicreportings/(?P<year>\d+)/(?P<month>\d{2})/(?P<slug>[\w-]+)/$',
+        view=BasicReportingDetailView.as_view(),
+        name="basic-reporting-detail"),
+        
+     # basic reporting create
+    url(r'^countries/(?P<country>[\w-]+)/basicreportings/(?P<type>[\w-]+)/create/$',
+        view=basic_reporting_create,
+        name='basic-reporting-create'),
+        
+    # basic reporting edit
+    url(r'^countries/(?P<country>[\w-]+)/basicreportings/edit/(?P<id>\d+)/$',
+        view=basic_reporting_edit,
+        name='basic-reporting-edit'),
+
     # newsletter for email utility
     # url(r'^newsletter/', include('newsletter.urls')),
 

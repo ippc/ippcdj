@@ -11,7 +11,7 @@ ul.breadcrumb {margin:0;}
 ul.languagebar {margin-top:-2px !important;}
 ul.languagebar > li > a {border-radius:0 0 5px 5px;}
 
-.dl-horizontal dt {overflow:visible; white-space:normal !important; border-bottom:1px solid #eee;}
+/*.dl-horizontal dt {overflow:visible; white-space:normal !important; border-bottom:1px solid #eee;}*/
 .dl-horizontal dd {border-bottom:1px solid #eee;}
 
 div#publications_length label, 

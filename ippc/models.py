@@ -56,6 +56,7 @@ PUBLICATION_STATUS_CHOICES = (
     (IS_PUBLIC, _("Public - visible on ippc.int")),
 )
 
+
 class Publication(Orderable):
     """Single publication to add in a publication library."""
 
@@ -309,9 +310,77 @@ class PestReport(Displayable, models.Model):
         super(PestReport, self).save(*args, **kwargs)
 
 
+# used by Basic Reporting type
+BASIC_REP_1 = 1
+BASIC_REP_2 = 2
+BASIC_REP_3 = 3
+BASIC_REP_4 = 4
+BASIC_REP_TYPE_CHOICES = (
+    (BASIC_REP_1, _("Description of the NPPO (Art. IV.4)")), 
+    (BASIC_REP_2, _("Entry points (Art. VII.2d)")),
+    (BASIC_REP_3, _("List of regulated pests (Art. VII.2i)")),
+    (BASIC_REP_4, _("Phytosanitary Restrictions/Legislation")),
+)
+   
+class BasicReporting(Displayable, models.Model):
+    """ Basic Reporting"""
+    country = models.ForeignKey(CountryPage, related_name="basic_reporting_country_page")
+    author = models.ForeignKey(User, related_name="basic_reporting_author")
+    
+    # slug - provided by mezzanine.core.models.slugged (subclassed by displayable)
+    # title - provided by mezzanine.core.models.slugged (subclassed by displayable)
+    # status - provided by mezzanine.core.models.displayable
+    # publish_date - provided by mezzanine.core.models.displayable
+    
+    basic_rep_type = models.IntegerField(_("Basic Reporting"), choices=BASIC_REP_TYPE_CHOICES, default=BASIC_REP_3)
+    publication_date = models.DateTimeField(_("Publication date"), blank=True, null=True, editable=True)
+    file = models.FileField(_("Report Document"), upload_to="basic_reporting/%Y/%m/", blank=True)
+    short_description = models.TextField(_("Short Description"),  blank=True, null=True)
+    contact_for_more_information = models.TextField(_("Contact for more information"), blank=True, null=True)    
+    url_for_more_information = models.URLField(blank=True, null=True)
+    modify_date = models.DateTimeField(_("Modified date"), blank=True, null=True, editable=False)
+   
+  
 
+    # =todo:
+    # commodity_groups = 
+    # keywords / tags = 
+    # objects = models.Manager()
+    objects = SearchableManager()
+    search_fields = ("title", "short_description")
 
+    class Meta:
+        verbose_name_plural = _("Basic Reportings")
+        # abstract = True
 
+    def __unicode__(self):
+        return self.title
+
+    # http://devwiki.beloblotskiy.com/index.php5/Django:_Decoupling_the_URLs  
+    @models.permalink # or: get_absolute_url = models.permalink(get_absolute_url) below
+    def get_absolute_url(self): # "view on site" link will be visible in admin interface
+        """Construct the absolute URL for a Pest Report."""
+        return ('basic-reporting-detail', (), {
+                            'country': self.country.name, # =todo: get self.country.name working
+                            'year': self.publish_date.strftime("%Y"),
+                            'month': self.publish_date.strftime("%m"),
+                            # 'day': self.pub_date.strftime("%d"),
+                            'slug': self.slug})
+            
+    def save(self, *args, **kwargs):
+        ''' On save, update timestamps '''
+        if not self.id:
+            self.publish_date = datetime.today()
+            # Newly created object, so set slug
+            self.slug = slugify(self.title)
+        self.modify_date = datetime.now()
+        super(BasicReporting, self).save(*args, **kwargs)
+
+    def filename(self):
+        return os.path.basename(self.file.name)
+    def basic_rep_type_verbose(self):
+        return dict(BASIC_REP_TYPE_CHOICES)[self.basic_rep_type]
+    
 
 
 

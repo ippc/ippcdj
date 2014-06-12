@@ -1,0 +1,56 @@
+{% extends "base.html" %}
+{% load pages_tags translate_tags mezzanine_tags i18n future staticfiles accounts_tags %}
+
+{% block meta_title %}{% trans "Edit Pest Report" %} - {{ basic_reporting.country}} {% endblock %}
+
+{# {% block extra_style %} #}
+{#     <link href="{% static "css/Markdown.Editor.css" %}" rel="stylesheet"> #}
+{# {% endblock extra_style %} #}
+
+{% block body_class %}wide{% endblock %}
+
+{% block breadcrumb_menu %}
+<li>
+  <a href="/countries/">{% trans "Countries" %}</a>
+  <span class="divider">/</span>
+</li>
+<li>
+  <a href="/countries/{{ basic_reporting.country.country_slug }}/">
+      {{ basic_reporting.country }}
+  </a>
+  <span class="divider">/</span>
+</li>
+<li>
+  <a href="/countries/{{ basic_reporting.country.country_slug }}/basicreportings/">{% trans "Basic Reportings" %}</a>
+  <span class="divider">/</span>
+</li>
+<li class="active">{% trans "Editing" %} {{ basic_reporting.title }}</li>
+{% endblock %}
+
+{% block local_nav %}
+{% endblock local_nav %}
+
+{% block pageinfo %}
+{% endblock pageinfo %}
+
+{% block main %}
+
+<p class="pull-right">
+  <a href="javascript:history.go(-1)">{% trans "« Cancel and go back" %}</a>
+</p>
+
+<h1><small class="normal">{% trans "Editing" %}</small> {{ basic_reporting.title }} <br><small class="normal">{% trans "Last updated on" %} {{basic_reporting.modify_date}}</small></h1>
+
+<form enctype="multipart/form-data" class="customform" method="POST" action="{% url 'basic-reporting-edit' basic_reporting.country.country_slug basic_reporting.id %}">
+    {% csrf_token %}
+    <fieldset>
+        {% include "countries/basic_reporting_form.html" %}
+        <div class="form-actions">
+            <button type="submit" class="btn btn-info btn-large">{% trans "Update Report" %}</button> {% trans "or" %} <a href="javascript:history.go(-1)">{% trans "Cancel" %}</a>
+        </div>
+    </fieldset>
+</form>
+
+
+{% endblock %}
+

@@ -1,9 +1,9 @@
 from django.shortcuts import render
 from django.utils.translation import ugettext_lazy as _
 from django.contrib.messages import info, error
-from .models import IppcUserProfile, PestStatus, PestReport, IS_PUBLIC, IS_HIDDEN, Publication
+from .models import IppcUserProfile, PestStatus, PestReport, IS_PUBLIC, IS_HIDDEN, Publication, BasicReporting,BASIC_REP_TYPE_CHOICES
 from mezzanine.core.models import Displayable, CONTENT_STATUS_DRAFT, CONTENT_STATUS_PUBLISHED
-from .forms import PestReportForm
+from .forms import PestReportForm, BasicReportingForm
 
 from django.views.generic import ListView, MonthArchiveView, YearArchiveView, DetailView, TemplateView, CreateView
 from django.core.urlresolvers import reverse
@@ -187,7 +187,7 @@ def pest_report_edit(request, country, id=None, template_name='countries/pest_re
         pest_report = PestReport(author=request.user)
 
     if request.POST:
-        form = PestReportForm(request.POST, instance=pest_report)
+        form = PestReportForm(request.POST,  request.FILES, instance=pest_report)
         if form.is_valid():
             form.save()
 
@@ -203,4 +203,107 @@ def pest_report_edit(request, country, id=None, template_name='countries/pest_re
 
     return render_to_response(template_name, {
         'form': form, "pest_report": pest_report
+    }, context_instance=RequestContext(request))
+
+
+class BasicReportingListView(ListView):
+    """
+     Basic Reporting
+        http://stackoverflow.com/questions/8547880/listing-object-with-specific-tag-using-django-taggit
+        http://stackoverflow.com/a/7382708/412329
+    """
+    context_object_name = 'latest'
+    model = BasicReporting
+    date_field = 'publish_date'
+    template_name = 'countries/basic_reporting_list.html'
+    queryset = BasicReporting.objects.all().order_by('-publish_date', 'title')
+    allow_future = False
+    allow_empty = True
+    paginate_by = 30
+
+    def get_queryset(self):
+        """ only return pest reports from the specific country """
+        # self.country = get_object_or_404(CountryPage, country=self.kwargs['country'])
+        self.country = self.kwargs['country']
+        # CountryPage country_slug == country URL parameter keyword argument
+        return BasicReporting.objects.filter(country__country_slug=self.country)
+    
+    def get_context_data(self, **kwargs): # http://stackoverflow.com/a/15515220
+        context = super(BasicReportingListView, self).get_context_data(**kwargs)
+        context['country'] = self.kwargs['country']
+        # context.update({
+        #     'country': self.kwargs['country']
+        # })
+        return context
+
+class BasicReportingDetailView(DetailView):
+    """ Pest report detail page """
+    model = BasicReporting
+    context_object_name = 'basicreporting'
+    template_name = 'countries/basic_reporting_detail.html'
+    queryset = BasicReporting.objects.filter()
+    # print('>>>>>>>>>>>>>>>')
+    # print(user.get_profile().country)
+
+
+
+@login_required
+@permission_required('ippc.add_basicreporting', login_url="/accounts/login/")
+def basic_reporting_create(request, country,type):
+    """ Create Basic Reporting """
+    user = request.user
+    author = user
+    country=user.get_profile().country
+    user_country_slug = lower(slugify(country))
+
+    form = BasicReportingForm(request.POST or None)
+  
+    if request.method == "POST":
+        if form.is_valid():
+            new_basic_reporting = form.save(commit=False)
+            new_basic_reporting.author = request.user
+            new_basic_reporting.author_id = author.id
+            new_basic_reporting.basic_rep_type = type
+            form.save()
+            info(request, _("Successfully created basic_reporting."))
+            
+            return redirect("basic-reporting-detail", country=user_country_slug, year=new_basic_reporting.publish_date.strftime("%Y"), month=new_basic_reporting.publish_date.strftime("%m"), slug=new_basic_reporting.slug)
+    else:
+        form = BasicReportingForm(initial={'country': country,'basic_rep_type': type}, instance=BasicReporting())
+    
+    return render_to_response('countries/basic_reporting_create.html', {'form': form},
+        context_instance=RequestContext(request))
+
+        
+# http://stackoverflow.com/a/1854453/412329
+@login_required
+@permission_required('ippc.change_basicreporting', login_url="/accounts/login/")
+def basic_reporting_edit(request, country, id=None, template_name='countries/basic_reporting_edit.html'):
+    """ Edit Basic Reporting """
+    user = request.user
+    author = user
+    country = user.get_profile().country
+    # country_id = PestReport.objects.filter(country__country_id=country.id)
+    user_country_slug = lower(slugify(country))
+    if id:
+        basic_reporting = get_object_or_404(BasicReporting, country=country, pk=id)
+        # if pest_report.author != request.user:
+        #     return HttpResponseForbidden()
+    else:
+        basic_reporting = BasicReporting(author=request.user)
+      
+    if request.POST:
+        form = BasicReportingForm(request.POST,  request.FILES, instance=basic_reporting)
+        if form.is_valid():
+            form.save()
+
+            # If the save was successful, success message and redirect to another page
+            # info(request, _("Successfully updated pest report."))
+            return redirect("basic-reporting-detail", country=user_country_slug, year=basic_reporting.publish_date.strftime("%Y"), month=basic_reporting.publish_date.strftime("%m"), slug=basic_reporting.slug)
+
+    else:
+        form = BasicReportingForm(instance=basic_reporting)
+
+    return render_to_response(template_name, {
+        'form': form, "basic_reporting": basic_reporting
     }, context_instance=RequestContext(request))

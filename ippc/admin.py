@@ -6,7 +6,7 @@ from mezzanine.pages.admin import PageAdmin
 from mezzanine.conf import settings
 from mezzanine.core.admin import TabularDynamicInlineAdmin, StackedDynamicInlineAdmin
 
-from .models import PestStatus, PestReport, CountryPage, WorkAreaPage, PublicationLibrary, Publication#, File
+from .models import PestStatus, PestReport, CountryPage, WorkAreaPage, PublicationLibrary, Publication, BasicReporting#, File
 from django.contrib.auth.models import User
 
 # Publications -----------------
@@ -108,7 +108,22 @@ admin.site.register(PestStatus, PestStatusAdmin)
 admin.site.register(PestReport, PestReportAdmin)
 
 
-
+class BasicReportingAdmin(admin.ModelAdmin):
+    # http://stackoverflow.com/a/8393130
+    # def has_add_permission(self, request):
+    #     return request.user.groups.filter(name='Developers').exists()
+    # 
+    # def has_change_permission(self, request, obj=None):
+    #     return request.user.groups.filter(name='Developers').exists()
+    # 
+    # def has_delete_permission(self, request, obj=None):
+    #     return request.user.groups.filter(name='Developers').exists()
+    save_on_top = True
+    list_display = ('title', 'publication_date', 'modify_date',   'country')
+    list_filter = ('title', 'publication_date', 'modify_date',  'country')
+    search_fields = ('title', 'short_description')
+    prepopulated_fields = { 'slug': ['title'] }
+admin.site.register(BasicReporting, BasicReportingAdmin)
 
 # Translatable user-content  -----------------
 if "mezzanine.pages" in settings.INSTALLED_APPS:

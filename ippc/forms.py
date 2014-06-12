@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 
 from django import forms
-from .models import IppcUserProfile, PestStatus, PestReport, CountryPage
+from .models import IppcUserProfile, PestStatus, PestReport, CountryPage,BasicReporting
 from django.contrib.auth.models import User
 
 class PestReportForm(forms.ModelForm):
@@ -31,10 +31,32 @@ class PestReportForm(forms.ModelForm):
             ]
         exclude = ('author', 'slug', 'publish_date', 'modify_date')
         widgets = {
-            'country': forms.HiddenInput()
+            'country': forms.HiddenInput()            
         }
             
+class BasicReportingForm(forms.ModelForm):
 
+    # country = forms.ChoiceField(widget=forms.Select(), initial='country')
+    # =todo: https://docs.djangoproject.com/en/dev/ref/forms/api/#dynamic-initial-values
+
+    class Meta:
+        model = BasicReporting
+        fields = [
+           'basic_rep_type',
+           'title', 
+           'publication_date', 
+           'file',
+           'short_description',
+           'contact_for_more_information',
+           'url_for_more_information',
+           'country',
+            ]
+        exclude = ('author', 'slug', 'publish_date',  'modify_date')
+        widgets = {
+            'country': forms.HiddenInput(),   
+            'basic_rep_type': forms.RadioSelect(attrs={'readonly':'True'})
+        }
+ 
 
     # def __init__(self, request, *args, **kwargs):
     #     author=request.user
