@@ -76,9 +76,9 @@
   <dt>{% trans "Report Status" %}</dt>
   <dd>{{ report.get_report_status_display }}</dd>{# http://stackoverflow.com/a/1106201 #}
 
-  {% if report.filename %}
+  {% if report.file %}
   <dt>{% trans "File" %}</dt>
-  <dd><a href="{{MEDIA_URL}}{{ report.files }}">{{ report.filename }}</a></dd>
+  <dd><a href="{{MEDIA_URL}}{{ report.files }}{{ report.file }}">{{ report.filename }}</a></dd>
   {% endif %}
 
   {% if report.pest_status.all %}

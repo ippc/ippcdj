@@ -286,6 +286,9 @@ class PestReport(Displayable, models.Model):
 
     def country_code(self):
         return self.country
+    
+    def filename(self):
+        return os.path.basename(self.file.name)
         
         
     # http://devwiki.beloblotskiy.com/index.php5/Django:_Decoupling_the_URLs  
