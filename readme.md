@@ -1,4 +1,4 @@
-# Better content management system for IPPC
+# IPPC 4.0
 
 ## Things to do
 
@@ -11,12 +11,14 @@
 - Update to latest version of Mezzanine and make sure current functionality works
 - Setup auto-sending of messages to new users, with possible custom messages for NPPOs and Editors
 - Create remaining forms for all types of NPPO reports
+    - Add [tagging](http://django-taggit.readthedocs.org/en/latest/) (keywords) and other fields
 - Country pages:
     - Versioning of Pest Reports. Report number: GBR-32/1. When edited: GBR-32/2.
     - Other country forms
     - Prevent hidden report titles from appearing in search results
     - Country RSS feeds
 - Author field for publications
+- User registration open but behind login-required and super-user required so only admins can add new users, who get notification emails to confirm account and set own password. OR, user registration open to all, but need approval by admins. i.e. Account registration & [activation](http://mezzanine.jupo.org/docs/user-accounts.html#account-approval) system?
 - Create separate User database to be used by all IPPC-related apps for authentication
     - Users
         - Email
@@ -41,7 +43,6 @@
     - Apppc
         - User(Fk to Users)
         - APPPC country
-- User registration open but behind login-required and super-user required so only admins can add new users, who get notification emails to confirm account and set own password. OR, user registration open to all, but need approval by admins. i.e. Account registration & [activation](http://mezzanine.jupo.org/docs/user-accounts.html#account-approval) system?
 - [Email utility](https://github.com/pinax/django-mailer)
     - Ability to insert user groups as well as individual users in `To:` field in `/admin/mailer/message/add/`
         - Use [admin actions](https://docs.djangoproject.com/en/1.5/ref/contrib/admin/actions/)?
