@@ -380,10 +380,224 @@ class BasicReporting(Displayable, models.Model):
         return os.path.basename(self.file.name)
     def basic_rep_type_verbose(self):
         return dict(BASIC_REP_TYPE_CHOICES)[self.basic_rep_type]
+
+# used by Basic Reporting type
+EVT_REP_1 = 1
+EVT_REP_2 = 2
+EVT_REP_3 = 3
+EVT_REP_4 = 4
+EVT_REP_5 = 5
+EVT_REP_TYPE_CHOICES = (
+    (EVT_REP_1, _("Emergency Actions (Art. VII 6)")), 
+    (EVT_REP_2, _("Non-compliance")),
+    (EVT_REP_3, _("Organizational Arrangements of Plant Protection")),
+    (EVT_REP_4, _("Pest status")),
+    (EVT_REP_5, _("Rationale for Phytosanitary Requirements")),
+)
+   
+
+class EventReporting(Displayable, models.Model):
+    """ Event Reporting"""
+    country = models.ForeignKey(CountryPage, related_name="event_reporting_country_page")
+    author = models.ForeignKey(User, related_name="event__reporting_author")
     
+    # slug - provided by mezzanine.core.models.slugged (subclassed by displayable)
+    # title - provided by mezzanine.core.models.slugged (subclassed by displayable)
+    # status - provided by mezzanine.core.models.displayable
+    # publish_date - provided by mezzanine.core.models.displayable
+    
+    event_rep_type = models.IntegerField(_("Event Reporting"), choices=EVT_REP_TYPE_CHOICES, default=EVT_REP_1)
+    publication_date = models.DateTimeField(_("Publication date"), blank=True, null=True, editable=True)
+    file = models.FileField(_("Report Document"), upload_to="event_reporting/%Y/%m/", blank=True)
+    short_description = models.TextField(_("Short Description"),  blank=True, null=True)
+    contact_for_more_information = models.TextField(_("Contact for more information"), blank=True, null=True)    
+    url_for_more_information = models.URLField(blank=True, null=True)
+    modify_date = models.DateTimeField(_("Modified date"), blank=True, null=True, editable=False)
+   
+  
+
+    # =todo:
+    # commodity_groups = 
+    # keywords / tags = 
+    # objects = models.Manager()
+    objects = SearchableManager()
+    search_fields = ("title", "short_description")
+
+    class Meta:
+        verbose_name_plural = _("Event Reportings")
+        # abstract = True
+
+    def __unicode__(self):
+        return self.title
+
+    # http://devwiki.beloblotskiy.com/index.php5/Django:_Decoupling_the_URLs  
+    @models.permalink # or: get_absolute_url = models.permalink(get_absolute_url) below
+    def get_absolute_url(self): # "view on site" link will be visible in admin interface
+        """Construct the absolute URL for a Pest Report."""
+        return ('event-reporting-detail', (), {
+                            'country': self.country.name, # =todo: get self.country.name working
+                            'year': self.publish_date.strftime("%Y"),
+                            'month': self.publish_date.strftime("%m"),
+                            # 'day': self.pub_date.strftime("%d"),
+                            'slug': self.slug})
+            
+    def save(self, *args, **kwargs):
+        ''' On save, update timestamps '''
+        if not self.id:
+            self.publish_date = datetime.today()
+            # Newly created object, so set slug
+            self.slug = slugify(self.title)
+        self.modify_date = datetime.now()
+        super(EventReporting, self).save(*args, **kwargs)
+
+    def filename(self):
+        return os.path.basename(self.file.name)
+    def event_rep_type_verbose(self):
+        return dict(EVT_REP_TYPE_CHOICES)[self.event_rep_type]
+
+PFA_TYPE_1 = 1
+PFA_TYPE_2 = 2
+PFA_TYPE_1_CHOICES = (
+    (PFA_TYPE_1, _("PFA")), 
+    (PFA_TYPE_2, _("ALPP")),
+)
+class PestFreeArea(Displayable, models.Model):
+    """ Pest Free Area"""
+    country = models.ForeignKey(CountryPage, related_name="pestfreearea_country_page")
+    author = models.ForeignKey(User, related_name="pestfreearea_author")
+    
+    # slug - provided by mezzanine.core.models.slugged (subclassed by displayable)
+    # title - provided by mezzanine.core.models.slugged (subclassed by displayable)
+    # status - provided by mezzanine.core.models.displayable
+    # publish_date - provided by mezzanine.core.models.displayable
+    
+    short_description = models.TextField(_("Location and description of the area"),  blank=True, null=True)
+    publication_date = models.DateTimeField(_("Publication date"), blank=True, null=True, editable=True)
+    pfa_type = models.IntegerField(_("Type of recognition"), choices=PFA_TYPE_1_CHOICES, default=None)
+    file = models.FileField(_("Additional information and Documentation"), upload_to="pestfreearea/%Y/%m/", blank=True)
+    contact_for_more_information = models.TextField(_("Contact for more information"), blank=True, null=True)    
+    url_for_more_information = models.URLField(blank=True, null=True)
+    modify_date = models.DateTimeField(_("Modified date"), blank=True, null=True, editable=False)
+    # =todo:
+    # commodity_groups = 
+    # keywords / tags = 
+    # objects = models.Manager()
+    objects = SearchableManager()
+    search_fields = ("title", "short_description")
+
+    class Meta:
+        verbose_name_plural = _("Pest Free Areas")
+        # abstract = True
+
+    def __unicode__(self):
+        return self.title
+
+    # http://devwiki.beloblotskiy.com/index.php5/Django:_Decoupling_the_URLs  
+    @models.permalink # or: get_absolute_url = models.permalink(get_absolute_url) below
+    def get_absolute_url(self): # "view on site" link will be visible in admin interface
+        """Construct the absolute URL for a Pest Report."""
+        return ('pfa-detail', (), {
+                            'country': self.country.name, # =todo: get self.country.name working
+                            'year': self.publish_date.strftime("%Y"),
+                            'month': self.publish_date.strftime("%m"),
+                            # 'day': self.pub_date.strftime("%d"),
+                            'slug': self.slug})
+            
+    def save(self, *args, **kwargs):
+        ''' On save, update timestamps '''
+        if not self.id:
+            self.publish_date = datetime.today()
+            # Newly created object, so set slug
+            self.slug = slugify(self.title)
+        self.modify_date = datetime.now()
+        super(PestFreeArea, self).save(*args, **kwargs)
+
+    def filename(self):
+        return os.path.basename(self.file.name)
+    def pfa_type_verbose(self):
+        return dict(PFA_TYPE_1_CHOICES)[self.pfa_type]
 
 
+YES_1 = 1
+NO_2 = 2
+DONTKNOW_3 = 3
+YES_NO_CHOICES = (
+    (YES_1, _("Yes")), 
+    (NO_2, _("No")),
+)
 
+
+YES_NO_DONTKNOW_CHOICES = (
+    (YES_1, _("Yes")), 
+    (NO_2, _("No")), 
+    (DONTKNOW_3, _("Don't know")), 
+)
+VERS_1 = 1
+VERS_2 = 2
+VERS_CHOICES = (
+    (VERS_1, _("2002")), 
+    (VERS_1, _("2009")),
+)
+class ImplementationISPM(Displayable, models.Model):
+    """ Implementationof ISPM 15"""
+    country = models.ForeignKey(CountryPage, related_name="implementationispm_country_page")
+    author = models.ForeignKey(User, related_name="implementationispm_author")
+    
+    # slug - provided by mezzanine.core.models.slugged (subclassed by displayable)
+    # title - provided by mezzanine.core.models.slugged (subclassed by displayable)
+    # status - provided by mezzanine.core.models.displayable
+    # publish_date - provided by mezzanine.core.models.displayable
+    publication_date = models.DateTimeField(_("Publication date"), blank=True, null=True, editable=True)
+    implementimport_type = models.IntegerField(_("Has your country implemented ISPM 15 for imports?"), choices=YES_NO_CHOICES, default=None)
+    implementimport_version = models.IntegerField(_("If yes, which version (click all that apply): "), choices=VERS_CHOICES, default=None)
+    implementexport_type = models.IntegerField(_("  Has your country implemented ISPM 15 for exports?"), choices=YES_NO_CHOICES, default=None)
+    implementexport_version = models.IntegerField(_("If yes, which version (click all that apply): "), choices=VERS_CHOICES, default=None)
+    file = models.FileField(_("Additional information and Documentation"), upload_to="implemenationispm/%Y/%m/", blank=True)
+    mark_registered_type = models.IntegerField(_(" Is the ISPM No.15 mark registered as a trade mark in your country??"), choices=YES_NO_DONTKNOW_CHOICES, default=None)
+    
+    # =todo Image
+    short_description = models.TextField(_("Enter a description of mark"),  blank=True, null=True)
+    contact_for_more_information = models.TextField(_("Contact for more information"), blank=True, null=True)    
+    url_for_more_information = models.URLField(blank=True, null=True)
+    modify_date = models.DateTimeField(_("Modified date"), blank=True, null=True, editable=False)
+    # =todo:
+    # commodity_groups = 
+    # keywords / tags = 
+    # objects = models.Manager()
+    objects = SearchableManager()
+    search_fields = ("title", "short_description")
+
+    class Meta:
+        verbose_name_plural = _("Implementationof ISPMs")
+        # abstract = True
+
+    def __unicode__(self):
+        return self.title
+
+    # http://devwiki.beloblotskiy.com/index.php5/Django:_Decoupling_the_URLs  
+    @models.permalink # or: get_absolute_url = models.permalink(get_absolute_url) below
+    def get_absolute_url(self): # "view on site" link will be visible in admin interface
+        """Construct the absolute URL for a Pest Report."""
+        return ('pfa-detail', (), {
+                            'country': self.country.name, # =todo: get self.country.name working
+                            'year': self.publish_date.strftime("%Y"),
+                            'month': self.publish_date.strftime("%m"),
+                            # 'day': self.pub_date.strftime("%d"),
+                            'slug': self.slug})
+            
+    def save(self, *args, **kwargs):
+        ''' On save, update timestamps '''
+        if not self.id:
+            self.publish_date = datetime.today()
+            # Newly created object, so set slug
+            self.slug = slugify(self.title)
+        self.modify_date = datetime.now()
+        super(ImplementationISPM, self).save(*args, **kwargs)
+
+    def filename(self):
+        return os.path.basename(self.file.name)
+    def pfa_type_verbose(self):
+        return dict(YES_NO_DONTKNOW_CHOICES)[self.pfa_type]
 
 
 

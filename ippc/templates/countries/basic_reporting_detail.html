@@ -13,7 +13,7 @@
 
 {% block local_nav %}
 <div class="well">
-  <p><a href="/countries/{{ basicreporting.country.name|slugify }}/basicreportings/">« {% trans "Back to" %} {% trans "Basic Reports" %}</a></p>
+  <p><a href="/countries/{{ basicreporting.country.name|slugify }}/basicreportings/">« {% trans "Back to" %} {% trans "Basic Reportings" %}</a></p>
     {% if user.is_superuser %} 
         <a class="btn btn-small btn-info" href="/admin/ippc/basicreportings/{{ basicreporting.id }}">Edit as Admin</a><br>
     {% endif %}

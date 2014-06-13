@@ -1,0 +1,91 @@
+{% extends "base.html" %}
+{% load pages_tags mezzanine_tags i18n future staticfiles accounts_tags %}
+
+{% block meta_title %}{% trans "Latest Event Reportings" %}{% endblock %}
+
+{% block breadcrumb_menu %}
+<li><a href="/">{% trans "Home" %}</a><span class="divider">/</span></li>
+<li><a href="/countries/">Countries</a><span class="divider">/</span></li>
+<li><a href="/countries/{{eventreporting.country.name|slugify}}">{{eventreporting.country.name}}</a><span class="divider">/</span></li>
+<li><a href="/countries/{{eventreporting.country.name|slugify}}/eventreportings/">Event Reportings</a><span class="divider">/</span></li>
+<li class="active">{{ eventreporting.title }}</li>
+{% endblock %}
+
+{% block local_nav %}
+<div class="well">
+  <p><a href="/countries/{{ eventreporting.country.name|slugify }}/eventreportings/">« {% trans "Back to" %} {% trans "Event Reportings" %}</a></p>
+    {% if user.is_superuser %} 
+        <a class="btn btn-small btn-info" href="/admin/ippc/eventreportings/{{ eventreporting.id }}">Edit as Admin</a><br>
+    {% endif %}
+        
+    {% if perms.ippc.change_eventreporting and request.user.get_profile.country.name == page.title %}
+        <a class="btn btn-small btn-info" href="{% url 'event-reporting-edit' eventreporting.country.name|slugify eventreporting.id %}"><i class="icon-edit icon-white"></i> Edit</a>
+        {# <a class="btn" href="{% url 'event-reporting-edit' eventreporting.id %}"><i class="icon-edit"></i> Edit</a> #}
+    {% else %}
+    {% endif %}
+    
+    
+    
+   
+</div>
+{% endblock local_nav %}
+
+{% block pageinfo %}
+
+{% endblock pageinfo %}
+
+{% block main %}
+<h1>{{ eventreporting.title }}</h1> 
+
+<dl class="dl-horizontal">
+  {% if eventreporting.event_rep_type %}
+  <dt>{% trans "Event Reporting" %}</dt>
+  <dd>
+    <ul class="unstyled nomargin">
+      <li>{{ eventreporting.event_rep_type_verbose }}</li>
+    </ul>
+  </dd>
+  {% endif %}
+  
+  <dt>{% trans "Publication date" %}</dt>
+  <dd>a{% blocktrans with sometime=eventreporting.publication_date|date:"d-m-Y" %}{{ sometime }}{% endblocktrans %}</dd>
+  
+ {% if eventreporting.short_description %}
+  <dt>{% trans "short description" %}</dt>
+  <dd>{{ eventreporting.short_description }}</dd>
+  {% endif %}
+  
+  {% if eventreporting.contact_for_more_information %}
+  <dt>{% trans "Contact for more information" %}</dt>
+  <dd>{{ eventreporting.contact_for_more_information }}</dd>
+  {% endif %}
+  
+  {% if eventreporting.url_for_more_information %}
+  <dt>{% trans "Website" %}</dt>
+  <dd><a href="{{ eventreporting.url_for_more_information }}">{{ eventreporting.url_for_more_information }}</a></dd>
+  {% endif %}
+  
+  <dt>{% trans "Author" %}</dt>
+  <dd>{{ eventreporting.author.get_profile.first_name }} {{ eventreporting.author.get_profile.last_name }}</dd>
+  
+  {% if eventreporting.file %}
+  <dt>{% trans "Report file" %}</dt>
+  <dd><a href="{{MEDIA_URL}}{{ eventreporting.files }}{{ eventreporting.file }}">{{ eventreporting.filename }}</a></dd>
+  {% endif %}
+
+
+  
+ 
+  
+  
+ 
+  
+ 
+  
+  
+ 
+  
+</dl>
+
+{% endblock %}
+

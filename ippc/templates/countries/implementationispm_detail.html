@@ -1,0 +1,91 @@
+{% extends "base.html" %}
+{% load pages_tags mezzanine_tags i18n future staticfiles accounts_tags %}
+
+{% block meta_title %}{% trans "Latest Implementation of ISPM 15" %}{% endblock %}
+
+{% block breadcrumb_menu %}
+<li><a href="/">{% trans "Home" %}</a><span class="divider">/</span></li>
+<li><a href="/countries/">Countries</a><span class="divider">/</span></li>
+<li><a href="/countries/{{implementationispm.country.name|slugify}}">{{implementationispm.country.name}}</a><span class="divider">/</span></li>
+<li><a href="/countries/{{implementationispm.country.name|slugify}}/implementationispm/">implementationispm</a><span class="divider">/</span></li>
+<li class="active">{{ implementationispm.title }}</li>
+{% endblock %}
+
+{% block local_nav %}
+<div class="well">
+  <p><a href="/countries/{{ implementationispm.country.name|slugify }}/implementationispm/">« {% trans "Back to" %} {% trans "Implementation of ISPM 15" %}</a></p>
+    {% if user.is_superuser %} 
+        <a class="btn btn-small btn-info" href="/admin/ippc/implementationispm/{{ implementationispm.id }}">Edit as Admin</a><br>
+    {% endif %}
+        
+    {% if perms.ippc.change_implementationispm and request.user.get_profile.country.name == page.title %}
+        <a class="btn btn-small btn-info" href="{% url 'implementationispm-edit' implementationispm.country.name|slugify implementationispm.id %}"><i class="icon-edit icon-white"></i> Edit</a>
+        {# <a class="btn" href="{% url 'implementationispm-edit' implementationispm.id %}"><i class="icon-edit"></i> Edit</a> #}
+    {% else %}
+    {% endif %}
+    
+    
+    
+   
+</div>
+{% endblock local_nav %}
+
+{% block pageinfo %}
+
+{% endblock pageinfo %}
+
+{% block main %}
+<h1>{{ implementationispm.title }}</h1> 
+
+<dl class="dl-horizontal">
+  {% if implementationispm.implementationispm %}
+  <dt>{% trans "Type of recognition" %}</dt>
+  <dd>
+    <ul class="unstyled nomargin">
+      <li>{{ implementationispm.pimplementationispmtype_verbose }}</li>
+    </ul>
+  </dd>
+  {% endif %}
+  
+  <dt>{% trans "Publication date" %}</dt>
+  <dd>a{% blocktrans with sometime=implementationispm.publication_date|date:"d-m-Y" %}{{ sometime }}{% endblocktrans %}</dd>
+  
+ {% if implementationispm.short_description %}
+  <dt>{% trans "short description" %}</dt>
+  <dd>{{ implementationispm.short_description }}</dd>
+  {% endif %}
+  
+  {% if implementationispm.contact_for_more_information %}
+  <dt>{% trans "Contact for more information" %}</dt>
+  <dd>{{ implementationispm.contact_for_more_information }}</dd>
+  {% endif %}
+  
+  {% if implementationispm.url_for_more_information %}
+  <dt>{% trans "Website" %}</dt>
+  <dd><a href="{{ implementationispm.url_for_more_information }}">{{ implementationispm.url_for_more_information }}</a></dd>
+  {% endif %}
+  
+  <dt>{% trans "Author" %}</dt>
+  <dd>{{ implementationispm.author.get_profile.first_name }} {{ implementationispm.author.get_profile.last_name }}</dd>
+  
+  {% if implementationispm.file %}
+  <dt>{% trans "Report file" %}</dt>
+  <dd><a href="{{MEDIA_URL}}{{ implementationispm.files }}{{ implementationispm.file }}">{{ implementationispm.filename }}</a></dd>
+  {% endif %}
+
+
+  
+ 
+  
+  
+ 
+  
+ 
+  
+  
+ 
+  
+</dl>
+
+{% endblock %}
+

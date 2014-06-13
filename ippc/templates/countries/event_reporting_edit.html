@@ -1,7 +1,7 @@
 {% extends "base.html" %}
 {% load pages_tags translate_tags mezzanine_tags i18n future staticfiles accounts_tags %}
 
-{% block meta_title %}{% trans "Edit Basic Reporting" %} - {{ basic_reporting.country}} {% endblock %}
+{% block meta_title %}{% trans "Edit Event Reporting" %} - {{ event_reporting.country}} {% endblock %}
 
 {# {% block extra_style %} #}
 {#     <link href="{% static "css/Markdown.Editor.css" %}" rel="stylesheet"> #}
@@ -15,16 +15,16 @@
   <span class="divider">/</span>
 </li>
 <li>
-  <a href="/countries/{{ basic_reporting.country.country_slug }}/">
-      {{ basic_reporting.country }}
+  <a href="/countries/{{ event_reporting.country.country_slug }}/">
+      {{ event_reporting.country }}
   </a>
   <span class="divider">/</span>
 </li>
 <li>
-  <a href="/countries/{{ basic_reporting.country.country_slug }}/basicreportings/">{% trans "Basic Reportings" %}</a>
+  <a href="/countries/{{ event_reporting.country.country_slug }}/eventreportings/">{% trans "Event Reportings" %}</a>
   <span class="divider">/</span>
 </li>
-<li class="active">{% trans "Editing" %} {{ basic_reporting.title }}</li>
+<li class="active">{% trans "Editing" %} {{ event_reporting.title }}</li>
 {% endblock %}
 
 {% block local_nav %}
@@ -39,12 +39,12 @@
   <a href="javascript:history.go(-1)">{% trans "« Cancel and go back" %}</a>
 </p>
 
-<h1><small class="normal">{% trans "Editing" %}</small> {{ basic_reporting.title }} <br><small class="normal">{% trans "Last updated on" %} {{basic_reporting.modify_date}}</small></h1>
+<h1><small class="normal">{% trans "Editing" %}</small> {{ event_reporting.title }} <br><small class="normal">{% trans "Last updated on" %} {{event_reporting.modify_date}}</small></h1>
 
-<form enctype="multipart/form-data" class="customform" method="POST" action="{% url 'basic-reporting-edit' basic_reporting.country.country_slug basic_reporting.id %}">
+<form enctype="multipart/form-data" class="customform" method="POST" action="{% url 'event-reporting-edit' event_reporting.country.country_slug event_reporting.id %}">
     {% csrf_token %}
     <fieldset>
-        {% include "countries/basic_reporting_form.html" %}
+        {% include "countries/event_reporting_form.html" %}
         <div class="form-actions">
             <button type="submit" class="btn btn-info btn-large">{% trans "Update Report" %}</button> {% trans "or" %} <a href="javascript:history.go(-1)">{% trans "Cancel" %}</a>
         </div>
