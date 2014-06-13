@@ -2,14 +2,6 @@
 
 ## Things to do
 
-- Setup proper permissions (nginx is currently running as root — not good) so that static media, including user-uploaded files are served through Nginx. Document nginx/gunicorn/supervisor setup (currently running gunicorn with deprecated `gunicorn_django -b 0.0.0.0:8000` command — get it running and working with recommended command instead)
-- Setup working fabric script for easy deployment that does the following after running `fab deploy dev`:
-    1. Adds, commits and pushes files to Github (for future: if tests pass)
-    2. Logs in to dev.ippc.int, activates application virtualenv and pulls changes from Github
-    3. Collect static files to locations to be served on dev server
-    4. Restart gunicorn and nginx 
-- Update to latest version of Mezzanine and make sure current functionality works
-- Setup auto-sending of messages to new users, with possible custom messages for NPPOs and Editors
 - Create remaining forms for all types of NPPO reports
     - Add [tagging](http://django-taggit.readthedocs.org/en/latest/) (keywords) and other fields
 - Country pages:
@@ -18,7 +10,12 @@
     - Prevent hidden report titles from appearing in search results
     - Country RSS feeds
 - Author field for publications
+- Homepage design
+    - ¿'Add Pest Report' button in countries for NPPOs, visible even when user is logged out. Once user logs in, if they're an NPPO, they are redirected to the pest report form for their country?
+- [Calendar](https://github.com/shurik/mezzanine.calendar) (or [Events](https://github.com/stbarnabas/mezzanine-events)?)
+- Forums
 - User registration open but behind login-required and super-user required so only admins can add new users, who get notification emails to confirm account and set own password. OR, user registration open to all, but need approval by admins. i.e. Account registration & [activation](http://mezzanine.jupo.org/docs/user-accounts.html#account-approval) system?
+    - Setup auto-sending of messages to new users, with possible custom messages for NPPOs and Editors
 - Create separate User database to be used by all IPPC-related apps for authentication
     - Users
         - Email
@@ -49,16 +46,19 @@
         - [Custom admin form](http://stackoverflow.com/a/6099360/412329) overriding mailer's default form? Also see [this](http://djangosnippets.org/snippets/1650/) and [this](https://gist.github.com/luzfcb/1712348)
         - Custom email utility app and admin form calling django-mailer and groups?
 - Add [blog category management page to admin](http://127.0.0.1:8000/en/admin/blog/blogcategory/)
-- Homepage design
-    - ¿'Add Pest Report' button in countries for NPPOs, visible even when user is logged out. Once user logs in, if they're an NPPO, they are redirected to the pest report form for their country?
-- [Calendar](https://github.com/shurik/mezzanine.calendar) (or [Events](https://github.com/stbarnabas/mezzanine-events)?)
-- Forums
 - Contact form
 - FAQ
 - Last modified date for pages
 - Content (data) migration
 - ¿Use jQuery [multi-file-upload](https://github.com/sigurdga/django-jquery-file-upload) functionality for uploading images and files to be inserted in pages and blog posts, [with additional fields for each file](https://github.com/blueimp/jQuery-File-Upload/wiki/How-to-submit-additional-form-data) if required?
 - Order permission groups alphabetically in admin
+- Setup proper permissions (nginx is currently running as root — not good) so that static media, including user-uploaded files are served through Nginx. Document nginx/gunicorn/supervisor setup (currently running gunicorn with deprecated `gunicorn_django -b 0.0.0.0:8000` command — get it running and working with recommended command instead)
+- Setup working fabric script for easy deployment that does the following after running `fab deploy dev`:
+    1. Adds, commits and pushes files to Github (for future: if tests pass)
+    2. Logs in to dev.ippc.int, activates application virtualenv and pulls changes from Github
+    3. Collect static files to locations to be served on dev server
+    4. Restart gunicorn and nginx 
+- Update to latest version of Mezzanine and make sure current functionality works
 - [Versioning](https://django-simple-history.readthedocs.org/en/latest/) of all page content?
 - [Pest Report mapping](http://leafletjs.com/examples/choropleth.html)
     - <http://blog.thematicmapping.org/2008/04/thematic-mapping-with-geojson.html>
