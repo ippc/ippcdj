@@ -532,12 +532,23 @@ YES_NO_DONTKNOW_CHOICES = (
     (NO_2, _("No")), 
     (DONTKNOW_3, _("Don't know")), 
 )
-VERS_1 = 1
-VERS_2 = 2
+VERS_1 = "2002"
+VERS_2 = "2009"
 VERS_CHOICES = (
     (VERS_1, _("2002")), 
     (VERS_1, _("2009")),
 )
+class ImplementationISPMVersion(models.Model):
+    """ ImplementationISPMVersions """
+    version = models.CharField(_("Implementation of ISPM Version"), max_length=4)
+    
+    def __unicode__(self):
+        return self.version
+        
+    class Meta:
+        verbose_name_plural = _("Implementation of ISPM Versions ")
+    pass
+
 class ImplementationISPM(Displayable, models.Model):
     """ Implementationof ISPM 15"""
     country = models.ForeignKey(CountryPage, related_name="implementationispm_country_page")
@@ -549,11 +560,16 @@ class ImplementationISPM(Displayable, models.Model):
     # publish_date - provided by mezzanine.core.models.displayable
     publication_date = models.DateTimeField(_("Publication date"), blank=True, null=True, editable=True)
     implementimport_type = models.IntegerField(_("Has your country implemented ISPM 15 for imports?"), choices=YES_NO_CHOICES, default=None)
-    implementimport_version = models.IntegerField(_("If yes, which version (click all that apply): "), choices=VERS_CHOICES, default=None)
+    implementimport_version = models.ManyToManyField(ImplementationISPMVersion,
+        verbose_name=_("If yes, which version (click all that apply): "),
+        related_name='implementimport_version+', blank=True, null=True, default=None)
     implementexport_type = models.IntegerField(_("  Has your country implemented ISPM 15 for exports?"), choices=YES_NO_CHOICES, default=None)
-    implementexport_version = models.IntegerField(_("If yes, which version (click all that apply): "), choices=VERS_CHOICES, default=None)
+    implementexport_version = models.ManyToManyField(ImplementationISPMVersion,
+        verbose_name=_("If yes, which version (click all that apply): "),
+        related_name='implementexport_version+', blank=True, null=True, default=None)
     file = models.FileField(_("Additional information and Documentation"), upload_to="implemenationispm/%Y/%m/", blank=True)
     mark_registered_type = models.IntegerField(_(" Is the ISPM No.15 mark registered as a trade mark in your country??"), choices=YES_NO_DONTKNOW_CHOICES, default=None)
+    image = models.ImageField(_("Image of mark"), upload_to="implemenationispm/images/%Y/%m/", blank=True)
     
     # =todo Image
     short_description = models.TextField(_("Enter a description of mark"),  blank=True, null=True)
@@ -578,7 +594,7 @@ class ImplementationISPM(Displayable, models.Model):
     @models.permalink # or: get_absolute_url = models.permalink(get_absolute_url) below
     def get_absolute_url(self): # "view on site" link will be visible in admin interface
         """Construct the absolute URL for a Pest Report."""
-        return ('pfa-detail', (), {
+        return ('implementationispm-detail', (), {
                             'country': self.country.name, # =todo: get self.country.name working
                             'year': self.publish_date.strftime("%Y"),
                             'month': self.publish_date.strftime("%m"),
@@ -596,10 +612,14 @@ class ImplementationISPM(Displayable, models.Model):
 
     def filename(self):
         return os.path.basename(self.file.name)
-    def pfa_type_verbose(self):
-        return dict(YES_NO_DONTKNOW_CHOICES)[self.pfa_type]
-
-
+    def imagename(self):
+        return os.path.basename(self.image.name)
+    def implementimport_type_verbose(self):
+        return dict(YES_NO_CHOICES)[self.implementimport_type]
+    def implementexport_type_verbose(self):
+        return dict(YES_NO_CHOICES)[self.implementexport_type]
+    def mark_registered_type_verbose(self):
+        return dict(YES_NO_DONTKNOW_CHOICES)[self.mark_registered_type]
 
 
 

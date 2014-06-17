@@ -6,7 +6,7 @@ from mezzanine.pages.admin import PageAdmin
 from mezzanine.conf import settings
 from mezzanine.core.admin import TabularDynamicInlineAdmin, StackedDynamicInlineAdmin
 
-from .models import PestStatus, PestReport, CountryPage, WorkAreaPage, PublicationLibrary, Publication, BasicReporting,EventReporting,PestFreeArea,ImplementationISPM#, File
+from .models import PestStatus, PestReport, CountryPage, WorkAreaPage, PublicationLibrary, Publication, BasicReporting,EventReporting,PestFreeArea,ImplementationISPM,ImplementationISPMVersion#, File
 from django.contrib.auth.models import User
 
 # Publications -----------------
@@ -176,6 +176,12 @@ class ImplementationISPMAdmin(admin.ModelAdmin):
     prepopulated_fields = { 'slug': ['title'] }
 admin.site.register(ImplementationISPM, ImplementationISPMAdmin)
 
+
+class ImplementationISPMVersionAdmin(admin.ModelAdmin):
+    """Options for ImplementationISPMVersion field of ImplementationISPM"""
+    save_on_top = True
+admin.site.register(ImplementationISPMVersion, ImplementationISPMVersionAdmin)  
+    
 # Translatable user-content  -----------------
 if "mezzanine.pages" in settings.INSTALLED_APPS:
     from mezzanine.pages.models import RichTextPage, Link

@@ -48,7 +48,7 @@
   {% endif %}
   
   <dt>{% trans "Publication date" %}</dt>
-  <dd>a{% blocktrans with sometime=pfa.publication_date|date:"d-m-Y" %}{{ sometime }}{% endblocktrans %}</dd>
+  <dd>{% blocktrans with sometime=pfa.publication_date|date:"d-m-Y" %}{{ sometime }}{% endblocktrans %}</dd>
   
  {% if pfa.short_description %}
   <dt>{% trans "short description" %}</dt>

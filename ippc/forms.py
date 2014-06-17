@@ -2,7 +2,7 @@
 
 from django import forms
 from .models import IppcUserProfile, PestStatus, PestReport, CountryPage, \
-BasicReporting, EventReporting, PestFreeArea, ImplementationISPM
+BasicReporting, EventReporting, PestFreeArea, ImplementationISPM, VERS_CHOICES
 from django.contrib.auth.models import User
 
 class PestReportForm(forms.ModelForm):
@@ -113,6 +113,7 @@ class ImplementationISPMForm(forms.ModelForm):
            'implementexport_version',
            'file',
            'mark_registered_type',
+           'image',
            'short_description',
            'contact_for_more_information',
            'url_for_more_information',
@@ -120,10 +121,11 @@ class ImplementationISPMForm(forms.ModelForm):
             ]
         exclude = ('author', 'slug', 'publish_date',  'modify_date')
         widgets = {
-            'country': forms.HiddenInput()
+            'country': forms.HiddenInput(),
+            'implementimport_type':forms.RadioSelect(),
+            'implementexport_type':forms.RadioSelect(),
         }
-        
-     
+
     # =todo:     
         
     # def __init__(self, request, *args, **kwargs):

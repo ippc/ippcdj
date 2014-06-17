@@ -37,24 +37,78 @@
 {% block main %}
 <h1>{{ implementationispm.title }}</h1> 
 
+<dt>{% trans "Publication date" %}</dt>
+<dd>{% blocktrans with sometime=implementationispm.publication_date|date:"d-m-Y" %}{{ sometime }}{% endblocktrans %}</dd>
+  
 <dl class="dl-horizontal">
-  {% if implementationispm.implementationispm %}
-  <dt>{% trans "Type of recognition" %}</dt>
+  {% if implementationispm.implementimport_type %}
+  <dt>{% trans "Country implemented ISPM 15 for imports" %}</dt>
   <dd>
     <ul class="unstyled nomargin">
-      <li>{{ implementationispm.pimplementationispmtype_verbose }}</li>
+      <li>{{ implementationispm.implementimport_type_verbose }}</li>
     </ul>
   </dd>
   {% endif %}
+  </dl>
   
-  <dt>{% trans "Publication date" %}</dt>
-  <dd>a{% blocktrans with sometime=implementationispm.publication_date|date:"d-m-Y" %}{{ sometime }}{% endblocktrans %}</dd>
+  {% if implementationispm.implementimport_version.all %}
+  <dt>{% trans "Implementation version" %}</dt>
+  <dd>
+    <ul class="unstyled nomargin">
+    {% for implementimport_version in implementationispm.implementimport_version.all %}
+      <li>{{ implementimport_version.version }}</li>
+    {% empty %}
+    {% endfor %}
+    </ul>
+  </dd>        
+ {% endif %}
+
+ 
+ <dl class="dl-horizontal">
+  {% if implementationispm.implementexport_type %}
+  <dt>{% trans "Country implemented ISPM 15 for exports" %}</dt>
+  <dd>
+    <ul class="unstyled nomargin">
+      <li>{{ implementationispm.implementexport_type_verbose }}</li>
+    </ul>
+  </dd>
+  {% endif %}
+  </dl>
   
+  {% if implementationispm.implementexport_version.all %}
+  <dt>{% trans "Implementation version" %}</dt>
+  <dd>
+    <ul class="unstyled nomargin">
+    {% for implementimport_version in implementationispm.implementexport_version.all %}
+      <li>{{ implementexport_version.version }}</li>
+    {% empty %}
+    {% endfor %}
+    </ul>
+  </dd>        
+ {% endif %}
+ 
+ 
+           
+         {% if implementationispm.mark_registered_type %}
+  <dt>{% trans "The ISPM No.15 mark is registered as a trade mark" %}</dt>
+  <dd>{{ implementationispm.mark_registered_type_verbose }}</dd>
+  {% endif %}
+     
+  
+   {% if implementationispm.image %}
+  <dt>{% trans "Image" %}</dt>
+  <dd><image src="{{MEDIA_URL}}{{ implementationispm.images }}{{ implementationispm.image }}"/></dd>
+  {% endif %}
+
  {% if implementationispm.short_description %}
-  <dt>{% trans "short description" %}</dt>
+  <dt>{% trans "Description of the mark" %}</dt>
   <dd>{{ implementationispm.short_description }}</dd>
   {% endif %}
-  
+   {% if implementationispm.file %}
+  <dt>{% trans "Report file" %}</dt>
+  <dd><a href="{{MEDIA_URL}}{{ implementationispm.files }}{{ implementationispm.file }}">{{ implementationispm.filename }}</a></dd>
+  {% endif %}
+
   {% if implementationispm.contact_for_more_information %}
   <dt>{% trans "Contact for more information" %}</dt>
   <dd>{{ implementationispm.contact_for_more_information }}</dd>
@@ -68,21 +122,8 @@
   <dt>{% trans "Author" %}</dt>
   <dd>{{ implementationispm.author.get_profile.first_name }} {{ implementationispm.author.get_profile.last_name }}</dd>
   
-  {% if implementationispm.file %}
-  <dt>{% trans "Report file" %}</dt>
-  <dd><a href="{{MEDIA_URL}}{{ implementationispm.files }}{{ implementationispm.file }}">{{ implementationispm.filename }}</a></dd>
-  {% endif %}
+ 
 
-
-  
- 
-  
-  
- 
-  
- 
-  
-  
  
   
 </dl>
