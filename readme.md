@@ -17,14 +17,24 @@
 - Forums
 - User registration open but behind login-required and super-user required so only admins can add new users, who get notification emails to confirm account and set own password. OR, user registration open to all, but need approval by admins. i.e. Account registration & [activation](http://mezzanine.jupo.org/docs/user-accounts.html#account-approval) system?
     - Setup auto-sending of messages to new users, with possible custom messages for NPPOs and Editors
-- Create separate User database to be used by all IPPC-related apps for authentication
-    - Users
-        - Email
-        - Password
-        - First Name
-        - Last Name
-    - IPPC (profile in each web app extends above Users DB authentication defaults)
-        - User(Fk to Users)
+- [Single Sign-On](https://docs.djangoproject.com/en/1.5/topics/auth/customizing/). Create separate Accounts database to be used by all IPPC-related apps for authentication and authorization. The database should contain two tables:
+    - Users (authentication - recognizes who you are)
+        - ID
+        - first name
+        - last name
+        - login/nickname
+        - email
+        - hashed password
+        - salt
+        - creation timestamp
+        - update timestamp
+        - account state (verified, disabled, etc)
+    - Groups (knows what you are allowed to do, or what you allow others to do)
+
+    Then, each application contains a profile app that extends the above Accounts DB authentication defaults:
+    
+    - IPPC
+        - User(Fk to Accounts)
         - IPPC Country
         - Telephone
         - Alternate email
@@ -41,6 +51,13 @@
     - Apppc
         - User(Fk to Users)
         - APPPC country
+
+    The easiest way to implement this is probably to use [CAS-Provider and CAS-consumer](http://stackoverflow.com/a/4663223) or [django-cas](https://bitbucket.org/cpcc/django-cas/overview). Another option: [mama-cas](https://github.com/jbittel/django-mama-cas). Relevant documentation pages: [multiple databases](https://docs.djangoproject.com/en/1.5/topics/db/multi-db/), [authentication](https://docs.djangoproject.com/en/1.5/topics/auth/customizing/), [multiple sites framework](https://docs.djangoproject.com/en/1.5/ref/contrib/sites/). See also [this blog post](http://reinout.vanrees.org/weblog/2014/05/09/authentication-python-web.html).
+    
+    Both phytosantiary.info and apppc.org will need to get SSL certificates for single sign-on to work securely: 
+    
+    > Even if the authentication with CAS is made using a mechanism which makes it difficult to interfere with, all authorized communication will subsequentely use a cookie identifing the session which can be used to hijack the connection. So you need to encrypt the communication. There is just no way around that if you want to enforce some sort of security.
+    
 - [Email utility](https://github.com/pinax/django-mailer)
     - Ability to insert user groups as well as individual users in `To:` field in `/admin/mailer/message/add/`
         - Use [admin actions](https://docs.djangoproject.com/en/1.5/ref/contrib/admin/actions/)?
