@@ -7,7 +7,7 @@ PestReportDetailView, CountryView, pest_report_create, pest_report_edit, Publica
 PublicationListView,BasicReportingListView, BasicReportingDetailView,basic_reporting_create, basic_reporting_edit, \
 EventReportingListView, EventReportingDetailView,event_reporting_create, event_reporting_edit, \
 PestFreeAreaListView, PestFreeAreaDetailView,pfa_create, pfa_edit, \
-ImplementationISPMListView, ImplementationISPMDetailView,implementationispm_create, implementationispm_edit
+ImplementationISPMListView, ImplementationISPMDetailView,implementationispm_create, implementationispm_edit,CountryListView
 
 from mezzanine.core.views import direct_to_template
 import mezzanine_pagedown.urls
@@ -36,6 +36,11 @@ urlpatterns = patterns("",
         view=CountryView.as_view(),
         # view=country_view(),
         name='country'),
+    
+    url(r'^countries/list-countries',
+        view=CountryListView.as_view(),
+        # view=country_view(),
+        name='country-list'),
     
     # pest report list
     url(r'^countries/(?P<country>[\w-]+)/pestreports/$',

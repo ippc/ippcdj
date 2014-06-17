@@ -148,6 +148,34 @@ class WorkAreaPage(Page, RichText):
             ("can_view", "View Work Area Page"),
         )
 
+CP_NCP_T_TYPE_0 = 'N/A'
+CP_NCP_T_TYPE_1 = 'CP'
+CP_NCP_T_TYPE_2 = 'NCP'
+CP_NCP_T_TYPE_3 = 'T'
+CP_NCP_TYPE_CHOICES = (
+    (CP_NCP_T_TYPE_1, _("Contracting party")),
+    (CP_NCP_T_TYPE_2, _("Non-Contracting party")),
+    (CP_NCP_T_TYPE_3, _("Territory")),
+)
+REGION_1 = 1
+REGION_2 = 2
+REGION_3 = 3
+REGION_4 = 4
+REGION_5 = 5
+REGION_6 = 6
+REGION_7 = 7
+REGIONS = (
+    (REGION_1, _("Africa")),
+    (REGION_2, _("Asia")),
+    (REGION_3, _("Europe")),
+    (REGION_4, _("Latin America and Caribbean")),
+    (REGION_5, _("Near East")),
+    (REGION_6, _("North America")),
+    (REGION_7, _("South West Pacific")),
+)
+
+
+
 class CountryPage(Page):
     """ Country Pages with definable names, slugs, editors and contact point"""
     class Meta:
@@ -166,7 +194,11 @@ class CountryPage(Page):
             verbose_name=_("Country Chief Contact Point"), blank=True, null=True)
     editors = models.ManyToManyField(User, verbose_name=_("Country Editors"), 
         related_name='countryeditors+', blank=True, null=True)
-    # =todo: 
+    cp_ncp_t_type = models.CharField(_("Contracting or Non-Contracting party"),max_length=3, choices=CP_NCP_TYPE_CHOICES, default=CP_NCP_T_TYPE_0)
+    region = models.IntegerField(_("Region"), choices=REGIONS, default=None)
+    cn_flag = models.ImageField(_("Country flag"), upload_to="flags/", blank=True)
+    
+        # =todo: 
     # contracting_party = boolean
     # territory_of = foreignkey to other country
     # flag

@@ -33,11 +33,9 @@ class PublicationLibraryAdmin(PageAdmin):
 admin.site.register(PublicationLibrary, PublicationLibraryAdmin)
 
 
-
-
 # Country Pages ----------------- 
 # http://mezzanine.jupo.org/docs/content-architecture.html#creating-custom-content-types
-countrypages_extra_fieldsets = ((None, {"fields": ("name", "country_slug", "iso", "iso3", "contact_point", "editors", )}),)
+countrypages_extra_fieldsets = ((None, {"fields": ("name", "country_slug", "iso", "iso3", "contact_point", "editors", "cp_ncp_t_type", "region", "cn_flag", )}),)
 
 class CountryPageAdmin(PageAdmin):
     fieldsets = deepcopy(PageAdmin.fieldsets) + countrypages_extra_fieldsets

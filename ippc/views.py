@@ -1,7 +1,7 @@
 from django.shortcuts import render
 from django.utils.translation import ugettext_lazy as _
 from django.contrib.messages import info, error
-from .models import IppcUserProfile, PestStatus, PestReport, IS_PUBLIC, IS_HIDDEN, Publication, BasicReporting, BASIC_REP_TYPE_CHOICES, EventReporting, EVT_REP_TYPE_CHOICES,PestFreeArea,ImplementationISPM
+from .models import IppcUserProfile, PestStatus, PestReport, IS_PUBLIC, IS_HIDDEN, Publication, BasicReporting, BASIC_REP_TYPE_CHOICES, EventReporting, EVT_REP_TYPE_CHOICES,PestFreeArea,ImplementationISPM,CountryPage
 from mezzanine.core.models import Displayable, CONTENT_STATUS_DRAFT, CONTENT_STATUS_PUBLISHED
 from .forms import PestReportForm, BasicReportingForm, EventReportingForm, PestFreeAreaForm,ImplementationISPMForm
 
@@ -604,4 +604,16 @@ def implementationispm_edit(request, country, id=None, template_name='countries/
     return render_to_response(template_name, {
         'form': form, "implementationispm": implementationispm
     }, context_instance=RequestContext(request))
+    
+class CountryListView(ListView):
+    """   alphabetic countries list  """
+    context_object_name = 'latest'
+    model = CountryPage
+    template_name = 'countries/countries_list.html'
+    queryset = CountryPage.objects.all().order_by('title')
+    
+    def get_context_data(self, **kwargs): # http://stackoverflow.com/a/15515220
+        context = super(CountryListView, self).get_context_data(**kwargs)
+        context['number_of_cp']= CountryPage.objects.filter(cp_ncp_t_type='CP').count()
+        return context
     
