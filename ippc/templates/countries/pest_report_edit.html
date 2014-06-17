@@ -47,7 +47,7 @@
 {# {% debug %} #}
 {# <form class="customform" method="POST" action="/countries/{{pest_report.country.country_slug}}/pestreports/edit/{{pest_report.id}}"> #}
 <form enctype="multipart/form-data" class="customform" method="POST" action="{% url 'pest-report-edit' pest_report.country.country_slug pest_report.id %}">
-    {% csrf_token %}
+   {% csrf_token %}
     <fieldset>
         {% include "countries/pest_report_form.html" %}
         <div class="form-actions">

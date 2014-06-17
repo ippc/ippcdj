@@ -148,7 +148,7 @@ def pest_report_create(request, country):
     country=user.get_profile().country
     user_country_slug = lower(slugify(country))
 
-    form = PestReportForm(request.POST or None)
+    form = PestReportForm(request.POST, request.FILES)
     
     if request.method == "POST":
         if form.is_valid():
@@ -190,6 +190,7 @@ def pest_report_edit(request, country, id=None, template_name='countries/pest_re
 
     if request.POST:
         form = PestReportForm(request.POST,  request.FILES, instance=pest_report)
+
         if form.is_valid():
             form.save()
 

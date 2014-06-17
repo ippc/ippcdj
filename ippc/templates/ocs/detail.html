@@ -5,6 +5,110 @@
   {% trans "Test Document" %}
 {% endblock %}
 
+{% block extra_head %}
+
+{# HTML5 ContentEditable demo: http://html5demos.com/contenteditable #}
+<script type="text/javascript">
+// For discussion and comments, see: http://remysharp.com/2009/01/07/html5-enabling-script/
+/*@cc_on'abbr article aside audio canvas details figcaption figure footer header hgroup mark menu meter nav output progress section summary time video'.replace(/\w+/g,function(n){document.createElement(n)})@*/
+
+var addEvent = (function () {
+  if (document.addEventListener) {
+    return function (el, type, fn) {
+      if (el && el.nodeName || el === window) {
+        el.addEventListener(type, fn, false);
+      } else if (el && el.length) {
+        for (var i = 0; i < el.length; i++) {
+          addEvent(el[i], type, fn);
+        }
+      }
+    };
+  } else {
+    return function (el, type, fn) {
+      if (el && el.nodeName || el === window) {
+        el.attachEvent('on' + type, function () { return fn.call(el, window.event); });
+      } else if (el && el.length) {
+        for (var i = 0; i < el.length; i++) {
+          addEvent(el[i], type, fn);
+        }
+      }
+    };
+  }
+})();
+
+(function () {
+
+var pre = document.createElement('pre');
+pre.id = "view-source"
+
+// private scope to avoid conflicts with demos
+addEvent(window, 'click', function (event) {
+  if (event.target.hash == '#view-source') {
+    // event.preventDefault();
+    if (!document.getElementById('view-source')) {
+      // pre.innerHTML = ('<!DOCTYPE html>\n<html>\n' + document.documentElement.innerHTML + '\n</html>').replace(/[<>]/g, function (m) { return {'<':'&lt;','>':'&gt;'}[m]});
+      var xhr = new XMLHttpRequest();
+
+      // original source - rather than rendered source
+      xhr.onreadystatechange = function () {
+        if (this.readyState == 4 && this.status == 200) {
+          pre.innerHTML = this.responseText.replace(/[<>]/g, function (m) { return {'<':'&lt;','>':'&gt;'}[m]});
+          prettyPrint();
+        }
+      };
+
+      document.body.appendChild(pre);
+      // really need to be sync? - I like to think so
+      xhr.open("GET", window.location, true);
+      xhr.send();
+    }
+    document.body.className = 'view-source';
+    
+    var sourceTimer = setInterval(function () {
+      if (window.location.hash != '#view-source') {
+        clearInterval(sourceTimer);
+        document.body.className = '';
+      }
+    }, 200);
+  }
+});
+  
+})();
+</script>
+
+{# Automatic section numbering http://stackoverflow.com/a/10345407 #}
+<style type="text/css" media="screen">
+body {counter-reset:section;}
+h1 {counter-reset:subsection;}
+section h1:before, 
+section h2:before, 
+section h3:before, 
+section h4:before, 
+section h5:before, 
+section h6:before, 
+section ul:before, 
+section ol:before, 
+section table:before, 
+section img:before {
+counter-increment:section;
+content:"" counter(section) ".";
+    font-weight:bold;
+    font-size:0.9em;
+    display:block;
+    clear:both;
+    margin:0 !important;
+    padding:0 !important;
+    border-bottom:1px dotted #0cf;
+    color:#00f;
+}
+/*h2:before 
+{
+counter-increment:subsection;
+content:counter(section) "." counter(subsection) " ";
+}
+*/</style>
+{% endblock extra_head %}
+
 {% block breadcrumb_menu %}
 <li>
   <a href="/ocs/">{% trans "Home" %}</a>
@@ -16,142 +120,75 @@
 {% block main %}
 
 {# {% if latest %} #}
-<table class="table table-condensed table-striped" id="publications">
-  <thead>
-    <tr>
-      <th style="width:2em;">{% trans "Item" %}</th>
-      <th class="normal" style="width:50%;">{% trans "Document" %}</th>
-      <th style="width:40%;">{% trans "History" %}</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-    </tr>
-    <tr>
-      <td>
-        {# {{ forloop.counter0|add:page_obj.start_index }} #}
-        1
-      </td>
-      <td>
-        <h1>Test Document</h1>
-        
-        <!-- Button to trigger modal -->
-        {# <a href="#myModal" role="button" class="btn" data-toggle="modal">Launch demo modal</a> #}
-     
-        <!-- Modal -->
-        {# <div id="myModal" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true"> #}
-        {# <div class="modal-header"> #}
-        {# <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button> #}
-        {# <h3 id="myModalLabel">Modal header</h3> #}
-        {# </div> #}
-        {# <div class="modal-body"> #}
-        {# <p>One fine body…</p> #}
-        {# </div> #}
-        {# <div class="modal-footer"> #}
-        {# <button class="btn" data-dismiss="modal" aria-hidden="true">Close</button> #}
-        {# <button class="btn btn-primary">Save changes</button> #}
-        {# </div> #}
-        {# </div> #}
 
-        <fieldset>
-          <legend>Comments</legend><form class="customform" method="POST" action="">
-          {% csrf_token %}
-          {% include "ocs/comment_form.html" %}
-        </form></fieldset>
-        
-      </td>
-      <td>
-        <ul>
-          <li><a href="#">List</a></li>
-          <li><a href="#">Of</a></li>
-          <li><a href="#">Changes</a></li>
-        </ul>
-      </td>
+<section id="editable" contenteditable="true">
+  <h2>Document Title. Go ahead, edit away!</h2>
+  <p>The changes will be saved to your (modern) browser's local storage, so your edits will remain here even if you refresh the page. To clear them click on 'Clear Changes' below. Obviously, in the real application, the changes would be saved to the database eventually or maybe there would be an ability to export them as a diff file to save and send by email for users without internet connection, but I'm getting far ahead of myself here.</p>
+  <ol>
+    <li>And now a list</li>
+    <li>With only</li>
+    <li>Three items</li>
+  </ol>
+  <table class="table table-bordered">
+    <tr>
+      <th>Table Header</th>
+      <th>Header Again</th>
+      <th>Another One</th>
     </tr>
     <tr>
-      <td>
-        {# {{ forloop.counter0|add:page_obj.start_index }} #}
-        2
-      </td>
-      <td>
-        <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
-     <fieldset>
-       <legend>Comments</legend><form class="customform" method="POST" action="">
-       {% csrf_token %}
-       {% include "ocs/comment_form.html" %}
-     </form></fieldset>
-     
-   </td>
-   <td>
-     <ul>
-       <li><a href="#">List</a></li>
-       <li><a href="#">Of</a></li>
-       <li><a href="#">Changes</a></li>
-     </ul>
-   </td>
- </tr>
-    <tr>
-      <td>
-        {# {{ forloop.counter0|add:page_obj.start_index }} #}
-        3
-      </td>
-      <td>
-        <ul>
-          <li>Here's a bulleted list</li>
-          <li>With three or</li>
-          <li>Four items</li>
-        </ul>
-        <fieldset>
-          <legend>Comments</legend><form class="customform" method="POST" action="">
-          {% csrf_token %}
-          {% include "ocs/comment_form.html" %}
-        </form></fieldset>
-        
-      </td>
-      <td>
-        <ul>
-          <li><a href="#">List</a></li>
-          <li><a href="#">Of</a></li>
-          <li><a href="#">Changes</a></li>
-        </ul>
-      </td>
+      <td>Table cell</td>
+      <td>Another one</td>
+      <td>One more time</td>
     </tr>
-    <tr>
-      <td>
-        {# {{ forloop.counter0|add:page_obj.start_index }} #}
-        4
-      </td>
-      <td>
-          <table border="0" cellspacing="5" cellpadding="5">
-            <tr>
-              <th>Table Header</th>
-              <th>Header Again</th>
-              <th>Another One</th>
-            </tr>
-            <tr>
-              <td>Laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</td>
-              <td>Velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</td>
-              <td>Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</td>
-            </tr>
-          </table>
-        <fieldset>
-          <legend>Comments</legend>
-          <form class="customform" method="POST" action="">
-          {% csrf_token %}
-          {% include "ocs/comment_form.html" %}
-        </form></fieldset>
-        
-      </td>
-      <td>
-        <ul>
-          <li><a href="#">List</a></li>
-          <li><a href="#">Of</a></li>
-          <li><a href="#">Changes</a></li>
-        </ul>
-      </td>
-    </tr>
-  </tbody>
-</table>
+  </table>
+</section>
+
+<div class="panel">
+  <p class="text-info">Click on the text above and begin typing to revise it, then explain your chnage below and click the Submit button</p>
+    <form class="customform" method="POST" action="">
+    {% csrf_token %}
+    
+    
+    <textarea rows="3"></textarea>
+    <br>
+    <select name="comment_type">
+    <option>-- type of comment --</option>
+    <option>Too many choices</option>
+    <option>Make users</option>
+    <option>Go nuts</option>
+    <option>But here</option>
+    <option>We are</option>
+    </select>
+    <br>
+    <button type="submit" class="btn btn-large btn-info">Submit</button>  or <input type="button" class="btn btn-small btn-danger" id="clear" value="cancel and clear changes" /> <span class="quiet">(nothing will happen because this is only a mockup so far)</span>
+  </form>
+</div>
+
+{# HTML5 ContentEditable demo: http://html5demos.com/contenteditable #}
+<script>
+var editable = document.getElementById('editable');
+
+addEvent(editable, 'blur', function () {
+  // lame that we're hooking the blur event
+  localStorage.setItem('contenteditable', this.innerHTML);
+  document.designMode = 'off';
+});
+
+addEvent(editable, 'focus', function () {
+  document.designMode = 'on';
+});
+
+addEvent(document.getElementById('clear'), 'click', function () {
+  localStorage.clear();
+  window.location = window.location; // refresh
+});
+
+if (localStorage.getItem('contenteditable')) {
+  editable.innerHTML = localStorage.getItem('contenteditable');
+}
+
+</script>
+
 
 {% endblock main %}
 

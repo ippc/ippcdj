@@ -45,7 +45,7 @@
 <h1><span class="normal">{% trans "Create New Pest Report for" %}</span> {{ user.get_profile.country.name }}</h1>
 
 {# {% debug %} #}
-<form class="customform" method="POST" action="">
+<form class="customform" method="POST" action="" enctype="multipart/form-data">
     {% csrf_token %}
     <fieldset>
         {% include "countries/pest_report_form.html" %}
