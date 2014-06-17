@@ -2,6 +2,7 @@
 
 ## Things to do
 
+- Setup Dev [MySQL](http://www.tecmint.com/install-mariadb-in-linux/), [php](http://www.if-not-true-then-false.com/2011/install-nginx-php-fpm-on-fedora-centos-red-hat-rhel/) and [phpmyadmin](http://stackoverflow.com/questions/5895707/how-to-combine-django-and-wordpress-based-on-ubuntu-and-nginx)
 - Create remaining forms for all types of NPPO reports
     - Add [tagging](http://django-taggit.readthedocs.org/en/latest/) (keywords) and other fields
 - Country pages:
@@ -258,6 +259,18 @@ Dev server exlqaippc2.ext.fao.org setup and configuration for IPPC 4.0 prototype
 
 8. Kill [gunicorn](http://gunicorn-docs.readthedocs.org/en/latest/run.html) process `pkill gunicorn` then restart it `gunicorn_django --daemon -b 0.0.0.0:8000`
 9. Stop nginx `service nginx stop` then restart `service nginx start`
+
+## MariaDB (MySQL)
+
+For setup see <http://www.tecmint.com/install-mariadb-in-linux/>:
+
+Start:
+
+    /etc/init.d/mysql start
+
+Login:
+
+    
 
 ## Permissions System
 
