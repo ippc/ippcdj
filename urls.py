@@ -2,7 +2,12 @@
 from django.conf.urls import patterns, include, url
 from django.contrib import admin
 
-from .ippc.views import PestReportListView, PestReportHiddenListView, PestReportDetailView, CountryView, pest_report_create, pest_report_edit, PublicationDetailView, PublicationListView
+from .ippc.views import PestReportListView, PestReportHiddenListView, \
+PestReportDetailView, CountryView, pest_report_create, pest_report_edit, PublicationDetailView,\
+PublicationListView,BasicReportingListView, BasicReportingDetailView,basic_reporting_create, basic_reporting_edit, \
+EventReportingListView, EventReportingDetailView,event_reporting_create, event_reporting_edit, \
+PestFreeAreaListView, PestFreeAreaDetailView,pfa_create, pfa_edit, \
+ImplementationISPMListView, ImplementationISPMDetailView,implementationispm_create, implementationispm_edit
 
 from mezzanine.core.views import direct_to_template
 import mezzanine_pagedown.urls
@@ -68,8 +73,123 @@ urlpatterns = patterns("",
         view=PublicationDetailView.as_view(),
         name='publication-detail'),
     
-    # newsletter for email utility
-    # url(r'^newsletter/', include('newsletter.urls')),
+    # basic reporting list
+    url(r'^countries/(?P<country>[\w-]+)/basicreportings/$',
+        view=BasicReportingListView.as_view(),
+        name='basic-reporting-list'),
+
+    # basic reporting list showing hidden reports 
+    #url(r'^countries/(?P<country>[\w-]+)/basicreportings/hidden/$',
+    #    view=BasicReportingHiddenListView.as_view(),
+    #    name='pest-report-hidden-list'),
+
+    # basic reporting detail
+    url(r'^countries/(?P<country>[\w-]+)/basicreportings/(?P<year>\d+)/(?P<month>\d{2})/(?P<slug>[\w-]+)/$',
+        view=BasicReportingDetailView.as_view(),
+        name="basic-reporting-detail"),
+        
+     # basic reporting create
+    url(r'^countries/(?P<country>[\w-]+)/basicreportings/(?P<type>[\w-]+)/create/$',
+        view=basic_reporting_create,
+        name='basic-reporting-create'),
+        
+    # basic reporting edit
+    url(r'^countries/(?P<country>[\w-]+)/basicreportings/edit/(?P<id>\d+)/$',
+        view=basic_reporting_edit,
+        name='basic-reporting-edit'),
+
+    # event reporting list
+    url(r'^countries/(?P<country>[\w-]+)/eventreportings/$',
+        view=EventReportingListView.as_view(),
+        name='event-reporting-list'),
+
+    # event reporting list showing hidden reports 
+    #url(r'^countries/(?P<country>[\w-]+)/eventreportings/hidden/$',
+    #    view=EventReportingHiddenListView.as_view(),
+    #    name='event-reporting-hidden-list'),
+
+    # event reporting detail
+    url(r'^countries/(?P<country>[\w-]+)/eventreportings/(?P<year>\d+)/(?P<month>\d{2})/(?P<slug>[\w-]+)/$',
+        view=EventReportingDetailView.as_view(),
+        name="event-reporting-detail"),
+        
+     # event reporting create
+    url(r'^countries/(?P<country>[\w-]+)/eventreportings/(?P<type>[\w-]+)/create/$',
+        view=event_reporting_create,
+        name='event-reporting-create'),
+        
+    # event reporting edit
+    url(r'^countries/(?P<country>[\w-]+)/eventreportings/edit/(?P<id>\d+)/$',
+        view=event_reporting_edit,
+        name='event-reporting-edit'),
+
+
+    # event reporting list
+    url(r'^countries/(?P<country>[\w-]+)/eventreportings/$',
+        view=EventReportingListView.as_view(),
+        name='event-reporting-list'),
+
+    # event reporting list showing hidden reports 
+    #url(r'^countries/(?P<country>[\w-]+)/eventreportings/hidden/$',
+    #    view=EventReportingHiddenListView.as_view(),
+    #    name='event-reporting-hidden-list'),
+
+   # event reporting list
+    url(r'^countries/(?P<country>[\w-]+)/pestfreeareas/$',
+        view=PestFreeAreaListView.as_view(),
+        name='pfa-list'),
+
+    # event reporting list showing hidden reports 
+    #url(r'^countries/(?P<country>[\w-]+)/eventreportings/hidden/$',
+    #    view=EventReportingHiddenListView.as_view(),
+    #    name='event-reporting-hidden-list'),
+
+    # event reporting detail
+    url(r'^countries/(?P<country>[\w-]+)/pestfreeareas/(?P<year>\d+)/(?P<month>\d{2})/(?P<slug>[\w-]+)/$',
+        view=PestFreeAreaDetailView.as_view(),
+        name="pfa-detail"),
+        
+     # event reporting create
+    url(r'^countries/(?P<country>[\w-]+)/pestfreeareas/create/$',
+        view=pfa_create,
+        name='pfa-create'),
+        
+    # event reporting edit
+    url(r'^countries/(?P<country>[\w-]+)/pestfreeareas/edit/(?P<id>\d+)/$',
+        view=pfa_edit,
+        name='pfa-edit'),
+
+
+
+
+
+
+# event reporting list
+    url(r'^countries/(?P<country>[\w-]+)/implementationispm/$',
+        view=ImplementationISPMListView.as_view(),
+        name='implementationispm-list'),
+
+    # event reporting list showing hidden reports 
+    #url(r'^countries/(?P<country>[\w-]+)/eventreportings/hidden/$',
+    #    view=EventReportingHiddenListView.as_view(),
+    #    name='event-reporting-hidden-list'),
+
+    # event reporting detail
+    url(r'^countries/(?P<country>[\w-]+)/implementationispm/(?P<year>\d+)/(?P<month>\d{2})/(?P<slug>[\w-]+)/$',
+        view=ImplementationISPMDetailView.as_view(),
+        name="implementationispm-detail"),
+        
+     # event reporting create
+    url(r'^countries/(?P<country>[\w-]+)/implementationispm/create/$',
+        view=implementationispm_create,
+        name='implementationispm-create'),
+        
+    # event reporting edit
+    url(r'^countries/(?P<country>[\w-]+)/implementationispm/edit/(?P<id>\d+)/$',
+        view=implementationispm_edit,
+        name='implementationispm-edit'),
+
+
 
     # pagedown for markdown wysiwyg
     ("^pagedown/", include(mezzanine_pagedown.urls)),

@@ -1,9 +1,9 @@
 from django.shortcuts import render
 from django.utils.translation import ugettext_lazy as _
 from django.contrib.messages import info, error
-from .models import IppcUserProfile, PestStatus, PestReport, IS_PUBLIC, IS_HIDDEN, Publication
+from .models import IppcUserProfile, PestStatus, PestReport, IS_PUBLIC, IS_HIDDEN, Publication, BasicReporting, BASIC_REP_TYPE_CHOICES, EventReporting, EVT_REP_TYPE_CHOICES,PestFreeArea,ImplementationISPM
 from mezzanine.core.models import Displayable, CONTENT_STATUS_DRAFT, CONTENT_STATUS_PUBLISHED
-from .forms import PestReportForm
+from .forms import PestReportForm, BasicReportingForm, EventReportingForm, PestFreeAreaForm,ImplementationISPMForm
 
 from django.views.generic import ListView, MonthArchiveView, YearArchiveView, DetailView, TemplateView, CreateView
 from django.core.urlresolvers import reverse
@@ -29,6 +29,8 @@ class CountryView(TemplateView):
     
     def get_context_data(self, **kwargs): # http://stackoverflow.com/a/15515220
         context = super(TemplateView, self).get_context_data(**kwargs)
+        context['event_types'] =EVT_REP_TYPE_CHOICES
+        context['basic_types'] =BASIC_REP_TYPE_CHOICES 
         context.update({
             'country': self.kwargs['country']
             # 'editors': self.kwargs['editors']
@@ -187,7 +189,8 @@ def pest_report_edit(request, country, id=None, template_name='countries/pest_re
         pest_report = PestReport(author=request.user)
 
     if request.POST:
-        form = PestReportForm(request.POST, request.FILES, instance=pest_report)
+        form = PestReportForm(request.POST,  request.FILES, instance=pest_report)
+
         if form.is_valid():
             form.save()
 
@@ -204,3 +207,401 @@ def pest_report_edit(request, country, id=None, template_name='countries/pest_re
     return render_to_response(template_name, {
         'form': form, "pest_report": pest_report
     }, context_instance=RequestContext(request))
+
+
+class BasicReportingListView(ListView):
+    """    Basic Reporting """
+    context_object_name = 'latest'
+    model = BasicReporting
+    date_field = 'publish_date'
+    template_name = 'countries/basic_reporting_list.html'
+    queryset = BasicReporting.objects.all().order_by('-publish_date', 'title')
+    
+    allow_future = False
+    allow_empty = True
+    paginate_by = 30
+
+    def get_queryset(self):
+        """ only return pest reports from the specific country """
+        # self.country = get_object_or_404(CountryPage, country=self.kwargs['country'])
+        self.country = self.kwargs['country']
+        # CountryPage country_slug == country URL parameter keyword argument
+        return BasicReporting.objects.filter(country__country_slug=self.country)
+    
+    def get_context_data(self, **kwargs): # http://stackoverflow.com/a/15515220
+        context = super(BasicReportingListView, self).get_context_data(**kwargs)
+        context['country'] = self.kwargs['country']
+        context['basic_types'] =BASIC_REP_TYPE_CHOICES
+        return context
+   
+       
+   
+class BasicReportingDetailView(DetailView):
+    """  Basic Reporting detail page """
+    model = BasicReporting
+    context_object_name = 'basicreporting'
+    template_name = 'countries/basic_reporting_detail.html'
+    queryset = BasicReporting.objects.filter()
+    # print('>>>>>>>>>>>>>>>')
+    # print(user.get_profile().country)
+
+
+
+@login_required
+@permission_required('ippc.add_basicreporting', login_url="/accounts/login/")
+def basic_reporting_create(request, country,type):
+    """ Create Basic Reporting """
+    user = request.user
+    author = user
+    country=user.get_profile().country
+    user_country_slug = lower(slugify(country))
+
+    form = BasicReportingForm(request.POST or None)
+  
+    if request.method == "POST":
+        if form.is_valid():
+            new_basic_reporting = form.save(commit=False)
+            new_basic_reporting.author = request.user
+            new_basic_reporting.author_id = author.id
+            new_basic_reporting.basic_rep_type = type
+            form.save()
+            info(request, _("Successfully created basic_reporting."))
+            
+            return redirect("basic-reporting-detail", country=user_country_slug, year=new_basic_reporting.publish_date.strftime("%Y"), month=new_basic_reporting.publish_date.strftime("%m"), slug=new_basic_reporting.slug)
+    else:
+        form = BasicReportingForm(initial={'country': country,'basic_rep_type': type}, instance=BasicReporting())
+    
+    return render_to_response('countries/basic_reporting_create.html', {'form': form},
+        context_instance=RequestContext(request))
+
+        
+# http://stackoverflow.com/a/1854453/412329
+@login_required
+@permission_required('ippc.change_basicreporting', login_url="/accounts/login/")
+def basic_reporting_edit(request, country, id=None, template_name='countries/basic_reporting_edit.html'):
+    """ Edit Basic Reporting """
+    user = request.user
+    author = user
+    country = user.get_profile().country
+    # country_id = PestReport.objects.filter(country__country_id=country.id)
+    user_country_slug = lower(slugify(country))
+    if id:
+        basic_reporting = get_object_or_404(BasicReporting, country=country, pk=id)
+        # if pest_report.author != request.user:
+        #     return HttpResponseForbidden()
+    else:
+        basic_reporting = BasicReporting(author=request.user)
+      
+    if request.POST:
+        form = BasicReportingForm(request.POST,  request.FILES, instance=basic_reporting)
+        if form.is_valid():
+            form.save()
+
+            # If the save was successful, success message and redirect to another page
+            # info(request, _("Successfully updated pest report."))
+            return redirect("basic-reporting-detail", country=user_country_slug, year=basic_reporting.publish_date.strftime("%Y"), month=basic_reporting.publish_date.strftime("%m"), slug=basic_reporting.slug)
+
+    else:
+        form = BasicReportingForm(instance=basic_reporting)
+
+    return render_to_response(template_name, {
+        'form': form, "basic_reporting": basic_reporting
+    }, context_instance=RequestContext(request))
+    
+
+
+class EventReportingListView(ListView):
+    """    Event Reporting """
+    context_object_name = 'latest'
+    model = BasicReporting
+    date_field = 'publish_date'
+    template_name = 'countries/event_reporting_list.html'
+    queryset = EventReporting.objects.all().order_by('-publish_date', 'title')
+    
+    allow_future = False
+    allow_empty = True
+    paginate_by = 30
+
+    def get_queryset(self):
+        """ only return pest reports from the specific country """
+        # self.country = get_object_or_404(CountryPage, country=self.kwargs['country'])
+        self.country = self.kwargs['country']
+        # CountryPage country_slug == country URL parameter keyword argument
+        return EventReporting.objects.filter(country__country_slug=self.country)
+    
+    def get_context_data(self, **kwargs): # http://stackoverflow.com/a/15515220
+        context = super(EventReportingListView, self).get_context_data(**kwargs)
+        context['country'] = self.kwargs['country']
+        context['event_types'] =EVT_REP_TYPE_CHOICES
+        return context
+   
+       
+   
+class EventReportingDetailView(DetailView):
+    """ EventReporting detail page """
+    model = EventReporting
+    context_object_name = 'eventreporting'
+    template_name = 'countries/eventreporting_detail.html'
+    queryset = EventReporting.objects.filter()
+    # print('>>>>>>>>>>>>>>>')
+    # print(user.get_profile().country)
+
+
+
+@login_required
+@permission_required('ippc.add_eventreporting', login_url="/accounts/login/")
+def event_reporting_create(request, country,type):
+    """ Create Event Reporting """
+    user = request.user
+    author = user
+    country=user.get_profile().country
+    user_country_slug = lower(slugify(country))
+
+    form = EventReportingForm(request.POST or None)
+  
+    if request.method == "POST":
+        if form.is_valid():
+            new_event_reporting = form.save(commit=False)
+            new_event_reporting.author = request.user
+            new_event_reporting.author_id = author.id
+            new_event_reporting.event_rep_type = type
+            form.save()
+            info(request, _("Successfully created event reporting."))
+            
+            return redirect("event-reporting-detail", country=user_country_slug, year=new_event_reporting.publish_date.strftime("%Y"), month=new_event_reporting.publish_date.strftime("%m"), slug=new_event_reporting.slug)
+    else:
+        form = EventReportingForm(initial={'country': country,'event_rep_type': type}, instance=EventReporting())
+    
+    return render_to_response('countries/event_reporting_create.html', {'form': form},
+        context_instance=RequestContext(request))
+
+        
+# http://stackoverflow.com/a/1854453/412329
+@login_required
+@permission_required('ippc.change_eventreporting', login_url="/accounts/login/")
+def event_reporting_edit(request, country, id=None, template_name='countries/event_reporting_edit.html'):
+    """ Edit Basic Reporting """
+    user = request.user
+    author = user
+    country = user.get_profile().country
+    # country_id = PestReport.objects.filter(country__country_id=country.id)
+    user_country_slug = lower(slugify(country))
+    if id:
+        event_reporting = get_object_or_404(EventReporting, country=country, pk=id)
+        # if pest_report.author != request.user:
+        #     return HttpResponseForbidden()
+    else:
+        event_reporting = EventReporting(author=request.user)
+      
+    if request.POST:
+        form = EventReportingForm(request.POST,  request.FILES, instance=event_reporting)
+        if form.is_valid():
+            form.save()
+
+            # If the save was successful, success message and redirect to another page
+            # info(request, _("Successfully updated pest report."))
+            return redirect("event-reporting-detail", country=user_country_slug, year=event_reporting.publish_date.strftime("%Y"), month=event_reporting.publish_date.strftime("%m"), slug=event_reporting.slug)
+
+    else:
+        form = EventReportingForm(instance=event_reporting)
+
+    return render_to_response(template_name, {
+        'form': form, "event_reporting": event_reporting
+    }, context_instance=RequestContext(request))
+    
+    
+class PestFreeAreaListView(ListView):
+    """    Event Reporting """
+    context_object_name = 'latest'
+    model = PestFreeArea
+    date_field = 'publish_date'
+    template_name = 'countries/pfa_list.html'
+    queryset = PestFreeArea.objects.all().order_by('-publish_date', 'title')
+    
+    allow_future = False
+    allow_empty = True
+    paginate_by = 30
+
+    def get_queryset(self):
+        """ only return PestFreeArea from the specific country """
+        # self.country = get_object_or_404(CountryPage, country=self.kwargs['country'])
+        self.country = self.kwargs['country']
+        # CountryPage country_slug == country URL parameter keyword argument
+        return PestFreeArea.objects.filter(country__country_slug=self.country)
+    
+    def get_context_data(self, **kwargs): # http://stackoverflow.com/a/15515220
+        context = super(PestFreeAreaListView, self).get_context_data(**kwargs)
+        context['country'] = self.kwargs['country']
+        return context
+   
+       
+   
+class PestFreeAreaDetailView(DetailView):
+    """ PestFreeArea Detail page """
+    model = PestFreeArea
+    context_object_name = 'pfa'
+    template_name = 'countries/pfa_detail.html'
+    queryset = PestFreeArea.objects.filter()
+    # print('>>>>>>>>>>>>>>>')
+    # print(user.get_profile().country)
+
+
+
+@login_required
+@permission_required('ippc.add_pestfreearea', login_url="/accounts/login/")
+def pfa_create(request, country):
+    """ Create PestFreeArea """
+    user = request.user
+    author = user
+    country=user.get_profile().country
+    user_country_slug = lower(slugify(country))
+
+    form = PestFreeAreaForm(request.POST or None)
+  
+    if request.method == "POST":
+        if form.is_valid():
+            new_pfa = form.save(commit=False)
+            new_pfa.author = request.user
+            new_pfa.author_id = author.id
+            form.save()
+            info(request, _("Successfully created PestFreeArea."))
+            
+            return redirect("pfa-detail", country=user_country_slug, year=new_pfa.publish_date.strftime("%Y"), month=new_pfa.publish_date.strftime("%m"), slug=new_pfa.slug)
+    else:
+        form = PestFreeAreaForm(initial={'country': country}, instance=PestFreeArea())
+    
+    return render_to_response('countries/pfa_create.html', {'form': form},
+        context_instance=RequestContext(request))
+
+        
+# http://stackoverflow.com/a/1854453/412329
+@login_required
+@permission_required('ippc.change_pestfreearea', login_url="/accounts/login/")
+def pfa_edit(request, country, id=None, template_name='countries/pfa_edit.html'):
+    """ Edit PestFreeArea """
+    user = request.user
+    author = user
+    country = user.get_profile().country
+    # country_id = PestReport.objects.filter(country__country_id=country.id)
+    user_country_slug = lower(slugify(country))
+    if id:
+        pfa = get_object_or_404(PestFreeArea, country=country, pk=id)
+        # if pest_report.author != request.user:
+        #     return HttpResponseForbidden()
+    else:
+        pfa = PestFreeArea(author=request.user)
+      
+    if request.POST:
+        form = PestFreeAreaForm(request.POST,  request.FILES, instance=pfa)
+        if form.is_valid():
+            form.save()
+
+            # If the save was successful, success message and redirect to another page
+            # info(request, _("Successfully updated pest report."))
+            return redirect("pfa-detail", country=user_country_slug, year=pfa.publish_date.strftime("%Y"), month=pfa.publish_date.strftime("%m"), slug=pfa.slug)
+
+    else:
+        form = PestFreeAreaForm(instance=pfa)
+
+    return render_to_response(template_name, {
+        'form': form, "pfa": pfa
+    }, context_instance=RequestContext(request))
+    
+
+class ImplementationISPMListView(ListView):
+    """    ImplementationISPM """
+    context_object_name = 'latest'
+    model = ImplementationISPM
+    date_field = 'publish_date'
+    template_name = 'countries/implementationispm_list.html'
+    queryset = ImplementationISPM.objects.all().order_by('-publish_date', 'title')
+    
+    allow_future = False
+    allow_empty = True
+    paginate_by = 30
+
+    def get_queryset(self):
+        """ only return pest reports from the specific country """
+        # self.country = get_object_or_404(CountryPage, country=self.kwargs['country'])
+        self.country = self.kwargs['country']
+        # CountryPage country_slug == country URL parameter keyword argument
+        return ImplementationISPM.objects.filter(country__country_slug=self.country)
+    
+    def get_context_data(self, **kwargs): # http://stackoverflow.com/a/15515220
+        context = super(ImplementationISPMListView, self).get_context_data(**kwargs)
+        context['country'] = self.kwargs['country']
+        return context
+   
+       
+   
+class ImplementationISPMDetailView(DetailView):
+    """ ImplementationISPM detail page """
+    model = ImplementationISPM
+    context_object_name = 'implementationispm'
+    template_name = 'countries/implementationispm_detail.html'
+    queryset = ImplementationISPM.objects.filter()
+    # print('>>>>>>>>>>>>>>>')
+    # print(user.get_profile().country)
+
+
+
+@login_required
+@permission_required('ippc.add_implementationispm', login_url="/accounts/login/")
+def implementationispm_create(request, country):
+    """ Create ImplementationISPM """
+    user = request.user
+    author = user
+    country=user.get_profile().country
+    user_country_slug = lower(slugify(country))
+
+    form = ImplementationISPMForm(request.POST or None)
+  
+    if request.method == "POST":
+        if form.is_valid():
+            new_implementationispm = form.save(commit=False)
+            new_implementationispm.author = request.user
+            new_implementationispm.author_id = author.id
+            form.save()
+            info(request, _("Successfully created implementationispm."))
+            
+            return redirect("implementationispm-detail", country=user_country_slug, year=new_implementationispm.publish_date.strftime("%Y"), month=new_implementationispm.publish_date.strftime("%m"), slug=new_implementationispm.slug)
+    else:
+        form = ImplementationISPMForm(initial={'country': country}, instance=ImplementationISPM())
+    
+    return render_to_response('countries/implementationispm_create.html', {'form': form},
+        context_instance=RequestContext(request))
+
+        
+# http://stackoverflow.com/a/1854453/412329
+@login_required
+@permission_required('ippc.change_implementationispm', login_url="/accounts/login/")
+def implementationispm_edit(request, country, id=None, template_name='countries/implementationispm_edit.html'):
+    """ Edit implementationispm """
+    user = request.user
+    author = user
+    country = user.get_profile().country
+    # country_id = PestReport.objects.filter(country__country_id=country.id)
+    user_country_slug = lower(slugify(country))
+    if id:
+        implementationispm = get_object_or_404(ImplementationISPM, country=country, pk=id)
+        # if pest_report.author != request.user:
+        #     return HttpResponseForbidden()
+    else:
+        implementationispm = ImplementationISPM(author=request.user)
+      
+    if request.POST:
+        form = ImplementationISPMForm(request.POST,  request.FILES, instance=implementationispm)
+        if form.is_valid():
+            form.save()
+
+            # If the save was successful, success message and redirect to another page
+            # info(request, _("Successfully updated pest report."))
+            return redirect("implementationispm-detail", country=user_country_slug, year=implementationispm.publish_date.strftime("%Y"), month=implementationispm.publish_date.strftime("%m"), slug=implementationispm.slug)
+
+    else:
+        form = ImplementationISPMForm(instance=implementationispm)
+
+    return render_to_response(template_name, {
+        'form': form, "implementationispm": implementationispm
+    }, context_instance=RequestContext(request))
+    

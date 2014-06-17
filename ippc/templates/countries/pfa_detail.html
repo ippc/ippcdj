@@ -1,0 +1,91 @@
+{% extends "base.html" %}
+{% load pages_tags mezzanine_tags i18n future staticfiles accounts_tags %}
+
+{% block meta_title %}{% trans "Latest Pest Free Areas" %}{% endblock %}
+
+{% block breadcrumb_menu %}
+<li><a href="/">{% trans "Home" %}</a><span class="divider">/</span></li>
+<li><a href="/countries/">Countries</a><span class="divider">/</span></li>
+<li><a href="/countries/{{pfa.country.name|slugify}}">{{pfa.country.name}}</a><span class="divider">/</span></li>
+<li><a href="/countries/{{pfa.country.name|slugify}}/pestfreeareas/">Pest Free Areas</a><span class="divider">/</span></li>
+<li class="active">{{ pfa.title }}</li>
+{% endblock %}
+
+{% block local_nav %}
+<div class="well">
+  <p><a href="/countries/{{ pfa.country.name|slugify }}/pestfreeareas/">« {% trans "Back to" %} {% trans "Pest Free Areas" %}</a></p>
+    {% if user.is_superuser %} 
+        <a class="btn btn-small btn-info" href="/admin/ippc/pestfreearea/{{ pfa.id }}">Edit as Admin</a><br>
+    {% endif %}
+        
+    {% if perms.ippc.change_pestfreearea and request.user.get_profile.country.name == page.title %}
+        <a class="btn btn-small btn-info" href="{% url 'pfa-edit' pfa.country.name|slugify pfa.id %}"><i class="icon-edit icon-white"></i> Edit</a>
+        {# <a class="btn" href="{% url 'pfa-edit' pfa.id %}"><i class="icon-edit"></i> Edit</a> #}
+    {% else %}
+    {% endif %}
+    
+    
+    
+   
+</div>
+{% endblock local_nav %}
+
+{% block pageinfo %}
+
+{% endblock pageinfo %}
+
+{% block main %}
+<h1>{{ pfa.title }}</h1> 
+
+<dl class="dl-horizontal">
+  {% if pfa.pfa_type %}
+  <dt>{% trans "Type of recognition" %}</dt>
+  <dd>
+    <ul class="unstyled nomargin">
+      <li>{{ pfa.pfa_type_verbose }}</li>
+    </ul>
+  </dd>
+  {% endif %}
+  
+  <dt>{% trans "Publication date" %}</dt>
+  <dd>{% blocktrans with sometime=pfa.publication_date|date:"d-m-Y" %}{{ sometime }}{% endblocktrans %}</dd>
+  
+ {% if pfa.short_description %}
+  <dt>{% trans "short description" %}</dt>
+  <dd>{{ pfa.short_description }}</dd>
+  {% endif %}
+  
+  {% if pfa.contact_for_more_information %}
+  <dt>{% trans "Contact for more information" %}</dt>
+  <dd>{{ pfa.contact_for_more_information }}</dd>
+  {% endif %}
+  
+  {% if pfa.url_for_more_information %}
+  <dt>{% trans "Website" %}</dt>
+  <dd><a href="{{ pfa.url_for_more_information }}">{{ pfa.url_for_more_information }}</a></dd>
+  {% endif %}
+  
+  <dt>{% trans "Author" %}</dt>
+  <dd>{{ pfa.author.get_profile.first_name }} {{ pfa.author.get_profile.last_name }}</dd>
+  
+  {% if pfa.file %}
+  <dt>{% trans "Report file" %}</dt>
+  <dd><a href="{{MEDIA_URL}}{{ pfa.files }}{{ pfa.file }}">{{ pfa.filename }}</a></dd>
+  {% endif %}
+
+
+  
+ 
+  
+  
+ 
+  
+ 
+  
+  
+ 
+  
+</dl>
+
+{% endblock %}
+
