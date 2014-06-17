@@ -260,6 +260,62 @@ Dev server exlqaippc2.ext.fao.org setup and configuration for IPPC 4.0 prototype
 8. Kill [gunicorn](http://gunicorn-docs.readthedocs.org/en/latest/run.html) process `pkill gunicorn` then restart it `gunicorn_django --daemon -b 0.0.0.0:8000`
 9. Stop nginx `service nginx stop` then restart `service nginx start`
 
+## Example Nginx Configuration
+
+    # phpmyadmin.site.tld (dev only to aid management of MySQL DB. Do not install in production.)
+    server {
+        listen xxx.xxx.x.xxx:80;
+        server_name phpmyadmin.site.tld;
+        
+        root /path/to/phpmyadmin;
+        index index.html index.php;
+        
+        location / {
+                index index.html index.htm index.php;
+            }
+            
+        location ~ \.php$ {
+            expires    off;
+            include /etc/nginx/fastcgi_params;
+            fastcgi_pass    127.0.0.1:9000;
+            fastcgi_index   index.php;
+            fastcgi_param   SCRIPT_FILENAME  /path/to/phpmyadmin/$fastcgi_script_name;
+        }
+    }
+    
+    
+    # dev.site.tld
+    server {
+      listen xxx.xxx.x.xxx:80;
+      server_name dev.site.tld;
+      access_log  /var/log/nginx/dev_site_tld.log;
+      
+      location /admin/media/ {
+          # this changes depending on your python version
+          root /path/to/env/lib/python2.7/site-packages/django/contrib;
+      }
+      
+      location /static/media { # STATIC_URL
+          alias /path/to/env/repo/static/media; # STATIC_ROOT
+          expires 30d;
+      }
+      
+      location /static { # STATIC_URL
+          alias /path/to/env/repo/static; # STATIC_ROOT
+          expires 30d;
+      }
+      
+      location / {
+          proxy_pass http://127.0.0.1:8000;
+          proxy_set_header Host $host;
+          proxy_set_header X-Real-IP $remote_addr;
+          proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+          }
+          
+      # what to serve if upstream is not available or crashes
+      error_page 500 502 503 504 /media/50x.html;
+    }
+
 ## MariaDB (MySQL)
 
 For setup see <http://www.tecmint.com/install-mariadb-in-linux/>:
