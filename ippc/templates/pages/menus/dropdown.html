@@ -62,11 +62,17 @@
     <li class="dropdown{% if page.is_current_or_ascendant %} active{% endif %}"
         id="dropdown-menu-{{ page.html_id }}">
         <a href="{{ page.get_absolute_url }}"{% if page.has_children %}data-hover="dropdown" class="dropdown-toggle active"{% endif %}>
-                {# {% trans page.title %}   #}
+
+
                 {% load translate_tags %}
                 {% with page.richtextpage|get_object_translation as translated_page %}
                     {{ translated_page.title|safe }}
                 {% endwith %}
+
+                {# =todo: get Link pages to display text. #}
+                {% if not page.richtextpage %}
+                  {% trans page.title %} &#8599; {# <i class="icon-share-alt"></i>   #}
+                {% endif %}
                 
             {% if page.has_children %}<span class="caret"></span>{% endif %}
         </a>
