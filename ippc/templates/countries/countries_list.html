@@ -23,7 +23,10 @@
   </a>
   <span class="divider">/</span>
 </li-->
-<li class="active">{% trans "Countries List" %}</li>
+<li class="active">{% trans "Countries List" %} 
+    {% if region_name %}
+  from {{region_name}}
+  {% endif %}</li>
 {% endblock %}
 
 {% block local_nav %}
@@ -39,7 +42,10 @@
 </p>
 
 <h1>
-  <small class="normal">{% trans "Countries list" %}</small>
+  <small class="normal">{% trans "Countries list" %} 
+  {% if region_name %}
+  from {{region_name}}
+  {% endif %}</small>
   </h1> 
 <p class="small">
             <span class="bullet-triangle">= Contracting parties ({{number_of_cp}}). Visit the website of <a href="http://www.fao.org/fileadmin/user_upload/legal/docs/5_004s-e.pdf">FAO Legal</a></span>
@@ -49,7 +55,7 @@
             <span class="icn-territory">= Territory</span></p>
 {% if latest %}
 
-    {% for object in latest %}
+    {% for object in countries %}
    {{ object.cp_ncp_t_type }} <a href="/{{ object.slug}}">{{ object.name }}</a><image src="{{MEDIA_URL}}{{  object.cn_flag }}"/>
     <br/><br/>
     {% endfor %}

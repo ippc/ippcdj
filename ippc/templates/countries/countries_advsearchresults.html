@@ -1,0 +1,104 @@
+{% extends "base.html" %}
+{% load pages_tags mezzanine_tags i18n future staticfiles accounts_tags %}
+
+{% block meta_title %}
+  {% trans "Search results for: " %}: 
+  {{ type_label }}
+{% endblock %}
+
+{% block body_class %}wide{% endblock %}
+
+{% block breadcrumb_menu %}
+<li><a href="/">{% trans "Home" %}</a><span class="divider">/</span></li>
+<li>
+  <a href="/countries/">Countries</a>
+  <span class="divider">/</span>
+</li>
+
+<li class="active">{{type_label}} {% trans "list" %}</li>
+{% endblock %}
+
+{% block local_nav %}
+{% endblock local_nav %}
+
+{% block pageinfo %}
+{% endblock pageinfo %}
+
+{% block main %}
+
+<p class="pull-right">
+  <a href="javascript:history.go(-1)">{% trans "« Go back" %}</a>
+  </p>
+
+<h1>
+  <small class="normal">{% trans "Results for: " %} {{type_label}} (1-{{counttotal}} of {{counttotal}})</small>
+  
+</h1> 
+{% if items %}
+
+{% ifequal link_to_item 'pest-report-detail' %}
+
+<table class="table table-condensed table-striped" id="publications">
+  <thead>
+    <tr>
+      <th>{% trans "Country" %}{{type}}</th>
+      <th>{% trans "Report number" %}</th>
+      <th>{% trans "Last updated" %}</th>
+      <th>{% trans "Identity of Pest" %}</th>
+      <th>{% trans "Host(s) or Article(s)" %}</th>
+      <th>{% trans "Status of pest (under ISPM No.8)" %}</th>
+      <th>{% trans "Title" %}</th>
+      
+    </tr>
+  </thead>
+  <tbody>
+    {% for object in items %}
+    <tr>
+      <td><a href="{% url 'country' object.country.country_slug%}">{{ object.country }}</a></td>
+      <td>n </td>
+      <td>{{ object.modified_date|date:"d M Y" }}</td>
+      <td>{{ object.pest_identity}} </td>
+      <td>{{ object.hosts}} </td>
+      <td>{{ object.pest_status}} </td>
+      <td><a href="{% url link_to_item object.country.country_slug object.publish_date|date:'Y' object.publish_date|date:'m'  object.slug %}">             {{ object.title }}</a></td>
+     </tr>
+    {% endfor %}
+  </tbody>
+</table>
+
+
+{% else %}
+<table class="table table-condensed table-striped" id="publications">
+  <thead>
+    <tr>
+      <th>{% trans "Country" %}{{type}}</th>
+      <th>{% trans "Title" %}</th>
+      <th>{% trans "Date Published" %}</th>
+      <th>{% trans "Last updated" %}</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for object in items %}
+    <tr>
+      <td><a href="{% url 'country' object.country.country_slug%}">{{ object.country }}</a></td>
+      <td>
+          <a href="{% url link_to_item object.country.country_slug object.publish_date|date:'Y' object.publish_date|date:'m'  object.slug %}">             {{ object.title }}</a></td>
+      <td>{{ object.publish_date|date:"d M Y" }}</td>
+      <td>{{ object.modify_date|date:"d M Y" }} </td>
+    </tr>
+    {% endfor %}
+  </tbody>
+</table>
+
+
+{% endifequal %}
+{% else %}
+<p>No items available.</p>
+{% endif %}
+
+{% endblock %}
+
+{# {% block extra_js %} #}
+{#   <script src="{% static "js/jquery.dataTables.js" %}"></script> #}
+{#   <script src="{% static "js/DT_bootstrap.js" %}"></script> #}
+{# {% endblock %} #}

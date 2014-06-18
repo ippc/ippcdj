@@ -1,7 +1,7 @@
 from django.shortcuts import render
 from django.utils.translation import ugettext_lazy as _
 from django.contrib.messages import info, error
-from .models import IppcUserProfile, PestStatus, PestReport, IS_PUBLIC, IS_HIDDEN, Publication, BasicReporting, BASIC_REP_TYPE_CHOICES, EventReporting, EVT_REP_TYPE_CHOICES,PestFreeArea,ImplementationISPM,CountryPage
+from .models import IppcUserProfile, PestStatus, PestReport, IS_PUBLIC, IS_HIDDEN, Publication, BasicReporting, BASIC_REP_TYPE_CHOICES, EventReporting, EVT_REP_TYPE_CHOICES,PestFreeArea,ImplementationISPM,CountryPage,REGIONS
 from mezzanine.core.models import Displayable, CONTENT_STATUS_DRAFT, CONTENT_STATUS_PUBLISHED
 from .forms import PestReportForm, BasicReportingForm, EventReportingForm, PestFreeAreaForm,ImplementationISPMForm
 
@@ -611,9 +611,80 @@ class CountryListView(ListView):
     model = CountryPage
     template_name = 'countries/countries_list.html'
     queryset = CountryPage.objects.all().order_by('title')
-    
+    #region_name=self.kwargs['region']
+   
     def get_context_data(self, **kwargs): # http://stackoverflow.com/a/15515220
         context = super(CountryListView, self).get_context_data(**kwargs)
         context['number_of_cp']= CountryPage.objects.filter(cp_ncp_t_type='CP').count()
+        if self.kwargs['region'] == 'all':
+            context['countries']= CountryPage.objects.all()
+        else:
+            for k,v in REGIONS:
+                reg = v.lower()
+                reg = reg.replace(" ", "-");
+                if reg == self.kwargs['region']:
+                    kindex=k
+                    context['region_name']=v
+            context['countries']= CountryPage.objects.filter(region=kindex)
         return context
+
+class AdvancesSearchCNListView(ListView):
+    """  AdvancesSearchCNListView list  """
+    context_object_name = 'latest'
+    model = CountryPage
+    template_name = 'countries/countries_advsearchresults.html'
     
+    def get_context_data(self, **kwargs): # http://stackoverflow.com/a/15515220
+        context = super(AdvancesSearchCNListView, self).get_context_data(**kwargs)
+        if self.kwargs['type'] == 'pestreport':
+            context['type_label'] = 'Official pest report (Art. VIII.1a)'
+            context['link_to_item'] = 'pest-report-detail'
+            context['items']= PestReport.objects.all()
+        elif self.kwargs['type'] == 'nppo':
+            context['type_label'] = dict(BASIC_REP_TYPE_CHOICES)[1]
+            context['link_to_item'] = 'basic-reporting-detail'
+            context['items']= BasicReporting.objects.filter(basic_rep_type=1)
+        elif self.kwargs['type'] == 'entrypoints':
+            context['type_label'] = dict(BASIC_REP_TYPE_CHOICES)[2]
+            context['link_to_item'] = 'basic-reporting-detail'
+            context['items']= BasicReporting.objects.filter(basic_rep_type=2)
+        elif self.kwargs['type'] == 'regulatedpests':
+            context['type_label'] = dict(BASIC_REP_TYPE_CHOICES)[3]
+            context['link_to_item'] = 'basic-reporting-detail'
+            context['items']= BasicReporting.objects.filter(basic_rep_type=3)
+        elif self.kwargs['type'] == 'legislation':
+            context['type_label'] = dict(BASIC_REP_TYPE_CHOICES)[4]
+            context['link_to_item'] = 'basic-reporting-detail'
+            context['items']= BasicReporting.objects.filter(basic_rep_type=4)
+        elif self.kwargs['type'] == 'emergencyactions':
+            context['type_label'] = dict(EVT_REP_TYPE_CHOICES)[1]
+            context['link_to_item'] = 'event-reporting-detail'
+            context['items']= EventReporting.objects.filter(event_rep_type=1)
+        elif self.kwargs['type'] == 'noncompliance':
+            context['type_label'] = dict(EVT_REP_TYPE_CHOICES)[2]
+            context['link_to_item'] = 'event-reporting-detail'
+            context['items']= EventReporting.objects.filter(event_rep_type=2)
+        elif self.kwargs['type'] == 'plantprotection':
+            context['type_label'] = dict(EVT_REP_TYPE_CHOICES)[3]
+            context['link_to_item'] = 'event-reporting-detail'
+            context['items']= EventReporting.objects.filter(event_rep_type=3)
+        elif self.kwargs['type'] == 'peststatus':
+            context['type_label'] = dict(EVT_REP_TYPE_CHOICES)[4]
+            context['link_to_item'] = 'event-reporting-detail'
+            context['items']= EventReporting.objects.filter(event_rep_type=4)
+        elif self.kwargs['type'] == 'phytosanitaryrequirements':
+            context['type_label'] = dict(EVT_REP_TYPE_CHOICES)[5]
+            context['link_to_item'] = 'event-reporting-detail'
+            context['items']= EventReporting.objects.filter(event_rep_type=5)
+        elif self.kwargs['type'] == 'pfa':
+            context['type_label'] = 'Pest free areas'
+            context['link_to_item'] = 'pfa-detail'
+            context['items']= PestFreeArea.objects.all()
+        elif self.kwargs['type'] == 'ispm15':
+            context['type_label'] = 'Implementation of ISPM 15'
+            context['link_to_item'] = 'implementationispm-detail'
+            context['items']= ImplementationISPM.objects.all()
+        
+        context['counttotal'] =context['items'].count() 
+        
+        return context
