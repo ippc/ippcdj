@@ -54,7 +54,7 @@ class BasicReportingForm(forms.ModelForm):
             ]
         exclude = ('author', 'slug', 'publish_date',  'modify_date')
         widgets = {
-            'country': forms.HiddenInput(),   
+            'country': forms.HiddenInput(),
             'basic_rep_type': forms.RadioSelect(attrs={'readonly':'True'})
         }
         

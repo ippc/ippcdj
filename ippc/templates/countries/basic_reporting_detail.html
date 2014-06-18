@@ -1,19 +1,19 @@
 {% extends "base.html" %}
 {% load pages_tags mezzanine_tags i18n future staticfiles accounts_tags %}
 
-{% block meta_title %}{% trans "Latest Basic Reportings" %}{% endblock %}
+{% block meta_title %}{% trans "Latest Basic Reports" %}{% endblock %}
 
 {% block breadcrumb_menu %}
 <li><a href="/">{% trans "Home" %}</a><span class="divider">/</span></li>
 <li><a href="/countries/">Countries</a><span class="divider">/</span></li>
 <li><a href="/countries/{{basicreporting.country.name|slugify}}">{{basicreporting.country.name}}</a><span class="divider">/</span></li>
-<li><a href="/countries/{{basicreporting.country.name|slugify}}/basicreporting/">Basic Reportings</a><span class="divider">/</span></li>
+<li><a href="/countries/{{basicreporting.country.name|slugify}}/basicreporting/">Basic Reports</a><span class="divider">/</span></li>
 <li class="active">{{ basicreporting.title }}</li>
 {% endblock %}
 
 {% block local_nav %}
 <div class="well">
-  <p><a href="/countries/{{ basicreporting.country.name|slugify }}/basicreporting/">« {% trans "Back to" %} {% trans "Basic Reportings" %}</a></p>
+  <p><a href="/countries/{{ basicreporting.country.name|slugify }}/basicreporting/">« {% trans "Back to" %} {% trans "Basic Reports" %}</a></p>
     {% if user.is_superuser %} 
         <a class="btn btn-small btn-info" href="/admin/ippc/basicreporting/{{ basicreporting.id }}">Edit as Admin</a><br>
     {% endif %}

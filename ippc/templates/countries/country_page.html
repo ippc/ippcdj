@@ -25,7 +25,7 @@
 {% block main %}
   {% if user.is_superuser %} 
   <div class="pull-right">
-      <a class="btn btn-small btn-info" href="/admin/ippc/countrypage/{{ page.id }}">Edit page as Admin <small>(also contact point &amp; editors relation)</a><br>
+      <a class="btn btn-mini btn-info" href="/admin/ippc/countrypage/{{ page.id }}">Edit page as Admin <small>(also contact point &amp; editors relation)</a><br>
   </div>
   {% endif %}
 
@@ -57,7 +57,7 @@
     <tbody>
       {% for editor in page.get_content_model.editors.all %}
         <tr>
-          <td>{{ editor.get_profile.first_name }} {{ editor.get_profile.last_name }} <a class="btn btn-small btn-info pull-right" href="/admin/auth/user/{{ editor.get_profile.id }}">Edit User as Admin</a><br></td>
+          <td>{{ editor.get_profile.first_name }} {{ editor.get_profile.last_name }} <a class="btn btn-mini  pull-right" href="/admin/auth/user/{{ editor.get_profile.id }}">Edit User as Admin</a><br></td>
         </tr>
       {% endfor %}
     </tbody>
@@ -68,75 +68,71 @@
 {% block local_nav %}
 <div class="panel">    
     <ul class="nav nav-list">
-      <li class="nav-header">{{ page.title }}</li>
-      <li><a href="{% url 'pest-report-list' page.title|slugify %}">Official Pest Reports</a> 
-        
+      <li class="nav-header">
+        {{ page.title }}
+      </li>
+      <li>
+        <a href="{% url 'pest-report-list' page.title|slugify %}">Official Pest Reports</a> 
         {% if perms.ippc.add_pestreport and request.user.get_profile.country.name == page.title or user.is_superuser %}
-          <small><a class="btn btn-small btn-info" href="{% url 'pest-report-create' page.title|slugify %}">+ {% trans "Add new" %}</a></small>
+          <small><a class="btn btn-mini " href="{% url 'pest-report-create' page.title|slugify %}">+ {% trans "Add new" %}</a></small>
         {% else %}
         {% endif %}
-      
       </li>
       <li class="divider"></li>
-      <li><a href="{% url 'basic-reporting-list' page.title|slugify %}">Reporting Obligations</a> 
-      <table>  {% for key, val in basic_types %}
-        <tr>
-          <td>
-          <small class="muted">{{val}}</small></td>
-          <td>{% if perms.ippc.add_basicreporting and request.user.get_profile.country.name == page.title or user.is_superuser %}
-                <small><a class="btn btn-small btn-info" href="{% url 'basic-reporting-create' page.title|slugify key %}">+ {% trans "Add new" %}</a></small>
-             {% endif %} 
-          </td>
-        </tr>
+      <li>
+        <a href="{% url 'basic-reporting-list' page.title|slugify %}">Reporting Obligations</a> 
+        {% for key, val in basic_types %}
+          <small class="muted">{{val}}</small>
+          {% if perms.ippc.add_basicreporting and request.user.get_profile.country.name == page.title or user.is_superuser %}
+            <small><a class="btn btn-mini " href="{% url 'basic-reporting-create' page.title|slugify key %}">+ {% trans "Add new" %}</a></small>
+          {% endif %}
+          <br>
         {% endfor %} 
-        </table>        
-          
        </li>
     
       <li class="divider"></li>
-       <li><a href="{% url 'event-reporting-list' page.title|slugify %}">Event Reporting</a> 
-          <table>
+       <li>
+         <a href="{% url 'event-reporting-list' page.title|slugify %}">Event Reporting</a> 
         {% for key, val in event_types %}
-        <tr>
-          <td>
-          <small class="muted">{{val}}</small></td>
-          <td>{% if perms.ippc.add_eventreporting and request.user.get_profile.country.name == page.title or user.is_superuser %}
-                <small><a class="btn btn-small btn-info" href="{% url 'event-reporting-create' page.title|slugify key %}">+ {% trans "Add new" %}</a></small>
-             {% endif %} 
-          </td>
-        </tr>
+          <small class="muted">{{val}}</small>
+          {% if perms.ippc.add_eventreporting and request.user.get_profile.country.name == page.title or user.is_superuser %}
+            <small><a class="btn btn-mini " href="{% url 'event-reporting-create' page.title|slugify key %}">+ {% trans "Add new" %}</a></small>
+          {% endif %} 
+          <br>
         {% endfor %} 
-        </table>        
-
-      
       </li>
     
       <li class="divider"></li>
       
-       <li><a href="{% url 'pfa-list' page.title|slugify %}">Pest-Free Area or Area of Low Pest Prevalence</a> 
-        
+      <li>
+        <a href="{% url 'pfa-list' page.title|slugify %}">Pest-Free Area or Area of Low Pest Prevalence</a>         
         {% if perms.ippc.add_pestfreearea and request.user.get_profile.country.name == page.title or user.is_superuser %}
-          <small><a class="btn btn-small btn-info" href="{% url 'pfa-create' page.title|slugify %}">+ {% trans "Add new" %}</a></small>
+          <small><a class="btn btn-mini " href="{% url 'pfa-create' page.title|slugify %}">+ {% trans "Add new" %}</a></small>
         {% else %}
         {% endif %}
-      
       </li>
+      
      <li class="divider"></li>
       
-       <li><a href="{% url 'implementationispm-list' page.title|slugify %}">Implementation of ISPM 15</a> 
-        
-        {% if perms.ippc.add_implementationispm and request.user.get_profile.country.name == page.title or user.is_superuser %}
-          <small><a class="btn btn-small btn-info" href="{% url 'implementationispm-create' page.title|slugify %}">+ {% trans "Add new" %}</a></small>
-        {% else %}
-        {% endif %}
-      
+       <li>
+         <a href="{% url 'implementationispm-list' page.title|slugify %}">Implementation of ISPM 15</a> 
+          {% if perms.ippc.add_implementationispm and request.user.get_profile.country.name == page.title or user.is_superuser %}
+            <small><a class="btn btn-mini " href="{% url 'implementationispm-create' page.title|slugify %}">+ {% trans "Add new" %}</a></small>
+            {% else %}
+          {% endif %}
       </li>
+
       <li class="divider"></li>
-      <li><a href="#">Publication</a></li>
-      <li><a href="#">News Item</a></li>
-      <li><a href="#">Event</a></li>
-      <li><a href="#">News Item</a></li>
-      <li><a href="http://phytosanitary.info/user/login?destination=node/add" target="_blank">Project <span class="small">(go to phytosanitary.info)</span></a></li>
+
+      <li>
+        <a href="#">Other</a>
+      </li>
+      <li>
+        <small class="muted"><a href="#">Publication</a></small>
+      </li>
+      <li>
+        <small class="muted"><a href="http://phytosanitary.info/user/login?destination=node/add" target="_blank">Project <span class="small">(go to phytosanitary.info)</span></a></small>
+        </li>
     </ul>
 </div>  
   {# =todo: link to this country's RSS feed here. #}
