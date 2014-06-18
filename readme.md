@@ -99,7 +99,7 @@
     ````
     git clone https://github.com/hypertexthero/ippcdj.git ippcdj_repo
     cd ippcdj_repo
-    pip install -r requirements/project.txt
+    pip2.7 install -r requirements/project.txt
     # if you see errors related to PIL, see: <http://www.hypertexthero.com/logbook/2013/07/pil-pillow-libjpeg-ldconfig/>
     # if you're on Windows install Pillow for your computer from <http://www.lfd.uci.edu/~gohlke/pythonlibs/> (see <https://bitnami.com/forums/forums/djangostack/topics/i-was-running-through-the-djangobook-tutorials-and-now-i-need-a-python-imaging-library>)
     
