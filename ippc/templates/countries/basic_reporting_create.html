@@ -17,7 +17,7 @@
   <span class="divider">/</span>
 </li>
 <li>
-  <a href="/countries/{{ user.get_profile.country.name|slugify }}/basicreportings/">{% trans "Basic Reporting" %}</a>
+  <a href="/countries/{{ user.get_profile.country.name|slugify }}/basicreporting/">{% trans "Basic Reporting" %}</a>
   <span class="divider">/</span>
 </li>
 <li class="active">{% trans "Create New" %}</li>
@@ -37,7 +37,7 @@
 
 <h1><span class="normal">{% trans "Create New Basic Reporting for" %}</span> {{ user.get_profile.country.name }}</h1>
 
-<form class="customform" method="POST" action="">
+<form class="customform" method="POST" action="" enctype="multipart/form-data">
     {% csrf_token %}
     <fieldset>
         {% include "countries/basic_reporting_form.html" %}

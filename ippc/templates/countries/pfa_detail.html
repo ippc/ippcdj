@@ -47,8 +47,10 @@
   </dd>
   {% endif %}
   
+  {% if pfa.publication_date %}
   <dt>{% trans "Publication date" %}</dt>
   <dd>{% blocktrans with sometime=pfa.publication_date|date:"d-m-Y" %}{{ sometime }}{% endblocktrans %}</dd>
+  {% endif %}
   
  {% if pfa.short_description %}
   <dt>{% trans "short description" %}</dt>
@@ -65,8 +67,10 @@
   <dd><a href="{{ pfa.url_for_more_information }}">{{ pfa.url_for_more_information }}</a></dd>
   {% endif %}
   
+  {% if pfa.author %}
   <dt>{% trans "Author" %}</dt>
   <dd>{{ pfa.author.get_profile.first_name }} {{ pfa.author.get_profile.last_name }}</dd>
+  {% endif %}
   
   {% if pfa.file %}
   <dt>{% trans "Report file" %}</dt>

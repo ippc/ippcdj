@@ -74,63 +74,63 @@ urlpatterns = patterns("",
         name='publication-detail'),
     
     # basic reporting list
-    url(r'^countries/(?P<country>[\w-]+)/basicreportings/$',
+    url(r'^countries/(?P<country>[\w-]+)/basicreporting/$',
         view=BasicReportingListView.as_view(),
         name='basic-reporting-list'),
 
     # basic reporting list showing hidden reports 
-    #url(r'^countries/(?P<country>[\w-]+)/basicreportings/hidden/$',
+    #url(r'^countries/(?P<country>[\w-]+)/basicreporting/hidden/$',
     #    view=BasicReportingHiddenListView.as_view(),
     #    name='pest-report-hidden-list'),
 
     # basic reporting detail
-    url(r'^countries/(?P<country>[\w-]+)/basicreportings/(?P<year>\d+)/(?P<month>\d{2})/(?P<slug>[\w-]+)/$',
+    url(r'^countries/(?P<country>[\w-]+)/basicreporting/(?P<year>\d+)/(?P<month>\d{2})/(?P<slug>[\w-]+)/$',
         view=BasicReportingDetailView.as_view(),
         name="basic-reporting-detail"),
         
      # basic reporting create
-    url(r'^countries/(?P<country>[\w-]+)/basicreportings/(?P<type>[\w-]+)/create/$',
+    url(r'^countries/(?P<country>[\w-]+)/basicreporting/(?P<type>[\w-]+)/create/$',
         view=basic_reporting_create,
         name='basic-reporting-create'),
         
     # basic reporting edit
-    url(r'^countries/(?P<country>[\w-]+)/basicreportings/edit/(?P<id>\d+)/$',
+    url(r'^countries/(?P<country>[\w-]+)/basicreporting/edit/(?P<id>\d+)/$',
         view=basic_reporting_edit,
         name='basic-reporting-edit'),
 
     # event reporting list
-    url(r'^countries/(?P<country>[\w-]+)/eventreportings/$',
+    url(r'^countries/(?P<country>[\w-]+)/eventreporting/$',
         view=EventReportingListView.as_view(),
         name='event-reporting-list'),
 
     # event reporting list showing hidden reports 
-    #url(r'^countries/(?P<country>[\w-]+)/eventreportings/hidden/$',
+    #url(r'^countries/(?P<country>[\w-]+)/eventreporting/hidden/$',
     #    view=EventReportingHiddenListView.as_view(),
     #    name='event-reporting-hidden-list'),
 
     # event reporting detail
-    url(r'^countries/(?P<country>[\w-]+)/eventreportings/(?P<year>\d+)/(?P<month>\d{2})/(?P<slug>[\w-]+)/$',
+    url(r'^countries/(?P<country>[\w-]+)/eventreporting/(?P<year>\d+)/(?P<month>\d{2})/(?P<slug>[\w-]+)/$',
         view=EventReportingDetailView.as_view(),
         name="event-reporting-detail"),
         
      # event reporting create
-    url(r'^countries/(?P<country>[\w-]+)/eventreportings/(?P<type>[\w-]+)/create/$',
+    url(r'^countries/(?P<country>[\w-]+)/eventreporting/(?P<type>[\w-]+)/create/$',
         view=event_reporting_create,
         name='event-reporting-create'),
         
     # event reporting edit
-    url(r'^countries/(?P<country>[\w-]+)/eventreportings/edit/(?P<id>\d+)/$',
+    url(r'^countries/(?P<country>[\w-]+)/eventreporting/edit/(?P<id>\d+)/$',
         view=event_reporting_edit,
         name='event-reporting-edit'),
 
 
     # event reporting list
-    url(r'^countries/(?P<country>[\w-]+)/eventreportings/$',
+    url(r'^countries/(?P<country>[\w-]+)/eventreporting/$',
         view=EventReportingListView.as_view(),
         name='event-reporting-list'),
 
     # event reporting list showing hidden reports 
-    #url(r'^countries/(?P<country>[\w-]+)/eventreportings/hidden/$',
+    #url(r'^countries/(?P<country>[\w-]+)/eventreporting/hidden/$',
     #    view=EventReportingHiddenListView.as_view(),
     #    name='event-reporting-hidden-list'),
 
@@ -140,7 +140,7 @@ urlpatterns = patterns("",
         name='pfa-list'),
 
     # event reporting list showing hidden reports 
-    #url(r'^countries/(?P<country>[\w-]+)/eventreportings/hidden/$',
+    #url(r'^countries/(?P<country>[\w-]+)/eventreporting/hidden/$',
     #    view=EventReportingHiddenListView.as_view(),
     #    name='event-reporting-hidden-list'),
 
@@ -170,7 +170,7 @@ urlpatterns = patterns("",
         name='implementationispm-list'),
 
     # event reporting list showing hidden reports 
-    #url(r'^countries/(?P<country>[\w-]+)/eventreportings/hidden/$',
+    #url(r'^countries/(?P<country>[\w-]+)/eventreporting/hidden/$',
     #    view=EventReportingHiddenListView.as_view(),
     #    name='event-reporting-hidden-list'),
 

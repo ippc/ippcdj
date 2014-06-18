@@ -189,7 +189,7 @@ def pest_report_edit(request, country, id=None, template_name='countries/pest_re
         pest_report = PestReport(author=request.user)
 
     if request.POST:
-        form = PestReportForm(request.POST,  request.FILES, instance=pest_report)
+        form = PestReportForm(request.POST, request.FILES, instance=pest_report)
 
         if form.is_valid():
             form.save()
@@ -256,7 +256,7 @@ def basic_reporting_create(request, country,type):
     country=user.get_profile().country
     user_country_slug = lower(slugify(country))
 
-    form = BasicReportingForm(request.POST or None)
+    form = BasicReportingForm(request.POST, request.FILES)
   
     if request.method == "POST":
         if form.is_valid():
@@ -293,7 +293,7 @@ def basic_reporting_edit(request, country, id=None, template_name='countries/bas
         basic_reporting = BasicReporting(author=request.user)
       
     if request.POST:
-        form = BasicReportingForm(request.POST,  request.FILES, instance=basic_reporting)
+        form = BasicReportingForm(request.POST, request.FILES, instance=basic_reporting)
         if form.is_valid():
             form.save()
 
@@ -357,7 +357,7 @@ def event_reporting_create(request, country,type):
     country=user.get_profile().country
     user_country_slug = lower(slugify(country))
 
-    form = EventReportingForm(request.POST or None)
+    form = EventReportingForm(request.POST, request.FILES)
   
     if request.method == "POST":
         if form.is_valid():
@@ -394,7 +394,7 @@ def event_reporting_edit(request, country, id=None, template_name='countries/eve
         event_reporting = EventReporting(author=request.user)
       
     if request.POST:
-        form = EventReportingForm(request.POST,  request.FILES, instance=event_reporting)
+        form = EventReportingForm(request.POST, request.FILES, instance=event_reporting)
         if form.is_valid():
             form.save()
 
@@ -456,7 +456,7 @@ def pfa_create(request, country):
     country=user.get_profile().country
     user_country_slug = lower(slugify(country))
 
-    form = PestFreeAreaForm(request.POST or None)
+    form = PestFreeAreaForm(request.POST, request.FILES)
   
     if request.method == "POST":
         if form.is_valid():
@@ -492,7 +492,7 @@ def pfa_edit(request, country, id=None, template_name='countries/pfa_edit.html')
         pfa = PestFreeArea(author=request.user)
       
     if request.POST:
-        form = PestFreeAreaForm(request.POST,  request.FILES, instance=pfa)
+        form = PestFreeAreaForm(request.POST, request.FILES, instance=pfa)
         if form.is_valid():
             form.save()
 
@@ -554,7 +554,7 @@ def implementationispm_create(request, country):
     country=user.get_profile().country
     user_country_slug = lower(slugify(country))
 
-    form = ImplementationISPMForm(request.POST or None)
+    form = ImplementationISPMForm(request.POST, request.FILES)
   
     if request.method == "POST":
         if form.is_valid():
@@ -590,7 +590,7 @@ def implementationispm_edit(request, country, id=None, template_name='countries/
         implementationispm = ImplementationISPM(author=request.user)
       
     if request.POST:
-        form = ImplementationISPMForm(request.POST,  request.FILES, instance=implementationispm)
+        form = ImplementationISPMForm(request.POST, request.FILES, instance=implementationispm)
         if form.is_valid():
             form.save()
 
