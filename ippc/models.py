@@ -313,7 +313,7 @@ class PestReport(Displayable, models.Model):
         super(PestReport, self).save(*args, **kwargs)
 
 
-# used by Basic Reporting type
+# used by Reporting Obligation type
 BASIC_REP_1 = 1
 BASIC_REP_2 = 2
 BASIC_REP_3 = 3
@@ -325,19 +325,19 @@ BASIC_REP_TYPE_CHOICES = (
     (BASIC_REP_4, _("Phytosanitary Restrictions/Legislation")),
 )
    
-class BasicReporting(Displayable, models.Model):
-    """ Basic Reporting"""
-    country = models.ForeignKey(CountryPage, related_name="basic_reporting_country_page")
-    author = models.ForeignKey(User, related_name="basic_reporting_author")
+class ReportingObligation(Displayable, models.Model):
+    """ReportingObligation"""
+    country = models.ForeignKey(CountryPage, related_name="reporting_obligation_country_page")
+    author = models.ForeignKey(User, related_name="reporting_obligation_author")
     
     # slug - provided by mezzanine.core.models.slugged (subclassed by displayable)
     # title - provided by mezzanine.core.models.slugged (subclassed by displayable)
     # status - provided by mezzanine.core.models.displayable
     # publish_date - provided by mezzanine.core.models.displayable
     
-    basic_rep_type = models.IntegerField(_("Basic Reporting"), choices=BASIC_REP_TYPE_CHOICES, default=BASIC_REP_3)
+    report_obligation_type = models.IntegerField(_("Reporting Obligation"), choices=BASIC_REP_TYPE_CHOICES, default=BASIC_REP_3)
     publication_date = models.DateTimeField(_("Publication date"), blank=True, null=True, editable=True)
-    file = models.FileField(_("Report Document"), upload_to="basic_reporting/%Y/%m/", blank=True)
+    file = models.FileField(_("Report Document"), upload_to="reporting_obligation/%Y/%m/", blank=True)
     short_description = models.TextField(_("Short Description"),  blank=True, null=True)
     contact_for_more_information = models.TextField(_("Contact for more information"), blank=True, null=True)    
     url_for_more_information = models.URLField(blank=True, null=True)
@@ -353,7 +353,7 @@ class BasicReporting(Displayable, models.Model):
     search_fields = ("title", "short_description")
 
     class Meta:
-        verbose_name_plural = _("Basic Reportings")
+        verbose_name_plural = _("Reporting Obligations")
         # abstract = True
 
     def __unicode__(self):
@@ -377,14 +377,14 @@ class BasicReporting(Displayable, models.Model):
             # Newly created object, so set slug
             self.slug = slugify(self.title)
         self.modify_date = datetime.now()
-        super(BasicReporting, self).save(*args, **kwargs)
+        super(ReportingObligation, self).save(*args, **kwargs)
 
     def filename(self):
         return os.path.basename(self.file.name)
-    def basic_rep_type_verbose(self):
-        return dict(BASIC_REP_TYPE_CHOICES)[self.basic_rep_type]
+    def report_obligation_type_verbose(self):
+        return dict(BASIC_REP_TYPE_CHOICES)[self.report_obligation_type]
 
-# used by Basic Reporting type
+# used by Reporting Obligation type
 EVT_REP_1 = 1
 EVT_REP_2 = 2
 EVT_REP_3 = 3

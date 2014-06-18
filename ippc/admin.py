@@ -6,7 +6,7 @@ from mezzanine.pages.admin import PageAdmin
 from mezzanine.conf import settings
 from mezzanine.core.admin import TabularDynamicInlineAdmin, StackedDynamicInlineAdmin
 
-from .models import PestStatus, PestReport, CountryPage, WorkAreaPage, PublicationLibrary, Publication, BasicReporting,EventReporting,PestFreeArea,ImplementationISPM,ImplementationISPMVersion#, File
+from .models import PestStatus, PestReport, CountryPage, WorkAreaPage, PublicationLibrary, Publication, ReportingObligation,EventReporting,PestFreeArea,ImplementationISPM,ImplementationISPMVersion#, File
 from django.contrib.auth.models import User
 
 # Publications -----------------
@@ -108,7 +108,7 @@ admin.site.register(PestStatus, PestStatusAdmin)
 admin.site.register(PestReport, PestReportAdmin)
 
 
-class BasicReportingAdmin(admin.ModelAdmin):
+class ReportingObligationAdmin(admin.ModelAdmin):
     # http://stackoverflow.com/a/8393130
     # def has_add_permission(self, request):
     #     return request.user.groups.filter(name='Developers').exists()
@@ -123,7 +123,7 @@ class BasicReportingAdmin(admin.ModelAdmin):
     list_filter = ('title', 'publication_date', 'modify_date',  'country')
     search_fields = ('title', 'short_description')
     prepopulated_fields = { 'slug': ['title'] }
-admin.site.register(BasicReporting, BasicReportingAdmin)
+admin.site.register(ReportingObligation, ReportingObligationAdmin)
 
 class EventReportingAdmin(admin.ModelAdmin):
     # http://stackoverflow.com/a/8393130

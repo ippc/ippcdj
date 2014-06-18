@@ -83,7 +83,7 @@
         <a href="{% url 'basic-reporting-list' page.title|slugify %}">Reporting Obligations</a> 
         {% for key, val in basic_types %}
           <small class="muted">{{val}}</small>
-          {% if perms.ippc.add_basicreporting and request.user.get_profile.country.name == page.title or user.is_superuser %}
+          {% if perms.ippc.add_reportingobligation and request.user.get_profile.country.name == page.title or user.is_superuser %}
             <small><a class="btn btn-mini " href="{% url 'basic-reporting-create' page.title|slugify key %}">+ {% trans "Add new" %}</a></small>
           {% endif %}
           <br>

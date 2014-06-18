@@ -4,7 +4,7 @@ from django.contrib import admin
 
 from .ippc.views import PestReportListView, PestReportHiddenListView, \
 PestReportDetailView, CountryView, pest_report_create, pest_report_edit, PublicationDetailView,\
-PublicationListView,BasicReportingListView, BasicReportingDetailView,basic_reporting_create, basic_reporting_edit, \
+PublicationListView,ReportingObligationListView, ReportingObligationDetailView,reporting_obligation_create, reporting_obligation_edit, \
 EventReportingListView, EventReportingDetailView,event_reporting_create, event_reporting_edit, \
 PestFreeAreaListView, PestFreeAreaDetailView,pfa_create, pfa_edit, \
 ImplementationISPMListView, ImplementationISPMDetailView,implementationispm_create, implementationispm_edit
@@ -73,29 +73,29 @@ urlpatterns = patterns("",
         view=PublicationDetailView.as_view(),
         name='publication-detail'),
     
-    # basic reporting list
-    url(r'^countries/(?P<country>[\w-]+)/basicreporting/$',
-        view=BasicReportingListView.as_view(),
+    # reporting obligation list
+    url(r'^countries/(?P<country>[\w-]+)/reportingobligation/$',
+        view=ReportingObligationListView.as_view(),
         name='basic-reporting-list'),
 
-    # basic reporting list showing hidden reports 
-    #url(r'^countries/(?P<country>[\w-]+)/basicreporting/hidden/$',
-    #    view=BasicReportingHiddenListView.as_view(),
+    # reporting obligation list showing hidden reports 
+    #url(r'^countries/(?P<country>[\w-]+)/reportingobligation/hidden/$',
+    #    view=ReportingObligationHiddenListView.as_view(),
     #    name='pest-report-hidden-list'),
 
-    # basic reporting detail
-    url(r'^countries/(?P<country>[\w-]+)/basicreporting/(?P<year>\d+)/(?P<month>\d{2})/(?P<slug>[\w-]+)/$',
-        view=BasicReportingDetailView.as_view(),
+    # reporting obligation detail
+    url(r'^countries/(?P<country>[\w-]+)/reportingobligation/(?P<year>\d+)/(?P<month>\d{2})/(?P<slug>[\w-]+)/$',
+        view=ReportingObligationDetailView.as_view(),
         name="basic-reporting-detail"),
         
-     # basic reporting create
-    url(r'^countries/(?P<country>[\w-]+)/basicreporting/(?P<type>[\w-]+)/create/$',
-        view=basic_reporting_create,
+     # reporting obligation create
+    url(r'^countries/(?P<country>[\w-]+)/reportingobligation/(?P<type>[\w-]+)/create/$',
+        view=reporting_obligation_create,
         name='basic-reporting-create'),
         
-    # basic reporting edit
-    url(r'^countries/(?P<country>[\w-]+)/basicreporting/edit/(?P<id>\d+)/$',
-        view=basic_reporting_edit,
+    # reporting obligation edit
+    url(r'^countries/(?P<country>[\w-]+)/reportingobligation/edit/(?P<id>\d+)/$',
+        view=reporting_obligation_edit,
         name='basic-reporting-edit'),
 
     # event reporting list

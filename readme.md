@@ -241,7 +241,7 @@ Edit the django.po file for each language in `ippcdj_repo/conf/locale/` and then
     python manage.py makemessages --all
     python manage.py compilemessages
 
-## Deployment
+## Deployment & Data Migrations
 
 Dev server exlqaippc2.ext.fao.org setup and configuration for IPPC 4.0 prototype at <http://dev.ippc.int/en/> (only available within FAO network). To update code (eventually this will all be done with one command which fires a fabric script such as `fab deploy dev`):
 
@@ -254,6 +254,8 @@ Dev server exlqaippc2.ext.fao.org setup and configuration for IPPC 4.0 prototype
 
         python manage.py schemamigration ippc --auto
         python  manage.py migrate ippc
+
+    See also: <http://stackoverflow.com/questions/2862979/easiest-way-to-rename-a-model-using-django-south>
 
 7. Compile translations
 

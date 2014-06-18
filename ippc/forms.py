@@ -2,7 +2,7 @@
 
 from django import forms
 from .models import IppcUserProfile, PestStatus, PestReport, CountryPage, \
-BasicReporting, EventReporting, PestFreeArea, ImplementationISPM, VERS_CHOICES
+ReportingObligation, EventReporting, PestFreeArea, ImplementationISPM, VERS_CHOICES
 from django.contrib.auth.models import User
 
 class PestReportForm(forms.ModelForm):
@@ -35,15 +35,15 @@ class PestReportForm(forms.ModelForm):
             'country': forms.HiddenInput()            
         }
 
-class BasicReportingForm(forms.ModelForm):
+class ReportingObligationForm(forms.ModelForm):
 
     # country = forms.ChoiceField(widget=forms.Select(), initial='country')
     # =todo: https://docs.djangoproject.com/en/dev/ref/forms/api/#dynamic-initial-values
 
     class Meta:
-        model = BasicReporting
+        model = ReportingObligation
         fields = [
-           'basic_rep_type',
+           'report_obligation_type',
            'title', 
            'publication_date', 
            'file',
@@ -55,7 +55,7 @@ class BasicReportingForm(forms.ModelForm):
         exclude = ('author', 'slug', 'publish_date',  'modify_date')
         widgets = {
             'country': forms.HiddenInput(),
-            'basic_rep_type': forms.RadioSelect(attrs={'readonly':'True'})
+            'report_obligation_type': forms.RadioSelect(attrs={'readonly':'True'})
         }
         
 class EventReportingForm(forms.ModelForm):

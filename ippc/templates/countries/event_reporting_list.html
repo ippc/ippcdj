@@ -53,18 +53,18 @@
     <tbody>
       <tr>
         <td colspan="2">
-          <h3 class="pull-left">{{val}}</h3> 
+          <h4 class="pull-left normal">{{val}}</h4> 
           {% if perms.ippc.add_eventreporting and request.user.get_profile.country.name == page.title %}
             <small  class="pull-right">
-              <a class="btn btn-small btn-info" href="{% url 'event-reporting-create' page.title|slugify key %}">+ {% trans "Add new" %}</a>
+              <a class="btn btn-small" href="{% url 'event-reporting-create' page.title|slugify key %}">+ {% trans "Add new" %}</a>
             </small>
           {% endif %}
         </td>
      </tr>
      
      <tr>
-       <th>{% trans "Title" %}</th>
-       <th>{% trans "Date Published" %}</th>
+       <th style="font-weight:normal;">{% trans "Title" %}</th>
+       <th style="font-weight:normal;">{% trans "Date Published" %}</th>
      </tr>
        
      {% for object in latest %}
