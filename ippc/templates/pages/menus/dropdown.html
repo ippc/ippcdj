@@ -86,29 +86,31 @@
 {% endif %}
 
 {% if branch_level > 0 %}
-<ul class="dropdown-menu"{% if branch_level == 1 %} role="menu"{% endif %}>
-    {% for page in page_branch %}
-    {% if page.in_menu %}
-    {% if page.login_required and request.user.is_authenticated or not page.login_required %}
-    <li{% if page.is_current_or_ascendant %} class="active {% if page.has_children %} dropdown-submenu{% endif %}"{% else %}
-            {% if page.has_children %}class="dropdown-submenu"{% endif %}
-            {% endif %}
-        id="dropdown-menu-{{ page.html_id }}">
-        <a href="{{ page.get_absolute_url }}">
-            {% with page.richtextpage|get_object_translation as translated_page %}
-            {% if translated_page.title %}
-                {{ translated_page.title|safe }}
-                {% else %}
-                {{ page.title }}
-            {% endif %}
-            {% endwith %}
-        </a>
-        {% if page.has_children %}{% page_menu page %}{% endif %}
-    </li>
-    {% endif %}
-    {% endif %}
-    {% endfor %}
-</ul>
+  {# {% if not page.title == "Countries" %} #} {# don't show all countries in dropdown #}
+  <ul class="dropdown-menu"{% if branch_level == 1 %} role="menu"{% endif %}>
+      {% for page in page_branch %}
+      {% if page.in_menu %}
+      {% if page.login_required and request.user.is_authenticated or not page.login_required %}
+      <li{% if page.is_current_or_ascendant %} class="active {% if page.has_children %} dropdown-submenu{% endif %}"{% else %}
+              {% if page.has_children %}class="dropdown-submenu"{% endif %}
+              {% endif %}
+          id="dropdown-menu-{{ page.html_id }}">
+          <a href="{{ page.get_absolute_url }}">
+              {% with page.richtextpage|get_object_translation as translated_page %}
+              {% if translated_page.title %}
+                  {{ translated_page.title|safe }}
+                  {% else %}
+                  {{ page.title }}
+              {% endif %}
+              {% endwith %}
+          </a>
+          {% if page.has_children %}{% page_menu page %}{% endif %}
+      </li>
+      {% endif %}
+      {% endif %}
+      {% endfor %}
+  </ul>
+  {# {% endif %} #}
 {% endif %}
 
 {% endif %}

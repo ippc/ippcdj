@@ -15,7 +15,7 @@
     - ¿'Add Pest Report' button in countries for NPPOs, visible even when user is logged out. Once user logs in, if they're an NPPO, they are redirected to the pest report form for their country?
     - Photos
 - [Calendar](https://github.com/shurik/mezzanine.calendar) (or [Events](https://github.com/stbarnabas/mezzanine-events)?)
-- Forums
+- [Forums](https://github.com/hovel/pybbm)
 - User registration open but behind login-required and super-user required so only admins can add new users, who get notification emails to confirm account and set own password. OR, user registration open to all, but need approval by admins. i.e. Account registration & [activation](http://mezzanine.jupo.org/docs/user-accounts.html#account-approval) system?
     - Setup auto-sending of messages to new users, with possible custom messages for NPPOs and Editors
 - [Single Sign-On](https://docs.djangoproject.com/en/1.5/topics/auth/customizing/). Create separate Accounts database to be used by all IPPC-related apps for authentication and authorization. The database should contain two tables:
@@ -53,6 +53,8 @@
         - User(Fk to Users)
         - APPPC country
 
+- [IRSS](https://github.com/ASKBOT/askbot-devel) refactor
+
     The easiest way to implement this is probably to use [CAS-Provider and CAS-consumer](http://stackoverflow.com/a/4663223) or [django-cas](https://bitbucket.org/cpcc/django-cas/overview). Another option: [mama-cas](https://github.com/jbittel/django-mama-cas). Relevant documentation pages: [multiple databases](https://docs.djangoproject.com/en/1.5/topics/db/multi-db/), [authentication](https://docs.djangoproject.com/en/1.5/topics/auth/customizing/), [multiple sites framework](https://docs.djangoproject.com/en/1.5/ref/contrib/sites/). See also [this blog post](http://reinout.vanrees.org/weblog/2014/05/09/authentication-python-web.html).
     
     Both phytosantiary.info and apppc.org will need to get SSL certificates for single sign-on to work securely: 
@@ -67,6 +69,7 @@
 - Add [blog category management page to admin](http://127.0.0.1:8000/en/admin/blog/blogcategory/)
 - Contact form
 - FAQ
+- Custom Work Area main page descriptions or announcements or links to particular utilities depending on user permissions. Probably need to use a custom template that appears on /work-area/ URL (like the /news/ which displays the custom blog).
 - Last modified date for pages
 - Content (data) migration
 - ¿Use jQuery [multi-file-upload](https://github.com/sigurdga/django-jquery-file-upload) functionality for uploading images and files to be inserted in pages and blog posts, [with additional fields for each file](https://github.com/blueimp/jQuery-File-Upload/wiki/How-to-submit-additional-form-data) if required?
@@ -87,7 +90,8 @@
         - [Income levels example](http://humangeo.github.io/leaflet-dvf/examples/html/incomelevels.html)
         - [Top Cities](http://techslides.com/leaflet-map-with-utfgrid-and-php-served-mbtiles/)
 - [Download multiple files](http://stackoverflow.com/a/12951557/412329)
-- Use [Chosen](http://harvesthq.github.io/chosen/) to make globalnav dropdowns friedly. Also in admin. There's a [Django app](https://github.com/theatlantic/django-chosen), too.
+- Use [Chosen](http://harvesthq.github.io/chosen/) to make globalnav dropdowns friedly. Also in admin. There's a [Django app](https://github.com/theatlantic/django-chosen), too. 
+- Remove dropdown from Countries globalnav menu
 
 ## Installation / Setup
 
