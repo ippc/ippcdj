@@ -29,7 +29,7 @@
         {% endif %}
         
         <h5>
-          <a class="dark" href="{{ entry.get_absolute_url }}">{{ entry.title }}</a>
+          <a class="dark" href="{{ entry.get_absolute_url }}">{{ entry.title }}</a><br>
           <small>{{ entry.publish_date|timesince }} {% trans "ago" %}.</small>
         </h5>
         <p>{{ entry.content|truncatechars:148 }} <small><a href="{{ entry.get_absolute_url }}">{% trans "Continue reading…" %}</a></small></p>
