@@ -1,6 +1,22 @@
-body {padding-top: 10px; padding-bottom:5em; background:#fff url(/static/img/website-bar-3.0.gif) repeat-x; color:#000; font-family:verdana, sans-serif;}
+body {
+    padding-top:10px; 
+    padding-bottom:5em; 
+    background:#fff url(/static/img/website-bar-3.0.gif) repeat-x; 
+    color:#000; 
+    font-family:verdana, sans-serif;
+    text-align:center;
+}
+div.container-fluid {max-width:1200px; text-align:left; margin:0 auto;}
  /*url(/static/img/background.jpg) repeat 0 0;*/
-a.brand {font-size:1em !important; vertical-align:middle; color:#000 !important; background:url(/static/img/ippc-logo-glyph-web-80x42.png) no-repeat 0 7px; margin:0 !important; padding:10px 0 12px 88px !important; line-height:16px;}
+a.brand {
+    font-size:1em !important; 
+    vertical-align:middle; 
+    color:#000 !important; 
+    background:url(/static/img/ippc-logo-glyph-web-80x42.png) no-repeat 0 7px; 
+    margin:0 !important; 
+    padding:10px 0 12px 88px !important; 
+    line-height:16px;
+}
 
 div.navbar, div.navbar-fixed-top {position:relative !important; font-size:0.9em; background:#000;}
 div.navbar-inner {border-radius:0; min-height:25px;}
@@ -35,6 +51,7 @@ img {box-shadow:none;}
 .caps {text-transform: uppercase; font-size:0.9em;}
 .normal {font-weight:normal;}
 .quiet, .helptext {color:#999;}
+.dark {color:#000;}
 .helptext {font-size:0.9em; vertical-align:top;}
 .tright {text-align:right;}
 .tleft {text-align:left;}

@@ -69,6 +69,7 @@
 - Contact form
 - FAQ
 - Custom Work Area main page descriptions or announcements or links to particular utilities depending on user permissions. Probably need to use a custom template that appears on /work-area/ URL (like the /news/ which displays the custom blog).
+- Images in news items. See <http://mezzanine.jupo.org/docs/model-customization.html>
 - Last modified date for pages
 - Content (data) migration
 - ¿Use jQuery [multi-file-upload](https://github.com/sigurdga/django-jquery-file-upload) functionality for uploading images and files to be inserted in pages and blog posts, [with additional fields for each file](https://github.com/blueimp/jQuery-File-Upload/wiki/How-to-submit-additional-form-data) if required?
