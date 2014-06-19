@@ -30,7 +30,7 @@
         
         <h5>
           <a class="dark" href="{{ entry.get_absolute_url }}">{{ entry.title }}</a>
-          <small>{{ entry.publish_date|timesince }}{% trans "ago" %}.</small>
+          <small>{{ entry.publish_date|timesince }} {% trans "ago" %}.</small>
         </h5>
         <p>{{ entry.content|truncatechars:148 }} <small><a href="{{ entry.get_absolute_url }}">{% trans "Continue reading…" %}</a></small></p>
       {# if the the forloop counter is divisible by 2, close the row-fluid <div> tag and open a new one #}
