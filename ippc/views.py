@@ -1,9 +1,9 @@
 from django.shortcuts import render
 from django.utils.translation import ugettext_lazy as _
 from django.contrib.messages import info, error
-from .models import IppcUserProfile, PestStatus, PestReport, IS_PUBLIC, IS_HIDDEN, Publication, BasicReporting, BASIC_REP_TYPE_CHOICES, EventReporting, EVT_REP_TYPE_CHOICES,PestFreeArea,ImplementationISPM,CountryPage,REGIONS
+from .models import IppcUserProfile, PestStatus,Files, PestReport, IS_PUBLIC, IS_HIDDEN, Publication, BasicReporting, BASIC_REP_TYPE_CHOICES, EventReporting, EVT_REP_TYPE_CHOICES,PestFreeArea,ImplementationISPM,CountryPage,REGIONS
 from mezzanine.core.models import Displayable, CONTENT_STATUS_DRAFT, CONTENT_STATUS_PUBLISHED
-from .forms import PestReportForm, BasicReportingForm, EventReportingForm, PestFreeAreaForm,ImplementationISPMForm
+from .forms import PestReportForm, FilesForm, BasicReportingForm, EventReportingForm, PestFreeAreaForm,ImplementationISPMForm
 
 from django.views.generic import ListView, MonthArchiveView, YearArchiveView, DetailView, TemplateView, CreateView
 from django.core.urlresolvers import reverse
@@ -242,9 +242,11 @@ class BasicReportingDetailView(DetailView):
     context_object_name = 'basicreporting'
     template_name = 'countries/basic_reporting_detail.html'
     queryset = BasicReporting.objects.filter()
-    # print('>>>>>>>>>>>>>>>')
-    # print(user.get_profile().country)
-
+    #f3 = Files.objects.filter() 
+   
+    def get_context_data(self, **kwargs): # http://stackoverflow.com/a/15515220
+        context = super(BasicReportingDetailView, self).get_context_data(**kwargs)
+        return context
 
 
 @login_required
@@ -256,7 +258,7 @@ def basic_reporting_create(request, country,type):
     country=user.get_profile().country
     user_country_slug = lower(slugify(country))
 
-    form = BasicReportingForm(request.POST or None)
+    form = BasicReportingForm()
   
     if request.method == "POST":
         if form.is_valid():
@@ -287,6 +289,13 @@ def basic_reporting_edit(request, country, id=None, template_name='countries/bas
     user_country_slug = lower(slugify(country))
     if id:
         basic_reporting = get_object_or_404(BasicReporting, country=country, pk=id)
+        files=basic_reporting.getFiles()
+        f=  get_object_or_404(Files,pk=files[0])
+        f1=  get_object_or_404(Files,pk=files[1])
+        aa=[]
+        aa.append(f)
+        aa.append(f1)
+        
         # if pest_report.author != request.user:
         #     return HttpResponseForbidden()
     else:
@@ -294,21 +303,32 @@ def basic_reporting_edit(request, country, id=None, template_name='countries/bas
       
     if request.POST:
         form = BasicReportingForm(request.POST,  request.FILES, instance=basic_reporting)
-        if form.is_valid():
+        filesform = [FilesForm(request.POST, request.FILES, prefix=str(x), instance=Files()) for x in range(0,2)]
+        name='' 
+        if form.is_valid() and all([ff.is_valid() for ff in filesform]):
+            new_br = form.save(commit=False)
+            #form.save()
+            for ff in filesform:
+                new_file = ff.save()
+                if new_file.id!='' and new_file.id!='None':
+                    name+=str(new_file.id)+','
+                    new_br.file=name
+                    form.save()
             form.save()
-
+                        
             # If the save was successful, success message and redirect to another page
             # info(request, _("Successfully updated pest report."))
             return redirect("basic-reporting-detail", country=user_country_slug, year=basic_reporting.publish_date.strftime("%Y"), month=basic_reporting.publish_date.strftime("%m"), slug=basic_reporting.slug)
 
     else:
         form = BasicReportingForm(instance=basic_reporting)
-
+       # all_forms = [MyModelForm(request.POST, prefix=str(id), instance=model.objects.get(pk=id)) for id in ids]
+     
+        filesform = [FilesForm(prefix=str(x), instance=aa[x]) for x in range(0,2)]
     return render_to_response(template_name, {
-        'form': form, "basic_reporting": basic_reporting
+        'form': form, 'filesform': filesform, "basic_reporting": basic_reporting
     }, context_instance=RequestContext(request))
     
-
 
 class EventReportingListView(ListView):
     """    Event Reporting """
@@ -357,7 +377,7 @@ def event_reporting_create(request, country,type):
     country=user.get_profile().country
     user_country_slug = lower(slugify(country))
 
-    form = EventReportingForm(request.POST or None)
+    form = EventReportingForm(request.POST or None, request.FILES)
   
     if request.method == "POST":
         if form.is_valid():
@@ -399,7 +419,7 @@ def event_reporting_edit(request, country, id=None, template_name='countries/eve
             form.save()
 
             # If the save was successful, success message and redirect to another page
-            # info(request, _("Successfully updated pest report."))
+            info(request, _("Successfully updated pest report."))
             return redirect("event-reporting-detail", country=user_country_slug, year=event_reporting.publish_date.strftime("%Y"), month=event_reporting.publish_date.strftime("%m"), slug=event_reporting.slug)
 
     else:
@@ -456,7 +476,7 @@ def pfa_create(request, country):
     country=user.get_profile().country
     user_country_slug = lower(slugify(country))
 
-    form = PestFreeAreaForm(request.POST or None)
+    form = PestFreeAreaForm()
   
     if request.method == "POST":
         if form.is_valid():
@@ -554,7 +574,7 @@ def implementationispm_create(request, country):
     country=user.get_profile().country
     user_country_slug = lower(slugify(country))
 
-    form = ImplementationISPMForm(request.POST or None)
+    form = ImplementationISPMForm()
   
     if request.method == "POST":
         if form.is_valid():
@@ -640,51 +660,67 @@ class AdvancesSearchCNListView(ListView):
             context['type_label'] = 'Official pest report (Art. VIII.1a)'
             context['link_to_item'] = 'pest-report-detail'
             context['items']= PestReport.objects.all()
+            context['counttotal'] =context['items'].count() 
         elif self.kwargs['type'] == 'nppo':
             context['type_label'] = dict(BASIC_REP_TYPE_CHOICES)[1]
             context['link_to_item'] = 'basic-reporting-detail'
             context['items']= BasicReporting.objects.filter(basic_rep_type=1)
+            context['counttotal'] =context['items'].count() 
         elif self.kwargs['type'] == 'entrypoints':
             context['type_label'] = dict(BASIC_REP_TYPE_CHOICES)[2]
             context['link_to_item'] = 'basic-reporting-detail'
             context['items']= BasicReporting.objects.filter(basic_rep_type=2)
+            context['counttotal'] =context['items'].count() 
         elif self.kwargs['type'] == 'regulatedpests':
             context['type_label'] = dict(BASIC_REP_TYPE_CHOICES)[3]
             context['link_to_item'] = 'basic-reporting-detail'
             context['items']= BasicReporting.objects.filter(basic_rep_type=3)
+            context['counttotal'] =context['items'].count() 
         elif self.kwargs['type'] == 'legislation':
             context['type_label'] = dict(BASIC_REP_TYPE_CHOICES)[4]
             context['link_to_item'] = 'basic-reporting-detail'
             context['items']= BasicReporting.objects.filter(basic_rep_type=4)
+            context['counttotal'] =context['items'].count() 
         elif self.kwargs['type'] == 'emergencyactions':
             context['type_label'] = dict(EVT_REP_TYPE_CHOICES)[1]
             context['link_to_item'] = 'event-reporting-detail'
             context['items']= EventReporting.objects.filter(event_rep_type=1)
+            context['counttotal'] =context['items'].count() 
         elif self.kwargs['type'] == 'noncompliance':
             context['type_label'] = dict(EVT_REP_TYPE_CHOICES)[2]
             context['link_to_item'] = 'event-reporting-detail'
             context['items']= EventReporting.objects.filter(event_rep_type=2)
+            context['counttotal'] =context['items'].count() 
         elif self.kwargs['type'] == 'plantprotection':
             context['type_label'] = dict(EVT_REP_TYPE_CHOICES)[3]
             context['link_to_item'] = 'event-reporting-detail'
             context['items']= EventReporting.objects.filter(event_rep_type=3)
+            context['counttotal'] =context['items'].count() 
         elif self.kwargs['type'] == 'peststatus':
             context['type_label'] = dict(EVT_REP_TYPE_CHOICES)[4]
             context['link_to_item'] = 'event-reporting-detail'
             context['items']= EventReporting.objects.filter(event_rep_type=4)
+            context['counttotal'] =context['items'].count() 
         elif self.kwargs['type'] == 'phytosanitaryrequirements':
             context['type_label'] = dict(EVT_REP_TYPE_CHOICES)[5]
             context['link_to_item'] = 'event-reporting-detail'
             context['items']= EventReporting.objects.filter(event_rep_type=5)
+            context['counttotal'] =context['items'].count() 
         elif self.kwargs['type'] == 'pfa':
             context['type_label'] = 'Pest free areas'
             context['link_to_item'] = 'pfa-detail'
             context['items']= PestFreeArea.objects.all()
+            context['counttotal'] =context['items'].count() 
         elif self.kwargs['type'] == 'ispm15':
             context['type_label'] = 'Implementation of ISPM 15'
             context['link_to_item'] = 'implementationispm-detail'
             context['items']= ImplementationISPM.objects.all()
+            context['counttotal'] =context['items'].count() 
         
-        context['counttotal'] =context['items'].count() 
+        
         
         return context
+		
+		
+		
+	

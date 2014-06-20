@@ -30,7 +30,7 @@ urlpatterns = patterns("",
     # url("^faq/$", direct_to_template, {"template": "sitemap.html"}, name="sitemap"),
     
     # countries
-
+    
     # individual country home
     url(r'^countries/(?P<country>[\w-]+)/$',
         view=CountryView.as_view(),

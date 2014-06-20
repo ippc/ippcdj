@@ -345,6 +345,11 @@ class PestReport(Displayable, models.Model):
         super(PestReport, self).save(*args, **kwargs)
 
 
+
+
+
+
+
 # used by Basic Reporting type
 BASIC_REP_1 = 1
 BASIC_REP_2 = 2
@@ -356,7 +361,33 @@ BASIC_REP_TYPE_CHOICES = (
     (BASIC_REP_3, _("List of regulated pests (Art. VII.2i)")),
     (BASIC_REP_4, _("Phytosanitary Restrictions/Legislation")),
 )
-   
+class Files(models.Model):
+    """ Documents """
+    #basic_reporting = models.ForeignKey(BasicReporting) # , related_name='photos'
+    # http://stackoverflow.com/a/1190866/412329
+    files = models.FileField(blank=True, help_text='10 MB maximum file size.', verbose_name='Upload a file', upload_to='files/%Y/%m/%d/')
+
+    # Eureka!! http://scottbarnham.com/blog/2008/02/24/imagefield-and-edit_inline-revisited/   
+    def save(self):
+        if not self.id and not self.files:
+            return
+        # if self.remove:
+        #     self.delete()
+        else:
+            super(Files, self).save()
+
+    # class Meta:
+        # ordering = ['']
+
+    def __unicode__(self):
+        return self.files.name
+    # http://stackoverflow.com/questions/2683621/django-filefield-return-filename-only-in-template
+    def name(self):
+           return self.files.name
+    
+    def filename(self):
+           return os.path.basename(self.files.name)
+       
 class BasicReporting(Displayable, models.Model):
     """ Basic Reporting"""
     country = models.ForeignKey(CountryPage, related_name="basic_reporting_country_page")
@@ -374,6 +405,7 @@ class BasicReporting(Displayable, models.Model):
     contact_for_more_information = models.TextField(_("Contact for more information"), blank=True, null=True)    
     url_for_more_information = models.URLField(blank=True, null=True)
     modify_date = models.DateTimeField(_("Modified date"), blank=True, null=True, editable=False)
+    #files = models.ForeignKey(Files) # , related_name='photos'
    
   
 
@@ -410,11 +442,25 @@ class BasicReporting(Displayable, models.Model):
             self.slug = slugify(self.title)
         self.modify_date = datetime.now()
         super(BasicReporting, self).save(*args, **kwargs)
-
-    def filename(self):
-        return os.path.basename(self.file.name)
+ 
+    def filelist(self):
+        filesarray=[]
+        for f in self.file.name.split(","):
+            print(f)
+            if f!='' and f!='None':
+                f1 = Files.objects.get(id=int(f))
+                filesarray.append((f1.name(),f1.filename()))
+        return filesarray
+    def getFiles(self):
+        return self.file.name.split(",")
     def basic_rep_type_verbose(self):
         return dict(BASIC_REP_TYPE_CHOICES)[self.basic_rep_type]
+
+
+
+    # @models.permalink
+    # def get_absolute_url(self):
+    #     return ('phytosanitary_resource_detail', None, {'object_id': self.id})
 
 # used by Basic Reporting type
 EVT_REP_1 = 1
@@ -466,15 +512,15 @@ class EventReporting(Displayable, models.Model):
         return self.title
 
     # http://devwiki.beloblotskiy.com/index.php5/Django:_Decoupling_the_URLs  
-    @models.permalink # or: get_absolute_url = models.permalink(get_absolute_url) below
-    def get_absolute_url(self): # "view on site" link will be visible in admin interface
-        """Construct the absolute URL for a Pest Report."""
-        return ('event-reporting-detail', (), {
-                            'country': self.country.name, # =todo: get self.country.name working
-                            'year': self.publish_date.strftime("%Y"),
-                            'month': self.publish_date.strftime("%m"),
-                            # 'day': self.pub_date.strftime("%d"),
-                            'slug': self.slug})
+    #@models.permalink # or: get_absolute_url = models.permalink(get_absolute_url) below
+    #def get_absolute_url(self): # "view on site" link will be visible in admin interface
+    ##    """Construct the absolute URL for a Pest Report."""
+    #    return ('event-reporting-detail', (), {
+    #                        'country': self.country.name, # =todo: get self.country.name working
+    #                       'year': self.publish_date.strftime("%Y"),
+    #                        'month': self.publish_date.strftime("%m"),
+    #                        # 'day': self.pub_date.strftime("%d"),
+    #                        'slug': self.slug})
             
     def save(self, *args, **kwargs):
         ''' On save, update timestamps '''
@@ -489,7 +535,16 @@ class EventReporting(Displayable, models.Model):
         return os.path.basename(self.file.name)
     def event_rep_type_verbose(self):
         return dict(EVT_REP_TYPE_CHOICES)[self.event_rep_type]
+  
+    @models.permalink
+    def get_absolute_url(self):
+        return ('upload-new', )
 
+    
+    
+    
+    
+    
 PFA_TYPE_1 = 1
 PFA_TYPE_2 = 2
 PFA_TYPE_1_CHOICES = (
@@ -655,8 +710,6 @@ class ImplementationISPM(Displayable, models.Model):
         return dict(YES_NO_CHOICES)[self.implementexport_type]
     def mark_registered_type_verbose(self):
         return dict(YES_NO_DONTKNOW_CHOICES)[self.mark_registered_type]
-
-
 
 class Translatable(models.Model):
     """ Translations of user-generated content - https://gist.github.com/renyi/3596248"""

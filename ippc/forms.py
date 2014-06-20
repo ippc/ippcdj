@@ -1,8 +1,8 @@
 # -*- coding: utf-8 -*-
 
 from django import forms
-from .models import IppcUserProfile, PestStatus, PestReport, CountryPage, \
-BasicReporting, EventReporting, PestFreeArea, ImplementationISPM, VERS_CHOICES
+from .models import IppcUserProfile, PestStatus, PestReport,  CountryPage, \
+BasicReporting, EventReporting, PestFreeArea, ImplementationISPM, VERS_CHOICES,Files
 from django.contrib.auth.models import User
 
 class PestReportForm(forms.ModelForm):
@@ -46,17 +46,23 @@ class BasicReportingForm(forms.ModelForm):
            'basic_rep_type',
            'title', 
            'publication_date', 
-           'file',
+           
            'short_description',
            'contact_for_more_information',
            'url_for_more_information',
            'country',
             ]
-        exclude = ('author', 'slug', 'publish_date',  'modify_date')
+        exclude = ('author', 'slug', 'publish_date',  'modify_date','file')
         widgets = {
             'country': forms.HiddenInput(),   
             'basic_rep_type': forms.RadioSelect(attrs={'readonly':'True'})
         }
+
+class FilesForm(forms.ModelForm):
+    class Meta:
+        model = Files
+        fields = ('files',)
+        
         
 class EventReportingForm(forms.ModelForm):
    # country = forms.ChoiceField(widget=forms.Select(), initial='country')
@@ -77,6 +83,7 @@ class EventReportingForm(forms.ModelForm):
         widgets = {
             'country': forms.HiddenInput(),   
             'event_rep_type': forms.RadioSelect(attrs={'readonly':'True'})
+            
         }
         
 class PestFreeAreaForm(forms.ModelForm):

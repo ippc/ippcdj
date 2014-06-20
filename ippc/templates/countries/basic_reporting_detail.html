@@ -70,8 +70,17 @@
   
   {% if basicreporting.file %}
   <dt>{% trans "Report file" %}</dt>
-  <dd><a href="{{MEDIA_URL}}{{ basicreporting.files }}{{ basicreporting.file }}">{{ basicreporting.filename }}</a></dd>
+   {% for key, val in basicreporting.filelist %}
+      <a href="{{MEDIA_URL}}{{ key }}">{{ val}}</a><br/>
+  {% endfor %}
+    
+    
+    
+  <dd><!--a href="{{MEDIA_URL}}{{ basicreporting.files }}{{ basicreporting.file }}">{{ basicreporting.filename }}</a-->{{b}}</dd>
   {% endif %}
+
+ 
+  
 
 
   

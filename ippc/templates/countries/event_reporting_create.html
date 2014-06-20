@@ -37,7 +37,7 @@
 
 <h1><span class="normal">{% trans "Create New Event Reporting for" %}</span> {{ user.get_profile.country.name }}</h1>
 
-<form class="customform" method="POST" action="">
+<form class="customform" method="POST" action="" enctype="multipart/form-data">
     {% csrf_token %}
     <fieldset>
         {% include "countries/event_reporting_form.html" %}
