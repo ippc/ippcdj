@@ -1,17 +1,23 @@
 {% extends "pages/page.html" %}
 
-{% load mezzanine_tags staticfiles i18n %}
+{% load mezzanine_tags translate_tags staticfiles i18n %}
 
 {% block extra_css %}
   <link rel="stylesheet" href="{% static "css/DT_bootstrap.css" %}">
 {% endblock %}
 
 {% block meta_title %}
-  {{ page.publicationlibrary.title }}
+  {% with page.publicationlibrary|get_object_translation as translated_page %}
+      {{ translated_page.title|richtext_filter|safe }}
+  {% endwith %}
+  {# {{ page.publicationlibrary.title }} #}
 {% endblock %}
 
 {% block title %}
-  {{ page.publicationlibrary.title }}
+      {% with page.publicationlibrary|get_object_translation as translated_page %}
+          {{ translated_page.title|richtext_filter|safe }}
+      {% endwith %}
+      {# {{ page.publicationlibrary.title }} #}
 {% endblock %}
 
 {% block main %}
@@ -24,7 +30,19 @@
     {% if group in page.get_content_model.groups.all %}
       {{ block.super }}
       {# {% editable page.publicationlibrary.content %} #}
-      {{ page.publicationlibrary.content|richtext_filter|safe }}
+      
+
+
+
+      {% with page.publicationlibrary|get_object_translation as translated_page %}
+          {{ translated_page.content|richtext_filter|safe }}
+      {% endwith %}
+      
+      {# {{ page.publicationlibrary.content|richtext_filter|safe }} #}
+
+
+
+
       {# {% endeditable %} #}
         {% include "pages/publicationtable.html" %}
     {% endif %} {# group in request.user.groups.all #}
@@ -34,7 +52,12 @@
   
       {{ block.super }}
       {# {% editable page.publicationlibrary.content %} #}
-      {{ page.publicationlibrary.content|richtext_filter|safe }}
+
+      {% with page.publicationlibrary|get_object_translation as translated_page %}
+          {{ translated_page.content|richtext_filter|safe }}
+      {% endwith %}
+
+      {# {{ page.publicationlibrary.content|richtext_filter|safe }} #}
       {# {% endeditable %} #}
         {% include "pages/publicationtable.html" %}
   

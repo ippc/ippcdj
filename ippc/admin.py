@@ -6,14 +6,33 @@ from mezzanine.pages.admin import PageAdmin
 from mezzanine.conf import settings
 from mezzanine.core.admin import TabularDynamicInlineAdmin, StackedDynamicInlineAdmin
 
-from .models import PestStatus, PestReport, CountryPage, WorkAreaPage, PublicationLibrary, Publication, ReportingObligation,EventReporting,PestFreeArea,ImplementationISPM,ImplementationISPMVersion#, File
+from .models import PestStatus, PestReport, CountryPage, WorkAreaPage, PublicationLibrary, Publication, ReportingObligation,EventReporting,PestFreeArea,ImplementationISPM,ImplementationISPMVersion, TransPublicationLibraryPage#, File
 from django.contrib.auth.models import User
+
+from mezzanine.pages.models import RichTextPage, Link
+from mezzanine.pages.admin import PageAdmin, LinkAdmin
+from models import TransRichTextPage, TransLinkPage
 
 # Publications -----------------
 
 # class FileInline(TabularDynamicInlineAdmin):
 #     model = File
-    
+
+
+#
+# Publication Library
+#
+# class TransPublicationLibraryPageInline(TabularDynamicInlineAdmin):
+#     model  = TransPublicationLibraryPage
+#     fields = ("lang", "title", "content")
+#
+# class TransPublicationLibraryPageAdmin(admin.ModelAdmin):
+#     inlines   = (TransInline,)
+#
+# admin.site.unregister(PublicationLibrary)
+# admin.site.register(PublicationLibrary, TransPublicationLibraryPageAdmin)
+
+
 class PublicationInline(StackedDynamicInlineAdmin):
     model = Publication
     prepopulated_fields = { 'slug': ['title'] }
@@ -27,10 +46,33 @@ class PublicationInline(StackedDynamicInlineAdmin):
     #     obj.author_id = request.user.id
     #     obj.save()
 
+
+    # #
+    # # Richtext
+    # #
+    # class TransInline(TabularDynamicInlineAdmin):
+    #     model  = TransRichTextPage
+    #     fields = ("lang", "title", "content")
+    #
+    # class TransPageAdmin(PageAdmin):
+    #     inlines   = (TransInline,)
+    #
+    # admin.site.unregister(RichTextPage)
+    # admin.site.register(RichTextPage, TransPageAdmin)
+
+
+
+class TransPublicationLibraryPageAdmin(StackedDynamicInlineAdmin):
+    model = TransPublicationLibraryPage
+    fields = ("lang", "title", "content")
+    # fk_name = 'parent' # http://stackoverflow.com/a/2409118
+    # prepopulated_fields = { 'slug': ['title'] }
+
 class PublicationLibraryAdmin(PageAdmin):
-    inlines = (PublicationInline,)
+    inlines = (PublicationInline, TransPublicationLibraryPageAdmin,)
 
 admin.site.register(PublicationLibrary, PublicationLibraryAdmin)
+
 
 
 
@@ -69,15 +111,15 @@ admin.site.register(WorkAreaPage, WorkAreaPageAdmin)
 # Pages -----------------
 # =todo: get this to work
 
-admin.site.unregister(Page)
-
-class CustomPageAdmin(PageAdmin):
-    save_on_top = True
-    list_display = ('title', 'publish_date', 'status')
-    list_filter = ('title', 'publish_date', 'status')
-    search_fields = ('title', 'content')
-
-admin.site.register(Page, CustomPageAdmin)
+# admin.site.unregister(Page)
+#
+# class CustomPageAdmin(PageAdmin):
+#     save_on_top = True
+#     list_display = ('title', 'publish_date', 'status')
+#     list_filter = ('title', 'publish_date', 'status')
+#     search_fields = ('title', 'content')
+#
+# admin.site.register(Page, CustomPageAdmin)
 
 
 
@@ -184,9 +226,7 @@ admin.site.register(ImplementationISPMVersion, ImplementationISPMVersionAdmin)
     
 # Translatable user-content  -----------------
 if "mezzanine.pages" in settings.INSTALLED_APPS:
-    from mezzanine.pages.models import RichTextPage, Link
-    from mezzanine.pages.admin import PageAdmin, LinkAdmin
-    from models import TransRichTextPage, TransLinkPage
+
 
     #
     # Richtext
@@ -200,6 +240,8 @@ if "mezzanine.pages" in settings.INSTALLED_APPS:
 
     admin.site.unregister(RichTextPage)
     admin.site.register(RichTextPage, TransPageAdmin)
+    
+
 
     #
     # Link

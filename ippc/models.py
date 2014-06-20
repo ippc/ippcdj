@@ -1,3 +1,4 @@
+
 from string import punctuation
 from urllib import unquote
 
@@ -655,6 +656,7 @@ if "mezzanine.pages" in settings.INSTALLED_APPS:
             ordering = ("lang",)
             unique_together = ("lang", "translation")
 
+
 if "mezzanine.forms" in settings.INSTALLED_APPS:
     from mezzanine.forms import fields
     from mezzanine.forms.models import Form, FieldManager, Field
@@ -707,3 +709,13 @@ if "mezzanine.galleries" in settings.INSTALLED_APPS:
             verbose_name = _("Translated Image")
             verbose_name_plural = _("Translated Images")
             ordering = ("lang",)
+
+
+class TransPublicationLibraryPage(Translatable, RichText, Slugged):
+    translation = models.ForeignKey(PublicationLibrary, related_name="translation")
+
+    class Meta:
+        verbose_name = _("Translated Publication Library")
+        verbose_name_plural = _("Translated Publication Libraries")
+        ordering = ("lang",)
+        unique_together = ("lang", "translation")
