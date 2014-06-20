@@ -4,8 +4,12 @@
   {# http://datatables.net/blog/Twitter_Bootstrap_2 #}
    <thead>
      <tr>
-       <th style="width:15%;">{% trans "Doc #" %}</th>
-       <th style="width:15%;">{% trans "Agenda #" %}</th>
+       {% if publication.document_number %}
+         <th style="width:15%;">{% trans "Doc #" %}</th>
+       {% endif %}
+       {% if publication.agenda_number %}
+         <th style="width:15%;">{% trans "Agenda #" %}</th>
+       {% endif %}
        <th>{% trans "Title" %}</th>
        <th>{% trans "Files" %}</th>
      </tr>
@@ -15,8 +19,12 @@
 {% with page.publicationlibrary.publications.all as publications %}
   {% for publication in publications %}
     <tr id="media-file-{{ publication.id }}">
-      <td>{{ publication.document_number }}</td>
-      <td>{{ publication.agenda_number }}</td>
+      {% if publication.document_number %}
+        <td>{{ publication.document_number }}</td>
+      {% endif %}
+      {% if publication.agenda_number %}
+        <td>{{ publication.agenda_number }}</td>
+      {% endif %}
       <td><a href="{% url 'publication-detail' publication.pk %}">{{ publication.title }}</a></td>
 
       <td>
