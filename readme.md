@@ -92,6 +92,7 @@
 - [Download multiple files](http://stackoverflow.com/a/12951557/412329)
 - Use [Chosen](http://harvesthq.github.io/chosen/) to make globalnav dropdowns friedly. Also in admin. There's a [Django app](https://github.com/theatlantic/django-chosen), too. 
 - Remove dropdown from Countries globalnav menu
+- If no publication or agenda numbers exist, don't show header or cells
 
 ## Installation / Setup
 
