@@ -280,7 +280,7 @@ class PestReport(Displayable, models.Model):
     # objects = models.Manager()
 
     objects = SearchableManager()
-    attachments = AttachmentManager()
+    # attachments = AttachmentManager()
     search_fields = ("title", "summary")
 
     class Meta:
