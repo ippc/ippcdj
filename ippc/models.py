@@ -21,7 +21,7 @@ from mezzanine.core.managers import SearchableManager
 from mezzanine.utils.importing import import_dotted_path
 from mezzanine.utils.models import upload_to
 
-from attachments.models import AttachmentManager
+# from attachments.models import AttachmentManager
 
 class PublicationLibrary(Page, RichText):
     """
