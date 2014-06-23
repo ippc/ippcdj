@@ -28,7 +28,8 @@ class LatestContentNode(Node):
         self.model = get_model(*model.split('.'))
     
     def render(self, context):
-        context[self.varname] = self.model._default_manager.all()[:self.num]
+        # status=2 means only show entries that are not marked as draft in Mezzanine Displayable core model
+        context[self.varname] = self.model._default_manager.filter(status=2)[:self.num]
         return ''
  
 def get_latest(parser, token):

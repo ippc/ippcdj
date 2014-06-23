@@ -189,6 +189,9 @@ urlpatterns = patterns("",
         view=implementationispm_edit,
         name='implementationispm-edit'),
 
+    # attachments for any model
+    url(r'^attachments/', include('attachments.urls')),
+
 
 
     # pagedown for markdown wysiwyg

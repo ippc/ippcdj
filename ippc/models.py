@@ -21,6 +21,8 @@ from mezzanine.core.managers import SearchableManager
 from mezzanine.utils.importing import import_dotted_path
 from mezzanine.utils.models import upload_to
 
+from attachments.models import AttachmentManager
+
 class PublicationLibrary(Page, RichText):
     """
         Page bucket for publications. Here's the expect folder layout:
@@ -276,7 +278,9 @@ class PestReport(Displayable, models.Model):
     # commodity_groups = 
     # keywords / tags = 
     # objects = models.Manager()
+
     objects = SearchableManager()
+    attachments = AttachmentManager()
     search_fields = ("title", "summary")
 
     class Meta:

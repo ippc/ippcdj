@@ -72,7 +72,7 @@
 - Images in news items. See <http://mezzanine.jupo.org/docs/model-customization.html>
 - Last modified date for pages
 - Content (data) migration
-- ¿Use jQuery [multi-file-upload](https://github.com/sigurdga/django-jquery-file-upload) functionality for uploading images and files to be inserted in pages and blog posts, [with additional fields for each file](https://github.com/blueimp/jQuery-File-Upload/wiki/How-to-submit-additional-form-data) if required?
+- ¿Use jQuery [multi-file-upload](https://github.com/sigurdga/django-jquery-file-upload) functionality for uploading images and files to be inserted in pages and blog posts, [with additional fields for each file](https://github.com/blueimp/jQuery-File-Upload/wiki/How-to-submit-additional-form-data) if required? Or probably best to have own files table that can be related to any model, such as **[django-attach](https://github.com/peterkuma/django-attach/tree/master/example_project)** or **[django-jfu](https://github.com/Alem/django-jfu)**.
 - Order permission groups alphabetically in admin
 - Setup proper permissions (nginx is currently running as root — not good) so that static media, including user-uploaded files are served through Nginx. Document nginx/gunicorn/supervisor setup (currently running gunicorn with deprecated `gunicorn_django -b 0.0.0.0:8000` command — get it running and working with recommended command instead)
 - Setup working fabric script for easy deployment that does the following after running `fab deploy dev`:
@@ -93,6 +93,7 @@
 - Use [Chosen](http://harvesthq.github.io/chosen/) to make globalnav dropdowns friedly. Also in admin. There's a [Django app](https://github.com/theatlantic/django-chosen), too. 
 - Remove dropdown from Countries globalnav menu
 - If no publication or agenda numbers exist, don't show header or cells
+- Automatic local table of contents for pages with headers with IDs? <http://css-tricks.com/automatic-table-of-contents/> 
 
 ## Installation / Setup
 

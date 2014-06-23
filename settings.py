@@ -265,6 +265,10 @@ INSTALLED_APPS = (
     # or, a probably better alternative, fileuploads for publications
     "fileupload",
     
+    # or, even better, attachments that can be related to any model type
+    # https://github.com/bartTC/django-attachments
+    "attachments",
+    
     # south for database data migrations
     "south",
     
