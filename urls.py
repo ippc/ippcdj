@@ -190,7 +190,7 @@ urlpatterns = patterns("",
         name='implementationispm-edit'),
 
     # attachments for any model
-    url(r'^attachments/', include('attachments.urls')),
+    # url(r'^attachments/', include('attachments.urls')),
 
 
 
