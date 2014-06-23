@@ -234,6 +234,8 @@ If you add new fields or change certain values of existing ones such as blank or
         manage.py migrate your_app ####
 
 
+If you mess up or want an overview to understand what south is doing, see [here](http://stackoverflow.com/a/4840262)
+
 ## Translation updates for non-user-generated site content
 
 <https://docs.djangoproject.com/en/dev/topics/i18n/translation/>
