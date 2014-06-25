@@ -7,8 +7,8 @@ from mezzanine.conf import settings
 from mezzanine.core.admin import TabularDynamicInlineAdmin, StackedDynamicInlineAdmin
 
 from .models import PestStatus, PestReport, CountryPage, WorkAreaPage, PublicationLibrary, Publication,\
-ReportingObligation, EventReporting, PestFreeArea, ImplementationISPM, ImplementationISPMVersion, EppoCodes,\
-IssueKeywords, CommodityKeywords    
+ReportingObligation, EventReporting, PestFreeArea, ImplementationISPM, ImplementationISPMVersion,\
+EppoCode,IssueKeyword, CommodityKeyword    
 from django.contrib.auth.models import User
 from django import forms
 
@@ -98,9 +98,9 @@ class MyPestReportAdminForm(forms.ModelForm):
     class Meta:
         model = PestReport
         widgets = {
-          'pest_identity': autocomplete_light.ChoiceWidget ('EppoCodesAutocomplete'),
-          'issue_keywords': autocomplete_light.ChoiceWidget ('IssueKeywordsAutocomplete'),
-          'commodity_keywords': autocomplete_light.ChoiceWidget ('CommodityKeywordsAutocomplete'),
+          'pest_identity': autocomplete_light.ChoiceWidget ('EppoCodeAutocomplete'),
+          'issue_keywords': autocomplete_light.ChoiceWidget ('IssueKeywordAutocomplete'),
+          'commodity_keywords': autocomplete_light.ChoiceWidget ('CommodityKeywordAutocomplete'),
             }
 
 class PestReportAdmin(admin.ModelAdmin):
@@ -123,7 +123,7 @@ class PestReportAdmin(admin.ModelAdmin):
 admin.site.register(PestStatus, PestStatusAdmin)
 admin.site.register(PestReport, PestReportAdmin)
 
-class EppoCodesAdmin(admin.ModelAdmin):
+class EppoCodeAdmin(admin.ModelAdmin):
     # http://stackoverflow.com/a/8393130
     # def has_add_permission(self, request):
     #     return request.user.groups.filter(name='Developers').exists()
@@ -137,22 +137,22 @@ class EppoCodesAdmin(admin.ModelAdmin):
     list_display = ('codename', 'code', 'codeparent')
     list_filter = ('codename','code')
     search_fields = ('codename', 'code')
-admin.site.register(EppoCodes, EppoCodesAdmin)
+admin.site.register(EppoCode, EppoCodeAdmin)
 
-class IssueKeywordsAdmin(admin.ModelAdmin):
+class IssueKeywordAdmin(admin.ModelAdmin):
     save_on_top = True
-admin.site.register(IssueKeywords, IssueKeywordsAdmin)
+admin.site.register(IssueKeyword, IssueKeywordAdmin)
 
-class CommodityKeywordsAdmin(admin.ModelAdmin):
+class CommodityKeywordAdmin(admin.ModelAdmin):
     save_on_top = True
-admin.site.register(CommodityKeywords, CommodityKeywordsAdmin)
+admin.site.register(CommodityKeyword, CommodityKeywordAdmin)
 
 class MyReportingObligationAdmin(forms.ModelForm):
     class Meta:
         model = ReportingObligation
         widgets = {
-          'issue_keywords': autocomplete_light.ChoiceWidget ('IssueKeywordsAutocomplete'),
-          'commodity_keywords': autocomplete_light.ChoiceWidget ('CommodityKeywordsAutocomplete'),
+          'issue_keywords': autocomplete_light.ChoiceWidget ('IssueKeywordAutocomplete'),
+          'commodity_keywords': autocomplete_light.ChoiceWidget ('CommodityKeywordAutocomplete'),
             }
 class ReportingObligationAdmin(admin.ModelAdmin):
     form = MyReportingObligationAdmin
@@ -169,8 +169,8 @@ class MyEventReportingAdmin(forms.ModelForm):
     class Meta:
         model = EventReporting
         widgets = {
-          'issue_keywords': autocomplete_light.ChoiceWidget ('IssueKeywordsAutocomplete'),
-          'commodity_keywords': autocomplete_light.ChoiceWidget ('CommodityKeywordsAutocomplete'),
+          'issue_keywords': autocomplete_light.ChoiceWidget ('IssueKeywordAutocomplete'),
+          'commodity_keywords': autocomplete_light.ChoiceWidget ('CommodityKeywordAutocomplete'),
             }
 class EventReportingAdmin(admin.ModelAdmin):
     form = MyEventReportingAdmin
@@ -185,8 +185,8 @@ class MyPestFreeAreaAdmin(forms.ModelForm):
     class Meta:
         model = PestFreeArea
         widgets = {
-          'issue_keywords': autocomplete_light.ChoiceWidget ('IssueKeywordsAutocomplete'),
-          'commodity_keywords': autocomplete_light.ChoiceWidget ('CommodityKeywordsAutocomplete'),
+          'issue_keywords': autocomplete_light.ChoiceWidget ('IssueKeywordAutocomplete'),
+          'commodity_keywords': autocomplete_light.ChoiceWidget ('CommodityKeywordAutocomplete'),
             }
 class PestFreeAreaAdmin(admin.ModelAdmin):
     form = MyPestFreeAreaAdmin
@@ -201,8 +201,8 @@ class MyImplementationISPMAdmin(forms.ModelForm):
     class Meta:
         model = ImplementationISPM
         widgets = {
-          'issue_keywords': autocomplete_light.ChoiceWidget ('IssueKeywordsAutocomplete'),
-          'commodity_keywords': autocomplete_light.ChoiceWidget ('CommodityKeywordsAutocomplete'),
+          'issue_keywords': autocomplete_light.ChoiceWidget ('IssueKeywordAutocomplete'),
+          'commodity_keywords': autocomplete_light.ChoiceWidget ('CommodityKeywordAutocomplete'),
             }
 class ImplementationISPMAdmin(admin.ModelAdmin):
     form = MyImplementationISPMAdmin

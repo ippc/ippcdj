@@ -78,13 +78,13 @@
       
       </li>
       <li class="divider"></li>
-      <li><a href="{% url 'reportin-gobligation-list' page.title|slugify %}">Reporting Obligations</a> 
+      <li><a href="{% url 'reporting-obligation-list' page.title|slugify %}">Reporting Obligations</a> 
       <table>  {% for key, val in basic_types %}
         <tr>
           <td>
           <small class="muted">{{val}}</small></td>
-          <td>{% if perms.ippc.add_basicreporting and request.user.get_profile.country.name == page.title or user.is_superuser %}
-                <small><a class="btn btn-small btn-info" href="{% url 'basic-reporting-create' page.title|slugify key %}">+ {% trans "Add new" %}</a></small>
+          <td>{% if perms.ippc.add_reportingobligation and request.user.get_profile.country.name == page.title or user.is_superuser %}
+                <small><a class="btn btn-small btn-info" href="{% url 'reporting-obligation-create' page.title|slugify key %}">+ {% trans "Add new" %}</a></small>
              {% endif %} 
           </td>
         </tr>

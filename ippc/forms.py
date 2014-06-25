@@ -38,9 +38,9 @@ class PestReportForm(forms.ModelForm):
         exclude = ('author', 'slug', 'publish_date', 'modify_date')
         widgets = {
             'country': forms.HiddenInput(),
-            'pest_identity': autocomplete_light.ChoiceWidget ('EppoCodesAutocomplete'),
-            'issue_keywords': autocomplete_light.ChoiceWidget ('IssueKeywordsAutocomplete'),
-            'commodity_keywords': autocomplete_light.ChoiceWidget ('CommodityKeywordsAutocomplete'),
+            'pest_identity': autocomplete_light.ChoiceWidget ('EppoCodeAutocomplete'),
+            'issue_keywords': autocomplete_light.ChoiceWidget ('IssueKeywordAutocomplete'),
+            'commodity_keywords': autocomplete_light.ChoiceWidget ('CommodityKeywordAutocomplete'),
               
         }
 
@@ -67,8 +67,8 @@ class ReportingObligationForm(forms.ModelForm):
         widgets = {
             'country': forms.HiddenInput(),   
             'reporting_obligation_type': forms.RadioSelect(attrs={'readonly':'True'}),
-            'issue_keywords': autocomplete_light.ChoiceWidget ('IssueKeywordsAutocomplete'),
-            'commodity_keywords': autocomplete_light.ChoiceWidget ('CommodityKeywordsAutocomplete'),
+            'issue_keywords': autocomplete_light.ChoiceWidget ('IssueKeywordAutocomplete'),
+            'commodity_keywords': autocomplete_light.ChoiceWidget ('CommodityKeywordAutocomplete'),
         }
 
 
@@ -94,8 +94,8 @@ class EventReportingForm(forms.ModelForm):
         widgets = {
             'country': forms.HiddenInput(),   
             'event_rep_type': forms.RadioSelect(attrs={'readonly':'True'}),
-            'issue_keywords': autocomplete_light.ChoiceWidget ('IssueKeywordsAutocomplete'),
-            'commodity_keywords': autocomplete_light.ChoiceWidget ('CommodityKeywordsAutocomplete'),
+            'issue_keywords': autocomplete_light.ChoiceWidget ('IssueKeywordAutocomplete'),
+            'commodity_keywords': autocomplete_light.ChoiceWidget ('CommodityKeywordAutocomplete'),
          }
          
 class PestFreeAreaForm(forms.ModelForm):
@@ -118,8 +118,8 @@ class PestFreeAreaForm(forms.ModelForm):
         exclude = ('author', 'slug', 'publish_date',  'modify_date')
         widgets = {
             'country': forms.HiddenInput(),
-            'issue_keywords': autocomplete_light.ChoiceWidget ('IssueKeywordsAutocomplete'),
-            'commodity_keywords': autocomplete_light.ChoiceWidget ('CommodityKeywordsAutocomplete'),
+            'issue_keywords': autocomplete_light.ChoiceWidget ('IssueKeywordAutocomplete'),
+            'commodity_keywords': autocomplete_light.ChoiceWidget ('CommodityKeywordAutocomplete'),
            
         }
 class ImplementationISPMForm(forms.ModelForm):
@@ -149,6 +149,6 @@ class ImplementationISPMForm(forms.ModelForm):
             'country': forms.HiddenInput(),
             'implementimport_type':forms.RadioSelect(),
             'implementexport_type':forms.RadioSelect(),
-            'issue_keywords': autocomplete_light.ChoiceWidget ('IssueKeywordsAutocomplete'),
-            'commodity_keywords': autocomplete_light.ChoiceWidget ('CommodityKeywordsAutocomplete'),
+            'issue_keywords': autocomplete_light.ChoiceWidget ('IssueKeywordAutocomplete'),
+            'commodity_keywords': autocomplete_light.ChoiceWidget ('CommodityKeywordAutocomplete'),
         }

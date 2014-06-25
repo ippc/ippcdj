@@ -209,7 +209,7 @@ def pest_report_edit(request, country, id=None, template_name='countries/pest_re
     }, context_instance=RequestContext(request))
 
 
-************
+
 class ReportingObligationListView(ListView):
     """    Reporting Obligation """
     context_object_name = 'latest'
@@ -270,7 +270,7 @@ def reporting_obligation_create(request, country,type):
             
             return redirect("reporting-obligation-detail", country=user_country_slug, year=new_reporting_obligation.publish_date.strftime("%Y"), month=new_reporting_obligation.publish_date.strftime("%m"), slug=new_reporting_obligation.slug)
     else:
-        form = ReportingObligationForm(initial={'country': country,'report_obligation_type': type}, instance=ReportingObligation())
+        form = ReportingObligationForm(initial={'country': country,'reporting_obligation_type': type}, instance=ReportingObligation())
     
     return render_to_response('countries/reporting_obligation_create.html', {'form': form},
         context_instance=RequestContext(request))

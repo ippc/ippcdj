@@ -220,8 +220,8 @@ class PestStatus(models.Model):
         verbose_name_plural = _("Pest Statuses")
     pass
 
-class EppoCodes(models.Model):
-    """ Pest Statuses """
+class EppoCode(models.Model):
+    """ Eppo Code """
     codename = models.CharField(_("Eppo code"), max_length=250)
     codedescr = models.CharField(_("description"), max_length=250)
     code = models.CharField(_("Code"), max_length=100)
@@ -234,15 +234,15 @@ class EppoCodes(models.Model):
     def __unicode__(self):
         return self.codename
     
-class IssueKeywords(models.Model):
-    """ Pest Statuses """
+class IssueKeyword(models.Model):
+    """ IssueKeyword  """
     name = models.CharField(_("Issue Keyword"), max_length=250)
 
     def __unicode__(self):
         return self.name
     
-class CommodityKeywords(models.Model):
-    """ Pest Statuses """
+class CommodityKeyword(models.Model):
+    """ CommodityKeyword """
     name = models.CharField(_("Commodity Keyword"), max_length=500)
 
     def __unicode__(self):
@@ -322,7 +322,7 @@ class PestReport(Displayable, models.Model):
         verbose_name=_("Pest Status"),
         related_name='pest_status+', blank=True, null=True,
         help_text=_("Under ISPM 8 -"))
-    pest_identity = models.ForeignKey(EppoCodes, null=True, blank=True)
+    pest_identity = models.ForeignKey(EppoCode, null=True, blank=True)
     #pest_identity = models.TextField(_("Identity of Pest"),    blank=True, null=True)
     hosts = models.TextField(_("Hosts or Articles concerned"),
         blank=True, null=True)
@@ -333,8 +333,8 @@ class PestReport(Displayable, models.Model):
     contact_for_more_information = models.TextField(_("Contact for more information"),
         blank=True, null=True)
     url_for_more_information = models.URLField(blank=True, null=True)
-    issue_keywords = models.ForeignKey(IssueKeywords, null=True, blank=True)
-    commodity_keywords = models.ForeignKey(CommodityKeywords, null=True, blank=True)
+    issue_keywords = models.ForeignKey(IssueKeyword, null=True, blank=True)
+    commodity_keywords = models.ForeignKey(CommodityKeyword, null=True, blank=True)
   
     # =todo:
     # commodity_groups = 
@@ -437,8 +437,8 @@ class ReportingObligation(Displayable, models.Model):
     contact_for_more_information = models.TextField(_("Contact for more information"), blank=True, null=True)    
     url_for_more_information = models.URLField(blank=True, null=True)
     modify_date = models.DateTimeField(_("Modified date"), blank=True, null=True, editable=False)
-    issue_keywords = models.ForeignKey(IssueKeywords, null=True, blank=True)
-    commodity_keywords = models.ForeignKey(CommodityKeywords, null=True, blank=True)
+    issue_keywords = models.ForeignKey(IssueKeyword, null=True, blank=True)
+    commodity_keywords = models.ForeignKey(CommodityKeyword, null=True, blank=True)
   
     #files = models.ForeignKey(Files) # , related_name='photos'
    
@@ -538,8 +538,8 @@ class EventReporting(Displayable, models.Model):
     contact_for_more_information = models.TextField(_("Contact for more information"), blank=True, null=True)    
     url_for_more_information = models.URLField(blank=True, null=True)
     modify_date = models.DateTimeField(_("Modified date"), blank=True, null=True, editable=False)
-    issue_keywords = models.ForeignKey(IssueKeywords, null=True, blank=True)
-    commodity_keywords = models.ForeignKey(CommodityKeywords, null=True, blank=True)
+    issue_keywords = models.ForeignKey(IssueKeyword, null=True, blank=True)
+    commodity_keywords = models.ForeignKey(CommodityKeyword, null=True, blank=True)
     # =todo:
     # commodity_groups = 
     # keywords / tags = 
@@ -612,8 +612,8 @@ class PestFreeArea(Displayable, models.Model):
     contact_for_more_information = models.TextField(_("Contact for more information"), blank=True, null=True)    
     url_for_more_information = models.URLField(blank=True, null=True)
     modify_date = models.DateTimeField(_("Modified date"), blank=True, null=True, editable=False)
-    issue_keywords = models.ForeignKey(IssueKeywords, null=True, blank=True)
-    commodity_keywords = models.ForeignKey(CommodityKeywords, null=True, blank=True)
+    issue_keywords = models.ForeignKey(IssueKeyword, null=True, blank=True)
+    commodity_keywords = models.ForeignKey(CommodityKeyword, null=True, blank=True)
     # =todo:
     # commodity_groups = 
     # keywords / tags = 
@@ -712,8 +712,8 @@ class ImplementationISPM(Displayable, models.Model):
     contact_for_more_information = models.TextField(_("Contact for more information"), blank=True, null=True)    
     url_for_more_information = models.URLField(blank=True, null=True)
     modify_date = models.DateTimeField(_("Modified date"), blank=True, null=True, editable=False)
-    issue_keywords = models.ForeignKey(IssueKeywords, null=True, blank=True)
-    commodity_keywords = models.ForeignKey(CommodityKeywords, null=True, blank=True)
+    issue_keywords = models.ForeignKey(IssueKeyword, null=True, blank=True)
+    commodity_keywords = models.ForeignKey(CommodityKeyword, null=True, blank=True)
     # =todo:
     # commodity_groups = 
     # keywords / tags = 

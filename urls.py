@@ -94,7 +94,7 @@ urlpatterns = patterns("",
 
     # reporting obligation detail
     url(r'^countries/(?P<country>[\w-]+)/reportingobligation/(?P<year>\d+)/(?P<month>\d{2})/(?P<slug>[\w-]+)/$',
-        view=ReportingObligationView.as_view(),
+        view=ReportingObligationDetailView.as_view(),
         name="reporting-obligation-detail"),
         
      # reporting obligation create
