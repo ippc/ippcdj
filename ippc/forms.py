@@ -2,8 +2,11 @@
 
 from django import forms
 from .models import IppcUserProfile, PestStatus, PestReport,  CountryPage, \
-BasicReporting, EventReporting, PestFreeArea, ImplementationISPM, VERS_CHOICES,Files
+ReportingObligation, EventReporting, PestFreeArea, ImplementationISPM, VERS_CHOICES
 from django.contrib.auth.models import User
+import autocomplete_light
+
+import autocomplete_light_registry
 
 class PestReportForm(forms.ModelForm):
 
@@ -28,45 +31,51 @@ class PestReportForm(forms.ModelForm):
             'geographical_distribution',
             'nature_of_danger',
             'contact_for_more_information',
-            'url_for_more_information'
+            'url_for_more_information',
+            'issue_keywords',
+            'commodity_keywords'
             ]
         exclude = ('author', 'slug', 'publish_date', 'modify_date')
         widgets = {
-            'country': forms.HiddenInput()            
+            'country': forms.HiddenInput(),
+            'pest_identity': autocomplete_light.ChoiceWidget ('EppoCodesAutocomplete'),
+            'issue_keywords': autocomplete_light.ChoiceWidget ('IssueKeywordsAutocomplete'),
+            'commodity_keywords': autocomplete_light.ChoiceWidget ('CommodityKeywordsAutocomplete'),
+              
         }
 
-class BasicReportingForm(forms.ModelForm):
+class ReportingObligationForm(forms.ModelForm):
 
     # country = forms.ChoiceField(widget=forms.Select(), initial='country')
     # =todo: https://docs.djangoproject.com/en/dev/ref/forms/api/#dynamic-initial-values
 
     class Meta:
-        model = BasicReporting
+        model = ReportingObligation
         fields = [
-           'basic_rep_type',
+           'reporting_obligation_type',
            'title', 
            'publication_date', 
-           
+           'file',
            'short_description',
            'contact_for_more_information',
            'url_for_more_information',
            'country',
+           'issue_keywords',
+           'commodity_keywords'
             ]
-        exclude = ('author', 'slug', 'publish_date',  'modify_date','file')
+        exclude = ('author', 'slug', 'publish_date',  'modify_date')
         widgets = {
             'country': forms.HiddenInput(),   
-            'basic_rep_type': forms.RadioSelect(attrs={'readonly':'True'})
+            'reporting_obligation_type': forms.RadioSelect(attrs={'readonly':'True'}),
+            'issue_keywords': autocomplete_light.ChoiceWidget ('IssueKeywordsAutocomplete'),
+            'commodity_keywords': autocomplete_light.ChoiceWidget ('CommodityKeywordsAutocomplete'),
         }
 
-class FilesForm(forms.ModelForm):
-    class Meta:
-        model = Files
-        fields = ('files',)
-        
-        
+
 class EventReportingForm(forms.ModelForm):
    # country = forms.ChoiceField(widget=forms.Select(), initial='country')
     # =todo: https://docs.djangoproject.com/en/dev/ref/forms/api/#dynamic-initial-values
+   
     class Meta:
         model = EventReporting
         fields = [
@@ -78,14 +87,17 @@ class EventReportingForm(forms.ModelForm):
            'contact_for_more_information',
            'url_for_more_information',
            'country',
+           'issue_keywords',
+           'commodity_keywords'
             ]
         exclude = ('author', 'slug', 'publish_date',  'modify_date')
         widgets = {
             'country': forms.HiddenInput(),   
-            'event_rep_type': forms.RadioSelect(attrs={'readonly':'True'})
-            
-        }
-        
+            'event_rep_type': forms.RadioSelect(attrs={'readonly':'True'}),
+            'issue_keywords': autocomplete_light.ChoiceWidget ('IssueKeywordsAutocomplete'),
+            'commodity_keywords': autocomplete_light.ChoiceWidget ('CommodityKeywordsAutocomplete'),
+         }
+         
 class PestFreeAreaForm(forms.ModelForm):
    # country = forms.ChoiceField(widget=forms.Select(), initial='country')
     # =todo: https://docs.djangoproject.com/en/dev/ref/forms/api/#dynamic-initial-values
@@ -100,10 +112,14 @@ class PestFreeAreaForm(forms.ModelForm):
            'contact_for_more_information',
            'url_for_more_information',
            'country',
+           'issue_keywords',
+           'commodity_keywords'
             ]
         exclude = ('author', 'slug', 'publish_date',  'modify_date')
         widgets = {
-            'country': forms.HiddenInput()
+            'country': forms.HiddenInput(),
+            'issue_keywords': autocomplete_light.ChoiceWidget ('IssueKeywordsAutocomplete'),
+            'commodity_keywords': autocomplete_light.ChoiceWidget ('CommodityKeywordsAutocomplete'),
            
         }
 class ImplementationISPMForm(forms.ModelForm):
@@ -125,54 +141,14 @@ class ImplementationISPMForm(forms.ModelForm):
            'contact_for_more_information',
            'url_for_more_information',
            'country',
+           'issue_keywords',
+           'commodity_keywords'
             ]
         exclude = ('author', 'slug', 'publish_date',  'modify_date')
         widgets = {
             'country': forms.HiddenInput(),
             'implementimport_type':forms.RadioSelect(),
             'implementexport_type':forms.RadioSelect(),
+            'issue_keywords': autocomplete_light.ChoiceWidget ('IssueKeywordsAutocomplete'),
+            'commodity_keywords': autocomplete_light.ChoiceWidget ('CommodityKeywordsAutocomplete'),
         }
-
-    # =todo:     
-        
-    # def __init__(self, request, *args, **kwargs):
-    #     author=request.user
-    #     self.country=author.get_profile().country
-    #     # self.author = request.user
-    #     # self.author.id = request.user.id
-    #     # self.author = request.User.username
-    #     
-    #     super(PestReportForm, self).__init__(request, *args, **kwargs)
-    #     # 
-    #     self.fields['country'].initial = request.country
-        
-        # self.fields['country'].queryset = IppcUserProfile.objects.filter(country=country)
-        
-        # self.country = forms.IntegerField(widget=forms.HiddenInput(), initial=123)
-        # self.fields['country'].widget = forms.HiddenInput()
-        # self.fields['country'].required = True
-        # self.fields["country"].queryset = IppcUserProfile.objects.filter(country=country)
-        
-        # country should be set automatically to logged-in country editor's country
-        # report = kwargs["instance"]
-        # value = report.value
-        # content_object = report.content_object
-        # queryset = Profile.objects.filter(user=content_object.user)
-        # self.country = IppcUserProfile.objects.filter(country="country")
-        # self.country = request.user.get_profile().country
-        # self.country = profile_user.get_profile.country.name
-        # self.fields['country'].widget
-
-
-        # self.fields['content_markdown'].widget.attrs['id'] = 'wmd-input'
-        # only active users should appear in observers field
-        # self.fields['observers'].queryset = User.objects.filter(is_active=True).order_by('username')
-
-        # @receiver(post_save, sender=Rating)
-        # def karma(sender, **kwargs):
-        #     report = kwargs["instance"]
-        #     value = report.value
-        # 
-        #     content_object = report.content_object
-        #     queryset = Profile.objects.filter(user=content_object.user)
-        #     queryset.update(karma=models.F("karma") + value)

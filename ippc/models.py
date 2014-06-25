@@ -20,6 +20,8 @@ from mezzanine.core.managers import SearchableManager
 from mezzanine.utils.importing import import_dotted_path
 from mezzanine.utils.models import upload_to
 
+
+
 class PublicationLibrary(Page, RichText):
     """
         Page bucket for publications. Here's the expect folder layout:
@@ -218,6 +220,35 @@ class PestStatus(models.Model):
         verbose_name_plural = _("Pest Statuses")
     pass
 
+class EppoCodes(models.Model):
+    """ Pest Statuses """
+    codename = models.CharField(_("Eppo code"), max_length=250)
+    codedescr = models.CharField(_("description"), max_length=250)
+    code = models.CharField(_("Code"), max_length=100)
+    codeparent = models.CharField(_("Parent code"), max_length=100)
+    lang = models.CharField(_("Language"), max_length=100)
+    preferred = models.CharField(_("Preferred language"), max_length=100)
+    authority = models.CharField(_("Authority"), max_length=250)
+    creationdate = models.DateTimeField(_("creationdate"), default=datetime.now, editable=False)
+
+    def __unicode__(self):
+        return self.codename
+    
+class IssueKeywords(models.Model):
+    """ Pest Statuses """
+    name = models.CharField(_("Issue Keyword"), max_length=250)
+
+    def __unicode__(self):
+        return self.name
+    
+class CommodityKeywords(models.Model):
+    """ Pest Statuses """
+    name = models.CharField(_("Commodity Keyword"), max_length=500)
+
+    def __unicode__(self):
+        return self.name
+    
+    
 class IppcUserProfile(models.Model):
     """ User Profiles for IPPC"""
     
@@ -291,8 +322,8 @@ class PestReport(Displayable, models.Model):
         verbose_name=_("Pest Status"),
         related_name='pest_status+', blank=True, null=True,
         help_text=_("Under ISPM 8 -"))
-    pest_identity = models.TextField(_("Identity of Pest"),
-        blank=True, null=True)
+    pest_identity = models.ForeignKey(EppoCodes, null=True, blank=True)
+    #pest_identity = models.TextField(_("Identity of Pest"),    blank=True, null=True)
     hosts = models.TextField(_("Hosts or Articles concerned"),
         blank=True, null=True)
     geographical_distribution = models.TextField(_("Geographical Distribution"),
@@ -302,7 +333,9 @@ class PestReport(Displayable, models.Model):
     contact_for_more_information = models.TextField(_("Contact for more information"),
         blank=True, null=True)
     url_for_more_information = models.URLField(blank=True, null=True)
-
+    issue_keywords = models.ForeignKey(IssueKeywords, null=True, blank=True)
+    commodity_keywords = models.ForeignKey(CommodityKeywords, null=True, blank=True)
+  
     # =todo:
     # commodity_groups = 
     # keywords / tags = 
@@ -350,7 +383,7 @@ class PestReport(Displayable, models.Model):
 
 
 
-# used by Basic Reporting type
+# used by Reporting Obligation type
 BASIC_REP_1 = 1
 BASIC_REP_2 = 2
 BASIC_REP_3 = 3
@@ -363,7 +396,6 @@ BASIC_REP_TYPE_CHOICES = (
 )
 class Files(models.Model):
     """ Documents """
-    #basic_reporting = models.ForeignKey(BasicReporting) # , related_name='photos'
     # http://stackoverflow.com/a/1190866/412329
     files = models.FileField(blank=True, help_text='10 MB maximum file size.', verbose_name='Upload a file', upload_to='files/%Y/%m/%d/')
 
@@ -388,26 +420,29 @@ class Files(models.Model):
     def filename(self):
            return os.path.basename(self.files.name)
        
-class BasicReporting(Displayable, models.Model):
-    """ Basic Reporting"""
-    country = models.ForeignKey(CountryPage, related_name="basic_reporting_country_page")
-    author = models.ForeignKey(User, related_name="basic_reporting_author")
+class ReportingObligation(Displayable, models.Model):
+    """ ReportingObligation"""
+    country = models.ForeignKey(CountryPage, related_name="reporting_obligation_country_page")
+    author = models.ForeignKey(User, related_name="reporting_obligation_author")
     
     # slug - provided by mezzanine.core.models.slugged (subclassed by displayable)
     # title - provided by mezzanine.core.models.slugged (subclassed by displayable)
     # status - provided by mezzanine.core.models.displayable
     # publish_date - provided by mezzanine.core.models.displayable
     
-    basic_rep_type = models.IntegerField(_("Basic Reporting"), choices=BASIC_REP_TYPE_CHOICES, default=BASIC_REP_3)
+    reporting_obligation_type = models.IntegerField(_("Reporting Obligation"), choices=BASIC_REP_TYPE_CHOICES, default=BASIC_REP_3)
     publication_date = models.DateTimeField(_("Publication date"), blank=True, null=True, editable=True)
-    file = models.FileField(_("Report Document"), upload_to="basic_reporting/%Y/%m/", blank=True)
+    file = models.FileField(_("Report Document"), upload_to="reporting_obligation/%Y/%m/", blank=True)
     short_description = models.TextField(_("Short Description"),  blank=True, null=True)
     contact_for_more_information = models.TextField(_("Contact for more information"), blank=True, null=True)    
     url_for_more_information = models.URLField(blank=True, null=True)
     modify_date = models.DateTimeField(_("Modified date"), blank=True, null=True, editable=False)
+    issue_keywords = models.ForeignKey(IssueKeywords, null=True, blank=True)
+    commodity_keywords = models.ForeignKey(CommodityKeywords, null=True, blank=True)
+  
     #files = models.ForeignKey(Files) # , related_name='photos'
    
-  
+ 
 
     # =todo:
     # commodity_groups = 
@@ -417,7 +452,7 @@ class BasicReporting(Displayable, models.Model):
     search_fields = ("title", "short_description")
 
     class Meta:
-        verbose_name_plural = _("Basic Reportings")
+        verbose_name_plural = _("Reporting Obligations")
         # abstract = True
 
     def __unicode__(self):
@@ -427,7 +462,7 @@ class BasicReporting(Displayable, models.Model):
     @models.permalink # or: get_absolute_url = models.permalink(get_absolute_url) below
     def get_absolute_url(self): # "view on site" link will be visible in admin interface
         """Construct the absolute URL for a Pest Report."""
-        return ('basic-reporting-detail', (), {
+        return ('reporting-obligation-detail', (), {
                             'country': self.country.name, # =todo: get self.country.name working
                             'year': self.publish_date.strftime("%Y"),
                             'month': self.publish_date.strftime("%m"),
@@ -441,20 +476,29 @@ class BasicReporting(Displayable, models.Model):
             # Newly created object, so set slug
             self.slug = slugify(self.title)
         self.modify_date = datetime.now()
-        super(BasicReporting, self).save(*args, **kwargs)
+        super(ReportingObligation, self).save(*args, **kwargs)
  
     def filelist(self):
         filesarray=[]
         for f in self.file.name.split(","):
-            print(f)
             if f!='' and f!='None':
                 f1 = Files.objects.get(id=int(f))
                 filesarray.append((f1.name(),f1.filename()))
         return filesarray
     def getFiles(self):
-        return self.file.name.split(",")
-    def basic_rep_type_verbose(self):
-        return dict(BASIC_REP_TYPE_CHOICES)[self.basic_rep_type]
+        filesarray=[]
+        for f in self.file.name.split(","):
+            if f!='' and f!='None':
+                f1 = Files.objects.get(id=int(f))
+                filesarray.append(f1)
+                #print(filesarray)
+        return filesarray
+        
+        
+        
+        return 
+    def reporting_obligation_type_verbose(self):
+        return dict(BASIC_REP_TYPE_CHOICES)[self.reporting_obligation_type]
 
 
 
@@ -462,7 +506,7 @@ class BasicReporting(Displayable, models.Model):
     # def get_absolute_url(self):
     #     return ('phytosanitary_resource_detail', None, {'object_id': self.id})
 
-# used by Basic Reporting type
+# used by  Reporting type
 EVT_REP_1 = 1
 EVT_REP_2 = 2
 EVT_REP_3 = 3
@@ -494,14 +538,14 @@ class EventReporting(Displayable, models.Model):
     contact_for_more_information = models.TextField(_("Contact for more information"), blank=True, null=True)    
     url_for_more_information = models.URLField(blank=True, null=True)
     modify_date = models.DateTimeField(_("Modified date"), blank=True, null=True, editable=False)
-   
-  
-
+    issue_keywords = models.ForeignKey(IssueKeywords, null=True, blank=True)
+    commodity_keywords = models.ForeignKey(CommodityKeywords, null=True, blank=True)
     # =todo:
     # commodity_groups = 
     # keywords / tags = 
     # objects = models.Manager()
     objects = SearchableManager()
+    
     search_fields = ("title", "short_description")
 
     class Meta:
@@ -568,6 +612,8 @@ class PestFreeArea(Displayable, models.Model):
     contact_for_more_information = models.TextField(_("Contact for more information"), blank=True, null=True)    
     url_for_more_information = models.URLField(blank=True, null=True)
     modify_date = models.DateTimeField(_("Modified date"), blank=True, null=True, editable=False)
+    issue_keywords = models.ForeignKey(IssueKeywords, null=True, blank=True)
+    commodity_keywords = models.ForeignKey(CommodityKeywords, null=True, blank=True)
     # =todo:
     # commodity_groups = 
     # keywords / tags = 
@@ -666,6 +712,8 @@ class ImplementationISPM(Displayable, models.Model):
     contact_for_more_information = models.TextField(_("Contact for more information"), blank=True, null=True)    
     url_for_more_information = models.URLField(blank=True, null=True)
     modify_date = models.DateTimeField(_("Modified date"), blank=True, null=True, editable=False)
+    issue_keywords = models.ForeignKey(IssueKeywords, null=True, blank=True)
+    commodity_keywords = models.ForeignKey(CommodityKeywords, null=True, blank=True)
     # =todo:
     # commodity_groups = 
     # keywords / tags = 

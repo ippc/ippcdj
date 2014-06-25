@@ -1,7 +1,7 @@
 {% extends "base.html" %}
 {% load pages_tags translate_tags mezzanine_tags i18n future staticfiles accounts_tags %}
 
-{% block meta_title %}{% trans "New Basic Reporting" %} - {{ user.get_profile.country.name}} {% endblock %}
+{% block meta_title %}{% trans "New Reporting Obligations" %} - {{ user.get_profile.country.name}} {% endblock %}
 
 {% block body_class %}wide{% endblock %}
 
@@ -17,7 +17,7 @@
   <span class="divider">/</span>
 </li>
 <li>
-  <a href="/countries/{{ user.get_profile.country.name|slugify }}/basicreportings/">{% trans "Basic Reporting" %}</a>
+  <a href="/countries/{{ user.get_profile.country.name|slugify }}/reportingobligation/">{% trans "Reporting Obligations" %}</a>
   <span class="divider">/</span>
 </li>
 <li class="active">{% trans "Create New" %}</li>
@@ -32,15 +32,15 @@
 {% block main %}
 
 <p class="pull-right">
-  <a href="javascript:history.go(-1)">{% trans "Â« Cancel and go back" %}</a>
+  <a href="javascript:history.go(-1)">{% trans "« Cancel and go back" %}</a>
 </p>
 
-<h1><span class="normal">{% trans "Create New Basic Reporting for" %}</span> {{ user.get_profile.country.name }}</h1>
+<h1><span class="normal">{% trans "Create New Reporting Obligations for" %}</span> {{ user.get_profile.country.name }}</h1>
 
 <form class="customform" method="POST" action="" enctype="multipart/form-data">
     {% csrf_token %}
     <fieldset>
-        {% include "countries/basic_reporting_form.html" %}
+        {% include "countries/reporting_obligation_form.html" %}
         <div class="form-actions">
             <button type="submit" class="btn btn-info btn-large" tabindex="7">{% trans "Submit" %}</button> or <a href="javascript:history.go(-1)">{% trans "Cancel" %}</a>
         </div>

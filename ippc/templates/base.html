@@ -39,6 +39,8 @@
 <script src="{% static "js/bootstrap.js" %}"></script>
 <script src="{% static "js/bootstrap-extras.js" %}"></script>
 <script src="{% static "js/chosen.jquery.min.js" %}"></script>
+
+{% include 'autocomplete_light/static.html' %}
 {# {% block extra_js %}{% endblock %} #} {# MOVED TO BOTTOM #}
 {% endcompress %}
 <!--[if lt IE 9]>
@@ -201,7 +203,7 @@
     {# {% endifinstalled %} #}
 </footer>
 
-{% include "includes/footer_scripts.html" %}
+{# include "includes/footer_scripts.html" #}
 {% compress js %}
 
 {# better country selector using chosen - http://harvesthq.github.io/chosen/ #}

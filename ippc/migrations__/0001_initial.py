@@ -108,27 +108,6 @@ class Migration(SchemaMigration):
         ))
         db.send_create_signal(u'ippc', ['PestStatus'])
 
-        # Adding model 'EppoCodes'
-        db.create_table(u'ippc_eppocodes', (
-            (u'id', self.gf('django.db.models.fields.AutoField')(primary_key=True)),
-            ('codename', self.gf('django.db.models.fields.CharField')(max_length=250)),
-            ('codedescr', self.gf('django.db.models.fields.CharField')(max_length=250)),
-            ('code', self.gf('django.db.models.fields.CharField')(max_length=100)),
-            ('codeparent', self.gf('django.db.models.fields.CharField')(max_length=100)),
-            ('lang', self.gf('django.db.models.fields.CharField')(max_length=100)),
-            ('preferred', self.gf('django.db.models.fields.CharField')(max_length=100)),
-            ('authority', self.gf('django.db.models.fields.CharField')(max_length=250)),
-            ('creationdate', self.gf('django.db.models.fields.DateTimeField')(default=datetime.datetime.now)),
-        ))
-        db.send_create_signal(u'ippc', ['EppoCodes'])
-
-        # Adding model 'AAACodes'
-        db.create_table(u'ippc_aaacodes', (
-            (u'id', self.gf('django.db.models.fields.AutoField')(primary_key=True)),
-            ('codename', self.gf('django.db.models.fields.CharField')(max_length=250)),
-        ))
-        db.send_create_signal(u'ippc', ['AAACodes'])
-
         # Adding model 'IppcUserProfile'
         db.create_table(u'ippc_ippcuserprofile', (
             (u'id', self.gf('django.db.models.fields.AutoField')(primary_key=True)),
@@ -253,7 +232,6 @@ class Migration(SchemaMigration):
             ('contact_for_more_information', self.gf('django.db.models.fields.TextField')(null=True, blank=True)),
             ('url_for_more_information', self.gf('django.db.models.fields.URLField')(max_length=200, null=True, blank=True)),
             ('modify_date', self.gf('django.db.models.fields.DateTimeField')(null=True, blank=True)),
-            ('eppo', self.gf('django.db.models.fields.related.ForeignKey')(to=orm['ippc.AAACodes'], null=True, blank=True)),
             ('keywords', self.gf('mezzanine.generic.fields.KeywordsField')(object_id_field='object_pk', to=orm['generic.AssignedKeyword'], frozen_by_south=True)),
         ))
         db.send_create_signal(u'ippc', ['EventReporting'])
@@ -466,12 +444,6 @@ class Migration(SchemaMigration):
         # Deleting model 'PestStatus'
         db.delete_table(u'ippc_peststatus')
 
-        # Deleting model 'EppoCodes'
-        db.delete_table(u'ippc_eppocodes')
-
-        # Deleting model 'AAACodes'
-        db.delete_table(u'ippc_aaacodes')
-
         # Deleting model 'IppcUserProfile'
         db.delete_table(u'ippc_ippcuserprofile')
 
@@ -616,11 +588,6 @@ class Migration(SchemaMigration):
             'slug': ('django.db.models.fields.CharField', [], {'max_length': '2000', 'null': 'True', 'blank': 'True'}),
             'title': ('django.db.models.fields.CharField', [], {'max_length': '500'})
         },
-        u'ippc.aaacodes': {
-            'Meta': {'object_name': 'AAACodes'},
-            'codename': ('django.db.models.fields.CharField', [], {'max_length': '250'}),
-            u'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'})
-        },
         u'ippc.basicreporting': {
             'Meta': {'object_name': 'BasicReporting'},
             '_meta_title': ('django.db.models.fields.CharField', [], {'max_length': '500', 'null': 'True', 'blank': 'True'}),
@@ -660,18 +627,6 @@ class Migration(SchemaMigration):
             u'page_ptr': ('django.db.models.fields.related.OneToOneField', [], {'to': u"orm['pages.Page']", 'unique': 'True', 'primary_key': 'True'}),
             'region': ('django.db.models.fields.IntegerField', [], {'default': 'None'})
         },
-        u'ippc.eppocodes': {
-            'Meta': {'object_name': 'EppoCodes'},
-            'authority': ('django.db.models.fields.CharField', [], {'max_length': '250'}),
-            'code': ('django.db.models.fields.CharField', [], {'max_length': '100'}),
-            'codedescr': ('django.db.models.fields.CharField', [], {'max_length': '250'}),
-            'codename': ('django.db.models.fields.CharField', [], {'max_length': '250'}),
-            'codeparent': ('django.db.models.fields.CharField', [], {'max_length': '100'}),
-            'creationdate': ('django.db.models.fields.DateTimeField', [], {'default': 'datetime.datetime.now'}),
-            u'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
-            'lang': ('django.db.models.fields.CharField', [], {'max_length': '100'}),
-            'preferred': ('django.db.models.fields.CharField', [], {'max_length': '100'})
-        },
         u'ippc.eventreporting': {
             'Meta': {'object_name': 'EventReporting'},
             '_meta_title': ('django.db.models.fields.CharField', [], {'max_length': '500', 'null': 'True', 'blank': 'True'}),
@@ -679,7 +634,6 @@ class Migration(SchemaMigration):
             'contact_for_more_information': ('django.db.models.fields.TextField', [], {'null': 'True', 'blank': 'True'}),
             'country': ('django.db.models.fields.related.ForeignKey', [], {'related_name': "'event_reporting_country_page'", 'to': u"orm['ippc.CountryPage']"}),
             'description': ('django.db.models.fields.TextField', [], {'blank': 'True'}),
-            'eppo': ('django.db.models.fields.related.ForeignKey', [], {'to': u"orm['ippc.AAACodes']", 'null': 'True', 'blank': 'True'}),
             'event_rep_type': ('django.db.models.fields.IntegerField', [], {'default': '1'}),
             'expiry_date': ('django.db.models.fields.DateTimeField', [], {'null': 'True', 'blank': 'True'}),
             'file': ('django.db.models.fields.files.FileField', [], {'max_length': '100', 'blank': 'True'}),

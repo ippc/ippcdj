@@ -1,0 +1,41 @@
+
+{% load pages_tags translate_tags mezzanine_tags ippc_tags i18n future staticfiles accounts_tags %} {# accounts_tags #}
+
+{% if form.non_field_errors or form.errors %}
+<div class="alert alert-error">{% trans "Please correct the errors below." %}
+<ul>
+{% for error in form.non_field_errors %}
+<li>{{ error }}</li>
+{% endfor %}
+{% for error in form.errors %}
+<li>{{ error }}</li>
+{% endfor %}
+</ul>
+</div>
+{% endif %}
+
+{% fields_for form %}
+
+-------------------------------------
+
+<ul>{% for f in filesform %}
+<li>
+    {% for key, val in f %}
+    {% if key.value %}
+    
+    Currently: <a href="/static/media/{{key.value}}">{{key.value}}</a> 
+<input id="{{ key.name }}-clear_id" name="0-files-clear" type="checkbox" /> 
+<label for="{{ key.name }}-clear_id">Clear</label>
+
+Change: <input name="{{ key.name }}" type="file" value="{{key.value}}"/>
+
+    {% else %}
+    {{ key }}
+    {% endif %}
+    
+    
+<br/>{% endfor %}
+</li>
+{% endfor %}
+</ul>
+

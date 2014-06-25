@@ -1,0 +1,93 @@
+{% extends "base.html" %}
+{% load pages_tags mezzanine_tags i18n future staticfiles accounts_tags %}
+
+{% block meta_title %}{% trans "Latest Reporting Obligation" %}{% endblock %}
+
+{% block breadcrumb_menu %}
+<li><a href="/">{% trans "Home" %}</a><span class="divider">/</span></li>
+<li><a href="/countries/">Countries</a><span class="divider">/</span></li>
+<li><a href="/countries/{{reportingobligation.country.name|slugify}}">{{reportingobligation.country.name}}</a><span class="divider">/</span></li>
+<li><a href="/countries/{{reportingobligation.country.name|slugify}}/reportingobligation/">Reporting Obligation</a><span class="divider">/</span></li>
+<li class="active">{{ reportingobligation.title }}</li>
+{% endblock %}
+
+{% block local_nav %}
+<div class="well">
+  <p><a href="/countries/{{ reportingobligation.country.name|slugify }}/reportingobligation/">« {% trans "Back to" %} {% trans "Reporting Obligations" %}</a></p>
+    {% if user.is_superuser %} 
+        <a class="btn btn-small btn-info" href="/admin/ippc/reportingobligation/{{ reportingobligation.id }}">Edit as Admin</a><br>
+    {% endif %}
+        
+    {% if perms.ippc.change_reportingobligation and request.user.get_profile.country.name == page.title %}
+        <a class="btn btn-small btn-info" href="{% url 'reporting-obligation-edit' reportingobligation.country.name|slugify reportingobligation.id %}"><i class="icon-edit icon-white"></i> Edit</a>
+        {# <a class="btn" href="{% url 'reporting-obligation-edit' reportingobligation.id %}"><i class="icon-edit"></i> Edit</a> #}
+    {% else %}
+    {% endif %}
+    
+    
+    
+   
+</div>
+{% endblock local_nav %}
+
+{% block pageinfo %}
+
+{% endblock pageinfo %}
+
+{% block main %}
+<h1>{{ reportingobligation.title }}</h1> 
+
+<dl class="dl-horizontal">
+  {% if reportingobligation.report_obligation_type %}
+  <dt>{% trans "Reporting Obligation" %}</dt>
+  <dd>
+    <ul class="unstyled nomargin">
+      <li>{{ reportingobligation.report_obligation_type_verbose }}</li>
+    </ul>
+  </dd>
+  {% endif %}
+  
+ {% if reportingobligation.publication_date %}
+  <dt>{% trans "Publication date" %}</dt>
+  <dd>{% blocktrans with sometime=reportingobligation.publication_date|date:"d-m-Y" %}{{ sometime }}{% endblocktrans %}</dd>
+  {% endif %}
+ {% if reportingobligation.short_description %}
+  <dt>{% trans "short description" %}</dt>
+  <dd>{{ reportingobligation.short_description }}</dd>
+  {% endif %}
+  
+  {% if reportingobligation.contact_for_more_information %}
+  <dt>{% trans "Contact for more information" %}</dt>
+  <dd>{{ reportingobligation.contact_for_more_information }}</dd>
+  {% endif %}
+  
+  {% if reportingobligation.url_for_more_information %}
+  <dt>{% trans "Website" %}</dt>
+  <dd><a href="{{ reportingobligation.url_for_more_information }}">{{ reportingobligation.url_for_more_information }}</a></dd>
+  {% endif %}
+
+  {% if reportingobligation.author %}  
+  <dt>{% trans "Author" %}</dt>
+  <dd>{{ reportingobligation.author.get_profile.first_name }} {{ reportingobligation.author.get_profile.last_name }}</dd>
+  {% endif %}
+    
+  {% if reportingobligation.file %}
+  <dt>{% trans "Report file" %}</dt>
+  <dd><a href="{{MEDIA_URL}}{{ reportingobligation.files }}{{ reportingobligation.file }}">{{ reportingobligation.filename }}</a></dd>
+  {% endif %}
+
+
+  
+ 
+  
+  
+ 
+  
+ 
+  
+  
+ 
+  
+</dl>
+
+{% endblock %}

@@ -1,9 +1,9 @@
 from django.shortcuts import render
 from django.utils.translation import ugettext_lazy as _
 from django.contrib.messages import info, error
-from .models import IppcUserProfile, PestStatus,Files, PestReport, IS_PUBLIC, IS_HIDDEN, Publication, BasicReporting, BASIC_REP_TYPE_CHOICES, EventReporting, EVT_REP_TYPE_CHOICES,PestFreeArea,ImplementationISPM,CountryPage,REGIONS
+from .models import IppcUserProfile, PestStatus, PestReport, IS_PUBLIC, IS_HIDDEN, Publication, ReportingObligation, BASIC_REP_TYPE_CHOICES, EventReporting, EVT_REP_TYPE_CHOICES,PestFreeArea,ImplementationISPM,CountryPage,REGIONS
 from mezzanine.core.models import Displayable, CONTENT_STATUS_DRAFT, CONTENT_STATUS_PUBLISHED
-from .forms import PestReportForm, FilesForm, BasicReportingForm, EventReportingForm, PestFreeAreaForm,ImplementationISPMForm
+from .forms import PestReportForm, ReportingObligationForm, EventReportingForm, PestFreeAreaForm,ImplementationISPMForm
 
 from django.views.generic import ListView, MonthArchiveView, YearArchiveView, DetailView, TemplateView, CreateView
 from django.core.urlresolvers import reverse
@@ -209,13 +209,14 @@ def pest_report_edit(request, country, id=None, template_name='countries/pest_re
     }, context_instance=RequestContext(request))
 
 
-class BasicReportingListView(ListView):
-    """    Basic Reporting """
+************
+class ReportingObligationListView(ListView):
+    """    Reporting Obligation """
     context_object_name = 'latest'
-    model = BasicReporting
+    model = ReportingObligation
     date_field = 'publish_date'
-    template_name = 'countries/basic_reporting_list.html'
-    queryset = BasicReporting.objects.all().order_by('-publish_date', 'title')
+    template_name = 'countries/reporting_obligation_list.html'
+    queryset = ReportingObligation.objects.all().order_by('-publish_date', 'title')
     
     allow_future = False
     allow_empty = True
@@ -226,114 +227,159 @@ class BasicReportingListView(ListView):
         # self.country = get_object_or_404(CountryPage, country=self.kwargs['country'])
         self.country = self.kwargs['country']
         # CountryPage country_slug == country URL parameter keyword argument
-        return BasicReporting.objects.filter(country__country_slug=self.country)
+        return ReportingObligation.objects.filter(country__country_slug=self.country)
     
     def get_context_data(self, **kwargs): # http://stackoverflow.com/a/15515220
-        context = super(BasicReportingListView, self).get_context_data(**kwargs)
+        context = super(ReportingObligationListView, self).get_context_data(**kwargs)
         context['country'] = self.kwargs['country']
         context['basic_types'] =BASIC_REP_TYPE_CHOICES
         return context
    
        
    
-class BasicReportingDetailView(DetailView):
-    """  Basic Reporting detail page """
-    model = BasicReporting
-    context_object_name = 'basicreporting'
-    template_name = 'countries/basic_reporting_detail.html'
-    queryset = BasicReporting.objects.filter()
-    #f3 = Files.objects.filter() 
-   
-    def get_context_data(self, **kwargs): # http://stackoverflow.com/a/15515220
-        context = super(BasicReportingDetailView, self).get_context_data(**kwargs)
-        return context
+class ReportingObligationDetailView(DetailView):
+    """  Reporting Obligation detail page """
+    model = ReportingObligation
+    context_object_name = 'reportingobligation'
+    template_name = 'countries/reporting_obligation_detail.html'
+    queryset = ReportingObligation.objects.filter()
+    # print('>>>>>>>>>>>>>>>')
+    # print(user.get_profile().country)
+
 
 
 @login_required
-@permission_required('ippc.add_basicreporting', login_url="/accounts/login/")
-def basic_reporting_create(request, country,type):
-    """ Create Basic Reporting """
+@permission_required('ippc.add_reportingobligation', login_url="/accounts/login/")
+def reporting_obligation_create(request, country,type):
+    """ Create Reporting Obligation """
     user = request.user
     author = user
     country=user.get_profile().country
     user_country_slug = lower(slugify(country))
 
-    form = BasicReportingForm()
+    form = ReportingObligationForm(request.POST, request.FILES)
   
     if request.method == "POST":
         if form.is_valid():
-            new_basic_reporting = form.save(commit=False)
-            new_basic_reporting.author = request.user
-            new_basic_reporting.author_id = author.id
-            new_basic_reporting.basic_rep_type = type
+            new_reporting_obligation = form.save(commit=False)
+            new_reporting_obligation.author = request.user
+            new_reporting_obligation.author_id = author.id
+            new_reporting_obligation.report_obligation_type = type
             form.save()
-            info(request, _("Successfully created basic_reporting."))
+            info(request, _("Successfully created reporting_obligation."))
             
-            return redirect("basic-reporting-detail", country=user_country_slug, year=new_basic_reporting.publish_date.strftime("%Y"), month=new_basic_reporting.publish_date.strftime("%m"), slug=new_basic_reporting.slug)
+            return redirect("reporting-obligation-detail", country=user_country_slug, year=new_reporting_obligation.publish_date.strftime("%Y"), month=new_reporting_obligation.publish_date.strftime("%m"), slug=new_reporting_obligation.slug)
     else:
-        form = BasicReportingForm(initial={'country': country,'basic_rep_type': type}, instance=BasicReporting())
+        form = ReportingObligationForm(initial={'country': country,'report_obligation_type': type}, instance=ReportingObligation())
     
-    return render_to_response('countries/basic_reporting_create.html', {'form': form},
+    return render_to_response('countries/reporting_obligation_create.html', {'form': form},
         context_instance=RequestContext(request))
 
         
 # http://stackoverflow.com/a/1854453/412329
 @login_required
-@permission_required('ippc.change_basicreporting', login_url="/accounts/login/")
-def basic_reporting_edit(request, country, id=None, template_name='countries/basic_reporting_edit.html'):
-    """ Edit Basic Reporting """
+@permission_required('ippc.change_reportingobligation', login_url="/accounts/login/")
+def reporting_obligation_edit(request, country, id=None, template_name='countries/reporting_obligation_edit.html'):
+    """ Edit Reporting Obligation """
     user = request.user
     author = user
     country = user.get_profile().country
     # country_id = PestReport.objects.filter(country__country_id=country.id)
     user_country_slug = lower(slugify(country))
     if id:
-        basic_reporting = get_object_or_404(BasicReporting, country=country, pk=id)
-        files=basic_reporting.getFiles()
-        f=  get_object_or_404(Files,pk=files[0])
-        f1=  get_object_or_404(Files,pk=files[1])
-        aa=[]
-        aa.append(f)
-        aa.append(f1)
-        
+        reporting_obligation = get_object_or_404(ReportingObligation, country=country, pk=id)
         # if pest_report.author != request.user:
         #     return HttpResponseForbidden()
     else:
-        basic_reporting = BasicReporting(author=request.user)
+        reporting_obligation = ReportingObligation(author=request.user)
       
     if request.POST:
-        form = BasicReportingForm(request.POST,  request.FILES, instance=basic_reporting)
-        filesform = [FilesForm(request.POST, request.FILES, prefix=str(x), instance=Files()) for x in range(0,2)]
-        name='' 
-        if form.is_valid() and all([ff.is_valid() for ff in filesform]):
-            new_br = form.save(commit=False)
-            #form.save()
-            for ff in filesform:
-                new_file = ff.save()
-                if new_file.id!='' and new_file.id!='None':
-                    name+=str(new_file.id)+','
-                    new_br.file=name
-                    form.save()
+        form = ReportingObligationForm(request.POST, request.FILES, instance=reporting_obligation)
+        if form.is_valid():
             form.save()
-                        
+
             # If the save was successful, success message and redirect to another page
             # info(request, _("Successfully updated pest report."))
-            return redirect("basic-reporting-detail", country=user_country_slug, year=basic_reporting.publish_date.strftime("%Y"), month=basic_reporting.publish_date.strftime("%m"), slug=basic_reporting.slug)
+            return redirect("reporting-obligation-detail", country=user_country_slug, year=reporting_obligation.publish_date.strftime("%Y"), month=reporting_obligation.publish_date.strftime("%m"), slug=reporting_obligation.slug)
 
     else:
-        form = BasicReportingForm(instance=basic_reporting)
-       # all_forms = [MyModelForm(request.POST, prefix=str(id), instance=model.objects.get(pk=id)) for id in ids]
-     
-        filesform = [FilesForm(prefix=str(x), instance=aa[x]) for x in range(0,2)]
+        form = ReportingObligationForm(instance=reporting_obligation)
+
     return render_to_response(template_name, {
-        'form': form, 'filesform': filesform, "basic_reporting": basic_reporting
+        'form': form, "reporting_obligation": reporting_obligation
     }, context_instance=RequestContext(request))
+
+
+        
+# http://stackoverflow.com/a/1854453/412329
+#@login_required
+#@permission_required('ippc.change_basicreporting', login_url="/accounts/login/")
+#def basic_reporting_edit(request, country, id=None, template_name='countries/basic_reporting_edit.html'):
+#    """ Edit Basic Reporting """
+#    user = request.user
+#    author = user
+#    country = user.get_profile().country
+#    # country_id = PestReport.objects.filter(country__country_id=country.id)
+#    user_country_slug = lower(slugify(country))
+#    if id:
+#        basic_reporting = get_object_or_404(BasicReporting, country=country, pk=id)
+#        files=basic_reporting.getFiles()
+#        numberfiles=len(files)
+#        if numberfiles < 3 :
+#            i= 3 - numberfiles
+#            for count in range(1,i+1):
+#                files.append(Files())
+#        print(files[1])
+#        # if pest_report.author != request.user:
+#        #     return HttpResponseForbidden()
+#    else:
+#        basic_reporting = BasicReporting(author=request.user)
+#    """ file old to be kepts """  
+#    
+#    if request.POST:
+#        form = BasicReportingForm(request.POST,  request.FILES, instance=basic_reporting)
+#        filesform = [FilesForm(request.POST, request.FILES, prefix=str(x), instance=Files()) for x in range(0,2)]
+#        name='' 
+#        if form.is_valid() and all([ff.is_valid() for ff in filesform]):
+#            new_br = form.save(commit=False)
+#                #
+#            #form.save()
+#            for ff in filesform:
+#                print('             ')
+#                print('>>>>>>>')
+#                #
+#                new_file = ff.save()
+#                
+#                print(new_file.id)
+#                print('<<<<<<-----')
+#                if new_file.id!='' and new_file.id!='None':
+#                    name+=str(new_file.id)+','
+#                  
+#                    new_br.file=name
+#                    form.save()
+#            form.save()
+#                        
+#            # If the save was successful, success message and redirect to another page
+#            # info(request, _("Successfully updated pest report."))
+#            return redirect("basic-reporting-detail", country=user_country_slug, year=basic_reporting.publish_date.strftime("%Y"), month=basic_reporting.publish_date.strftime("%m"), slug=basic_reporting.slug)
+#
+#    else:
+#        form = BasicReportingForm(instance=basic_reporting)
+#       # all_forms = [MyModelForm(request.POST, prefix=str(id), instance=model.objects.get(pk=id)) for id in ids]
+#     
+#        filesform = [FilesForm(prefix=str(x), instance=files[x]) for x in range(0,3)]
+#    return render_to_response(template_name, {
+#        'form': form, 'filesform': filesform, "basic_reporting": basic_reporting
+#    }, context_instance=RequestContext(request))
     
+
+
+
 
 class EventReportingListView(ListView):
     """    Event Reporting """
     context_object_name = 'latest'
-    model = BasicReporting
+    model = EventReporting
     date_field = 'publish_date'
     template_name = 'countries/event_reporting_list.html'
     queryset = EventReporting.objects.all().order_by('-publish_date', 'title')
@@ -400,7 +446,7 @@ def event_reporting_create(request, country,type):
 @login_required
 @permission_required('ippc.change_eventreporting', login_url="/accounts/login/")
 def event_reporting_edit(request, country, id=None, template_name='countries/event_reporting_edit.html'):
-    """ Edit Basic Reporting """
+    """ Edit  Reporting """
     user = request.user
     author = user
     country = user.get_profile().country
@@ -663,23 +709,23 @@ class AdvancesSearchCNListView(ListView):
             context['counttotal'] =context['items'].count() 
         elif self.kwargs['type'] == 'nppo':
             context['type_label'] = dict(BASIC_REP_TYPE_CHOICES)[1]
-            context['link_to_item'] = 'basic-reporting-detail'
-            context['items']= BasicReporting.objects.filter(basic_rep_type=1)
+            context['link_to_item'] = 'reporting-obligation-detail'
+            context['items']= ReportingObligation.objects.filter(basic_rep_type=1)
             context['counttotal'] =context['items'].count() 
         elif self.kwargs['type'] == 'entrypoints':
             context['type_label'] = dict(BASIC_REP_TYPE_CHOICES)[2]
-            context['link_to_item'] = 'basic-reporting-detail'
-            context['items']= BasicReporting.objects.filter(basic_rep_type=2)
+            context['link_to_item'] = 'reporting-obligation-detail'
+            context['items']= ReportingObligation.objects.filter(basic_rep_type=2)
             context['counttotal'] =context['items'].count() 
         elif self.kwargs['type'] == 'regulatedpests':
             context['type_label'] = dict(BASIC_REP_TYPE_CHOICES)[3]
-            context['link_to_item'] = 'basic-reporting-detail'
-            context['items']= BasicReporting.objects.filter(basic_rep_type=3)
+            context['link_to_item'] = 'reporting-obligation-detail'
+            context['items']= ReportingObligation.objects.filter(basic_rep_type=3)
             context['counttotal'] =context['items'].count() 
         elif self.kwargs['type'] == 'legislation':
             context['type_label'] = dict(BASIC_REP_TYPE_CHOICES)[4]
-            context['link_to_item'] = 'basic-reporting-detail'
-            context['items']= BasicReporting.objects.filter(basic_rep_type=4)
+            context['link_to_item'] = 'reporting-obligation-detail'
+            context['items']= ReportingObligation.objects.filter(basic_rep_type=4)
             context['counttotal'] =context['items'].count() 
         elif self.kwargs['type'] == 'emergencyactions':
             context['type_label'] = dict(EVT_REP_TYPE_CHOICES)[1]

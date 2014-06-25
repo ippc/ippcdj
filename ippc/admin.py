@@ -6,8 +6,16 @@ from mezzanine.pages.admin import PageAdmin
 from mezzanine.conf import settings
 from mezzanine.core.admin import TabularDynamicInlineAdmin, StackedDynamicInlineAdmin
 
-from .models import PestStatus, PestReport, CountryPage, WorkAreaPage, PublicationLibrary, Publication, BasicReporting,EventReporting,PestFreeArea,ImplementationISPM,ImplementationISPMVersion#, File
+from .models import PestStatus, PestReport, CountryPage, WorkAreaPage, PublicationLibrary, Publication,\
+ReportingObligation, EventReporting, PestFreeArea, ImplementationISPM, ImplementationISPMVersion, EppoCodes,\
+IssueKeywords, CommodityKeywords    
 from django.contrib.auth.models import User
+from django import forms
+
+
+
+import autocomplete_light
+import autocomplete_light_registry
 
 # Publications -----------------
 
@@ -86,7 +94,17 @@ class PestStatusAdmin(admin.ModelAdmin):
     """Options for the pest status field of Pest Reports"""
     save_on_top = True
         
+class MyPestReportAdminForm(forms.ModelForm):
+    class Meta:
+        model = PestReport
+        widgets = {
+          'pest_identity': autocomplete_light.ChoiceWidget ('EppoCodesAutocomplete'),
+          'issue_keywords': autocomplete_light.ChoiceWidget ('IssueKeywordsAutocomplete'),
+          'commodity_keywords': autocomplete_light.ChoiceWidget ('CommodityKeywordsAutocomplete'),
+            }
+
 class PestReportAdmin(admin.ModelAdmin):
+    form = MyPestReportAdminForm
     # http://stackoverflow.com/a/8393130
     # def has_add_permission(self, request):
     #     return request.user.groups.filter(name='Developers').exists()
@@ -105,8 +123,7 @@ class PestReportAdmin(admin.ModelAdmin):
 admin.site.register(PestStatus, PestStatusAdmin)
 admin.site.register(PestReport, PestReportAdmin)
 
-
-class BasicReportingAdmin(admin.ModelAdmin):
+class EppoCodesAdmin(admin.ModelAdmin):
     # http://stackoverflow.com/a/8393130
     # def has_add_permission(self, request):
     #     return request.user.groups.filter(name='Developers').exists()
@@ -117,22 +134,46 @@ class BasicReportingAdmin(admin.ModelAdmin):
     # def has_delete_permission(self, request, obj=None):
     #     return request.user.groups.filter(name='Developers').exists()
     save_on_top = True
+    list_display = ('codename', 'code', 'codeparent')
+    list_filter = ('codename','code')
+    search_fields = ('codename', 'code')
+admin.site.register(EppoCodes, EppoCodesAdmin)
+
+class IssueKeywordsAdmin(admin.ModelAdmin):
+    save_on_top = True
+admin.site.register(IssueKeywords, IssueKeywordsAdmin)
+
+class CommodityKeywordsAdmin(admin.ModelAdmin):
+    save_on_top = True
+admin.site.register(CommodityKeywords, CommodityKeywordsAdmin)
+
+class MyReportingObligationAdmin(forms.ModelForm):
+    class Meta:
+        model = ReportingObligation
+        widgets = {
+          'issue_keywords': autocomplete_light.ChoiceWidget ('IssueKeywordsAutocomplete'),
+          'commodity_keywords': autocomplete_light.ChoiceWidget ('CommodityKeywordsAutocomplete'),
+            }
+class ReportingObligationAdmin(admin.ModelAdmin):
+    form = MyReportingObligationAdmin
+   
+    save_on_top = True
     list_display = ('title', 'publication_date', 'modify_date',   'country')
     list_filter = ('title', 'publication_date', 'modify_date',  'country')
     search_fields = ('title', 'short_description')
     prepopulated_fields = { 'slug': ['title'] }
-admin.site.register(BasicReporting, BasicReportingAdmin)
+admin.site.register(ReportingObligation, ReportingObligationAdmin)
 
+
+class MyEventReportingAdmin(forms.ModelForm):
+    class Meta:
+        model = EventReporting
+        widgets = {
+          'issue_keywords': autocomplete_light.ChoiceWidget ('IssueKeywordsAutocomplete'),
+          'commodity_keywords': autocomplete_light.ChoiceWidget ('CommodityKeywordsAutocomplete'),
+            }
 class EventReportingAdmin(admin.ModelAdmin):
-    # http://stackoverflow.com/a/8393130
-    # def has_add_permission(self, request):
-    #     return request.user.groups.filter(name='Developers').exists()
-    # 
-    # def has_change_permission(self, request, obj=None):
-    #     return request.user.groups.filter(name='Developers').exists()
-    # 
-    # def has_delete_permission(self, request, obj=None):
-    #     return request.user.groups.filter(name='Developers').exists()
+    form = MyEventReportingAdmin
     save_on_top = True
     list_display = ('title', 'publication_date', 'modify_date',   'country')
     list_filter = ('title', 'publication_date', 'modify_date',  'country')
@@ -140,16 +181,15 @@ class EventReportingAdmin(admin.ModelAdmin):
     prepopulated_fields = { 'slug': ['title'] }
 admin.site.register(EventReporting, EventReportingAdmin)
 
+class MyPestFreeAreaAdmin(forms.ModelForm):
+    class Meta:
+        model = PestFreeArea
+        widgets = {
+          'issue_keywords': autocomplete_light.ChoiceWidget ('IssueKeywordsAutocomplete'),
+          'commodity_keywords': autocomplete_light.ChoiceWidget ('CommodityKeywordsAutocomplete'),
+            }
 class PestFreeAreaAdmin(admin.ModelAdmin):
-    # http://stackoverflow.com/a/8393130
-    # def has_add_permission(self, request):
-    #     return request.user.groups.filter(name='Developers').exists()
-    # 
-    # def has_change_permission(self, request, obj=None):
-    #     return request.user.groups.filter(name='Developers').exists()
-    # 
-    # def has_delete_permission(self, request, obj=None):
-    #     return request.user.groups.filter(name='Developers').exists()
+    form = MyPestFreeAreaAdmin
     save_on_top = True
     list_display = ('title', 'publication_date', 'modify_date',   'country')
     list_filter = ('title', 'publication_date', 'modify_date',  'country')
@@ -157,16 +197,15 @@ class PestFreeAreaAdmin(admin.ModelAdmin):
     prepopulated_fields = { 'slug': ['title'] }
 admin.site.register(PestFreeArea, PestFreeAreaAdmin)
 
+class MyImplementationISPMAdmin(forms.ModelForm):
+    class Meta:
+        model = ImplementationISPM
+        widgets = {
+          'issue_keywords': autocomplete_light.ChoiceWidget ('IssueKeywordsAutocomplete'),
+          'commodity_keywords': autocomplete_light.ChoiceWidget ('CommodityKeywordsAutocomplete'),
+            }
 class ImplementationISPMAdmin(admin.ModelAdmin):
-    # http://stackoverflow.com/a/8393130
-    # def has_add_permission(self, request):
-    #     return request.user.groups.filter(name='Developers').exists()
-    # 
-    # def has_change_permission(self, request, obj=None):
-    #     return request.user.groups.filter(name='Developers').exists()
-    # 
-    # def has_delete_permission(self, request, obj=None):
-    #     return request.user.groups.filter(name='Developers').exists()
+    form = MyImplementationISPMAdmin
     save_on_top = True
     list_display = ('title', 'publication_date', 'modify_date',   'country')
     list_filter = ('title', 'publication_date', 'modify_date',  'country')

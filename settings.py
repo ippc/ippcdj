@@ -274,7 +274,7 @@ INSTALLED_APPS = (
     # for email utility
     # http://stackoverflow.com/a/1823193/412329
     "mailer",
-    
+    "autocomplete_light",
     # debug toolbar
     # "debug_toolbar",
     
@@ -340,7 +340,7 @@ LANGUAGES = (
     ('en', ugettext('English')),
     ('fr', ugettext('Français')),
     ('es', ugettext('Español')),
-    ('ru', ugettext('Русский')),
+    ('ru', ugettext('Ру�?�?кий')),
     ('ar', ugettext('العربية')),
     ('zh', ugettext('简体中文')),
 )
