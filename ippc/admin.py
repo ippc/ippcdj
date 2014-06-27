@@ -8,7 +8,7 @@ from mezzanine.core.admin import TabularDynamicInlineAdmin, StackedDynamicInline
 
 from .models import PestStatus, PestReport, CountryPage, WorkAreaPage, PublicationLibrary, Publication,\
 ReportingObligation, EventReporting, PestFreeArea, ImplementationISPM, ImplementationISPMVersion,\
-EppoCode,IssueKeyword, CommodityKeyword
+EppoCode,IssueKeyword, CommodityKeyword,IssueKeywordsRelate,CommodityKeywordsRelate# ,Entry,TestAA
 from django.contrib.auth.models import User
 from django import forms
 
@@ -99,9 +99,7 @@ class MyPestReportAdminForm(forms.ModelForm):
         model = PestReport
         widgets = {
           'pest_identity': autocomplete_light.ChoiceWidget ('EppoCodeAutocomplete'),
-          'issue_keywords': autocomplete_light.ChoiceWidget ('IssueKeywordAutocomplete'),
-          'commodity_keywords': autocomplete_light.ChoiceWidget ('CommodityKeywordAutocomplete'),
-            }
+          }
 
 class PestReportAdmin(admin.ModelAdmin):
     form = MyPestReportAdminForm
@@ -123,16 +121,31 @@ class PestReportAdmin(admin.ModelAdmin):
 admin.site.register(PestStatus, PestStatusAdmin)
 admin.site.register(PestReport, PestReportAdmin)
 
+class MyIssueKeywordsRelateAdminForm(forms.ModelForm):
+    class Meta:
+        model = IssueKeywordsRelate
+        widgets = {
+          'issuename': autocomplete_light.MultipleChoiceWidget ('IssueKeywordAutocomplete'),
+          }
+
+class IssueKeywordsRelateAdmin(admin.ModelAdmin):
+    form = MyIssueKeywordsRelateAdminForm
+    save_on_top = True
+admin.site.register(IssueKeywordsRelate, IssueKeywordsRelateAdmin)
+
+class MyCommodityKeywordsRelateAdminForm(forms.ModelForm):
+    class Meta:
+        model = CommodityKeywordsRelate
+        widgets = {
+          'commname': autocomplete_light.MultipleChoiceWidget ('CommodityKeywordAutocomplete'),
+          }
+
+class CommodityKeywordsRelateAdmin(admin.ModelAdmin):
+    form = MyCommodityKeywordsRelateAdminForm
+    save_on_top = True
+admin.site.register(CommodityKeywordsRelate, CommodityKeywordsRelateAdmin)
+
 class EppoCodeAdmin(admin.ModelAdmin):
-    # http://stackoverflow.com/a/8393130
-    # def has_add_permission(self, request):
-    #     return request.user.groups.filter(name='Developers').exists()
-    # 
-    # def has_change_permission(self, request, obj=None):
-    #     return request.user.groups.filter(name='Developers').exists()
-    # 
-    # def has_delete_permission(self, request, obj=None):
-    #     return request.user.groups.filter(name='Developers').exists()
     save_on_top = True
     list_display = ('codename', 'code', 'codeparent')
     list_filter = ('codename','code')
@@ -146,22 +159,11 @@ admin.site.register(IssueKeyword, IssueKeywordAdmin)
 class CommodityKeywordAdmin(admin.ModelAdmin):
     save_on_top = True
 admin.site.register(CommodityKeyword, CommodityKeywordAdmin)
-#class EntryAdmin(admin.ModelAdmin):
-#    save_on_top = True
-#admin.site.register(Entry, EntryAdmin)
 
-        
-        
-class MyReportingObligationAdmin(forms.ModelForm):
-    class Meta:
-        model = ReportingObligation
-        widgets = {
-          'issue_keywords': autocomplete_light.ChoiceWidget ('IssueKeywordAutocomplete'),
-          'commodity_keywords': autocomplete_light.ChoiceWidget ('CommodityKeywordAutocomplete'),
-            }
-class ReportingObligationAdmin(admin.ModelAdmin):
-    form = MyReportingObligationAdmin
    
+       
+
+class ReportingObligationAdmin(admin.ModelAdmin):
     save_on_top = True
     list_display = ('title', 'publication_date', 'modify_date',   'country')
     list_filter = ('title', 'publication_date', 'modify_date',  'country')
@@ -170,15 +172,15 @@ class ReportingObligationAdmin(admin.ModelAdmin):
 admin.site.register(ReportingObligation, ReportingObligationAdmin)
 
 
-class MyEventReportingAdmin(forms.ModelForm):
-    class Meta:
-        model = EventReporting
-        widgets = {
-          'issue_keywords': autocomplete_light.ChoiceWidget ('IssueKeywordAutocomplete'),
-          'commodity_keywords': autocomplete_light.ChoiceWidget ('CommodityKeywordAutocomplete'),
-            }
+#class MyEventReportingAdmin(forms.ModelForm):
+#    class Meta:
+#        model = EventReporting
+#        widgets = {
+#          'issue_keywords': autocomplete_light.ChoiceWidget ('IssueKeywordAutocomplete'),
+#          'commodity_keywords': autocomplete_light.ChoiceWidget ('CommodityKeywordAutocomplete'),
+#            }
 class EventReportingAdmin(admin.ModelAdmin):
-    form = MyEventReportingAdmin
+#    form = MyEventReportingAdmin
     save_on_top = True
     list_display = ('title', 'publication_date', 'modify_date',   'country')
     list_filter = ('title', 'publication_date', 'modify_date',  'country')
@@ -186,15 +188,7 @@ class EventReportingAdmin(admin.ModelAdmin):
     prepopulated_fields = { 'slug': ['title'] }
 admin.site.register(EventReporting, EventReportingAdmin)
 
-class MyPestFreeAreaAdmin(forms.ModelForm):
-    class Meta:
-        model = PestFreeArea
-        widgets = {
-          'issue_keywords': autocomplete_light.ChoiceWidget ('IssueKeywordAutocomplete'),
-          'commodity_keywords': autocomplete_light.ChoiceWidget ('CommodityKeywordAutocomplete'),
-            }
 class PestFreeAreaAdmin(admin.ModelAdmin):
-    form = MyPestFreeAreaAdmin
     save_on_top = True
     list_display = ('title', 'publication_date', 'modify_date',   'country')
     list_filter = ('title', 'publication_date', 'modify_date',  'country')
@@ -202,15 +196,8 @@ class PestFreeAreaAdmin(admin.ModelAdmin):
     prepopulated_fields = { 'slug': ['title'] }
 admin.site.register(PestFreeArea, PestFreeAreaAdmin)
 
-class MyImplementationISPMAdmin(forms.ModelForm):
-    class Meta:
-        model = ImplementationISPM
-        widgets = {
-          'issue_keywords': autocomplete_light.ChoiceWidget ('IssueKeywordAutocomplete'),
-          'commodity_keywords': autocomplete_light.ChoiceWidget ('CommodityKeywordAutocomplete'),
-            }
+
 class ImplementationISPMAdmin(admin.ModelAdmin):
-    form = MyImplementationISPMAdmin
     save_on_top = True
     list_display = ('title', 'publication_date', 'modify_date',   'country')
     list_filter = ('title', 'publication_date', 'modify_date',  'country')

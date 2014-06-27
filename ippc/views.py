@@ -199,7 +199,10 @@ def pest_report_edit(request, country, id=None, template_name='countries/pest_re
     
     if id:
         pest_report = get_object_or_404(PestReport, country=country, pk=id)
-        # if pest_report.author != request.user:
+        issues = get_object_or_404(IssueKeywordsRelate, pk=event_reporting.issuename.all()[0].id)
+        commodities = get_object_or_404(CommodityKeywordsRelate, pk=event_reporting.commname.all()[0].id)
+       
+       # if pest_report.author != request.user:
         #     return HttpResponseForbidden()
     else:
         pest_report = PestReport(author=request.user)
@@ -209,7 +212,15 @@ def pest_report_edit(request, country, id=None, template_name='countries/pest_re
 
         if form.is_valid():
             form.save()
-
+            issue_instance = issueform.save(commit=False)
+            issue_instance.content_object = pest_report
+            issue_instance.save()
+            issueform.save_m2m()
+            
+            commodity_instance = commodityform.save(commit=False)
+            commodity_instance.content_object = pest_report
+            commodity_instance.save()
+            commodityform.save_m2m() 
             # If the save was successful, success message and redirect to another page
             # info(request, _("Successfully updated pest report."))
             if pest_report.status == CONTENT_STATUS_DRAFT:
@@ -219,9 +230,10 @@ def pest_report_edit(request, country, id=None, template_name='countries/pest_re
 
     else:
         form = PestReportForm(instance=pest_report)
-
+        issueform =IssueKeywordsRelateForm(instance=issues)
+        commodityform =CommodityKeywordsRelateForm(instance=commodities)
     return render_to_response(template_name, {
-        'form': form, "pest_report": pest_report
+        'form': form,'issueform': issueform,'commodityform': commodityform,  "pest_report": pest_report
     }, context_instance=RequestContext(request))
 
 
@@ -326,6 +338,9 @@ def reporting_obligation_edit(request, country, id=None, template_name='countrie
     user_country_slug = lower(slugify(country))
     if id:
         reporting_obligation = get_object_or_404(ReportingObligation, country=country, pk=id)
+        issues = get_object_or_404(IssueKeywordsRelate, pk=event_reporting.issuename.all()[0].id)
+        commodities = get_object_or_404(CommodityKeywordsRelate, pk=event_reporting.commname.all()[0].id)
+       
         # if pest_report.author != request.user:
         #     return HttpResponseForbidden()
     else:
@@ -335,16 +350,25 @@ def reporting_obligation_edit(request, country, id=None, template_name='countrie
         form = ReportingObligationForm(request.POST, request.FILES, instance=reporting_obligation)
         if form.is_valid():
             form.save()
-
+            issue_instance = issueform.save(commit=False)
+            issue_instance.content_object = reporting_obligation
+            issue_instance.save()
+            issueform.save_m2m()
+            
+            commodity_instance = commodityform.save(commit=False)
+            commodity_instance.content_object = reporting_obligation
+            commodity_instance.save()
+            commodityform.save_m2m() 
             # If the save was successful, success message and redirect to another page
             # info(request, _("Successfully updated pest report."))
             return redirect("reporting-obligation-detail", country=user_country_slug, year=reporting_obligation.publish_date.strftime("%Y"), month=reporting_obligation.publish_date.strftime("%m"), slug=reporting_obligation.slug)
 
     else:
         form = ReportingObligationForm(instance=reporting_obligation)
-
+        issueform =IssueKeywordsRelateForm(instance=issues)
+        commodityform =CommodityKeywordsRelateForm(instance=commodities)
     return render_to_response(template_name, {
-        'form': form, "reporting_obligation": reporting_obligation
+        'form': form,'issueform': issueform,'commodityform': commodityform,  "reporting_obligation": reporting_obligation
     }, context_instance=RequestContext(request))
 
      
@@ -483,20 +507,19 @@ def event_reporting_create(request, country,type):
             commodity_instance = commodityform.save(commit=False)
             commodity_instance.content_object = new_event_reporting
             commodity_instance.save()
-            #form.save_m2m()
             commodityform.save_m2m() 
+    
             return redirect("event-reporting-detail", country=user_country_slug, year=new_event_reporting.publish_date.strftime("%Y"), month=new_event_reporting.publish_date.strftime("%m"), slug=new_event_reporting.slug)
     else:
         form = EventReportingForm(initial={'country': country,'event_rep_type': type}, instance=EventReporting())
         issueform =IssueKeywordsRelateForm(request.POST)
         commodityform =CommodityKeywordsRelateForm(request.POST)
     
-  #entryform =EntryForm(instance=Entry()) 
     return render_to_response('countries/event_reporting_create.html', {'form': form,'issueform':issueform, 'commodityform':commodityform},#'entryform': entryform
         context_instance=RequestContext(request))
 
         
-# http://stackoverflow.com/a/1854453/412329
+
 @login_required
 @permission_required('ippc.change_eventreporting', login_url="/accounts/login/")
 def event_reporting_edit(request, country, id=None, template_name='countries/event_reporting_edit.html'):
@@ -508,6 +531,9 @@ def event_reporting_edit(request, country, id=None, template_name='countries/eve
     user_country_slug = lower(slugify(country))
     if id:
         event_reporting = get_object_or_404(EventReporting, country=country, pk=id)
+        issues = get_object_or_404(IssueKeywordsRelate, pk=event_reporting.issuename.all()[0].id)
+        commodities = get_object_or_404(CommodityKeywordsRelate, pk=event_reporting.commname.all()[0].id)
+       
         # if pest_report.author != request.user:
         #     return HttpResponseForbidden()
     else:
@@ -515,18 +541,33 @@ def event_reporting_edit(request, country, id=None, template_name='countries/eve
       
     if request.POST:
         form = EventReportingForm(request.POST,  request.FILES, instance=event_reporting)
+        issueform =IssueKeywordsRelateForm(request.POST,instance=issues)
+        commodityform =CommodityKeywordsRelateForm(request.POST,instance=commodities)
         if form.is_valid():
             form.save()
-
-            # If the save was successful, success message and redirect to another page
+            issue_instance = issueform.save(commit=False)
+            issue_instance.content_object = event_reporting
+            issue_instance.save()
+            issueform.save_m2m()
+            
+            commodity_instance = commodityform.save(commit=False)
+            commodity_instance.content_object = event_reporting
+            commodity_instance.save()
+            commodityform.save_m2m() 
+    
+            
+            
+            
             info(request, _("Successfully updated pest report."))
             return redirect("event-reporting-detail", country=user_country_slug, year=event_reporting.publish_date.strftime("%Y"), month=event_reporting.publish_date.strftime("%m"), slug=event_reporting.slug)
 
     else:
         form = EventReportingForm(instance=event_reporting)
-
+        issueform =IssueKeywordsRelateForm(instance=issues)
+        commodityform =CommodityKeywordsRelateForm(instance=commodities)
+   
     return render_to_response(template_name, {
-        'form': form, "event_reporting": event_reporting
+        'form': form,  'issueform': issueform,  'commodityform': commodityform, "event_reporting": event_reporting
     }, context_instance=RequestContext(request))
     
     
@@ -623,6 +664,9 @@ def pfa_edit(request, country, id=None, template_name='countries/pfa_edit.html')
     user_country_slug = lower(slugify(country))
     if id:
         pfa = get_object_or_404(PestFreeArea, country=country, pk=id)
+        issues = get_object_or_404(IssueKeywordsRelate, pk=event_reporting.issuename.all()[0].id)
+        commodities = get_object_or_404(CommodityKeywordsRelate, pk=event_reporting.commname.all()[0].id)
+       
         # if pest_report.author != request.user:
         #     return HttpResponseForbidden()
     else:
@@ -632,16 +676,25 @@ def pfa_edit(request, country, id=None, template_name='countries/pfa_edit.html')
         form = PestFreeAreaForm(request.POST,  request.FILES, instance=pfa)
         if form.is_valid():
             form.save()
-
+            issue_instance = issueform.save(commit=False)
+            issue_instance.content_object = pfa
+            issue_instance.save()
+            issueform.save_m2m()
+            
+            commodity_instance = commodityform.save(commit=False)
+            commodity_instance.content_object = pfa
+            commodity_instance.save()
+            commodityform.save_m2m() 
             # If the save was successful, success message and redirect to another page
             # info(request, _("Successfully updated pest report."))
             return redirect("pfa-detail", country=user_country_slug, year=pfa.publish_date.strftime("%Y"), month=pfa.publish_date.strftime("%m"), slug=pfa.slug)
 
     else:
         form = PestFreeAreaForm(instance=pfa)
-
+        issueform =IssueKeywordsRelateForm(instance=issues)
+        commodityform =CommodityKeywordsRelateForm(instance=commodities)
     return render_to_response(template_name, {
-        'form': form, "pfa": pfa
+        'form': form,'issueform': issueform,'commodityform': commodityform,  "pfa": pfa
     }, context_instance=RequestContext(request))
     
 
@@ -735,7 +788,10 @@ def implementationispm_edit(request, country, id=None, template_name='countries/
     user_country_slug = lower(slugify(country))
     if id:
         implementationispm = get_object_or_404(ImplementationISPM, country=country, pk=id)
-        # if pest_report.author != request.user:
+        issues = get_object_or_404(IssueKeywordsRelate, pk=event_reporting.issuename.all()[0].id)
+        commodities = get_object_or_404(CommodityKeywordsRelate, pk=event_reporting.commname.all()[0].id)
+       
+       # if pest_report.author != request.user:
         #     return HttpResponseForbidden()
     else:
         implementationispm = ImplementationISPM(author=request.user)
@@ -744,7 +800,15 @@ def implementationispm_edit(request, country, id=None, template_name='countries/
         form = ImplementationISPMForm(request.POST,  request.FILES, instance=implementationispm)
         if form.is_valid():
             form.save()
-
+            issue_instance = issueform.save(commit=False)
+            issue_instance.content_object = implementationispm
+            issue_instance.save()
+            issueform.save_m2m()
+            
+            commodity_instance = commodityform.save(commit=False)
+            commodity_instance.content_object = implementationispm
+            commodity_instance.save()
+            commodityform.save_m2m() 
             # If the save was successful, success message and redirect to another page
             # info(request, _("Successfully updated pest report."))
             return redirect("implementationispm-detail", country=user_country_slug, year=implementationispm.publish_date.strftime("%Y"), month=implementationispm.publish_date.strftime("%m"), slug=implementationispm.slug)
@@ -753,7 +817,7 @@ def implementationispm_edit(request, country, id=None, template_name='countries/
         form = ImplementationISPMForm(instance=implementationispm)
 
     return render_to_response(template_name, {
-        'form': form, "implementationispm": implementationispm
+        'form': form,'issueform': issueform,'commodityform': commodityform,  "implementationispm": implementationispm
     }, context_instance=RequestContext(request))
     
 class CountryListView(ListView):
