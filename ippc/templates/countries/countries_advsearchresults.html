@@ -23,7 +23,6 @@
 
 {% block pageinfo %}
 {% endblock pageinfo %}
-
 {% block main %}
 
 <p class="pull-right">
@@ -34,10 +33,58 @@
   <small class="normal">{% trans "Results for: " %} {{type_label}} (1-{{counttotal}} of {{counttotal}})</small>
   
 </h1> 
+
+  
 {% if items %}
 
 {% ifequal link_to_item 'pest-report-detail' %}
+{% load leaflet_tags %}
+{% leaflet_js %}
+        {% leaflet_css %}
+ 
 
+
+
+   <div id="map" style="width: 600px; height: 500px"></div>
+
+    <script src="http://cdn.leafletjs.com/leaflet-0.7/leaflet.js">
+    </script>
+
+    <script>
+var greenIcon = L.icon({
+    iconUrl: '/static/leaflet/images/leaf-red.png',
+    shadowUrl: '/static/leaflet/images/leaf-shadow.png',
+
+    iconSize:     [38, 95], // size of the icon
+    shadowSize:   [50, 64], // size of the shadow
+    iconAnchor:   [22, 94], // point of the icon which will correspond to marker's location
+    shadowAnchor: [4, 62],  // the same for the shadow
+    popupAnchor:  [-3, -76] // point from which the popup should open relative to the iconAnchor
+});
+	 var planes = [
+               {% for a in map %}
+                   {% autoescape off %}
+                        {{a}},
+                   {% endautoescape %}  
+                {% endfor %}
+            ];
+        var map = L.map('map', { center: [3, 28],   zoom: 1});
+        mapLink = '<a href="http://openstreetmap.org">OpenStreetMap</a>';
+        L.tileLayer(
+            'http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+            attribution: '&copy; ' + mapLink + ' Contributors',
+            maxZoom: 18,
+            }).addTo(map);
+
+		for (var i = 0; i < planes.length; i++) {
+			marker = new L.marker([planes[i][1],planes[i][2]], {icon: greenIcon})
+				.bindPopup(planes[i][0])
+				.addTo(map);
+                        
+                 
+		}
+               
+    </script>
 <table class="table table-condensed table-striped" id="publications">
   <thead>
     <tr>

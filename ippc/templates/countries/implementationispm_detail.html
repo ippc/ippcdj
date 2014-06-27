@@ -124,6 +124,35 @@
   
  
 
+  
+ {% if implementationispm.issuename %}
+  <dt>{% trans "Issue keywords" %}</dt>
+  <dd>
+  {% for entry in implementationispm.issuename.all %}
+  <br/>
+  {% for e in entry.issuename.all %}
+   <br/>
+  {{e.name}}<br/>
+ {% endfor %} 
+{% endfor %}
+  </dd>
+  {% endif %}
+ 
+  
+  
+  {% if implementationispm.commname %}
+  <dt>{% trans "Commodity keywords" %}</dt>
+  <dd>
+  {% for entry in implementationispm.commname.all %}
+ 
+  {% for e in entry.commname.all %}
+  
+  {{e.name}}<br/>
+ {% endfor %} 
+{% endfor %}
+  </dd>
+  {% endif %}
+  
  
   
 </dl>

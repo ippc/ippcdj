@@ -8,7 +8,7 @@ from mezzanine.core.admin import TabularDynamicInlineAdmin, StackedDynamicInline
 
 from .models import PestStatus, PestReport, CountryPage, WorkAreaPage, PublicationLibrary, Publication,\
 ReportingObligation, EventReporting, PestFreeArea, ImplementationISPM, ImplementationISPMVersion,\
-EppoCode,IssueKeyword, CommodityKeyword    
+EppoCode,IssueKeyword, CommodityKeyword
 from django.contrib.auth.models import User
 from django import forms
 
@@ -146,7 +146,12 @@ admin.site.register(IssueKeyword, IssueKeywordAdmin)
 class CommodityKeywordAdmin(admin.ModelAdmin):
     save_on_top = True
 admin.site.register(CommodityKeyword, CommodityKeywordAdmin)
+#class EntryAdmin(admin.ModelAdmin):
+#    save_on_top = True
+#admin.site.register(Entry, EntryAdmin)
 
+        
+        
 class MyReportingObligationAdmin(forms.ModelForm):
     class Meta:
         model = ReportingObligation

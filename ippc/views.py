@@ -1,9 +1,12 @@
 from django.shortcuts import render
 from django.utils.translation import ugettext_lazy as _
 from django.contrib.messages import info, error
-from .models import IppcUserProfile, PestStatus, PestReport, IS_PUBLIC, IS_HIDDEN, Publication, ReportingObligation, BASIC_REP_TYPE_CHOICES, EventReporting, EVT_REP_TYPE_CHOICES,PestFreeArea,ImplementationISPM,CountryPage,REGIONS
+from .models import IppcUserProfile,CountryPage, PestStatus, PestReport, IS_PUBLIC, IS_HIDDEN, Publication,\
+ReportingObligation, BASIC_REP_TYPE_CHOICES, EventReporting, EVT_REP_TYPE_CHOICES,\
+PestFreeArea,ImplementationISPM,REGIONS, IssueKeywordsRelate,CommodityKeywordsRelate
 from mezzanine.core.models import Displayable, CONTENT_STATUS_DRAFT, CONTENT_STATUS_PUBLISHED
-from .forms import PestReportForm, ReportingObligationForm, EventReportingForm, PestFreeAreaForm,ImplementationISPMForm
+from .forms import PestReportForm, ReportingObligationForm, EventReportingForm, PestFreeAreaForm,\
+ImplementationISPMForm,IssueKeywordsRelateForm,CommodityKeywordsRelateForm
 
 from django.views.generic import ListView, MonthArchiveView, YearArchiveView, DetailView, TemplateView, CreateView
 from django.core.urlresolvers import reverse
@@ -149,13 +152,25 @@ def pest_report_create(request, country):
     user_country_slug = lower(slugify(country))
 
     form = PestReportForm(request.POST, request.FILES)
-    
+    issueform =IssueKeywordsRelateForm(request.POST)
+    commodityform =CommodityKeywordsRelateForm(request.POST)
     if request.method == "POST":
-        if form.is_valid():
+        if form.is_valid():  
             new_pest_report = form.save(commit=False)
             new_pest_report.author = request.user
             new_pest_report.author_id = author.id
             form.save()
+           
+            issue_instance = issueform.save(commit=False)
+            issue_instance.content_object = new_pest_report
+            issue_instance.save()
+            issueform.save_m2m()
+            
+            commodity_instance = commodityform.save(commit=False)
+            commodity_instance.content_object = new_pest_report
+            commodity_instance.save()
+            commodityform.save_m2m()
+            
             info(request, _("Successfully created pest report."))
             
             if new_pest_report.status == CONTENT_STATUS_DRAFT:
@@ -163,10 +178,11 @@ def pest_report_create(request, country):
             else:
                 return redirect("pest-report-detail", country=user_country_slug, year=new_pest_report.publish_date.strftime("%Y"), month=new_pest_report.publish_date.strftime("%m"), slug=new_pest_report.slug)
     else:
-
         form = PestReportForm(initial={'country': country}, instance=PestReport())
-    
-    return render_to_response('countries/pest_report_create.html', {'form': form},
+        issueform =IssueKeywordsRelateForm(request.POST)
+        commodityform =CommodityKeywordsRelateForm(request.POST)
+
+    return render_to_response('countries/pest_report_create.html', {'form': form,'issueform':issueform, 'commodityform':commodityform},
         context_instance=RequestContext(request))
 
 
@@ -256,25 +272,47 @@ def reporting_obligation_create(request, country,type):
     author = user
     country=user.get_profile().country
     user_country_slug = lower(slugify(country))
-
+    print('......')
     form = ReportingObligationForm(request.POST, request.FILES)
-  
+    issueform =IssueKeywordsRelateForm(request.POST)
+    commodityform =CommodityKeywordsRelateForm(request.POST)
+    
     if request.method == "POST":
         if form.is_valid():
+#            new_br = form.save(commit=False)
             new_reporting_obligation = form.save(commit=False)
             new_reporting_obligation.author = request.user
             new_reporting_obligation.author_id = author.id
             new_reporting_obligation.report_obligation_type = type
             form.save()
+            
+            issue_instance = issueform.save(commit=False)
+            issue_instance.content_object = new_reporting_obligation
+            issue_instance.save()
+            issueform.save_m2m()
+            
+            commodity_instance = commodityform.save(commit=False)
+            commodity_instance.content_object = new_reporting_obligation
+            commodity_instance.save()
+            commodityform.save_m2m()
+            
+            
             info(request, _("Successfully created reporting_obligation."))
             
             return redirect("reporting-obligation-detail", country=user_country_slug, year=new_reporting_obligation.publish_date.strftime("%Y"), month=new_reporting_obligation.publish_date.strftime("%m"), slug=new_reporting_obligation.slug)
     else:
         form = ReportingObligationForm(initial={'country': country,'reporting_obligation_type': type}, instance=ReportingObligation())
+        issueform =IssueKeywordsRelateForm(request.POST)
+        commodityform =CommodityKeywordsRelateForm(request.POST)
     
-    return render_to_response('countries/reporting_obligation_create.html', {'form': form},
+   #testform =TestEntryForm(instance=TestEntry())
+#    return render_to_response(template_name, {
+#        'form': form, 'filesform': filesform, "basic_reporting": basic_reporting
+#    }, context_instance=RequestContext(request))
+    return render_to_response('countries/reporting_obligation_create.html', {'form': form ,'issueform':issueform, 'commodityform':commodityform},
         context_instance=RequestContext(request))
-
+        
+        
         
 # http://stackoverflow.com/a/1854453/412329
 @login_required
@@ -309,8 +347,8 @@ def reporting_obligation_edit(request, country, id=None, template_name='countrie
         'form': form, "reporting_obligation": reporting_obligation
     }, context_instance=RequestContext(request))
 
-
-        
+     
+         
 # http://stackoverflow.com/a/1854453/412329
 #@login_required
 #@permission_required('ippc.change_basicreporting', login_url="/accounts/login/")
@@ -424,6 +462,10 @@ def event_reporting_create(request, country,type):
     user_country_slug = lower(slugify(country))
 
     form = EventReportingForm(request.POST or None, request.FILES)
+    issueform =IssueKeywordsRelateForm(request.POST)
+    commodityform =CommodityKeywordsRelateForm(request.POST)
+    
+ #entryform = EntryForm(request.POST, request.FILES)
   
     if request.method == "POST":
         if form.is_valid():
@@ -432,13 +474,25 @@ def event_reporting_create(request, country,type):
             new_event_reporting.author_id = author.id
             new_event_reporting.event_rep_type = type
             form.save()
-            info(request, _("Successfully created event reporting."))
             
+            issue_instance = issueform.save(commit=False)
+            issue_instance.content_object = new_event_reporting
+            issue_instance.save()
+            issueform.save_m2m()
+            
+            commodity_instance = commodityform.save(commit=False)
+            commodity_instance.content_object = new_event_reporting
+            commodity_instance.save()
+            #form.save_m2m()
+            commodityform.save_m2m() 
             return redirect("event-reporting-detail", country=user_country_slug, year=new_event_reporting.publish_date.strftime("%Y"), month=new_event_reporting.publish_date.strftime("%m"), slug=new_event_reporting.slug)
     else:
         form = EventReportingForm(initial={'country': country,'event_rep_type': type}, instance=EventReporting())
+        issueform =IssueKeywordsRelateForm(request.POST)
+        commodityform =CommodityKeywordsRelateForm(request.POST)
     
-    return render_to_response('countries/event_reporting_create.html', {'form': form},
+  #entryform =EntryForm(instance=Entry()) 
+    return render_to_response('countries/event_reporting_create.html', {'form': form,'issueform':issueform, 'commodityform':commodityform},#'entryform': entryform
         context_instance=RequestContext(request))
 
         
@@ -522,21 +576,38 @@ def pfa_create(request, country):
     country=user.get_profile().country
     user_country_slug = lower(slugify(country))
 
-    form = PestFreeAreaForm()
-  
+    form = PestFreeAreaForm(request.POST)
+    issueform =IssueKeywordsRelateForm(request.POST)
+    commodityform =CommodityKeywordsRelateForm(request.POST)
+    
+
     if request.method == "POST":
         if form.is_valid():
             new_pfa = form.save(commit=False)
             new_pfa.author = request.user
             new_pfa.author_id = author.id
             form.save()
+            
+            issue_instance = issueform.save(commit=False)
+            issue_instance.content_object = new_pfa
+            issue_instance.save()
+            issueform.save_m2m()
+            
+            commodity_instance = commodityform.save(commit=False)
+            commodity_instance.content_object = new_pfa
+            commodity_instance.save()
+            commodityform.save_m2m() 
+            
             info(request, _("Successfully created PestFreeArea."))
             
             return redirect("pfa-detail", country=user_country_slug, year=new_pfa.publish_date.strftime("%Y"), month=new_pfa.publish_date.strftime("%m"), slug=new_pfa.slug)
     else:
         form = PestFreeAreaForm(initial={'country': country}, instance=PestFreeArea())
+        issueform =IssueKeywordsRelateForm(request.POST)
+        commodityform =CommodityKeywordsRelateForm(request.POST)
     
-    return render_to_response('countries/pfa_create.html', {'form': form},
+
+    return render_to_response('countries/pfa_create.html', {'form': form,'issueform':issueform, 'commodityform':commodityform},
         context_instance=RequestContext(request))
 
         
@@ -606,8 +677,6 @@ class ImplementationISPMDetailView(DetailView):
     context_object_name = 'implementationispm'
     template_name = 'countries/implementationispm_detail.html'
     queryset = ImplementationISPM.objects.filter()
-    # print('>>>>>>>>>>>>>>>')
-    # print(user.get_profile().country)
 
 
 
@@ -620,21 +689,37 @@ def implementationispm_create(request, country):
     country=user.get_profile().country
     user_country_slug = lower(slugify(country))
 
-    form = ImplementationISPMForm()
-  
+    form = ImplementationISPMForm(request.POST)
+    issueform =IssueKeywordsRelateForm(request.POST)
+    commodityform =CommodityKeywordsRelateForm(request.POST)
+    
+
     if request.method == "POST":
         if form.is_valid():
             new_implementationispm = form.save(commit=False)
             new_implementationispm.author = request.user
             new_implementationispm.author_id = author.id
             form.save()
+            
+            issue_instance = issueform.save(commit=False)
+            issue_instance.content_object = new_implementationispm
+            issue_instance.save()
+            issueform.save_m2m()
+            
+            commodity_instance = commodityform.save(commit=False)
+            commodity_instance.content_object = new_implementationispm
+            commodity_instance.save()
+            commodityform.save_m2m()
+            
             info(request, _("Successfully created implementationispm."))
             
             return redirect("implementationispm-detail", country=user_country_slug, year=new_implementationispm.publish_date.strftime("%Y"), month=new_implementationispm.publish_date.strftime("%m"), slug=new_implementationispm.slug)
     else:
         form = ImplementationISPMForm(initial={'country': country}, instance=ImplementationISPM())
+        issueform =IssueKeywordsRelateForm(request.POST)
+        commodityform =CommodityKeywordsRelateForm(request.POST)
     
-    return render_to_response('countries/implementationispm_create.html', {'form': form},
+    return render_to_response('countries/implementationispm_create.html', {'form': form,'issueform':issueform, 'commodityform':commodityform},
         context_instance=RequestContext(request))
 
         
@@ -707,25 +792,35 @@ class AdvancesSearchCNListView(ListView):
             context['link_to_item'] = 'pest-report-detail'
             context['items']= PestReport.objects.all()
             context['counttotal'] =context['items'].count() 
+            
+            cns= CountryPage.objects.all()
+            maparray=[]
+            for cn in cns:
+              p=PestReport.objects.filter(country_id=cn.id).count()
+              if p>0:
+                maparray.append([str('<a href="'+cn.country_slug+'/pestreports/">'+cn.name)+': '+str(p)+'</a>',int(cn.cn_lat),int(cn.cn_long)])
+            context['map']=maparray
+            
+                
         elif self.kwargs['type'] == 'nppo':
             context['type_label'] = dict(BASIC_REP_TYPE_CHOICES)[1]
             context['link_to_item'] = 'reporting-obligation-detail'
-            context['items']= ReportingObligation.objects.filter(basic_rep_type=1)
+            context['items']= ReportingObligation.objects.filter(reporting_obligation_type=1)
             context['counttotal'] =context['items'].count() 
         elif self.kwargs['type'] == 'entrypoints':
             context['type_label'] = dict(BASIC_REP_TYPE_CHOICES)[2]
             context['link_to_item'] = 'reporting-obligation-detail'
-            context['items']= ReportingObligation.objects.filter(basic_rep_type=2)
+            context['items']= ReportingObligation.objects.filter(reporting_obligation_type=2)
             context['counttotal'] =context['items'].count() 
         elif self.kwargs['type'] == 'regulatedpests':
             context['type_label'] = dict(BASIC_REP_TYPE_CHOICES)[3]
             context['link_to_item'] = 'reporting-obligation-detail'
-            context['items']= ReportingObligation.objects.filter(basic_rep_type=3)
+            context['items']= ReportingObligation.objects.filter(reporting_obligation_type=3)
             context['counttotal'] =context['items'].count() 
         elif self.kwargs['type'] == 'legislation':
             context['type_label'] = dict(BASIC_REP_TYPE_CHOICES)[4]
             context['link_to_item'] = 'reporting-obligation-detail'
-            context['items']= ReportingObligation.objects.filter(basic_rep_type=4)
+            context['items']= ReportingObligation.objects.filter(reporting_obligation_type=4)
             context['counttotal'] =context['items'].count() 
         elif self.kwargs['type'] == 'emergencyactions':
             context['type_label'] = dict(EVT_REP_TYPE_CHOICES)[1]

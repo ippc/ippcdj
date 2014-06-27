@@ -73,7 +73,7 @@
      
     {% for object in latest %}
      
-    {% ifequal object.reportin_gobligation_type key %}
+    {% ifequal object.reporting_obligation_type key %}
  
     <tr>
       <td><a href="{% url 'reporting-obligation-detail' object.country.country_slug object.publish_date|date:'Y' object.publish_date|date:'m'  object.slug %}">{{ object.title }}</a></td>

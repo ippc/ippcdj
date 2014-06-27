@@ -2,8 +2,11 @@ from string import punctuation
 from urllib import unquote
 
 from django.db import models
+#from django.contrib.gis.db import models as gismodels
+
 from django.utils.translation import ugettext_lazy as _
 from django_countries.fields import CountryField
+
 
 from django.contrib.auth.models import User, Group
 
@@ -20,6 +23,13 @@ from mezzanine.core.managers import SearchableManager
 from mezzanine.utils.importing import import_dotted_path
 from mezzanine.utils.models import upload_to
 
+
+from django.contrib.contenttypes import generic
+from django.contrib.contenttypes.generic import GenericRelation
+from django.contrib.contenttypes.models import ContentType
+from django.db.models.signals import post_save
+ 
+ 
 
 
 class PublicationLibrary(Page, RichText):
@@ -199,6 +209,8 @@ class CountryPage(Page):
     cp_ncp_t_type = models.CharField(_("Contracting or Non-Contracting party"),max_length=3, choices=CP_NCP_TYPE_CHOICES, default=CP_NCP_T_TYPE_0)
     region = models.IntegerField(_("Region"), choices=REGIONS, default=None)
     cn_flag = models.ImageField(_("Country flag"), upload_to="flags/", blank=True)
+    cn_lat = models.CharField(_("Country latitude"), max_length=100, unique=True, blank=True, null=True)
+    cn_long = models.CharField(_("Country longitute"),max_length=100, unique=True, blank=True, null=True)
     
         # =todo: 
     # contracting_party = boolean
@@ -233,21 +245,35 @@ class EppoCode(models.Model):
 
     def __unicode__(self):
         return self.codename
-    
+
+        
 class IssueKeyword(models.Model):
     """ IssueKeyword  """
-    name = models.CharField(_("Issue Keyword"), max_length=250)
-
+    name = models.CharField(_("Issue Keyword"), max_length=500)
     def __unicode__(self):
         return self.name
-    
 class CommodityKeyword(models.Model):
     """ CommodityKeyword """
     name = models.CharField(_("Commodity Keyword"), max_length=500)
-
     def __unicode__(self):
         return self.name
     
+    
+class IssueKeywordsRelate(models.Model):
+    content_type = models.ForeignKey(ContentType)
+    object_id = models.PositiveIntegerField()
+    content_object = generic.GenericForeignKey('content_type', 'object_id')
+    issuename = models.ManyToManyField(IssueKeyword,
+        verbose_name=_("Issue Keywords"),
+        blank=True, null=True)
+
+class CommodityKeywordsRelate(models.Model):
+    content_type = models.ForeignKey(ContentType)
+    object_id = models.PositiveIntegerField()
+    content_object = generic.GenericForeignKey('content_type', 'object_id')
+    commname = models.ManyToManyField(CommodityKeyword,
+        verbose_name=_("Commodity Keywords"),
+        blank=True, null=True)    
     
 class IppcUserProfile(models.Model):
     """ User Profiles for IPPC"""
@@ -301,6 +327,8 @@ REPORT_STATUS_CHOICES = (
     (REPORT_STATUS_FINAL, _("Final")),
 )
 
+
+
 class PestReport(Displayable, models.Model):
     """ Pest Reports"""
     country = models.ForeignKey(CountryPage, related_name="pest_report_country_page")
@@ -333,8 +361,10 @@ class PestReport(Displayable, models.Model):
     contact_for_more_information = models.TextField(_("Contact for more information"),
         blank=True, null=True)
     url_for_more_information = models.URLField(blank=True, null=True)
-    issue_keywords = models.ForeignKey(IssueKeyword, null=True, blank=True)
-    commodity_keywords = models.ForeignKey(CommodityKeyword, null=True, blank=True)
+    #issue_keywords = models.ForeignKey(IssueKeyword, null=True, blank=True)
+    #commodity_keywords = models.ForeignKey(CommodityKeyword, null=True, blank=True)
+    issuename=generic.GenericRelation(IssueKeywordsRelate)
+    commname=generic.GenericRelation(CommodityKeywordsRelate)
   
     # =todo:
     # commodity_groups = 
@@ -377,11 +407,7 @@ class PestReport(Displayable, models.Model):
         self.modify_date = datetime.now()
         super(PestReport, self).save(*args, **kwargs)
 
-
-
-
-
-
+ 
 
 # used by Reporting Obligation type
 BASIC_REP_1 = 1
@@ -437,12 +463,11 @@ class ReportingObligation(Displayable, models.Model):
     contact_for_more_information = models.TextField(_("Contact for more information"), blank=True, null=True)    
     url_for_more_information = models.URLField(blank=True, null=True)
     modify_date = models.DateTimeField(_("Modified date"), blank=True, null=True, editable=False)
-    issue_keywords = models.ForeignKey(IssueKeyword, null=True, blank=True)
-    commodity_keywords = models.ForeignKey(CommodityKeyword, null=True, blank=True)
+    #issue_keywords = models.ForeignKey(IssueKeyword, null=True, blank=True)
+    #commodity_keywords = models.ForeignKey(CommodityKeyword, null=True, blank=True)
+    issuename=generic.GenericRelation(IssueKeywordsRelate)
+    commname=generic.GenericRelation(CommodityKeywordsRelate)
   
-    #files = models.ForeignKey(Files) # , related_name='photos'
-   
- 
 
     # =todo:
     # commodity_groups = 
@@ -494,19 +519,10 @@ class ReportingObligation(Displayable, models.Model):
                 #print(filesarray)
         return filesarray
         
-        
-        
-        return 
     def reporting_obligation_type_verbose(self):
         return dict(BASIC_REP_TYPE_CHOICES)[self.reporting_obligation_type]
 
 
-
-    # @models.permalink
-    # def get_absolute_url(self):
-    #     return ('phytosanitary_resource_detail', None, {'object_id': self.id})
-
-# used by  Reporting type
 EVT_REP_1 = 1
 EVT_REP_2 = 2
 EVT_REP_3 = 3
@@ -538,8 +554,11 @@ class EventReporting(Displayable, models.Model):
     contact_for_more_information = models.TextField(_("Contact for more information"), blank=True, null=True)    
     url_for_more_information = models.URLField(blank=True, null=True)
     modify_date = models.DateTimeField(_("Modified date"), blank=True, null=True, editable=False)
-    issue_keywords = models.ForeignKey(IssueKeyword, null=True, blank=True)
-    commodity_keywords = models.ForeignKey(CommodityKeyword, null=True, blank=True)
+    #issue_keywords = models.ForeignKey(IssueKeyword, null=True, blank=True)
+    #commodity_keywords = models.ForeignKey(CommodityKeyword, null=True, blank=True)
+    issuename=generic.GenericRelation(IssueKeywordsRelate)
+    commname=generic.GenericRelation(CommodityKeywordsRelate)
+  
     # =todo:
     # commodity_groups = 
     # keywords / tags = 
@@ -612,8 +631,10 @@ class PestFreeArea(Displayable, models.Model):
     contact_for_more_information = models.TextField(_("Contact for more information"), blank=True, null=True)    
     url_for_more_information = models.URLField(blank=True, null=True)
     modify_date = models.DateTimeField(_("Modified date"), blank=True, null=True, editable=False)
-    issue_keywords = models.ForeignKey(IssueKeyword, null=True, blank=True)
-    commodity_keywords = models.ForeignKey(CommodityKeyword, null=True, blank=True)
+    #issue_keywords = models.ForeignKey(IssueKeyword, null=True, blank=True)
+    #commodity_keywords = models.ForeignKey(CommodityKeyword, null=True, blank=True)
+    issuename=generic.GenericRelation(IssueKeywordsRelate)
+    commname=generic.GenericRelation(CommodityKeywordsRelate)
     # =todo:
     # commodity_groups = 
     # keywords / tags = 
@@ -712,8 +733,10 @@ class ImplementationISPM(Displayable, models.Model):
     contact_for_more_information = models.TextField(_("Contact for more information"), blank=True, null=True)    
     url_for_more_information = models.URLField(blank=True, null=True)
     modify_date = models.DateTimeField(_("Modified date"), blank=True, null=True, editable=False)
-    issue_keywords = models.ForeignKey(IssueKeyword, null=True, blank=True)
-    commodity_keywords = models.ForeignKey(CommodityKeyword, null=True, blank=True)
+    #issue_keywords = models.ForeignKey(IssueKeyword, null=True, blank=True)
+    #commodity_keywords = models.ForeignKey(CommodityKeyword, null=True, blank=True)
+    issuename=generic.GenericRelation(IssueKeywordsRelate)
+    commname=generic.GenericRelation(CommodityKeywordsRelate)
     # =todo:
     # commodity_groups = 
     # keywords / tags = 

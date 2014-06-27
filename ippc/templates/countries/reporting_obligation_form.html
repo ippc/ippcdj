@@ -15,10 +15,10 @@
 {% endif %}
 
 {% fields_for form %}
+{% fields_for issueform %}
+{% fields_for commodityform %}
 
--------------------------------------
-
-<ul>{% for f in filesform %}
+<!--ul>{% for f in filesform %}
 <li>
     {% for key, val in f %}
     {% if key.value %}
@@ -37,5 +37,5 @@ Change: <input name="{{ key.name }}" type="file" value="{{key.value}}"/>
 <br/>{% endfor %}
 </li>
 {% endfor %}
-</ul>
+</ul-->
 

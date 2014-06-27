@@ -2,7 +2,8 @@
 
 from django import forms
 from .models import IppcUserProfile, PestStatus, PestReport,  CountryPage, \
-ReportingObligation, EventReporting, PestFreeArea, ImplementationISPM, VERS_CHOICES
+ReportingObligation, EventReporting, PestFreeArea, ImplementationISPM, \
+VERS_CHOICES,IssueKeywordsRelate,CommodityKeywordsRelate#,IssueKeywordEntry,Entry,TestModel,TestAA
 from django.contrib.auth.models import User
 import autocomplete_light
 
@@ -32,17 +33,29 @@ class PestReportForm(forms.ModelForm):
             'nature_of_danger',
             'contact_for_more_information',
             'url_for_more_information',
-            'issue_keywords',
-            'commodity_keywords'
             ]
         exclude = ('author', 'slug', 'publish_date', 'modify_date')
         widgets = {
             'country': forms.HiddenInput(),
             'pest_identity': autocomplete_light.ChoiceWidget ('EppoCodeAutocomplete'),
-            'issue_keywords': autocomplete_light.ChoiceWidget ('IssueKeywordAutocomplete'),
-            'commodity_keywords': autocomplete_light.ChoiceWidget ('CommodityKeywordAutocomplete'),
-              
         }
+
+class IssueKeywordsRelateForm(forms.ModelForm):
+    class Meta:
+        model =  IssueKeywordsRelate
+        fields = [
+            'issuename',]
+        widgets = {
+         'issuename': autocomplete_light.MultipleChoiceWidget ('IssueKeywordAutocomplete'),   
+         }
+class CommodityKeywordsRelateForm(forms.ModelForm):
+    class Meta:
+        model =  CommodityKeywordsRelate
+        fields = [
+            'commname',]
+        widgets = {
+         'commname': autocomplete_light.MultipleChoiceWidget ('CommodityKeywordAutocomplete'),   
+         }        
 
 class ReportingObligationForm(forms.ModelForm):
 
@@ -60,15 +73,11 @@ class ReportingObligationForm(forms.ModelForm):
            'contact_for_more_information',
            'url_for_more_information',
            'country',
-           'issue_keywords',
-           'commodity_keywords'
-            ]
+           ]
         exclude = ('author', 'slug', 'publish_date',  'modify_date')
         widgets = {
             'country': forms.HiddenInput(),   
             'reporting_obligation_type': forms.RadioSelect(attrs={'readonly':'True'}),
-            'issue_keywords': autocomplete_light.ChoiceWidget ('IssueKeywordAutocomplete'),
-            'commodity_keywords': autocomplete_light.ChoiceWidget ('CommodityKeywordAutocomplete'),
         }
 
 
@@ -87,17 +96,13 @@ class EventReportingForm(forms.ModelForm):
            'contact_for_more_information',
            'url_for_more_information',
            'country',
-           'issue_keywords',
-           'commodity_keywords'
             ]
         exclude = ('author', 'slug', 'publish_date',  'modify_date')
         widgets = {
             'country': forms.HiddenInput(),   
             'event_rep_type': forms.RadioSelect(attrs={'readonly':'True'}),
-            'issue_keywords': autocomplete_light.ChoiceWidget ('IssueKeywordAutocomplete'),
-            'commodity_keywords': autocomplete_light.ChoiceWidget ('CommodityKeywordAutocomplete'),
-         }
-         
+          }
+    
 class PestFreeAreaForm(forms.ModelForm):
    # country = forms.ChoiceField(widget=forms.Select(), initial='country')
     # =todo: https://docs.djangoproject.com/en/dev/ref/forms/api/#dynamic-initial-values
@@ -112,15 +117,11 @@ class PestFreeAreaForm(forms.ModelForm):
            'contact_for_more_information',
            'url_for_more_information',
            'country',
-           'issue_keywords',
-           'commodity_keywords'
+         
             ]
         exclude = ('author', 'slug', 'publish_date',  'modify_date')
         widgets = {
             'country': forms.HiddenInput(),
-            'issue_keywords': autocomplete_light.ChoiceWidget ('IssueKeywordAutocomplete'),
-            'commodity_keywords': autocomplete_light.ChoiceWidget ('CommodityKeywordAutocomplete'),
-           
         }
 class ImplementationISPMForm(forms.ModelForm):
     # country = forms.ChoiceField(widget=forms.Select(), initial='country')
@@ -141,14 +142,10 @@ class ImplementationISPMForm(forms.ModelForm):
            'contact_for_more_information',
            'url_for_more_information',
            'country',
-           'issue_keywords',
-           'commodity_keywords'
-            ]
+           ]
         exclude = ('author', 'slug', 'publish_date',  'modify_date')
         widgets = {
             'country': forms.HiddenInput(),
             'implementimport_type':forms.RadioSelect(),
             'implementexport_type':forms.RadioSelect(),
-            'issue_keywords': autocomplete_light.ChoiceWidget ('IssueKeywordAutocomplete'),
-            'commodity_keywords': autocomplete_light.ChoiceWidget ('CommodityKeywordAutocomplete'),
-        }
+           }

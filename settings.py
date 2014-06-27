@@ -237,7 +237,7 @@ INSTALLED_APPS = (
     "django.contrib.sites",
     "django.contrib.sitemaps",
     "django.contrib.staticfiles",
-    
+
     # ippc theme
     "ippc",
     
@@ -275,6 +275,7 @@ INSTALLED_APPS = (
     # http://stackoverflow.com/a/1823193/412329
     "mailer",
     "autocomplete_light",
+    "leaflet",
     # debug toolbar
     # "debug_toolbar",
     

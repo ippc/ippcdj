@@ -82,6 +82,9 @@ urlpatterns = patterns("",
         view=PublicationDetailView.as_view(),
         name='publication-detail'),
     #-------------------------------------------#
+ 
+    #-------------------------------------------#
+    
     # reporting obligation list
     url(r'^countries/(?P<country>[\w-]+)/reportingobligation/$',
         view=ReportingObligationListView.as_view(),
@@ -91,7 +94,9 @@ urlpatterns = patterns("",
     #url(r'^countries/(?P<country>[\w-]+)/reportingobligation/hidden/$',
     #    view=ReportingObligationHiddenListView.as_view(),
     #    name='reporting-obligation-hidden-list'),
-
+     # testmodel create
+     
+    
     # reporting obligation detail
     url(r'^countries/(?P<country>[\w-]+)/reportingobligation/(?P<year>\d+)/(?P<month>\d{2})/(?P<slug>[\w-]+)/$',
         view=ReportingObligationDetailView.as_view(),
