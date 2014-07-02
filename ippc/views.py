@@ -3,10 +3,10 @@ from django.utils.translation import ugettext_lazy as _
 from django.contrib.messages import info, error
 from .models import IppcUserProfile,CountryPage, PestStatus, PestReport, IS_PUBLIC, IS_HIDDEN, Publication,\
 ReportingObligation, BASIC_REP_TYPE_CHOICES, EventReporting, EVT_REP_TYPE_CHOICES,\
-PestFreeArea,ImplementationISPM,REGIONS, IssueKeywordsRelate,CommodityKeywordsRelate
+PestFreeArea,ImplementationISPM,REGIONS, IssueKeywordsRelate,CommodityKeywordsRelate,FileAndDescr#,AEntryImage,FileRelate,Files
 from mezzanine.core.models import Displayable, CONTENT_STATUS_DRAFT, CONTENT_STATUS_PUBLISHED
 from .forms import PestReportForm, ReportingObligationForm, EventReportingForm, PestFreeAreaForm,\
-ImplementationISPMForm,IssueKeywordsRelateForm,CommodityKeywordsRelateForm
+ImplementationISPMForm,IssueKeywordsRelateForm,CommodityKeywordsRelateForm,FileAndDescrFormSet#,AEntryImageForm,FileRelateForm,FilesForm#
 
 from django.views.generic import ListView, MonthArchiveView, YearArchiveView, DetailView, TemplateView, CreateView
 from django.core.urlresolvers import reverse
@@ -17,7 +17,9 @@ from django.shortcuts import render_to_response, get_object_or_404, redirect
 
 from django.contrib.auth.decorators import login_required, permission_required
 from django.utils.decorators import method_decorator
-
+from django.forms.models import inlineformset_factory
+from django.contrib.contenttypes.generic import generic_inlineformset_factory 
+from django.forms.formsets import formset_factory
 def get_profile():
     return IppcUserProfile.objects.all()
 
@@ -289,6 +291,7 @@ def reporting_obligation_create(request, country,type):
     form = ReportingObligationForm(request.POST, request.FILES)
     issueform =IssueKeywordsRelateForm(request.POST)
     commodityform =CommodityKeywordsRelateForm(request.POST)
+    #entryform=AEntryImageForm(request.POST, request.FILES)
     
     if request.method == "POST":
         if form.is_valid():
@@ -317,12 +320,13 @@ def reporting_obligation_create(request, country,type):
         form = ReportingObligationForm(initial={'country': country,'reporting_obligation_type': type}, instance=ReportingObligation())
         issueform =IssueKeywordsRelateForm(request.POST)
         commodityform =CommodityKeywordsRelateForm(request.POST)
-    
+        #entryform=AEntryImageForm()
+   
    #testform =TestEntryForm(instance=TestEntry())
 #    return render_to_response(template_name, {
 #        'form': form, 'filesform': filesform, "basic_reporting": basic_reporting
 #    }, context_instance=RequestContext(request))
-    return render_to_response('countries/reporting_obligation_create.html', {'form': form ,'issueform':issueform, 'commodityform':commodityform},
+    return render_to_response('countries/reporting_obligation_create.html', {'form': form  ,'issueform':issueform, 'commodityform':commodityform},
         context_instance=RequestContext(request))
         
         
@@ -491,11 +495,16 @@ def event_reporting_create(request, country,type):
     form = EventReportingForm(request.POST or None, request.FILES)
     issueform =IssueKeywordsRelateForm(request.POST)
     commodityform =CommodityKeywordsRelateForm(request.POST)
-    
- #entryform = EntryForm(request.POST, request.FILES)
-  
+    #docform =FileRelateForm(request.POST, request.FILES)
+    #fform =FilesForm(request.POST, request.FILES)
+ 
+    #FileRelateFormSet    = generic_inlineformset_factory(FileRelate)    
+         
+         
     if request.method == "POST":
-        if form.is_valid():
+         #myformset    = FileRelateFormSet(request.POST)
+        f_form = FileAndDescrFormSet(request.POST, request.FILES)
+        if form.is_valid() and f_form.is_valid():
             new_event_reporting = form.save(commit=False)
             new_event_reporting.author = request.user
             new_event_reporting.author_id = author.id
@@ -511,14 +520,33 @@ def event_reporting_create(request, country,type):
             commodity_instance.content_object = new_event_reporting
             commodity_instance.save()
             commodityform.save_m2m() 
-    
+#            
+              
+            f_form.instance = new_event_reporting
+            f_form.save()
+            # if docform.is_valid():
+#             doc_instance = docform.save(commit=False)
+#             doc_instance.content_object = new_event_reporting
+#             doc_instance.save()
+#             docform.save_m2m()
             return redirect("event-reporting-detail", country=user_country_slug, year=new_event_reporting.publish_date.strftime("%Y"), month=new_event_reporting.publish_date.strftime("%m"), slug=new_event_reporting.slug)
+        else:
+            return render_to_response('countries/event_reporting_create.html', {'form': form,'f_form': f_form,'issueform':issueform, 'commodityform':commodityform},#'entryform': entryform,'docform':myformset,
+             context_instance=RequestContext(request))
+
+          
+        
     else:
         form = EventReportingForm(initial={'country': country,'event_rep_type': type}, instance=EventReporting())
         issueform =IssueKeywordsRelateForm(request.POST)
         commodityform =CommodityKeywordsRelateForm(request.POST)
-    
-    return render_to_response('countries/event_reporting_create.html', {'form': form,'issueform':issueform, 'commodityform':commodityform},#'entryform': entryform
+        f_form = FileAndDescrFormSet()
+      
+        #docform =FileRelateForm(request.POST)
+        #fform =FilesForm(request.POST, request.FILES)
+        #docform = FileRelateFormSet()
+        #myformset    = FileRelateFormSet()
+    return render_to_response('countries/event_reporting_create.html', {'form': form,'f_form': f_form,'issueform':issueform, 'commodityform':commodityform},#'entryform': entryform,'docform':myformset,
         context_instance=RequestContext(request))
 
         
@@ -536,9 +564,6 @@ def event_reporting_edit(request, country, id=None, template_name='countries/eve
         event_reporting = get_object_or_404(EventReporting, country=country, pk=id)
         issues = get_object_or_404(IssueKeywordsRelate, pk=event_reporting.issuename.all()[0].id)
         commodities = get_object_or_404(CommodityKeywordsRelate, pk=event_reporting.commname.all()[0].id)
-       
-        # if pest_report.author != request.user:
-        #     return HttpResponseForbidden()
     else:
         event_reporting = EventReporting(author=request.user)
       
@@ -546,7 +571,9 @@ def event_reporting_edit(request, country, id=None, template_name='countries/eve
         form = EventReportingForm(request.POST,  request.FILES, instance=event_reporting)
         issueform =IssueKeywordsRelateForm(request.POST,instance=issues)
         commodityform =CommodityKeywordsRelateForm(request.POST,instance=commodities)
-        if form.is_valid():
+        f_form = FileAndDescrFormSet(request.POST,  request.FILES,instance=event_reporting)
+      
+        if form.is_valid() and f_form.is_valid():
             form.save()
             issue_instance = issueform.save(commit=False)
             issue_instance.content_object = event_reporting
@@ -558,7 +585,8 @@ def event_reporting_edit(request, country, id=None, template_name='countries/eve
             commodity_instance.save()
             commodityform.save_m2m() 
     
-            
+            f_form.instance = event_reporting
+            f_form.save()
             
             
             info(request, _("Successfully updated pest report."))
@@ -568,9 +596,10 @@ def event_reporting_edit(request, country, id=None, template_name='countries/eve
         form = EventReportingForm(instance=event_reporting)
         issueform =IssueKeywordsRelateForm(instance=issues)
         commodityform =CommodityKeywordsRelateForm(instance=commodities)
-   
+        f_form = FileAndDescrFormSet(instance=event_reporting)
+      
     return render_to_response(template_name, {
-        'form': form,  'issueform': issueform,  'commodityform': commodityform, "event_reporting": event_reporting
+        'form': form, 'f_form':f_form, 'issueform': issueform,  'commodityform': commodityform, "event_reporting": event_reporting
     }, context_instance=RequestContext(request))
     
     

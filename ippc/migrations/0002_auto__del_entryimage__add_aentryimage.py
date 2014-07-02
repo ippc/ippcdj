@@ -8,31 +8,27 @@ from django.db import models
 class Migration(SchemaMigration):
 
     def forwards(self, orm):
-        # Deleting model 'TestEntry'
-        db.delete_table(u'ippc_testentry')
+        # Deleting model 'EntryImage'
+        db.delete_table(u'ippc_entryimage')
 
-        # Adding model 'TestAA'
-        db.create_table(u'ippc_testaa', (
+        # Adding model 'AEntryImage'
+        db.create_table(u'ippc_aentryimage', (
             (u'id', self.gf('django.db.models.fields.AutoField')(primary_key=True)),
-            ('content_type', self.gf('django.db.models.fields.related.ForeignKey')(to=orm['contenttypes.ContentType'])),
-            ('object_id', self.gf('django.db.models.fields.PositiveIntegerField')()),
-            ('name', self.gf('django.db.models.fields.CharField')(max_length=250)),
+            ('image', self.gf('django.db.models.fields.files.ImageField')(max_length=100)),
         ))
-        db.send_create_signal(u'ippc', ['TestAA'])
+        db.send_create_signal(u'ippc', ['AEntryImage'])
 
 
     def backwards(self, orm):
-        # Adding model 'TestEntry'
-        db.create_table(u'ippc_testentry', (
-            ('object_id', self.gf('django.db.models.fields.PositiveIntegerField')()),
+        # Adding model 'EntryImage'
+        db.create_table(u'ippc_entryimage', (
+            ('image', self.gf('django.db.models.fields.files.ImageField')(max_length=100)),
             (u'id', self.gf('django.db.models.fields.AutoField')(primary_key=True)),
-            ('content_type', self.gf('django.db.models.fields.related.ForeignKey')(to=orm['contenttypes.ContentType'])),
-            ('name', self.gf('django.db.models.fields.CharField')(max_length=250)),
         ))
-        db.send_create_signal(u'ippc', ['TestEntry'])
+        db.send_create_signal(u'ippc', ['EntryImage'])
 
-        # Deleting model 'TestAA'
-        db.delete_table(u'ippc_testaa')
+        # Deleting model 'AEntryImage'
+        db.delete_table(u'ippc_aentryimage')
 
 
     models = {
@@ -127,10 +123,22 @@ class Migration(SchemaMigration):
             'slug': ('django.db.models.fields.CharField', [], {'max_length': '2000', 'null': 'True', 'blank': 'True'}),
             'title': ('django.db.models.fields.CharField', [], {'max_length': '500'})
         },
+        u'ippc.aentryimage': {
+            'Meta': {'object_name': 'AEntryImage'},
+            u'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
+            'image': ('django.db.models.fields.files.ImageField', [], {'max_length': '100'})
+        },
         u'ippc.commoditykeyword': {
             'Meta': {'object_name': 'CommodityKeyword'},
             u'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
             'name': ('django.db.models.fields.CharField', [], {'max_length': '500'})
+        },
+        u'ippc.commoditykeywordsrelate': {
+            'Meta': {'object_name': 'CommodityKeywordsRelate'},
+            'commname': ('django.db.models.fields.related.ManyToManyField', [], {'symmetrical': 'False', 'to': u"orm['ippc.CommodityKeyword']", 'null': 'True', 'blank': 'True'}),
+            'content_type': ('django.db.models.fields.related.ForeignKey', [], {'to': u"orm['contenttypes.ContentType']"}),
+            u'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
+            'object_id': ('django.db.models.fields.PositiveIntegerField', [], {})
         },
         u'ippc.countrypage': {
             'Meta': {'ordering': "['name']", 'object_name': 'CountryPage', '_ormbases': [u'pages.Page']},
@@ -146,13 +154,6 @@ class Migration(SchemaMigration):
             'name': ('django.db.models.fields.CharField', [], {'max_length': '50', 'unique': 'True', 'null': 'True', 'blank': 'True'}),
             u'page_ptr': ('django.db.models.fields.related.OneToOneField', [], {'to': u"orm['pages.Page']", 'unique': 'True', 'primary_key': 'True'}),
             'region': ('django.db.models.fields.IntegerField', [], {'default': 'None'})
-        },
-        u'ippc.entry': {
-            'Meta': {'ordering': "['-name']", 'object_name': 'Entry'},
-            'content_type': ('django.db.models.fields.related.ForeignKey', [], {'to': u"orm['contenttypes.ContentType']"}),
-            u'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
-            'name': ('django.db.models.fields.CharField', [], {'max_length': '250'}),
-            'object_id': ('django.db.models.fields.PositiveIntegerField', [], {})
         },
         u'ippc.eppocode': {
             'Meta': {'object_name': 'EppoCode'},
@@ -170,7 +171,6 @@ class Migration(SchemaMigration):
             'Meta': {'object_name': 'EventReporting'},
             '_meta_title': ('django.db.models.fields.CharField', [], {'max_length': '500', 'null': 'True', 'blank': 'True'}),
             'author': ('django.db.models.fields.related.ForeignKey', [], {'related_name': "'event__reporting_author'", 'to': u"orm['auth.User']"}),
-            'commodity_keywords': ('django.db.models.fields.related.ForeignKey', [], {'to': u"orm['ippc.CommodityKeyword']", 'null': 'True', 'blank': 'True'}),
             'contact_for_more_information': ('django.db.models.fields.TextField', [], {'null': 'True', 'blank': 'True'}),
             'country': ('django.db.models.fields.related.ForeignKey', [], {'related_name': "'event_reporting_country_page'", 'to': u"orm['ippc.CountryPage']"}),
             'description': ('django.db.models.fields.TextField', [], {'blank': 'True'}),
@@ -180,7 +180,6 @@ class Migration(SchemaMigration):
             'gen_description': ('django.db.models.fields.BooleanField', [], {'default': 'True'}),
             u'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
             'in_sitemap': ('django.db.models.fields.BooleanField', [], {'default': 'True'}),
-            'issue_keywords': ('django.db.models.fields.related.ManyToManyField', [], {'symmetrical': 'False', 'to': u"orm['ippc.IssueKeyword']", 'null': 'True', 'blank': 'True'}),
             'keywords': ('mezzanine.generic.fields.KeywordsField', [], {'object_id_field': "'object_pk'", 'to': u"orm['generic.AssignedKeyword']", 'frozen_by_south': 'True'}),
             'keywords_string': ('django.db.models.fields.CharField', [], {'max_length': '500', 'blank': 'True'}),
             'modify_date': ('django.db.models.fields.DateTimeField', [], {'null': 'True', 'blank': 'True'}),
@@ -203,7 +202,6 @@ class Migration(SchemaMigration):
             'Meta': {'object_name': 'ImplementationISPM'},
             '_meta_title': ('django.db.models.fields.CharField', [], {'max_length': '500', 'null': 'True', 'blank': 'True'}),
             'author': ('django.db.models.fields.related.ForeignKey', [], {'related_name': "'implementationispm_author'", 'to': u"orm['auth.User']"}),
-            'commodity_keywords': ('django.db.models.fields.related.ForeignKey', [], {'to': u"orm['ippc.CommodityKeyword']", 'null': 'True', 'blank': 'True'}),
             'contact_for_more_information': ('django.db.models.fields.TextField', [], {'null': 'True', 'blank': 'True'}),
             'country': ('django.db.models.fields.related.ForeignKey', [], {'related_name': "'implementationispm_country_page'", 'to': u"orm['ippc.CountryPage']"}),
             'description': ('django.db.models.fields.TextField', [], {'blank': 'True'}),
@@ -217,7 +215,6 @@ class Migration(SchemaMigration):
             'implementimport_type': ('django.db.models.fields.IntegerField', [], {'default': 'None'}),
             'implementimport_version': ('django.db.models.fields.related.ManyToManyField', [], {'related_name': "'implementimport_version+'", 'default': 'None', 'to': u"orm['ippc.ImplementationISPMVersion']", 'blank': 'True', 'symmetrical': 'False', 'null': 'True'}),
             'in_sitemap': ('django.db.models.fields.BooleanField', [], {'default': 'True'}),
-            'issue_keywords': ('django.db.models.fields.related.ForeignKey', [], {'to': u"orm['ippc.IssueKeyword']", 'null': 'True', 'blank': 'True'}),
             'keywords': ('mezzanine.generic.fields.KeywordsField', [], {'object_id_field': "'object_pk'", 'to': u"orm['generic.AssignedKeyword']", 'frozen_by_south': 'True'}),
             'keywords_string': ('django.db.models.fields.CharField', [], {'max_length': '500', 'blank': 'True'}),
             'mark_registered_type': ('django.db.models.fields.IntegerField', [], {'default': 'None'}),
@@ -265,11 +262,17 @@ class Migration(SchemaMigration):
             u'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
             'name': ('django.db.models.fields.CharField', [], {'max_length': '500'})
         },
+        u'ippc.issuekeywordsrelate': {
+            'Meta': {'object_name': 'IssueKeywordsRelate'},
+            'content_type': ('django.db.models.fields.related.ForeignKey', [], {'to': u"orm['contenttypes.ContentType']"}),
+            u'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
+            'issuename': ('django.db.models.fields.related.ManyToManyField', [], {'symmetrical': 'False', 'to': u"orm['ippc.IssueKeyword']", 'null': 'True', 'blank': 'True'}),
+            'object_id': ('django.db.models.fields.PositiveIntegerField', [], {})
+        },
         u'ippc.pestfreearea': {
             'Meta': {'object_name': 'PestFreeArea'},
             '_meta_title': ('django.db.models.fields.CharField', [], {'max_length': '500', 'null': 'True', 'blank': 'True'}),
             'author': ('django.db.models.fields.related.ForeignKey', [], {'related_name': "'pestfreearea_author'", 'to': u"orm['auth.User']"}),
-            'commodity_keywords': ('django.db.models.fields.related.ForeignKey', [], {'to': u"orm['ippc.CommodityKeyword']", 'null': 'True', 'blank': 'True'}),
             'contact_for_more_information': ('django.db.models.fields.TextField', [], {'null': 'True', 'blank': 'True'}),
             'country': ('django.db.models.fields.related.ForeignKey', [], {'related_name': "'pestfreearea_country_page'", 'to': u"orm['ippc.CountryPage']"}),
             'description': ('django.db.models.fields.TextField', [], {'blank': 'True'}),
@@ -278,7 +281,6 @@ class Migration(SchemaMigration):
             'gen_description': ('django.db.models.fields.BooleanField', [], {'default': 'True'}),
             u'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
             'in_sitemap': ('django.db.models.fields.BooleanField', [], {'default': 'True'}),
-            'issue_keywords': ('django.db.models.fields.related.ForeignKey', [], {'to': u"orm['ippc.IssueKeyword']", 'null': 'True', 'blank': 'True'}),
             'keywords': ('mezzanine.generic.fields.KeywordsField', [], {'object_id_field': "'object_pk'", 'to': u"orm['generic.AssignedKeyword']", 'frozen_by_south': 'True'}),
             'keywords_string': ('django.db.models.fields.CharField', [], {'max_length': '500', 'blank': 'True'}),
             'modify_date': ('django.db.models.fields.DateTimeField', [], {'null': 'True', 'blank': 'True'}),
@@ -297,7 +299,6 @@ class Migration(SchemaMigration):
             'Meta': {'object_name': 'PestReport'},
             '_meta_title': ('django.db.models.fields.CharField', [], {'max_length': '500', 'null': 'True', 'blank': 'True'}),
             'author': ('django.db.models.fields.related.ForeignKey', [], {'related_name': "'pest_report_author'", 'to': u"orm['auth.User']"}),
-            'commodity_keywords': ('django.db.models.fields.related.ForeignKey', [], {'to': u"orm['ippc.CommodityKeyword']", 'null': 'True', 'blank': 'True'}),
             'contact_for_more_information': ('django.db.models.fields.TextField', [], {'null': 'True', 'blank': 'True'}),
             'country': ('django.db.models.fields.related.ForeignKey', [], {'related_name': "'pest_report_country_page'", 'to': u"orm['ippc.CountryPage']"}),
             'description': ('django.db.models.fields.TextField', [], {'blank': 'True'}),
@@ -308,7 +309,6 @@ class Migration(SchemaMigration):
             'hosts': ('django.db.models.fields.TextField', [], {'null': 'True', 'blank': 'True'}),
             u'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
             'in_sitemap': ('django.db.models.fields.BooleanField', [], {'default': 'True'}),
-            'issue_keywords': ('django.db.models.fields.related.ForeignKey', [], {'to': u"orm['ippc.IssueKeyword']", 'null': 'True', 'blank': 'True'}),
             'keywords': ('mezzanine.generic.fields.KeywordsField', [], {'object_id_field': "'object_pk'", 'to': u"orm['generic.AssignedKeyword']", 'frozen_by_south': 'True'}),
             'keywords_string': ('django.db.models.fields.CharField', [], {'max_length': '500', 'blank': 'True'}),
             'modify_date': ('django.db.models.fields.DateTimeField', [], {'null': 'True', 'blank': 'True'}),
@@ -359,7 +359,6 @@ class Migration(SchemaMigration):
             'Meta': {'object_name': 'ReportingObligation'},
             '_meta_title': ('django.db.models.fields.CharField', [], {'max_length': '500', 'null': 'True', 'blank': 'True'}),
             'author': ('django.db.models.fields.related.ForeignKey', [], {'related_name': "'reporting_obligation_author'", 'to': u"orm['auth.User']"}),
-            'commodity_keywords': ('django.db.models.fields.related.ForeignKey', [], {'to': u"orm['ippc.CommodityKeyword']", 'null': 'True', 'blank': 'True'}),
             'contact_for_more_information': ('django.db.models.fields.TextField', [], {'null': 'True', 'blank': 'True'}),
             'country': ('django.db.models.fields.related.ForeignKey', [], {'related_name': "'reporting_obligation_country_page'", 'to': u"orm['ippc.CountryPage']"}),
             'description': ('django.db.models.fields.TextField', [], {'blank': 'True'}),
@@ -367,8 +366,8 @@ class Migration(SchemaMigration):
             'file': ('django.db.models.fields.files.FileField', [], {'max_length': '100', 'blank': 'True'}),
             'gen_description': ('django.db.models.fields.BooleanField', [], {'default': 'True'}),
             u'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
+            'images': ('django.db.models.fields.related.ManyToManyField', [], {'symmetrical': 'False', 'to': u"orm['ippc.AEntryImage']", 'null': 'True', 'blank': 'True'}),
             'in_sitemap': ('django.db.models.fields.BooleanField', [], {'default': 'True'}),
-            'keys': ('django.db.models.fields.related.ManyToManyField', [], {'symmetrical': 'False', 'to': u"orm['ippc.IssueKeyword']", 'null': 'True', 'blank': 'True'}),
             'keywords': ('mezzanine.generic.fields.KeywordsField', [], {'object_id_field': "'object_pk'", 'to': u"orm['generic.AssignedKeyword']", 'frozen_by_south': 'True'}),
             'keywords_string': ('django.db.models.fields.CharField', [], {'max_length': '500', 'blank': 'True'}),
             'modify_date': ('django.db.models.fields.DateTimeField', [], {'null': 'True', 'blank': 'True'}),
@@ -382,24 +381,6 @@ class Migration(SchemaMigration):
             'status': ('django.db.models.fields.IntegerField', [], {'default': '2'}),
             'title': ('django.db.models.fields.CharField', [], {'max_length': '500'}),
             'url_for_more_information': ('django.db.models.fields.URLField', [], {'max_length': '200', 'null': 'True', 'blank': 'True'})
-        },
-        u'ippc.testaa': {
-            'Meta': {'object_name': 'TestAA'},
-            'content_type': ('django.db.models.fields.related.ForeignKey', [], {'to': u"orm['contenttypes.ContentType']"}),
-            u'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
-            'name': ('django.db.models.fields.CharField', [], {'max_length': '250'}),
-            'object_id': ('django.db.models.fields.PositiveIntegerField', [], {})
-        },
-        u'ippc.testkeyword': {
-            'Meta': {'object_name': 'TestKeyword'},
-            u'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
-            'name': ('django.db.models.fields.CharField', [], {'max_length': '500'})
-        },
-        u'ippc.testmodel': {
-            'Meta': {'object_name': 'TestModel'},
-            u'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
-            'taa': ('django.db.models.fields.CharField', [], {'max_length': '500'}),
-            'title': ('django.db.models.fields.CharField', [], {'max_length': '500'})
         },
         u'ippc.transfield': {
             'Meta': {'ordering': "('lang',)", 'object_name': 'TransField'},

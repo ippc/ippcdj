@@ -8,197 +8,68 @@ from django.db import models
 class Migration(SchemaMigration):
 
     def forwards(self, orm):
-        # Deleting model 'Entry'
-        db.delete_table(u'ippc_entry')
+        # Deleting model 'AEntryImage'
+        db.delete_table(u'ippc_aentryimage')
 
-        # Deleting model 'TestAA'
-        db.delete_table(u'ippc_testaa')
+        # Deleting model 'FileRelate'
+        db.delete_table(u'ippc_filerelate')
 
-        # Removing M2M table for field name on 'TestAA'
-        db.delete_table(db.shorten_name(u'ippc_testaa_name'))
+        # Removing M2M table for field files_doc on 'FileRelate'
+        db.delete_table(db.shorten_name(u'ippc_filerelate_files_doc'))
 
-        # Deleting model 'TestModel'
-        db.delete_table(u'ippc_testmodel')
+        # Deleting field 'Files.file'
+        db.delete_column(u'ippc_files', 'file')
 
-        # Deleting model 'TestKeyword'
-        db.delete_table(u'ippc_testkeyword')
+        # Adding field 'Files.files'
+        db.add_column(u'ippc_files', 'files',
+                      self.gf('django.db.models.fields.files.FileField')(default='', max_length=100, blank=True),
+                      keep_default=False)
 
-        # Adding model 'IssueKeywordsRelate'
-        db.create_table(u'ippc_issuekeywordsrelate', (
-            (u'id', self.gf('django.db.models.fields.AutoField')(primary_key=True)),
-            ('content_type', self.gf('django.db.models.fields.related.ForeignKey')(to=orm['contenttypes.ContentType'])),
-            ('object_id', self.gf('django.db.models.fields.PositiveIntegerField')()),
-        ))
-        db.send_create_signal(u'ippc', ['IssueKeywordsRelate'])
-
-        # Adding M2M table for field name on 'IssueKeywordsRelate'
-        m2m_table_name = db.shorten_name(u'ippc_issuekeywordsrelate_name')
-        db.create_table(m2m_table_name, (
-            ('id', models.AutoField(verbose_name='ID', primary_key=True, auto_created=True)),
-            ('issuekeywordsrelate', models.ForeignKey(orm[u'ippc.issuekeywordsrelate'], null=False)),
-            ('issuekeyword', models.ForeignKey(orm[u'ippc.issuekeyword'], null=False))
-        ))
-        db.create_unique(m2m_table_name, ['issuekeywordsrelate_id', 'issuekeyword_id'])
-
-        # Adding model 'CommodityKeywordsRelate'
-        db.create_table(u'ippc_commoditykeywordsrelate', (
-            (u'id', self.gf('django.db.models.fields.AutoField')(primary_key=True)),
-            ('content_type', self.gf('django.db.models.fields.related.ForeignKey')(to=orm['contenttypes.ContentType'])),
-            ('object_id', self.gf('django.db.models.fields.PositiveIntegerField')()),
-        ))
-        db.send_create_signal(u'ippc', ['CommodityKeywordsRelate'])
-
-        # Adding M2M table for field name on 'CommodityKeywordsRelate'
-        m2m_table_name = db.shorten_name(u'ippc_commoditykeywordsrelate_name')
-        db.create_table(m2m_table_name, (
-            ('id', models.AutoField(verbose_name='ID', primary_key=True, auto_created=True)),
-            ('commoditykeywordsrelate', models.ForeignKey(orm[u'ippc.commoditykeywordsrelate'], null=False)),
-            ('commoditykeyword', models.ForeignKey(orm[u'ippc.commoditykeyword'], null=False))
-        ))
-        db.create_unique(m2m_table_name, ['commoditykeywordsrelate_id', 'commoditykeyword_id'])
-
-        # Deleting field 'PestFreeArea.issue_keywords'
-        db.delete_column(u'ippc_pestfreearea', 'issue_keywords_id')
-
-        # Deleting field 'PestFreeArea.commodity_keywords'
-        db.delete_column(u'ippc_pestfreearea', 'commodity_keywords_id')
-
-        # Deleting field 'ImplementationISPM.issue_keywords'
-        db.delete_column(u'ippc_implementationispm', 'issue_keywords_id')
-
-        # Deleting field 'ImplementationISPM.commodity_keywords'
-        db.delete_column(u'ippc_implementationispm', 'commodity_keywords_id')
-
-        # Deleting field 'EventReporting.commodity_keywords'
-        db.delete_column(u'ippc_eventreporting', 'commodity_keywords_id')
-
-        # Removing M2M table for field issue_keywords on 'EventReporting'
-        db.delete_table(db.shorten_name(u'ippc_eventreporting_issue_keywords'))
-
-        # Deleting field 'ReportingObligation.commodity_keywords'
-        db.delete_column(u'ippc_reportingobligation', 'commodity_keywords_id')
-
-        # Removing M2M table for field keys on 'ReportingObligation'
-        db.delete_table(db.shorten_name(u'ippc_reportingobligation_keys'))
-
-        # Deleting field 'PestReport.issue_keywords'
-        db.delete_column(u'ippc_pestreport', 'issue_keywords_id')
-
-        # Deleting field 'PestReport.commodity_keywords'
-        db.delete_column(u'ippc_pestreport', 'commodity_keywords_id')
+        # Removing M2M table for field images on 'ReportingObligation'
+        db.delete_table(db.shorten_name(u'ippc_reportingobligation_images'))
 
 
     def backwards(self, orm):
-        # Adding model 'Entry'
-        db.create_table(u'ippc_entry', (
-            ('object_id', self.gf('django.db.models.fields.PositiveIntegerField')()),
+        # Adding model 'AEntryImage'
+        db.create_table(u'ippc_aentryimage', (
+            ('image2', self.gf('django.db.models.fields.files.FileField')(max_length=100)),
+            (u'id', self.gf('django.db.models.fields.AutoField')(primary_key=True)),
+        ))
+        db.send_create_signal(u'ippc', ['AEntryImage'])
+
+        # Adding model 'FileRelate'
+        db.create_table(u'ippc_filerelate', (
             (u'id', self.gf('django.db.models.fields.AutoField')(primary_key=True)),
             ('content_type', self.gf('django.db.models.fields.related.ForeignKey')(to=orm['contenttypes.ContentType'])),
-            ('name', self.gf('django.db.models.fields.CharField')(max_length=250)),
-        ))
-        db.send_create_signal(u'ippc', ['Entry'])
-
-        # Adding model 'TestAA'
-        db.create_table(u'ippc_testaa', (
             ('object_id', self.gf('django.db.models.fields.PositiveIntegerField')()),
-            (u'id', self.gf('django.db.models.fields.AutoField')(primary_key=True)),
-            ('content_type', self.gf('django.db.models.fields.related.ForeignKey')(to=orm['contenttypes.ContentType'])),
         ))
-        db.send_create_signal(u'ippc', ['TestAA'])
+        db.send_create_signal(u'ippc', ['FileRelate'])
 
-        # Adding M2M table for field name on 'TestAA'
-        m2m_table_name = db.shorten_name(u'ippc_testaa_name')
+        # Adding M2M table for field files_doc on 'FileRelate'
+        m2m_table_name = db.shorten_name(u'ippc_filerelate_files_doc')
         db.create_table(m2m_table_name, (
             ('id', models.AutoField(verbose_name='ID', primary_key=True, auto_created=True)),
-            ('testaa', models.ForeignKey(orm[u'ippc.testaa'], null=False)),
-            ('testkeyword', models.ForeignKey(orm[u'ippc.testkeyword'], null=False))
+            ('filerelate', models.ForeignKey(orm[u'ippc.filerelate'], null=False)),
+            ('files', models.ForeignKey(orm[u'ippc.files'], null=False))
         ))
-        db.create_unique(m2m_table_name, ['testaa_id', 'testkeyword_id'])
+        db.create_unique(m2m_table_name, ['filerelate_id', 'files_id'])
 
-        # Adding model 'TestModel'
-        db.create_table(u'ippc_testmodel', (
-            ('title', self.gf('django.db.models.fields.CharField')(max_length=500)),
-            (u'id', self.gf('django.db.models.fields.AutoField')(primary_key=True)),
-            ('taa', self.gf('django.db.models.fields.CharField')(max_length=500)),
-        ))
-        db.send_create_signal(u'ippc', ['TestModel'])
-
-        # Adding model 'TestKeyword'
-        db.create_table(u'ippc_testkeyword', (
-            (u'id', self.gf('django.db.models.fields.AutoField')(primary_key=True)),
-            ('name', self.gf('django.db.models.fields.CharField')(max_length=500)),
-        ))
-        db.send_create_signal(u'ippc', ['TestKeyword'])
-
-        # Deleting model 'IssueKeywordsRelate'
-        db.delete_table(u'ippc_issuekeywordsrelate')
-
-        # Removing M2M table for field name on 'IssueKeywordsRelate'
-        db.delete_table(db.shorten_name(u'ippc_issuekeywordsrelate_name'))
-
-        # Deleting model 'CommodityKeywordsRelate'
-        db.delete_table(u'ippc_commoditykeywordsrelate')
-
-        # Removing M2M table for field name on 'CommodityKeywordsRelate'
-        db.delete_table(db.shorten_name(u'ippc_commoditykeywordsrelate_name'))
-
-        # Adding field 'PestFreeArea.issue_keywords'
-        db.add_column(u'ippc_pestfreearea', 'issue_keywords',
-                      self.gf('django.db.models.fields.related.ForeignKey')(to=orm['ippc.IssueKeyword'], null=True, blank=True),
+        # Adding field 'Files.file'
+        db.add_column(u'ippc_files', 'file',
+                      self.gf('django.db.models.fields.files.FileField')(default='', max_length=100),
                       keep_default=False)
 
-        # Adding field 'PestFreeArea.commodity_keywords'
-        db.add_column(u'ippc_pestfreearea', 'commodity_keywords',
-                      self.gf('django.db.models.fields.related.ForeignKey')(to=orm['ippc.CommodityKeyword'], null=True, blank=True),
-                      keep_default=False)
+        # Deleting field 'Files.files'
+        db.delete_column(u'ippc_files', 'files')
 
-        # Adding field 'ImplementationISPM.issue_keywords'
-        db.add_column(u'ippc_implementationispm', 'issue_keywords',
-                      self.gf('django.db.models.fields.related.ForeignKey')(to=orm['ippc.IssueKeyword'], null=True, blank=True),
-                      keep_default=False)
-
-        # Adding field 'ImplementationISPM.commodity_keywords'
-        db.add_column(u'ippc_implementationispm', 'commodity_keywords',
-                      self.gf('django.db.models.fields.related.ForeignKey')(to=orm['ippc.CommodityKeyword'], null=True, blank=True),
-                      keep_default=False)
-
-        # Adding field 'EventReporting.commodity_keywords'
-        db.add_column(u'ippc_eventreporting', 'commodity_keywords',
-                      self.gf('django.db.models.fields.related.ForeignKey')(to=orm['ippc.CommodityKeyword'], null=True, blank=True),
-                      keep_default=False)
-
-        # Adding M2M table for field issue_keywords on 'EventReporting'
-        m2m_table_name = db.shorten_name(u'ippc_eventreporting_issue_keywords')
-        db.create_table(m2m_table_name, (
-            ('id', models.AutoField(verbose_name='ID', primary_key=True, auto_created=True)),
-            ('eventreporting', models.ForeignKey(orm[u'ippc.eventreporting'], null=False)),
-            ('issuekeyword', models.ForeignKey(orm[u'ippc.issuekeyword'], null=False))
-        ))
-        db.create_unique(m2m_table_name, ['eventreporting_id', 'issuekeyword_id'])
-
-        # Adding field 'ReportingObligation.commodity_keywords'
-        db.add_column(u'ippc_reportingobligation', 'commodity_keywords',
-                      self.gf('django.db.models.fields.related.ForeignKey')(to=orm['ippc.CommodityKeyword'], null=True, blank=True),
-                      keep_default=False)
-
-        # Adding M2M table for field keys on 'ReportingObligation'
-        m2m_table_name = db.shorten_name(u'ippc_reportingobligation_keys')
+        # Adding M2M table for field images on 'ReportingObligation'
+        m2m_table_name = db.shorten_name(u'ippc_reportingobligation_images')
         db.create_table(m2m_table_name, (
             ('id', models.AutoField(verbose_name='ID', primary_key=True, auto_created=True)),
             ('reportingobligation', models.ForeignKey(orm[u'ippc.reportingobligation'], null=False)),
-            ('issuekeyword', models.ForeignKey(orm[u'ippc.issuekeyword'], null=False))
+            ('aentryimage', models.ForeignKey(orm[u'ippc.aentryimage'], null=False))
         ))
-        db.create_unique(m2m_table_name, ['reportingobligation_id', 'issuekeyword_id'])
-
-        # Adding field 'PestReport.issue_keywords'
-        db.add_column(u'ippc_pestreport', 'issue_keywords',
-                      self.gf('django.db.models.fields.related.ForeignKey')(to=orm['ippc.IssueKeyword'], null=True, blank=True),
-                      keep_default=False)
-
-        # Adding field 'PestReport.commodity_keywords'
-        db.add_column(u'ippc_pestreport', 'commodity_keywords',
-                      self.gf('django.db.models.fields.related.ForeignKey')(to=orm['ippc.CommodityKeyword'], null=True, blank=True),
-                      keep_default=False)
+        db.create_unique(m2m_table_name, ['reportingobligation_id', 'aentryimage_id'])
 
 
     models = {
@@ -300,9 +171,9 @@ class Migration(SchemaMigration):
         },
         u'ippc.commoditykeywordsrelate': {
             'Meta': {'object_name': 'CommodityKeywordsRelate'},
+            'commname': ('django.db.models.fields.related.ManyToManyField', [], {'symmetrical': 'False', 'to': u"orm['ippc.CommodityKeyword']", 'null': 'True', 'blank': 'True'}),
             'content_type': ('django.db.models.fields.related.ForeignKey', [], {'to': u"orm['contenttypes.ContentType']"}),
             u'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
-            'name': ('django.db.models.fields.related.ManyToManyField', [], {'symmetrical': 'False', 'to': u"orm['ippc.CommodityKeyword']", 'null': 'True', 'blank': 'True'}),
             'object_id': ('django.db.models.fields.PositiveIntegerField', [], {})
         },
         u'ippc.countrypage': {
@@ -341,7 +212,6 @@ class Migration(SchemaMigration):
             'description': ('django.db.models.fields.TextField', [], {'blank': 'True'}),
             'event_rep_type': ('django.db.models.fields.IntegerField', [], {'default': '1'}),
             'expiry_date': ('django.db.models.fields.DateTimeField', [], {'null': 'True', 'blank': 'True'}),
-            'file': ('django.db.models.fields.files.FileField', [], {'max_length': '100', 'blank': 'True'}),
             'gen_description': ('django.db.models.fields.BooleanField', [], {'default': 'True'}),
             u'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
             'in_sitemap': ('django.db.models.fields.BooleanField', [], {'default': 'True'}),
@@ -357,6 +227,13 @@ class Migration(SchemaMigration):
             'status': ('django.db.models.fields.IntegerField', [], {'default': '2'}),
             'title': ('django.db.models.fields.CharField', [], {'max_length': '500'}),
             'url_for_more_information': ('django.db.models.fields.URLField', [], {'max_length': '200', 'null': 'True', 'blank': 'True'})
+        },
+        u'ippc.fileanddescr': {
+            'Meta': {'object_name': 'FileAndDescr'},
+            'description': ('django.db.models.fields.CharField', [], {'max_length': '255'}),
+            'eventreporting': ('django.db.models.fields.related.ForeignKey', [], {'to': u"orm['ippc.EventReporting']"}),
+            'file': ('django.db.models.fields.files.FileField', [], {'max_length': '100', 'blank': 'True'}),
+            u'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'})
         },
         u'ippc.files': {
             'Meta': {'object_name': 'Files'},
@@ -431,7 +308,7 @@ class Migration(SchemaMigration):
             'Meta': {'object_name': 'IssueKeywordsRelate'},
             'content_type': ('django.db.models.fields.related.ForeignKey', [], {'to': u"orm['contenttypes.ContentType']"}),
             u'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
-            'name': ('django.db.models.fields.related.ManyToManyField', [], {'symmetrical': 'False', 'to': u"orm['ippc.IssueKeyword']", 'null': 'True', 'blank': 'True'}),
+            'issuename': ('django.db.models.fields.related.ManyToManyField', [], {'symmetrical': 'False', 'to': u"orm['ippc.IssueKeyword']", 'null': 'True', 'blank': 'True'}),
             'object_id': ('django.db.models.fields.PositiveIntegerField', [], {})
         },
         u'ippc.pestfreearea': {

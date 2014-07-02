@@ -8,55 +8,43 @@ from django.db import models
 class Migration(SchemaMigration):
 
     def forwards(self, orm):
-        # Removing M2M table for field name on 'IssueKeywordsRelate'
-        db.delete_table(db.shorten_name(u'ippc_issuekeywordsrelate_name'))
+        # Deleting field 'Files.files'
+        db.delete_column(u'ippc_files', 'files')
 
-        # Adding M2M table for field issuename on 'IssueKeywordsRelate'
-        m2m_table_name = db.shorten_name(u'ippc_issuekeywordsrelate_issuename')
+        # Adding field 'Files.file'
+        db.add_column(u'ippc_files', 'file',
+                      self.gf('django.db.models.fields.files.FileField')(default='', max_length=100),
+                      keep_default=False)
+
+        # Deleting field 'FileRelate.files_doc'
+        db.delete_column(u'ippc_filerelate', 'files_doc')
+
+        # Adding M2M table for field files_doc on 'FileRelate'
+        m2m_table_name = db.shorten_name(u'ippc_filerelate_files_doc')
         db.create_table(m2m_table_name, (
             ('id', models.AutoField(verbose_name='ID', primary_key=True, auto_created=True)),
-            ('issuekeywordsrelate', models.ForeignKey(orm[u'ippc.issuekeywordsrelate'], null=False)),
-            ('issuekeyword', models.ForeignKey(orm[u'ippc.issuekeyword'], null=False))
+            ('filerelate', models.ForeignKey(orm[u'ippc.filerelate'], null=False)),
+            ('files', models.ForeignKey(orm[u'ippc.files'], null=False))
         ))
-        db.create_unique(m2m_table_name, ['issuekeywordsrelate_id', 'issuekeyword_id'])
-
-        # Removing M2M table for field name on 'CommodityKeywordsRelate'
-        db.delete_table(db.shorten_name(u'ippc_commoditykeywordsrelate_name'))
-
-        # Adding M2M table for field commname on 'CommodityKeywordsRelate'
-        m2m_table_name = db.shorten_name(u'ippc_commoditykeywordsrelate_commname')
-        db.create_table(m2m_table_name, (
-            ('id', models.AutoField(verbose_name='ID', primary_key=True, auto_created=True)),
-            ('commoditykeywordsrelate', models.ForeignKey(orm[u'ippc.commoditykeywordsrelate'], null=False)),
-            ('commoditykeyword', models.ForeignKey(orm[u'ippc.commoditykeyword'], null=False))
-        ))
-        db.create_unique(m2m_table_name, ['commoditykeywordsrelate_id', 'commoditykeyword_id'])
+        db.create_unique(m2m_table_name, ['filerelate_id', 'files_id'])
 
 
     def backwards(self, orm):
-        # Adding M2M table for field name on 'IssueKeywordsRelate'
-        m2m_table_name = db.shorten_name(u'ippc_issuekeywordsrelate_name')
-        db.create_table(m2m_table_name, (
-            ('id', models.AutoField(verbose_name='ID', primary_key=True, auto_created=True)),
-            ('issuekeywordsrelate', models.ForeignKey(orm[u'ippc.issuekeywordsrelate'], null=False)),
-            ('issuekeyword', models.ForeignKey(orm[u'ippc.issuekeyword'], null=False))
-        ))
-        db.create_unique(m2m_table_name, ['issuekeywordsrelate_id', 'issuekeyword_id'])
+        # Adding field 'Files.files'
+        db.add_column(u'ippc_files', 'files',
+                      self.gf('django.db.models.fields.files.FileField')(default='', max_length=100, blank=True),
+                      keep_default=False)
 
-        # Removing M2M table for field issuename on 'IssueKeywordsRelate'
-        db.delete_table(db.shorten_name(u'ippc_issuekeywordsrelate_issuename'))
+        # Deleting field 'Files.file'
+        db.delete_column(u'ippc_files', 'file')
 
-        # Adding M2M table for field name on 'CommodityKeywordsRelate'
-        m2m_table_name = db.shorten_name(u'ippc_commoditykeywordsrelate_name')
-        db.create_table(m2m_table_name, (
-            ('id', models.AutoField(verbose_name='ID', primary_key=True, auto_created=True)),
-            ('commoditykeywordsrelate', models.ForeignKey(orm[u'ippc.commoditykeywordsrelate'], null=False)),
-            ('commoditykeyword', models.ForeignKey(orm[u'ippc.commoditykeyword'], null=False))
-        ))
-        db.create_unique(m2m_table_name, ['commoditykeywordsrelate_id', 'commoditykeyword_id'])
+        # Adding field 'FileRelate.files_doc'
+        db.add_column(u'ippc_filerelate', 'files_doc',
+                      self.gf('django.db.models.fields.files.FileField')(default='', max_length=100, blank=True),
+                      keep_default=False)
 
-        # Removing M2M table for field commname on 'CommodityKeywordsRelate'
-        db.delete_table(db.shorten_name(u'ippc_commoditykeywordsrelate_commname'))
+        # Removing M2M table for field files_doc on 'FileRelate'
+        db.delete_table(db.shorten_name(u'ippc_filerelate_files_doc'))
 
 
     models = {
@@ -216,9 +204,16 @@ class Migration(SchemaMigration):
             'title': ('django.db.models.fields.CharField', [], {'max_length': '500'}),
             'url_for_more_information': ('django.db.models.fields.URLField', [], {'max_length': '200', 'null': 'True', 'blank': 'True'})
         },
+        u'ippc.filerelate': {
+            'Meta': {'object_name': 'FileRelate'},
+            'content_type': ('django.db.models.fields.related.ForeignKey', [], {'to': u"orm['contenttypes.ContentType']"}),
+            'files_doc': ('django.db.models.fields.related.ManyToManyField', [], {'related_name': "'files_doc'", 'symmetrical': 'False', 'to': u"orm['ippc.Files']"}),
+            u'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
+            'object_id': ('django.db.models.fields.PositiveIntegerField', [], {})
+        },
         u'ippc.files': {
             'Meta': {'object_name': 'Files'},
-            'files': ('django.db.models.fields.files.FileField', [], {'max_length': '100', 'blank': 'True'}),
+            'file': ('django.db.models.fields.files.FileField', [], {'max_length': '100'}),
             u'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'})
         },
         u'ippc.implementationispm': {

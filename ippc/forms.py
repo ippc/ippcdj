@@ -3,11 +3,12 @@
 from django import forms
 from .models import IppcUserProfile, PestStatus, PestReport,  CountryPage, \
 ReportingObligation, EventReporting, PestFreeArea, ImplementationISPM, \
-VERS_CHOICES,IssueKeywordsRelate,CommodityKeywordsRelate#,IssueKeywordEntry,Entry,TestModel,TestAA
+VERS_CHOICES,IssueKeywordsRelate,CommodityKeywordsRelate,FileAndDescr#AEntryImage,Files,FileRelate,
 from django.contrib.auth.models import User
 import autocomplete_light
-
 import autocomplete_light_registry
+from django.forms.models import inlineformset_factory
+from django.forms.formsets import formset_factory
 
 class PestReportForm(forms.ModelForm):
 
@@ -40,6 +41,7 @@ class PestReportForm(forms.ModelForm):
             'pest_identity': autocomplete_light.ChoiceWidget ('EppoCodeAutocomplete'),
         }
 
+
 class IssueKeywordsRelateForm(forms.ModelForm):
     class Meta:
         model =  IssueKeywordsRelate
@@ -56,7 +58,26 @@ class CommodityKeywordsRelateForm(forms.ModelForm):
         widgets = {
          'commname': autocomplete_light.MultipleChoiceWidget ('CommodityKeywordAutocomplete'),   
          }        
-
+#class FileRelateForm(forms.ModelForm):
+#    class Meta:
+#        model =  FileRelate
+#        fields = [
+#            'files_doc',]
+#        widgets = {
+#             'files_doc':forms.FileField()
+#        }           
+#       
+#class AEntryImageForm(forms.ModelForm):
+#    class Meta:
+#        model =  AEntryImage
+#        fields = [
+#            'image2',]
+#class FilesForm(forms.ModelForm):
+#    class Meta:
+#        model =  Files
+#        fields = [
+#            'file',]        
+#            
 class ReportingObligationForm(forms.ModelForm):
 
     # country = forms.ChoiceField(widget=forms.Select(), initial='country')
@@ -73,6 +94,7 @@ class ReportingObligationForm(forms.ModelForm):
            'contact_for_more_information',
            'url_for_more_information',
            'country',
+          
            ]
         exclude = ('author', 'slug', 'publish_date',  'modify_date')
         widgets = {
@@ -91,7 +113,7 @@ class EventReportingForm(forms.ModelForm):
            'event_rep_type',
            'title', 
            'publication_date', 
-           'file',
+          # 'file',
            'short_description',
            'contact_for_more_information',
            'url_for_more_information',
@@ -102,6 +124,8 @@ class EventReportingForm(forms.ModelForm):
             'country': forms.HiddenInput(),   
             'event_rep_type': forms.RadioSelect(attrs={'readonly':'True'}),
           }
+ 
+FileAndDescrFormSet = inlineformset_factory(EventReporting,  FileAndDescr,extra=1)
     
 class PestFreeAreaForm(forms.ModelForm):
    # country = forms.ChoiceField(widget=forms.Select(), initial='country')

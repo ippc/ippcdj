@@ -29,7 +29,8 @@ from django.contrib.contenttypes.generic import GenericRelation
 from django.contrib.contenttypes.models import ContentType
 from django.db.models.signals import post_save
  
- 
+from django.core.exceptions import ValidationError
+
 
 
 class PublicationLibrary(Page, RichText):
@@ -258,7 +259,7 @@ class CommodityKeyword(models.Model):
     def __unicode__(self):
         return self.name
     
-    
+
 class IssueKeywordsRelate(models.Model):
     content_type = models.ForeignKey(ContentType)
     object_id = models.PositiveIntegerField()
@@ -274,7 +275,46 @@ class CommodityKeywordsRelate(models.Model):
     commname = models.ManyToManyField(CommodityKeyword,
         verbose_name=_("Commodity Keywords"),
         blank=True, null=True)    
-    
+
+#class Files(models.Model):
+#    """ Documents """
+#    # http://stackoverflow.com/a/1190866/412329
+#    files = models.FileField(blank=True, help_text='10 MB maximum file size.', verbose_name='Upload a file', upload_to='files/%Y/%m/%d/')
+#
+#    # Eureka!! http://scottbarnham.com/blog/2008/02/24/imagefield-and-edit_inline-revisited/   
+#    def save(self):
+#        if not self.id and not self.files:
+#            return
+#        # if self.remove:
+#        #     self.delete()
+#        else:
+#            super(Files, self).save()
+#
+#    # class Meta:
+#        # ordering = ['']
+#
+#    def __unicode__(self):
+#        return self.files.name
+#    # http://stackoverflow.com/questions/2683621/django-filefield-return-filename-only-in-template
+#    def name(self):
+#           return self.files.name
+#    
+#    def filename(self):
+#           return os.path.basename(self.files.name) 
+
+#class Files(models.Model):
+#   file = models.FileField(upload_to='files')
+#
+#class FileRelate(models.Model):
+#    content_type = models.ForeignKey(ContentType)
+#    object_id = models.PositiveIntegerField()
+#    content_object = generic.GenericForeignKey('content_type', 'object_id')
+##    files_doc =models.FileField(_("Document"), upload_to="files/", blank=True)
+#    files_doc = models.ManyToManyField(Files, null=True, blank=True)
+## 
+#class AEntryImage(models.Model):  
+#    image2 = models.FileField(upload_to="entries")
+
 class IppcUserProfile(models.Model):
     """ User Profiles for IPPC"""
     
@@ -328,7 +368,6 @@ REPORT_STATUS_CHOICES = (
 )
 
 
-
 class PestReport(Displayable, models.Model):
     """ Pest Reports"""
     country = models.ForeignKey(CountryPage, related_name="pest_report_country_page")
@@ -361,11 +400,11 @@ class PestReport(Displayable, models.Model):
     contact_for_more_information = models.TextField(_("Contact for more information"),
         blank=True, null=True)
     url_for_more_information = models.URLField(blank=True, null=True)
-    #issue_keywords = models.ForeignKey(IssueKeyword, null=True, blank=True)
-    #commodity_keywords = models.ForeignKey(CommodityKeyword, null=True, blank=True)
+    
+    
     issuename=generic.GenericRelation(IssueKeywordsRelate)
     commname=generic.GenericRelation(CommodityKeywordsRelate)
-  
+    
     # =todo:
     # commodity_groups = 
     # keywords / tags = 
@@ -463,12 +502,12 @@ class ReportingObligation(Displayable, models.Model):
     contact_for_more_information = models.TextField(_("Contact for more information"), blank=True, null=True)    
     url_for_more_information = models.URLField(blank=True, null=True)
     modify_date = models.DateTimeField(_("Modified date"), blank=True, null=True, editable=False)
-    #issue_keywords = models.ForeignKey(IssueKeyword, null=True, blank=True)
-    #commodity_keywords = models.ForeignKey(CommodityKeyword, null=True, blank=True)
+    
+    
     issuename=generic.GenericRelation(IssueKeywordsRelate)
     commname=generic.GenericRelation(CommodityKeywordsRelate)
   
-
+    #images = models.ManyToManyField(AEntryImage, null=True, blank=True)
     # =todo:
     # commodity_groups = 
     # keywords / tags = 
@@ -535,7 +574,7 @@ EVT_REP_TYPE_CHOICES = (
     (EVT_REP_4, _("Pest status")),
     (EVT_REP_5, _("Rationale for Phytosanitary Requirements")),
 )
-   
+          
 
 class EventReporting(Displayable, models.Model):
     """ Event Reporting"""
@@ -549,20 +588,13 @@ class EventReporting(Displayable, models.Model):
     
     event_rep_type = models.IntegerField(_("Event Reporting"), choices=EVT_REP_TYPE_CHOICES, default=EVT_REP_1)
     publication_date = models.DateTimeField(_("Publication date"), blank=True, null=True, editable=True)
-    file = models.FileField(_("Report Document"), upload_to="event_reporting/%Y/%m/", blank=True)
+    #file = models.FileField(_("Report Document"), upload_to="event_reporting/%Y/%m/", blank=True)
     short_description = models.TextField(_("Short Description"),  blank=True, null=True)
     contact_for_more_information = models.TextField(_("Contact for more information"), blank=True, null=True)    
     url_for_more_information = models.URLField(blank=True, null=True)
     modify_date = models.DateTimeField(_("Modified date"), blank=True, null=True, editable=False)
-    #issue_keywords = models.ForeignKey(IssueKeyword, null=True, blank=True)
-    #commodity_keywords = models.ForeignKey(CommodityKeyword, null=True, blank=True)
     issuename=generic.GenericRelation(IssueKeywordsRelate)
     commname=generic.GenericRelation(CommodityKeywordsRelate)
-  
-    # =todo:
-    # commodity_groups = 
-    # keywords / tags = 
-    # objects = models.Manager()
     objects = SearchableManager()
     
     search_fields = ("title", "short_description")
@@ -603,11 +635,22 @@ class EventReporting(Displayable, models.Model):
     def get_absolute_url(self):
         return ('upload-new', )
 
+def validate_file_extension(value):
+    if not value.name.endswith('.pdf'):
+        raise ValidationError(u'You can only upload PDF files')
     
-    
-    
-    
-    
+class FileAndDescr(models.Model):
+    eventreporting = models.ForeignKey(EventReporting)
+    description = models.CharField(max_length=255)
+    file = models.FileField(blank=True, help_text='10 MB maximum file size.', verbose_name='Upload a file', upload_to='files/%Y/%m/%d/', validators=[validate_file_extension])
+
+    def __unicode__(self):  
+        return self.file.name  
+    def name(self):
+        return self.file.name
+    def filename(self):
+        return os.path.basename(self.file.name) 
+   
 PFA_TYPE_1 = 1
 PFA_TYPE_2 = 2
 PFA_TYPE_1_CHOICES = (
@@ -631,8 +674,8 @@ class PestFreeArea(Displayable, models.Model):
     contact_for_more_information = models.TextField(_("Contact for more information"), blank=True, null=True)    
     url_for_more_information = models.URLField(blank=True, null=True)
     modify_date = models.DateTimeField(_("Modified date"), blank=True, null=True, editable=False)
-    #issue_keywords = models.ForeignKey(IssueKeyword, null=True, blank=True)
-    #commodity_keywords = models.ForeignKey(CommodityKeyword, null=True, blank=True)
+    
+    
     issuename=generic.GenericRelation(IssueKeywordsRelate)
     commname=generic.GenericRelation(CommodityKeywordsRelate)
     # =todo:
@@ -733,8 +776,8 @@ class ImplementationISPM(Displayable, models.Model):
     contact_for_more_information = models.TextField(_("Contact for more information"), blank=True, null=True)    
     url_for_more_information = models.URLField(blank=True, null=True)
     modify_date = models.DateTimeField(_("Modified date"), blank=True, null=True, editable=False)
-    #issue_keywords = models.ForeignKey(IssueKeyword, null=True, blank=True)
-    #commodity_keywords = models.ForeignKey(CommodityKeyword, null=True, blank=True)
+    
+    
     issuename=generic.GenericRelation(IssueKeywordsRelate)
     commname=generic.GenericRelation(CommodityKeywordsRelate)
     # =todo:

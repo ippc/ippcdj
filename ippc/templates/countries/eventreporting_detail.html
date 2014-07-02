@@ -68,11 +68,7 @@
   <dt>{% trans "Author" %}</dt>
   <dd>{{ eventreporting.author.get_profile.first_name }} {{ eventreporting.author.get_profile.last_name }}</dd>
   
-  {% if eventreporting.file %}
-  <dt>{% trans "Report file" %}</dt>
-  <dd><a href="{{MEDIA_URL}}{{ eventreporting.files }}{{ eventreporting.file }}">{{ eventreporting.filename }}</a></dd>
-  {% endif %}
-
+  
 
   {% if eventreporting.issuename %}
   <dt>{% trans "Issue keywords" %}</dt>
@@ -106,9 +102,19 @@
  
   
   
- 
+  {% if eventreporting.file %}
+  <dt>{% trans "Report file" %}</dt>
+  <dd><a href="{{MEDIA_URL}}{{ eventreporting.files }}{{ eventreporting.file }}">{{ eventreporting.filename }}</a></dd>
+  {% endif %}
+
+   
+  <dt>{% trans "Report files" %}</dt>
+   {% for f in eventreporting.fileanddescr_set.all %} 
+    
+  <dd><a href="{{MEDIA_URL}}{{f.file.name}}">{{ f.description }}</a></dd>
+{% endfor %}
+
   
 </dl>
-
 {% endblock %}
 
