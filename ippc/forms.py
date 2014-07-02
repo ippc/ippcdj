@@ -3,7 +3,7 @@
 from django import forms
 from .models import IppcUserProfile, PestStatus, PestReport,  CountryPage, \
 ReportingObligation, EventReporting, PestFreeArea, ImplementationISPM, \
-VERS_CHOICES,IssueKeywordsRelate,CommodityKeywordsRelate,FileAndDescr#AEntryImage,Files,FileRelate,
+VERS_CHOICES,IssueKeywordsRelate,CommodityKeywordsRelate,EventreportingFile
 from django.contrib.auth.models import User
 import autocomplete_light
 import autocomplete_light_registry
@@ -58,26 +58,7 @@ class CommodityKeywordsRelateForm(forms.ModelForm):
         widgets = {
          'commname': autocomplete_light.MultipleChoiceWidget ('CommodityKeywordAutocomplete'),   
          }        
-#class FileRelateForm(forms.ModelForm):
-#    class Meta:
-#        model =  FileRelate
-#        fields = [
-#            'files_doc',]
-#        widgets = {
-#             'files_doc':forms.FileField()
-#        }           
-#       
-#class AEntryImageForm(forms.ModelForm):
-#    class Meta:
-#        model =  AEntryImage
-#        fields = [
-#            'image2',]
-#class FilesForm(forms.ModelForm):
-#    class Meta:
-#        model =  Files
-#        fields = [
-#            'file',]        
-#            
+
 class ReportingObligationForm(forms.ModelForm):
 
     # country = forms.ChoiceField(widget=forms.Select(), initial='country')
@@ -125,7 +106,7 @@ class EventReportingForm(forms.ModelForm):
             'event_rep_type': forms.RadioSelect(attrs={'readonly':'True'}),
           }
  
-FileAndDescrFormSet = inlineformset_factory(EventReporting,  FileAndDescr,extra=1)
+EventreportingFileFormSet = inlineformset_factory(EventReporting,  EventreportingFile,extra=1)
     
 class PestFreeAreaForm(forms.ModelForm):
    # country = forms.ChoiceField(widget=forms.Select(), initial='country')

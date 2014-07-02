@@ -276,45 +276,6 @@ class CommodityKeywordsRelate(models.Model):
         verbose_name=_("Commodity Keywords"),
         blank=True, null=True)    
 
-#class Files(models.Model):
-#    """ Documents """
-#    # http://stackoverflow.com/a/1190866/412329
-#    files = models.FileField(blank=True, help_text='10 MB maximum file size.', verbose_name='Upload a file', upload_to='files/%Y/%m/%d/')
-#
-#    # Eureka!! http://scottbarnham.com/blog/2008/02/24/imagefield-and-edit_inline-revisited/   
-#    def save(self):
-#        if not self.id and not self.files:
-#            return
-#        # if self.remove:
-#        #     self.delete()
-#        else:
-#            super(Files, self).save()
-#
-#    # class Meta:
-#        # ordering = ['']
-#
-#    def __unicode__(self):
-#        return self.files.name
-#    # http://stackoverflow.com/questions/2683621/django-filefield-return-filename-only-in-template
-#    def name(self):
-#           return self.files.name
-#    
-#    def filename(self):
-#           return os.path.basename(self.files.name) 
-
-#class Files(models.Model):
-#   file = models.FileField(upload_to='files')
-#
-#class FileRelate(models.Model):
-#    content_type = models.ForeignKey(ContentType)
-#    object_id = models.PositiveIntegerField()
-#    content_object = generic.GenericForeignKey('content_type', 'object_id')
-##    files_doc =models.FileField(_("Document"), upload_to="files/", blank=True)
-#    files_doc = models.ManyToManyField(Files, null=True, blank=True)
-## 
-#class AEntryImage(models.Model):  
-#    image2 = models.FileField(upload_to="entries")
-
 class IppcUserProfile(models.Model):
     """ User Profiles for IPPC"""
     
@@ -639,7 +600,7 @@ def validate_file_extension(value):
     if not value.name.endswith('.pdf'):
         raise ValidationError(u'You can only upload PDF files')
     
-class FileAndDescr(models.Model):
+class EventreportingFile(models.Model):
     eventreporting = models.ForeignKey(EventReporting)
     description = models.CharField(max_length=255)
     file = models.FileField(blank=True, help_text='10 MB maximum file size.', verbose_name='Upload a file', upload_to='files/%Y/%m/%d/', validators=[validate_file_extension])
