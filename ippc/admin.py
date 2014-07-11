@@ -6,67 +6,25 @@ from mezzanine.pages.admin import PageAdmin
 from mezzanine.conf import settings
 from mezzanine.core.admin import TabularDynamicInlineAdmin, StackedDynamicInlineAdmin
 
-from .models import PestStatus, PestReport, CountryPage, WorkAreaPage, PublicationLibrary, Publication, ReportingObligation,EventReporting,PestFreeArea,ImplementationISPM,ImplementationISPMVersion, TransPublicationLibraryPage#, File
+from .models import PestStatus, PestReport, CountryPage, WorkAreaPage, PublicationLibrary, \
+Publication, ReportingObligation,EventReporting,PestFreeArea,ImplementationISPM, \
+ImplementationISPMVersion, TransPublicationLibraryPage
 from django.contrib.auth.models import User
 
 from mezzanine.pages.models import RichTextPage, Link
 from mezzanine.pages.admin import PageAdmin, LinkAdmin
 from models import TransRichTextPage, TransLinkPage
 
-# Publications -----------------
-
-# class FileInline(TabularDynamicInlineAdmin):
-#     model = File
-
-
-#
-# Publication Library
-#
-# class TransPublicationLibraryPageInline(TabularDynamicInlineAdmin):
-#     model  = TransPublicationLibraryPage
-#     fields = ("lang", "title", "content")
-#
-# class TransPublicationLibraryPageAdmin(admin.ModelAdmin):
-#     inlines   = (TransInline,)
-#
-# admin.site.unregister(PublicationLibrary)
-# admin.site.register(PublicationLibrary, TransPublicationLibraryPageAdmin)
-
 
 class PublicationInline(StackedDynamicInlineAdmin):
     model = Publication
     prepopulated_fields = { 'slug': ['title'] }
-    # exclude = ('author',) # http://stackoverflow.com/a/7588194/412329
-    
-    # def queryset(self, request):
-    #     return Publication.objects.filter(author=request.user)
-    # 
-    # def save_model(self, request, obj, form, change):
-    #     obj.author = request.user
-    #     obj.author_id = request.user.id
-    #     obj.save()
-
-
-    # #
-    # # Richtext
-    # #
-    # class TransInline(TabularDynamicInlineAdmin):
-    #     model  = TransRichTextPage
-    #     fields = ("lang", "title", "content")
-    #
-    # class TransPageAdmin(PageAdmin):
-    #     inlines   = (TransInline,)
-    #
-    # admin.site.unregister(RichTextPage)
-    # admin.site.register(RichTextPage, TransPageAdmin)
-
 
 
 class TransPublicationLibraryPageAdmin(StackedDynamicInlineAdmin):
     model = TransPublicationLibraryPage
     fields = ("lang", "title", "content")
-    # fk_name = 'parent' # http://stackoverflow.com/a/2409118
-    # prepopulated_fields = { 'slug': ['title'] }
+
 
 class PublicationLibraryAdmin(PageAdmin):
     inlines = (PublicationInline, TransPublicationLibraryPageAdmin,)
@@ -90,6 +48,23 @@ class CountryPageAdmin(PageAdmin):
 admin.site.register(CountryPage, CountryPageAdmin)
 
 
+# forumposts_extra_fieldsets = ((None, {"fields": ("moderator", "comments", )}),)
+#
+# class ForumPostAdmin(PageAdmin):
+#     save_on_top = True
+#     # fieldsets = deepcopy(PageAdmin.fieldsets) + forumposts_extra_fieldsets
+#     # readonly_fields = ('comments', 'in_menus',)
+#
+#     # list_display = ('title', 'publish_date', 'modify_date', 'status', 'country')
+#     # list_filter = ('title', 'publish_date', 'modify_date', 'status', 'country')
+#     # search_fields = ('title', 'summary')
+#     # prepopulated_fields = { 'slug': ['title'] }
+#     # fieldsets = deepcopy(PageAdmin.fieldsets) + countrypages_extra_fieldsets
+#     # prepopulated_fields = { 'country_slug': ['name'] }
+#     # list_display = ('continent','name','iso','iso3', 'languages', 'currency_name')
+#     # list_display_links = ('name',)
+#
+# admin.site.register(ForumPost, ForumPostAdmin)
 
 
 

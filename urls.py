@@ -21,6 +21,8 @@ admin.autodiscover()
 urlpatterns = patterns("",
     
     url(r'^ocs/', include('ocs.urls', namespace="ocs")),
+    url(r'^forum/', include('forum.urls', namespace="forum")),
+    
     
     url("^sitemap/$", direct_to_template, {"template": "sitemap.html"}, name="sitemap"),
     url("^contact/$", direct_to_template, {"template": "contact.html"}, name="contact"),
@@ -192,8 +194,6 @@ urlpatterns = patterns("",
     # attachments for any model
     # url(r'^attachments/', include('attachments.urls')),
 
-
-
     # pagedown for markdown wysiwyg
     ("^pagedown/", include(mezzanine_pagedown.urls)),
     
@@ -249,7 +249,9 @@ urlpatterns = patterns("",
     # ``mezzanine.urls``, go right ahead and take the parts you want
     # from it, and use them directly below instead of using
     # ``mezzanine.urls``.
+
     ("^", include("mezzanine.urls")),
+
 
     # MOUNTING MEZZANINE UNDER A PREFIX
     # ---------------------------------

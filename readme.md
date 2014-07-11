@@ -2,55 +2,54 @@
 
 ## Things to do
 
-- Create remaining forms for all types of NPPO reports
-    - Add [tagging](http://django-taggit.readthedocs.org/en/latest/) (keywords) and other fields
+- Start from Dj 1.6.5 (1.7?) and Mezzanine 3.1.5
+- The All Our Users Database. Two options:
+    1. Create[Single Sign-On](https://docs.djangoproject.com/en/1.5/topics/auth/customizing/) (see also [this](https://meta.discourse.org/t/sso-example-for-django/14258) and [this](https://github.com/Bouke/django-federated-login/tree/master/example)) and **[this](https://gist.github.com/kenbolton/4946936)** - a separate Accounts database to be used by all IPPC-related apps for authentication and authorization. The database should contain two tables:
+        - Users (authentication - recognizes who you are)
+            - ID
+            - first name
+            - last name
+            - login/nickname
+            - email
+            - hashed password
+            - salt
+            - creation timestamp
+            - update timestamp
+            - account state (verified, disabled, etc)
+        - Groups (knows what you are allowed to do, or what you allow others to do)
+
+        Then, each application contains a profile app that extends the above Accounts DB authentication defaults:
+    
+        - IPPC
+            - User(Fk to Accounts)
+            - IPPC Country
+            - Telephone
+            - Alternate email
+        - Phyto
+            - User(Fk to Users)
+            - CV
+            - Date Joined
+        - Ocs
+            - User(Fk to Users)
+            - Document Title
+            - Revision
+            - Comment
+            - Version
+        - Apppc
+            - User(Fk to Users)
+            - APPPC country
+    2. [All websites run off the same application instance](http://stackoverflow.com/questions/1581602/django-sharing-authentication-across-two-sites-that-are-on-different-domains) with [custom authentication backend](http://stackoverflow.com/questions/1404131/how-to-get-unique-users-across-multiple-django-sites-powered-by-the-sites-fram)
 - Country pages:
-    - Versioning of Pest Reports. Report number: GBR-32/1. When edited: GBR-32/2.
-    - Other country forms
     - Prevent hidden report titles from appearing in search results
     - Country RSS feeds
 - Author field for publications
 - Homepage design
     - ¿'Add Pest Report' button in countries for NPPOs, visible even when user is logged out. Once user logs in, if they're an NPPO, they are redirected to the pest report form for their country?
     - Photos
-- [Calendar](https://github.com/shurik/mezzanine.calendar) (or [Events](https://github.com/stbarnabas/mezzanine-events)?)
+- [Calendar](https://github.com/llazzaro/django-scheduler)
 - [Forums](https://github.com/hovel/pybbm)
 - User registration open but behind login-required and super-user required so only admins can add new users, who get notification emails to confirm account and set own password. OR, user registration open to all, but need approval by admins. i.e. Account registration & [activation](http://mezzanine.jupo.org/docs/user-accounts.html#account-approval) system?
     - Setup auto-sending of messages to new users, with possible custom messages for NPPOs and Editors
-- [Single Sign-On](https://docs.djangoproject.com/en/1.5/topics/auth/customizing/). Create separate Accounts database to be used by all IPPC-related apps for authentication and authorization. The database should contain two tables:
-    - Users (authentication - recognizes who you are)
-        - ID
-        - first name
-        - last name
-        - login/nickname
-        - email
-        - hashed password
-        - salt
-        - creation timestamp
-        - update timestamp
-        - account state (verified, disabled, etc)
-    - Groups (knows what you are allowed to do, or what you allow others to do)
-
-    Then, each application contains a profile app that extends the above Accounts DB authentication defaults:
-    
-    - IPPC
-        - User(Fk to Accounts)
-        - IPPC Country
-        - Telephone
-        - Alternate email
-    - Phyto
-        - User(Fk to Users)
-        - CV
-        - Date Joined
-    - Ocs
-        - User(Fk to Users)
-        - Document Title
-        - Revision
-        - Comment
-        - Version
-    - Apppc
-        - User(Fk to Users)
-        - APPPC country
 
 - [IRSS](https://github.com/ASKBOT/askbot-devel) refactor
 

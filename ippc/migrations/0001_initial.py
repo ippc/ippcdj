@@ -78,6 +78,16 @@ class Migration(SchemaMigration):
         ))
         db.create_unique(m2m_table_name, ['workareapage_id', 'group_id'])
 
+        # Adding model 'ForumPost'
+        db.create_table(u'ippc_forumpost', (
+            (u'page_ptr', self.gf('django.db.models.fields.related.OneToOneField')(to=orm['pages.Page'], unique=True, primary_key=True)),
+            ('comments_count', self.gf('django.db.models.fields.IntegerField')(default=0)),
+            ('content', self.gf('mezzanine.core.fields.RichTextField')()),
+            ('moderator', self.gf('django.db.models.fields.related.OneToOneField')(to=orm['auth.User'], unique=True, null=True, blank=True)),
+            ('comments', self.gf('mezzanine.generic.fields.CommentsField')(object_id_field='object_pk', to=orm['generic.ThreadedComment'], frozen_by_south=True)),
+        ))
+        db.send_create_signal(u'ippc', ['ForumPost'])
+
         # Adding model 'CountryPage'
         db.create_table(u'ippc_countrypage', (
             (u'page_ptr', self.gf('django.db.models.fields.related.OneToOneField')(to=orm['pages.Page'], unique=True, primary_key=True)),
@@ -443,6 +453,9 @@ class Migration(SchemaMigration):
         # Removing M2M table for field groups on 'WorkAreaPage'
         db.delete_table(db.shorten_name(u'ippc_workareapage_groups'))
 
+        # Deleting model 'ForumPost'
+        db.delete_table(u'ippc_forumpost')
+
         # Deleting model 'CountryPage'
         db.delete_table(u'ippc_countrypage')
 
@@ -534,6 +547,22 @@ class Migration(SchemaMigration):
             'user_permissions': ('django.db.models.fields.related.ManyToManyField', [], {'to': u"orm['auth.Permission']", 'symmetrical': 'False', 'blank': 'True'}),
             'username': ('django.db.models.fields.CharField', [], {'unique': 'True', 'max_length': '30'})
         },
+        u'comments.comment': {
+            'Meta': {'ordering': "('submit_date',)", 'object_name': 'Comment', 'db_table': "'django_comments'"},
+            'comment': ('django.db.models.fields.TextField', [], {'max_length': '3000'}),
+            'content_type': ('django.db.models.fields.related.ForeignKey', [], {'related_name': "'content_type_set_for_comment'", 'to': u"orm['contenttypes.ContentType']"}),
+            u'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
+            'ip_address': ('django.db.models.fields.IPAddressField', [], {'max_length': '15', 'null': 'True', 'blank': 'True'}),
+            'is_public': ('django.db.models.fields.BooleanField', [], {'default': 'True'}),
+            'is_removed': ('django.db.models.fields.BooleanField', [], {'default': 'False'}),
+            'object_pk': ('django.db.models.fields.TextField', [], {}),
+            'site': ('django.db.models.fields.related.ForeignKey', [], {'to': u"orm['sites.Site']"}),
+            'submit_date': ('django.db.models.fields.DateTimeField', [], {'default': 'None'}),
+            'user': ('django.db.models.fields.related.ForeignKey', [], {'blank': 'True', 'related_name': "'comment_comments'", 'null': 'True', 'to': u"orm['auth.User']"}),
+            'user_email': ('django.db.models.fields.EmailField', [], {'max_length': '75', 'blank': 'True'}),
+            'user_name': ('django.db.models.fields.CharField', [], {'max_length': '50', 'blank': 'True'}),
+            'user_url': ('django.db.models.fields.URLField', [], {'max_length': '200', 'blank': 'True'})
+        },
         u'contenttypes.contenttype': {
             'Meta': {'ordering': "('name',)", 'unique_together': "(('app_label', 'model'),)", 'object_name': 'ContentType', 'db_table': "'django_content_type'"},
             'app_label': ('django.db.models.fields.CharField', [], {'max_length': '100'}),
@@ -596,6 +625,25 @@ class Migration(SchemaMigration):
             'slug': ('django.db.models.fields.CharField', [], {'max_length': '2000', 'null': 'True', 'blank': 'True'}),
             'title': ('django.db.models.fields.CharField', [], {'max_length': '500'})
         },
+        u'generic.rating': {
+            'Meta': {'object_name': 'Rating'},
+            'content_type': ('django.db.models.fields.related.ForeignKey', [], {'to': u"orm['contenttypes.ContentType']"}),
+            u'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
+            'object_pk': ('django.db.models.fields.IntegerField', [], {}),
+            'rating_date': ('django.db.models.fields.DateTimeField', [], {'auto_now_add': 'True', 'null': 'True', 'blank': 'True'}),
+            'user': ('django.db.models.fields.related.ForeignKey', [], {'related_name': "'ratings'", 'null': 'True', 'to': u"orm['auth.User']"}),
+            'value': ('django.db.models.fields.IntegerField', [], {})
+        },
+        u'generic.threadedcomment': {
+            'Meta': {'ordering': "('submit_date',)", 'object_name': 'ThreadedComment', '_ormbases': [u'comments.Comment']},
+            'by_author': ('django.db.models.fields.BooleanField', [], {'default': 'False'}),
+            u'comment_ptr': ('django.db.models.fields.related.OneToOneField', [], {'to': u"orm['comments.Comment']", 'unique': 'True', 'primary_key': 'True'}),
+            'rating': ('mezzanine.generic.fields.RatingField', [], {'object_id_field': "'object_pk'", 'to': u"orm['generic.Rating']", 'frozen_by_south': 'True'}),
+            'rating_average': ('django.db.models.fields.FloatField', [], {'default': '0'}),
+            'rating_count': ('django.db.models.fields.IntegerField', [], {'default': '0'}),
+            'rating_sum': ('django.db.models.fields.IntegerField', [], {'default': '0'}),
+            'replied_to': ('django.db.models.fields.related.ForeignKey', [], {'related_name': "'comments'", 'null': 'True', 'to': u"orm['generic.ThreadedComment']"})
+        },
         u'ippc.countrypage': {
             'Meta': {'ordering': "['name']", 'object_name': 'CountryPage', '_ormbases': [u'pages.Page']},
             'contact_point': ('django.db.models.fields.related.OneToOneField', [], {'to': u"orm['auth.User']", 'unique': 'True', 'null': 'True', 'blank': 'True'}),
@@ -631,6 +679,14 @@ class Migration(SchemaMigration):
             'status': ('django.db.models.fields.IntegerField', [], {'default': '2'}),
             'title': ('django.db.models.fields.CharField', [], {'max_length': '500'}),
             'url_for_more_information': ('django.db.models.fields.URLField', [], {'max_length': '200', 'null': 'True', 'blank': 'True'})
+        },
+        u'ippc.forumpost': {
+            'Meta': {'ordering': "('_order',)", 'object_name': 'ForumPost', '_ormbases': [u'pages.Page']},
+            'comments': ('mezzanine.generic.fields.CommentsField', [], {'object_id_field': "'object_pk'", 'to': u"orm['generic.ThreadedComment']", 'frozen_by_south': 'True'}),
+            'comments_count': ('django.db.models.fields.IntegerField', [], {'default': '0'}),
+            'content': ('mezzanine.core.fields.RichTextField', [], {}),
+            'moderator': ('django.db.models.fields.related.OneToOneField', [], {'to': u"orm['auth.User']", 'unique': 'True', 'null': 'True', 'blank': 'True'}),
+            u'page_ptr': ('django.db.models.fields.related.OneToOneField', [], {'to': u"orm['pages.Page']", 'unique': 'True', 'primary_key': 'True'})
         },
         u'ippc.implementationispm': {
             'Meta': {'object_name': 'ImplementationISPM'},
