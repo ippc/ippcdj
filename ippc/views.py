@@ -1,7 +1,7 @@
 from django.shortcuts import render
 from django.utils.translation import ugettext_lazy as _
 from django.contrib.messages import info, error
-from .models import IppcUserProfile, PestStatus, PestReport, IS_PUBLIC, IS_HIDDEN, Publication, ReportingObligation, BASIC_REP_TYPE_CHOICES, EventReporting, EVT_REP_TYPE_CHOICES,PestFreeArea,ImplementationISPM
+from .models import IppcUserProfile, PestStatus, PestReport, IS_PUBLIC, IS_HIDDEN, Publication, ReportingObligation, BASIC_REP_TYPE_CHOICES, EventReporting, EVT_REP_TYPE_CHOICES,PestFreeArea,ImplementationISPM, ForumPost
 from mezzanine.core.models import Displayable, CONTENT_STATUS_DRAFT, CONTENT_STATUS_PUBLISHED
 from .forms import PestReportForm, ReportingObligationForm, EventReportingForm, PestFreeAreaForm,ImplementationISPMForm
 
@@ -114,6 +114,15 @@ class PestReportDetailView(DetailView):
     context_object_name = 'report'
     template_name = 'countries/pest_report_detail.html'
     queryset = PestReport.objects.filter(status=CONTENT_STATUS_PUBLISHED)
+    # print('>>>>>>>>>>>>>>>')
+    # print(user.get_profile().country)
+
+class ForumPostDetailView(DetailView):
+    """ Forum post detail page """
+    model = ForumPost
+    context_object_name = 'post'
+    template_name = 'forum/forum_post_detail.html'
+    # queryset = PestReport.objects.filter(status=CONTENT_STATUS_PUBLISHED)
     # print('>>>>>>>>>>>>>>>')
     # print(user.get_profile().country)
 

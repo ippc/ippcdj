@@ -242,7 +242,8 @@ INSTALLED_APPS = (
     "ippc",
     
     # forum application, based on mezzanine.blog
-    "forum",
+    # "forum",
+    # "drum",
     
     "mezzanine.boot",
     "mezzanine.conf",
@@ -363,7 +364,7 @@ SEARCH_MODEL_CHOICES = ("pages.Page", "blog.BlogPost", "ippc.PestReport")
 
 # BLOG_SLUG = 'news'
 # BLOG_USE_FEATURED_IMAGE = 'True'
-FORUM_SLUG = 'forum'
+# FORUM_SLUG = 'forum'
 # FORUM_USE_FEATURED_IMAGE = 'True'
 # FORUM_URLS_DATE_FORMAT = 'month'
 SITE_TITLE = ugettext("International Plant Protection Convention")

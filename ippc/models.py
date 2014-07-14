@@ -154,38 +154,24 @@ class WorkAreaPage(Page, RichText):
         )
 
 
-# class ForumPost(Page, RichText):
-#     """ Forum posts. Uses Mezzanine's built-in threaded comments."""
-#     # slug - provided by mezzanine.core.models.slugged (subclassed by displayable)
-#     # title - provided by mezzanine.core.models.slugged (subclassed by displayable)
-#     # status - provided by mezzanine.core.models.displayable
-#     # publish_date - provided by mezzanine.core.models.displayable
-#
-#     moderator = models.OneToOneField("auth.User",
-#             verbose_name=_("Post Moderator"), blank=True, null=True)
-#     comments = CommentsField()
-#     allow_comments = models.BooleanField(verbose_name=_("Allow comments"),
-#                                          default=True)
-#
-#     # http://devwiki.beloblotskiy.com/index.php5/Django:_Decoupling_the_URLs
-#     @models.permalink # or: get_absolute_url = models.permalink(get_absolute_url) below
-#     def get_absolute_url(self): # "view on site" link will be visible in admin interface
-#         """Construct the absolute URL for a Pest Report."""
-#         return ('pest-report-detail', (), {
-#                             'country': self.country.name, # =todo: get self.country.name working
-#                             'year': self.publish_date.strftime("%Y"),
-#                             'month': self.publish_date.strftime("%m"),
-#                             # 'day': self.pub_date.strftime("%d"),
-#                             'slug': self.slug})
-#
-#     def save(self, *args, **kwargs):
-#         ''' On save, update timestamps '''
-#         if not self.id:
-#             self.publish_date = datetime.today()
-#             # Newly created object, so set slug
-#             self.slug = slugify(self.title)
-#         self.modify_date = datetime.now()
-#         super(PestReport, self).save(*args, **kwargs)
+class ForumPost(Page, RichText):
+    """ Forum posts. Uses Mezzanine's built-in threaded comments."""
+    # slug - provided by mezzanine.core.models.slugged (subclassed by displayable)
+    # title - provided by mezzanine.core.models.slugged (subclassed by displayable)
+    # status - provided by mezzanine.core.models.displayable
+    # publish_date - provided by mezzanine.core.models.displayable
+
+    # moderator = models.OneToOneField("auth.User",
+    #         verbose_name=_("Post Moderator"), blank=True, null=True)
+    comments = CommentsField()
+    # allow_comments = models.BooleanField(verbose_name=_("Allow comments"),
+    #                                      default=True)
+
+    # http://devwiki.beloblotskiy.com/index.php5/Django:_Decoupling_the_URLs
+    @models.permalink # or: get_absolute_url = models.permalink(get_absolute_url) below
+    def get_absolute_url(self): # "view on site" link will be visible in admin interface
+        """Construct the absolute URL for a Pest Report."""
+        return ('forum-post-detail', (), {'slug': self.slug})
 
 
 

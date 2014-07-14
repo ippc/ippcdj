@@ -2,6 +2,12 @@
 
 ## Things to do
 
+- Merge our current work and update dev.ippc.int
+- Custom forum list page at /forum (lists 1st level of all subpages)
+- Country pages:
+    - Prevent hidden report titles from appearing in search results
+    - Country RSS feeds
+- Author field for publications
 - Start from Dj 1.6.5 (1.7?) and Mezzanine 3.1.5
 - The All Our Users Database. Two options:
     1. Create[Single Sign-On](https://docs.djangoproject.com/en/1.5/topics/auth/customizing/) (see also [this](https://meta.discourse.org/t/sso-example-for-django/14258) and [this](https://github.com/Bouke/django-federated-login/tree/master/example)) and **[this](https://gist.github.com/kenbolton/4946936)** - a separate Accounts database to be used by all IPPC-related apps for authentication and authorization. The database should contain two tables:
@@ -39,15 +45,12 @@
             - User(Fk to Users)
             - APPPC country
     2. [All websites run off the same application instance](http://stackoverflow.com/questions/1581602/django-sharing-authentication-across-two-sites-that-are-on-different-domains) with [custom authentication backend](http://stackoverflow.com/questions/1404131/how-to-get-unique-users-across-multiple-django-sites-powered-by-the-sites-fram)
-- Country pages:
-    - Prevent hidden report titles from appearing in search results
-    - Country RSS feeds
-- Author field for publications
+
 - Homepage design
     - ¿'Add Pest Report' button in countries for NPPOs, visible even when user is logged out. Once user logs in, if they're an NPPO, they are redirected to the pest report form for their country?
     - Photos
 - [Calendar](https://github.com/llazzaro/django-scheduler)
-- [Forums](https://github.com/hovel/pybbm)
+
 - User registration open but behind login-required and super-user required so only admins can add new users, who get notification emails to confirm account and set own password. OR, user registration open to all, but need approval by admins. i.e. Account registration & [activation](http://mezzanine.jupo.org/docs/user-accounts.html#account-approval) system?
     - Setup auto-sending of messages to new users, with possible custom messages for NPPOs and Editors
 

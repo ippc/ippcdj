@@ -8,7 +8,7 @@ from mezzanine.core.admin import TabularDynamicInlineAdmin, StackedDynamicInline
 
 from .models import PestStatus, PestReport, CountryPage, WorkAreaPage, PublicationLibrary, \
 Publication, ReportingObligation,EventReporting,PestFreeArea,ImplementationISPM, \
-ImplementationISPMVersion, TransPublicationLibraryPage
+ImplementationISPMVersion, TransPublicationLibraryPage, ForumPost
 from django.contrib.auth.models import User
 
 from mezzanine.pages.models import RichTextPage, Link
@@ -48,23 +48,23 @@ class CountryPageAdmin(PageAdmin):
 admin.site.register(CountryPage, CountryPageAdmin)
 
 
-# forumposts_extra_fieldsets = ((None, {"fields": ("moderator", "comments", )}),)
-#
-# class ForumPostAdmin(PageAdmin):
-#     save_on_top = True
-#     # fieldsets = deepcopy(PageAdmin.fieldsets) + forumposts_extra_fieldsets
-#     # readonly_fields = ('comments', 'in_menus',)
-#
-#     # list_display = ('title', 'publish_date', 'modify_date', 'status', 'country')
-#     # list_filter = ('title', 'publish_date', 'modify_date', 'status', 'country')
-#     # search_fields = ('title', 'summary')
-#     # prepopulated_fields = { 'slug': ['title'] }
-#     # fieldsets = deepcopy(PageAdmin.fieldsets) + countrypages_extra_fieldsets
-#     # prepopulated_fields = { 'country_slug': ['name'] }
-#     # list_display = ('continent','name','iso','iso3', 'languages', 'currency_name')
-#     # list_display_links = ('name',)
-#
-# admin.site.register(ForumPost, ForumPostAdmin)
+# forumposts_extra_fieldsets = ((None, {"fields": ("comments", )}),)
+
+class ForumPostAdmin(admin.ModelAdmin):
+    save_on_top = True
+    # fieldsets = deepcopy(PageAdmin.fieldsets) + forumposts_extra_fieldsets
+    # readonly_fields = ('comments', 'in_menus',)
+
+    # list_display = ('title', 'publish_date', 'modify_date', 'status', 'country')
+    # list_filter = ('title', 'publish_date', 'modify_date', 'status', 'country')
+    # search_fields = ('title', 'summary')
+    # prepopulated_fields = { 'slug': ['title'] }
+    # fieldsets = deepcopy(PageAdmin.fieldsets) + countrypages_extra_fieldsets
+    # prepopulated_fields = { 'country_slug': ['name'] }
+    # list_display = ('continent','name','iso','iso3', 'languages', 'currency_name')
+    # list_display_links = ('name',)
+
+admin.site.register(ForumPost, ForumPostAdmin)
 
 
 

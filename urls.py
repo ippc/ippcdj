@@ -7,7 +7,8 @@ PestReportDetailView, CountryView, pest_report_create, pest_report_edit, Publica
 PublicationListView,ReportingObligationListView, ReportingObligationDetailView,reporting_obligation_create, reporting_obligation_edit, \
 EventReportingListView, EventReportingDetailView,event_reporting_create, event_reporting_edit, \
 PestFreeAreaListView, PestFreeAreaDetailView,pfa_create, pfa_edit, \
-ImplementationISPMListView, ImplementationISPMDetailView,implementationispm_create, implementationispm_edit
+ImplementationISPMListView, ImplementationISPMDetailView,implementationispm_create, implementationispm_edit, \
+ForumPostDetailView
 
 from mezzanine.core.views import direct_to_template
 import mezzanine_pagedown.urls
@@ -21,8 +22,12 @@ admin.autodiscover()
 urlpatterns = patterns("",
     
     url(r'^ocs/', include('ocs.urls', namespace="ocs")),
-    url(r'^forum/', include('forum.urls', namespace="forum")),
-    
+    # url(r'^forum/', include('forum.urls', namespace="forum")),
+
+    # forum detail
+    url(r'^forum/(?P<slug>[\w-]+)/$',
+        view=ForumPostDetailView.as_view(),
+        name="forum-post-detail"),    
     
     url("^sitemap/$", direct_to_template, {"template": "sitemap.html"}, name="sitemap"),
     url("^contact/$", direct_to_template, {"template": "contact.html"}, name="contact"),
