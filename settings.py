@@ -241,10 +241,6 @@ INSTALLED_APPS = (
     # ippc theme
     "ippc",
     
-    # forum application, based on mezzanine.blog
-    # "forum",
-    # "drum",
-    
     "mezzanine.boot",
     "mezzanine.conf",
     "mezzanine.core",
@@ -266,8 +262,9 @@ INSTALLED_APPS = (
     
     # file collections for publications
     "mezzanine_file_collections",
-    # or, a probably better alternative, fileuploads for publications
-    "fileupload",
+
+    # forum application, based on mezzanine.blog
+    "forum",
     
     # or, even better, attachments that can be related to any model type
     
@@ -285,7 +282,7 @@ INSTALLED_APPS = (
     
     # for email utility
     # http://stackoverflow.com/a/1823193/412329
-    "mailer",
+    # "mailer",
     
     # debug toolbar
     # "debug_toolbar",
@@ -367,6 +364,7 @@ SEARCH_MODEL_CHOICES = ("pages.Page", "blog.BlogPost", "ippc.PestReport")
 # FORUM_SLUG = 'forum'
 # FORUM_USE_FEATURED_IMAGE = 'True'
 # FORUM_URLS_DATE_FORMAT = 'month'
+COMMENTS_USE_RATINGS = False
 SITE_TITLE = ugettext("International Plant Protection Convention")
 SITE_TAGLINE = ugettext("Protecting the world's plant resources from pests")
 

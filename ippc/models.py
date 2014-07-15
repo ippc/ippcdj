@@ -154,24 +154,24 @@ class WorkAreaPage(Page, RichText):
         )
 
 
-class ForumPost(Page, RichText):
-    """ Forum posts. Uses Mezzanine's built-in threaded comments."""
-    # slug - provided by mezzanine.core.models.slugged (subclassed by displayable)
-    # title - provided by mezzanine.core.models.slugged (subclassed by displayable)
-    # status - provided by mezzanine.core.models.displayable
-    # publish_date - provided by mezzanine.core.models.displayable
-
-    # moderator = models.OneToOneField("auth.User",
-    #         verbose_name=_("Post Moderator"), blank=True, null=True)
-    comments = CommentsField()
-    # allow_comments = models.BooleanField(verbose_name=_("Allow comments"),
-    #                                      default=True)
-
-    # http://devwiki.beloblotskiy.com/index.php5/Django:_Decoupling_the_URLs
-    @models.permalink # or: get_absolute_url = models.permalink(get_absolute_url) below
-    def get_absolute_url(self): # "view on site" link will be visible in admin interface
-        """Construct the absolute URL for a Pest Report."""
-        return ('forum-post-detail', (), {'slug': self.slug})
+# class ForumPost(Page, RichText):
+#     """ Forum posts. Uses Mezzanine's built-in threaded comments."""
+#
+#     comments = CommentsField()
+#     allow_comments = models.BooleanField(verbose_name=_("Allow comments"),
+#                                          default=True)
+#     class Meta:
+#         verbose_name = "Forum Post"
+#         verbose_name_plural = "Forum Posts"
+#         permissions = (
+#             ("can_view", "View Forum Posts"),
+#         )
+#
+#     # http://devwiki.beloblotskiy.com/index.php5/Django:_Decoupling_the_URLs
+#     @models.permalink # or: get_absolute_url = models.permalink(get_absolute_url) below
+#     def get_absolute_url(self): # "view on site" link will be visible in admin interface
+#         """Construct the absolute URL for a Pest Report."""
+#         return ('forum-post-detail', (), {'slug': self.slug})
 
 
 

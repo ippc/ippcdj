@@ -1,17 +1,16 @@
 # https://gist.github.com/renyi/3596248
 from copy import deepcopy
 from django.contrib import admin
-from mezzanine.pages.models import Page, RichTextPage
+from mezzanine.pages.models import Page, RichTextPage, Link
 from mezzanine.pages.admin import PageAdmin
 from mezzanine.conf import settings
 from mezzanine.core.admin import TabularDynamicInlineAdmin, StackedDynamicInlineAdmin
 
 from .models import PestStatus, PestReport, CountryPage, WorkAreaPage, PublicationLibrary, \
 Publication, ReportingObligation,EventReporting,PestFreeArea,ImplementationISPM, \
-ImplementationISPMVersion, TransPublicationLibraryPage, ForumPost
+ImplementationISPMVersion, TransPublicationLibraryPage
 from django.contrib.auth.models import User
 
-from mezzanine.pages.models import RichTextPage, Link
 from mezzanine.pages.admin import PageAdmin, LinkAdmin
 from models import TransRichTextPage, TransLinkPage
 
@@ -31,10 +30,6 @@ class PublicationLibraryAdmin(PageAdmin):
 
 admin.site.register(PublicationLibrary, PublicationLibraryAdmin)
 
-
-
-
-
 # Country Pages ----------------- 
 # http://mezzanine.jupo.org/docs/content-architecture.html#creating-custom-content-types
 countrypages_extra_fieldsets = ((None, {"fields": ("name", "country_slug", "iso", "iso3", "contact_point", "editors", )}),)
@@ -48,23 +43,20 @@ class CountryPageAdmin(PageAdmin):
 admin.site.register(CountryPage, CountryPageAdmin)
 
 
-# forumposts_extra_fieldsets = ((None, {"fields": ("comments", )}),)
 
-class ForumPostAdmin(admin.ModelAdmin):
-    save_on_top = True
-    # fieldsets = deepcopy(PageAdmin.fieldsets) + forumposts_extra_fieldsets
-    # readonly_fields = ('comments', 'in_menus',)
 
-    # list_display = ('title', 'publish_date', 'modify_date', 'status', 'country')
-    # list_filter = ('title', 'publish_date', 'modify_date', 'status', 'country')
-    # search_fields = ('title', 'summary')
-    # prepopulated_fields = { 'slug': ['title'] }
-    # fieldsets = deepcopy(PageAdmin.fieldsets) + countrypages_extra_fieldsets
-    # prepopulated_fields = { 'country_slug': ['name'] }
-    # list_display = ('continent','name','iso','iso3', 'languages', 'currency_name')
-    # list_display_links = ('name',)
 
-admin.site.register(ForumPost, ForumPostAdmin)
+# forumposts_extra_fieldsets = ((None, {"fields": ("comments", "allow_comments")}),)
+# # class WorkAreaFileInline(admin.TabularInline):
+# #     model = WorkAreaPage
+# class ForumPostAdmin(PageAdmin):
+#     readonly_fields = ('comments',)
+#     fieldsets = deepcopy(PageAdmin.fieldsets) + forumposts_extra_fieldsets
+#
+# admin.site.register(ForumPost, ForumPostAdmin)
+
+
+
 
 
 
@@ -78,25 +70,6 @@ class WorkAreaPageAdmin(PageAdmin):
     fieldsets = deepcopy(PageAdmin.fieldsets) + workareapages_extra_fieldsets
 
 admin.site.register(WorkAreaPage, WorkAreaPageAdmin)
-
-
-
-
-
-# Pages -----------------
-# =todo: get this to work
-
-# admin.site.unregister(Page)
-#
-# class CustomPageAdmin(PageAdmin):
-#     save_on_top = True
-#     list_display = ('title', 'publish_date', 'status')
-#     list_filter = ('title', 'publish_date', 'status')
-#     search_fields = ('title', 'content')
-#
-# admin.site.register(Page, CustomPageAdmin)
-
-
 
 
 # Pest Reports -----------------

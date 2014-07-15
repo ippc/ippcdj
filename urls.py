@@ -7,8 +7,7 @@ PestReportDetailView, CountryView, pest_report_create, pest_report_edit, Publica
 PublicationListView,ReportingObligationListView, ReportingObligationDetailView,reporting_obligation_create, reporting_obligation_edit, \
 EventReportingListView, EventReportingDetailView,event_reporting_create, event_reporting_edit, \
 PestFreeAreaListView, PestFreeAreaDetailView,pfa_create, pfa_edit, \
-ImplementationISPMListView, ImplementationISPMDetailView,implementationispm_create, implementationispm_edit, \
-ForumPostDetailView
+ImplementationISPMListView, ImplementationISPMDetailView,implementationispm_create, implementationispm_edit
 
 from mezzanine.core.views import direct_to_template
 import mezzanine_pagedown.urls
@@ -22,12 +21,12 @@ admin.autodiscover()
 urlpatterns = patterns("",
     
     url(r'^ocs/', include('ocs.urls', namespace="ocs")),
-    # url(r'^forum/', include('forum.urls', namespace="forum")),
+    url(r'^forum/', include('forum.urls')),
 
     # forum detail
-    url(r'^forum/(?P<slug>[\w-]+)/$',
-        view=ForumPostDetailView.as_view(),
-        name="forum-post-detail"),    
+    # url(r'^forum/(?P<slug>[\w-]+)/$',
+    #     view=ForumPostDetailView.as_view(),
+    #     name="forum-post-detail"),
     
     url("^sitemap/$", direct_to_template, {"template": "sitemap.html"}, name="sitemap"),
     url("^contact/$", direct_to_template, {"template": "contact.html"}, name="contact"),
@@ -275,6 +274,10 @@ urlpatterns = patterns("",
     # ("^%s/" % settings.SITE_PREFIX, include("mezzanine.urls"))
 
 )
+
+
+
+
 
 # Adds ``STATIC_URL`` to the context of error pages, so that error
 # pages can use JS, CSS and images.
