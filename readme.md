@@ -67,7 +67,9 @@
         - Use [admin actions](https://docs.djangoproject.com/en/1.5/ref/contrib/admin/actions/)?
         - [Custom admin form](http://stackoverflow.com/a/6099360/412329) overriding mailer's default form? Also see [this](http://djangosnippets.org/snippets/1650/) and [this](https://gist.github.com/luzfcb/1712348)
         - Custom email utility app and admin form calling django-mailer and groups?
-- Add [blog category management page to admin](http://127.0.0.1:8000/en/admin/blog/blogcategory/)
+- Add blog and forum category management page to admin: 
+    - http://127.0.0.1:8000/en/admin/blog/blogcategory/
+    - http://127.0.0.1:8000/en/admin/forum/forumcategory/
 - Contact form
 - FAQ
 - Custom Work Area main page descriptions or announcements or links to particular utilities depending on user permissions. Probably need to use a custom template that appears on /work-area/ URL (like the /news/ which displays the custom blog).

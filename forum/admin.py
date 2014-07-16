@@ -11,7 +11,9 @@ from mezzanine.core.admin import DisplayableAdmin, OwnableAdmin
 
 forumpost_fieldsets = deepcopy(DisplayableAdmin.fieldsets)
 forumpost_fieldsets[0][1]["fields"].insert(1, "categories")
-forumpost_fieldsets[0][1]["fields"].extend(["content", "allow_comments"])
+forumpost_fieldsets[0][1]["fields"].extend(["content", "allow_comments", "login_required"])
+forumpost_fieldsets[0][1]["fields"].insert(5, "groups")
+forumpost_fieldsets[0][1]["fields"].insert(6, "users")
 forumpost_list_display = ["title", "user", "status", "admin_link"]
 if settings.FORUM_USE_FEATURED_IMAGE:
     forumpost_fieldsets[0][1]["fields"].insert(-2, "featured_image")

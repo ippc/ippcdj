@@ -357,7 +357,7 @@ LANGUAGES = (
 # https://docs.djangoproject.com/en/dev/ref/settings/#locale-paths
 LOCALE_PATHS = (os.path.join(PROJECT_ROOT, "conf/locale"),)
 
-SEARCH_MODEL_CHOICES = ("pages.Page", "blog.BlogPost", "ippc.PestReport")
+SEARCH_MODEL_CHOICES = ("pages.Page", "blog.BlogPost", "ippc.PestReport", "forum.ForumPost")
 
 # BLOG_SLUG = 'news'
 # BLOG_USE_FEATURED_IMAGE = 'True'

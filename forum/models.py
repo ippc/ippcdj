@@ -1,6 +1,8 @@
 from django.db import models
 from django.utils.translation import ugettext_lazy as _
 
+from django.contrib.auth.models import User, Group
+
 from mezzanine.conf import settings
 from mezzanine.core.fields import FileField
 from mezzanine.core.models import Displayable, Ownable, RichText, Slugged
@@ -27,11 +29,30 @@ class ForumPost(Displayable, Ownable, RichText, AdminThumbMixin):
                                  verbose_name=_("Related posts"), blank=True)
 
     admin_thumb_field = "featured_image"
+    
+    users = models.ManyToManyField(User,
+        verbose_name=_("Users this forum post is accessible to"),
+        related_name='forumusers', blank=True, null=True)
+    groups = models.ManyToManyField(Group,
+        verbose_name=_("Groups this forum post is accessible to"),
+        related_name='forumgroups', blank=True, null=True)
+    login_required = models.BooleanField(verbose_name=_("Login required"),
+                                         default=True)
+    
 
     class Meta:
         verbose_name = _("Forum post")
         verbose_name_plural = _("Forum posts")
         ordering = ("-publish_date",)
+        # south overrides syncdb, so the following perms are not created
+        # unless we are starting the project from scratch.
+        # solution: python manage.py syncdb --all
+        # or
+        # manage.py datamigration myapp add_perm_foo --freeze=contenttypes --freeze=auth
+        # http://stackoverflow.com/questions/1742021/adding-new-custom-permissions-in-django
+        permissions = ( 
+            ("can_view", "View Forum Post"),
+        )
 
     @models.permalink
     def get_absolute_url(self):
