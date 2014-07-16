@@ -361,7 +361,7 @@ SEARCH_MODEL_CHOICES = ("pages.Page", "blog.BlogPost", "ippc.PestReport")
 
 # BLOG_SLUG = 'news'
 # BLOG_USE_FEATURED_IMAGE = 'True'
-# FORUM_SLUG = 'forum'
+FORUM_SLUG = 'forum'
 # FORUM_USE_FEATURED_IMAGE = 'True'
 # FORUM_URLS_DATE_FORMAT = 'month'
 COMMENTS_USE_RATINGS = False

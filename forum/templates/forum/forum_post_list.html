@@ -1,7 +1,7 @@
 {% extends "base.html" %}
 {% load i18n future mezzanine_tags forum_tags keyword_tags disqus_tags %}
 
-{% block meta_title %}{% if page %}{{ page.richtextpage.meta_title }}{% else %}{% trans "Forum" %}{% endif %}{% endblock %}
+{% block meta_title %}{% trans "Forum" %}{% endblock %}
 
 {% block meta_keywords %}{% metablock %}
 {% keywords_for page as keywords %}
@@ -17,7 +17,8 @@
 
 {% block title %}
 {% if page %}
-{% editable page.title %}{{ page.title }}{% endeditable %}
+{# {% editable page.title %}{{ page.title }}{% endeditable %} #}
+{% trans "Forum" %}
 {% else %}
 {% trans "Forum" %}
 {% endif %}
@@ -30,7 +31,7 @@
 {% if tag %}
     {% trans "Tag:" %} {{ tag }}
 {% else %}{% if category %}
-    {% trans "Category:" %} {{ category }}
+    {{ category }}
 {% else %}{% if year or month %}
     {% if month %}{{ month }}, {% endif %}{{ year }}
 {% else %}{% if author %}
@@ -45,11 +46,11 @@
 
 {% if tag or category or year or month or author %}
     {% block forum_post_list_filterinfo %}
-    <p>
+    <p class="lead">
     {% if tag %}
-        {% trans "Viewing posts tagged" %} {{ tag }}
+        {% trans "Posts tagged" %} <strong>{{ tag }}</strong>
     {% else %}{% if category %}
-        {% trans "Viewing posts for the category" %} {{ category }}
+        {% trans "Posts in the" %} <strong>{{ category }}</strong> {% trans "category" %}
     {% else %}{% if year or month %}
         {% trans "Viewing posts from" %} {% if month %}{{ month }}, {% endif %}
         {{ year }}
@@ -57,34 +58,40 @@
         {% trans "Viewing posts by" %}
         {{ author.get_full_name|default:author.username }}
     {% endif %}{% endif %}{% endif %}{% endif %}
-    {% endblock %}
     </p>
-{% else %}
-    {% if page %}
-    {% block forum_post_list_pagecontent %}
-    {% editable page.richtextpage.content %}
-    {{ page.richtextpage.content|richtext_filter|safe }}
-    {% endeditable %}
     {% endblock %}
-    {% endif %}
+
+{# {% else %} #}
+{#     {% if page %} #}
+{#     {% block forum_post_list_pagecontent %} #}
+{#     {% editable page.richtextpage.content %} #}
+{#     {{ page.richtextpage.content|richtext_filter|safe }} #}
+{#     {% endeditable %} #}
+{#     {% endblock %} #}
+{#     {% endif %} #}
+    {% else %}
+    <p class="lead">
+    Latest Posts
+    </p>  
 {% endif %}
 
 {% for forum_post in forum_posts.object_list %}
+
 {% block forum_post_list_post_title %}
-{% editable forum_post.title %}
+{# {% editable forum_post.title %} #}
 <h2>
     <a href="{{ forum_post.get_absolute_url }}">{{ forum_post.title }}</a>
 </h2>
-{% endeditable %}
+{# {% endeditable %} #}
 {% endblock %}
 {% block forum_post_list_post_metainfo %}
-{% editable forum_post.publish_date %}
+{# {% editable forum_post.publish_date %} #}
 <h6>
     {% trans "Posted by" %}:
     {% with forum_post.user as author %}
     <a href="{% url "forum_post_list_author" author %}">{{ author.get_full_name|default:author.username }}</a>
     {% endwith %}
-    {% with forum_post.category.all as categories %}
+    {% with forum_post.categories.all as categories %}
     {% if categories %}
     {% trans "in" %}
     {% for category in categories %}
@@ -94,7 +101,7 @@
     {% endwith %}
     {% blocktrans with sometime=forum_post.publish_date|timesince %}{{ sometime }} ago{% endblocktrans %}
 </h6>
-{% endeditable %}
+{# {% endeditable %} #}
 {% endblock %}
 
 {% if settings.FORUM_USE_FEATURED_IMAGE and forum_post.featured_image %}
@@ -104,9 +111,9 @@
 {% endif %}
 
 {% block forum_post_list_post_content %}
-{% editable forum_post.content %}
+{# {% editable forum_post.content %} #}
 {{ forum_post.description_from_content|safe }}
-{% endeditable %}
+{# {% endeditable %} #}
 {% endblock %}
 
 {% block forum_post_list_post_links %}
@@ -135,6 +142,7 @@
     {% endif %}
 </p>
 {% endblock %}
+<hr>
 {% endfor %}
 
 {% pagination_for forum_posts %}
@@ -148,3 +156,19 @@
 {% block right_panel %}
 {% include "forum/includes/filter_panel.html" %}
 {% endblock %}
+
+{% block local_nav %}
+{% forum_categories as categories %}
+{% if categories %}
+<h3>{% trans "Forum Categories" %}</h3>
+<ul class="unstyled">
+{% for category in categories %}
+<li>
+  <b><a href="{% url "forum_post_list_category" category.slug %}">{{ category }}</a></b> ({{ category.post_count }})</li>
+{% endfor %}
+</ul>
+{% endif %}
+
+{% endblock %}
+
+{% block pageinfo %}{% endblock %}
