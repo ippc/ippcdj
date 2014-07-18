@@ -2,13 +2,14 @@
 
 ## Things to do
 
-- Merge our current work and update dev.ippc.int
-- Custom forum list page at /forum (lists 1st level of all subpages)
+- Merge our current work and update dev.ippc.int with forum and calendar
+    - Files in forum posts
 - Country pages:
     - Prevent hidden report titles from appearing in search results
     - Country RSS feeds
 - Author field for publications
 - Start from Dj 1.6.5 (1.7?) and Mezzanine 3.1.5
+    - Update to latest version of Mezzanine and make sure current functionality works
 - The All Our Users Database. Two options:
     1. Create[Single Sign-On](https://docs.djangoproject.com/en/1.5/topics/auth/customizing/) (see also [this](https://meta.discourse.org/t/sso-example-for-django/14258) and [this](https://github.com/Bouke/django-federated-login/tree/master/example)) and **[this](https://gist.github.com/kenbolton/4946936)** - a separate Accounts database to be used by all IPPC-related apps for authentication and authorization. The database should contain two tables:
         - Users (authentication - recognizes who you are)
@@ -49,18 +50,14 @@
 - Homepage design
     - ¿'Add Pest Report' button in countries for NPPOs, visible even when user is logged out. Once user logs in, if they're an NPPO, they are redirected to the pest report form for their country?
     - Photos
-- [Calendar](https://github.com/llazzaro/django-scheduler)
-
 - User registration open but behind login-required and super-user required so only admins can add new users, who get notification emails to confirm account and set own password. OR, user registration open to all, but need approval by admins. i.e. Account registration & [activation](http://mezzanine.jupo.org/docs/user-accounts.html#account-approval) system?
     - Setup auto-sending of messages to new users, with possible custom messages for NPPOs and Editors
 
 - [IRSS](https://github.com/ASKBOT/askbot-devel) refactor
-
-    The easiest way to implement this is probably to use [CAS-Provider and CAS-consumer](http://stackoverflow.com/a/4663223) or [django-cas](https://bitbucket.org/cpcc/django-cas/overview). Another option: [mama-cas](https://github.com/jbittel/django-mama-cas). Relevant documentation pages: [multiple databases](https://docs.djangoproject.com/en/1.5/topics/db/multi-db/), [authentication](https://docs.djangoproject.com/en/1.5/topics/auth/customizing/), [multiple sites framework](https://docs.djangoproject.com/en/1.5/ref/contrib/sites/). See also [this blog post](http://reinout.vanrees.org/weblog/2014/05/09/authentication-python-web.html).
-    
-    Both phytosantiary.info and apppc.org will need to get SSL certificates for single sign-on to work securely: 
-    
-    > Even if the authentication with CAS is made using a mechanism which makes it difficult to interfere with, all authorized communication will subsequentely use a cookie identifing the session which can be used to hijack the connection. So you need to encrypt the communication. There is just no way around that if you want to enforce some sort of security.
+    - The easiest way to implement this is probably to use [CAS-Provider and CAS-consumer](http://stackoverflow.com/a/4663223) or [django-cas](https://bitbucket.org/cpcc/django-cas/overview). Another option: [mama-cas](https://github.com/jbittel/django-mama-cas). Relevant documentation pages: [multiple databases](https://docs.djangoproject.com/en/1.5/topics/db/multi-db/), [authentication](https://docs.djangoproject.com/en/1.5/topics/auth/customizing/), [multiple sites framework](https://docs.djangoproject.com/en/1.5/ref/contrib/sites/). See also [this blog post](http://reinout.vanrees.org/weblog/2014/05/09/authentication-python-web.html).
+- Phytosanitary.info refactor (use [original code](https://github.com/hypertexthero/phytosanitary)?)
+- Both phytosantiary.info and apppc.org will need to get SSL certificates for single sign-on to work securely: 
+        > Even if the authentication with CAS is made using a mechanism which makes it difficult to interfere with, all authorized communication will subsequentely use a cookie identifing the session which can be used to hijack the connection. So you need to encrypt the communication. There is just no way around that if you want to enforce some sort of security.
     
 - [Email utility](https://github.com/pinax/django-mailer)
     - Ability to insert user groups as well as individual users in `To:` field in `/admin/mailer/message/add/`
@@ -73,7 +70,6 @@
 - Contact form
 - FAQ
 - Custom Work Area main page descriptions or announcements or links to particular utilities depending on user permissions. Probably need to use a custom template that appears on /work-area/ URL (like the /news/ which displays the custom blog).
-- Images in news items. See <http://mezzanine.jupo.org/docs/model-customization.html>
 - Last modified date for pages
 - Content (data) migration
 - ¿Use jQuery [multi-file-upload](https://github.com/sigurdga/django-jquery-file-upload) functionality for uploading images and files to be inserted in pages and blog posts, [with additional fields for each file](https://github.com/blueimp/jQuery-File-Upload/wiki/How-to-submit-additional-form-data) if required? Or probably best to have own files table that can be related to any model, such as **[django-attach](https://github.com/peterkuma/django-attach/tree/master/example_project)** or **[django-jfu](https://github.com/Alem/django-jfu)**.
@@ -84,7 +80,6 @@
     2. Logs in to dev.ippc.int, activates application virtualenv and pulls changes from Github
     3. Collect static files to locations to be served on dev server
     4. Restart gunicorn and nginx 
-- Update to latest version of Mezzanine and make sure current functionality works
 - [Versioning](https://django-simple-history.readthedocs.org/en/latest/) of all page content?
 - [Pest Report mapping](http://leafletjs.com/examples/choropleth.html)
     - <http://blog.thematicmapping.org/2008/04/thematic-mapping-with-geojson.html>
@@ -94,8 +89,8 @@
         - [Income levels example](http://humangeo.github.io/leaflet-dvf/examples/html/incomelevels.html)
         - [Top Cities](http://techslides.com/leaflet-map-with-utfgrid-and-php-served-mbtiles/)
 - [Download multiple files](http://stackoverflow.com/a/12951557/412329)
+- [wiki.ippc.int](http://www.nomachetejuggling.com/2012/05/15/personal-wiki-using-github-and-gollum-on-os-x/)
 - Use [Chosen](http://harvesthq.github.io/chosen/) to make globalnav dropdowns friedly. Also in admin. There's a [Django app](https://github.com/theatlantic/django-chosen), too. 
-- Remove dropdown from Countries globalnav menu
 - If no publication or agenda numbers exist, don't show header or cells
 - Automatic local table of contents for pages with headers with IDs? <http://css-tricks.com/automatic-table-of-contents/> 
 
@@ -110,16 +105,8 @@
     git clone https://github.com/hypertexthero/ippcdj.git ippcdj_repo
     cd ippcdj_repo
     pip2.7 install -r requirements/project.txt
-    # if you see errors related to PIL, see: <http://www.hypertexthero.com/logbook/2013/07/pil-pillow-libjpeg-ldconfig/>
-    # if you're on Windows install Pillow for your computer from <http://www.lfd.uci.edu/~gohlke/pythonlibs/> (see <https://bitnami.com/forums/forums/djangostack/topics/i-was-running-through-the-djangobook-tutorials-and-now-i-need-a-python-imaging-library>)
-    
-    # rename local_settings_example.py to local_settings.py 
     mv local_settings_example.py local_settings.py 
-    
-    # create database (or rename existing test one dev.dbcopy > dev.db)
     python manage.py createdb
-    
-    # Accept the defaults, say 'Yes' to 'fake initial migrations'
     python manage.py runserver
     
     ````
@@ -151,9 +138,7 @@ Then, [here's a basic guide](http://rogerdudler.github.io/git-guide/) (below is 
 1. If you're working on the code for the first time, first clone repository from ippc repo (the first time you start working with it)
 
     ```bash    
-    # change into your local projects directory (in your own computer) 
     cd ~/projects
-    # clone the ippc repository
     git clone https://github.com/ippc/ippcdj.git
     ```
 
