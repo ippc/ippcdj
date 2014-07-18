@@ -262,8 +262,17 @@ INSTALLED_APPS = (
     
     # file collections for publications
     "mezzanine_file_collections",
-    # or, a probably better alternative, fileuploads for publications
-    "fileupload",
+
+    # forum application, based on mezzanine.blog
+    "forum",
+    
+    # or, even better, attachments that can be related to any model type
+    
+    # https://github.com/bartTC/django-attachments
+    # "attachments",
+    
+    # https://github.com/Alem/django-jfu
+    # "jfu",
     
     # south for database data migrations
     "south",
@@ -273,7 +282,6 @@ INSTALLED_APPS = (
     
     # for email utility
     # http://stackoverflow.com/a/1823193/412329
-    "mailer",
     "autocomplete_light",
     "leaflet",
     # debug toolbar
@@ -351,9 +359,14 @@ LANGUAGES = (
 # https://docs.djangoproject.com/en/dev/ref/settings/#locale-paths
 LOCALE_PATHS = (os.path.join(PROJECT_ROOT, "conf/locale"),)
 
-SEARCH_MODEL_CHOICES = ("pages.Page", "blog.BlogPost", "ippc.PestReport")
+SEARCH_MODEL_CHOICES = ("pages.Page", "blog.BlogPost", "ippc.PestReport", "forum.ForumPost")
 
-BLOG_SLUG = 'news'
+# BLOG_SLUG = 'news'
+# BLOG_USE_FEATURED_IMAGE = 'True'
+FORUM_SLUG = 'forum'
+# FORUM_USE_FEATURED_IMAGE = 'True'
+# FORUM_URLS_DATE_FORMAT = 'month'
+COMMENTS_USE_RATINGS = False
 SITE_TITLE = ugettext("International Plant Protection Convention")
 SITE_TAGLINE = ugettext("Protecting the world's plant resources from pests")
 

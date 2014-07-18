@@ -1,0 +1,33 @@
+{% load i18n future %}
+
+{% if perms.forum.add_forumpost and perms.forum.change_forumpost %}
+<script>
+// Format newlines for HTML in the quick forum form, since the content
+// is HTML but the form field is plain text.
+$(function() {
+    $('#quick-forum-form').submit(function() {
+        var field = $('#quick-forum-form #id_content');
+        var value = field.attr('value').split('\n\n').join('</p><p>');
+        value = '<p>' + value.split('\n').join('<br>') + '</p>';
+        field.attr('value', value);
+        return true;
+    });
+});
+</script>
+<div class="module">
+    <h2>{% trans "Quick Forum" %}</h2>
+    <form method="post" id="quick-forum-form" action="{% url "admin:forum_forumpost_add" %}">
+        {% csrf_token %}
+        <table id="quick-forum">
+            {{ form.as_table }}
+            <tr>
+                <td>&nbsp;</td>
+                <td style="width:100%;text-align:right;">
+                    <input type="submit" class="default"
+                        value="{% trans "Save Draft" %}" />
+                </td>
+            </tr>
+        </table>
+    </form>
+</div>
+{% endif %}

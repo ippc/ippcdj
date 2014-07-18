@@ -57,22 +57,19 @@
            {% if perms.ippc.add_reportingobligation and request.user.get_profile.country.name == page.title %}
            <small  class="pull-right">
                <a class="btn btn-small btn-info" href="{% url 'reporting-obligation-create' page.title|slugify key %}">+ {% trans "Add new" %}</a>
-           </small>
+    </small>
            {% endif %}
        </td>
    </tr>
 
-    <tr>
-        <th>{% trans "Title" %}</th>
-        <th>{% trans "Date Published" %}</th>
-       </tr>
-  
-   
-  
-      
+     <tr>
+       <th style="font-weight:normal;">{% trans "Title" %}</th>
+       <th style="font-weight:normal;">{% trans "Date Published" %}</th>
+     </tr>
      
     {% for object in latest %}
      
+
     {% ifequal object.reporting_obligation_type key %}
  
     <tr>
@@ -86,20 +83,17 @@
         {% if perms.ippc.change_reportingobligation and request.user.get_profile.country.name == page.title %}
             <a class="small pull-right" href="{% url 'reporting-obligation-edit' object.country.country_slug object.id %}"><i class="icon-edit"></i> Edit</a>
             {# <a class="btn" href="{% url 'reporting-obligation-edit' report.id %}"><i class="icon-edit"></i> Edit</a> #}
-        {% else %}
+    {% else %}
         {% endif %}
         </td>
        </tr>
       
-    {% endifequal %}
-    {% endfor %}
-
-    
-      {% endfor %} 
-    
+        {% endifequal %}
+      {% endfor %}
+    </tbody>
+  </table>
+{% endfor %} 
    <hr> 
-  </tbody>
-</table>
 
 
 

@@ -1,14 +1,16 @@
 # https://gist.github.com/renyi/3596248
 from copy import deepcopy
 from django.contrib import admin
-from mezzanine.pages.models import Page, RichTextPage
+from mezzanine.pages.models import Page, RichTextPage, Link
 from mezzanine.pages.admin import PageAdmin
 from mezzanine.conf import settings
 from mezzanine.core.admin import TabularDynamicInlineAdmin, StackedDynamicInlineAdmin
 
-from .models import PestStatus, PestReport, CountryPage, WorkAreaPage, PublicationLibrary, Publication,\
-ReportingObligation, EventReporting, PestFreeArea, ImplementationISPM, ImplementationISPMVersion,Website,\
+from .models import PestStatus, PestReport, CountryPage, WorkAreaPage, PublicationLibrary, \
+Publication, ReportingObligation,EventReporting,PestFreeArea,ImplementationISPM, \
+ImplementationISPMVersion, TransPublicationLibraryPage,Website,\
 EppoCode,IssueKeyword, CommodityKeyword,IssueKeywordsRelate,CommodityKeywordsRelate
+
 from django.contrib.auth.models import User
 from django import forms
 
@@ -17,29 +19,25 @@ from django import forms
 import autocomplete_light
 import autocomplete_light_registry
 
-# Publications -----------------
+from mezzanine.pages.admin import PageAdmin, LinkAdmin
+from models import TransRichTextPage, TransLinkPage
 
-# class FileInline(TabularDynamicInlineAdmin):
-#     model = File
-    
+
 class PublicationInline(StackedDynamicInlineAdmin):
     model = Publication
     prepopulated_fields = { 'slug': ['title'] }
-    # exclude = ('author',) # http://stackoverflow.com/a/7588194/412329
-    
-    # def queryset(self, request):
-    #     return Publication.objects.filter(author=request.user)
-    # 
-    # def save_model(self, request, obj, form, change):
-    #     obj.author = request.user
-    #     obj.author_id = request.user.id
-    #     obj.save()
+
+
+class TransPublicationLibraryPageAdmin(StackedDynamicInlineAdmin):
+    model = TransPublicationLibraryPage
+    fields = ("lang", "title", "content")
+
+
 
 class PublicationLibraryAdmin(PageAdmin):
-    inlines = (PublicationInline,)
+    inlines = (PublicationInline, TransPublicationLibraryPageAdmin,)
 
 admin.site.register(PublicationLibrary, PublicationLibraryAdmin)
-
 
 # Country Pages ----------------- 
 # http://mezzanine.jupo.org/docs/content-architecture.html#creating-custom-content-types
@@ -57,6 +55,20 @@ admin.site.register(CountryPage, CountryPageAdmin)
 
 
 
+# forumposts_extra_fieldsets = ((None, {"fields": ("comments", "allow_comments")}),)
+# # class WorkAreaFileInline(admin.TabularInline):
+# #     model = WorkAreaPage
+# class ForumPostAdmin(PageAdmin):
+#     readonly_fields = ('comments',)
+#     fieldsets = deepcopy(PageAdmin.fieldsets) + forumposts_extra_fieldsets
+#
+# admin.site.register(ForumPost, ForumPostAdmin)
+
+
+
+
+
+
 # Work Area Pages -----------------
 
 workareapages_extra_fieldsets = ((None, {"fields": ("users", "groups", "content")}),)
@@ -67,25 +79,6 @@ class WorkAreaPageAdmin(PageAdmin):
     fieldsets = deepcopy(PageAdmin.fieldsets) + workareapages_extra_fieldsets
 
 admin.site.register(WorkAreaPage, WorkAreaPageAdmin)
-
-
-
-
-
-# Pages -----------------
-# =todo: get this to work
-
-admin.site.unregister(Page)
-
-class CustomPageAdmin(PageAdmin):
-    save_on_top = True
-    list_display = ('title', 'publish_date', 'status')
-    list_filter = ('title', 'publish_date', 'status')
-    search_fields = ('title', 'content')
-
-admin.site.register(Page, CustomPageAdmin)
-
-
 
 
 # Pest Reports -----------------
@@ -127,6 +120,7 @@ class MyIssueKeywordsRelateAdminForm(forms.ModelForm):
         widgets = {
           'issuename': autocomplete_light.MultipleChoiceWidget ('IssueKeywordAutocomplete'),
           }
+
 
 class IssueKeywordsRelateAdmin(admin.ModelAdmin):
     form = MyIssueKeywordsRelateAdminForm
@@ -221,9 +215,7 @@ admin.site.register(ImplementationISPMVersion, ImplementationISPMVersionAdmin)
     
 # Translatable user-content  -----------------
 if "mezzanine.pages" in settings.INSTALLED_APPS:
-    from mezzanine.pages.models import RichTextPage, Link
-    from mezzanine.pages.admin import PageAdmin, LinkAdmin
-    from models import TransRichTextPage, TransLinkPage
+
 
     #
     # Richtext
@@ -237,6 +229,8 @@ if "mezzanine.pages" in settings.INSTALLED_APPS:
 
     admin.site.unregister(RichTextPage)
     admin.site.register(RichTextPage, TransPageAdmin)
+    
+
 
     #
     # Link

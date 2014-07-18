@@ -23,6 +23,14 @@ admin.autodiscover()
 urlpatterns = patterns("",
     
     url(r'^ocs/', include('ocs.urls', namespace="ocs")),
+
+    url(r'^forum/', include('forum.urls')),
+
+    # forum detail
+    # url(r'^forum/(?P<slug>[\w-]+)/$',
+    #     view=ForumPostDetailView.as_view(),
+    #     name="forum-post-detail"),
+    
     url("^sitemap/$", direct_to_template, {"template": "sitemap.html"}, name="sitemap"),
     url("^contact/$", direct_to_template, {"template": "contact.html"}, name="contact"),
     # url("^feeds/$", direct_to_template, {"template": "feeds.html"}, name="feeds"),
@@ -116,45 +124,43 @@ urlpatterns = patterns("",
     url(r'^countries/(?P<country>[\w-]+)/reportingobligation/(?P<year>\d+)/(?P<month>\d{2})/(?P<slug>[\w-]+)/$',
         view=ReportingObligationDetailView.as_view(),
         name="reporting-obligation-detail"),
-        
      # reporting obligation create
     url(r'^countries/(?P<country>[\w-]+)/reportingobligation/(?P<type>[\w-]+)/create/$',
         view=reporting_obligation_create,
         name='reporting-obligation-create'),
-        
     # reporting obligation edit
     url(r'^countries/(?P<country>[\w-]+)/reportingobligation/edit/(?P<id>\d+)/$',
         view=reporting_obligation_edit,
         name='reporting-obligation-edit'),
     #-------------------------------------------#
     # event reporting list
-    url(r'^countries/(?P<country>[\w-]+)/eventreportings/$',
+    url(r'^countries/(?P<country>[\w-]+)/eventreporting/$',
         view=EventReportingListView.as_view(),
         name='event-reporting-list'),
 
     # event reporting list showing hidden reports 
-    #url(r'^countries/(?P<country>[\w-]+)/eventreportings/hidden/$',
+    #url(r'^countries/(?P<country>[\w-]+)/eventreporting/hidden/$',
     #    view=EventReportingHiddenListView.as_view(),
     #    name='event-reporting-hidden-list'),
 
     # event reporting detail
-    url(r'^countries/(?P<country>[\w-]+)/eventreportings/(?P<year>\d+)/(?P<month>\d{2})/(?P<slug>[\w-]+)/$',
+    url(r'^countries/(?P<country>[\w-]+)/eventreporting/(?P<year>\d+)/(?P<month>\d{2})/(?P<slug>[\w-]+)/$',
         view=EventReportingDetailView.as_view(),
         name="event-reporting-detail"),
         
      # event reporting create
-    url(r'^countries/(?P<country>[\w-]+)/eventreportings/(?P<type>[\w-]+)/create/$',
+    url(r'^countries/(?P<country>[\w-]+)/eventreporting/(?P<type>[\w-]+)/create/$',
         view=event_reporting_create,
         name='event-reporting-create'),
         
     # event reporting edit
-    url(r'^countries/(?P<country>[\w-]+)/eventreportings/edit/(?P<id>\d+)/$',
+    url(r'^countries/(?P<country>[\w-]+)/eventreporting/edit/(?P<id>\d+)/$',
         view=event_reporting_edit,
         name='event-reporting-edit'),
 
 
     # event reporting list
-    url(r'^countries/(?P<country>[\w-]+)/eventreportings/$',
+    url(r'^countries/(?P<country>[\w-]+)/eventreporting/$',
         view=EventReportingListView.as_view(),
         name='event-reporting-list'),
  #-------------------------------------------#
@@ -209,7 +215,10 @@ urlpatterns = patterns("",
     url(r'^countries/(?P<country>[\w-]+)/publications/edit/(?P<id>\d+)/$',
         view=country_publication_edit,
         name='country-publication-edit'),
-
+    # event reporting list showing hidden reports 
+    #url(r'^countries/(?P<country>[\w-]+)/eventreporting/hidden/$',
+    #    view=EventReportingHiddenListView.as_view(),
+    #    name='event-reporting-hidden-list'),
 
 #-------------------------------------------#
    # pfa list
@@ -246,6 +255,7 @@ urlpatterns = patterns("",
     url(r'^countries/(?P<country>[\w-]+)/implementationispm/$',
         view=ImplementationISPMListView.as_view(),
         name='implementationispm-list'),
+
 
     #ImplementationISPMlist showing hidden reports 
     #url(r'^countries/(?P<country>[\w-]+)/eventreportings/hidden/$',
@@ -324,6 +334,7 @@ urlpatterns = patterns("",
     # ``mezzanine.urls``, go right ahead and take the parts you want
     # from it, and use them directly below instead of using
     # ``mezzanine.urls``.
+
     ("^", include("mezzanine.urls")),
 
     # MOUNTING MEZZANINE UNDER A PREFIX
@@ -343,6 +354,10 @@ urlpatterns = patterns("",
     # ("^%s/" % settings.SITE_PREFIX, include("mezzanine.urls"))
 
 )
+
+
+
+
 
 # Adds ``STATIC_URL`` to the context of error pages, so that error
 # pages can use JS, CSS and images.

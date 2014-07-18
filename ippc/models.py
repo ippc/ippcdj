@@ -1,3 +1,4 @@
+
 from string import punctuation
 from urllib import unquote
 
@@ -16,9 +17,11 @@ import os.path
 
 from mezzanine.pages.models import Page, RichTextPage
 from mezzanine.conf import settings
-from mezzanine.core.models import Slugged, MetaData, Displayable, Orderable, RichText
+from mezzanine.core.models import Slugged, MetaData, Displayable, Ownable, Orderable, RichText
 from mezzanine.core.fields import RichTextField, FileField
 from mezzanine.core.managers import SearchableManager
+
+from mezzanine.generic.fields import CommentsField
 
 from mezzanine.utils.importing import import_dotted_path
 from mezzanine.utils.models import upload_to
@@ -30,6 +33,7 @@ from django.contrib.contenttypes.models import ContentType
 from django.db.models.signals import post_save
 
 from django.core.exceptions import ValidationError
+
 
 
 class PublicationLibrary(Page, RichText):
@@ -159,6 +163,7 @@ class WorkAreaPage(Page, RichText):
         permissions = (
             ("can_view", "View Work Area Page"),
         )
+
 
 CP_NCP_T_TYPE_0 = 'N/A'
 CP_NCP_T_TYPE_1 = 'CP'
@@ -378,7 +383,9 @@ class PestReport(Displayable, models.Model):
     # commodity_groups = 
     # keywords / tags = 
     # objects = models.Manager()
+
     objects = SearchableManager()
+    # attachments = AttachmentManager()
     search_fields = ("title", "summary")
 
     class Meta:
@@ -429,6 +436,7 @@ class PestReportFile(models.Model):
     def fileextension(self):
         return os.path.splitext(self.file.name)[1]
 
+
 class PestReportUrl(models.Model):
     pestreport = models.ForeignKey(PestReport)
     url_for_more_information = models.URLField(blank=True, null=True)
@@ -451,6 +459,7 @@ BASIC_REP_TYPE_CHOICES = (
 )
 
 
+
       
 class ReportingObligation(Displayable, models.Model):
     """ ReportingObligation"""
@@ -461,7 +470,7 @@ class ReportingObligation(Displayable, models.Model):
     # title - provided by mezzanine.core.models.slugged (subclassed by displayable)
     # status - provided by mezzanine.core.models.displayable
     # publish_date - provided by mezzanine.core.models.displayable
-    
+
     reporting_obligation_type = models.IntegerField(_("Reporting Obligation"), choices=BASIC_REP_TYPE_CHOICES, default=BASIC_REP_3)
     publication_date = models.DateTimeField(_("Publication date"), blank=True, null=True, editable=True)
     #file = models.FileField(_("Report Document"), upload_to="reporting_obligation/%Y/%m/", blank=True)
@@ -504,6 +513,7 @@ class ReportingObligation(Displayable, models.Model):
             self.slug = slugify(self.title)
         self.modify_date = datetime.now()
         super(ReportingObligation, self).save(*args, **kwargs)
+
  
     def filelist(self):
         filesarray=[]
@@ -621,7 +631,6 @@ class CnPublicationUrl(models.Model):
         return self.url_for_more_information  
     def name(self):
         return self.url_for_more_information   
-
 
 EVT_REP_1 = 1
 EVT_REP_2 = 2
@@ -1049,6 +1058,7 @@ if "mezzanine.pages" in settings.INSTALLED_APPS:
             ordering = ("lang",)
             unique_together = ("lang", "translation")
 
+
 if "mezzanine.forms" in settings.INSTALLED_APPS:
     from mezzanine.forms import fields
     from mezzanine.forms.models import Form, FieldManager, Field
@@ -1101,3 +1111,13 @@ if "mezzanine.galleries" in settings.INSTALLED_APPS:
             verbose_name = _("Translated Image")
             verbose_name_plural = _("Translated Images")
             ordering = ("lang",)
+
+
+class TransPublicationLibraryPage(Translatable, RichText, Slugged):
+    translation = models.ForeignKey(PublicationLibrary, related_name="translation")
+
+    class Meta:
+        verbose_name = _("Translated Publication Library")
+        verbose_name_plural = _("Translated Publication Libraries")
+        ordering = ("lang",)
+        unique_together = ("lang", "translation")

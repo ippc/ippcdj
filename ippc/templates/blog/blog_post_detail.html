@@ -21,6 +21,8 @@
 <li class="active">{{ blog_post.title }}</li>
 {% endblock %}
 
+{# =note: the sidebar is in the filter_panel.html include #}
+
 {% block main %}
 
 {% block blog_post_detail_postedby %}
@@ -53,7 +55,7 @@
 
 {% block blog_post_detail_featured_image %}
 {% if settings.BLOG_USE_FEATURED_IMAGE and blog_post.featured_image %}
-<p><img src="{{ MEDIA_URL }}{% thumbnail blog_post.featured_image 600 0 %}"></p>
+  <p><img src="{{ MEDIA_URL }}{% thumbnail blog_post.featured_image 500 0 %}"></p>
 {% endif %}
 {% endblock %}
 

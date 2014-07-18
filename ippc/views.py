@@ -1,6 +1,7 @@
 from django.shortcuts import render
 from django.utils.translation import ugettext_lazy as _
 from django.contrib.messages import info, error
+
 from .models import IppcUserProfile,CountryPage, PestStatus, PestReport, IS_PUBLIC, IS_HIDDEN, Publication,\
 ReportingObligation, BASIC_REP_TYPE_CHOICES, EventReporting, EVT_REP_TYPE_CHOICES,Website,CnPublication, \
 PestFreeArea,ImplementationISPM,REGIONS, IssueKeywordsRelate,CommodityKeywordsRelate,EventreportingFile,ReportingObligation_File
@@ -123,9 +124,6 @@ class PestReportDetailView(DetailView):
     context_object_name = 'report'
     template_name = 'countries/pest_report_detail.html'
     queryset = PestReport.objects.filter(status=CONTENT_STATUS_PUBLISHED)
-    # print('>>>>>>>>>>>>>>>')
-    # print(user.get_profile().country)
-
 
 class PublicationListView(ListView):
     """
@@ -281,8 +279,6 @@ def pest_report_edit(request, country, id=None, template_name='countries/pest_re
         'form': form,'f_form':f_form,'u_form':u_form,'issueform': issueform,'commodityform': commodityform,  "pest_report": pest_report
     }, context_instance=RequestContext(request))
 
-
-
 class ReportingObligationListView(ListView):
     """    Reporting Obligation """
     context_object_name = 'latest'
@@ -326,7 +322,7 @@ def reporting_obligation_create(request, country,type):
     author = user
     country=user.get_profile().country
     user_country_slug = lower(slugify(country))
-    
+
     form = ReportingObligationForm(request.POST, request.FILES)
     issueform =IssueKeywordsRelateForm(request.POST)
     commodityform =CommodityKeywordsRelateForm(request.POST)
@@ -412,6 +408,7 @@ def reporting_obligation_edit(request, country, id=None, template_name='countrie
             u_form.instance = reporting_obligation
             u_form.save()
             # If the save was successful, success message and redirect to another page
+
             info(request, _("Successfully updated Reporting obligation."))
             return redirect("reporting-obligation-detail", country=user_country_slug, year=reporting_obligation.publish_date.strftime("%Y"), month=reporting_obligation.publish_date.strftime("%m"), slug=reporting_obligation.slug)
 
@@ -471,11 +468,11 @@ def event_reporting_create(request, country,type):
     country=user.get_profile().country
     user_country_slug = lower(slugify(country))
 
+
     form = EventReportingForm(request.POST or None, request.FILES)
     issueform =IssueKeywordsRelateForm(request.POST)
     commodityform =CommodityKeywordsRelateForm(request.POST)
     
-         
     if request.method == "POST":
         f_form = EventreportingFileFormSet(request.POST, request.FILES)
         u_form = EventreportingUrlFormSet(request.POST)
@@ -893,8 +890,6 @@ class PestFreeAreaDetailView(DetailView):
     context_object_name = 'pfa'
     template_name = 'countries/pfa_detail.html'
     queryset = PestFreeArea.objects.filter()
-    # print('>>>>>>>>>>>>>>>')
-    # print(user.get_profile().country)
 
 
 
@@ -906,6 +901,7 @@ def pfa_create(request, country):
     author = user
     country=user.get_profile().country
     user_country_slug = lower(slugify(country))
+
 
     form = PestFreeAreaForm(request.POST)
     issueform =IssueKeywordsRelateForm(request.POST)
@@ -977,6 +973,7 @@ def pfa_edit(request, country, id=None, template_name='countries/pfa_edit.html')
         pfa = PestFreeArea(author=request.user)
       
     if request.POST:
+
         form = PestFreeAreaForm(request.POST,  request.FILES, instance=pfa)
         issueform =IssueKeywordsRelateForm(request.POST, instance=issues)
         commodityform =CommodityKeywordsRelateForm(request.POST, instance=commodities)
@@ -1058,12 +1055,12 @@ def implementationispm_create(request, country):
     country=user.get_profile().country
     user_country_slug = lower(slugify(country))
 
+
     form = ImplementationISPMForm(request.POST)
     issueform =IssueKeywordsRelateForm(request.POST)
     commodityform =CommodityKeywordsRelateForm(request.POST)
     
-
-    if request.method == "POST":
+ if request.method == "POST":
         f_form =ImplementationISPMFileFormSet(request.POST, request.FILES)
         u_form =ImplementationISPMUrlFormSet(request.POST)
         if form.is_valid() and f_form.is_valid() and u_form.is_valid():

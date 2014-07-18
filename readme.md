@@ -2,56 +2,77 @@
 
 ## Things to do
 
-- Create remaining forms for all types of NPPO reports
-    - Add [tagging](http://django-taggit.readthedocs.org/en/latest/) (keywords) and other fields
+- Merge our current work and update dev.ippc.int with forum and calendar
+    - Files in forum posts
 - Country pages:
-    - Versioning of Pest Reports. Report number: GBR-32/1. When edited: GBR-32/2.
-    - Other country forms
     - Prevent hidden report titles from appearing in search results
     - Country RSS feeds
 - Author field for publications
+- Start from Dj 1.6.5 (1.7?) and Mezzanine 3.1.5
+    - Update to latest version of Mezzanine and make sure current functionality works
+- The All Our Users Database. Two options:
+    1. Create[Single Sign-On](https://docs.djangoproject.com/en/1.5/topics/auth/customizing/) (see also [this](https://meta.discourse.org/t/sso-example-for-django/14258) and [this](https://github.com/Bouke/django-federated-login/tree/master/example)) and **[this](https://gist.github.com/kenbolton/4946936)** - a separate Accounts database to be used by all IPPC-related apps for authentication and authorization. The database should contain two tables:
+        - Users (authentication - recognizes who you are)
+            - ID
+            - first name
+            - last name
+            - login/nickname
+            - email
+            - hashed password
+            - salt
+            - creation timestamp
+            - update timestamp
+            - account state (verified, disabled, etc)
+        - Groups (knows what you are allowed to do, or what you allow others to do)
+
+        Then, each application contains a profile app that extends the above Accounts DB authentication defaults:
+    
+        - IPPC
+            - User(Fk to Accounts)
+            - IPPC Country
+            - Telephone
+            - Alternate email
+        - Phyto
+            - User(Fk to Users)
+            - CV
+            - Date Joined
+        - Ocs
+            - User(Fk to Users)
+            - Document Title
+            - Revision
+            - Comment
+            - Version
+        - Apppc
+            - User(Fk to Users)
+            - APPPC country
+    2. [All websites run off the same application instance](http://stackoverflow.com/questions/1581602/django-sharing-authentication-across-two-sites-that-are-on-different-domains) with [custom authentication backend](http://stackoverflow.com/questions/1404131/how-to-get-unique-users-across-multiple-django-sites-powered-by-the-sites-fram)
+
 - Homepage design
     - ¿'Add Pest Report' button in countries for NPPOs, visible even when user is logged out. Once user logs in, if they're an NPPO, they are redirected to the pest report form for their country?
     - Photos
-- [Calendar](https://github.com/shurik/mezzanine.calendar) (or [Events](https://github.com/stbarnabas/mezzanine-events)?)
-- Forums
 - User registration open but behind login-required and super-user required so only admins can add new users, who get notification emails to confirm account and set own password. OR, user registration open to all, but need approval by admins. i.e. Account registration & [activation](http://mezzanine.jupo.org/docs/user-accounts.html#account-approval) system?
     - Setup auto-sending of messages to new users, with possible custom messages for NPPOs and Editors
-- Create separate User database to be used by all IPPC-related apps for authentication
-    - Users
-        - Email
-        - Password
-        - First Name
-        - Last Name
-    - IPPC (profile in each web app extends above Users DB authentication defaults)
-        - User(Fk to Users)
-        - IPPC Country
-        - Telephone
-        - Alternate email
-    - Phyto
-        - User(Fk to Users)
-        - CV
-        - Date Joined
-    - Ocs
-        - User(Fk to Users)
-        - Document Title
-        - Revision
-        - Comment
-        - Version
-    - Apppc
-        - User(Fk to Users)
-        - APPPC country
+
+- [IRSS](https://github.com/ASKBOT/askbot-devel) refactor
+    - The easiest way to implement this is probably to use [CAS-Provider and CAS-consumer](http://stackoverflow.com/a/4663223) or [django-cas](https://bitbucket.org/cpcc/django-cas/overview). Another option: [mama-cas](https://github.com/jbittel/django-mama-cas). Relevant documentation pages: [multiple databases](https://docs.djangoproject.com/en/1.5/topics/db/multi-db/), [authentication](https://docs.djangoproject.com/en/1.5/topics/auth/customizing/), [multiple sites framework](https://docs.djangoproject.com/en/1.5/ref/contrib/sites/). See also [this blog post](http://reinout.vanrees.org/weblog/2014/05/09/authentication-python-web.html).
+- Phytosanitary.info refactor (use [original code](https://github.com/hypertexthero/phytosanitary)?)
+- Both phytosantiary.info and apppc.org will need to get SSL certificates for single sign-on to work securely: 
+        > Even if the authentication with CAS is made using a mechanism which makes it difficult to interfere with, all authorized communication will subsequentely use a cookie identifing the session which can be used to hijack the connection. So you need to encrypt the communication. There is just no way around that if you want to enforce some sort of security.
+    
 - [Email utility](https://github.com/pinax/django-mailer)
     - Ability to insert user groups as well as individual users in `To:` field in `/admin/mailer/message/add/`
         - Use [admin actions](https://docs.djangoproject.com/en/1.5/ref/contrib/admin/actions/)?
         - [Custom admin form](http://stackoverflow.com/a/6099360/412329) overriding mailer's default form? Also see [this](http://djangosnippets.org/snippets/1650/) and [this](https://gist.github.com/luzfcb/1712348)
         - Custom email utility app and admin form calling django-mailer and groups?
-- Add [blog category management page to admin](http://127.0.0.1:8000/en/admin/blog/blogcategory/)
+- Add blog and forum category management page to admin: 
+    - http://127.0.0.1:8000/en/admin/blog/blogcategory/
+    - http://127.0.0.1:8000/en/admin/forum/forumcategory/
 - Contact form
 - FAQ
+- Custom Work Area main page descriptions or announcements or links to particular utilities depending on user permissions. Probably need to use a custom template that appears on /work-area/ URL (like the /news/ which displays the custom blog).
 - Last modified date for pages
 - Content (data) migration
-- ¿Use jQuery [multi-file-upload](https://github.com/sigurdga/django-jquery-file-upload) functionality for uploading images and files to be inserted in pages and blog posts, [with additional fields for each file](https://github.com/blueimp/jQuery-File-Upload/wiki/How-to-submit-additional-form-data) if required?
+- ¿Use jQuery [multi-file-upload](https://github.com/sigurdga/django-jquery-file-upload) functionality for uploading images and files to be inserted in pages and blog posts, [with additional fields for each file](https://github.com/blueimp/jQuery-File-Upload/wiki/How-to-submit-additional-form-data) if required? Or probably best to have own files table that can be related to any model, such as **[django-attach](https://github.com/peterkuma/django-attach/tree/master/example_project)** or **[django-jfu](https://github.com/Alem/django-jfu)**.
 - Order permission groups alphabetically in admin
 - Setup proper permissions (nginx is currently running as root — not good) so that static media, including user-uploaded files are served through Nginx. Document nginx/gunicorn/supervisor setup (currently running gunicorn with deprecated `gunicorn_django -b 0.0.0.0:8000` command — get it running and working with recommended command instead)
 - Setup working fabric script for easy deployment that does the following after running `fab deploy dev`:
@@ -59,7 +80,6 @@
     2. Logs in to dev.ippc.int, activates application virtualenv and pulls changes from Github
     3. Collect static files to locations to be served on dev server
     4. Restart gunicorn and nginx 
-- Update to latest version of Mezzanine and make sure current functionality works
 - [Versioning](https://django-simple-history.readthedocs.org/en/latest/) of all page content?
 - [Pest Report mapping](http://leafletjs.com/examples/choropleth.html)
     - <http://blog.thematicmapping.org/2008/04/thematic-mapping-with-geojson.html>
@@ -69,7 +89,10 @@
         - [Income levels example](http://humangeo.github.io/leaflet-dvf/examples/html/incomelevels.html)
         - [Top Cities](http://techslides.com/leaflet-map-with-utfgrid-and-php-served-mbtiles/)
 - [Download multiple files](http://stackoverflow.com/a/12951557/412329)
-- Use [Chosen](http://harvesthq.github.io/chosen/) to make globalnav dropdowns friedly. Also in admin. There's a [Django app](https://github.com/theatlantic/django-chosen), too.
+- [wiki.ippc.int](http://www.nomachetejuggling.com/2012/05/15/personal-wiki-using-github-and-gollum-on-os-x/)
+- Use [Chosen](http://harvesthq.github.io/chosen/) to make globalnav dropdowns friedly. Also in admin. There's a [Django app](https://github.com/theatlantic/django-chosen), too. 
+- If no publication or agenda numbers exist, don't show header or cells
+- Automatic local table of contents for pages with headers with IDs? <http://css-tricks.com/automatic-table-of-contents/> 
 
 ## Installation / Setup
 
@@ -81,17 +104,9 @@
     ````
     git clone https://github.com/hypertexthero/ippcdj.git ippcdj_repo
     cd ippcdj_repo
-    pip install -r requirements/project.txt
-    # if you see errors related to PIL, see: <http://www.hypertexthero.com/logbook/2013/07/pil-pillow-libjpeg-ldconfig/>
-    # if you're on Windows install Pillow for your computer from <http://www.lfd.uci.edu/~gohlke/pythonlibs/> (see <https://bitnami.com/forums/forums/djangostack/topics/i-was-running-through-the-djangobook-tutorials-and-now-i-need-a-python-imaging-library>)
-    
-    # rename local_settings_example.py to local_settings.py 
+    pip2.7 install -r requirements/project.txt
     mv local_settings_example.py local_settings.py 
-    
-    # create database (or rename existing test one dev.dbcopy > dev.db)
     python manage.py createdb
-    
-    # Accept the defaults, say 'Yes' to 'fake initial migrations'
     python manage.py runserver
     
     ````
@@ -123,9 +138,7 @@ Then, [here's a basic guide](http://rogerdudler.github.io/git-guide/) (below is 
 1. If you're working on the code for the first time, first clone repository from ippc repo (the first time you start working with it)
 
     ```bash    
-    # change into your local projects directory (in your own computer) 
     cd ~/projects
-    # clone the ippc repository
     git clone https://github.com/ippc/ippcdj.git
     ```
 
@@ -211,6 +224,8 @@ If you add new fields or change certain values of existing ones such as blank or
         manage.py migrate your_app ####
 
 
+If you mess up or want an overview to understand what south is doing, see [here](http://stackoverflow.com/a/4840262)
+
 ## Translation updates for non-user-generated site content
 
 <https://docs.djangoproject.com/en/dev/topics/i18n/translation/>
@@ -220,7 +235,7 @@ Edit the django.po file for each language in `ippcdj_repo/conf/locale/` and then
     python manage.py makemessages --all
     python manage.py compilemessages
 
-## Deployment
+## Deployment & Data Migrations
 
 Dev server exlqaippc2.ext.fao.org setup and configuration for IPPC 4.0 prototype at <http://dev.ippc.int/en/> (only available within FAO network). To update code (eventually this will all be done with one command which fires a fabric script such as `fab deploy dev`):
 
@@ -234,6 +249,8 @@ Dev server exlqaippc2.ext.fao.org setup and configuration for IPPC 4.0 prototype
         python manage.py schemamigration ippc --auto
         python  manage.py migrate ippc
 
+    See also: <http://stackoverflow.com/questions/2862979/easiest-way-to-rename-a-model-using-django-south>
+
 7. Compile translations
 
         python manage.py makemessages --all
@@ -241,6 +258,71 @@ Dev server exlqaippc2.ext.fao.org setup and configuration for IPPC 4.0 prototype
 
 8. Kill [gunicorn](http://gunicorn-docs.readthedocs.org/en/latest/run.html) process `pkill gunicorn` then restart it `gunicorn_django --daemon -b 0.0.0.0:8000`
 9. Stop nginx `service nginx stop` then restart `service nginx start`
+
+## Example Nginx Configuration
+
+    # phpmyadmin.site.tld (dev only to aid management of MySQL DB. Do not install in production.)
+    server {
+        listen xxx.xxx.x.xxx:80;
+        server_name phpmyadmin.site.tld;
+        
+        root /path/to/phpmyadmin;
+        index index.html index.php;
+        
+        location / {
+                index index.html index.htm index.php;
+            }
+            
+        location ~ \.php$ {
+            expires    off;
+            include /etc/nginx/fastcgi_params;
+            fastcgi_pass    127.0.0.1:9000;
+            fastcgi_index   index.php;
+            fastcgi_param   SCRIPT_FILENAME  /path/to/phpmyadmin/$fastcgi_script_name;
+        }
+    }
+    
+    
+    # dev.site.tld
+    server {
+      listen xxx.xxx.x.xxx:80;
+      server_name dev.site.tld;
+      access_log  /var/log/nginx/dev_site_tld.log;
+      
+      location /admin/media/ {
+          # this changes depending on your python version
+          root /path/to/env/lib/python2.7/site-packages/django/contrib;
+      }
+      
+      location /static/media { # STATIC_URL
+          alias /path/to/env/repo/static/media; # STATIC_ROOT
+          expires 30d;
+      }
+      
+      location /static { # STATIC_URL
+          alias /path/to/env/repo/static; # STATIC_ROOT
+          expires 30d;
+      }
+      
+      location / {
+          proxy_pass http://127.0.0.1:8000;
+          proxy_set_header Host $host;
+          proxy_set_header X-Real-IP $remote_addr;
+          proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+          }
+          
+      # what to serve if upstream is not available or crashes
+      error_page 500 502 503 504 /media/50x.html;
+    }
+
+## MariaDB (MySQL)
+
+[MySQL](http://www.tecmint.com/install-mariadb-in-linux/), [php](http://www.if-not-true-then-false.com/2011/install-nginx-php-fpm-on-fedora-centos-red-hat-rhel/) and [phpmyadmin](http://stackoverflow.com/questions/5895707/how-to-combine-django-and-wordpress-based-on-ubuntu-and-nginx)
+
+Start:
+
+    /etc/init.d/mysql start
+
 
 ## Permissions System
 

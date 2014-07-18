@@ -23,3 +23,4 @@ requests==1.2.3
 requests-oauthlib==0.3.2
 wsgiref==0.1.2
 gunicorn==18.0
+MySQL-python==1.2.5 # first `yum install mysql-devel` then `pip2.7 install mysql-python` on RHEL dev server

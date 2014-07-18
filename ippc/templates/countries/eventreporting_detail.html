@@ -7,15 +7,15 @@
 <li><a href="/">{% trans "Home" %}</a><span class="divider">/</span></li>
 <li><a href="/countries/">Countries</a><span class="divider">/</span></li>
 <li><a href="/countries/{{eventreporting.country.name|slugify}}">{{eventreporting.country.name}}</a><span class="divider">/</span></li>
-<li><a href="/countries/{{eventreporting.country.name|slugify}}/eventreportings/">Event Reportings</a><span class="divider">/</span></li>
+<li><a href="/countries/{{eventreporting.country.name|slugify}}/eventreporting/">Event Reportings</a><span class="divider">/</span></li>
 <li class="active">{{ eventreporting.title }}</li>
 {% endblock %}
 
 {% block local_nav %}
 <div class="well">
-  <p><a href="/countries/{{ eventreporting.country.name|slugify }}/eventreportings/">« {% trans "Back to" %} {% trans "Event Reportings" %}</a></p>
+  <p><a href="/countries/{{ eventreporting.country.name|slugify }}/eventreporting/">« {% trans "Back to" %} {% trans "Event Reportings" %}</a></p>
     {% if user.is_superuser %} 
-        <a class="btn btn-small btn-info" href="/admin/ippc/eventreportings/{{ eventreporting.id }}">Edit as Admin</a><br>
+        <a class="btn btn-small btn-info" href="/admin/ippc/eventreporting/{{ eventreporting.id }}">Edit as Admin</a><br>
     {% endif %}
         
     {% if perms.ippc.change_eventreporting and request.user.get_profile.country.name == page.title %}
@@ -47,8 +47,10 @@
   </dd>
   {% endif %}
   
+  {% if eventreporting.publication_date %}
   <dt>{% trans "Publication date" %}</dt>
   <dd>{% blocktrans with sometime=eventreporting.publication_date|date:"d-m-Y" %}{{ sometime }}{% endblocktrans %}</dd>
+  {% endif %}
   
  {% if eventreporting.short_description %}
   <dt>{% trans "short description" %}</dt>
@@ -64,7 +66,6 @@
 
   <dt>{% trans "Author" %}</dt>
   <dd>{{ eventreporting.author.get_profile.first_name }} {{ eventreporting.author.get_profile.last_name }}</dd>
-  
   
 
   {% if eventreporting.issuename %}

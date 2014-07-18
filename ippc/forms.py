@@ -8,6 +8,7 @@ VERS_CHOICES,IssueKeywordsRelate,CommodityKeywordsRelate,\
 EventreportingFile, ReportingObligation_File,PestFreeAreaFile, ImplementationISPMFile,PestReportFile,\
 EventreportingUrl, ReportingObligationUrl,PestFreeAreaUrl, ImplementationISPMUrl,PestReportUrl,WebsiteUrl,\
 CnPublication,CnPublicationFile,CnPublicationUrl
+
 from django.contrib.auth.models import User
 import autocomplete_light
 import autocomplete_light_registry
@@ -73,6 +74,7 @@ class IssueKeywordsRelateForm(forms.ModelForm):
          'issuename': autocomplete_light.MultipleChoiceWidget ('IssueKeywordAutocomplete'),   
          }
 
+
 class ReportingObligationForm(forms.ModelForm):
 
     # country = forms.ChoiceField(widget=forms.Select(), initial='country')
@@ -81,6 +83,7 @@ class ReportingObligationForm(forms.ModelForm):
     class Meta:
         model = ReportingObligation
         fields = [
+
            'reporting_obligation_type',
            'title', 
            'publication_date', 
@@ -93,8 +96,7 @@ class ReportingObligationForm(forms.ModelForm):
             'country': forms.HiddenInput(),   
             'reporting_obligation_type': forms.RadioSelect(attrs={'readonly':'True'}),
             'publication_date': AdminDateWidget(),
-            
-        }
+      }
 
 class EventReportingForm(forms.ModelForm):
    # country = forms.ChoiceField(widget=forms.Select(), initial='country')

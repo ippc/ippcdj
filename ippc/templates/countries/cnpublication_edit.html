@@ -1,7 +1,7 @@
 {% extends "base.html" %}
 {% load pages_tags translate_tags mezzanine_tags i18n future staticfiles accounts_tags %}
 
-{% block meta_title %}{% trans "Edit Publication" %} - {{ website.country}} {% endblock %}
+{% block meta_title %}{% trans "Edit Publication" %} - {{ cnpublication.country}} {% endblock %}
 
 {# {% block extra_style %} #}
 {#     <link href="{% static "css/Markdown.Editor.css" %}" rel="stylesheet"> #}
@@ -38,6 +38,7 @@
 <p class="pull-right">
   <a href="javascript:history.go(-1)">{% trans "« Cancel and go back" %}</a>
 </p>
+
 
 <h1><small class="normal">{% trans "Editing" %}</small> {{ cnpublication.title }} <br><small class="normal">{% trans "Last updated on" %} {{cnpublication.modify_date}}</small></h1>
 
