@@ -1,0 +1,33 @@
+{% load scheduletags %}
+{% ifnotequal day.start.month month.start.month %}
+  <td class="{{size}} daynumber noday"></td>
+{% else %}
+  {% if day.has_occurrences %}
+    <td class="{{size}} daynumber busy">
+  {% else %}
+    <td class="{{size}} daynumber free">
+{% endif %}
+   
+           <b>{{day.start.day}}</b>
+        
+    {% ifnotequal size "small" %}
+        <div class="daycell">
+            {% if day.has_occurrences %}
+                {% for o in day.get_occurrence_partials %}
+                        <div class="eventcell eventcell{{o.class}}{% if o.occurrence.cancelled %} cancelled{% endif %}" >
+                           {% ifequal day.start.day o.occurrence.event.start.day %}
+                           <a  href="/events/event/{{o.occurrence.event.id}}">
+                                {% title o.occurrence %}
+                            </a>
+                            {% else %}
+                           <a  href="/events/event/{{o.occurrence.event.id}}">
+                               &#160;
+                            </a>
+                           {% endifequal %}
+                        </div>
+                {% endfor %}
+            {% endif %}
+        </div>
+    {% endifnotequal %}
+</td>
+{% endifnotequal %}

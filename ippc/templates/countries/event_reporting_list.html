@@ -77,8 +77,7 @@
  
     <tr>
       <td><a href="{% url 'event-reporting-detail' object.country.country_slug object.publish_date|date:'Y' object.publish_date|date:'m'  object.slug %}">{{ object.title }}</a></td>
-      <td><a href="{% url 'event-reporting-detail' object.country.country_slug object.publish_date|date:'Y' object.publish_date|date:'m'  object.slug %}">{{ object.publish_date|date:"d M Y" }}</a>
-
+      <td>{{ object.publish_date|date:"d M Y" }}
         {% if user.is_superuser %} 
             <a class="small pull-right" href="/admin/ippc/eventreporting/{{ object.id }}"><i class="icon-edit"></i> Edit as Admin</a><br>
         {% endif %}

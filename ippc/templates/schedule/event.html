@@ -1,0 +1,130 @@
+{% extends "base.html" %}
+{% load i18n staticfiles scheduletags %}
+{% load pages_tags mezzanine_tags i18n future staticfiles accounts_tags %}
+
+{% block meta_title %}{% trans "Event" %}{% endblock %}
+
+{% block breadcrumb_menu %}
+<li><a href="/">{% trans "Home" %}</a><span class="divider">/</span></li>
+<li><a href="/calendar/">Calendar / events</a><span class="divider">/</span></li>
+<li class="active">{{event.title}}</li>
+{% endblock %}
+
+{% block local_nav %}
+<div class="well">
+    {% if user.is_superuser %} 
+    <a class="btn btn-small btn-info" href="/admin/schedule/event/{{ event.id }}">Edit as Admin</a><br>
+    {% endif %}
+    {% if perms.ippc.change_event %}
+    <a class="btn btn-small btn-info" href="{% url "edit_event" event.calendar.slug event.id %}">Edit</a>
+    {% endif %}
+</div>
+{% endblock local_nav %}
+
+{% block pageinfo %}
+
+{% endblock pageinfo %}
+
+{% block main %}
+<h1>{{event.title}}</h1> 
+<dl class="dl-horizontal">
+
+    <dt>{% trans "Starts" %}</dt>
+    <dd>
+        <ul class="unstyled nomargin">
+            <li>{% blocktrans with event.start|date:"d-m-Y" as start_date %}{{ start_date }}{% endblocktrans %}</li>
+        </ul>
+    </dd>
+
+
+    <dt>{% trans "Ends" %}</dt>
+    <dd>
+        <ul class="unstyled nomargin">
+            <li>{% blocktrans with event.end|date:"d-m-Y" as end_date %}{{ end_date }}{% endblocktrans %}</li>
+        </ul>
+    </dd>
+    {% if event.description %}
+    <dt>{% trans "Description" %}</dt>
+    <dd>
+        <ul class="unstyled nomargin">
+            <li>{{event.description}}</li>
+        </ul>
+    </dd>
+    {% endif %}
+    <dt>{% trans "Category" %}</dt>
+    <dd>
+        <ul class="unstyled nomargin">
+            <li>{{event.category_verbose}}</li>
+        </ul>
+    </dd>
+    <dt>{% trans "Type" %}</dt>
+    <dd>
+        <ul class="unstyled nomargin">
+            <li>{{event.type_verbose}}</li>
+        </ul>
+    </dd>
+    <dt>{% trans "Venue city" %}</dt>
+    <dd>
+        <ul class="unstyled nomargin">
+            <li>{{event.venuecity}}</li>
+        </ul>
+    </dd>
+    <dt>{% trans "Venue country" %}</dt>
+    <dd>
+        <ul class="unstyled nomargin">
+            <li>{{event.venuecountry}}</li>
+        </ul>
+    </dd>
+
+    <dt>{% trans "Organizer" %}</dt>
+    <dd>
+        <ul class="unstyled nomargin">
+            <li>{{event.organizer}}</li>
+        </ul>
+    </dd>
+    <dt>{% trans "Created on" %}</dt>
+    <dd>{% blocktrans with sometime=event.created_on|date:"d-m-Y" %}{{ sometime }}{% endblocktrans %}</dd>
+    <dt>{% trans "Updated on" %}</dt>
+    <dd>{% blocktrans with sometime=event.updated_on|date:"d-m-Y" %}{{ sometime }}{% endblocktrans %}</dd>
+
+    {% if event.issuename %}
+    <dt>{% trans "Issue keywords" %}</dt>
+    <dd>
+        {% for entry in event.issuename.all %}
+        <br/>
+        {% for e in entry.issuename.all %}
+        <br/>
+        {{e.name}}<br/>
+        {% endfor %} 
+        {% endfor %}
+    </dd>
+    {% endif %}
+
+
+
+    <dt>{% trans "Event files" %}</dt>  <dd> <ul class="unstyled nomargin">
+            {% for f in event.eventfile_set.all %} 
+
+            <li><a href="{{MEDIA_URL}}{{f.file.name}}">{{ f.description }}</a></li>
+            {% endfor %}
+        </ul></dd>
+    <dt>{% trans "Event websites/urls" %}</dt>
+    <dd> <ul class="unstyled nomargin">
+            {% for u in event.eventurl_set.all %} 
+
+            <li> <a href="{{ u.url_for_more_information }}">{{ u.url_for_more_information }}</a></li>
+            {% endfor %}  
+        </ul></dd>
+
+
+
+
+
+
+</dl>
+
+
+
+
+{% endblock %}
+

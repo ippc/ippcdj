@@ -6,9 +6,10 @@ from .ippc.views import PestReportListView, PestReportHiddenListView, \
 PestReportDetailView, CountryView, pest_report_create, pest_report_edit, PublicationDetailView,\
 PublicationListView,ReportingObligationListView, ReportingObligationDetailView,reporting_obligation_create, reporting_obligation_edit, \
 EventReportingListView, EventReportingDetailView,event_reporting_create, event_reporting_edit, \
-PestFreeAreaListView, PestFreeAreaDetailView,pfa_create, pfa_edit, \
+PestFreeAreaListView, PestFreeAreaDetailView,pfa_create, pfa_edit, WebsiteListView, WebsiteDetailView ,website_create, website_edit, \
 ImplementationISPMListView, ImplementationISPMDetailView,implementationispm_create, implementationispm_edit,CountryListView,\
-AdvancesSearchCNListView
+AdvancesSearchCNListView,CnPublicationListView,CnPublicationDetailView,country_publication_create,country_publication_edit
+from schedule.periods import Year, Month, Week, Day
 from mezzanine.core.views import direct_to_template
 import mezzanine_pagedown.urls
 import autocomplete_light
@@ -28,8 +29,22 @@ urlpatterns = patterns("",
     # url("^legal/$", direct_to_template, {"template": "legal.html"}, name="legal"),
     # url("^colophon/$", direct_to_template, {"template": "colophon.html"}, name="colophon"),
     # url("^faq/$", direct_to_template, {"template": "sitemap.html"}, name="sitemap"),
-     url(r'^autocomplete/', include('autocomplete_light.urls')),
-    # countries
+    url(r'^autocomplete/', include('autocomplete_light.urls')),
+    url(r'^events/', include('schedule.urls')),
+    url(r'^month/(?P<calendar_slug>[-\w]+)/$',
+        'schedule.views.calendar_by_periods',
+        name="month_calendar",
+        kwargs={'periods': [Month], 'template_name': 'schedule/calendar_month.html'}),
+    url(r'^event/create/(?P<calendar_slug>[-\w]+)/$',
+        'schedule.views.create_or_edit_event',
+        name='calendar_create_event'),
+    url(r'^year/(?P<calendar_slug>[-\w]+)/$',
+        'schedule.views.calendar_by_year',
+        name="year_calendar",
+        kwargs={'year': [Year], 'template_name': 'schedule/calendar_year.html'}),
+
+      
+  # countries
     
     # individual country home
     url(r'^countries/(?P<country>[\w-]+)/$',
@@ -142,6 +157,59 @@ urlpatterns = patterns("",
     url(r'^countries/(?P<country>[\w-]+)/eventreportings/$',
         view=EventReportingListView.as_view(),
         name='event-reporting-list'),
+ #-------------------------------------------#
+    # website list
+    url(r'^countries/(?P<country>[\w-]+)/websites/$',
+        view=WebsiteListView.as_view(),
+        name='website-list'),
+
+    #website list showing hidden reports 
+    #url(r'^countries/(?P<country>[\w-]+)/websites/hidden/$',
+    #    view=WebsitesHiddenListView.as_view(),
+    #    name='website-hidden-list'),
+
+    # website detail
+    url(r'^countries/(?P<country>[\w-]+)/websites/(?P<year>\d+)/(?P<month>\d{2})/(?P<slug>[\w-]+)/$',
+        view=WebsiteDetailView.as_view(),
+        name="website-detail"),
+        
+     # websitecreate
+    url(r'^countries/(?P<country>[\w-]+)/websites/create/$',
+        view=website_create,
+        name='website-create'),
+        
+    # website edit
+    url(r'^countries/(?P<country>[\w-]+)/websites/edit/(?P<id>\d+)/$',
+        view=website_edit,
+        name='website-edit'),
+
+
+#-------------------------------------------#
+    # CN publications list
+    url(r'^countries/(?P<country>[\w-]+)/publications/$',
+        view=CnPublicationListView.as_view(),
+        name='country-publication-list'),
+
+    #CN publications list showing hidden reports 
+    #url(r'^countries/(?P<country>[\w-]+)/websites/hidden/$',
+    #    view=WebsitesHiddenListView.as_view(),
+    #    name='website-hidden-list'),
+
+    # CN publications detail
+    url(r'^countries/(?P<country>[\w-]+)/publications/(?P<year>\d+)/(?P<month>\d{2})/(?P<slug>[\w-]+)/$',
+        view=CnPublicationDetailView.as_view(),
+        name="country-publication-detail"),
+        
+     # CN publications create
+    url(r'^countries/(?P<country>[\w-]+)/publications/create/$',
+        view=country_publication_create,
+        name='country-publication-create'),
+        
+    # CN publications edit
+    url(r'^countries/(?P<country>[\w-]+)/publications/edit/(?P<id>\d+)/$',
+        view=country_publication_edit,
+        name='country-publication-edit'),
+
 
 #-------------------------------------------#
    # pfa list

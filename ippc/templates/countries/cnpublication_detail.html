@@ -1,0 +1,112 @@
+{% extends "base.html" %}
+{% load pages_tags mezzanine_tags i18n future staticfiles accounts_tags %}
+
+{% block meta_title %}{% trans "Latest Publications" %}{% endblock %}
+
+{% block breadcrumb_menu %}
+<li><a href="/">{% trans "Home" %}</a><span class="divider">/</span></li>
+<li><a href="/countries/">Countries</a><span class="divider">/</span></li>
+<li><a href="/countries/{{cnpublication.country.name|slugify}}">{{cnpublication.country.name}}</a><span class="divider">/</span></li>
+<li><a href="/countries/{{cnpublication.country.name|slugify}}/publications/">Publications</a><span class="divider">/</span></li>
+<li class="active">{{ cnpublication.title }}</li>
+{% endblock %}
+
+{% block local_nav %}
+<div class="well">
+  <p><a href="/countries/{{ cnpublication.country.name|slugify }}/publications/">« {% trans "Back to" %} {% trans "Publications" %}</a></p>
+    {% if user.is_superuser %} 
+        <a class="btn btn-small btn-info" href="/admin/ippc/publications/{{ cnpublication.id }}">Edit as Admin</a><br>
+    {% endif %}
+        
+    {% if perms.ippc.change_cnpublication and request.user.get_profile.country.name == page.title %}
+        <a class="btn btn-small btn-info" href="{% url 'country-publication-edit' cnpublication.country.name|slugify cnpublication.id %}"><i class="icon-edit icon-white"></i> Edit</a>
+        {# <a class="btn" href="{% url 'country-publication-edit' cnpublication.id %}"><i class="icon-edit"></i> Edit</a> #}
+    {% else %}
+    {% endif %}
+    
+    
+    
+   
+</div>
+{% endblock local_nav %}
+
+{% block pageinfo %}
+
+{% endblock pageinfo %}
+
+{% block main %}
+<h1>{{ cnpublication.title }}</h1> 
+
+<dl class="dl-horizontal">
+ 
+ {% if cnpublication.agenda_number %}
+  <dt>{% trans "Agenda number" %}</dt>
+  <dd>{{ cnpublication.agenda_number }}</dd>
+  {% endif %}
+   {% if cnpublication.document_number %}
+  <dt>{% trans "Document number" %}</dt>
+  <dd>{{ cnpublication.document_number }}</dd>
+  {% endif %}
+  
+ {% if cnpublication.short_description %}
+  <dt>{% trans "short description" %}</dt>
+  <dd>{{ cnpublication.short_description }}</dd>
+  {% endif %}
+  
+  {% if cnpublication.contact_for_more_information %}
+  <dt>{% trans "Contact for more information" %}</dt>
+  <dd>{{ cnpublication.contact_for_more_information }}</dd>
+  {% endif %}
+  
+
+
+  
+
+  {% if cnpublication.issuename %}
+  <dt>{% trans "Issue keywords" %}</dt>
+  <dd>
+  {% for entry in cnpublication.issuename.all %}
+  <br/>
+  {% for e in entry.issuename.all %}
+   <br/>
+  {{e.name}}<br/>
+ {% endfor %} 
+{% endfor %}
+  </dd>
+  {% endif %}
+ 
+  
+  
+  {% if cnpublication.commname %}
+  <dt>{% trans "Commodity keywords" %}</dt>
+  <dd>
+  {% for entry in cnpublication.commname.all %}
+ 
+  {% for e in entry.commname.all %}
+  
+  {{e.name}}<br/>
+ {% endfor %} 
+{% endfor %}
+  </dd>
+  {% endif %}
+ 
+  
+ 
+  
+     
+  <dt>{% trans "Files" %}</dt>
+   {% for f in cnpublication.cnpublicationfile_set.all %} 
+    
+  <dd><a href="{{MEDIA_URL}}{{f.file.name}}">{{ f.description }}</a></dd>
+{% endfor %}
+
+
+    
+  <dt>{% trans "Website" %}</dt>
+   {% for f in cnpublication.cnpublicationurl_set.all %} 
+    
+  <dd><a href="{{MEDIA_URL}}{{f.url_for_more_information}}">{{ f.url_for_more_information }}</a></dd>
+{% endfor %}
+</dl>
+{% endblock %}
+

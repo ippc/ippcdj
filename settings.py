@@ -280,6 +280,8 @@ INSTALLED_APPS = (
     # "debug_toolbar",
     
     #"mezzanine.mobile",
+    "schedule"
+
 )
 
 # NEWSLETTER_CONFIRM_EMAIL = False

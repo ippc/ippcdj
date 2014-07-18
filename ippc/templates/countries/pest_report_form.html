@@ -21,6 +21,58 @@
 {% fields_for commodityform %}
 
 
+
+   <fieldset>
+                <legend>Files</legend>
+                {{ f_form.management_form }}
+                {{ f_form.non_form_errors }}
+                {% for form in f_form %}
+                    {{ form.id }}
+                    <div class="inline {{ f_form.prefix }}">
+                       {% if  form.errors %}
+                       <div class="alert alert-error"> 
+                       {% endif %}
+                           
+                        {{ form.description.errors }}
+                        {{ form.description.label_tag }}
+                        {{ form.description }}
+                        {{ form.file.errors }}
+                        {{ form.file.label_tag }}
+                        {{ form.file }}
+                         {% if f_form.can_delete %}
+                {{ form.DELETE }}
+            {% endif %}
+                        {% if  f_form.errors %}
+                       </div> 
+                       {% endif %}
+                    </div>
+                {% endfor %}
+            </fieldset>
+ 
+   <fieldset>      
+ <legend>Websites</legend>
+                {{ u_form.management_form }}
+                {{ u_form.non_form_errors }}
+                {% for form in u_form %}
+                    {{ form.id }}
+                    <div class="inline {{ u_form.prefix }}">
+                       {% if  form.errors %}
+                       <div class="alert alert-error"> 
+                       {% endif %}
+                           
+                        
+                        {{ form.url_for_more_information.errors }}
+                        {{ form.url_for_more_information.label_tag }}
+                        {{ form.url_for_more_information }}
+                         {% if u_form.can_delete %}
+                {{ form.DELETE }}
+            {% endif %}
+                        {% if  u_form.errors %}
+                       </div> 
+                       {% endif %}
+                    </div>
+                {% endfor %}
+            </fieldset>
 {# {{ form.non_field_errors }} #}
 {# {{ form.errors }} #}
 {#  #}

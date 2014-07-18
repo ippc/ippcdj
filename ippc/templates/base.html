@@ -10,7 +10,7 @@
 <meta name="description" content="{% block meta_description %}{% endblock %}">
 <title>{% block meta_title %}{% endblock %} - {% trans "International Plant Protection Convention" %}</title>
 <link rel="shortcut icon" href="{% static "img/favicon.ico" %}">
-
+<link rel="stylesheet" type="text/css" href="/static/grappelli/css/widgets.css">
 {% ifinstalled mezzanine.blog %}
 <link rel="alternate" type="application/rss+xml" title="RSS" href="{% url "blog_post_feed" "rss" %}">
 <link rel="alternate" type="application/atom+xml" title="Atom" href="{% url "blog_post_feed" "atom" %}">
@@ -36,11 +36,20 @@
 
 {% compress js %}
 <script src="{% static "mezzanine/js/"|add:settings.JQUERY_FILENAME %}"></script>
-<script src="{% static "js/bootstrap.js" %}"></script>
+ <script src="{% static "js/bootstrap.js" %}"></script>
 <script src="{% static "js/bootstrap-extras.js" %}"></script>
 <script src="{% static "js/chosen.jquery.min.js" %}"></script>
-   <script src="{% static "js/jquery.min.js" %}"></script>
-    <script src="{% static "js/jquery.formset.js" %}"></script>
+<script src="{% static "js/jquery.min.js" %}"></script>
+  
+<script type="text/javascript" src="/admin/jsi18n/"></script>
+<script type="text/javascript" src="/static/admin/js/core.js"></script>
+<!--script type="text/javascript" src="/static/admin/js/admin/RelatedObjectLookups.js">        </script-->
+<script type="tepxt/javascript" src="/static/admin/js/jquery.min.js"></script>
+<script type="text/javascript" src="/static/admin/js/jquery.init.js"></script>
+<script type="text/javascript" src="/static/admin/js/actions.min.js"></script>
+<script type="text/javascript" src="/static/admin/js/calendar.js"></script>
+<script type="text/javascript" src="/static/admin/js/admin/DateTimeShortcuts.js"></script>   
+<script src="{% static "js/jquery.formset.js" %}"></script>
 
 {% include 'autocomplete_light/static.html' %}
 {# {% block extra_js %}{% endblock %} #} {# MOVED TO BOTTOM #}
@@ -49,7 +58,7 @@
 <script src="{% static "js/html5shiv.js" %}"></script>
 <![endif]-->
 
-{% block extra_head %}{% endblock %}
+
 
 <style type="text/css" media="screen">
 fieldset {background:#eee; margin:1em 0;}
@@ -57,10 +66,16 @@ legend {font-weight:bold;}
 </style>
  <script type="text/javascript">
         $(function() {
+            $(".inline.{{ u_form.prefix }}").formset({
+                prefix: "{{ u_form.prefix }}",
+            })
+        })
+        $(function() {
             $(".inline.{{ f_form.prefix }}").formset({
                 prefix: "{{ f_form.prefix }}",
             })
         })
+       
     </script>
 </head>
 <body id="{% block body_id %}body{% endblock %}" class="{% block body_class %}{% endblock %}">

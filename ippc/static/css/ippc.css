@@ -97,4 +97,6 @@ select#selectcountry {max-width:350px;}
 .codehilite .vc { color: #008080 } /* Name.Variable.Class */
 .codehilite .vg { color: #008080 } /* Name.Variable.Global */
 .codehilite .vi { color: #008080 } /* Name.Variable.Instance */
-.codehilite .il { color: #009999 } /* Literal.Number.Integer.Long */
+.codehilite .il { color: #009999 } /* Literal.Number.;
+    padding-left: 0;
+}

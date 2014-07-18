@@ -28,9 +28,8 @@ from django.contrib.contenttypes import generic
 from django.contrib.contenttypes.generic import GenericRelation
 from django.contrib.contenttypes.models import ContentType
 from django.db.models.signals import post_save
- 
-from django.core.exceptions import ValidationError
 
+from django.core.exceptions import ValidationError
 
 
 class PublicationLibrary(Page, RichText):
@@ -258,8 +257,10 @@ class CommodityKeyword(models.Model):
     name = models.CharField(_("Commodity Keyword"), max_length=500)
     def __unicode__(self):
         return self.name
-    
 
+
+
+        
 class IssueKeywordsRelate(models.Model):
     content_type = models.ForeignKey(ContentType)
     object_id = models.PositiveIntegerField()
@@ -318,7 +319,14 @@ class IppcUserProfile(models.Model):
 #     (CONTENT_STATUS_DRAFT, _("Draft")),
 #     (CONTENT_STATUS_PUBLISHED, _("Published")),
 # )
-
+def validate_file_extension(value):
+    if not (value.name.endswith('.pdf') or value.name.endswith('.doc')or value.name.endswith('.txt')
+        or value.name.endswith('.xls')   or value.name.endswith('.ppt') or value.name.endswith('.jpg')
+        or value.name.endswith('.png') or value.name.endswith('.gif') or value.name.endswith('.xlsx')
+        or value.name.endswith('.docx')or value.name.endswith('.pptx') or value.name.endswith('.zip')
+        or value.name.endswith('.rar')):
+        raise ValidationError(u'You can only upload files:  txt pdf ppt doc xls jpg png docx xlsx pptx zip rar.')
+   
 REPORT_STATUS_NA = 1
 REPORT_STATUS_PRELIMINARY = 2
 REPORT_STATUS_FINAL = 3
@@ -345,7 +353,8 @@ class PestReport(Displayable, models.Model):
         blank=True, null=True)
     report_status = models.IntegerField(_("Report Status"),
         choices=REPORT_STATUS_CHOICES, default=REPORT_STATUS_FINAL)
-    file = models.FileField(_("Pest Report Document"), upload_to="pest_reports/%Y/%m/", blank=True)
+    report_number = models.CharField(_("Report Number"), blank=True, null=True, max_length=100)
+    #file = models.FileField(_("Pest Report Document"), upload_to="pest_reports/%Y/%m/", blank=True)
     pest_status = models.ManyToManyField(PestStatus,
         verbose_name=_("Pest Status"),
         related_name='pest_status+', blank=True, null=True,
@@ -360,12 +369,11 @@ class PestReport(Displayable, models.Model):
         blank=True, null=True)
     contact_for_more_information = models.TextField(_("Contact for more information"),
         blank=True, null=True)
-    url_for_more_information = models.URLField(blank=True, null=True)
+    #url_for_more_information = models.URLField(blank=True, null=True)
     
-    
-    issuename=generic.GenericRelation(IssueKeywordsRelate)
     commname=generic.GenericRelation(CommodityKeywordsRelate)
-    
+    issuename=generic.GenericRelation(IssueKeywordsRelate)
+    old_id = models.CharField(max_length=50)
     # =todo:
     # commodity_groups = 
     # keywords / tags = 
@@ -407,8 +415,29 @@ class PestReport(Displayable, models.Model):
         self.modify_date = datetime.now()
         super(PestReport, self).save(*args, **kwargs)
 
- 
+class PestReportFile(models.Model):
+    pestreport = models.ForeignKey(PestReport)
+    description = models.CharField(max_length=255)
+    file = models.FileField(max_length=255,blank=True, help_text='10 MB maximum file size.', verbose_name='Upload a file', upload_to='files/pestreport/%Y/%m/%d/', validators=[validate_file_extension])
 
+    def __unicode__(self):  
+        return self.file.name  
+    def name(self):
+        return self.file.name
+    def filename(self):
+        return os.path.basename(self.file.name) 
+    def fileextension(self):
+        return os.path.splitext(self.file.name)[1]
+
+class PestReportUrl(models.Model):
+    pestreport = models.ForeignKey(PestReport)
+    url_for_more_information = models.URLField(blank=True, null=True)
+    def __unicode__(self):  
+        return self.url_for_more_information  
+    def name(self):
+        return self.url_for_more_information
+    
+    
 # used by Reporting Obligation type
 BASIC_REP_1 = 1
 BASIC_REP_2 = 2
@@ -420,32 +449,9 @@ BASIC_REP_TYPE_CHOICES = (
     (BASIC_REP_3, _("List of regulated pests (Art. VII.2i)")),
     (BASIC_REP_4, _("Phytosanitary Restrictions/Legislation")),
 )
-class Files(models.Model):
-    """ Documents """
-    # http://stackoverflow.com/a/1190866/412329
-    files = models.FileField(blank=True, help_text='10 MB maximum file size.', verbose_name='Upload a file', upload_to='files/%Y/%m/%d/')
 
-    # Eureka!! http://scottbarnham.com/blog/2008/02/24/imagefield-and-edit_inline-revisited/   
-    def save(self):
-        if not self.id and not self.files:
-            return
-        # if self.remove:
-        #     self.delete()
-        else:
-            super(Files, self).save()
 
-    # class Meta:
-        # ordering = ['']
-
-    def __unicode__(self):
-        return self.files.name
-    # http://stackoverflow.com/questions/2683621/django-filefield-return-filename-only-in-template
-    def name(self):
-           return self.files.name
-    
-    def filename(self):
-           return os.path.basename(self.files.name)
-       
+      
 class ReportingObligation(Displayable, models.Model):
     """ ReportingObligation"""
     country = models.ForeignKey(CountryPage, related_name="reporting_obligation_country_page")
@@ -458,20 +464,16 @@ class ReportingObligation(Displayable, models.Model):
     
     reporting_obligation_type = models.IntegerField(_("Reporting Obligation"), choices=BASIC_REP_TYPE_CHOICES, default=BASIC_REP_3)
     publication_date = models.DateTimeField(_("Publication date"), blank=True, null=True, editable=True)
-    file = models.FileField(_("Report Document"), upload_to="reporting_obligation/%Y/%m/", blank=True)
+    #file = models.FileField(_("Report Document"), upload_to="reporting_obligation/%Y/%m/", blank=True)
     short_description = models.TextField(_("Short Description"),  blank=True, null=True)
     contact_for_more_information = models.TextField(_("Contact for more information"), blank=True, null=True)    
-    url_for_more_information = models.URLField(blank=True, null=True)
+    #url_for_more_information = models.URLField(max_length=500,blank=True, null=True)
     modify_date = models.DateTimeField(_("Modified date"), blank=True, null=True, editable=False)
-    
-    
     issuename=generic.GenericRelation(IssueKeywordsRelate)
     commname=generic.GenericRelation(CommodityKeywordsRelate)
   
-    #images = models.ManyToManyField(AEntryImage, null=True, blank=True)
-    # =todo:
-    # commodity_groups = 
-    # keywords / tags = 
+    
+    old_id = models.CharField(max_length=50)
     # objects = models.Manager()
     objects = SearchableManager()
     search_fields = ("title", "short_description")
@@ -518,9 +520,107 @@ class ReportingObligation(Displayable, models.Model):
                 filesarray.append(f1)
                 #print(filesarray)
         return filesarray
-        
+    def getWebUrls(self):
+        return self.url_for_more_information.split(",")
+    
     def reporting_obligation_type_verbose(self):
         return dict(BASIC_REP_TYPE_CHOICES)[self.reporting_obligation_type]
+    
+
+class ReportingObligation_File(models.Model):
+    reportingobligation = models.ForeignKey(ReportingObligation)
+    description = models.CharField(max_length=255)
+    file = models.FileField(max_length=255,blank=True, help_text='10 MB maximum file size.', verbose_name='Upload a file', upload_to='files/reportingobligation/%Y/%m/%d/', validators=[validate_file_extension])
+
+    def __unicode__(self):  
+        return self.file.name  
+    def name(self):
+        return self.file.name
+    def filename(self):
+        return os.path.basename(self.file.name) 
+    def fileextension(self):
+        return os.path.splitext(self.file.name)[1]
+
+class ReportingObligationUrl(models.Model):
+    reportingobligation = models.ForeignKey(ReportingObligation)
+    url_for_more_information = models.URLField(blank=True, null=True)
+    def __unicode__(self):  
+        return self.url_for_more_information  
+    def name(self):
+        return self.url_for_more_information   
+
+class CnPublication(Displayable, models.Model):
+    """ ReportingObligation"""
+    country = models.ForeignKey(CountryPage, related_name="cnpublication_country_page")
+    author = models.ForeignKey(User, related_name="cnpublicatio_author")
+    
+    # slug - provided by mezzanine.core.models.slugged (subclassed by displayable)
+    # title - provided by mezzanine.core.models.slugged (subclassed by displayable)
+    # status - provided by mezzanine.core.models.displayable
+    # publish_date - provided by mezzanine.core.models.displayable
+    
+    publication_date = models.DateTimeField(_("Publication date"), blank=True, null=True, editable=True)
+    agenda_number = models.CharField(_("Agenda Item Number"), max_length=100, blank=True)
+    document_number = models.CharField(_("Document Number"), max_length=100,  blank=True)
+    short_description = models.TextField(_("Short Description"),  blank=True, null=True)
+    contact_for_more_information = models.TextField(_("Contact for more information"), blank=True, null=True)    
+    modify_date = models.DateTimeField(_("Modified date"), blank=True, null=True, editable=False)
+    issuename=generic.GenericRelation(IssueKeywordsRelate)
+    commname=generic.GenericRelation(CommodityKeywordsRelate)
+    old_id = models.CharField(max_length=50)
+    # objects = models.Manager()
+    objects = SearchableManager()
+    search_fields = ("title", "short_description")
+
+    class Meta:
+        verbose_name_plural = _("Publications")
+        # abstract = True
+
+    def __unicode__(self):
+        return self.title
+
+    # http://devwiki.beloblotskiy.com/index.php5/Django:_Decoupling_the_URLs  
+    @models.permalink # or: get_absolute_url = models.permalink(get_absolute_url) below
+    def get_absolute_url(self): # "view on site" link will be visible in admin interface
+        """Construct the absolute URL for a country publication."""
+        return ('country-publication', (), {
+                            'country': self.country.name, # =todo: get self.country.name working
+                            'year': self.publish_date.strftime("%Y"),
+                            'month': self.publish_date.strftime("%m"),
+                            # 'day': self.pub_date.strftime("%d"),
+                            'slug': self.slug})
+            
+    def save(self, *args, **kwargs):
+        ''' On save, update timestamps '''
+        if not self.id:
+            self.publish_date = datetime.today()
+            # Newly created object, so set slug
+            self.slug = slugify(self.title)
+        self.modify_date = datetime.now()
+        super(CnPublication, self).save(*args, **kwargs)
+ 
+    
+class CnPublicationFile(models.Model):
+    cnpublication = models.ForeignKey(CnPublication)
+    description = models.CharField(max_length=255)
+    file = models.FileField(max_length=255,blank=True, help_text='10 MB maximum file size.', verbose_name='Upload a file', upload_to='files/cn_publication/%Y/%m/%d/', validators=[validate_file_extension])
+
+    def __unicode__(self):  
+        return self.file.name  
+    def name(self):
+        return self.file.name
+    def filename(self):
+        return os.path.basename(self.file.name) 
+    def fileextension(self):
+        return os.path.splitext(self.file.name)[1]
+
+class CnPublicationUrl(models.Model):
+    cnpublication = models.ForeignKey(CnPublication)
+    url_for_more_information = models.URLField(blank=True, null=True)
+    def __unicode__(self):  
+        return self.url_for_more_information  
+    def name(self):
+        return self.url_for_more_information   
 
 
 EVT_REP_1 = 1
@@ -552,10 +652,11 @@ class EventReporting(Displayable, models.Model):
     #file = models.FileField(_("Report Document"), upload_to="event_reporting/%Y/%m/", blank=True)
     short_description = models.TextField(_("Short Description"),  blank=True, null=True)
     contact_for_more_information = models.TextField(_("Contact for more information"), blank=True, null=True)    
-    url_for_more_information = models.URLField(blank=True, null=True)
+    #url_for_more_information = models.URLField(blank=True, null=True)
     modify_date = models.DateTimeField(_("Modified date"), blank=True, null=True, editable=False)
     issuename=generic.GenericRelation(IssueKeywordsRelate)
     commname=generic.GenericRelation(CommodityKeywordsRelate)
+    old_id = models.CharField(max_length=50)
     objects = SearchableManager()
     
     search_fields = ("title", "short_description")
@@ -596,14 +697,11 @@ class EventReporting(Displayable, models.Model):
     def get_absolute_url(self):
         return ('upload-new', )
 
-def validate_file_extension(value):
-    if not value.name.endswith('.pdf'):
-        raise ValidationError(u'You can only upload PDF files')
-    
+
 class EventreportingFile(models.Model):
     eventreporting = models.ForeignKey(EventReporting)
     description = models.CharField(max_length=255)
-    file = models.FileField(blank=True, help_text='10 MB maximum file size.', verbose_name='Upload a file', upload_to='files/%Y/%m/%d/', validators=[validate_file_extension])
+    file = models.FileField(max_length=255,blank=True, help_text='10 MB maximum file size.', verbose_name='Upload a file', upload_to='files/eventreporting/%Y/%m/%d/', validators=[validate_file_extension])
 
     def __unicode__(self):  
         return self.file.name  
@@ -611,6 +709,96 @@ class EventreportingFile(models.Model):
         return self.file.name
     def filename(self):
         return os.path.basename(self.file.name) 
+    def fileextension(self):
+        return os.path.splitext(self.file.name)[1]
+
+class EventreportingUrl(models.Model):
+    eventreporting = models.ForeignKey(EventReporting)
+    url_for_more_information = models.URLField(blank=True, null=True)
+    def __unicode__(self):  
+        return self.url_for_more_information  
+    def name(self):
+        return self.url_for_more_information
+
+WEB_1 = 1
+WEB_2 = 2
+WEB_3 = 3
+WEB_4 = 4
+WEB_5 = 5
+WEB_TYPE_CHOICES = (
+    (WEB_1, _("NPPO")), 
+    (WEB_2, _("RPPO")),
+    (WEB_3, _("International Organization")),
+    (WEB_4, _("Research Institute")),
+    (WEB_5, _("Other")),
+)
+     
+class Website(Displayable, models.Model):
+    """ Event Reporting"""
+    country = models.ForeignKey(CountryPage, related_name="website_country_page")
+    author = models.ForeignKey(User, related_name="website__reporting_author")
+    
+    # slug - provided by mezzanine.core.models.slugged (subclassed by displayable)
+    # title - provided by mezzanine.core.models.slugged (subclassed by displayable)
+    # status - provided by mezzanine.core.models.displayable
+    # publish_date - provided by mezzanine.core.models.displayable
+    
+    web_type = models.IntegerField(_("Type of Website"), choices=WEB_TYPE_CHOICES, default=None)
+    short_description = models.TextField(_("Short Description"),  blank=True, null=True)
+    contact_for_more_information = models.TextField(_("Contact for more information"), blank=True, null=True)    
+    modify_date = models.DateTimeField(_("Modified date"), blank=True, null=True, editable=False)
+    issuename=generic.GenericRelation(IssueKeywordsRelate)
+    commname=generic.GenericRelation(CommodityKeywordsRelate)
+    old_id = models.CharField(max_length=50)
+    objects = SearchableManager()
+    
+    search_fields = ("title", "short_description")
+
+    class Meta:
+        verbose_name_plural = _("Websites")
+        # abstract = True
+
+    def __unicode__(self):
+        return self.title
+
+    # http://devwiki.beloblotskiy.com/index.php5/Django:_Decoupling_the_URLs  
+    #@models.permalink # or: get_absolute_url = models.permalink(get_absolute_url) below
+    #def get_absolute_url(self): # "view on site" link will be visible in admin interface
+    ##    """Construct the absolute URL for a Pest Report."""
+    #    return ('event-reporting-detail', (), {
+    #                        'country': self.country.name, # =todo: get self.country.name working
+    #                       'year': self.publish_date.strftime("%Y"),
+    #                        'month': self.publish_date.strftime("%m"),
+    #                        # 'day': self.pub_date.strftime("%d"),
+    #                        'slug': self.slug})
+            
+    def save(self, *args, **kwargs):
+        ''' On save, update timestamps '''
+        if not self.id:
+            self.publish_date = datetime.today()
+            # Newly created object, so set slug
+            self.slug = slugify(self.title)
+        self.modify_date = datetime.now()
+        super(Website, self).save(*args, **kwargs)
+
+    def filename(self):
+        return os.path.basename(self.file.name)
+    def event_rep_type_verbose(self):
+        return dict(WEB_TYPE_CHOICES)[self.web_type]
+  
+    @models.permalink
+    def get_absolute_url(self):
+        return ('upload-new', )
+
+
+
+class WebsiteUrl(models.Model):
+    website = models.ForeignKey(Website)
+    url_for_more_information = models.URLField(blank=True, null=True)
+    def __unicode__(self):  
+        return self.url_for_more_information  
+    def name(self):
+        return self.url_for_more_information            
    
 PFA_TYPE_1 = 1
 PFA_TYPE_2 = 2
@@ -631,14 +819,15 @@ class PestFreeArea(Displayable, models.Model):
     short_description = models.TextField(_("Location and description of the area"),  blank=True, null=True)
     publication_date = models.DateTimeField(_("Publication date"), blank=True, null=True, editable=True)
     pfa_type = models.IntegerField(_("Type of recognition"), choices=PFA_TYPE_1_CHOICES, default=None)
-    file = models.FileField(_("Additional information and Documentation"), upload_to="pestfreearea/%Y/%m/", blank=True)
+    #file = models.FileField(_("Additional information and Documentation"), upload_to="pestfreearea/%Y/%m/", blank=True)
     contact_for_more_information = models.TextField(_("Contact for more information"), blank=True, null=True)    
-    url_for_more_information = models.URLField(blank=True, null=True)
+    #url_for_more_information = models.URLField(blank=True, null=True)
     modify_date = models.DateTimeField(_("Modified date"), blank=True, null=True, editable=False)
     
     
     issuename=generic.GenericRelation(IssueKeywordsRelate)
     commname=generic.GenericRelation(CommodityKeywordsRelate)
+    old_id = models.CharField(max_length=50)
     # =todo:
     # commodity_groups = 
     # keywords / tags = 
@@ -678,7 +867,28 @@ class PestFreeArea(Displayable, models.Model):
     def pfa_type_verbose(self):
         return dict(PFA_TYPE_1_CHOICES)[self.pfa_type]
 
+class PestFreeAreaFile(models.Model):
+    pfa = models.ForeignKey(PestFreeArea)
+    description = models.CharField(max_length=255)
+    file = models.FileField(max_length=255,blank=True, help_text='10 MB maximum file size.', verbose_name='Upload a file', upload_to='files/pfa/%Y/%m/%d/', validators=[validate_file_extension])
 
+    def __unicode__(self):  
+        return self.file.name  
+    def name(self):
+        return self.file.name
+    def filename(self):
+        return os.path.basename(self.file.name) 
+    def fileextension(self):
+        return os.path.splitext(self.file.name)[1]
+
+class PestFreeAreaUrl(models.Model):
+    pfa = models.ForeignKey(PestFreeArea)
+    url_for_more_information = models.URLField(blank=True, null=True)
+    def __unicode__(self):  
+        return self.url_for_more_information  
+    def name(self):
+        return self.url_for_more_information
+    
 YES_1 = 1
 NO_2 = 2
 DONTKNOW_3 = 3
@@ -728,19 +938,20 @@ class ImplementationISPM(Displayable, models.Model):
     implementexport_version = models.ManyToManyField(ImplementationISPMVersion,
         verbose_name=_("If yes, which version (click all that apply): "),
         related_name='implementexport_version+', blank=True, null=True, default=None)
-    file = models.FileField(_("Additional information and Documentation"), upload_to="implemenationispm/%Y/%m/", blank=True)
+    #file = models.FileField(_("Additional information and Documentation"), upload_to="implemenationispm/%Y/%m/", blank=True)
     mark_registered_type = models.IntegerField(_(" Is the ISPM No.15 mark registered as a trade mark in your country??"), choices=YES_NO_DONTKNOW_CHOICES, default=None)
     image = models.ImageField(_("Image of mark"), upload_to="implemenationispm/images/%Y/%m/", blank=True)
     
     # =todo Image
     short_description = models.TextField(_("Enter a description of mark"),  blank=True, null=True)
     contact_for_more_information = models.TextField(_("Contact for more information"), blank=True, null=True)    
-    url_for_more_information = models.URLField(blank=True, null=True)
+    #url_for_more_information = models.URLField(blank=True, null=True)
     modify_date = models.DateTimeField(_("Modified date"), blank=True, null=True, editable=False)
     
     
     issuename=generic.GenericRelation(IssueKeywordsRelate)
     commname=generic.GenericRelation(CommodityKeywordsRelate)
+    old_id = models.CharField(max_length=50)
     # =todo:
     # commodity_groups = 
     # keywords / tags = 
@@ -786,6 +997,29 @@ class ImplementationISPM(Displayable, models.Model):
     def mark_registered_type_verbose(self):
         return dict(YES_NO_DONTKNOW_CHOICES)[self.mark_registered_type]
 
+class ImplementationISPMFile(models.Model):
+    implementationispm = models.ForeignKey(ImplementationISPM)
+    description = models.CharField(max_length=255)
+    file = models.FileField(max_length=255,blank=True, help_text='10 MB maximum file size.', verbose_name='Upload a file', upload_to='files/implementationispm/%Y/%m/%d/', validators=[validate_file_extension])
+
+    def __unicode__(self):  
+        return self.file.name  
+    def name(self):
+        return self.file.name
+    def filename(self):
+        return os.path.basename(self.file.name) 
+    def fileextension(self):
+        return os.path.splitext(self.file.name)[1]
+  
+class ImplementationISPMUrl(models.Model):
+    implementationispm = models.ForeignKey(ImplementationISPM)
+    url_for_more_information = models.URLField(blank=True, null=True)
+    def __unicode__(self):  
+        return self.url_for_more_information  
+    def name(self):
+        return self.url_for_more_information
+
+    
 class Translatable(models.Model):
     """ Translations of user-generated content - https://gist.github.com/renyi/3596248"""
     lang = models.CharField(max_length=5, choices=settings.LANGUAGES)

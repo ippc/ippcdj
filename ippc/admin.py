@@ -7,8 +7,8 @@ from mezzanine.conf import settings
 from mezzanine.core.admin import TabularDynamicInlineAdmin, StackedDynamicInlineAdmin
 
 from .models import PestStatus, PestReport, CountryPage, WorkAreaPage, PublicationLibrary, Publication,\
-ReportingObligation, EventReporting, PestFreeArea, ImplementationISPM, ImplementationISPMVersion,\
-EppoCode,IssueKeyword, CommodityKeyword,IssueKeywordsRelate,CommodityKeywordsRelate# ,Entry,TestAA
+ReportingObligation, EventReporting, PestFreeArea, ImplementationISPM, ImplementationISPMVersion,Website,\
+EppoCode,IssueKeyword, CommodityKeyword,IssueKeywordsRelate,CommodityKeywordsRelate
 from django.contrib.auth.models import User
 from django import forms
 
@@ -187,6 +187,14 @@ class EventReportingAdmin(admin.ModelAdmin):
     search_fields = ('title', 'short_description')
     prepopulated_fields = { 'slug': ['title'] }
 admin.site.register(EventReporting, EventReportingAdmin)
+
+class WebsiteAdmin(admin.ModelAdmin):
+    save_on_top = True
+    list_display = ('title', 'modify_date',   'country')
+    list_filter = ('title',   'modify_date',  'country')
+    search_fields = ('title', 'short_description')
+    prepopulated_fields = { 'slug': ['title'] }
+admin.site.register(Website, WebsiteAdmin)
 
 class PestFreeAreaAdmin(admin.ModelAdmin):
     save_on_top = True

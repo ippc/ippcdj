@@ -47,7 +47,30 @@
                     </div>
                 {% endfor %}
             </fieldset>
-         
-
+   
+   <fieldset>      
+ <legend>Websites</legend>
+                {{ u_form.management_form }}
+                {{ u_form.non_form_errors }}
+                {% for form in u_form %}
+                    {{ form.id }}
+                    <div class="inline {{ u_form.prefix }}">
+                       {% if  form.errors %}
+                       <div class="alert alert-error"> 
+                       {% endif %}
+                           
+                        
+                        {{ form.url_for_more_information.errors }}
+                        {{ form.url_for_more_information.label_tag }}
+                        {{ form.url_for_more_information }}
+                         {% if u_form.can_delete %}
+                {{ form.DELETE }}
+            {% endif %}
+                        {% if  u_form.errors %}
+                       </div> 
+                       {% endif %}
+                    </div>
+                {% endfor %}
+            </fieldset>
 
             

@@ -1,0 +1,52 @@
+{% extends "base.html" %}
+{% load scheduletags i18n %}
+{% load staticfiles i18n %}
+{% load pages_tags mezzanine_tags i18n future staticfiles accounts_tags %}
+
+{% block meta_title %}{% trans "Calendar" %}{% endblock %}
+
+{% block breadcrumb_menu %}
+
+<li><a href="/">{% trans "Home" %}</a><span class="divider">/</span></li>
+<li class="active">Calendar</li>
+{% endblock %}
+
+{% block local_nav %}
+<div class="well">
+    {% if user.is_superuser or perms.ippc.change_event %}  
+    <a class="btn btn-small btn-info" href="/event/create/calendar/">{% trans "Add Event" %}</a>
+    {% endif %}
+  
+</div>
+{% endblock local_nav %}
+
+{% block pageinfo %}
+ <a href="{% url "year_calendar" calendar.slug %}{% querystring_for_date periods.month.start 1%}">
+    {% trans "Full Year Calendar" %}
+  </a>
+{% endblock pageinfo %}
+
+ {% block main %}
+
+<div class="tablewrapper">
+  <div class="calendarname">{{ calendar.name }}</div>
+  <link rel="stylesheet" href="{% static "schedule/css/schedule.css" %}" type="text/css" media="screen" />
+
+  {% prevnext "month_calendar" calendar.slug periods.month "F Y"%}
+  <div class="now">
+    <a href="{% url "month_calendar" calendar.slug %}">
+      {% trans "This month" %}
+    </a>
+  </div>
+  
+
+</div>
+  {% month_table calendar periods.month "regular" %}
+
+{% endblock %}
+
+
+
+
+
+

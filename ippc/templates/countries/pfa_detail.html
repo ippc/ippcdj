@@ -59,19 +59,10 @@
   <dt>{% trans "Contact for more information" %}</dt>
   <dd>{{ pfa.contact_for_more_information }}</dd>
   {% endif %}
-  
-  {% if pfa.url_for_more_information %}
-  <dt>{% trans "Website" %}</dt>
-  <dd><a href="{{ pfa.url_for_more_information }}">{{ pfa.url_for_more_information }}</a></dd>
-  {% endif %}
-  
+
   <dt>{% trans "Author" %}</dt>
   <dd>{{ pfa.author.get_profile.first_name }} {{ pfa.author.get_profile.last_name }}</dd>
   
-  {% if pfa.file %}
-  <dt>{% trans "Report file" %}</dt>
-  <dd><a href="{{MEDIA_URL}}{{ pfa.files }}{{ pfa.file }}">{{ pfa.filename }}</a></dd>
-  {% endif %}
 
 
   
@@ -104,7 +95,18 @@
   {% endif %}
   
   
- 
+    <dt>{% trans "Report files" %}</dt>
+   {% for f in pfa.pestfreeareafile_set.all %} 
+    
+  <dd><a href="{{MEDIA_URL}}{{f.file.name}}">{{ f.description }}</a></dd>
+{% endfor %}
+
+    
+  <dt>{% trans "Website" %}</dt>
+   {% for f in pfa.pestfreeareaurl_set.all %} 
+    
+  <dd><a href="{{MEDIA_URL}}{{f.url_for_more_information}}">{{ f.url_for_more_information }}</a></dd>
+{% endfor %}
   
  
   
