@@ -35,7 +35,7 @@ class EventForm(SpanForm):
 
     class Meta:
         model = Event
-        exclude = ('creator', 'created_on', 'calendar','rule','end_recurring_period')
+        exclude = ('creator', 'created_on', 'calendar','rule','end_recurring_period','country')
         widgets = {
             'start': AdminDateWidget(),
             'end': AdminDateWidget(),

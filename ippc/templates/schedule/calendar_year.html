@@ -1,13 +1,29 @@
 {% extends "base.html" %}
 {% load scheduletags i18n %}
+
+
+
+{% block breadcrumb_menu %}
+<li>
+  <a href="/">{% trans "Home" %}</a>
+  <span class="divider">/</span>
+</li>
+<li>
+  <a href="/calendar/">{% trans "Calendar" %}</a>
+  <span class="divider">/</span>
+</li>
+<li class="active">{% trans "Year" %}</li>
+{% endblock breadcrumb_menu %}
+
+
 {% block local_nav %}
-<div class="well">
-    {% if user.is_superuser or perms.ippc.change_event %}  
-    <a class="btn btn-small btn-info" href="/event/create/calendar/">{% trans "Add Event" %}</a>
+    {% if user.is_superuser or can_add %}  
+        <div class="well">
+        <a class="btn btn-small btn-info" href="/create/event/calendar/">{% trans "Add Event" %}</a>
+        </div>
     {% endif %}
-  
-</div>
 {% endblock local_nav %}
+
 {% block pageinfo %}
  <a href="{% url "month_calendar" calendar.slug %}">
     {% trans "Month Calendar" %}
@@ -25,7 +41,7 @@
         <th>Activity</th>
         <th>Type</th>
         <th>Location</th>
-        {% if perms.ippc.change_event %}
+        {% if user.is_superuser or can_add %}
         <th> </th>
         {% endif %}
 
@@ -40,8 +56,8 @@
         <td>    <a  href="/events/event/{{event.id}}">{{event.title}}</a></td>
         <td>{{event.type_verbose}}</td>
         <td>{{event.location}}</td>
-        {% if perms.ippc.change_event %}
-        <td><a class="btn btn-small btn-info" href="{% url "edit_event" event.calendar.slug event.id %}">Edit</a> </td>
+        {% if user.is_superuser or can_add %}
+        <td><a class="btn btn-small btn-info" href="{% url 'edit_event' 'event' event.calendar.slug event.id %}">Edit</a> </td>
         {% endif %}
     </tr>
 

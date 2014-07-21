@@ -20,7 +20,7 @@ from schedule.models import Calendar, Occurrence, Event
 from schedule.periods import weekday_names
 from schedule.utils import check_event_permissions, coerce_date_dict
 from ippc.forms import IssueKeywordsRelateForm
-from ippc.models import IssueKeywordsRelate
+from ippc.models import IssueKeywordsRelate,CountryPage
 
 
 def calendar(request, calendar_slug, template='schedule/calendar.html'):
@@ -57,17 +57,53 @@ def calendar_by_year(request, calendar_slug, year=None, template_name="schedule/
             raise Http404
     else:
         date = timezone.now()
-        
-
+      
+    user = request.user   
+    can_add= 0 
+    if user.groups.filter(name='IPPC Secretariat'):
+        can_add=1
+   
     calendar = get_object_or_404(Calendar, slug=calendar_slug)
-    event_list= calendar.event_set.filter(start__year=date.year)
+    event_list= calendar.event_set.filter(start__year=date.year,country=-1)
     period_objects = dict([(period.__name__.lower(), period(event_list, date)) for period in year])
     return render_to_response(template_name, {
         'periods': period_objects,
         'calendar': calendar,
         'weekday_names': weekday_names,
         'event_list': event_list,
+        'can_add': can_add,
         'here': quote(request.get_full_path()),
+    }, context_instance=RequestContext(request), )
+
+def calendar_by_cn(request, country,template_name="schedule/calendar_cn.html"):
+    """
+    """
+    model = Event
+    calendar = get_object_or_404(Calendar, slug='calendar')
+    try:
+        date = coerce_date_dict(request.GET)
+    except ValueError:
+        raise Http404
+
+    if date:
+        try:
+            date = datetime.datetime(**date)
+        except ValueError:
+            raise Http404
+    else:
+        date = timezone.now()
+        
+
+    calendar = get_object_or_404(Calendar, slug='calendar')
+    country = get_object_or_404(CountryPage, name=country)
+    event_list= calendar.event_set.filter(country__country_slug=country)
+    return render_to_response(template_name, {
+        'calendar': calendar,
+        'weekday_names': weekday_names,
+        'event_list': event_list,
+        'here': quote(request.get_full_path()),
+        'country' : country
+        
     }, context_instance=RequestContext(request), )
 
 
@@ -104,6 +140,10 @@ def calendar_by_periods(request, calendar_slug, periods=None, template_name="sch
         internationalization.
 
     """
+    user = request.user   
+    can_add= 0 
+    if user.groups.filter(name='IPPC Secretariat'):
+        can_add=1
     calendar = get_object_or_404(Calendar, slug=calendar_slug)
     try:
         date = coerce_date_dict(request.GET)
@@ -127,6 +167,7 @@ def calendar_by_periods(request, calendar_slug, periods=None, template_name="sch
         'calendar': calendar,
         'weekday_names': weekday_names,
         'event_list': event_list,
+        'can_add':can_add,
         'here': quote(request.get_full_path()),
     }, context_instance=RequestContext(request), )
 
@@ -146,10 +187,22 @@ def event(request, event_id, template_name="schedule/event.html"):
     back_url
         this is the url that referred to this view.
     """
+    user = request.user
+    is_contryeditor=0
+    is_secretariat=0
+    event = get_object_or_404(Event, id=event_id)
+    print(event.country)
+    if user.groups.filter(name='Country editor') and (user.get_profile().country==event.country):
+        is_contryeditor=1
+    if user.groups.filter(name='IPPC Secretariat'):
+        is_secretariat=1
+        
     event = get_object_or_404(Event, id=event_id)
     return render(request, template_name, {
         "event": event,
         "back_url": None,
+        "is_contryeditor": is_contryeditor,
+        "is_secretariat": is_secretariat,
     })
 
 
@@ -237,7 +290,7 @@ def get_occurrence(event_id, occurrence_id=None, year=None, month=None, day=None
 
 
 @check_event_permissions
-def create_or_edit_event(request, calendar_slug, event_id=None, next=None, template_name='schedule/create_event.html', form_class=EventForm):
+def create_or_edit_event(request, country, calendar_slug, event_id=None, next=None, template_name='schedule/create_event.html', form_class=EventForm):
     """
     This function, if it receives a GET request or if given an invalid form in a
     POST request it will generate the following response
@@ -269,6 +322,16 @@ def create_or_edit_event(request, calendar_slug, event_id=None, next=None, templ
     # If the key word argument redirect is set
     # Lastly redirect to the event detail of the recently create event
     """
+    user = request.user
+    is_contryeditor=0
+    is_secretariat=0
+    if country=='event':
+        print()
+    else:
+        country = get_object_or_404(CountryPage, name=country)
+    if user.groups.filter(name='IPPC Secretariat'):
+        is_secretariat=1
+    
     date = coerce_date_dict(request.GET)
     initial_data = None
     if date:
@@ -285,25 +348,23 @@ def create_or_edit_event(request, calendar_slug, event_id=None, next=None, templ
 
     instance = None
     issues = None
+    
     calendar = get_object_or_404(Calendar, slug=calendar_slug)
-
     if event_id is not None:
         instance = get_object_or_404(Event, id=event_id)
+        if user.groups.filter(name='Country editor') and (instance.country==country):
+            is_contryeditor=1
+        
         issues = get_object_or_404(IssueKeywordsRelate, pk=instance.issuename.all()[0].id)
     else:
         instance = Event()
-   
-   
-   
-    
     form = form_class(data=request.POST or None, instance=instance, initial=initial_data)
-    
+  
         
     if request.method == "POST":
        f_form = EventFileFormSet(request.POST, request.FILES,instance=instance)
        u_form = EventUrlFormSet(request.POST, instance=instance)
        issueform =IssueKeywordsRelateForm(request.POST,instance=issues)
-  
     else:
        issueform =IssueKeywordsRelateForm(instance=issues)
        f_form = EventFileFormSet(instance=instance)
@@ -311,10 +372,12 @@ def create_or_edit_event(request, calendar_slug, event_id=None, next=None, templ
        
     if form.is_valid() and f_form.is_valid() and u_form.is_valid():
         event = form.save(commit=False)
-        if instance is None:
-            event.creator = request.user
-            event.calendar = calendar
+        if user.groups.filter(name='Country editor'):
+            event.country=user.get_profile().country
+        event.creator = request.user
+        event.calendar = calendar
         event.save()
+      
         
         issue_instance = issueform.save(commit=False)
         issue_instance.content_object = event
@@ -337,6 +400,9 @@ def create_or_edit_event(request, calendar_slug, event_id=None, next=None, templ
         "f_form": f_form,
         "u_form": u_form,
         "calendar": calendar,
+        "is_contryeditor":is_contryeditor,
+        "is_secretariat":is_secretariat,
+        "event_id":event_id,
         "next": next
     }, context_instance=RequestContext(request))
 

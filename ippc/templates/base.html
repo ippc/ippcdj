@@ -40,8 +40,8 @@
 <script src="{% static "js/bootstrap-extras.js" %}"></script>
 <script src="{% static "js/chosen.jquery.min.js" %}"></script>
 <script src="{% static "js/jquery.min.js" %}"></script>
-  
-<script type="text/javascript" src="/admin/jsi18n/"></script>
+
+<script type="text/javascript" src="{% url "django.views.i18n.javascript_catalog" %}"></script>
 <script type="text/javascript" src="/static/admin/js/core.js"></script>
 <!--script type="text/javascript" src="/static/admin/js/admin/RelatedObjectLookups.js">        </script-->
 <script type="tepxt/javascript" src="/static/admin/js/jquery.min.js"></script>
@@ -49,6 +49,8 @@
 <script type="text/javascript" src="/static/admin/js/actions.min.js"></script>
 <script type="text/javascript" src="/static/admin/js/calendar.js"></script>
 <script type="text/javascript" src="/static/admin/js/admin/DateTimeShortcuts.js"></script>   
+
+
 <script src="{% static "js/jquery.formset.js" %}"></script>
 
 {% include 'autocomplete_light/static.html' %}
@@ -65,6 +67,7 @@ fieldset {background:#eee; margin:1em 0;}
 legend {font-weight:bold;}
 </style>
  <script type="text/javascript">
+     
         $(function() {
             $(".inline.{{ u_form.prefix }}").formset({
                 prefix: "{{ u_form.prefix }}",

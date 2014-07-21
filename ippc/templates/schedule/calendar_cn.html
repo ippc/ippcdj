@@ -1,0 +1,90 @@
+{% extends "base.html" %}
+{% load pages_tags mezzanine_tags i18n future staticfiles accounts_tags %}
+{% load scheduletags i18n %}
+
+
+{% block meta_title %}
+  {% trans "Events" %}: 
+  {{ country.name }}
+{% endblock %}
+
+{% block body_class %}wide{% endblock %}
+
+{% block breadcrumb_menu %}
+<li><a href="/">{% trans "Home" %}</a><span class="divider">/</span></li>
+<li>
+  <a href="/countries/">Countries</a>
+  <span class="divider">/</span>
+</li>
+<li>
+  <a href="{{ country.get_absolute_url }}">
+    {{ country.name }}
+  </a>
+  <span class="divider">/</span>
+</li>
+<li class="active">{% trans "Events" %}</li>
+{% endblock %}
+
+{% block local_nav %}
+{% endblock local_nav %}
+
+{% block pageinfo %}
+{% endblock pageinfo %}
+
+{% block main %}
+
+<p class="pull-right">
+  <a href="javascript:history.go(-1)">{% trans "« Go back"  %}</a><br/>
+    {% if perms.schedule.add_event and request.user.get_profile.country.id == country.id %}  
+    <a class="btn btn-small btn-info" href="/event/create/calendar/">{% trans "Add Event" %}</a>
+    {% endif %}
+</p>
+
+<h1>
+  <small class="normal">{% trans "Events from" %}</small>
+   {{ country }}
+</h1> 
+
+
+
+<table class="table table-condensed table-striped" id="publications">
+    <tr>
+        <th>Start date</th>
+        <th>End date</th>
+        <th>Activity</th>
+        <th>Type</th>
+        <th>Location</th>
+        {% if perms.schedule.change_event %}
+        <th> </th>
+        {% endif %}
+
+
+    </tr>
+
+  {% if event_list %}
+    {% for event in event_list %}
+    <tr>
+        <td>{% blocktrans with event.start|date:"d-m-Y" as start_date %}{{ start_date }}{% endblocktrans %}</td>
+        <td>{% blocktrans with event.end|date:"d-m-Y" as end_date %}{{ end_date }}{% endblocktrans %}</td>
+        <td>    <a  href="/events/event/{{event.id}}">{{event.title}}</a></td>
+        <td>{{event.type_verbose}}</td>
+        <td>{{event.location}}</td>
+        {% if perms.schedule.change_event  and request.user.get_profile.country.id == country.id %}
+        <td><a class="small pull-right" href="{% url "edit_event" event.country event.calendar.slug event.id %}"><i class="icon-edit"></i> Edit</a> </td>
+        {% endif %}
+        
+    
+        
+        
+    </tr>
+    {% endfor %}
+</table>
+   {% else %}
+        <p>No events available.</p>
+    {% endif %}
+
+{% endblock %}
+
+
+
+

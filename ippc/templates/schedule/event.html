@@ -5,18 +5,46 @@
 {% block meta_title %}{% trans "Event" %}{% endblock %}
 
 {% block breadcrumb_menu %}
-<li><a href="/">{% trans "Home" %}</a><span class="divider">/</span></li>
-<li><a href="/calendar/">Calendar / events</a><span class="divider">/</span></li>
+<li>
+    <a href="/">{% trans "Home" %}</a>
+    <span class="divider">/</span>
+</li>
+{% if is_secretariat or user.is_superuser%}
+<li>
+    <a href="/calendar/">{% trans "Calendar" %}</a>
+    <span class="divider">/</span>
+</li>
+</li>
+{% elif is_contryeditor %}
+<li>
+    <a href="/countries/">{% trans "Countries" %}</a>
+    <span class="divider">/</span>
+</li>
+<li>
+    <a href="/countries/{{ user.get_profile.country.name|slugify }}/">
+        {{ user.get_profile.country.name }}
+    </a>
+    <span class="divider">/</span>
+</li>
+<li>
+    <a href="/countries/{{ user.get_profile.country.name|slugify }}/calendar/">{% trans "Events" %}</a>
+    <span class="divider">/</span>
+</li>
+{% endif %}
+
 <li class="active">{{event.title}}</li>
-{% endblock %}
+
+{% endblock  %}
 
 {% block local_nav %}
 <div class="well">
     {% if user.is_superuser %} 
     <a class="btn btn-small btn-info" href="/admin/schedule/event/{{ event.id }}">Edit as Admin</a><br>
     {% endif %}
-    {% if perms.ippc.change_event %}
-    <a class="btn btn-small btn-info" href="{% url "edit_event" event.calendar.slug event.id %}">Edit</a>
+    {% if is_secretariat  %}
+    <a class="btn btn-small btn-info" href="{% url "edit_event" 'event' event.calendar.slug event.id %}">Edit</a>
+    {% elif is_contryeditor %}
+    <a class="btn btn-small btn-info" href="{% url "edit_event" event.country event.calendar.slug event.id %}">Edit</a>
     {% endif %}
 </div>
 {% endblock local_nav %}

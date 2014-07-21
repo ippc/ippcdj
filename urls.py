@@ -19,18 +19,19 @@ admin.autodiscover()
 # Add the urlpatterns for any custom Django applications here.
 # You can also change the ``home`` view to add your own functionality
 # to the project's homepage.
+js_info_dict = {
+    'packages': ('ippc',),
+}
+
 
 urlpatterns = patterns("",
-    
+    (r'^jsi18n/$', 'django.views.i18n.javascript_catalog', js_info_dict),
     url(r'^ocs/', include('ocs.urls', namespace="ocs")),
-
     url(r'^forum/', include('forum.urls')),
-
     # forum detail
     # url(r'^forum/(?P<slug>[\w-]+)/$',
     #     view=ForumPostDetailView.as_view(),
     #     name="forum-post-detail"),
-    
     url("^sitemap/$", direct_to_template, {"template": "sitemap.html"}, name="sitemap"),
     url("^contact/$", direct_to_template, {"template": "contact.html"}, name="contact"),
     # url("^feeds/$", direct_to_template, {"template": "feeds.html"}, name="feeds"),
@@ -50,8 +51,20 @@ urlpatterns = patterns("",
         'schedule.views.calendar_by_year',
         name="year_calendar",
         kwargs={'year': [Year], 'template_name': 'schedule/calendar_year.html'}),
-
-      
+    url(r'^countries/(?P<country>[\w-]+)/calendar',
+        'schedule.views.calendar_by_cn',
+        name="country_calendar",
+        kwargs={'template_name': 'schedule/calendar_cn.html'}),
+    url(r'^countries/(?P<country>[\w-]+)/(?P<calendar_slug>[-\w]+)/create/$',
+        'schedule.views.create_or_edit_event',
+        name='calendar_create_event'),
+    url(r'^create/(?P<country>[\w-]+)/(?P<calendar_slug>[-\w]+)/$',
+        'schedule.views.create_or_edit_event',
+        name='calendar_create_event'),   
+    #edit    
+    url(r'^edit/(?P<country>[\w-]+)/(?P<calendar_slug>[-\w]+)/(?P<event_id>\d+)/$',
+        'schedule.views.create_or_edit_event',
+        name='edit_event'),    
   # countries
     
     # individual country home

@@ -17,7 +17,7 @@ from schedule.models.rules import Rule
 from schedule.models.calendars import Calendar
 from schedule.utils import OccurrenceReplacer
 from django.contrib.contenttypes.generic import GenericRelation
-from ippc.models import IssueKeywordsRelate,validate_file_extension
+from ippc.models import IssueKeywordsRelate,validate_file_extension, CountryPage
 
 class EventManager(models.Manager):
     def get_for_object(self, content_object, distinction=None, inherit=True):
@@ -126,11 +126,12 @@ class Event(models.Model):
     end_recurring_period = models.DateTimeField(_("end recurring period"), null=True, blank=True,
                                                 help_text=_("This date is ignored for one time only events."))
     calendar = models.ForeignKey(Calendar, null=True, blank=True, verbose_name=_("calendar"))
-    location = models.CharField(_("Location"), max_length=255)
-    venuecity = models.CharField(_("Venue City"), max_length=255)
-    venuecountry = models.CharField(_("Venue Country"), max_length=255)
-    organizer = models.CharField(_("Organizer"), max_length=255)
+    location = models.CharField(_("Location"), max_length=255,blank=True, null=True)
+    venuecity = models.CharField(_("Venue City"), max_length=255,blank=True, null=True)
+    venuecountry = models.CharField(_("Venue Country"), max_length=255,blank=True, null=True)
+    organizer = models.CharField(_("Organizer"), max_length=255,blank=True, null=True)
     issuename=generic.GenericRelation(IssueKeywordsRelate)
+    country = models.ForeignKey(CountryPage, related_name="event_country_page", default=-1)
     objects = EventManager()
 
     class Meta:
