@@ -5,33 +5,34 @@
 
 {% block breadcrumb_menu %}
 <li>
-  <a href="/">{% trans "Home" %}</a>
-  <span class="divider">/</span>
+    <a href="/">{% trans "Home" %}</a>
+    <span class="divider">/</span>
 </li>
 <li>
-  <a href="/calendar/">{% trans "Calendar" %}</a>
-  <span class="divider">/</span>
+    <a href="/year/calendar/">{% trans "Calendar" %}</a>
+    <span class="divider">/</span>
 </li>
 <li class="active">{% trans "Year" %}</li>
 {% endblock breadcrumb_menu %}
 
 
 {% block local_nav %}
-    {% if user.is_superuser or can_add %}  
-        <div class="well">
-        <a class="btn btn-small btn-info" href="/create/event/calendar/">{% trans "Add Event" %}</a>
-        </div>
-    {% endif %}
+<div class="well">
+    {% if user.is_superuser or can_add %} 
+    <a class="btn btn-small btn-info" href="/create/event/calendar/">{% trans "Add Event" %}</a>
+      <br><br><br>  
+     {% endif %}
+  
+    <a href="{% url "month_calendar" calendar.slug %}">
+       {% trans "See Month Calendar" %}
+    </a>
+</div>
 {% endblock local_nav %}
 
 {% block pageinfo %}
- <a href="{% url "month_calendar" calendar.slug %}">
-    {% trans "Month Calendar" %}
-  </a>
 {% endblock pageinfo %}
 
 {% block main %}
-
 <div class="calendarname">{{ calendar.name }}</div>
 {% prevnext "year_calendar" calendar.slug periods.year "Y" %}
 <table class="table table-condensed table-striped" id="publications">
@@ -44,8 +45,6 @@
         {% if user.is_superuser or can_add %}
         <th> </th>
         {% endif %}
-
-
     </tr>
 
 
@@ -57,7 +56,7 @@
         <td>{{event.type_verbose}}</td>
         <td>{{event.location}}</td>
         {% if user.is_superuser or can_add %}
-        <td><a class="btn btn-small btn-info" href="{% url 'edit_event' 'event' event.calendar.slug event.id %}">Edit</a> </td>
+        <td><a class="small pull-right" href="{% url 'edit_event' 'event' event.calendar.slug event.id %}"><i class="icon-edit"></i> Edit</a>  </td>
         {% endif %}
     </tr>
 

@@ -66,13 +66,8 @@
 fieldset {background:#eee; margin:1em 0;}
 legend {font-weight:bold;}
 </style>
+{% if f_form.prefix %}
  <script type="text/javascript">
-     
-        $(function() {
-            $(".inline.{{ u_form.prefix }}").formset({
-                prefix: "{{ u_form.prefix }}",
-            })
-        })
         $(function() {
             $(".inline.{{ f_form.prefix }}").formset({
                 prefix: "{{ f_form.prefix }}",
@@ -80,6 +75,17 @@ legend {font-weight:bold;}
         })
        
     </script>
+ {% endif %}  
+ {% if u_form.prefix %}
+     <script type="text/javascript">
+        
+       $(function() {
+            $(".inline.{{ u_form.prefix }}").formset({
+                prefix: "{{ u_form.prefix }}",
+            })
+        })
+    </script>
+ {% endif %}    
 </head>
 <body id="{% block body_id %}body{% endblock %}" class="{% block body_class %}{% endblock %}">
 

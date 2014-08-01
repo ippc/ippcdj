@@ -1,20 +1,24 @@
 from django.shortcuts import render
 from django.utils.translation import ugettext_lazy as _
 from django.contrib.messages import info, error
-
-from .models import IppcUserProfile,CountryPage, PestStatus, PestReport, IS_PUBLIC, IS_HIDDEN, Publication,\
-ReportingObligation, BASIC_REP_TYPE_CHOICES, EventReporting, EVT_REP_TYPE_CHOICES,Website,CnPublication, \
+from django.utils import timezone
+from django.core import mail
+from django.conf import settings
+from django.contrib.auth.models import User,Group
+from .models import EmailUtilityMessage, EmailUtilityMessageFile, Poll_Choice, Poll,PollVotes, IppcUserProfile,CountryPage, PestStatus, PestReport, IS_PUBLIC, IS_HIDDEN, Publication,\
+ReportingObligation, BASIC_REP_TYPE_CHOICES, EventReporting, EVT_REP_TYPE_CHOICES,Website,CnPublication,CountryNews, \
 PestFreeArea,ImplementationISPM,REGIONS, IssueKeywordsRelate,CommodityKeywordsRelate,EventreportingFile,ReportingObligation_File
 from mezzanine.core.models import Displayable, CONTENT_STATUS_DRAFT, CONTENT_STATUS_PUBLISHED
 from .forms import PestReportForm, ReportingObligationForm, EventReportingForm, PestFreeAreaForm,\
 ImplementationISPMForm,IssueKeywordsRelateForm,CommodityKeywordsRelateForm,EventreportingFileFormSet,ReportingoblicationFileFormSet,\
 ImplementationISPMFileFormSet,PestFreeAreaFileFormSet, PestReportFileFormSet,WebsiteUrlFormSet,WebsiteForm, \
-    EventreportingUrlFormSet, ReportingObligationUrlFormSet ,PestFreeAreaUrlFormSet,ImplementationISPMUrlFormSet,PestReportUrlFormSet,\
-        CnPublicationUrlFormSet,CnPublicationForm, CnPublicationFileFormSet
+EventreportingUrlFormSet, ReportingObligationUrlFormSet ,PestFreeAreaUrlFormSet,ImplementationISPMUrlFormSet,PestReportUrlFormSet,\
+CnPublicationUrlFormSet,CnPublicationForm, CnPublicationFileFormSet,EmailUtilityMessageForm,EmailUtilityMessageFileFormSet,\
+CountryNewsUrlFormSet,CountryNewsForm, CountryNewsFileFormSet
 
 from django.views.generic import ListView, MonthArchiveView, YearArchiveView, DetailView, TemplateView, CreateView
 from django.core.urlresolvers import reverse
-
+from django.core.mail import send_mail
 from django.template.defaultfilters import slugify, lower
 from django.template import RequestContext
 from django.shortcuts import render_to_response, get_object_or_404, redirect
@@ -1150,11 +1154,165 @@ def implementationispm_edit(request, country, id=None, template_name='countries/
 
     else:
         form = ImplementationISPMForm(instance=implementationispm)
+        issueform =IssueKeywordsRelateForm(instance=issues)
+        commodityform =CommodityKeywordsRelateForm(instance=commodities)
         f_form = ImplementationISPMFileFormSet(instance=implementationispm)
         u_form = ImplementationISPMUrlFormSet(instance=implementationispm)
     return render_to_response(template_name, {
         'form': form,'f_form':f_form,'u_form': u_form,'issueform': issueform,'commodityform': commodityform,  "implementationispm": implementationispm
     }, context_instance=RequestContext(request))
+
+    #/**************************************************************/
+class CountryNewsListView(ListView):
+    """    CountryNews """
+    context_object_name = 'latest'
+    model = CountryNews
+    date_field = 'publish_date'
+    template_name = 'countries/countrynews_list.html'
+    queryset = CountryNews.objects.all().order_by('-publish_date', 'title')
+    
+    allow_future = False
+    allow_empty = True
+    paginate_by = 30
+
+    def get_queryset(self):
+        """ only return CountryNews from the specific country """
+        # self.country = get_object_or_404(CountryPage, country=self.kwargs['country'])
+        self.country = self.kwargs['country']
+        # CountryPage country_slug == country URL parameter keyword argument
+        return CountryNews.objects.filter(country__country_slug=self.country)
+    
+    def get_context_data(self, **kwargs): # http://stackoverflow.com/a/15515220
+        context = super(CountryNewsListView, self).get_context_data(**kwargs)
+        context['country'] = self.kwargs['country']
+        return context
+   
+       
+   
+class CountryNewsDetailView(DetailView):
+    """ CountryNews detail page """
+    model = CountryNews
+    context_object_name = 'countrynews'
+    template_name = 'countries/countrynews_detail.html'
+    queryset = CountryNews.objects.filter()
+
+
+
+@login_required
+@permission_required('ippc.add_countrynews', login_url="/accounts/login/")
+def countrynews_create(request, country):
+    """ Create countrynews """
+    user = request.user
+    author = user
+    country=user.get_profile().country
+    user_country_slug = lower(slugify(country))
+
+
+    form = CountryNewsForm(request.POST)
+    issueform =IssueKeywordsRelateForm(request.POST)
+    commodityform =CommodityKeywordsRelateForm(request.POST)
+    
+    if request.method == "POST":
+        f_form =CountryNewsFileFormSet(request.POST, request.FILES)
+        u_form =CountryNewsUrlFormSet(request.POST)
+        if form.is_valid() and f_form.is_valid() and u_form.is_valid():
+            new_countrynews = form.save(commit=False)
+            new_countrynews.author = request.user
+            new_countrynews.author_id = author.id
+            form.save()
+            
+            issue_instance = issueform.save(commit=False)
+            issue_instance.content_object = new_countrynews
+            issue_instance.save()
+            issueform.save_m2m()
+            
+            commodity_instance = commodityform.save(commit=False)
+            commodity_instance.content_object = new_countrynews
+            commodity_instance.save()
+            commodityform.save_m2m()
+            
+            f_form.instance = new_countrynews
+            f_form.save()
+            u_form.instance = new_countrynews
+            u_form.save()
+            
+            info(request, _("Successfully created news."))
+            
+            return redirect("country-news-detail", country=user_country_slug, year=new_countrynews.publish_date.strftime("%Y"), month=new_countrynews.publish_date.strftime("%m"), slug=new_countrynews.slug)
+        else:
+             return render_to_response('countries/countrynews_create.html', {'form': form,'f_form': f_form,'u_form': u_form,'issueform':issueform, 'commodityform':commodityform},
+             context_instance=RequestContext(request))
+    else:
+        form = CountryNewsForm(initial={'country': country}, instance=CountryNews())
+        issueform =IssueKeywordsRelateForm(request.POST)
+        commodityform =CommodityKeywordsRelateForm(request.POST)
+        f_form =CountryNewsFileFormSet()
+        u_form =CountryNewsUrlFormSet()
+
+    return render_to_response('countries/countrynews_create.html', {'form': form  ,'f_form': f_form,'u_form': u_form,'issueform':issueform, 'commodityform':commodityform},
+        context_instance=RequestContext(request))
+
+
+        
+# http://stackoverflow.com/a/1854453/412329
+@login_required
+@permission_required('ippc.change_countrynews', login_url="/accounts/login/")
+def countrynews_edit(request, country, id=None, template_name='countries/countrynews_edit.html'):
+    """ Edit countrynews """
+    user = request.user
+    author = user
+    country = user.get_profile().country
+    # country_id = PestReport.objects.filter(country__country_id=country.id)
+    user_country_slug = lower(slugify(country))
+    if id:
+        countrynews = get_object_or_404(CountryNews, country=country, pk=id)
+        issues = get_object_or_404(IssueKeywordsRelate, pk=countrynews.issuename.all()[0].id)
+        commodities = get_object_or_404(CommodityKeywordsRelate, pk=countrynews.commname.all()[0].id)
+       
+       # if pest_report.author != request.user:
+        #     return HttpResponseForbidden()
+    else:
+        countrynews = CountryNews(author=request.user)
+      
+    if request.POST:
+        form = CountryNewsForm(request.POST,  request.FILES, instance=countrynews)
+        issueform =IssueKeywordsRelateForm(request.POST, instance=issues)
+        commodityform =CommodityKeywordsRelateForm(request.POST, instance=commodities)
+        f_form = CountryNewsFileFormSet(request.POST,  request.FILES,instance=countrynews)
+        u_form = CountryNewsUrlFormSet(request.POST,  instance=countrynews)
+        if form.is_valid() and f_form.is_valid() and u_form.is_valid():
+            form.save()
+            issue_instance = issueform.save(commit=False)
+            issue_instance.content_object = countrynews
+            issue_instance.save()
+            issueform.save_m2m()
+            
+            commodity_instance = commodityform.save(commit=False)
+            commodity_instance.content_object = countrynews
+            commodity_instance.save()
+            commodityform.save_m2m() 
+            
+            f_form.instance = countrynews
+            f_form.save()
+            u_form.instance = countrynews
+            u_form.save()
+            # If the save was successful, success message and redirect to another page
+            # info(request, _("Successfully updated pest report."))
+            return redirect("country-news-detail", country=user_country_slug, year=countrynews.publish_date.strftime("%Y"), month=countrynews.publish_date.strftime("%m"), slug=countrynews.slug)
+
+    else:
+        form = CountryNewsForm(instance=countrynews)
+        issueform =IssueKeywordsRelateForm(instance=issues)
+        commodityform =CommodityKeywordsRelateForm(instance=commodities)
+        f_form = CountryNewsFileFormSet(instance=countrynews)
+        u_form = CountryNewsUrlFormSet(instance=countrynews)
+    return render_to_response(template_name, {
+        'form': form,'f_form':f_form,'u_form': u_form,'issueform': issueform,'commodityform': commodityform,  "countrynews": countrynews
+    }, context_instance=RequestContext(request))
+   
+    
+    
+    
     
 class CountryListView(ListView):
     """   alphabetic countries list  """
@@ -1179,6 +1337,132 @@ class CountryListView(ListView):
             context['countries']= CountryPage.objects.filter(region=kindex)
         return context
 
+
+
+class PollListView(ListView):
+    template_name = 'polls/index.html'
+    context_object_name = 'latest_poll_list'
+    def get_queryset(self):
+        """Return the last five published polls."""
+        return Poll.objects.all
+
+
+class PollDetailView(DetailView):
+    model = Poll
+    template_name = 'polls/detail.html'
+    def get_queryset(self):
+        """Return the last five published polls."""
+        return Poll.objects.filter(pub_date__lte=timezone.now())
+        
+
+class PollResultsView(DetailView):
+    model = Poll
+    template_name = 'polls/results.html'
+    
+    def get_context_data(self, **kwargs):
+        context = super(PollResultsView, self).get_context_data(**kwargs)
+        pollid=self.kwargs['pk']
+        print("-------")
+        print(pollid)
+        votes=PollVotes.objects.filter(poll_id=pollid)
+        context['votes']= votes
+        print(votes)
+        return context
+    
+def vote_poll(request, poll_id):
+    p = get_object_or_404(Poll, pk=poll_id)
+    if PollVotes.objects.filter(poll_id=poll_id, user_id=request.user.id).exists():
+        return render(request, 'polls/detail.html', {
+        'poll': p,
+        'error_message': "Sorry, but you have already voted."
+        })
+    try:
+        selected_choice = p.poll_choice_set.get(pk=request.POST['choice'])
+    except (KeyError, Poll_Choice.DoesNotExist):
+        # Redisplay the poll voting form.
+        return render(request, 'polls/detail.html', {
+            'poll': p,
+            'error_message': "You didn't select a choice.",
+        })
+    else:
+        selected_choice.votes += 1
+        selected_choice.save()
+        v = PollVotes(user=request.user, poll=p,choice=selected_choice,comment=request.POST['comment'])
+        v.save()
+        return redirect("results", pk=p.id)
+
+class EmailUtilityMessageListView(ListView):
+    """    EmailUtilityMessage List view """
+    context_object_name = 'latest'
+    model = EmailUtilityMessage
+    date_field = 'date'
+    template_name = 'emailutility/emailutility_list.html'
+    queryset = EmailUtilityMessage.objects.all().order_by('-date', 'subject')
+   
+       
+class EmailUtilityMessageDetailView(DetailView):
+    """ EmailUtilityMessage detail page """
+    model = EmailUtilityMessage
+    context_object_name = 'emailmessage'
+    template_name = 'emailutility/emailutility_detail.html'
+    queryset = EmailUtilityMessage.objects.filter()
+
+@login_required
+@permission_required('ippc.add_emailutilitymessage', login_url="/accounts/login/")
+def email_send(request):
+    """ Create email to send """
+    form = EmailUtilityMessageForm(request.POST)
+  
+    if request.method == "POST":
+        f_form =EmailUtilityMessageFileFormSet(request.POST, request.FILES)
+        if form.is_valid() and f_form.is_valid():
+            emailto_all = [str(request.POST['emailto'])]
+            for u in request.POST.getlist('users'):
+                user_obj=User.objects.get(id=u)
+                user_email=user_obj.email
+                emailto_all.append(str(user_email))
+            for g in request.POST.getlist('groups'):
+                group=Group.objects.get(id=g)
+                users = group.user_set.all()
+                for u in users:
+                   user_obj=User.objects.get(username=u)
+                   user_email=user_obj.email
+                   emailto_all.append(str(user_email))
+            #save mail message in db
+            new_emailmessage = form.save(commit=False)
+            new_emailmessage.date=timezone.now()
+            form.save()
+            #save file to message in db
+            f_form.instance = new_emailmessage
+            f_form.save()
+            #send email message
+            message = mail.EmailMessage(request.POST['subject'],request.POST['messagebody'],request.POST['emailfrom'],
+            emailto_all, ['paola.sentinelli@gmail.com'])
+            # Attach a files to message
+            fileset= EmailUtilityMessageFile.objects.filter(emailmessage_id=new_emailmessage.id)
+            for f in fileset:
+                pf='static/media/'+str(f.file)
+                message.attach_file(pf) 
+            sent =message.send()
+            #update status mail message in db
+            new_emailmessage.sent=sent
+            form.save()
+           
+            info(request, _("Email  sent."))
+            return redirect("email-detail",new_emailmessage.id)
+        else:
+             return render_to_response('emailutility/emailutility_send.html', {'form': form,'f_form': f_form},
+             context_instance=RequestContext(request))
+    else:
+        form = EmailUtilityMessageForm(instance=EmailUtilityMessage())
+        f_form =EmailUtilityMessageFileFormSet()
+      
+    return render_to_response('emailutility/emailutility_send.html', {'form': form  ,'f_form': f_form},
+        context_instance=RequestContext(request))
+
+   
+
+
 class AdvancesSearchCNListView(ListView):
     """  AdvancesSearchCNListView list  """
     context_object_name = 'latest'
@@ -1198,7 +1482,7 @@ class AdvancesSearchCNListView(ListView):
             for cn in cns:
               p=PestReport.objects.filter(country_id=cn.id).count()
               if p>0:
-                maparray.append([str('<a href="'+cn.country_slug+'/pestreports/">'+cn.name)+': '+str(p)+'</a>',int(cn.cn_lat),int(cn.cn_long)])
+                maparray.append([str('<a href="'+cn.country_slug+'/pestreports/">'+cn.name)+': '+str(p)+'</a>',str(cn.cn_lat),str(cn.cn_long)])
             context['map']=maparray
             
                 

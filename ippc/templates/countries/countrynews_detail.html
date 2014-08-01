@@ -1,0 +1,115 @@
+{% extends "base.html" %}
+{% load pages_tags mezzanine_tags i18n future staticfiles accounts_tags %}
+
+{% block meta_title %}{% trans "Latest News" %}{% endblock %}
+
+{% block breadcrumb_menu %}
+<li><a href="/">{% trans "Home" %}</a><span class="divider">/</span></li>
+<li><a href="/countries/">Countries</a><span class="divider">/</span></li>
+<li><a href="/countries/{{countrynews.country.name|slugify}}/">{{countrynews.country.name}}</a><span class="divider">/</span></li>
+<li><a href="/countries/{{countrynews.country.name|slugify}}/countrynews/">countrynews</a><span class="divider">/</span></li>
+<li class="active">{{ countrynews.title }}</li>
+{% endblock %}
+
+{% block local_nav %}
+<div class="well">
+  <p><a href="/countries/{{ countrynews.country.name|slugify }}/countrynews/">« {% trans "Back to" %} {% trans "News" %}</a></p>
+    {% if user.is_superuser %} 
+        <a class="btn btn-small btn-info" href="/admin/ippc/countrynews/{{ countrynews.id }}">Edit as Admin</a><br>
+    {% endif %}
+        
+    {% if perms.ippc.change_countrynews and request.user.get_profile.country.name == page.title %}
+        <a class="btn btn-small btn-info" href="{% url 'country-news-edit' countrynews.country.name|slugify countrynews.id %}"><i class="icon-edit icon-white"></i> Edit</a>
+        {# <a class="btn" href="{% url 'country-news-edit' countrynews.id %}"><i class="icon-edit"></i> Edit</a> #}
+    {% else %}
+    {% endif %}
+    
+    
+    
+   
+</div>
+{% endblock local_nav %}
+
+{% block pageinfo %}
+
+{% endblock pageinfo %}
+
+{% block main %}
+<h1>{{ countrynews.title }}</h1> 
+<dl>
+<dt>{% trans "Publication date" %}</dt>
+<dd>{% blocktrans with sometime=countrynews.publication_date|date:"d-m-Y" %}{{ sometime }}{% endblocktrans %}</dd>
+  
+
+  
+     
+  
+   {% if countrynews.image %}
+  <dt>{% trans "Image" %}</dt>
+  <dd><image src="{{MEDIA_URL}}{{ countrynews.images }}{{ countrynews.image }}"/></dd>
+  {% endif %}
+
+ {% if countrynews.short_description %}
+  <dt>{% trans "Description of the mark" %}</dt>
+  <dd>{{ countrynews.short_description }}</dd>
+  {% endif %}
+  
+
+  {% if countrynews.contact_for_more_information %}
+  <dt>{% trans "Contact for more information" %}</dt>
+  <dd>{{ countrynews.contact_for_more_information }}</dd>
+  {% endif %}
+  
+
+  
+  <dt>{% trans "Author" %}</dt>
+  <dd>{{ countrynews.author.get_profile.first_name }} {{ countrynews.author.get_profile.last_name }}</dd>
+  
+ 
+
+  
+ {% if countrynews.issuename %}
+  <dt>{% trans "Issue keywords" %}</dt>
+  <dd>
+  {% for entry in countrynews.issuename.all %}
+  <br/>
+  {% for e in entry.issuename.all %}
+   <br/>
+  {{e.name}}<br/>
+ {% endfor %} 
+{% endfor %}
+  </dd>
+  {% endif %}
+ 
+  
+  
+  {% if countrynews.commname %}
+  <dt>{% trans "Commodity keywords" %}</dt>
+  <dd>
+  {% for entry in countrynews.commname.all %}
+ 
+  {% for e in entry.commname.all %}
+  
+  {{e.name}}<br/>
+ {% endfor %} 
+{% endfor %}
+  </dd>
+  {% endif %}
+  
+   <dt>{% trans "Report files" %}</dt>
+   {% for f in countrynews.countrynewsfile_set.all %} 
+    
+  <dd><a href="{{MEDIA_URL}}{{f.file.name}}">{{ f.description }}</a></dd>
+{% endfor %}
+
+    
+  <dt>{% trans "Website" %}</dt>
+   {% for f in countrynews.countrynewsurl_set.all %} 
+    
+  <dd><a href="{{MEDIA_URL}}{{f.url_for_more_information}}">{{ f.url_for_more_information }}</a></dd>
+{% endfor %}
+  
+</dl>
+
+{% endblock %}
+

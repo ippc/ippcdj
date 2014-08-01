@@ -6,7 +6,7 @@
 {% block breadcrumb_menu %}
 <li><a href="/">{% trans "Home" %}</a><span class="divider">/</span></li>
 <li><a href="/countries/">Countries</a><span class="divider">/</span></li>
-<li><a href="/countries/{{website.country.name|slugify}}">{{website.country.name}}</a><span class="divider">/</span></li>
+<li><a href="/countries/{{website.country.name|slugify}}/">{{website.country.name}}</a><span class="divider">/</span></li>
 <li><a href="/countries/{{website.country.name|slugify}}/websites/">Websites</a><span class="divider">/</span></li>
 <li class="active">{{ website.title }}</li>
 {% endblock %}

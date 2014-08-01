@@ -265,7 +265,6 @@ INSTALLED_APPS = (
 
     # forum application, based on mezzanine.blog
     "forum",
-    
     # or, even better, attachments that can be related to any model type
     
     # https://github.com/bartTC/django-attachments
@@ -288,7 +287,8 @@ INSTALLED_APPS = (
     # "debug_toolbar",
     
     #"mezzanine.mobile",
-    "schedule"
+    "schedule",
+    "django_markdown"
 
 )
 
@@ -322,7 +322,7 @@ MIDDLEWARE_CLASSES = (
     
     # localization for multi-lingual site
     # http://www.djangobook.com/en/2.0/chapter19.html
-    # "django.middleware.locale.LocaleMiddleware",
+    "django.middleware.locale.LocaleMiddleware",
     # https://bitbucket.org/carljm/django-localeurl/src/764caf7a412d77aca8cc929988f333ee808719e6/docs/setup.rst?at=default
     "localeurl.middleware.LocaleURLMiddleware",
     
@@ -389,7 +389,13 @@ RICHTEXT_FILTER = 'mezzanine_pagedown.filters.custom'
 RICHTEXT_FILTER_LEVEL = 3
 PAGEDOWN_MARKDOWN_EXTENSIONS = ('extra','codehilite','toc')
 
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 
+EMAIL_USE_TLS = True
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_PORT = 587
+EMAIL_HOST_USER = 'paola.sentinelli@gmail.com'
+EMAIL_HOST_PASSWORD = 'cipie1969'
 # http://codespatter.com/2009/04/10/how-to-add-locations-to-python-path-for-reusable-django-apps/
 # import sys
 # sys.path.insert(0, os.path.join(PROJECT_ROOT, "apps"))

@@ -190,9 +190,11 @@ def event(request, event_id, template_name="schedule/event.html"):
     user = request.user
     is_contryeditor=0
     is_secretariat=0
+    is_contryeevent=0
     event = get_object_or_404(Event, id=event_id)
-    print(event.country)
-    if user.groups.filter(name='Country editor') and (user.get_profile().country==event.country):
+    if event.country.id!=-1 :
+        is_contryeevent=1
+    if user.groups.filter(name='Country editor')  and (user.get_profile().country==event.country):
         is_contryeditor=1
     if user.groups.filter(name='IPPC Secretariat'):
         is_secretariat=1
@@ -203,6 +205,8 @@ def event(request, event_id, template_name="schedule/event.html"):
         "back_url": None,
         "is_contryeditor": is_contryeditor,
         "is_secretariat": is_secretariat,
+        "is_contryeevent":is_contryeevent,
+        "country":event.country,
     })
 
 
@@ -323,14 +327,12 @@ def create_or_edit_event(request, country, calendar_slug, event_id=None, next=No
     # Lastly redirect to the event detail of the recently create event
     """
     user = request.user
-    is_contryeditor=0
-    is_secretariat=0
+    
     if country=='event':
         print()
     else:
         country = get_object_or_404(CountryPage, name=country)
-    if user.groups.filter(name='IPPC Secretariat'):
-        is_secretariat=1
+    
     
     date = coerce_date_dict(request.GET)
     initial_data = None
@@ -349,15 +351,34 @@ def create_or_edit_event(request, country, calendar_slug, event_id=None, next=No
     instance = None
     issues = None
     
+    is_contryeevent=0
+    is_secretariat=0
+    is_contryeditor=0
+    is_contryeditor_1=0
+    can_add_edit=0
+    
+    if user.groups.filter(name='IPPC Secretariat'):
+        is_secretariat=1
+    if user.groups.filter(name='Country editor'):
+        is_contryeditor=1
+    
     calendar = get_object_or_404(Calendar, slug=calendar_slug)
     if event_id is not None:
         instance = get_object_or_404(Event, id=event_id)
-        if user.groups.filter(name='Country editor') and (instance.country==country):
-            is_contryeditor=1
-        
+        if user.groups.filter(name='Country editor') and (instance.country==user.get_profile().country):
+            is_contryeditor_1=1
+            can_add_edit=1  
+        if instance.country.id!=-1 :
+            is_contryeevent=1
+        if (is_secretariat==1 and is_contryeevent==0):
+            can_add_edit=1       
         issues = get_object_or_404(IssueKeywordsRelate, pk=instance.issuename.all()[0].id)
     else:
         instance = Event()
+        if is_contryeditor==1:
+            can_add_edit=1
+        if (is_secretariat==1):
+            can_add_edit=1  
     form = form_class(data=request.POST or None, instance=instance, initial=initial_data)
   
         
@@ -394,6 +415,7 @@ def create_or_edit_event(request, country, calendar_slug, event_id=None, next=No
         return HttpResponseRedirect(next)
 
     next = get_next_url(request, next)
+ 
     return render_to_response(template_name, {
         "form": form,
         "issueform": issueform,
@@ -401,7 +423,9 @@ def create_or_edit_event(request, country, calendar_slug, event_id=None, next=No
         "u_form": u_form,
         "calendar": calendar,
         "is_contryeditor":is_contryeditor,
+        "is_contryeditor_1":is_contryeditor_1,        
         "is_secretariat":is_secretariat,
+        "can_add_edit":can_add_edit,
         "event_id":event_id,
         "next": next
     }, context_instance=RequestContext(request))

@@ -42,7 +42,7 @@
 
 <h1><small class="normal">{% trans "Editing" %}</small> {{ cnpublication.title }} <br><small class="normal">{% trans "Last updated on" %} {{cnpublication.modify_date}}</small></h1>
 
-<form enctype="multipart/form-data" class="customform" method="POST" action="{% url 'website-edit' website.country.country_slug website.id %}">
+<form enctype="multipart/form-data" class="customform" method="POST" action="{% url 'country-publication-edit' cnpublication.country.country_slug cnpublication.id %}">
     {% csrf_token %}
     <fieldset>
         {% include "countries/cnpublication_form.html" %}

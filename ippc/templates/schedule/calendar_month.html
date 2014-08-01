@@ -11,7 +11,7 @@
   <span class="divider">/</span>
 </li>
 <li>
-  <a href="/calendar/">{% trans "Calendar" %}</a>
+  <a href="/year/calendar/">{% trans "Calendar" %}</a>
   <span class="divider">/</span>
 </li>
 <li class="active">{% trans "Month" %}</li>
@@ -20,17 +20,23 @@
 
  
 {% block local_nav %}
-{% if user.is_superuser or can_add %} 
+
 <div class="well">
+    {% if user.is_superuser or can_add %} 
     <a class="btn btn-small btn-info" href="/create/event/calendar/">{% trans "Add Event" %}</a>
+    <br>
+    <br>
+    <br>{% endif %}
+    
+    <a href="{% url "year_calendar" calendar.slug %}{% querystring_for_date periods.month.start 1%}">
+    {% trans "See Full Year Calendar" %}
+  </a>
 </div>
-{% endif %}
+
 {% endblock local_nav %}
 
 {% block pageinfo %}
- <a href="{% url "year_calendar" calendar.slug %}{% querystring_for_date periods.month.start 1%}">
-    {% trans "Full Year Calendar" %}
-  </a>
+
 {% endblock pageinfo %}
 
  {% block main %}

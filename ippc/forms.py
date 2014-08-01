@@ -7,7 +7,7 @@ ReportingObligation, EventReporting, PestFreeArea, ImplementationISPM, Website, 
 VERS_CHOICES,IssueKeywordsRelate,CommodityKeywordsRelate,\
 EventreportingFile, ReportingObligation_File,PestFreeAreaFile, ImplementationISPMFile,PestReportFile,\
 EventreportingUrl, ReportingObligationUrl,PestFreeAreaUrl, ImplementationISPMUrl,PestReportUrl,WebsiteUrl,\
-CnPublication,CnPublicationFile,CnPublicationUrl
+CnPublication,CnPublicationFile,CnPublicationUrl,CountryNews,CountryNewsFile,CountryNewsUrl, EmailUtilityMessage, EmailUtilityMessageFile
 
 from django.contrib.auth.models import User
 import autocomplete_light
@@ -204,7 +204,28 @@ class CnPublicationForm(forms.ModelForm):
             'country': forms.HiddenInput(),   
             'publication_date': AdminDateWidget(),
         }
-
+class CountryNewsForm(forms.ModelForm):
+    # country = forms.ChoiceField(widget=forms.Select(), initial='country')
+    # =todo: https://docs.djangoproject.com/en/dev/ref/forms/api/#dynamic-initial-values
+    class Meta:
+        model = CountryNews
+        fields = [
+           'title', 
+           'publication_date', 
+           'short_description',
+           'image',
+           'contact_for_more_information',
+           'country',
+           ]
+        exclude = ('author', 'slug', 'publish_date',  'modify_date')
+        widgets = {
+            'country': forms.HiddenInput(),
+            'publication_date': AdminDateWidget(),
+           }
+           
+CountryNewsUrlFormSet  = inlineformset_factory(CountryNews,  CountryNewsUrl, extra=1)
+CountryNewsFileFormSet = inlineformset_factory(CountryNews,  CountryNewsFile,extra=1)
+              
 CnPublicationUrlFormSet  = inlineformset_factory(CnPublication,  CnPublicationUrl, extra=1)
 CnPublicationFileFormSet = inlineformset_factory(CnPublication,  CnPublicationFile,extra=1)
        
@@ -229,4 +250,26 @@ PestReportUrlFormSet  = inlineformset_factory(PestReport,  PestReportUrl, extra=
 ReportingoblicationFileFormSet = inlineformset_factory(ReportingObligation,  ReportingObligation_File,extra=1)
 ReportingObligationUrlFormSet  = inlineformset_factory(ReportingObligation,  ReportingObligationUrl, extra=1)
 
-  
+
+
+class EmailUtilityMessageForm(forms.ModelForm):
+
+    class Meta:
+        model = EmailUtilityMessage
+        fields = [
+           'emailfrom',
+           'emailto',
+           'users',
+           'groups',
+           'subject', 
+           'messagebody',
+         
+           ]
+        exclude = ( 'date','sent')
+        widgets = {
+            #'groups': forms.CheckboxSelectMultiple(),
+     }
+#  
+EmailUtilityMessageFileFormSet = inlineformset_factory(EmailUtilityMessage,  EmailUtilityMessageFile,extra=1)
+
+    

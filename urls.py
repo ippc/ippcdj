@@ -6,9 +6,15 @@ from .ippc.views import PestReportListView, PestReportHiddenListView, \
 PestReportDetailView, CountryView, pest_report_create, pest_report_edit, PublicationDetailView,\
 PublicationListView,ReportingObligationListView, ReportingObligationDetailView,reporting_obligation_create, reporting_obligation_edit, \
 EventReportingListView, EventReportingDetailView,event_reporting_create, event_reporting_edit, \
-PestFreeAreaListView, PestFreeAreaDetailView,pfa_create, pfa_edit, WebsiteListView, WebsiteDetailView ,website_create, website_edit, \
-ImplementationISPMListView, ImplementationISPMDetailView,implementationispm_create, implementationispm_edit,CountryListView,\
-AdvancesSearchCNListView,CnPublicationListView,CnPublicationDetailView,country_publication_create,country_publication_edit
+PestFreeAreaListView, PestFreeAreaDetailView,pfa_create, pfa_edit,\
+WebsiteListView, WebsiteDetailView ,website_create, website_edit, \
+ImplementationISPMListView, ImplementationISPMDetailView,implementationispm_create, implementationispm_edit,\
+CountryListView,\
+AdvancesSearchCNListView,\
+CnPublicationListView,CnPublicationDetailView,country_publication_create,country_publication_edit,\
+CountryNewsListView,CountryNewsDetailView,countrynews_create,countrynews_edit,\
+PollListView,PollResultsView,PollDetailView,vote_poll,\
+email_send,EmailUtilityMessageDetailView,EmailUtilityMessageListView
 from schedule.periods import Year, Month, Week, Day
 from mezzanine.core.views import direct_to_template
 import mezzanine_pagedown.urls
@@ -26,8 +32,11 @@ js_info_dict = {
 
 urlpatterns = patterns("",
     (r'^jsi18n/$', 'django.views.i18n.javascript_catalog', js_info_dict),
+    
     url(r'^ocs/', include('ocs.urls', namespace="ocs")),
     url(r'^forum/', include('forum.urls')),
+    
+    url('^markdown/', include( 'django_markdown.urls')),
     # forum detail
     # url(r'^forum/(?P<slug>[\w-]+)/$',
     #     view=ForumPostDetailView.as_view(),
@@ -55,7 +64,7 @@ urlpatterns = patterns("",
         'schedule.views.calendar_by_cn',
         name="country_calendar",
         kwargs={'template_name': 'schedule/calendar_cn.html'}),
-    url(r'^countries/(?P<country>[\w-]+)/(?P<calendar_slug>[-\w]+)/create/$',
+    url(r'^countries/(?P<country>[\w-]+)/(?P<calendar_slug>[-\w]+)/add/$',
         'schedule.views.create_or_edit_event',
         name='calendar_create_event'),
     url(r'^create/(?P<country>[\w-]+)/(?P<calendar_slug>[-\w]+)/$',
@@ -82,6 +91,27 @@ urlpatterns = patterns("",
         view=AdvancesSearchCNListView.as_view(),
         name='advsearch'),
     #-------------------------------------------#    
+    #POLL:
+    
+    url(r'^poll/$',PollListView.as_view(), name='index'),
+    url(r'^poll/(?P<pk>\d+)/$', PollDetailView.as_view(), name='detail'),
+    url(r'^poll/(?P<pk>\d+)/results/$', PollResultsView.as_view(), name='results'),
+    url(r'^poll/(?P<poll_id>\d+)/vote/$', vote_poll, name='vote'),
+    #--------------------------------------#
+    #EMAIL:
+    
+#    url(r'^emailutility/$',PollListView.as_view(), name='index'),
+#    url(r'^poll/(?P<pk>\d+)/$', PollDetailView.as_view(), name='detail'),
+#    url(r'^poll/(?P<pk>\d+)/results/$', PollResultsView.as_view(), name='results'),
+#    url(r'^poll/(?P<poll_id>\d+)/send/$', vote_poll, name='vote'),
+    url(r'^emailutility/all/$',
+        view=EmailUtilityMessageListView.as_view(),
+        name='email-list'),
+    url(r'^emailutility/(?P<pk>\d+)/$',EmailUtilityMessageDetailView.as_view(), name='email-detail'),
+    url(r'^emailutility/send/$',
+        view=email_send,
+        name='email-send'),
+    #--------------------------------------#
     # pest report list
     url(r'^countries/(?P<country>[\w-]+)/pestreports/$',
         view=PestReportListView.as_view(),
@@ -228,6 +258,36 @@ urlpatterns = patterns("",
     url(r'^countries/(?P<country>[\w-]+)/publications/edit/(?P<id>\d+)/$',
         view=country_publication_edit,
         name='country-publication-edit'),
+    # event reporting list showing hidden reports 
+    #url(r'^countries/(?P<country>[\w-]+)/eventreporting/hidden/$',
+    #    view=EventReportingHiddenListView.as_view(),
+    #    name='event-reporting-hidden-list'),
+
+#-------------------------------------------#
+    # CN news list
+    url(r'^countries/(?P<country>[\w-]+)/countrynews/$',
+        view=CountryNewsListView.as_view(),
+        name='country-news-list'),
+
+    #CN news list showing hidden reports 
+    #url(r'^countries/(?P<country>[\w-]+)/countrynews/hidden/$',
+    #    view=CountryNewsListView.as_view(),
+    #    name='country-news-hidden-list'),
+
+    # CN publications detail
+    url(r'^countries/(?P<country>[\w-]+)/countrynews/(?P<year>\d+)/(?P<month>\d{2})/(?P<slug>[\w-]+)/$',
+        view=CountryNewsDetailView.as_view(),
+        name="country-news-detail"),
+        
+     # CN publications create
+    url(r'^countries/(?P<country>[\w-]+)/countrynews/create/$',
+        view=countrynews_create,
+        name='country-news-create'),
+        
+    # CN publications edit
+    url(r'^countries/(?P<country>[\w-]+)/countrynews/edit/(?P<id>\d+)/$',
+        view=countrynews_edit,
+        name='country-news-edit'),
     # event reporting list showing hidden reports 
     #url(r'^countries/(?P<country>[\w-]+)/eventreporting/hidden/$',
     #    view=EventReportingHiddenListView.as_view(),

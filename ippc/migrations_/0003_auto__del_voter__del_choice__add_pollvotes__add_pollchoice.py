@@ -8,47 +8,57 @@ from django.db import models
 class Migration(SchemaMigration):
 
     def forwards(self, orm):
-        # Adding model 'Website'
-        db.create_table(u'ippc_website', (
-            (u'id', self.gf('django.db.models.fields.AutoField')(primary_key=True)),
-            ('keywords_string', self.gf('django.db.models.fields.CharField')(max_length=500, blank=True)),
-            ('site', self.gf('django.db.models.fields.related.ForeignKey')(to=orm['sites.Site'])),
-            ('title', self.gf('django.db.models.fields.CharField')(max_length=500)),
-            ('slug', self.gf('django.db.models.fields.CharField')(max_length=2000, null=True, blank=True)),
-            ('_meta_title', self.gf('django.db.models.fields.CharField')(max_length=500, null=True, blank=True)),
-            ('description', self.gf('django.db.models.fields.TextField')(blank=True)),
-            ('gen_description', self.gf('django.db.models.fields.BooleanField')(default=True)),
-            ('status', self.gf('django.db.models.fields.IntegerField')(default=2)),
-            ('publish_date', self.gf('django.db.models.fields.DateTimeField')(null=True, blank=True)),
-            ('expiry_date', self.gf('django.db.models.fields.DateTimeField')(null=True, blank=True)),
-            ('short_url', self.gf('django.db.models.fields.URLField')(max_length=200, null=True, blank=True)),
-            ('in_sitemap', self.gf('django.db.models.fields.BooleanField')(default=True)),
-            ('country', self.gf('django.db.models.fields.related.ForeignKey')(related_name='website_country_page', to=orm['ippc.CountryPage'])),
-            ('author', self.gf('django.db.models.fields.related.ForeignKey')(related_name='website__reporting_author', to=orm['auth.User'])),
-            ('web_type', self.gf('django.db.models.fields.IntegerField')(default=None)),
-            ('short_description', self.gf('django.db.models.fields.TextField')(null=True, blank=True)),
-            ('contact_for_more_information', self.gf('django.db.models.fields.TextField')(null=True, blank=True)),
-            ('modify_date', self.gf('django.db.models.fields.DateTimeField')(null=True, blank=True)),
-            ('old_id', self.gf('django.db.models.fields.CharField')(max_length=50)),
-            ('keywords', self.gf('mezzanine.generic.fields.KeywordsField')(object_id_field='object_pk', to=orm['generic.AssignedKeyword'], frozen_by_south=True)),
-        ))
-        db.send_create_signal(u'ippc', ['Website'])
+        # Deleting model 'Voter'
+        db.delete_table(u'ippc_voter')
 
-        # Adding model 'WebsiteUrl'
-        db.create_table(u'ippc_websiteurl', (
+        # Deleting model 'Choice'
+        db.delete_table(u'ippc_choice')
+
+        # Adding model 'PollVotes'
+        db.create_table(u'ippc_pollvotes', (
             (u'id', self.gf('django.db.models.fields.AutoField')(primary_key=True)),
-            ('website', self.gf('django.db.models.fields.related.ForeignKey')(to=orm['ippc.Website'])),
-            ('url_for_more_information', self.gf('django.db.models.fields.URLField')(max_length=200, null=True, blank=True)),
+            ('user', self.gf('django.db.models.fields.related.ForeignKey')(to=orm['auth.User'])),
+            ('poll', self.gf('django.db.models.fields.related.ForeignKey')(to=orm['ippc.Poll'])),
+            ('choicetext', self.gf('django.db.models.fields.CharField')(max_length=50)),
+            ('comment', self.gf('django.db.models.fields.CharField')(max_length=200)),
         ))
-        db.send_create_signal(u'ippc', ['WebsiteUrl'])
+        db.send_create_signal(u'ippc', ['PollVotes'])
+
+        # Adding model 'PollChoice'
+        db.create_table(u'ippc_pollchoice', (
+            (u'id', self.gf('django.db.models.fields.AutoField')(primary_key=True)),
+            ('poll', self.gf('django.db.models.fields.related.ForeignKey')(to=orm['ippc.Poll'])),
+            ('choice_text', self.gf('django.db.models.fields.CharField')(max_length=200)),
+            ('votes', self.gf('django.db.models.fields.IntegerField')(default=0)),
+        ))
+        db.send_create_signal(u'ippc', ['PollChoice'])
 
 
     def backwards(self, orm):
-        # Deleting model 'Website'
-        db.delete_table(u'ippc_website')
+        # Adding model 'Voter'
+        db.create_table(u'ippc_voter', (
+            ('comment', self.gf('django.db.models.fields.CharField')(max_length=200)),
+            ('user', self.gf('django.db.models.fields.related.ForeignKey')(to=orm['auth.User'])),
+            ('poll', self.gf('django.db.models.fields.related.ForeignKey')(to=orm['ippc.Poll'])),
+            (u'id', self.gf('django.db.models.fields.AutoField')(primary_key=True)),
+            ('choicetext', self.gf('django.db.models.fields.CharField')(max_length=50)),
+        ))
+        db.send_create_signal(u'ippc', ['Voter'])
 
-        # Deleting model 'WebsiteUrl'
-        db.delete_table(u'ippc_websiteurl')
+        # Adding model 'Choice'
+        db.create_table(u'ippc_choice', (
+            ('poll', self.gf('django.db.models.fields.related.ForeignKey')(to=orm['ippc.Poll'])),
+            ('choice_text', self.gf('django.db.models.fields.CharField')(max_length=200)),
+            ('votes', self.gf('django.db.models.fields.IntegerField')(default=0)),
+            (u'id', self.gf('django.db.models.fields.AutoField')(primary_key=True)),
+        ))
+        db.send_create_signal(u'ippc', ['Choice'])
+
+        # Deleting model 'PollVotes'
+        db.delete_table(u'ippc_pollvotes')
+
+        # Deleting model 'PollChoice'
+        db.delete_table(u'ippc_pollchoice')
 
 
     models = {
@@ -143,6 +153,45 @@ class Migration(SchemaMigration):
             'slug': ('django.db.models.fields.CharField', [], {'max_length': '2000', 'null': 'True', 'blank': 'True'}),
             'title': ('django.db.models.fields.CharField', [], {'max_length': '500'})
         },
+        u'ippc.cnpublication': {
+            'Meta': {'object_name': 'CnPublication'},
+            '_meta_title': ('django.db.models.fields.CharField', [], {'max_length': '500', 'null': 'True', 'blank': 'True'}),
+            'agenda_number': ('django.db.models.fields.CharField', [], {'max_length': '100', 'blank': 'True'}),
+            'author': ('django.db.models.fields.related.ForeignKey', [], {'related_name': "'cnpublicatio_author'", 'to': u"orm['auth.User']"}),
+            'contact_for_more_information': ('django.db.models.fields.TextField', [], {'null': 'True', 'blank': 'True'}),
+            'country': ('django.db.models.fields.related.ForeignKey', [], {'related_name': "'cnpublication_country_page'", 'to': u"orm['ippc.CountryPage']"}),
+            'description': ('django.db.models.fields.TextField', [], {'blank': 'True'}),
+            'document_number': ('django.db.models.fields.CharField', [], {'max_length': '100', 'blank': 'True'}),
+            'expiry_date': ('django.db.models.fields.DateTimeField', [], {'null': 'True', 'blank': 'True'}),
+            'gen_description': ('django.db.models.fields.BooleanField', [], {'default': 'True'}),
+            u'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
+            'in_sitemap': ('django.db.models.fields.BooleanField', [], {'default': 'True'}),
+            'keywords': ('mezzanine.generic.fields.KeywordsField', [], {'object_id_field': "'object_pk'", 'to': u"orm['generic.AssignedKeyword']", 'frozen_by_south': 'True'}),
+            'keywords_string': ('django.db.models.fields.CharField', [], {'max_length': '500', 'blank': 'True'}),
+            'modify_date': ('django.db.models.fields.DateTimeField', [], {'null': 'True', 'blank': 'True'}),
+            'old_id': ('django.db.models.fields.CharField', [], {'max_length': '50'}),
+            'publication_date': ('django.db.models.fields.DateTimeField', [], {'null': 'True', 'blank': 'True'}),
+            'publish_date': ('django.db.models.fields.DateTimeField', [], {'null': 'True', 'blank': 'True'}),
+            'short_description': ('django.db.models.fields.TextField', [], {'null': 'True', 'blank': 'True'}),
+            'short_url': ('django.db.models.fields.URLField', [], {'max_length': '200', 'null': 'True', 'blank': 'True'}),
+            'site': ('django.db.models.fields.related.ForeignKey', [], {'to': u"orm['sites.Site']"}),
+            'slug': ('django.db.models.fields.CharField', [], {'max_length': '2000', 'null': 'True', 'blank': 'True'}),
+            'status': ('django.db.models.fields.IntegerField', [], {'default': '2'}),
+            'title': ('django.db.models.fields.CharField', [], {'max_length': '500'})
+        },
+        u'ippc.cnpublicationfile': {
+            'Meta': {'object_name': 'CnPublicationFile'},
+            'cnpublication': ('django.db.models.fields.related.ForeignKey', [], {'to': u"orm['ippc.CnPublication']"}),
+            'description': ('django.db.models.fields.CharField', [], {'max_length': '255'}),
+            'file': ('django.db.models.fields.files.FileField', [], {'max_length': '255', 'blank': 'True'}),
+            u'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'})
+        },
+        u'ippc.cnpublicationurl': {
+            'Meta': {'object_name': 'CnPublicationUrl'},
+            'cnpublication': ('django.db.models.fields.related.ForeignKey', [], {'to': u"orm['ippc.CnPublication']"}),
+            u'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
+            'url_for_more_information': ('django.db.models.fields.URLField', [], {'max_length': '200', 'null': 'True', 'blank': 'True'})
+        },
         u'ippc.commoditykeyword': {
             'Meta': {'object_name': 'CommodityKeyword'},
             u'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
@@ -154,6 +203,43 @@ class Migration(SchemaMigration):
             'content_type': ('django.db.models.fields.related.ForeignKey', [], {'to': u"orm['contenttypes.ContentType']"}),
             u'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
             'object_id': ('django.db.models.fields.PositiveIntegerField', [], {})
+        },
+        u'ippc.countrynews': {
+            'Meta': {'object_name': 'CountryNews'},
+            '_meta_title': ('django.db.models.fields.CharField', [], {'max_length': '500', 'null': 'True', 'blank': 'True'}),
+            'author': ('django.db.models.fields.related.ForeignKey', [], {'related_name': "'countrynews_author'", 'to': u"orm['auth.User']"}),
+            'contact_for_more_information': ('django.db.models.fields.TextField', [], {'null': 'True', 'blank': 'True'}),
+            'country': ('django.db.models.fields.related.ForeignKey', [], {'related_name': "'countrynews_country_page'", 'to': u"orm['ippc.CountryPage']"}),
+            'description': ('django.db.models.fields.TextField', [], {'blank': 'True'}),
+            'expiry_date': ('django.db.models.fields.DateTimeField', [], {'null': 'True', 'blank': 'True'}),
+            'gen_description': ('django.db.models.fields.BooleanField', [], {'default': 'True'}),
+            u'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
+            'image': ('django.db.models.fields.files.ImageField', [], {'max_length': '100', 'blank': 'True'}),
+            'in_sitemap': ('django.db.models.fields.BooleanField', [], {'default': 'True'}),
+            'keywords': ('mezzanine.generic.fields.KeywordsField', [], {'object_id_field': "'object_pk'", 'to': u"orm['generic.AssignedKeyword']", 'frozen_by_south': 'True'}),
+            'keywords_string': ('django.db.models.fields.CharField', [], {'max_length': '500', 'blank': 'True'}),
+            'modify_date': ('django.db.models.fields.DateTimeField', [], {'null': 'True', 'blank': 'True'}),
+            'publication_date': ('django.db.models.fields.DateTimeField', [], {'null': 'True', 'blank': 'True'}),
+            'publish_date': ('django.db.models.fields.DateTimeField', [], {'null': 'True', 'blank': 'True'}),
+            'short_description': ('django.db.models.fields.TextField', [], {'null': 'True', 'blank': 'True'}),
+            'short_url': ('django.db.models.fields.URLField', [], {'max_length': '200', 'null': 'True', 'blank': 'True'}),
+            'site': ('django.db.models.fields.related.ForeignKey', [], {'to': u"orm['sites.Site']"}),
+            'slug': ('django.db.models.fields.CharField', [], {'max_length': '2000', 'null': 'True', 'blank': 'True'}),
+            'status': ('django.db.models.fields.IntegerField', [], {'default': '2'}),
+            'title': ('django.db.models.fields.CharField', [], {'max_length': '500'})
+        },
+        u'ippc.countrynewsfile': {
+            'Meta': {'object_name': 'CountryNewsFile'},
+            'countrynews': ('django.db.models.fields.related.ForeignKey', [], {'to': u"orm['ippc.CountryNews']"}),
+            'description': ('django.db.models.fields.CharField', [], {'max_length': '255'}),
+            'file': ('django.db.models.fields.files.FileField', [], {'max_length': '255', 'blank': 'True'}),
+            u'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'})
+        },
+        u'ippc.countrynewsurl': {
+            'Meta': {'object_name': 'CountryNewsUrl'},
+            'countrynews': ('django.db.models.fields.related.ForeignKey', [], {'to': u"orm['ippc.CountryNews']"}),
+            u'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
+            'url_for_more_information': ('django.db.models.fields.URLField', [], {'max_length': '200', 'null': 'True', 'blank': 'True'})
         },
         u'ippc.countrypage': {
             'Meta': {'ordering': "['name']", 'object_name': 'CountryPage', '_ormbases': [u'pages.Page']},
@@ -389,6 +475,32 @@ class Migration(SchemaMigration):
             u'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
             'status': ('django.db.models.fields.CharField', [], {'max_length': '500'})
         },
+        u'ippc.poll': {
+            'Meta': {'object_name': 'Poll'},
+            'close_date': ('django.db.models.fields.DateTimeField', [], {}),
+            'description': ('django.db.models.fields.CharField', [], {'max_length': '500'}),
+            'groupspoll': ('django.db.models.fields.related.ManyToManyField', [], {'blank': 'True', 'related_name': "'pollgroups'", 'null': 'True', 'symmetrical': 'False', 'to': u"orm['auth.Group']"}),
+            u'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
+            'login_required': ('django.db.models.fields.BooleanField', [], {'default': 'True'}),
+            'pub_date': ('django.db.models.fields.DateTimeField', [], {}),
+            'question': ('django.db.models.fields.CharField', [], {'max_length': '200'}),
+            'userspoll': ('django.db.models.fields.related.ManyToManyField', [], {'blank': 'True', 'related_name': "'pollusers'", 'null': 'True', 'symmetrical': 'False', 'to': u"orm['auth.User']"})
+        },
+        u'ippc.pollchoice': {
+            'Meta': {'object_name': 'PollChoice'},
+            'choice_text': ('django.db.models.fields.CharField', [], {'max_length': '200'}),
+            u'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
+            'poll': ('django.db.models.fields.related.ForeignKey', [], {'to': u"orm['ippc.Poll']"}),
+            'votes': ('django.db.models.fields.IntegerField', [], {'default': '0'})
+        },
+        u'ippc.pollvotes': {
+            'Meta': {'object_name': 'PollVotes'},
+            'choicetext': ('django.db.models.fields.CharField', [], {'max_length': '50'}),
+            'comment': ('django.db.models.fields.CharField', [], {'max_length': '200'}),
+            u'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
+            'poll': ('django.db.models.fields.related.ForeignKey', [], {'to': u"orm['ippc.Poll']"}),
+            'user': ('django.db.models.fields.related.ForeignKey', [], {'to': u"orm['auth.User']"})
+        },
         u'ippc.publication': {
             'Meta': {'ordering': "('_order',)", 'object_name': 'Publication'},
             '_order': ('django.db.models.fields.IntegerField', [], {'null': 'True'}),
@@ -503,6 +615,16 @@ class Migration(SchemaMigration):
             'slug': ('django.db.models.fields.CharField', [], {'max_length': '2000', 'null': 'True', 'blank': 'True'}),
             'title': ('django.db.models.fields.CharField', [], {'max_length': '500'}),
             'translation': ('django.db.models.fields.related.ForeignKey', [], {'related_name': "'translation'", 'to': u"orm['pages.Link']"})
+        },
+        u'ippc.transpublicationlibrarypage': {
+            'Meta': {'ordering': "('lang',)", 'unique_together': "(('lang', 'translation'),)", 'object_name': 'TransPublicationLibraryPage'},
+            'content': ('mezzanine.core.fields.RichTextField', [], {}),
+            u'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
+            'lang': ('django.db.models.fields.CharField', [], {'max_length': '5'}),
+            'site': ('django.db.models.fields.related.ForeignKey', [], {'to': u"orm['sites.Site']"}),
+            'slug': ('django.db.models.fields.CharField', [], {'max_length': '2000', 'null': 'True', 'blank': 'True'}),
+            'title': ('django.db.models.fields.CharField', [], {'max_length': '500'}),
+            'translation': ('django.db.models.fields.related.ForeignKey', [], {'related_name': "'translation'", 'to': u"orm['ippc.PublicationLibrary']"})
         },
         u'ippc.transrichtextpage': {
             'Meta': {'ordering': "('lang',)", 'unique_together': "(('lang', 'translation'),)", 'object_name': 'TransRichTextPage'},

@@ -2,25 +2,31 @@
 from copy import deepcopy
 from django.contrib import admin
 from mezzanine.pages.models import Page, RichTextPage, Link
-from mezzanine.pages.admin import PageAdmin
+from mezzanine.pages.admin import PageAdmin, LinkAdmin
 from mezzanine.conf import settings
-from mezzanine.core.admin import TabularDynamicInlineAdmin, StackedDynamicInlineAdmin
+from mezzanine.core.admin import TabularDynamicInlineAdmin, StackedDynamicInlineAdmin,DisplayableAdmin, OwnableAdmin
+
 
 from .models import PestStatus, PestReport, CountryPage, WorkAreaPage, PublicationLibrary, \
-Publication, ReportingObligation,EventReporting,PestFreeArea,ImplementationISPM, \
-ImplementationISPMVersion, TransPublicationLibraryPage,Website,\
-EppoCode,IssueKeyword, CommodityKeyword,IssueKeywordsRelate,CommodityKeywordsRelate
-
+Publication, ReportingObligation,EventReporting,PestFreeArea,ImplementationISPM, Poll_Choice, Poll,\
+ImplementationISPMVersion, TransPublicationLibraryPage,Website,EventreportingFile,EventreportingUrl,\
+ReportingObligation_File, ReportingObligationUrl,ImplementationISPMUrl,ImplementationISPMFile,\
+PestFreeAreaFile, PestFreeAreaUrl, WebsiteUrl,PestReportUrl,PestReportFile,CnPublication,CnPublicationFile,CnPublicationUrl,\
+CountryNews,CountryNewsFile,CountryNewsUrl, EppoCode,IssueKeyword, CommodityKeyword,IssueKeywordsRelate,CommodityKeywordsRelate
+from django.forms.models import inlineformset_factory
+from django.forms.formsets import formset_factory
 from django.contrib.auth.models import User
 from django import forms
 
+from models import TransRichTextPage, TransLinkPage
+from django_markdown.admin import MarkdownModelAdmin
 
 
 import autocomplete_light
 import autocomplete_light_registry
+from django_markdown.widgets import MarkdownWidget
 
-from mezzanine.pages.admin import PageAdmin, LinkAdmin
-from models import TransRichTextPage, TransLinkPage
+
 
 
 class PublicationInline(StackedDynamicInlineAdmin):
@@ -31,7 +37,6 @@ class PublicationInline(StackedDynamicInlineAdmin):
 class TransPublicationLibraryPageAdmin(StackedDynamicInlineAdmin):
     model = TransPublicationLibraryPage
     fields = ("lang", "title", "content")
-
 
 
 class PublicationLibraryAdmin(PageAdmin):
@@ -53,6 +58,38 @@ admin.site.register(CountryPage, CountryPageAdmin)
 
 
 
+class PollChoiceInline(admin.TabularInline):
+    model = Poll_Choice
+    extra = 2
+    
+class MyPollAdminForm(forms.ModelForm):
+    class Meta:
+        model = Poll
+        widgets = {
+          'polltext':MarkdownWidget() 
+         # models.TextField: {'widget': },
+        }
+
+
+class PollAdmin(admin.ModelAdmin):
+    form = MyPollAdminForm
+    fieldsets = [
+        (None,               {'fields': ['question']}),
+        #(None,               {'fields': ['polltext'], 'classes': ['Textarea']}),
+        ('Date information', {'fields': ['pub_date'], 'classes': ['collapse']}),
+        ('Closing Date', {'fields': ['closing_date'], 'classes': ['collapse']}),
+        ('Groups', {'fields': ['userspoll'], 'classes': ['collapse']}),
+        ('Users', {'fields': ['groupspoll'], 'classes': ['collapse']}),
+       
+    ]
+    
+    list_display = ('question', 'pub_date','closing_date')
+    inlines = [PollChoiceInline]
+    search_fields = ['question']
+    list_filter = ['pub_date','question']
+	
+#admin.site.register(Poll, PollAdmin)
+admin.site.register(Poll, MarkdownModelAdmin)
 
 
 # forumposts_extra_fieldsets = ((None, {"fields": ("comments", "allow_comments")}),)
@@ -93,7 +130,14 @@ class MyPestReportAdminForm(forms.ModelForm):
         widgets = {
           'pest_identity': autocomplete_light.ChoiceWidget ('EppoCodeAutocomplete'),
           }
-
+class PestReportFileInline(admin.TabularInline):
+    model = PestReportFile
+    formset = inlineformset_factory(PestReport,  PestReportFile,extra=1)
+    
+class PestReportUrlInline(admin.TabularInline):
+    model = PestReportUrl
+    formset = inlineformset_factory(PestReport, PestReportUrl,extra=1)
+   
 class PestReportAdmin(admin.ModelAdmin):
     form = MyPestReportAdminForm
     # http://stackoverflow.com/a/8393130
@@ -105,6 +149,7 @@ class PestReportAdmin(admin.ModelAdmin):
     # 
     # def has_delete_permission(self, request, obj=None):
     #     return request.user.groups.filter(name='Developers').exists()
+    inlines = [PestReportFileInline,PestReportUrlInline ]
     save_on_top = True
     list_display = ('title', 'publish_date', 'modify_date', 'status', 'country')
     list_filter = ('title', 'publish_date', 'modify_date', 'status', 'country')
@@ -155,9 +200,16 @@ class CommodityKeywordAdmin(admin.ModelAdmin):
 admin.site.register(CommodityKeyword, CommodityKeywordAdmin)
 
    
-       
-
+class ReportingObligationFileInline(admin.TabularInline):
+    model = ReportingObligation_File
+    formset = inlineformset_factory(ReportingObligation,  ReportingObligation_File,extra=1)
+    
+class ReportingObligationUrlInline(admin.TabularInline):
+    model = ReportingObligationUrl
+    formset = inlineformset_factory(ReportingObligation, ReportingObligationUrl,extra=1)
+ 
 class ReportingObligationAdmin(admin.ModelAdmin):
+    inlines = [ReportingObligationFileInline,ReportingObligationUrlInline, ]
     save_on_top = True
     list_display = ('title', 'publication_date', 'modify_date',   'country')
     list_filter = ('title', 'publication_date', 'modify_date',  'country')
@@ -166,15 +218,16 @@ class ReportingObligationAdmin(admin.ModelAdmin):
 admin.site.register(ReportingObligation, ReportingObligationAdmin)
 
 
-#class MyEventReportingAdmin(forms.ModelForm):
-#    class Meta:
-#        model = EventReporting
-#        widgets = {
-#          'issue_keywords': autocomplete_light.ChoiceWidget ('IssueKeywordAutocomplete'),
-#          'commodity_keywords': autocomplete_light.ChoiceWidget ('CommodityKeywordAutocomplete'),
-#            }
+class EventReportingFileInline(admin.TabularInline):
+    model = EventreportingFile
+    formset = inlineformset_factory(EventReporting,  EventreportingFile,extra=1)
+    
+class EventReportingUrlInline(admin.TabularInline):
+    model = EventreportingUrl
+    formset = inlineformset_factory(EventReporting,  EventreportingUrl,extra=1)
+      
 class EventReportingAdmin(admin.ModelAdmin):
-#    form = MyEventReportingAdmin
+    inlines = [EventReportingFileInline,EventReportingUrlInline ]
     save_on_top = True
     list_display = ('title', 'publication_date', 'modify_date',   'country')
     list_filter = ('title', 'publication_date', 'modify_date',  'country')
@@ -182,7 +235,12 @@ class EventReportingAdmin(admin.ModelAdmin):
     prepopulated_fields = { 'slug': ['title'] }
 admin.site.register(EventReporting, EventReportingAdmin)
 
+class WebsiteUrlInline(admin.TabularInline):
+    model = WebsiteUrl
+    formset = inlineformset_factory(Website, WebsiteUrl,extra=1)
+
 class WebsiteAdmin(admin.ModelAdmin):
+    inlines = [WebsiteUrlInline ]
     save_on_top = True
     list_display = ('title', 'modify_date',   'country')
     list_filter = ('title',   'modify_date',  'country')
@@ -190,7 +248,16 @@ class WebsiteAdmin(admin.ModelAdmin):
     prepopulated_fields = { 'slug': ['title'] }
 admin.site.register(Website, WebsiteAdmin)
 
+class PestFreeAreaFileInline(admin.TabularInline):
+    model = PestFreeAreaFile
+    formset = inlineformset_factory(PestFreeArea,  PestFreeAreaFile,extra=1)
+    
+class PestFreeAreaUrlInline(admin.TabularInline):
+    model = PestFreeAreaUrl
+    formset = inlineformset_factory(PestFreeArea, PestFreeAreaUrl,extra=1)
+    
 class PestFreeAreaAdmin(admin.ModelAdmin):
+    inlines = [PestFreeAreaFileInline,PestFreeAreaUrlInline, ]
     save_on_top = True
     list_display = ('title', 'publication_date', 'modify_date',   'country')
     list_filter = ('title', 'publication_date', 'modify_date',  'country')
@@ -198,8 +265,33 @@ class PestFreeAreaAdmin(admin.ModelAdmin):
     prepopulated_fields = { 'slug': ['title'] }
 admin.site.register(PestFreeArea, PestFreeAreaAdmin)
 
+class CnPublicationFileInline(admin.TabularInline):
+    model = CnPublicationFile
+    formset = inlineformset_factory(CnPublication,  CnPublicationFile,extra=1)
+    
+class CnPublicationUrlInline(admin.TabularInline):
+    model = CnPublicationUrl
+    formset = inlineformset_factory(CnPublication, CnPublicationUrl,extra=1)
+
+class CnPublicationAdmin(admin.ModelAdmin):
+    inlines = [CnPublicationFileInline,CnPublicationUrlInline]
+    save_on_top = True
+    list_display = ('title', 'publication_date', 'modify_date',   'country')
+    list_filter = ('title', 'publication_date', 'modify_date',  'country')
+    search_fields = ('title', 'short_description')
+    prepopulated_fields = { 'slug': ['title'] }
+admin.site.register(CnPublication, CnPublicationAdmin)   
+
+class ImplementationISPMFileInline(admin.TabularInline):
+    model = ImplementationISPMFile
+    formset = inlineformset_factory(ImplementationISPM,  ImplementationISPMFile,extra=1)
+    
+class ImplementationISPMUrlInline(admin.TabularInline):
+    model = ImplementationISPMUrl
+    formset = inlineformset_factory(ImplementationISPM, ImplementationISPMUrl,extra=1)    
 
 class ImplementationISPMAdmin(admin.ModelAdmin):
+    inlines = [ImplementationISPMFileInline,ReportingObligationUrlInline ]
     save_on_top = True
     list_display = ('title', 'publication_date', 'modify_date',   'country')
     list_filter = ('title', 'publication_date', 'modify_date',  'country')
@@ -207,12 +299,30 @@ class ImplementationISPMAdmin(admin.ModelAdmin):
     prepopulated_fields = { 'slug': ['title'] }
 admin.site.register(ImplementationISPM, ImplementationISPMAdmin)
 
-
 class ImplementationISPMVersionAdmin(admin.ModelAdmin):
     """Options for ImplementationISPMVersion field of ImplementationISPM"""
     save_on_top = True
 admin.site.register(ImplementationISPMVersion, ImplementationISPMVersionAdmin)  
+
+class CountryNewsFileInline(admin.TabularInline):
+    model =  CountryNewsFile
+    formset = inlineformset_factory( CountryNews,   CountryNewsFile,extra=1)
     
+class  CountryNewsUrlInline(admin.TabularInline):
+    model =  CountryNewsUrl
+    formset = inlineformset_factory( CountryNews,  CountryNewsUrl,extra=1)
+ 
+class  CountryNewsAdmin(admin.ModelAdmin):
+    inlines = [CountryNewsFileInline,CountryNewsUrlInline, ]
+    save_on_top = True
+    list_display = ('title', 'publication_date', 'modify_date',   'country')
+    list_filter = ('title', 'publication_date', 'modify_date',  'country')
+    search_fields = ('title', 'short_description')
+    prepopulated_fields = { 'slug': ['title'] }
+admin.site.register( CountryNews,  CountryNewsAdmin)
+
+
+
 # Translatable user-content  -----------------
 if "mezzanine.pages" in settings.INSTALLED_APPS:
 

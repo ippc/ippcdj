@@ -6,7 +6,7 @@
 {% block breadcrumb_menu %}
 <li><a href="/">{% trans "Home" %}</a><span class="divider">/</span></li>
 <li><a href="/countries/">Countries</a><span class="divider">/</span></li>
-<li><a href="/countries/{{pfa.country.name|slugify}}">{{pfa.country.name}}</a><span class="divider">/</span></li>
+<li><a href="/countries/{{pfa.country.name|slugify}}/">{{pfa.country.name}}</a><span class="divider">/</span></li>
 <li><a href="/countries/{{pfa.country.name|slugify}}/pestfreeareas/">Pest Free Areas</a><span class="divider">/</span></li>
 <li class="active">{{ pfa.title }}</li>
 {% endblock %}
@@ -63,7 +63,7 @@
   {% endif %}
   <dt>{% trans "Author" %}</dt>
   <dd>{{ pfa.author.get_profile.first_name }} {{ pfa.author.get_profile.last_name }}</dd>
-  {% endif %}
+
   
 
 

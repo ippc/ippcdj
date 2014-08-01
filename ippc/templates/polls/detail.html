@@ -1,0 +1,67 @@
+{% extends "base.html" %}
+{% load pages_tags mezzanine_tags i18n future staticfiles %}
+
+{% block meta_title %}{% trans "Polls" %}{% endblock %}
+
+{% block breadcrumb_menu %}
+<li class="active">{% trans "Polls" %}</li>
+{% endblock %}
+
+{% block main %}
+{% if poll.login_required %}
+    {% if  user.is_superuser %}
+
+<h1>{{ poll.question }}<br>
+<small class="normal">
+{% trans "Publication date" %}: {{ poll.pub_date|date:"d M Y" }}<br>
+{% trans "Closing date" %}:  {{ poll.closing_date |date:"d M Y"}}</small></h1>
+{% if error_message %}<div class="alert alert-error"><p><strong>{{ error_message }}</strong></p></div>{% endif %}
+<p>{{ poll.polltext }}</p>
+<p></p>
+   {% if poll.is_past_due %}
+   {% else %} 
+   
+    <form action="{% url 'vote' poll.id %}" method="post">
+    {% csrf_token %}
+    {% for choice in poll.poll_choice_set.all %}
+        <input type="radio" name="choice" id="choice{{ forloop.counter }}" value="{{ choice.id }}" />  {{ choice.choice_text }}<br>
+
+    {% endfor %}
+    <label for="comment"><strong>comment:</strong></label>
+    <textarea name="comment" id="comment"></textarea></br>
+    <input type="submit" value="Vote" />
+    </form>
+     {% endif%}
+
+  {% else %} 
+
+  {% for group in request.user.groups.all %}
+{% if group in poll.groupspoll.all %}
+<h1>{{ poll.question }}<br>
+<small class="normal">
+{% trans "Publication date" %}: {{ poll.pub_date|date:"d M Y" }}<br>
+{% trans "Closing date" %}:  {{ poll.closing_date |date:"d M Y"}}</small></h1>
+{% if error_message %}<div class="alert alert-error"><p><strong>{{ error_message }}</strong></p></div>{% endif %}
+<p>{{ poll.polltext }}</p>
+<p></p>
+   {% if poll.is_past_due %}
+   {% else %} 
+   
+    <form action="{% url 'vote' poll.id %}" method="post">
+    {% csrf_token %}
+    {% for choice in poll.poll_choice_set.all %}
+        <input type="radio" name="choice" id="choice{{ forloop.counter }}" value="{{ choice.id }}" />  {{ choice.choice_text }}<br>
+
+    {% endfor %}
+    <label for="comment"><strong>comment:</strong></label>
+    <textarea name="comment" id="comment"></textarea></br>
+    <input type="submit" value="Vote" />
+    </form>
+     {% endif%}
+{% endif %}
+{% endfor %}
+   {% endif%}
+
+
+{% endif %}
+{% endblock %}

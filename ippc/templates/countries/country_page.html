@@ -125,8 +125,13 @@
           <small><a class="btn btn-mini" href="{% url 'country-publication-create' page.title|slugify %}">+ {% trans "Add new" %}</a></small>
         {% endif %}
       </li>
-      <li><a href="#">News Item</a></li>
-      <li> <a href="/countries/{{page.title|slugify }}/calendar/">{% trans "Events" %}</a>
+   
+      <li> <a href="/countries/{{page.title|slugify }}/countrynews/">{% trans "News Item" %}</a>
+        {% if perms.schedule.add_countrynews and request.user.get_profile.country.name == page.title or user.is_superuser %}
+          <small>  <a class="btn btn-mini" href="{% url 'country-news-create' page.title|slugify %}">+ {% trans "Add new" %}</a>
+          </small>
+        {% endif %}
+      </li><li> <a href="/countries/{{page.title|slugify }}/calendar/">{% trans "Events" %}</a>
         {% if perms.schedule.add_event and request.user.get_profile.country.name == page.title or user.is_superuser %}
           <small>  <a class="btn btn-mini" href="{% url 'calendar_create_event' page.title|slugify 'calendar' %}">+ {% trans "Add new" %}</a>
           </small>

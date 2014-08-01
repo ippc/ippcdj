@@ -14,7 +14,7 @@ from django.contrib.auth.models import User, Group
 from django.template.defaultfilters import slugify
 from datetime import datetime
 import os.path
-
+from django.utils import timezone
 from mezzanine.pages.models import Page, RichTextPage
 from mezzanine.conf import settings
 from mezzanine.core.models import Slugged, MetaData, Displayable, Ownable, Orderable, RichText
@@ -34,6 +34,9 @@ from django.db.models.signals import post_save
 
 from django.core.exceptions import ValidationError
 
+
+def user_unicode_patch(self):
+    return '%s %s' % (self.first_name, self.last_name)
 
 
 class PublicationLibrary(Page, RichText):
@@ -127,7 +130,7 @@ class Publication(Orderable):
         file name.
         """
         if not self.id and not self.title:
-            name = unquote(self.file.url).split("/")[-1].rsplit(".", 1)[0]
+            name = unquote(self.file_en.url).split("/")[-1].rsplit(".", 1)[0]
             name = name.replace("'", "")
             name = "".join([c if c not in punctuation else " " for c in name])
             # str.title() doesn't deal with unicode very well.
@@ -513,26 +516,7 @@ class ReportingObligation(Displayable, models.Model):
             self.slug = slugify(self.title)
         self.modify_date = datetime.now()
         super(ReportingObligation, self).save(*args, **kwargs)
-
- 
-    def filelist(self):
-        filesarray=[]
-        for f in self.file.name.split(","):
-            if f!='' and f!='None':
-                f1 = Files.objects.get(id=int(f))
-                filesarray.append((f1.name(),f1.filename()))
-        return filesarray
-    def getFiles(self):
-        filesarray=[]
-        for f in self.file.name.split(","):
-            if f!='' and f!='None':
-                f1 = Files.objects.get(id=int(f))
-                filesarray.append(f1)
-                #print(filesarray)
-        return filesarray
-    def getWebUrls(self):
-        return self.url_for_more_information.split(",")
-    
+  
     def reporting_obligation_type_verbose(self):
         return dict(BASIC_REP_TYPE_CHOICES)[self.reporting_obligation_type]
     
@@ -1028,7 +1012,151 @@ class ImplementationISPMUrl(models.Model):
     def name(self):
         return self.url_for_more_information
 
+class CountryNews(Displayable, models.Model):
+    """ CountryNews"""
+    country = models.ForeignKey(CountryPage, related_name="countrynews_country_page")
+    author = models.ForeignKey(User, related_name="countrynews_author")
     
+    # slug - provided by mezzanine.core.models.slugged (subclassed by displayable)
+    # title - provided by mezzanine.core.models.slugged (subclassed by displayable)
+    # status - provided by mezzanine.core.models.displayable
+    # publish_date - provided by mezzanine.core.models.displayable
+    
+    short_description = models.TextField(_("Text"),  blank=True, null=True)
+    publication_date = models.DateTimeField(_("Publication date"), blank=True, null=True, editable=True)
+    image = models.ImageField(_("Image"), upload_to="countrynews/images/%Y/%m/", blank=True)
+    contact_for_more_information = models.TextField(_("Contact for more information"), blank=True, null=True)    
+    modify_date = models.DateTimeField(_("Modified date"), blank=True, null=True, editable=False)
+    issuename=generic.GenericRelation(IssueKeywordsRelate)
+    commname=generic.GenericRelation(CommodityKeywordsRelate)
+    objects = SearchableManager()
+    search_fields = ("title", "short_description")
+
+    class Meta:
+        verbose_name_plural = _("Country News")
+        # abstract = True
+
+    def __unicode__(self):
+        return self.title
+
+    # http://devwiki.beloblotskiy.com/index.php5/Django:_Decoupling_the_URLs  
+    @models.permalink # or: get_absolute_url = models.permalink(get_absolute_url) below
+    def get_absolute_url(self): # "view on site" link will be visible in admin interface
+        """Construct the absolute URL """
+        return ('country_news-detail', (), {
+                            'country': self.country.name, # =todo: get self.country.name working
+                            'year': self.publish_date.strftime("%Y"),
+                            'month': self.publish_date.strftime("%m"),
+                            # 'day': self.pub_date.strftime("%d"),
+                            'slug': self.slug})
+            
+    def save(self, *args, **kwargs):
+        ''' On save, update timestamps '''
+        if not self.id:
+            self.publish_date = datetime.today()
+            # Newly created object, so set slug
+            self.slug = slugify(self.title)
+        self.modify_date = datetime.now()
+        super(CountryNews, self).save(*args, **kwargs)
+
+ 
+    def imagename(self):
+        return os.path.basename(self.image.name)
+
+class CountryNewsFile(models.Model):
+    countrynews = models.ForeignKey(CountryNews)
+    description = models.CharField(max_length=255)
+    file = models.FileField(max_length=255,blank=True, help_text='10 MB maximum file size.', verbose_name='Upload a file', upload_to='files/countrynews/%Y/%m/%d/', validators=[validate_file_extension])
+
+    def __unicode__(self):  
+        return self.file.name  
+    def name(self):
+        return self.file.name
+    def filename(self):
+        return os.path.basename(self.file.name) 
+    def fileextension(self):
+        return os.path.splitext(self.file.name)[1]
+  
+class CountryNewsUrl(models.Model):
+    countrynews = models.ForeignKey(CountryNews)
+    url_for_more_information = models.URLField(blank=True, null=True)
+    def __unicode__(self):  
+        return self.url_for_more_information  
+    def name(self):
+        return self.url_for_more_information
+
+class Poll(models.Model):
+    question = models.CharField(max_length=200)
+    polltext = models.TextField(max_length=500,blank=True, null=True)
+    pub_date = models.DateTimeField('date published')
+    closing_date = models.DateTimeField('close date',blank=True, null=True,)
+    
+    userspoll = models.ManyToManyField(User,
+        verbose_name=_("Users this forum post is accessible to"),
+        related_name='pollusers', blank=True, null=True)
+    groupspoll = models.ManyToManyField(Group,
+        verbose_name=_("Groups this forum post is accessible to"),
+        related_name='pollgroups', blank=True, null=True)
+    login_required = models.BooleanField(verbose_name=_("Login required"),
+                                         default=True)
+    
+    def __unicode__(self):  # Python 3: def __str__(self):
+        return self.question
+    def was_published_recently(self):
+        return self.pub_date >= timezone.now() - datetime.timedelta(days=1)
+    def is_past_due(self):
+        if timezone.now() > self.closing_date:
+            return True
+        else: 
+            return False
+
+
+class Poll_Choice(models.Model):
+    poll = models.ForeignKey(Poll)
+    choice_text = models.CharField(max_length=200)
+    votes = models.IntegerField(default=0)
+    
+    def __unicode__(self):  # Python 3: def __str__(self):
+        return self.choice_text
+
+class PollVotes(models.Model):
+    user = models.ForeignKey(User)
+    poll = models.ForeignKey(Poll)
+    choice= models.CharField(max_length=50)
+    comment= models.CharField(max_length=200)
+  
+class EmailUtilityMessage(models.Model):
+    emailfrom = models.CharField(_("From: "),max_length=200,default=_("ippc@fao.org"),help_text=_("The email will be sent from ippc@fao.org, if you want you can specify an other sender email address."))
+    emailto = models.CharField(_("To: "),max_length=200,help_text=_("Enter the email addresses of recipients, separated by comma"))
+    subject = models.CharField(_("Subject: "),max_length=200)
+    messagebody = models.TextField(_("Message: "),max_length=500,blank=True, null=True)
+    date = models.DateTimeField('date')
+    sent =  models.BooleanField()
+    #User.__unicode__ = user_unicode_patch
+    users = models.ManyToManyField(User,
+            verbose_name=_("Send to users:"),help_text=_("CTRL/Command+mouseclick for more than 1 selection"),
+            related_name='emailusers', blank=True, null=True)
+    groups = models.ManyToManyField(Group,
+            verbose_name=_("Send to groups:"),help_text=_("CTRL/Command+mouseclick for more than 1 selection"),
+            related_name='emailgroups', blank=True, null=True)
+    
+    def __unicode__(self):  
+         return self.subject 
+    
+class EmailUtilityMessageFile(models.Model):
+    emailmessage = models.ForeignKey(EmailUtilityMessage)
+    file = models.FileField(max_length=255,blank=True, help_text='10 MB maximum file size.', verbose_name='Attach a file', upload_to='files/email/', validators=[validate_file_extension])
+
+    def __unicode__(self):  
+        return self.file.name  
+    def name(self):
+        return self.file.name
+    def filename(self):
+        return os.path.basename(self.file.name) 
+    def fileextension(self):
+        return os.path.splitext(self.file.name)[1]
+             
+        
 class Translatable(models.Model):
     """ Translations of user-generated content - https://gist.github.com/renyi/3596248"""
     lang = models.CharField(max_length=5, choices=settings.LANGUAGES)
@@ -1051,7 +1179,7 @@ if "mezzanine.pages" in settings.INSTALLED_APPS:
 
     class TransLinkPage(Translatable, Slugged):
         translation = models.ForeignKey(Link, related_name="translation")
-
+        
         class Meta:
             verbose_name = _("Translated Link")
             verbose_name_plural = _("Translated Links")

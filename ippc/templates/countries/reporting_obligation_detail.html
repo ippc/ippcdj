@@ -6,7 +6,7 @@
 {% block breadcrumb_menu %}
 <li><a href="/">{% trans "Home" %}</a><span class="divider">/</span></li>
 <li><a href="/countries/">Countries</a><span class="divider">/</span></li>
-<li><a href="/countries/{{reportingobligation.country.name|slugify}}">{{reportingobligation.country.name}}</a><span class="divider">/</span></li>
+<li><a href="/countries/{{reportingobligation.country.name|slugify}}/">{{reportingobligation.country.name}}</a><span class="divider">/</span></li>
 <li><a href="/countries/{{reportingobligation.country.name|slugify}}/reportingobligation/">Reporting Obligation</a><span class="divider">/</span></li>
 <li class="active">{{ reportingobligation.title }}</li>
 {% endblock %}

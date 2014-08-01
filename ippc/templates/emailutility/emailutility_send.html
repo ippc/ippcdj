@@ -1,0 +1,44 @@
+{% extends "base.html" %}
+{% load pages_tags translate_tags mezzanine_tags i18n future staticfiles accounts_tags %}
+
+{% block meta_title %}{% trans "New email utility message" %} {% endblock %}
+
+{% block body_class %}wide{% endblock %}
+
+{% block breadcrumb_menu %}
+<li>
+  <a href="/home">{% trans "Home" %}</a>
+  <li><a href="/work-area/">Workarea</a><span class="divider">/</span></li>
+ <li><a href="/emailutility/all/">Emails</a><span class="divider">/</span></li>
+  <span class="divider">/</span>
+</li>
+
+<li class="active">{% trans "Create New Email Message" %}</li>
+
+{% endblock %}
+
+{% block local_nav %}
+{% endblock local_nav %}
+
+{% block pageinfo %}
+{% endblock pageinfo %}
+
+{% block main %}
+
+<p class="pull-right">
+  <a href="javascript:history.go(-1)">{% trans "« Cancel and go back" %}</a>
+</p>
+
+<h1><span class="normal">{% trans "Create New Email message" %}</span> </h1>
+<p>Emails can be sent to any number of recipients, either selecting specific members, groups of members, or entering the email addresses of individuals that are not in the system.</p>
+<form class="customform" method="POST" action="" enctype="multipart/form-data">
+    {% csrf_token %}
+    <fieldset>
+        {% include "emailutility/emailutility_sendform.html" %}
+        <div class="form-actions">
+            <button type="submit" class="btn btn-info btn-large" tabindex="7">{% trans "Send" %}</button> or <a href="javascript:history.go(-1)">{% trans "Cancel" %}</a>
+        </div>
+    </fieldset>
+</form>
+
+{% endblock %}

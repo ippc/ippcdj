@@ -35,9 +35,12 @@
 
 <p class="pull-right">
   <a href="javascript:history.go(-1)">{% trans "« Go back"  %}</a><br/>
-    {% if perms.schedule.add_event and request.user.get_profile.country.id == country.id %}  
-    <a class="btn btn-small btn-info" href="/event/create/calendar/">{% trans "Add Event" %}</a>
+  
+      {% if perms.schedule.add_event and request.user.get_profile.country.id == country.id or user.is_superuser %}
+    <small>  <a class="btn btn-small btn-info" href="{% url 'calendar_create_event' country|slugify 'calendar' %}">+ {% trans "Add new event" %}</a>
+    </small>
     {% endif %}
+    
 </p>
 
 <h1>
@@ -48,29 +51,23 @@
 
 
 <table class="table table-condensed table-striped" id="publications">
-    <tr>
+   <thead> <tr>
         <th>Start date</th>
         <th>End date</th>
         <th>Activity</th>
-        <th>Type</th>
-        <th>Location</th>
-        {% if perms.schedule.change_event %}
-        <th> </th>
-        {% endif %}
-
+      
 
     </tr>
-
+</thead>
+ <tbody>
   {% if event_list %}
     {% for event in event_list %}
     <tr>
         <td>{% blocktrans with event.start|date:"d-m-Y" as start_date %}{{ start_date }}{% endblocktrans %}</td>
         <td>{% blocktrans with event.end|date:"d-m-Y" as end_date %}{{ end_date }}{% endblocktrans %}</td>
-        <td>    <a  href="/events/event/{{event.id}}">{{event.title}}</a></td>
-        <td>{{event.type_verbose}}</td>
-        <td>{{event.location}}</td>
-        {% if perms.schedule.change_event  and request.user.get_profile.country.id == country.id %}
-        <td><a class="small pull-right" href="{% url "edit_event" event.country event.calendar.slug event.id %}"><i class="icon-edit"></i> Edit</a> </td>
+        <td>    <a  href="/events/event/{{event.id}}">{{event.title}}</a>
+        {% if user.is_superuser or  perms.schedule.change_event  and request.user.get_profile.country.id == country.id %}
+       <a class="small pull-right" href="{% url "edit_event" event.country event.calendar.slug event.id %}"><i class="icon-edit"></i> Edit</a> </td>
         {% endif %}
         
     
@@ -78,6 +75,7 @@
         
     </tr>
     {% endfor %}
+     </tbody>
 </table>
    {% else %}
         <p>No events available.</p>
