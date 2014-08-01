@@ -394,8 +394,8 @@ EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 EMAIL_USE_TLS = True
 EMAIL_HOST = 'smtp.gmail.com'
 EMAIL_PORT = 587
-EMAIL_HOST_USER = 'paola.sentinelli@gmail.com'
-EMAIL_HOST_PASSWORD = 'cipie1969'
+EMAIL_HOST_USER = 'pxxx@gmail.com'
+EMAIL_HOST_PASSWORD = 'xxx'
 # http://codespatter.com/2009/04/10/how-to-add-locations-to-python-path-for-reusable-django-apps/
 # import sys
 # sys.path.insert(0, os.path.join(PROJECT_ROOT, "apps"))
