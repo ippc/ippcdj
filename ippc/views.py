@@ -1336,6 +1336,260 @@ class CountryListView(ListView):
                     context['region_name']=v
             context['countries']= CountryPage.objects.filter(region=kindex)
         return context
+    
+class CountryStatsreportsListView(ListView):
+    """   Statistics reports  """
+    context_object_name = 'latest'
+    model = CountryPage
+    template_name = 'countries/countries_statsreports.html'
+    queryset = CountryPage.objects.all().order_by('title')
+   
+    def get_context_data(self, **kwargs): 
+        context = super(CountryStatsreportsListView, self).get_context_data(**kwargs)
+        context['dategenerate']=timezone.now()
+        results_list = []
+        countriesList=CountryPage.objects.filter().exclude(id='-1')
+        for c in countriesList:
+             totcn = []
+             totcn.append(c)    
+             p_count=PestReport.objects.filter(country_id=c.id).count()
+             totcn.append(p_count)
+             for i in range(1,6):
+                rep_count=ReportingObligation.objects.filter(country_id=c.id,reporting_obligation_type=i).count()
+                ev_count=EventReporting.objects.filter(country_id=c.id,event_rep_type=i).count()
+                totcn.append(rep_count)
+                totcn.append(ev_count)
+             totcn.append((slugify(c)))
+             results_list.append(totcn)
+        context['results_list']=results_list
+        
+                
+              
+  
+        return context
+  
+class CountryRegionsPercentageListView(ListView):
+    """   stat  """
+    context_object_name = 'latest'
+    model = CountryPage
+    template_name = 'countries/countries_regionspercentage.html'
+    queryset = CountryPage.objects.all().order_by('title')
+   
+    def get_context_data(self, **kwargs): # http://stackoverflow.com/a/15515220
+        context = super(CountryRegionsPercentageListView, self).get_context_data(**kwargs)
+        context['dategenerate']=timezone.now()
+        regionCN = []
+        regionCNcp = []
+        regionCNncp = []
+        
+        regionpest = []
+        regionrep1 = []
+        regionrep2 = []
+        regionrep3 = []
+        regionrep4 = []
+        regionev1 = []
+        regionev2 = []
+        regionev3 = []
+        regionev4 = []
+        regionev5 = []
+        regionpestcp = []
+        regionrep1cp = []
+        regionrep2cp = []
+        regionrep3cp= []
+        regionrep4cp = []
+        regionev1cp = []
+        regionev2cp = []
+        regionev3cp = []
+        regionev4cp = []
+        regionev5cp = []
+        regionpestncp = []
+        regionrep1ncp= []
+        regionrep2ncp = []
+        regionrep3ncp = []
+        regionrep4ncp = []
+        regionev1ncp = []
+        regionev2ncp = []
+        regionev3ncp = []
+        regionev4ncp = []
+        regionev5ncp = []
+        for k,v in REGIONS:
+                reg = v.lower()
+                numCN = []
+                countriesperregion=CountryPage.objects.filter(region=k).exclude(cp_ncp_t_type='T')
+                numb_countriesperregion=countriesperregion.count()
+                numCN.append(reg)
+                numCN.append(numb_countriesperregion)
+                regionCN.append(numCN)
+                context['region_cn']=regionCN
+                
+                numCNcp = []
+                countriesperregioncp=CountryPage.objects.filter(region=k,cp_ncp_t_type='CP')
+                numb_countriesperregioncp=countriesperregioncp.count()
+                numCNcp.append(reg)
+                numCNcp.append(numb_countriesperregioncp)
+                regionCNcp.append(numCNcp)
+                context['region_cp']=regionCNcp
+                
+                numCNncp = []
+                countriesperregionncp=CountryPage.objects.filter(region=k,cp_ncp_t_type='NCP')
+                numb_countriesperregionncp=countriesperregionncp.count()
+                numCNncp.append(reg)
+                numCNncp.append(numb_countriesperregionncp)
+                regionCNncp.append(numCNncp)
+                context['region_ncp']=regionCNncp
+                
+                pests = []
+                p_count=0
+                for c in countriesperregion:
+                    p=PestReport.objects.filter(country_id=c.id)
+                    p_count+=p.count()
+                pestC=(int)((p_count * 100)/numb_countriesperregion)
+                pests.append(pestC)
+                regionpest.append(pests)   
+                context['region_pest']=regionpest
+                
+                for i in range(1,6):
+                    rep_count=0
+                    ev_count=0
+                    reporting_array = []
+                    evreporting_array=[]
+                    for c in countriesperregion:
+                        r=ReportingObligation.objects.filter(country_id=c.id,reporting_obligation_type=i)
+                        rep_count+=r.count()
+                        r1=EventReporting.objects.filter(country_id=c.id,event_rep_type=i)
+                        ev_count+=r1.count()
+                    repC=(int)((rep_count * 100)/numb_countriesperregion)
+                    reporting_array.append(repC)
+                    repE=(int)((ev_count * 100)/numb_countriesperregion)
+                    evreporting_array.append(repE)
+                    if i==1:
+                        regionrep1.append(reporting_array)   
+                        context['region_rep'+str(i)]=regionrep1
+                        regionev1.append(evreporting_array)   
+                        context['region_ev'+str(i)]=regionev1
+                    elif i==2:
+                        regionrep2.append(reporting_array)   
+                        context['region_rep'+str(i)]=regionrep2
+                        regionev2.append(evreporting_array)   
+                        context['region_ev'+str(i)]=regionev2
+                    elif i==3:
+                        regionrep3.append(reporting_array)   
+                        context['region_rep'+str(i)]=regionrep3
+                        regionev3.append(evreporting_array)   
+                        context['region_ev'+str(i)]=regionev3
+                    elif i==4:
+                        regionrep4.append(reporting_array)   
+                        context['region_rep'+str(i)]=regionrep4
+                        regionev4.append(evreporting_array)   
+                        context['region_ev'+str(i)]=regionev4
+                    elif i==5:
+                        regionev5.append(evreporting_array)   
+                        context['region_ev'+str(i)]=regionev5    
+                  #CP
+                pests = []
+                p_count=0
+                for c in countriesperregioncp:
+                    p=PestReport.objects.filter(country_id=c.id)
+                    p_count+=p.count()
+                pestC=(int)((p_count * 100)/numb_countriesperregioncp)
+                pests.append(pestC)
+                regionpestcp.append(pests)   
+                context['region_pestcp']=regionpestcp
+
+                for i in range(1,6):
+                    rep_count=0
+                    ev_count=0
+                    reporting_array = []
+                    evreporting_array=[]
+                    for c in countriesperregioncp:
+                        r=ReportingObligation.objects.filter(country_id=c.id,reporting_obligation_type=i)
+                        rep_count+=r.count()
+                        r1=EventReporting.objects.filter(country_id=c.id,event_rep_type=i)
+                        ev_count+=r1.count()
+                    repC=(int)((rep_count * 100)/numb_countriesperregioncp)
+                    reporting_array.append(repC)
+                    repE=(int)((ev_count * 100)/numb_countriesperregioncp)
+                    evreporting_array.append(repE)
+                    if i==1:
+                        regionrep1cp.append(reporting_array)   
+                        context['region_rep'+str(i)+'cp']=regionrep1cp
+                        regionev1cp.append(evreporting_array)   
+                        context['region_ev'+str(i)+'cp']=regionev1cp
+                    elif i==2:
+                        regionrep2cp.append(reporting_array)   
+                        context['region_rep'+str(i)+'cp']=regionrep2cp
+                        regionev2cp.append(evreporting_array)   
+                        context['region_ev'+str(i)+'cp']=regionev2cp
+                    elif i==3:
+                        regionrep3cp.append(reporting_array)   
+                        context['region_rep'+str(i)+'cp']=regionrep3cp
+                        regionev3cp.append(evreporting_array)   
+                        context['region_ev'+str(i)+'cp']=regionev3cp
+                    elif i==4:
+                        regionrep4cp.append(reporting_array)   
+                        context['region_rep'+str(i)+'cp']=regionrep4cp
+                        regionev4cp.append(evreporting_array)   
+                        context['region_ev'+str(i)+'cp']=regionev4cp
+                    elif i==5:
+                        regionev5cp.append(evreporting_array)   
+                        context['region_ev'+str(i)+'cp']=regionev5cp
+                   #NCP
+                pests = []
+                p_count=0
+                for c in countriesperregionncp:
+                    p=PestReport.objects.filter(country_id=c.id)
+                    p_count+=p.count()
+                pestC=0
+                if numb_countriesperregionncp>0:
+                    pestC=(int)((p_count * 100)/numb_countriesperregionncp)
+                pests.append(pestC)
+                regionpestncp.append(pests)   
+                context['region_pestncp']=regionpestncp
+
+                for i in range(1,6):
+                    rep_count=0
+                    ev_count=0
+                    reporting_array = []
+                    evreporting_array=[]
+                    for c in countriesperregionncp:
+                        r=ReportingObligation.objects.filter(country_id=c.id,reporting_obligation_type=i)
+                        rep_count+=r.count()
+                        r1=EventReporting.objects.filter(country_id=c.id,event_rep_type=i)
+                        ev_count+=r1.count()
+                    repC=0
+                    repE=0
+                    if numb_countriesperregionncp>0:
+                        repC=(int)((rep_count * 100)/numb_countriesperregionncp)
+                        repE=(int)((ev_count * 100)/numb_countriesperregionncp)
+              
+                    reporting_array.append(repC)
+                    evreporting_array.append(repE)
+                    if i==1:
+                        regionrep1ncp.append(reporting_array)   
+                        context['region_rep'+str(i)+'ncp']=regionrep1ncp
+                        regionev1ncp.append(evreporting_array)   
+                        context['region_ev'+str(i)+'ncp']=regionev1ncp
+                    elif i==2:
+                        regionrep2ncp.append(reporting_array)   
+                        context['region_rep'+str(i)+'ncp']=regionrep2ncp
+                        regionev2ncp.append(evreporting_array)   
+                        context['region_ev'+str(i)+'ncp']=regionev2ncp
+                    elif i==3:
+                        regionrep3ncp.append(reporting_array)   
+                        context['region_rep'+str(i)+'ncp']=regionrep3ncp
+                        regionev3ncp.append(evreporting_array)   
+                        context['region_ev'+str(i)+'ncp']=regionev3ncp
+                    elif i==4:
+                        regionrep4ncp.append(reporting_array)   
+                        context['region_rep'+str(i)+'ncp']=regionrep4ncp
+                        regionev4ncp.append(evreporting_array)   
+                        context['region_ev'+str(i)+'ncp']=regionev4ncp
+                    elif i==5:
+                        regionev5ncp.append(evreporting_array)   
+                        context['region_ev'+str(i)+'ncp']=regionev5ncp
+  
+        return context
+
 
 
 
