@@ -2,7 +2,8 @@
 
 ## Things to do
 
-- **Update <dev.ippc.int> with latest work**
+- Remove `<p>` tags in page titles in imported data
+- Calendar month select arrow links
 - **Fix admin links that have disappeared ¿due to jQuery conflict?**
 - Add permissions check so Admins can see any forum or publicationlibrary page without needing to be in same group
 - Fix add file label in pest report create
