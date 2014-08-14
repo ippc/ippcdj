@@ -379,8 +379,8 @@ FORUM_SLUG = 'forum'
 # FORUM_USE_FEATURED_IMAGE = 'True'
 # FORUM_URLS_DATE_FORMAT = 'month'
 COMMENTS_USE_RATINGS = False
-SITE_TITLE = ugettext("International Plant Protection Convention")
-SITE_TAGLINE = ugettext("Protecting the world's plant resources from pests")
+SITE_TITLE = _("International Plant Protection Convention")
+SITE_TAGLINE = _("Protecting the world's plant resources from pests")
 
 AUTH_PROFILE_MODULE = "ippc.IppcUserProfile"
 ACCOUNTS_PROFILE_VIEWS_ENABLED = True
