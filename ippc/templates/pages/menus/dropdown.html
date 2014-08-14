@@ -87,7 +87,8 @@
 
 {% if branch_level > 0 %}
   {# {% if not page.title == "Countries" %} #} {# don't show all countries in dropdown #}
-  <ul class="dropdown-menu"{% if branch_level == 1 %} role="menu"{% endif %}>
+  {# <ul class="dropdown-menu"{% if branch_level == 1 %} role="menu"{% endif %}> #}
+    <ul>
       {% for page in page_branch %}
       {% if page.in_menu %}
       {% if page.login_required and request.user.is_authenticated or not page.login_required %}
