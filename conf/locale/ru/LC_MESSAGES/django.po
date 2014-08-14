@@ -30,7 +30,7 @@ msgid "Español"
 msgstr ""
 
 #: settings.py:343
-msgid "Русский"
+msgid "Russian"
 msgstr ""
 
 #: settings.py:344
