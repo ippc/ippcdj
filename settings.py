@@ -346,27 +346,27 @@ LANGUAGE_CODE == 'en'
 # https://docs.djangoproject.com/en/1.3/ref/settings/#std:setting-LANGUAGES
 # http://pythonhosted.org/django-localeurl/usage.html
 
-# ugettext = lambda s: s
-#LANGUAGES = (
-#    ('en', ugettext('English')),
-#    ('fr', ugettext('FranÃ§ais')),
-#    ('es', ugettext('EspaÃ±ol')),
-#    ('ru', ugettext('Ð ÑÑ?Ñ?ÐºÐ¸Ð¹')),
-#    ('ar', ugettext('Ø§ÙØ¹Ø±Ø¨ÙØ©')),
-#    ('zh', ugettext('ç®ä½ä¸­æ')),
-#)
+ugettext = lambda s: s
+LANGUAGES = (
+   ('en', ugettext('English')),
+   ('fr', ugettext('French')),
+   ('es', ugettext('Spanish')),
+   ('ru', ugettext('Russian')),
+   ('ar', ugettext('Arabic')),
+   ('zh', ugettext('Chinese')),
+)
 
 # https://docs.djangoproject.com/en/1.5/ref/settings/#std:setting-LANGUAGES
-from django.utils.translation import ugettext_lazy as _
-LANGUAGES = (
-    ('en', _('English')),
-    ('fr', _('French')),
-    ('es', _('Spanish')),
-    ('ru', _('Russian')),
-    ('ar', _('Arabic')),
-    ('zh', _('Chinese')),
-  
-)
+# from django.utils.translation import ugettext_lazy as _
+# LANGUAGES = (
+#     ('en', _('English')),
+#     ('fr', _('French')),
+#     ('es', _('Spanish')),
+#     ('ru', _('Russian')),
+#     ('ar', _('Arabic')),
+#     ('zh', _('Chinese')),
+#
+# )
 
 # https://docs.djangoproject.com/en/dev/ref/settings/#locale-paths
 LOCALE_PATHS = (os.path.join(PROJECT_ROOT, "conf/locale"),)
@@ -379,8 +379,8 @@ FORUM_SLUG = 'forum'
 # FORUM_USE_FEATURED_IMAGE = 'True'
 # FORUM_URLS_DATE_FORMAT = 'month'
 COMMENTS_USE_RATINGS = False
-SITE_TITLE = _("International Plant Protection Convention")
-SITE_TAGLINE = _("Protecting the world's plant resources from pests")
+SITE_TITLE = ugettext("International Plant Protection Convention")
+SITE_TAGLINE = ugettext("Protecting the world's plant resources from pests")
 
 AUTH_PROFILE_MODULE = "ippc.IppcUserProfile"
 ACCOUNTS_PROFILE_VIEWS_ENABLED = True
