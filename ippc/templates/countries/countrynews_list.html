@@ -1,0 +1,120 @@
+{% extends "base.html" %}
+{% load pages_tags mezzanine_tags i18n future staticfiles accounts_tags %}
+
+{% block meta_title %}
+  {% trans "news" %}: 
+ 
+  {{ page.title }}
+{% endblock %}
+
+{% block body_class %}wide{% endblock %}
+
+{% block breadcrumb_menu %}
+<li><a href="/">{% trans "Home" %}</a><span class="divider">/</span></li>
+<li>
+  <a href="/countries/">Countries</a>
+  <span class="divider">/</span>
+</li>
+<li>
+  <a href="{{ page.get_absolute_url }}">
+    {# {% with latest|first as first_object %} #}
+    {#   {{ first_object.country.name }} #}
+    {# {% endwith %} #}
+    {{ page.title }}
+  </a>
+  <span class="divider">/</span>
+</li>
+<li class="active">{% trans "news" %}</li>
+{% endblock %}
+
+{% block local_nav %}
+{% endblock local_nav %}
+
+{% block pageinfo %}
+{% endblock pageinfo %}
+
+{% block main %}
+
+<p class="pull-right">
+  <a href="javascript:history.go(-1)">{% trans "« Go back" %}</a>
+  {% if perms.ippc.add_countrynews and request.user.get_profile.country.name == page.title %}
+  <br>
+  <small><a class="btn btn-small btn-info" href="{% url 'country-news-create' page.title|slugify %}">+ {% trans "Add new news" %}</a></small>
+  <br>
+ 
+  {% else %}
+  {% endif %}
+</p>
+
+<h1>
+  <small class="normal">{% trans "News from" %}</small>
+  {{ page.title }}
+</h1> 
+
+{% if latest %}
+<table class="table table-condensed table-striped" id="publications">
+  <thead>
+    <tr>
+      <th>{% trans "Title" %}</th>
+      <th>{% trans "Date Published" %}</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for object in latest %}
+    <tr>
+      <td><a href="{% url 'country-news-detail' object.country.country_slug object.publish_date|date:'Y' object.publish_date|date:'m'  object.slug %}">{{ object.title }}</a></td>
+      <td><a href="{% url 'country-news-detail' object.country.country_slug object.publish_date|date:'Y' object.publish_date|date:'m'  object.slug %}">{{ object.publish_date|date:"d M Y" }}</a>
+
+        {% if user.is_superuser %} 
+            <a class="small pull-right" href="/admin/ippc/countrynews/{{ object.id }}"><i class="icon-edit"></i> Edit as Admin</a><br>
+        {% endif %}
+
+        {% if perms.ippc.change_countrynews and request.user.get_profile.country.name == page.title %}
+            <a class="small pull-right" href="{% url 'country-news-edit' object.country.country_slug object.id %}"><i class="icon-edit"></i> Edit</a>
+            {# <a class="btn" href="{% url 'country-news-edit' countrynews.id %}"><i class="icon-edit"></i> Edit</a> #}
+        {% else %}
+        {% endif %}
+        </td>
+    </tr>
+
+    {% endfor %}
+  </tbody>
+</table>
+
+
+{% if is_paginated %}
+  {% if page_obj.has_other_pages %}
+    <div class="pagination">
+    <ul>
+    <li class="disabled page-info">
+        <a>{% trans "Page" %} {{ page_obj.number }} {% trans "of" %} {{ page_obj.paginator.num_pages }}</a>
+    </li>
+    <li class="prev previous{% if not page_obj.has_previous %} disabled{% endif %}">
+        <a{% if page_obj.has_previous %} href="{% url 'country-news-list' page.title|slugify %}?page={{ page_obj.previous_page_number }}"{% endif %}>&larr;</a>
+    </li>
+    {% for page in page_obj.paginator.page_range %}
+        {% if page %}
+            <li class="{% ifequal page page_obj.number %}active{% endifequal %}"><a href="?page={{ page }}">{{ page }}</a></li>
+        {% else %}
+            <li class="disabled"><a href="#">…</a></li>
+        {% endif %}
+    {% endfor %}
+    <li class="next{% if not page_obj.has_next %} disabled{% endif %}">
+        <a{% if page_obj.has_next %} href="{% url 'country-news-list' page.title|slugify %}?page={{ page_obj.next_page_number }}"{% endif %}>&rarr;</a>
+    </li>
+    </ul>
+    </div>
+  {% endif %}
+{% endif %}
+
+
+{% else %}
+<p>No country-news  available.</p>
+{% endif %}
+
+{% endblock %}
+
+{# {% block extra_js %} #}
+{#   <script src="{% static "js/jquery.dataTables.js" %}"></script> #}
+{#   <script src="{% static "js/DT_bootstrap.js" %}"></script> #}
+{# {% endblock %} #}

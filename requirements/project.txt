@@ -28,18 +28,26 @@ future==0.9.0
 grappelli-safe==0.2.22
 gunicorn==18.0
 html5lib==0.95
+icalendar==3.0.1b2
+mailer==0.7
 mezzanine-file-collections==1.0.1
 mezzanine-pagedown==0.5
+# mysql-python==1.2.3
+MySQL-python==1.2.5 # first `yum install mysql-devel` then `pip2.7 install mysql-python` on RHEL dev server
 oauthlib==0.5.0
+psycopg2==2.4.2
 pygments-style-github==0.4
+pysqlite==2.6.3
 python-dateutil==2.2
+python-openid==2.2.5
 pytz==2014.4
 requests==1.2.3
 requests-oauthlib==0.3.2
 six==1.7.3
 sphinx-me==0.2.1
 tzlocal==1.0
+wsgiref==0.1.2
+requests==1.2.3
+requests-oauthlib==0.3.2
 vobject==0.8.1c
 wsgiref==0.1.2
-
-MySQL-python==1.2.5 # first `yum install mysql-devel` then `pip2.7 install mysql-python` on RHEL dev server

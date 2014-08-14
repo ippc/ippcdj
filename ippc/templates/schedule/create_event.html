@@ -1,68 +1,136 @@
 {% extends "base.html" %}
+{% load pages_tags translate_tags mezzanine_tags i18n future staticfiles accounts_tags %}
 {% load i18n %}
 {% load staticfiles %}
-{% block main %} 
+{% block meta_title %}{% trans "Event" %} - {{ user.get_profile.country.name}} {% endblock %}
 
-<b>{% trans "Create or change event. All fields are required." %}</b>
+{% block body_class %}wide{% endblock %}
+
+
+
+
+
+{% block breadcrumb_menu %}
+<li>
+    <a href="/">{% trans "Home" %}</a>
+    <span class="divider">/</span>
+</li>
+{% if is_secretariat or user.is_superuser%}
+<li>
+    <a href="/calendar/">{% trans "Calendar" %}</a>
+    <span class="divider">/</span>
+</li>
+</li>
+{% elif is_contryeditor_1 %}
+<li>
+    <a href="/countries/">{% trans "Countries" %}</a>
+    <span class="divider">/</span>
+</li>
+<li>
+    <a href="/countries/{{ user.get_profile.country.name|slugify }}/">
+        {{ user.get_profile.country.name }}
+    </a>
+    <span class="divider">/</span>
+</li>
+<li>
+    <a href="/countries/{{ user.get_profile.country.name|slugify }}/calendar/">{% trans "Events" %}</a>
+    <span class="divider">/</span>
+</li>
+{% endif %}
+{% if  event_id   %}
+<li class="active">{% trans "Edit Event" %}</li>
+{% else %}
+<li class="active">{% trans "Create New Event" %}</li>
+{% endif %}
+
+{% endblock %}
+
+{% block local_nav %}
+{% endblock local_nav %}
+
+{% block pageinfo %}
+{% endblock pageinfo %}
+
+{% block main %}
+{% if can_add_edit or user.is_superuser %}
+<p class="pull-right">
+    <a href="javascript:history.go(-1)">{% trans " Cancel and go back" %}</a>
+</p>
+<h1>
+    {% if  event_id   %}
+    <span class="normal">{% trans "Edit Event" %}</span>
+    {% else %}
+    <span class="normal">{% trans "Create New Event" %}</span>
+    {% endif %}
+
+    {% if is_contryeditor %}
+    - {{ user.get_profile.country.name }}
+    {% endif %}
+</h1>
 <br/><br/>
-<form action="" method="post" enctype="multipart/form-data">
-  {% csrf_token %}
-  <table>
-    {{ form.as_table }}
-      {{ issueform }}
-  </table>
-  <fieldset>
-                <legend>Files</legend>
-                {{ f_form.management_form }}
-                {{ f_form.non_form_errors }}
-                {% for form in f_form %}
-                    {{ form.id }}
-                    <div class="inline {{ f_form.prefix }}">
-                       {% if  form.errors %}
-                       <div class="alert alert-error"> 
-                       {% endif %}
-                           
-                        {{ form.description.errors }}
-                        {{ form.description.label_tag }}
-                        {{ form.description }}
-                        {{ form.file.errors }}
-                        {{ form.file.label_tag }}
-                        {{ form.file }}
-                         {% if f_form.can_delete %}
+<form action="" class="customform" method="post" enctype="multipart/form-data">
+    {% csrf_token %}
+    <fieldset>
+    <table>
+        {{ form.as_table }}
+        {{ issueform }}
+    </table>
+    <fieldset>
+        <legend>Files</legend>
+        {{ f_form.management_form }}
+        {{ f_form.non_form_errors }}
+        {% for form in f_form %}
+        {{ form.id }}
+        <div class="inline {{ f_form.prefix }}">
+            {% if  form.errors %}
+            <div class="alert alert-error"> 
+                {% endif %}
+
+                {{ form.description.errors }}
+                {{ form.description.label_tag }}
+                {{ form.description }}
+                {{ form.file.errors }}
+                {{ form.file.label_tag }}
+                {{ form.file }}
+                {% if f_form.can_delete %}
                 {{ form.DELETE }}
+                {% endif %}
+                {% if  f_form.errors %}
+            </div> 
             {% endif %}
-                        {% if  f_form.errors %}
-                       </div> 
-                       {% endif %}
-                    </div>
-                {% endfor %}
-            </fieldset>
-      <legend>Websites</legend>
-                {{ u_form.management_form }}
-                {{ u_form.non_form_errors }}
-                {% for form in u_form %}
-                    {{ form.id }}
-                    <div class="inline {{ u_form.prefix }}">
-                       {% if  form.errors %}
-                       <div class="alert alert-error"> 
-                       {% endif %}
-                           
-                        
-                        {{ form.url_for_more_information.errors }}
-                        {{ form.url_for_more_information.label_tag }}
-                        {{ form.url_for_more_information }}
-                         {% if u_form.can_delete %}
-                {{ form.DELETE }}
+        </div>
+        {% endfor %}
+    </fieldset>
+    <legend>Websites</legend>
+    {{ u_form.management_form }}
+    {{ u_form.non_form_errors }}
+    {% for form in u_form %}
+    {{ form.id }}
+    <div class="inline {{ u_form.prefix }}">
+        {% if  form.errors %}
+        <div class="alert alert-error"> 
             {% endif %}
-                        {% if  u_form.errors %}
-                       </div> 
-                       {% endif %}
-                    </div>
-                {% endfor %}
-            </fieldset>
-  <br/>
-  <input type="submit" value="{% trans "Save" %}">
-  <input type="button" value="{% trans "Cancel" %}" onclick="window.location='{{next}}'"/>
-  <input type="hidden" name="next" value="{{next|default:""}}"/>
+
+
+            {{ form.url_for_more_information.errors }}
+            {{ form.url_for_more_information.label_tag }}
+            {{ form.url_for_more_information }}
+            {% if u_form.can_delete %}
+            {{ form.DELETE }}
+            {% endif %}
+            {% if  u_form.errors %}
+        </div> 
+        {% endif %}
+    </div>
+    {% endfor %}
+</fieldset>
+<br/>
+<input type="submit" value="{% trans "Save" %}">
+       <input type="button" value="{% trans "Cancel" %}" onclick="window.location='{{next}}'"/>
+       <input type="hidden" name="next" value="{{next|default:""}}"/>
 </form>
+</fieldset>
+{% else %}
+<p>NO PERMISSIONs</p>
+{% endif %}
 {% endblock %}

@@ -1,0 +1,408 @@
+{% extends "base.html" %}
+{% load pages_tags mezzanine_tags i18n future staticfiles accounts_tags %}
+
+{% block meta_title %}
+  {% trans "Countries Stats" %}: 
+  {{ page.title }}
+{% endblock %}
+
+{% block body_class %}wide{% endblock %}
+
+{% block breadcrumb_menu %}
+<li><a href="/">{% trans "Home" %}</a><span class="divider">/</span></li>
+<li>
+  <a href="/countries/">Countries</a>
+  <span class="divider">/</span>
+</li>
+
+<li class="active">{% trans "Countries Stats" %} </li>
+{% endblock %}
+
+{% block local_nav %}
+{% endblock local_nav %}
+
+{% block pageinfo %}
+{% endblock pageinfo %}
+
+{% block main %}
+
+<p class="pull-right">
+  <a href="javascript:history.go(-1)">{% trans "« Go back" %}</a>
+</p>
+
+<h1>
+  <small class="normal">{% trans "The percentage of countries per region with reporting information" %} </small>
+  </h1> 
+<p>The table below shows the percentage of countries per region (excluded territories) with information on the IPP for each reporting type.
+<br>
+<em>Mouseover the reporting types for more information.</em><br>
+<b>Date generated: </b>  {{ dategenerate|date:"d M Y, H:m" }}</p><br>
+
+<table class="table table-condensed table-striped">
+<thead>
+<tr>
+    <th colspan="4">&nbsp;</th>
+    <th colspan="4">REGIONS</th>
+</tr> 
+<tr>
+    <th>ALL Countries</th>
+    <th>Africa</th>
+    <th>Asia</th>
+    <th>Europe</th>
+    <th>Latin America &amp; Caribbean</th>
+    <th>Near East</th>
+    <th>North America</th>
+    <th>Southwest Pacific</th>
+</tr>
+<tr>
+<th  colspan="8" title="Phytosanitary information that countries are obliged to report.">BASIC REPORTING</th>
+</tr>
+</thead>
+<tbody>
+ <tr>
+<td title="Article IV.4: 'Each contracting party shall submit a description of its official national plant protection organization and of changes in such organization to the Secretary. A contracting party shall provide a description of its organizational arrangements for plant protection to another contracting party, upon request.'"><a href="/countries/nppo">Description of the NPPO</a></td>
+  {% if latest %}
+    {% for object in region_rep1 %}
+        <td>{{object.0 }} </td>
+    {% endfor %}
+{% endif %}
+</tr>
+<tr>
+<td title="Article VII.2d: 'In order to minimize interference with international trade, each contracting party, in exercising its authority under paragraph 1 of this Article, undertakes to act in conformity with the following:  If a contracting party requires consignments of particular plants or plant products to be imported only through specified points of entry, such points shall be so selected as not to unnecessarily impede international trade. The contracting party shall publish a list of such points of entry and communicate it to the Secretary, any regional plant protection organization of which the contracting party is a member, all contracting parties which the contracting party believes to be directly affected, and other contracting parties upon request. Such restrictions on points of entry shall not be made unless the plants, plant products or other regulated articles concerned are required to be accompanied by phytosanitary certificates or to be submitted to inspection or treatment."><a href="/countries/entrypoints">Entry points</a></td>
+ {% if latest %}
+    {% for object in region_rep2 %}
+        <td>{{object.0}} </td>
+    {% endfor %}
+{% endif %}
+</tr>
+
+<tr>
+<td title="Article VII.2i: 'Contracting parties shall, to the best of their ability, establish and update lists of regulated pests, using scientific names, and make such lists available to the Secretary, to regional plant protection organizations of which they are members and, on request, to other contracting parties.'"><a href="/countries/regulatedpests">List of regulated pests</a></td>
+ {% if latest %}
+    {% for object in region_rep3 %}
+        <td>{{object.0 }} </td>
+    {% endfor %}
+{% endif %}
+</tr>
+<tr>
+<td title="Article VII.2b: 'With the aim of preventing the introduction and/or spread of regulated pests into their territories, contracting parties shall have sovereign authority to regulate, in accordance with applicable international agreements, the entry of plants and plant products and other regulated articles and, to this end, may:  refuse entry or detain, or require treatment, destruction or removal from the territory of the contracting party, of plants, plant products and other regulated articles or consignments thereof that do not comply with the phytosanitary measures prescribed or adopted under subparagraph (a)...'"><a href="/countries/legislation">Phytosanitary restrictions</a></td>
+  {% if latest %}
+    {% for object in region_rep4 %}
+        <td>{{object.0 }} </td>
+    {% endfor %}
+{% endif %}
+</tr>
+ <tr>
+<th colspan="8" title="Reporting items that are driven by events, e.g. a pest outbreak, a case of non-compliance.">EVENT-DRIVEN REPORTING</th>
+</tr>  
+  <tr>
+<td title="Article VII.2f: 'Importing contracting parties shall, as soon as possible, inform the exporting contracting party concerned or, where appropriate, the re-exporting contracting party concerned, of significant instances of non-compliance with phytosanitary certification. The exporting contracting party or, where appropriate, the reexporting contracting party concerned, should investigate and, on request, report the result of its investigation to the importing contracting party concerned."><a href="/countries/noncompliance">Non compliance</a></td>
+    {% if latest %}
+    {% for object in region_ev2 %}
+        <td>{{object.0}} </td>
+    {% endfor %}
+{% endif %}
+</tr>
+
+<tr>
+<td title="Article VII.6: 'Nothing in this Article shall prevent any contracting party from taking appropriate emergency action on the detection of a pest posing a potential threat to its territories or the report of such a detection. Any such action shall be evaluated as soon as possible to ensure that its continuance is justified. The action taken shall be immediately reported to contracting parties concerned, the Secretary, and any regional plant protection organization of which the contracting party is a member"><a href="/countries/emergencyactions">Emergency actions</a></td>
+    {% if latest %}
+    {% for object in region_ev1 %}
+        <td>{{object.0}} </td>
+    {% endfor %}
+{% endif %}
+</tr>
+<tr>
+<td title="Articles IV.2b: 'The responsibilities of an official national plant protection organization shall include the following: the surveillance of growing plants, including both areas under cultivation (interalia fields, plantations, nurseries, gardens, greenhouses and laboratories) and wild flora, and of plants and plant products in storage or in transportation, particularly with the object of reporting the occurrence, outbreak and spread of pests, and of controlling those pests, including the reporting referred to under Article VIII paragraph 1(a) ' Article VIII.1a: 'The contracting parties shall cooperate with one another to the fullest practicable extent in achieving the aims of this Convention, and shall in particular: a) cooperate in the exchange of information on plant pests, particularly the reporting of the occurrence, outbreak or spread of pests that may be of immediate or potential danger, in accordance with such procedures as may be established by the Commission ' "><a href="/countries/pestreport">Pest report</a></td>
+  {% if latest %}
+    {% for object in region_pest %}
+        <td>{{object.0}} </td>
+    {% endfor %}
+{% endif %}
+</tr>
+    <tr>
+<th colspan="8" title="The IPPC specifies that certain information should be provided by an NPPO to another NPPO which requests it.">REQUEST-DRIVEN REPORTING</th>
+</tr>
+ <tr>
+<td title="Article IV.4: 'Each contracting party shall submit a description of its official national plant protection organization and of changes in such organization to the Secretary. A contracting party shall provide a description of its organizational arrangements for plant protection to another contracting party, upon request."><a href="/countries/plantprotection">Organizational (NPPO info)</a></td>
+ {% if latest %}
+    {% for object in region_ev3 %}
+        <td>{{object.0}} </td>
+    {% endfor %}
+{% endif %}
+
+<tr>
+<td title="Article VII.2c: 'Contracting parties shall, on request, make available to any contracting party the rationale for phytosanitary requirements, restrictions and prohibitions"><a href="/countries/phytosanitaryrequirements">PRA (rationale phytosanitary requirements)</a></td>
+    {% if latest %}
+    {% for object in region_ev4 %}
+        <td>{{object.0}} </td>
+    {% endfor %}
+{% endif %}
+
+<tr>
+<td title="Article IV.4: 'Each contracting party shall submit a description of its official national plant protection organization and of changes in such organization to the Secretary. A contracting party shall provide a description of its organizational arrangements for plant protection to another contracting party, upon request."><a href="/countries/peststatus">Pest status</td>
+ {% if latest %}
+    {% for object in region_ev5 %}
+        <td>{{object.0}} </td>
+    {% endfor %}
+{% endif %} 
+
+
+    <tr>
+    <th>No. of countries:</th>
+    {% if latest %}
+    {% for object in region_cn %}
+    <th>{{ object.1 }} </th>
+    {% endfor %}
+    {% endif %}
+     </tr>
+</tbody>
+
+</table>
+
+<table class="table table-condensed table-striped">
+<thead>
+<tr>
+    <th colspan="4">&nbsp;</th>
+    <th colspan="4">REGIONS</th>
+</tr> 
+<tr>
+    <th>Contracting Parties</th>
+    <th>Africa</th>
+    <th>Asia</th>
+    <th>Europe</th>
+    <th>Latin America &amp; Caribbean</th>
+    <th>Near East</th>
+    <th>North America</th>
+    <th>Southwest Pacific</th>
+</tr>
+<tr>
+<th  colspan="8" title="Phytosanitary information that countries are obliged to report.">BASIC REPORTING</th>
+</tr>
+</thead>
+<tbody>
+ <tr>
+<td title="Article IV.4: 'Each contracting party shall submit a description of its official national plant protection organization and of changes in such organization to the Secretary. A contracting party shall provide a description of its organizational arrangements for plant protection to another contracting party, upon request.'"><a href="/countries/nppo">Description of the NPPO</a></td>
+  {% if latest %}
+    {% for object in region_rep1cp %}
+        <td>{{object.0 }} </td>
+    {% endfor %}
+{% endif %}
+</tr>
+<tr>
+<td title="Article VII.2d: 'In order to minimize interference with international trade, each contracting party, in exercising its authority under paragraph 1 of this Article, undertakes to act in conformity with the following:  If a contracting party requires consignments of particular plants or plant products to be imported only through specified points of entry, such points shall be so selected as not to unnecessarily impede international trade. The contracting party shall publish a list of such points of entry and communicate it to the Secretary, any regional plant protection organization of which the contracting party is a member, all contracting parties which the contracting party believes to be directly affected, and other contracting parties upon request. Such restrictions on points of entry shall not be made unless the plants, plant products or other regulated articles concerned are required to be accompanied by phytosanitary certificates or to be submitted to inspection or treatment."><a href="/countries/entrypoints">Entry points</a></td>
+ {% if latest %}
+    {% for object in region_rep2cp %}
+        <td>{{object.0}} </td>
+    {% endfor %}
+{% endif %}
+</tr>
+
+<tr>
+<td title="Article VII.2i: 'Contracting parties shall, to the best of their ability, establish and update lists of regulated pests, using scientific names, and make such lists available to the Secretary, to regional plant protection organizations of which they are members and, on request, to other contracting parties.'"><a href="/countries/regulatedpests">List of regulated pests</a></td>
+ {% if latest %}
+    {% for object in region_rep3cp %}
+        <td>{{object.0 }} </td>
+    {% endfor %}
+{% endif %}
+</tr>
+<tr>
+<td title="Article VII.2b: 'With the aim of preventing the introduction and/or spread of regulated pests into their territories, contracting parties shall have sovereign authority to regulate, in accordance with applicable international agreements, the entry of plants and plant products and other regulated articles and, to this end, may:  refuse entry or detain, or require treatment, destruction or removal from the territory of the contracting party, of plants, plant products and other regulated articles or consignments thereof that do not comply with the phytosanitary measures prescribed or adopted under subparagraph (a)...'"><a href="/countries/legislation">Phytosanitary restrictions</a></td>
+  {% if latest %}
+    {% for object in region_rep4cp %}
+        <td>{{object.0 }} </td>
+    {% endfor %}
+{% endif %}
+</tr>
+ <tr>
+<th colspan="8" title="Reporting items that are driven by events, e.g. a pest outbreak, a case of non-compliance.">EVENT-DRIVEN REPORTING</th>
+</tr>  
+  <tr>
+<td title="Article VII.2f: 'Importing contracting parties shall, as soon as possible, inform the exporting contracting party concerned or, where appropriate, the re-exporting contracting party concerned, of significant instances of non-compliance with phytosanitary certification. The exporting contracting party or, where appropriate, the reexporting contracting party concerned, should investigate and, on request, report the result of its investigation to the importing contracting party concerned."><a href="/countries/noncompliance">Non compliance</a></td>
+    {% if latest %}
+    {% for object in region_ev2cp %}
+        <td>{{object.0}} </td>
+    {% endfor %}
+{% endif %}
+</tr>
+
+<tr>
+<td title="Article VII.6: 'Nothing in this Article shall prevent any contracting party from taking appropriate emergency action on the detection of a pest posing a potential threat to its territories or the report of such a detection. Any such action shall be evaluated as soon as possible to ensure that its continuance is justified. The action taken shall be immediately reported to contracting parties concerned, the Secretary, and any regional plant protection organization of which the contracting party is a member"><a href="/countries/emergencyactions">Emergency actions</a></td>
+    {% if latest %}
+    {% for object in region_ev1cp %}
+        <td>{{object.0}} </td>
+    {% endfor %}
+{% endif %}
+</tr>
+<tr>
+<td title="Articles IV.2b: 'The responsibilities of an official national plant protection organization shall include the following: the surveillance of growing plants, including both areas under cultivation (interalia fields, plantations, nurseries, gardens, greenhouses and laboratories) and wild flora, and of plants and plant products in storage or in transportation, particularly with the object of reporting the occurrence, outbreak and spread of pests, and of controlling those pests, including the reporting referred to under Article VIII paragraph 1(a) ' Article VIII.1a: 'The contracting parties shall cooperate with one another to the fullest practicable extent in achieving the aims of this Convention, and shall in particular: a) cooperate in the exchange of information on plant pests, particularly the reporting of the occurrence, outbreak or spread of pests that may be of immediate or potential danger, in accordance with such procedures as may be established by the Commission ' "><a href="/countries/pestreport">Pest report</a></td>
+  {% if latest %}
+    {% for object in region_pestcp %}
+        <td>{{object.0}} </td>
+    {% endfor %}
+{% endif %}
+</tr>
+    <tr>
+<th colspan="8" title="The IPPC specifies that certain information should be provided by an NPPO to another NPPO which requests it.">REQUEST-DRIVEN REPORTING</th>
+</tr>
+ <tr>
+<td title="Article IV.4: 'Each contracting party shall submit a description of its official national plant protection organization and of changes in such organization to the Secretary. A contracting party shall provide a description of its organizational arrangements for plant protection to another contracting party, upon request."><a href="/countries/plantprotection">Organizational (NPPO info)</a></td>
+ {% if latest %}
+    {% for object in region_ev3cp %}
+        <td>{{object.0}} </td>
+    {% endfor %}
+{% endif %}
+
+<tr>
+<td title="Article VII.2c: 'Contracting parties shall, on request, make available to any contracting party the rationale for phytosanitary requirements, restrictions and prohibitions"><a href="/countries/phytosanitaryrequirements">PRA (rationale phytosanitary requirements)</a></td>
+    {% if latest %}
+    {% for object in region_ev4cp %}
+        <td>{{object.0}} </td>
+    {% endfor %}
+{% endif %}
+
+<tr>
+<td title="Article IV.4: 'Each contracting party shall submit a description of its official national plant protection organization and of changes in such organization to the Secretary. A contracting party shall provide a description of its organizational arrangements for plant protection to another contracting party, upon request."><a href="/countries/peststatus">Pest status</td>
+ {% if latest %}
+    {% for object in region_ev5cp %}
+        <td>{{object.0}} </td>
+    {% endfor %}
+{% endif %} 
+
+
+    <tr>
+    <th>No. of countries:</th>
+    {% if latest %}
+    {% for object in region_cp %}
+    <th>{{ object.1 }} </th>
+    {% endfor %}
+    {% endif %}
+     </tr>
+</tbody>
+
+</table>
+
+
+
+<table class="table table-condensed table-striped">
+<thead>
+<tr>
+    <th colspan="4">&nbsp;</th>
+    <th colspan="4">REGIONS</th>
+</tr> 
+<tr>
+    <th>Non  Contracting parties</th>
+    <th>Africa</th>
+    <th>Asia</th>
+    <th>Europe</th>
+    <th>Latin America &amp; Caribbean</th>
+    <th>Near East</th>
+    <th>North America</th>
+    <th>Southwest Pacific</th>
+</tr>
+<tr>
+<th  colspan="8" title="Phytosanitary information that countries are obliged to report.">BASIC REPORTING</th>
+</tr>
+</thead>
+<tbody>
+ <tr>
+<td title="Article IV.4: 'Each contracting party shall submit a description of its official national plant protection organization and of changes in such organization to the Secretary. A contracting party shall provide a description of its organizational arrangements for plant protection to another contracting party, upon request.'"><a href="/countries/nppo">Description of the NPPO</a></td>
+  {% if latest %}
+    {% for object in region_rep1ncp %}
+        <td>{{object.0 }} </td>
+    {% endfor %}
+{% endif %}
+</tr>
+<tr>
+<td title="Article VII.2d: 'In order to minimize interference with international trade, each contracting party, in exercising its authority under paragraph 1 of this Article, undertakes to act in conformity with the following:  If a contracting party requires consignments of particular plants or plant products to be imported only through specified points of entry, such points shall be so selected as not to unnecessarily impede international trade. The contracting party shall publish a list of such points of entry and communicate it to the Secretary, any regional plant protection organization of which the contracting party is a member, all contracting parties which the contracting party believes to be directly affected, and other contracting parties upon request. Such restrictions on points of entry shall not be made unless the plants, plant products or other regulated articles concerned are required to be accompanied by phytosanitary certificates or to be submitted to inspection or treatment."><a href="/countries/entrypoints">Entry points</a></td>
+ {% if latest %}
+    {% for object in region_rep2ncp %}
+        <td>{{object.0}} </td>
+    {% endfor %}
+{% endif %}
+</tr>
+
+<tr>
+<td title="Article VII.2i: 'Contracting parties shall, to the best of their ability, establish and update lists of regulated pests, using scientific names, and make such lists available to the Secretary, to regional plant protection organizations of which they are members and, on request, to other contracting parties.'"><a href="/countries/regulatedpests">List of regulated pests</a></td>
+ {% if latest %}
+    {% for object in region_rep3ncp %}
+        <td>{{object.0 }} </td>
+    {% endfor %}
+{% endif %}
+</tr>
+<tr>
+<td title="Article VII.2b: 'With the aim of preventing the introduction and/or spread of regulated pests into their territories, contracting parties shall have sovereign authority to regulate, in accordance with applicable international agreements, the entry of plants and plant products and other regulated articles and, to this end, may:  refuse entry or detain, or require treatment, destruction or removal from the territory of the contracting party, of plants, plant products and other regulated articles or consignments thereof that do not comply with the phytosanitary measures prescribed or adopted under subparagraph (a)...'"><a href="/countries/legislation">Phytosanitary restrictions</a></td>
+  {% if latest %}
+    {% for object in region_rep4ncp %}
+        <td>{{object.0 }} </td>
+    {% endfor %}
+{% endif %}
+</tr>
+ <tr>
+<th colspan="8" title="Reporting items that are driven by events, e.g. a pest outbreak, a case of non-compliance.">EVENT-DRIVEN REPORTING</th>
+</tr>  
+  <tr>
+<td title="Article VII.2f: 'Importing contracting parties shall, as soon as possible, inform the exporting contracting party concerned or, where appropriate, the re-exporting contracting party concerned, of significant instances of non-compliance with phytosanitary certification. The exporting contracting party or, where appropriate, the reexporting contracting party concerned, should investigate and, on request, report the result of its investigation to the importing contracting party concerned."><a href="/countries/noncompliance">Non compliance</a></td>
+    {% if latest %}
+    {% for object in region_ev2ncp %}
+        <td>{{object.0}} </td>
+    {% endfor %}
+{% endif %}
+</tr>
+
+<tr>
+<td title="Article VII.6: 'Nothing in this Article shall prevent any contracting party from taking appropriate emergency action on the detection of a pest posing a potential threat to its territories or the report of such a detection. Any such action shall be evaluated as soon as possible to ensure that its continuance is justified. The action taken shall be immediately reported to contracting parties concerned, the Secretary, and any regional plant protection organization of which the contracting party is a member"><a href="/countries/emergencyactions">Emergency actions</a></td>
+    {% if latest %}
+    {% for object in region_ev1ncp %}
+        <td>{{object.0}} </td>
+    {% endfor %}
+{% endif %}
+</tr>
+<tr>
+<td title="Articles IV.2b: 'The responsibilities of an official national plant protection organization shall include the following: the surveillance of growing plants, including both areas under cultivation (interalia fields, plantations, nurseries, gardens, greenhouses and laboratories) and wild flora, and of plants and plant products in storage or in transportation, particularly with the object of reporting the occurrence, outbreak and spread of pests, and of controlling those pests, including the reporting referred to under Article VIII paragraph 1(a) ' Article VIII.1a: 'The contracting parties shall cooperate with one another to the fullest practicable extent in achieving the aims of this Convention, and shall in particular: a) cooperate in the exchange of information on plant pests, particularly the reporting of the occurrence, outbreak or spread of pests that may be of immediate or potential danger, in accordance with such procedures as may be established by the Commission ' "><a href="/countries/pestreport">Pest report</a></td>
+  {% if latest %}
+    {% for object in region_pestncp %}
+        <td>{{object.0}} </td>
+    {% endfor %}
+{% endif %}
+</tr>
+    <tr>
+<th colspan="8" title="The IPPC specifies that certain information should be provided by an NPPO to another NPPO which requests it.">REQUEST-DRIVEN REPORTING</th>
+</tr>
+ <tr>
+<td title="Article IV.4: 'Each contracting party shall submit a description of its official national plant protection organization and of changes in such organization to the Secretary. A contracting party shall provide a description of its organizational arrangements for plant protection to another contracting party, upon request."><a href="/countries/plantprotection">Organizational (NPPO info)</a></td>
+ {% if latest %}
+    {% for object in region_ev3ncp %}
+        <td>{{object.0}} </td>
+    {% endfor %}
+{% endif %}
+
+<tr>
+<td title="Article VII.2c: 'Contracting parties shall, on request, make available to any contracting party the rationale for phytosanitary requirements, restrictions and prohibitions"><a href="/countries/phytosanitaryrequirements">PRA (rationale phytosanitary requirements)</a></td>
+    {% if latest %}
+    {% for object in region_ev4ncp %}
+        <td>{{object.0}} </td>
+    {% endfor %}
+{% endif %}
+
+<tr>
+<td title="Article IV.4: 'Each contracting party shall submit a description of its official national plant protection organization and of changes in such organization to the Secretary. A contracting party shall provide a description of its organizational arrangements for plant protection to another contracting party, upon request."><a href="/countries/peststatus">Pest status</td>
+ {% if latest %}
+    {% for object in region_ev5ncp %}
+        <td>{{object.0}} </td>
+    {% endfor %}
+{% endif %} 
+
+
+    <tr>
+    <th>No. of countries:</th>
+    {% if latest %}
+    {% for object in region_ncp %}
+    <th>{{ object.1 }} </th>
+    {% endfor %}
+    {% endif %}
+     </tr>
+</tbody>
+
+</table>
+{% endblock %}

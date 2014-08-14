@@ -34,7 +34,13 @@
   </h1> 
 
   <div class="panel contact-info">
-  <h2>{% trans "Contact Point" %}</h2>
+  <h2>{% trans "Contact Point: " %} 
+    <small>
+     {% for entry in page.get_content_model.contact_point.get_profile.contact_type.all %}
+      {{entry}}{% if forloop.last %} {% else %},{% endif %}
+    {% endfor %}
+    </small>
+  </h2>
     {% include "accounts/account_contactpoint_details.html" %}
   </div>
 
@@ -81,15 +87,12 @@
       <li class="divider"></li>
 
       <li><a href="{% url 'reporting-obligation-list' page.title|slugify %}">Reporting Obligations</a> 
-      <table>  {% for key, val in basic_types %}
-        <tr>
-          <td>
+      {% for key, val in basic_types %}
           <small class="muted">{{val}}</small></td>
-          <td>{% if perms.ippc.add_reportingobligation and request.user.get_profile.country.name == page.title or user.is_superuser %}
-                <small><a class="btn btn-small btn-info" href="{% url 'reporting-obligation-create' page.title|slugify key %}">+ {% trans "Add new" %}</a></small>
+        {% if perms.ippc.add_reportingobligation and request.user.get_profile.country.name == page.title or user.is_superuser %}
+                <small><a class="btn btn-mini" href="{% url 'reporting-obligation-create' page.title|slugify key %}">+ {% trans "Add new" %}</a></small>
              {% endif %} 
-          </td>
-        </tr>
+          <br>
         {% endfor %} 
        </li>
     
@@ -118,21 +121,31 @@
      <li class="divider"></li>
        <li><a href="{% url 'implementationispm-list' page.title|slugify %}">Implementation of ISPM 15</a> 
         {% if perms.ippc.add_implementationispm and request.user.get_profile.country.name == page.title or user.is_superuser %}
-          <small><a class="btn btn-small btn-info" href="{% url 'implementationispm-create' page.title|slugify %}">+ {% trans "Add new" %}</a></small>
+          <small><a class="btn btn-mini" href="{% url 'implementationispm-create' page.title|slugify %}">+ {% trans "Add new" %}</a></small>
         {% endif %}
       </li>
 
       <li class="divider"></li>
       <li><a href="{% url 'country-publication-list' page.title|slugify %}">Publication</a> 
         {% if perms.ippc.add_cnpublication and request.user.get_profile.country.name == page.title or user.is_superuser %}
-          <small><a class="btn btn-small btn-info" href="{% url 'country-publication-create' page.title|slugify %}">+ {% trans "Add new" %}</a></small>
+          <small><a class="btn btn-mini" href="{% url 'country-publication-create' page.title|slugify %}">+ {% trans "Add new" %}</a></small>
         {% endif %}
       </li>
-      <li><a href="#">News Item</a></li>
-      <li><a href="#">Event</a></li>
-       <li><a href="{% url 'website-list' page.title|slugify %}">Website</a> 
+   
+      <li> <a href="/countries/{{page.title|slugify }}/countrynews/">{% trans "News Item" %}</a>
+        {% if perms.schedule.add_countrynews and request.user.get_profile.country.name == page.title or user.is_superuser %}
+          <small>  <a class="btn btn-mini" href="{% url 'country-news-create' page.title|slugify %}">+ {% trans "Add new" %}</a>
+          </small>
+        {% endif %}
+      </li><li> <a href="/countries/{{page.title|slugify }}/calendar/">{% trans "Events" %}</a>
+        {% if perms.schedule.add_event and request.user.get_profile.country.name == page.title or user.is_superuser %}
+          <small>  <a class="btn btn-mini" href="{% url 'calendar_create_event' page.title|slugify 'calendar' %}">+ {% trans "Add new" %}</a>
+          </small>
+        {% endif %}
+      </li>
+      <li><a href="{% url 'website-list' page.title|slugify %}">Website</a> 
         {% if perms.ippc.add_website and request.user.get_profile.country.name == page.title or user.is_superuser %}
-          <small><a class="btn btn-small btn-info" href="{% url 'website-create' page.title|slugify %}">+ {% trans "Add new" %}</a></small>
+          <small><a class="btn btn-mini" href="{% url 'website-create' page.title|slugify %}">+ {% trans "Add new" %}</a></small>
         {% endif %}
       </li>
       <li><a href="http://phytosanitary.info/user/login?destination=node/add" target="_blank">Project <span class="small">(go to phytosanitary.info)</span></a></li>

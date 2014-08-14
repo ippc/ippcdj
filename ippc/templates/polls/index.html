@@ -1,0 +1,63 @@
+{% extends "base.html" %}
+{% load pages_tags mezzanine_tags i18n future staticfiles %}
+
+{% block meta_title %}{% trans "Polls" %}{% endblock %}
+
+{% block breadcrumb_menu %}
+<li class="active">{% trans "Polls" %}</li>
+{% endblock %}
+
+{% block main %}
+
+{% if latest_poll_list %}
+<table class="table table-condensed table-striped" id="polls">
+    <thead>
+        <tr>
+            <th>POLL</th>
+            <th>Open</th>
+            <th>Results</th>
+        </tr>  </thead>  <tbody>
+        {% for poll in latest_poll_list %}
+        {% if poll.login_required %}
+        
+        {% if  user.is_superuser%}
+  
+        <tr>
+            {% if poll.is_past_due %}
+            <td>{{ poll.question }}</td>
+            <td>No </td>
+            {% else %} 
+            <td><a href="{% url 'detail' poll.id %}">{{ poll.question }}</a></td>
+            <td>Yes  </td>
+            {% endif%}
+            <td><a href="{% url 'results' poll.id %}">Show results</a></td>
+        </tr> 
+
+    
+          {% else %} 
+          {% for group in request.user.groups.all %}
+        {% if group in poll.groupspoll.all %}
+        <tr>
+            {% if poll.is_past_due %}
+            <td>{{ poll.question }}</td>
+            <td>No </td>
+            {% else %} 
+            <td><a href="{% url 'detail' poll.id %}">{{ poll.question }}</a></td>
+            <td>Yes  </td>
+            {% endif%}
+            <td><a href="{% url 'results' poll.id %}">Show results</a></td>
+        </tr> 
+
+        {% endif %}
+        {% endfor %}
+        {% endif %}
+        
+        {% endif %}
+        {% endfor %}
+
+    </tbody>
+</table>
+{% else %}
+<p>No polls are available.</p>
+{% endif %}
+{% endblock %}

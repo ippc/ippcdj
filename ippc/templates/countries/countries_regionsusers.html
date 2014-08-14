@@ -1,0 +1,370 @@
+{% extends "base.html" %}
+{% load pages_tags mezzanine_tags i18n future staticfiles accounts_tags %}
+
+{% block meta_title %}
+  {% trans "Countries Stats" %}: 
+  {{ page.title }}
+{% endblock %}
+
+{% block body_class %}wide{% endblock %}
+
+{% block breadcrumb_menu %}
+<li><a href="/">{% trans "Home" %}</a><span class="divider">/</span></li>
+<li>
+  <a href="/countries/">Countries</a>
+  <span class="divider">/</span>
+</li>
+<li>
+    <a href="/countries/statistics">Statistics</a>
+    <span class="divider">/</span>
+</li>
+
+<li class="active">{% trans "Countries Statistics: users per region" %} </li>
+{% endblock %}
+
+{% block local_nav %}
+{% endblock local_nav %}
+
+{% block pageinfo %}
+{% endblock pageinfo %}
+
+{% block main %}
+
+<p class="pull-right">
+  <a href="javascript:history.go(-1)">{% trans "« Go back" %}</a>
+</p>
+<script type="text/javascript">
+  window.onload = function () {
+    var chart1 = new CanvasJS.Chart("chartContainer1",
+    {
+      title:{
+        text: "Official"
+      },
+      legend:{
+        verticalAlign: "center",
+        horizontalAlign: "right",
+        fontSize: 16,
+        fontFamily: "Helvetica"        
+      },
+      theme: "theme2",
+      data: [
+      {        
+       type: "pie",       
+       indexLabelFontFamily: "Garamond",       
+       indexLabelFontSize: 16,
+       startAngle:-20,      
+       showInLegend: true,
+       toolTipContent:"{label}",
+       dataPoints: [
+             {% autoescape off %} 
+                {{datachart1}}
+             {% endautoescape %}  
+         ]
+     }
+     ]
+   });
+       chart1.render();
+   var chart2 = new CanvasJS.Chart("chartContainer2",
+    {
+      title:{
+        text: "Un-Official"
+      },
+      legend:{
+        verticalAlign: "center",
+        horizontalAlign: "right",
+        fontSize: 16,
+        fontFamily: "Helvetica"        
+      },
+      theme: "theme2",
+      data: [
+      {        
+       type: "pie",       
+       indexLabelFontFamily: "Garamond",       
+       indexLabelFontSize: 16,
+       startAngle:-20,      
+       showInLegend: true,
+       toolTipContent:"{label}",
+       dataPoints: [
+             {% autoescape off %} 
+                {{datachart2}}
+             {% endautoescape %}  
+         ]
+     }
+     ]
+   });
+       chart2.render();    
+       
+       
+       var chart3 = new CanvasJS.Chart("chartContainer3",
+    {
+      title:{
+        text: "Information Points"
+      },
+      legend:{
+        verticalAlign: "center",
+        horizontalAlign: "right",
+        fontSize: 16,
+        fontFamily: "Helvetica"        
+      },
+      theme: "theme2",
+      data: [
+      {        
+       type: "pie",       
+       indexLabelFontFamily: "Garamond",       
+       indexLabelFontSize: 16,
+       startAngle:-20,      
+       showInLegend: true,
+       toolTipContent:"{label}",
+       dataPoints: [
+             {% autoescape off %} 
+                {{datachart3}}
+             {% endautoescape %}  
+         ]
+     }
+     ]
+   });
+       chart3.render();  
+       
+       
+       var chart4 = new CanvasJS.Chart("chartContainer4",
+    {
+      title:{
+        text: "Local Contacts"
+      },
+      legend:{
+        verticalAlign: "center",
+        horizontalAlign: "right",
+        fontSize: 16,
+        fontFamily: "Helvetica"        
+      },
+      theme: "theme2",
+      data: [
+      {        
+       type: "pie",       
+       indexLabelFontFamily: "Garamond",       
+       indexLabelFontSize: 16,
+       startAngle:-20,      
+       showInLegend: true,
+       toolTipContent:"{label}",
+       dataPoints: [
+             {% autoescape off %} 
+                {{datachart4}}
+             {% endautoescape %}  
+         ]
+     }
+     ]
+   });
+       chart4.render();  
+       
+       
+       var chart5 = new CanvasJS.Chart("chartContainer5",
+    {
+      title:{
+        text: "Editors"
+      },
+      legend:{
+        verticalAlign: "center",
+        horizontalAlign: "right",
+        fontSize: 16,
+        fontFamily: "Helvetica"        
+      },
+      theme: "theme2",
+      data: [
+      {        
+       type: "pie",       
+       indexLabelFontFamily: "Garamond",       
+       indexLabelFontSize: 16,
+       startAngle:-20,      
+       showInLegend: true,
+       toolTipContent:"{label}",
+       dataPoints: [
+             {% autoescape off %} 
+                {{datachart5}}
+             {% endautoescape %}  
+         ]
+     }
+     ]
+   });
+       chart5.render();  
+  }
+  </script>
+  <script src='{% static "/static/canvasjs/canvasjs.min.js" %}'></script>
+<h1>
+  <small class="normal">{% trans "The percentage of users per region" %} </small>
+  </h1> 
+<p>The tables and Graphs below summarize by region the current status of IPPC Contact Points and IPP editors.
+<br>
+
+<b>Date generated: </b>  {{ dategenerate|date:"d M Y, H:m" }}</p><br>
+<h1>
+  <small class="normal">{% trans "Contracting parties" %} </small>
+  </h1> 
+<table class="table table-condensed table-striped">
+<thead>
+<tr>
+    <th colspan="4"></th>
+    <th colspan="4">REGIONS</th>
+</tr> 
+<tr>
+    <th></th>
+    <th>Africa</th>
+    <th>Asia</th>
+    <th>Europe</th>
+    <th>Latin America &amp; Caribbean</th>
+    <th>Near East</th>
+    <th>North America</th>
+    <th>Southwest Pacific</th>
+      <th>Total number</th>
+</tr>
+
+</thead>
+<tbody>
+ <tr>
+<td>Official</td>
+  {% if latest %}
+    {% for object in region_off_cp %}
+        <td>{{object.0 }} </td>
+    {% endfor %}
+{% endif %}
+
+<td> 
+        <td> {{tot_o_count}}</td>
+    </td>
+</tr>
+<tr>
+<td>UnOfficial</td>
+  {% if latest %}
+    {% for object in region_unoff_cp %}
+        <td>{{object.0 }} </td>
+    {% endfor %}
+{% endif %}   <td> {{tot_u_count}}</td>
+</tr>
+    <tr>
+    <th>No. of countries:</th>
+    {% if latest %}
+    {% for object in region_cp %}
+    <th>{{ object.1 }} </th>
+    {% endfor %}
+    {% endif %}<td> </td>
+     </tr>
+</tbody>
+
+</table>
+<table class="table table-condensed table-striped">
+<tr><td><div id="chartContainer1" style="height:300px; width: 100%;">
+            </div></td>
+            <td>
+<div id="chartContainer2" style="height:300px; width: 100%;">
+</div></td></t>
+ </table>
+<h1>
+  <small class="normal">{% trans "Non-contracting parties" %} </small>
+  </h1> 
+
+<table class="table table-condensed table-striped">
+<thead>
+<tr>
+    <th colspan="4"></th>
+    <th colspan="4">REGIONS</th>
+</tr> 
+<tr>
+    <th>-</th>
+    <th>Africa</th>
+    <th>Asia</th>
+    <th>Europe</th>
+    <th>Latin America &amp; Caribbean</th>
+    <th>Near East</th>
+    <th>North America</th>
+    <th>Southwest Pacific</th>
+    <th>Total number</th>
+</tr>
+
+<tr>
+<td>Information Points</td>
+ {% if latest %}
+    {% for object in region_info_ncp %}
+        <td>{{object.0 }} </td>
+    {% endfor %}
+{% endif %} <td> {{tot_i_count}}</td>
+</tr>
+<tr>
+    <td>Local contact</td>
+  {% if latest %}
+    {% for object in region_local_ncp %}
+        <td>{{object.0 }} </td>
+    {% endfor %}
+{% endif %}<td> {{tot_l_count}}</td>
+</tr>
+
+
+    <tr>
+    <th>No. of countries:</th>
+    {% if latest %}
+    {% for object in region_ncp %}
+    <th>{{ object.1 }} </th>
+    {% endfor %}
+    {% endif %}<td> </td>
+     </tr>
+</tbody>
+
+</table>
+<table class="table table-condensed table-striped">
+<tr><td><div id="chartContainer3" style="height:300px; width: 100%;">
+            </div></td>
+            <td>
+<div id="chartContainer4" style="height:300px; width: 100%;">
+</div></td></t>
+ </table>
+
+<h1>
+  <small class="normal">{% trans "Contracting & non-contracting parties" %} </small>
+  </h1> 
+<table class="table table-condensed table-striped">
+<thead>
+<tr>
+    <th colspan="4"></th>
+    <th colspan="4">REGIONS</th>
+</tr> 
+<tr>
+    <th></th>
+    <th>Africa</th>
+    <th>Asia</th>
+    <th>Europe</th>
+    <th>Latin America &amp; Caribbean</th>
+    <th>Near East</th>
+    <th>North America</th>
+    <th>Southwest Pacific</th>
+    <th>Total number</th>
+</tr>
+
+</thead>
+<tbody>
+ <tr>
+<td>Editors</td>
+  {% if latest %}
+    {% for object in region_editors %}
+        <td>{{object.0 }} </td>
+    {% endfor %}
+{% endif %}<td> {{tot_e_count}}</td>
+</tr>
+
+    <tr>
+    <th>No. of countries:</th>
+    {% if latest %}
+    {% for object in regions %}
+    <th>{{ object.1 }} </th>
+    {% endfor %}
+    {% endif %}<td> </td>
+     </tr>
+</tbody>
+
+</table>
+
+<table class="table table-condensed table-striped">
+<tr><td><div id="chartContainer5" style="height:300px; width: 100%;">
+            </div></td>
+            <td>
+<div id="s" style="height:300px; width: 100%;">
+</div></td></t>
+ </table>
+{% endblock %}

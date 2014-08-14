@@ -1,0 +1,72 @@
+{% extends "base.html" %}
+{% load pages_tags mezzanine_tags i18n future staticfiles accounts_tags %}
+
+{% block meta_title %}
+  {% trans "Email sent list" %}: 
+{% endblock %}
+
+{% block body_class %}wide{% endblock %}
+
+{% block breadcrumb_menu %}
+<li><a href="/">{% trans "Home" %}</a><span class="divider">/</span></li>
+<li>
+  <a href="/work-area/">Workarea</a>
+  <span class="divider">/</span>
+</li>
+
+<li class="active">{% trans "Emails" %}</li>
+{% endblock %}
+
+{% block local_nav %}
+{% endblock local_nav %}
+
+{% block pageinfo %}
+{% endblock pageinfo %}
+
+{% block main %}
+
+<p class="pull-right">
+  <a href="javascript:history.go(-1)">{% trans "« Go back" %}</a><br>
+      {% if perms.ippc.add_emailutilitymessage or user.is_superuser%}
+        <a class="btn btn-small btn-info" href="/emailutility/send"><i class="icon-edit icon-white"></i> Create New Email Message</a>
+    {% endif %}
+  
+ </p>
+
+<h1>
+  <small class="normal">{% trans "Email list" %}</small>
+</h1> 
+
+{% if latest %}
+<table class="table table-condensed table-striped" id="publications">
+  <thead>
+    <tr>
+      <th>{% trans "Subject" %}</th>
+      <th>{% trans "Sent date" %}</th>
+      <th><i class="icon-envelope"></i>  {% trans "Sent" %}</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for object in latest %}
+    <tr>
+      <td><a href="{% url 'email-detail'  object.id %}">{{ object.subject }}</a></td>
+      <td>{{ object.date|date:"d M Y" }}</td>
+      <td>      
+            {% if object.sent %}
+            <i class="icon-ok"></i> 
+            {% else %}
+            <i class="icon-exclamation-sign"> </i> not sent
+            {% endif %}
+      </td>
+    </tr>
+    {% endfor %}
+  </tbody>
+</table>
+
+
+{% else %}
+<p>No emails available.</p>
+{% endif %}
+
+{% endblock %}
+

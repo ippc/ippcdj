@@ -42,10 +42,46 @@
 {% leaflet_js %}
         {% leaflet_css %}
  
+ <script type="text/javascript">
+  window.onload = function () {
+    var chart = new CanvasJS.Chart("chartContainer",
+    {
+      title:{
+        text: "Pest Identity Report Chart "
+      },
+      legend:{
+        verticalAlign: "center",
+        horizontalAlign: "right",
+        fontSize: 16,
+        fontFamily: "Helvetica"        
+      },
+      theme: "theme2",
+      data: [
+      {        
+       type: "pie",       
+       indexLabelFontFamily: "Garamond",       
+       indexLabelFontSize: 16,
+       startAngle:-20,      
+       showInLegend: true,
+       toolTipContent:"{label}",
+       dataPoints: [
+             {% autoescape off %} 
+                {{datachart}}
+             {% endautoescape %}  
+         ]
+     }
+     ]
+   });
+       chart.render();
+    
+  }
+  </script>
+  <script src='{% static "/static/canvasjs/canvasjs.min.js" %}'></script>
 
+<table><tr>
+        <td><div id="map" style="width: 550px; height: 350px"></div></td>
+        <td></td></tr></table>
 
-
-   <div id="map" style="width: 600px; height: 500px"></div>
 
     <script src="http://cdn.leafletjs.com/leaflet-0.7/leaflet.js">
     </script>
@@ -85,6 +121,9 @@ var greenIcon = L.icon({
 		}
                
     </script>
+<div id="chartContainer" style="height: 300px; width: 100%;">
+    </div>   
+ 
 <table class="table table-condensed table-striped" id="publications">
   <thead>
     <tr>
@@ -106,7 +145,13 @@ var greenIcon = L.icon({
       <td>{{ object.modified_date|date:"d M Y" }}</td>
       <td>{{ object.pest_identity}} </td>
       <td>{{ object.hosts}} </td>
-      <td>{{ object.pest_status}} </td>
+      <td>
+      {% for pest_status in object.pest_status.all %}
+      {{ pest_status.status }}<br>
+    
+    {% endfor %}
+      
+      </td>
       <td><a href="{% url link_to_item object.country.country_slug object.publish_date|date:'Y' object.publish_date|date:'m'  object.slug %}">             {{ object.title }}</a></td>
      </tr>
     {% endfor %}

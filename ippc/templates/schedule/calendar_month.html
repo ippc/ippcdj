@@ -6,24 +6,37 @@
 {% block meta_title %}{% trans "Calendar" %}{% endblock %}
 
 {% block breadcrumb_menu %}
+<li>
+  <a href="/">{% trans "Home" %}</a>
+  <span class="divider">/</span>
+</li>
+<li>
+  <a href="/year/calendar/">{% trans "Calendar" %}</a>
+  <span class="divider">/</span>
+</li>
+<li class="active">{% trans "Month" %}</li>
+{% endblock breadcrumb_menu %}
 
-<li><a href="/">{% trans "Home" %}</a><span class="divider">/</span></li>
-<li class="active">Calendar</li>
-{% endblock %}
 
+ 
 {% block local_nav %}
+
 <div class="well">
-    {% if user.is_superuser or perms.ippc.change_event %}  
-    <a class="btn btn-small btn-info" href="/event/create/calendar/">{% trans "Add Event" %}</a>
-    {% endif %}
-  
+    {% if user.is_superuser or can_add %} 
+    <a class="btn btn-small btn-info" href="/create/event/calendar/">{% trans "Add Event" %}</a>
+    <br>
+    <br>
+    <br>{% endif %}
+    
+    <a href="{% url "year_calendar" calendar.slug %}{% querystring_for_date periods.month.start 1%}">
+    {% trans "See Full Year Calendar" %}
+  </a>
 </div>
+
 {% endblock local_nav %}
 
 {% block pageinfo %}
- <a href="{% url "year_calendar" calendar.slug %}{% querystring_for_date periods.month.start 1%}">
-    {% trans "Full Year Calendar" %}
-  </a>
+
 {% endblock pageinfo %}
 
  {% block main %}

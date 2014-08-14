@@ -265,7 +265,6 @@ INSTALLED_APPS = (
 
     # forum application, based on mezzanine.blog
     "forum",
-    
     # or, even better, attachments that can be related to any model type
     
     # https://github.com/bartTC/django-attachments
@@ -288,7 +287,8 @@ INSTALLED_APPS = (
     # "debug_toolbar",
     
     #"mezzanine.mobile",
-    "schedule"
+    "schedule",
+    "django_markdown"
 
 )
 
@@ -322,7 +322,7 @@ MIDDLEWARE_CLASSES = (
     
     # localization for multi-lingual site
     # http://www.djangobook.com/en/2.0/chapter19.html
-    # "django.middleware.locale.LocaleMiddleware",
+    "django.middleware.locale.LocaleMiddleware",
     # https://bitbucket.org/carljm/django-localeurl/src/764caf7a412d77aca8cc929988f333ee808719e6/docs/setup.rst?at=default
     "localeurl.middleware.LocaleURLMiddleware",
     
@@ -346,14 +346,27 @@ LANGUAGE_CODE == 'en'
 # https://docs.djangoproject.com/en/1.3/ref/settings/#std:setting-LANGUAGES
 # http://pythonhosted.org/django-localeurl/usage.html
 
-ugettext = lambda s: s
+# ugettext = lambda s: s
+# LANGUAGES = (
+#    ('en', ugettext('English')),
+#    ('fr', ugettext('French')),
+#    ('es', ugettext('Spanish')),
+#    ('ru', ugettext('Russian')),
+#    ('ar', ugettext('Arabic')),
+#    ('zh', ugettext('Chinese')),
+# )
+
+# https://docs.djangoproject.com/en/1.5/ref/settings/#std:setting-LANGUAGES
+from django.utils.translation import ugettext_lazy as _
+
 LANGUAGES = (
-    ('en', ugettext('English')),
-    ('fr', ugettext('Français')),
-    ('es', ugettext('Español')),
-    ('ru', ugettext('Ру�?�?кий')),
-    ('ar', ugettext('العربية')),
-    ('zh', ugettext('简体中文')),
+    ('en', _('English')),
+    ('fr', _('French')),
+    ('es', _('Spanish')),
+    ('ru', _('Russian')),
+    ('ar', _('Arabic')),
+    ('zh', _('Chinese')),
+
 )
 
 # https://docs.djangoproject.com/en/dev/ref/settings/#locale-paths
@@ -367,8 +380,8 @@ FORUM_SLUG = 'forum'
 # FORUM_USE_FEATURED_IMAGE = 'True'
 # FORUM_URLS_DATE_FORMAT = 'month'
 COMMENTS_USE_RATINGS = False
-SITE_TITLE = ugettext("International Plant Protection Convention")
-SITE_TAGLINE = ugettext("Protecting the world's plant resources from pests")
+SITE_TITLE = _("International Plant Protection Convention")
+SITE_TAGLINE = _("Protecting the world's plant resources from pests")
 
 AUTH_PROFILE_MODULE = "ippc.IppcUserProfile"
 ACCOUNTS_PROFILE_VIEWS_ENABLED = True
@@ -389,7 +402,13 @@ RICHTEXT_FILTER = 'mezzanine_pagedown.filters.custom'
 RICHTEXT_FILTER_LEVEL = 3
 PAGEDOWN_MARKDOWN_EXTENSIONS = ('extra','codehilite','toc')
 
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 
+EMAIL_USE_TLS = True
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_PORT = 587
+EMAIL_HOST_USER = 'pxxx@gmail.com'
+EMAIL_HOST_PASSWORD = 'xxx'
 # http://codespatter.com/2009/04/10/how-to-add-locations-to-python-path-for-reusable-django-apps/
 # import sys
 # sys.path.insert(0, os.path.join(PROJECT_ROOT, "apps"))

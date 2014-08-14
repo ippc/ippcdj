@@ -5,19 +5,58 @@
 {% block meta_title %}{% trans "Event" %}{% endblock %}
 
 {% block breadcrumb_menu %}
-<li><a href="/">{% trans "Home" %}</a><span class="divider">/</span></li>
-<li><a href="/calendar/">Calendar / events</a><span class="divider">/</span></li>
+<li>
+    <a href="/">{% trans "Home" %}</a>
+    <span class="divider">/</span>
+</li>
+
+{% if is_contryeevent %}
+<li>
+    <a href="/countries/">{% trans "Countries" %}</a>
+    <span class="divider">/</span>
+</li>
+<li>
+    <a href="/countries/{{ country|slugify }}/">
+        {{ country }}
+    </a>
+    <span class="divider">/</span>
+</li>
+<li>
+    <a href="/countries/{{ country|slugify }}/calendar/">{% trans "Events" %}</a>
+    <span class="divider">/</span>
+</li>
+{% else %}
+<li>
+    <a href="/calendar/">{% trans "Calendar" %}</a>
+    <span class="divider">/</span>
+</li>
+</li>
+{% endif %}
+
 <li class="active">{{event.title}}</li>
-{% endblock %}
+
+{% endblock  %}
 
 {% block local_nav %}
 <div class="well">
-    {% if user.is_superuser %} 
-    <a class="btn btn-small btn-info" href="/admin/schedule/event/{{ event.id }}">Edit as Admin</a><br>
+    {% if is_contryeevent %}
+    <p><a href="/countries/{{ event.country.name|slugify }}/calendar/">« {% trans "Back to" %}</a></p>
+    {% else %}    
+    <p><a href="/year/calendar/">« {% trans "Back to " %}  {% trans "Calendar" %}</a></p>
+     {% endif %}
+   {% if user.is_superuser %} 
+    <a class="btn btn-small btn-info" href="/admin/schedule/event/{{ event.id }}"><i class="icon-edit icon-white"></i>Edit as Admin</a><br>
     {% endif %}
-    {% if perms.ippc.change_event %}
-    <a class="btn btn-small btn-info" href="{% url "edit_event" event.calendar.slug event.id %}">Edit</a>
-    {% endif %}
+    
+    {% if is_contryeevent %}
+        {% if is_contryeditor or user.is_superuser %}
+            <a class="btn btn-small btn-info" href="{% url "edit_event" event.country event.calendar.slug event.id %}"><i class="icon-edit icon-white"></i>Edit</a>
+        {% endif %}
+    {% else %}    
+        {% if is_secretariat or user.is_superuser%}
+            <a class="btn btn-small btn-info" href="{% url "edit_event" 'event' event.calendar.slug event.id %}"><i class="icon-edit icon-white"></i>Edit</a>
+        {% endif %}
+     {% endif %}
 </div>
 {% endblock local_nav %}
 
