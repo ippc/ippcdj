@@ -151,7 +151,65 @@ class PublicationDetailView(DetailView):
     context_object_name = 'publication'
     template_name = 'pages/publication_detail.html'
     queryset = Publication.objects.filter(status=IS_PUBLIC)
+import os
+import zipfile
+import StringIO
+from settings import PROJECT_ROOT
+class PublicationFilesListView(ListView):
+    """
+    Publications Files List
+    """
+    context_object_name = 'latest'
+    model = Publication
+    date_field = 'modify_date'
+    template_name = 'pages/publicationfilestable.html'
+    queryset = Publication.objects.filter(status=IS_PUBLIC).order_by('-modify_date', 'title')
+    allow_future = False
+    allow_empty = True
+    paginate_by = 30
+    
+    def get_context_data(self, **kwargs):
+        context = super(PublicationFilesListView, self).get_context_data(**kwargs)
+        queryset = Publication.objects.filter(status=IS_PUBLIC,library_id=self.kwargs['id']).order_by('-modify_date', 'title')
+        filenames=[]
+        for p in queryset:
+            filenames.append(p.file_en)
 
+        # Folder name in ZIP archive which contains the above files
+        # E.g [thearchive.zip]/somefiles/file2.txt
+        # FIXME: Set this to something better
+        zip_subdir = "archive_en"
+        zip_filename = "%s.zip" % zip_subdir
+        print(zip_filename)
+        # Open StringIO to grab in-memory ZIP contents
+        s = StringIO.StringIO()
+
+        # The zip compressor
+        zf = zipfile.ZipFile(s, "w")
+
+        for fpath in filenames:
+            # Calculate path for file in zip
+            print(fpath)
+            strfpath=os.path.join(PROJECT_ROOT, 'static/media/')+str(fpath)
+            aaa = strfpath.split('/');
+            fname=aaa[len(aaa)-1]
+            print(fname)
+            zip_path = os.path.join(zip_subdir, strfpath)
+            print(zip_path)
+            # Add file, at correct path
+            zf.write(strfpath, zip_path)
+
+        # Must close zip for all contents to be written
+        zf.close()
+
+    #    # Grab ZIP file from in-memory, make response with correct MIME-type
+        resp = HttpResponse(s.getvalue(), mimetype = "application/x-zip-compressed")
+        # ..and correct content-disposition
+        resp['Content-Disposition'] = 'attachment; filename=%s' % zip_filename
+
+        return resp    
+        ##context['latest']=queryset
+        ##return context
 
 @login_required
 @permission_required('ippc.add_pestreport', login_url="/accounts/login/")

@@ -1,0 +1,141 @@
+{% extends "pages/page.html" %}
+
+{% load mezzanine_tags translate_tags staticfiles i18n %}
+
+{% block extra_css %}
+  <link rel="stylesheet" href="{% static "css/DT_bootstrap.css" %}">
+{% endblock %}
+
+{% block meta_title %}
+  {% with page.publicationlibrary|get_object_translation as translated_page %}
+      {{ translated_page.title }}
+  {% endwith %}
+  {# {{ page.publicationlibrary.title }} #}
+{% endblock %}
+
+{% block title %}
+      {% with page.publicationlibrary|get_object_translation as translated_page %}
+          {{ translated_page.title|richtext_filter|safe }}
+      {% endwith %}
+      {# {{ page.publicationlibrary.title }} #}
+{% endblock %}
+
+{% block main %}
+
+{# publication libaries may appear in restricted work area or public pages, #}
+{# so text if login is required before doing permissions tests #}
+{% if page.publicationlibrary.login_required %}
+
+  {% for group in request.user.groups.all %}
+    {% if group in page.get_content_model.groups.all %}
+      {{ block.super }}
+      {# {% editable page.publicationlibrary.content %} #}
+      
+
+
+
+      {% with page.publicationlibrary|get_object_translation as translated_page %}
+          {{ translated_page.content|richtext_filter|safe }}
+      {% endwith %}
+      
+      {# {{ page.publicationlibrary.content|richtext_filter|safe }} #}
+
+
+
+
+      {# {% endeditable %} #}
+        {% include "pages/publicationtable.html" %}
+    {% endif %} {# group in request.user.groups.all #}
+  {% endfor %} {# group in page.get_content_model.groups.all #}
+  
+  {% else %}
+  
+      {{ block.super }}
+      {# {% editable page.publicationlibrary.content %} #}
+
+      {% with page.publicationlibrary|get_object_translation as translated_page %}
+          {{ translated_page.content|richtext_filter|safe }}
+      {% endwith %}
+
+      {# {{ page.publicationlibrary.content|richtext_filter|safe }} #}
+      {# {% endeditable %} #}
+       
+
+{% load mezzanine_tags staticfiles i18n %}
+
+<table class="table table-condensed table-striped table-bordered" id="publications">
+   <thead>
+     <tr>
+         <th style="width:15%;">{% trans "Doc #" %}</th>
+         <th style="width:15%;">{% trans "Agenda #" %}</th>
+       <th>{% trans "Title" %}</th>
+       <th>{% trans "Files" %}</th>
+     </tr>
+   </thead>
+   <tbody>
+
+{% with page.publicationlibrary.publications.all as publications %}
+  {% for publication in latest %}
+    <tr id="media-file-{{ publication.id }}">
+        <td>{{ publication.document_number }}</td>
+        <td>{{ publication.agenda_number }}</td>
+        <td><a href="{% url 'publication-detail' publication.pk %}">{{ publication.title }}</a></td>
+
+      <td>
+        {% if publication.file_en %}
+        <a href="{{ MEDIA_URL }}{{ publication.file_en }}">
+          En
+        </a>
+        {% endif %}
+
+        {% if publication.file_es %}
+        <a href="{{ MEDIA_URL }}{{ publication.file_es }}">
+          Es
+        </a>
+        {% endif %}
+
+        {% if publication.file_fr %}
+        <a href="{{ MEDIA_URL }}{{ publication.file_fr }}">
+          Fr
+        </a>
+        {% endif %}
+
+        {% if publication.file_ru %}
+        <a href="{{ MEDIA_URL }}{{ publication.file_ru }}">
+          Ru
+        </a>
+        {% endif %}
+
+        {% if publication.file_ar %}
+        <a href="{{ MEDIA_URL }}{{ publication.file_ar }}">
+          Ar
+        </a>
+        {% endif %}
+
+        {% if publication.file_zh %}
+        <a href="{{ MEDIA_URL }}{{ publication.file_zh }}">
+          Zh
+        </a>
+        {% endif %}
+        
+      </td>
+    </tr>
+  {% endfor %} {# publication in publications #}
+  </tbody>
+</table>
+{% endwith %} {# page.publicationlibrary.publications.all as publications #}
+  
+{% endif %} {# page.publicationlibrary.login_required #}
+
+{% endblock main %}
+
+{% block extra_js %}
+  <script src="{% static "js/jquery.dataTables.js" %}"></script>
+  <script src="{% static "js/DT_bootstrap.js" %}"></script>
+{% endblock %}
+
+{% block pageinfo %}
+{% endblock pageinfo %}
+
+
+

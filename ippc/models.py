@@ -1174,7 +1174,7 @@ class EmailUtilityMessageFile(models.Model):
 class Translatable(models.Model):
     """ Translations of user-generated content - https://gist.github.com/renyi/3596248"""
     lang = models.CharField(max_length=5, choices=settings.LANGUAGES)
-    print(settings.LANGUAGES)
+    
     class Meta:
         abstract = True
         ordering = ("lang",)

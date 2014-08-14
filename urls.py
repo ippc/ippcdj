@@ -9,7 +9,7 @@ EventReportingListView, EventReportingDetailView,event_reporting_create, event_r
 PestFreeAreaListView, PestFreeAreaDetailView,pfa_create, pfa_edit,\
 WebsiteListView, WebsiteDetailView ,website_create, website_edit, \
 ImplementationISPMListView, ImplementationISPMDetailView,implementationispm_create, implementationispm_edit,\
-CountryListView,\
+CountryListView,PublicationFilesListView,\
 AdvancesSearchCNListView,\
 CnPublicationListView,CnPublicationDetailView,country_publication_create,country_publication_edit,\
 CountryNewsListView,CountryNewsDetailView,countrynews_create,countrynews_edit,\
@@ -166,7 +166,11 @@ urlpatterns = patterns("",
         view=PublicationDetailView.as_view(),
         name='publication-detail'),
     #-------------------------------------------#
- 
+  # publication list files
+    url(r'^publications/(?P<id>\d+)/files/$',
+        view=PublicationFilesListView.as_view(),
+        name='publication-file-list'),
+
     #-------------------------------------------#
     
     # reporting obligation list
