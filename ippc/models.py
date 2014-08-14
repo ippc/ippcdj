@@ -285,6 +285,17 @@ class CommodityKeywordsRelate(models.Model):
         verbose_name=_("Commodity Keywords"),
         blank=True, null=True)    
 
+class ContactType(models.Model):
+    """ Contact Types """
+    contacttype = models.CharField(_("Contact Type"), max_length=500)
+
+    def __unicode__(self):
+        return self.contacttype
+        
+    class Meta:
+        verbose_name_plural = _("Contact Types")
+    pass
+
 class IppcUserProfile(models.Model):
     """ User Profiles for IPPC"""
     
@@ -292,14 +303,17 @@ class IppcUserProfile(models.Model):
         (1, _("Mr")),
         (2, _("Ms")),
     )
-    
+  
     user = models.OneToOneField("auth.User")
     title = models.CharField(_("Professional Title"), blank=True, null=True, max_length=100)
     first_name = models.CharField(_("First Name"), max_length=30)
     last_name = models.CharField(_("Last Name"), max_length=30)
     # main email address already provided by auth.User
     email_address_alt = models.EmailField(_("Alternate Email"), default="", max_length=75, blank=True, null=True)
-
+    contact_type = models.ManyToManyField(ContactType,
+        verbose_name=_("Contact Type"),
+        related_name='contact_type+', blank=True, null=True,
+        )
     gender = models.PositiveSmallIntegerField(_("Gender"), choices=GENDER_CHOICES, blank=True, null=True)
     profile_photo = models.FileField(_("Profile Photo"), upload_to="profile_photos", blank=True)
     bio = models.TextField(_("Brief Biography"), default="", blank=True, null=True)
@@ -1160,7 +1174,7 @@ class EmailUtilityMessageFile(models.Model):
 class Translatable(models.Model):
     """ Translations of user-generated content - https://gist.github.com/renyi/3596248"""
     lang = models.CharField(max_length=5, choices=settings.LANGUAGES)
-
+    print(settings.LANGUAGES)
     class Meta:
         abstract = True
         ordering = ("lang",)
@@ -1248,4 +1262,4 @@ class TransPublicationLibraryPage(Translatable, RichText, Slugged):
         verbose_name = _("Translated Publication Library")
         verbose_name_plural = _("Translated Publication Libraries")
         ordering = ("lang",)
-        unique_together = ("lang", "translation")
+        #unique_together = ("lang", "translation")

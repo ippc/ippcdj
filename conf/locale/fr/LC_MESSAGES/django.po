@@ -21,16 +21,17 @@ msgstr ""
 msgid "English"
 msgstr ""
 
+
 #: settings.py:341
-msgid "Français"
-msgstr ""
+msgid "French"
+msgstr "Français"
 
 #: settings.py:342
 msgid "Español"
 msgstr ""
 
 #: settings.py:343
-msgid "Русский"
+msgid "Ру�?�?кий"
 msgstr ""
 
 #: settings.py:344

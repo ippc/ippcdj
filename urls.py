@@ -14,7 +14,8 @@ AdvancesSearchCNListView,\
 CnPublicationListView,CnPublicationDetailView,country_publication_create,country_publication_edit,\
 CountryNewsListView,CountryNewsDetailView,countrynews_create,countrynews_edit,\
 PollListView,PollResultsView,PollDetailView,vote_poll,\
-email_send,EmailUtilityMessageDetailView,EmailUtilityMessageListView, CountryRegionsPercentageListView,CountryStatsreportsListView
+email_send,EmailUtilityMessageDetailView,EmailUtilityMessageListView, \
+CountryRegionsPercentageListView,CountryStatsreportsListView,CountryStatsTotalreportsListView,CountryRegionsUsersListView,CountryTotalUsersListView
 from schedule.periods import Year, Month, Week, Day
 from mezzanine.core.views import direct_to_template
 import mezzanine_pagedown.urls
@@ -98,7 +99,15 @@ urlpatterns = patterns("",
     url(r'^countries/statistics/reports/$',
         view=CountryStatsreportsListView.as_view(),
         name='statsreports'),
-        
+    url(r'^countries/statistics/total-reports/$',
+        view=CountryStatsTotalreportsListView.as_view(),
+        name='statstotalreports'),  
+    url(r'^countries/statistics/region-users/$',
+        view=CountryRegionsUsersListView.as_view(),
+        name='regionusers'),
+    url(r'^countries/statistics/total-users/$',
+        view=CountryTotalUsersListView.as_view(),
+        name='totalusers'),
     #-------------------------------------------#    
     #POLL:
     

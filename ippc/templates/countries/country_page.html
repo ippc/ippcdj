@@ -34,7 +34,13 @@
   </h1> 
 
   <div class="panel contact-info">
-  <h2>{% trans "Contact Point" %}</h2>
+  <h2>{% trans "Contact Point: " %} 
+    <small>
+     {% for entry in page.get_content_model.contact_point.get_profile.contact_type.all %}
+      {{entry}}{% if forloop.last %} {% else %},{% endif %}
+    {% endfor %}
+    </small>
+  </h2>
     {% include "accounts/account_contactpoint_details.html" %}
   </div>
 

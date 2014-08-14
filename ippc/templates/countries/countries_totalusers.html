@@ -1,0 +1,167 @@
+{% extends "base.html" %}
+{% load pages_tags mezzanine_tags i18n future staticfiles accounts_tags %}
+
+{% block meta_title %}
+  {% trans "Countries Stats" %}: 
+  {{ page.title }}
+{% endblock %}
+
+{% block body_class %}wide{% endblock %}
+
+{% block breadcrumb_menu %}
+<li><a href="/">{% trans "Home" %}</a><span class="divider">/</span></li>
+<li>
+  <a href="/countries/">Countries</a>
+  <span class="divider">/</span>
+</li>
+<li>
+    <a href="/countries/statistics">Statistics</a>
+    <span class="divider">/</span>
+</li>
+
+<li class="active">{% trans "Countries Statistics: Contact points " %} </li>
+{% endblock %}
+
+{% block local_nav %}
+{% endblock local_nav %}
+
+{% block pageinfo %}
+{% endblock pageinfo %}
+
+{% block main %}
+
+<p class="pull-right">
+  <a href="javascript:history.go(-1)">{% trans "« Go back" %}</a>
+</p>
+<script type="text/javascript">
+ window.onload = function () {
+    var chart = new CanvasJS.Chart("chartContainer",
+    {
+      title:{
+        text: "Chart showing status of IPP Contact Points"    
+      },
+      axisY: {
+        title: "Number"
+      },
+      legend: {
+        verticalAlign: "bottom",
+        horizontalAlign: "center"
+      },
+      theme: "theme2",
+      data: [
+
+      {        
+        type: "column",  
+        showInLegend: true, 
+        legendMarkerColor: "grey",
+        legendText: "Type of Contacts",
+        dataPoints: [      
+        {y:{{tot_o_count}}, label: "IPPC Official"},
+        {y: {{tot_u_count}},  label: "IPPC Unofficial" },
+        {y:{{tot_i_count}},  label: "IPPC Information Points"},
+        {y:{{tot_l_count}},  label: "IPPC Local Contact"},
+        {y:{{tot_e_count}},  label: "Country Editors"}
+        
+        ]
+      }   
+      ]
+    });
+
+    chart.render();
+  }
+  </script>
+  <script src='{% static "/static/canvasjs/canvasjs.min.js" %}'></script>
+<h1>
+  <small class="normal">{% trans "Status of IPPC Contact Points" %} </small>
+  </h1> 
+<p>The tables and Graphs below summarize the status of IPPC Contact Points and IPPC editors.
+<br>
+
+<b>Date generated: </b>  {{ dategenerate|date:"d M Y, H:m" }}</p><br>
+
+
+<table class="table table-condensed table-striped">
+<thead>
+<tr>
+    <th>Type of Contact</th>
+    <th>Number</th>
+</tr> 
+</thead>
+<tbody>
+<tr>
+<td>IPPC Official</td>
+<td> {{tot_o_count}}</td>
+</tr>
+<tr>
+<td>UnOfficial</td>
+<td> {{tot_u_count}}</td>
+</tr>
+<tr>
+<td>Information Points</td>
+ <td> {{tot_i_count}}</td>
+</tr>
+<tr>
+    <td>Local contact</td>
+<td> {{tot_l_count}}</td>
+</tr>
+ <tr>
+<td>Editors</td>
+<td> {{tot_e_count}}</td>
+</tr>
+</tbody>
+
+</table>
+
+<div id="chartContainer" style="height:300px; width: 100%;">
+            </div>
+
+<h1> <small class="normal">All users</small></h1>
+<table class="table table-condensed table-striped">
+<thead>
+<tr>
+    <th></th>
+    <th>Total number of users</th>
+    <th>Registered by Dec {{date1}}</th>
+    <th>Registered by Dec {{date2}}</th>
+    <th>Increase percentage in the last year</th>
+</tr> 
+</thead>
+<tbody>
+<tr>
+<td>Users</td>
+<td> {{tot_users}}</td>
+<td> {{u_date1}}</td>
+<td> {{u_date2}}</td>
+<td> {{u_percentage}}%</td>
+</tr>
+</tbody>
+
+</table>
+<h1> <small class="normal">Updates/changes on IPP by Countries</small></h1>
+<table class="table table-condensed table-striped">
+<thead>
+<tr>
+    <th></th>
+    <th>Number by Dec {{date1}}</th>
+    <th>Number by Dec {{date2}}</th>
+    <th>Increase percentage in the last year</th>
+</tr> 
+</thead>
+<tbody>
+<tr>
+<td>New</td>
+<td> {{new_content1}}</td>
+<td> {{new_content2}}</td>
+<td> {{new_content_percentage}}%</td>
+</tr>
+<tr>
+<td>Updates</td>
+<td> {{up_content1}}</td>
+<td> {{up_content2}}</td>
+<td> {{up_content_percentage}}%</td>
+</tr>
+</tbody>
+
+</table>
+
+{% endblock %}

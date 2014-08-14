@@ -345,15 +345,24 @@ MIDDLEWARE_CLASSES = (
 LANGUAGE_CODE == 'en'
 # https://docs.djangoproject.com/en/1.3/ref/settings/#std:setting-LANGUAGES
 # http://pythonhosted.org/django-localeurl/usage.html
-
+from django.utils.translation import ugettext_lazy as _
 ugettext = lambda s: s
+#LANGUAGES = (
+#    ('en', ugettext('English')),
+#    ('fr', ugettext('Français')),
+#    ('es', ugettext('Español')),
+#    ('ru', ugettext('Ру�?�?кий')),
+#    ('ar', ugettext('العربية')),
+#    ('zh', ugettext('简体中文')),
+#)
 LANGUAGES = (
-    ('en', ugettext('English')),
-    ('fr', ugettext('Français')),
-    ('es', ugettext('Español')),
-    ('ru', ugettext('Ру�?�?кий')),
-    ('ar', ugettext('العربية')),
-    ('zh', ugettext('简体中文')),
+    ('en', _('English')),
+    ('fr', _('French')),
+    ('es', _('Spanish')),
+    ('ru', _('Russian')),
+    ('ar', _('Arabic')),
+    ('zh', _('Chinese')),
+  
 )
 
 # https://docs.djangoproject.com/en/dev/ref/settings/#locale-paths

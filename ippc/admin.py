@@ -12,7 +12,7 @@ Publication, ReportingObligation,EventReporting,PestFreeArea,ImplementationISPM,
 ImplementationISPMVersion, TransPublicationLibraryPage,Website,EventreportingFile,EventreportingUrl,\
 ReportingObligation_File, ReportingObligationUrl,ImplementationISPMUrl,ImplementationISPMFile,\
 PestFreeAreaFile, PestFreeAreaUrl, WebsiteUrl,PestReportUrl,PestReportFile,CnPublication,CnPublicationFile,CnPublicationUrl,\
-CountryNews,CountryNewsFile,CountryNewsUrl, EppoCode,IssueKeyword, CommodityKeyword,IssueKeywordsRelate,CommodityKeywordsRelate
+CountryNews,CountryNewsFile,CountryNewsUrl, EppoCode,IssueKeyword, CommodityKeyword,IssueKeywordsRelate,CommodityKeywordsRelate, ContactType
 from django.forms.models import inlineformset_factory
 from django.forms.formsets import formset_factory
 from django.contrib.auth.models import User
@@ -158,6 +158,11 @@ class PestReportAdmin(admin.ModelAdmin):
 
 admin.site.register(PestStatus, PestStatusAdmin)
 admin.site.register(PestReport, PestReportAdmin)
+
+class ContactTypeAdmin(admin.ModelAdmin):
+    """Options for the pest status field of Pest Reports"""
+    save_on_top = True
+admin.site.register(ContactType, ContactTypeAdmin)
 
 class MyIssueKeywordsRelateAdminForm(forms.ModelForm):
     class Meta:
