@@ -1,5 +1,9 @@
 {% load blog_tags keyword_tags i18n future %}
-
+{% if user.is_superuser  or perms.blog.add_blogpost  %} 
+    <div class="pull-right">
+        <a class="btn btn-small btn-info" href="/admin/blog/blogpost/add/">Add new news or call item</a><br>
+    </div>
+{% endif %}
 {% block blog_recent_posts %}
 {% blog_recent_posts 5 as recent_posts %}
 {% if recent_posts %}

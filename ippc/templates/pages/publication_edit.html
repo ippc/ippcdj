@@ -1,0 +1,51 @@
+{% extends "base.html" %}
+{% load pages_tags translate_tags mezzanine_tags i18n future staticfiles accounts_tags %}
+
+{% block meta_title %}{% trans "Edit Publication" %} - {{ publication.country}} {% endblock %}
+
+{# {% block extra_style %} #}
+{#     <link href="{% static "css/Markdown.Editor.css" %}" rel="stylesheet"> #}
+{# {% endblock extra_style %} #}
+
+{% block body_class %}wide{% endblock %}
+
+{% block breadcrumb_menu %}
+<li>
+  <a href="/home/">{% trans "Home" %}</a>
+  <span class="divider">/</span>
+</li>
+<li>
+  <a href="/publications/">{% trans "Publications" %}</a>
+  <span class="divider">/</span>
+</li>
+<li class="active">{% trans "Editing" %} {{ publication.title }}</li>
+{% endblock %}
+
+{% block local_nav %}
+{% endblock local_nav %}
+
+{% block pageinfo %}
+{% endblock pageinfo %}
+
+{% block main %}
+
+<p class="pull-right">
+  <a href="javascript:history.go(-1)">{% trans "« Cancel and go back" %}</a>
+</p>
+
+
+<h1><small class="normal">{% trans "Editing" %}</small> {{ publication.title }} <br><small class="normal">{% trans "Last updated on" %} {{publication.modify_date}}</small></h1>
+
+<form enctype="multipart/form-data" class="customform" method="POST" action="{% url 'publication-edit'  publication.id %}">
+    {% csrf_token %}
+    <fieldset>
+        {% include "pages/publication_form.html" %}
+        <div class="form-actions">
+            <button type="submit" class="btn btn-info btn-large">{% trans "Update Publication" %}</button> {% trans "or" %} <a href="javascript:history.go(-1)">{% trans "Cancel" %}</a>
+        </div>
+    </fieldset>
+</form>
+
+
+{% endblock %}
+

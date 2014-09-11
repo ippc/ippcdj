@@ -61,7 +61,43 @@ select#id_pest_status {min-height:30em; height:auto;}
 select#selectcountry {max-width:350px;}
 /*ul.nav li.dropdown:hover ul.dropdown-menu {display:inline;}*/
 
+.icn-noncontracting {background:url(/static/img/icons.gif) no-repeat 0 -1056px !important; color:#630 !important;} 
+.icn-territory {background:url(/static/img/icons.gif) no-repeat 0 -2508px !important;}
+.icn-contracting {background:url(/static/img/icons.gif) no-repeat 0 -66px !important;}
 
+
+ul#regionsmap {position:relative; list-style:none; margin:0 !important; padding:0 !important; background-image: url(/static/img/worldmap-small-faoregions.gif); background-repeat:no-repeat; height: 94px; width: 205px;}
+ul#regionsmap li {position:absolute; text-decoration:none;}
+ul#regionsmap li a:hover span {text-indent:0; color:#000; background-color:#F4F4F4; font-weight:bold; position:absolute; border:1px solid #ddd; margin:0; padding:2px; line-height:1.3em; font-size:0.8em;}
+
+li#africa a, li#asia a, li#southwestpacific a, li#europe a, li#northamerica a, li#latinamericacaribbean a, li#neareast a {position:absolute; text-decoration:none;}
+li#africa a span, li#asia a span, li#southwestpacific a span, li#europe a span, li#northamerica a span, li#latinamericacaribbean a span, li#neareast a span {display:none;}
+li#africa a:hover, li#asia a:hover, li#southwestpacific a:hover, li#europe a:hover, li#northamerica a:hover, li#latinamericacaribbean a:hover, li#neareast a:hover {position:absolute; top:0; left:0; background:none; border:none; cursor:pointer;}
+li#africa a:hover span, li#asia a:hover span, li#southwestpacific a:hover span, li#europe a:hover span, li#northamerica a:hover span, li#latinamericacaribbean a:hover span, li#neareast a:hover span {display: block;}
+
+li#africa {left:59px; top:46px;}
+li#africa a {width:40px; height:42px;}
+
+li#asia {left:100px; top:2px;}
+li#asia a {width:76px; height:44px;}
+
+li#southwestpacific {left:122px; top:43px;}
+li#southwestpacific a {width:60px; height:40px;}
+
+li#europe {left:65px; top:2px;}
+li#europe a {width:42px; height:29px;}
+
+li#northamerica {left:0px; top:2px;}
+li#northamerica a {width:54px; height:37px;}
+
+li#latinamericacaribbean {left:0; top:35px;}
+li#latinamericacaribbean a {width:48px; height:55px;}
+
+li#neareast {left:80px; top:24px;}
+li#neareast a {width:30px; height:20px;}
+
+
+ 
 /* pygments github code styles  */
 .codehilite .gd { color: #000000; background-color: #ffdddd } /* Generic.Deleted */
 .codehilite .ge { color: #000000; font-style: italic } /* Generic.Emph */

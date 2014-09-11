@@ -3,16 +3,20 @@ from django.conf.urls import patterns, include, url
 from django.contrib import admin
 
 from .ippc.views import PestReportListView, PestReportHiddenListView, \
-PestReportDetailView, CountryView, pest_report_create, pest_report_edit, PublicationDetailView,\
+PestReportDetailView, CountryView,PartnersView, pest_report_create, pest_report_edit, PublicationDetailView,\
 PublicationListView,ReportingObligationListView, ReportingObligationDetailView,reporting_obligation_create, reporting_obligation_edit, \
 EventReportingListView, EventReportingDetailView,event_reporting_create, event_reporting_edit, \
 PestFreeAreaListView, PestFreeAreaDetailView,pfa_create, pfa_edit,\
 WebsiteListView, WebsiteDetailView ,website_create, website_edit, \
 ImplementationISPMListView, ImplementationISPMDetailView,implementationispm_create, implementationispm_edit,\
-CountryListView,PublicationFilesListView,\
-AdvancesSearchCNListView,\
+CountryListView,PublicationFilesListView,CountryRelatedView,\
+AdvancesSearchCNListView,publication_edit,\
 CnPublicationListView,CnPublicationDetailView,country_publication_create,country_publication_edit,\
+PartnersPublicationDetailView,  partner_publication_create,  partner_publication_edit,\
+PartnersWebsitesDetailView,  partner_websites_create,  partner_websites_edit,\
 CountryNewsListView,CountryNewsDetailView,countrynews_create,countrynews_edit,\
+CountryNewsListView,CountryNewsDetailView,countrynews_create,countrynews_edit,\
+PartnersNewsDetailView,partnersnews_create,partnersnews_edit,\
 PollListView,PollResultsView,PollDetailView,vote_poll,\
 email_send,EmailUtilityMessageDetailView,EmailUtilityMessageListView, \
 CountryRegionsPercentageListView,CountryStatsreportsListView,CountryStatsTotalreportsListView,CountryRegionsUsersListView,CountryTotalUsersListView
@@ -42,6 +46,7 @@ urlpatterns = patterns("",
     # url(r'^forum/(?P<slug>[\w-]+)/$',
     #     view=ForumPostDetailView.as_view(),
     #     name="forum-post-detail"),
+    url(r'^contact/',    include('envelope.urls')),
     url("^sitemap/$", direct_to_template, {"template": "sitemap.html"}, name="sitemap"),
     url("^contact/$", direct_to_template, {"template": "contact.html"}, name="contact"),
     # url("^feeds/$", direct_to_template, {"template": "feeds.html"}, name="feeds"),
@@ -91,8 +96,21 @@ urlpatterns = patterns("",
     url(r'^countries/(?P<type>[\w-]+)$',
         view=AdvancesSearchCNListView.as_view(),
         name='advsearch'),
-    
+    #-------------PARTNERS---------------------------
+    url(r'^partners/international-organizations/(?P<partner>[\w-]+)/$',
+        view=PartnersView.as_view(),
+        # view=country_view(),
+        name='partner'),
+    url(r'^partners/regional-plant-protection-organizations/(?P<partner>[\w-]+)/$',
+        view=PartnersView.as_view(),
+        # view=country_view(),
+        name='partner'), 
+    url(r'^liason/(?P<partner>[\w-]+)/$',
+        view=PartnersView.as_view(),
+        # view=country_view(),
+        name='partner'),     
     #-------------------STATS------------------------    
+   
     url(r'^countries/statistics/regionspercentage/$',
         view=CountryRegionsPercentageListView.as_view(),
         name='regionspercentage'),
@@ -130,11 +148,16 @@ urlpatterns = patterns("",
         view=email_send,
         name='email-send'),
     #--------------------------------------#
-    # pest report list
+   url(r'^countries/(?P<country>[\w-]+)/relatedinformations/$',
+        view=CountryRelatedView.as_view(),
+        name='related-info'), 
+     #--------------------------------------#    
     url(r'^countries/(?P<country>[\w-]+)/pestreports/$',
         view=PestReportListView.as_view(),
         name='pest-report-list'),
-
+    url(r'^countries/(?P<country>[\w-]+)/pestreports/$',
+        view=PestReportListView.as_view(),
+        name='pest-report-list'),
     # pest list showing hidden reports 
     url(r'^countries/(?P<country>[\w-]+)/pestreports/hidden/$',
         view=PestReportHiddenListView.as_view(),
@@ -284,7 +307,58 @@ urlpatterns = patterns("",
     #url(r'^countries/(?P<country>[\w-]+)/eventreporting/hidden/$',
     #    view=EventReportingHiddenListView.as_view(),
     #    name='event-reporting-hidden-list'),
+#-------------------------------------------#
+    # partner publications 
 
+    # partners publications detail
+    url(r'^partners/(?P<partners>[\w-]+)/publications/(?P<year>\d+)/(?P<month>\d{2})/(?P<slug>[\w-]+)/$',
+        view=PartnersPublicationDetailView.as_view(),
+        name="partner-publication-detail"),
+        
+     #partners publications create
+    url(r'^partners/(?P<partners>[\w-]+)/publications/create/$',
+        view=partner_publication_create,
+        name='partner-publication-create'),
+        
+    # partners publications edit
+    url(r'^partners/(?P<partner>[\w-]+)/publications/edit/(?P<id>\d+)/$',
+        view=partner_publication_edit,
+        name='partner-publication-edit'),
+#-------------------------------------------#
+    # partner websites 
+
+    # partners websites detail
+    url(r'^partners/(?P<partners>[\w-]+)/websites/(?P<year>\d+)/(?P<month>\d{2})/(?P<slug>[\w-]+)/$',
+        view=PartnersWebsitesDetailView.as_view(),
+        name="partner-websites-detail"),
+        
+     #partners websites create
+    url(r'^partners/(?P<partners>[\w-]+)/websites/create/$',
+        view=partner_websites_create,
+        name='partner-websites-create'),
+        
+    # partners websites edit
+    url(r'^partners/(?P<partner>[\w-]+)/websites/edit/(?P<id>\d+)/$',
+        view=partner_websites_edit,
+        name='partner-websites-edit'),
+        
+   # partners news detail
+    url(r'^partners/(?P<partners>[\w-]+)/news/(?P<year>\d+)/(?P<month>\d{2})/(?P<slug>[\w-]+)/$',
+        view=PartnersNewsDetailView.as_view(),
+        name="partner-news-detail"),
+        
+     #partners news create
+    url(r'^partners/(?P<partners>[\w-]+)/news/create/$',
+        view=partnernews_create,
+        name='partner-news-create'),
+        
+    # partners news edit
+    url(r'^partners/(?P<partner>[\w-]+)/news/edit/(?P<id>\d+)/$',
+        view=partnernews_edit,
+        name='partner-websites-edit'),
+             
+        
+        
 #-------------------------------------------#
     # CN news list
     url(r'^countries/(?P<country>[\w-]+)/countrynews/$',
@@ -372,8 +446,11 @@ urlpatterns = patterns("",
         view=implementationispm_edit,
         name='implementationispm-edit'),
 
+#-----------PUBLICATION-------------------#
+   url(r'^publication/edit/(?P<id>\d+)/$',
+        view=publication_edit,
+        name='publication-edit'),
 #-------------------------------------------#
-
     # pagedown for markdown wysiwyg
     ("^pagedown/", include(mezzanine_pagedown.urls)),
     

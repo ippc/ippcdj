@@ -7,33 +7,21 @@
 {% endblock %}
 
 {% block meta_title %}
-  {% with page.publicationlibrary|get_object_translation as translated_page %}
-      {{ translated_page.title }}
-  {% endwith %}
-  {# {{ page.publicationlibrary.title }} #}
+   {{ titlepage }} 
 {% endblock %}
 
 {% block title %}
-      {% with page.publicationlibrary|get_object_translation as translated_page %}
-          {{ translated_page.title|richtext_filter|safe }}
-      {% endwith %}
-      {# {{ page.publicationlibrary.title }} #}
+     {{ titlepage }}
 {% endblock %}
 
 {% block main %}
 
-{# publication libaries may appear in restricted work area or public pages, #}
-{# so text if login is required before doing permissions tests #}
 {% if page.publicationlibrary.login_required %}
 
   {% for group in request.user.groups.all %}
     {% if group in page.get_content_model.groups.all %}
       {{ block.super }}
       {# {% editable page.publicationlibrary.content %} #}
-      
-
-
-
       {% with page.publicationlibrary|get_object_translation as translated_page %}
           {{ translated_page.content|richtext_filter|safe }}
       {% endwith %}
@@ -62,69 +50,72 @@
        
 
 {% load mezzanine_tags staticfiles i18n %}
+<!--h1>{{titlepage}}</h1-->
+<p>You can find in this table the links to download all the files of the page <b>{{titlepage}}</b>.<br>
+You can download the archive containing all the files or a specific language archive.<br>
+Click on the icon <i class="icon-download"></i>  to download the selected archive.</p>
+
 
 <table class="table table-condensed table-striped table-bordered" id="publications">
    <thead>
      <tr>
-         <th style="width:15%;">{% trans "Doc #" %}</th>
-         <th style="width:15%;">{% trans "Agenda #" %}</th>
-       <th>{% trans "Title" %}</th>
-       <th>{% trans "Files" %}</th>
+       <th>{% trans "Language" %}</th>
+       <th>{% trans "Archive name" %}</th>
+       <th>{% trans "Download" %}</th>
      </tr>
    </thead>
    <tbody>
+    {% if zip_all_s %}<tr>
+        <td>All</td>
+        <td>Complete archive </td>
+        <td><a href="/{{zip_all}}"><i class="icon-download"></i></a> ({{ zip_all_s|filesizeformat }})
+</a></td>
+    </tr>  {% endif  %}
+    {% if zip_en_s %}
+    <tr>
+        <td>English</td>
+        <td>En archive</td>
+        <td><a href="/{{zip_en}}"><i class="icon-download"></i></a> ({{ zip_en_s|filesizeformat }})</a></td>
 
-{% with page.publicationlibrary.publications.all as publications %}
-  {% for publication in latest %}
-    <tr id="media-file-{{ publication.id }}">
-        <td>{{ publication.document_number }}</td>
-        <td>{{ publication.agenda_number }}</td>
-        <td><a href="{% url 'publication-detail' publication.pk %}">{{ publication.title }}</a></td>
-
-      <td>
-        {% if publication.file_en %}
-        <a href="{{ MEDIA_URL }}{{ publication.file_en }}">
-          En
-        </a>
-        {% endif %}
-
-        {% if publication.file_es %}
-        <a href="{{ MEDIA_URL }}{{ publication.file_es }}">
-          Es
-        </a>
-        {% endif %}
-
-        {% if publication.file_fr %}
-        <a href="{{ MEDIA_URL }}{{ publication.file_fr }}">
-          Fr
-        </a>
-        {% endif %}
-
-        {% if publication.file_ru %}
-        <a href="{{ MEDIA_URL }}{{ publication.file_ru }}">
-          Ru
-        </a>
-        {% endif %}
-
-        {% if publication.file_ar %}
-        <a href="{{ MEDIA_URL }}{{ publication.file_ar }}">
-          Ar
-        </a>
-        {% endif %}
-
-        {% if publication.file_zh %}
-        <a href="{{ MEDIA_URL }}{{ publication.file_zh }}">
-          Zh
-        </a>
-        {% endif %}
-        
-      </td>
     </tr>
-  {% endfor %} {# publication in publications #}
+    {% endif  %}
+     {% if zip_es_s %}
+    <tr>
+        <td>Spanish</td>
+        <td>Es archive</td>
+        <td><a href="/{{zip_es}}"><i class="icon-download"></i></a> ({{ zip_es_s|filesizeformat }})
+</a></td>
+    </tr>{% endif  %}
+     {% if zip_fr_s %}
+    <tr>
+        <td>French</td>
+        <td>Fr archive</td>
+        <td><a href="/{{zip_fr}}"><i class="icon-download"></i></a> ({{ zip_fr_s|filesizeformat }})
+</a></td>
+    </tr>{% endif  %}
+     {% if zip_ar_s %}
+    <tr>
+        <td>Arabic</td>
+        <td>Ar archive</td>
+        <td><a href="/{{zip_ar}}"><i class="icon-download"></i></a> ({{ zip_ar_s|filesizeformat }})
+</a></td>
+    </tr>{% endif  %}
+     {% if zip_ru_s %}
+    <tr>
+        <td>Russian</td>
+        <td>Ru archive</td>
+        <td><a href="/{{zip_ru}}"><i class="icon-download"></i></a> ({{ zip_ru_s|filesizeformat }})
+</a></td>
+    </tr>{% endif  %}
+     {% if zip_zh_s %}
+    <tr>
+        <td>Chinese</td>
+        <td>Zh archive</td>
+        <td><a href="/{{zip_zh}}"><i class="icon-download"></i></a> ({{ zip_zh_s|filesizeformat }})
+</a></td>
+    </tr>{% endif  %}
   </tbody>
 </table>
-{% endwith %} {# page.publicationlibrary.publications.all as publications #}
-  
 {% endif %} {# page.publicationlibrary.login_required #}
 
 {% endblock main %}

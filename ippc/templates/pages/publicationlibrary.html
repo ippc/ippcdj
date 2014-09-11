@@ -21,33 +21,55 @@
 {% endblock %}
 
 {% block main %}
-
+{% if user.is_superuser or perms.pages.change_richtextpage %}
+    <div class="pull-right">
+        <a class="btn btn-info btn-small" href="/admin/ippc/publicationlibrary/{{ page.id }}"><i class="icon-edit icon-white"></i> Edit as Admin</a><br>
+        <a class="btn btn-info btn-small" href="/admin/ippc/publicationlibrary/add/?parent={{ page.id }}"><i class="icon-plus icon-white"></i> Add new sub page</a><br>
+    </div>
+{% endif %}
+    
 {# publication libaries may appear in restricted work area or public pages, #}
 {# so text if login is required before doing permissions tests #}
+
 {% if page.publicationlibrary.login_required %}
+      {% if user.is_superuser or perms.pages.change_richtextpage %}
+            {{ block.super }}
+            {# {% editable page.publicationlibrary.content %} #}
 
-  {% for group in request.user.groups.all %}
-    {% if group in page.get_content_model.groups.all %}
-      {{ block.super }}
-      {# {% editable page.publicationlibrary.content %} #}
-      
+            {% with page.publicationlibrary|get_object_translation as translated_page %}
+                {{ translated_page.content|richtext_filter|safe }}
+            {% endwith %}
 
-
-
-      {% with page.publicationlibrary|get_object_translation as translated_page %}
-          {{ translated_page.content|richtext_filter|safe }}
-      {% endwith %}
-      
-      {# {{ page.publicationlibrary.content|richtext_filter|safe }} #}
+            {# {{ page.publicationlibrary.content|richtext_filter|safe }} #}
 
 
 
 
-      {# {% endeditable %} #}
-        {% include "pages/publicationtable.html" %}
-    {% endif %} {# group in request.user.groups.all #}
-  {% endfor %} {# group in page.get_content_model.groups.all #}
-  
+            {# {% endeditable %} #}
+              {% include "pages/publicationtable.html" %}
+       {% else %}
+            {% for group in request.user.groups.all %}
+              {% if group in page.get_content_model.groups.all %}
+                {{ block.super }}
+                {# {% editable page.publicationlibrary.content %} #}
+
+
+
+
+                {% with page.publicationlibrary|get_object_translation as translated_page %}
+                    {{ translated_page.content|richtext_filter|safe }}
+                {% endwith %}
+
+                {# {{ page.publicationlibrary.content|richtext_filter|safe }} #}
+
+
+
+
+                {# {% endeditable %} #}
+                  {% include "pages/publicationtable.html" %}
+              {% endif %} {# group in request.user.groups.all #}
+            {% endfor %} {# group in page.get_content_model.groups.all #}
+        {% endif %} 
   {% else %}
   
       {{ block.super }}

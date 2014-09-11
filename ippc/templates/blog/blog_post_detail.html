@@ -24,7 +24,11 @@
 {# =note: the sidebar is in the filter_panel.html include #}
 
 {% block main %}
-
+{% if user.is_superuser or perms.blog.add_blogpost  %} 
+    <div class="pull-right">
+        <a class="btn btn-info btn-small" href="/admin/blog/blogpost/{{ blog_post.id }}">Edit as Admin</a><br>
+    </div>
+{% endif %}
 {% block blog_post_detail_postedby %}
 {% editable blog_post.publish_date %}
 <h6>

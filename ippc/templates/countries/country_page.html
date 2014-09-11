@@ -43,7 +43,8 @@
   </h2>
     {% include "accounts/account_contactpoint_details.html" %}
   </div>
-
+ 
+  
   {# =todo: description of nppo here #}
   {# <h2>Description of NPPO</h2> #}
   {# {% with page.richtextpage|get_object_translation as translated_page %} #}
@@ -149,6 +150,12 @@
         {% endif %}
       </li>
       <li><a href="http://phytosanitary.info/user/login?destination=node/add" target="_blank">Project <span class="small">(go to phytosanitary.info)</span></a></li>
+  
+     <li class="divider"></li>
+      <li><a href="/countries/{{page.title|slugify }}/relatedinformations/">Related informations</a> 
+       
+      </li>
+    
     </ul>
 </div>  
   {# =todo: link to this country's RSS feed here. #}

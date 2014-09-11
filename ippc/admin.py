@@ -7,12 +7,15 @@ from mezzanine.conf import settings
 from mezzanine.core.admin import TabularDynamicInlineAdmin, StackedDynamicInlineAdmin,DisplayableAdmin, OwnableAdmin
 
 
-from .models import PestStatus, PestReport, CountryPage, WorkAreaPage, PublicationLibrary, \
-Publication, ReportingObligation,EventReporting,PestFreeArea,ImplementationISPM, Poll_Choice, Poll,\
+from .models import PestStatus, PestReport, CountryPage, PartnersPage, WorkAreaPage, PublicationLibrary, \
+Publication,PublicationFile,PublicationUrl, ReportingObligation,EventReporting,PestFreeArea,ImplementationISPM, Poll_Choice, Poll,\
 ImplementationISPMVersion, TransPublicationLibraryPage,Website,EventreportingFile,EventreportingUrl,\
 ReportingObligation_File, ReportingObligationUrl,ImplementationISPMUrl,ImplementationISPMFile,\
-PestFreeAreaFile, PestFreeAreaUrl, WebsiteUrl,PestReportUrl,PestReportFile,CnPublication,CnPublicationFile,CnPublicationUrl,\
-CountryNews,CountryNewsFile,CountryNewsUrl, EppoCode,IssueKeyword, CommodityKeyword,IssueKeywordsRelate,CommodityKeywordsRelate, ContactType
+PestFreeAreaFile, PestFreeAreaUrl, WebsiteUrl,PestReportUrl,PestReportFile,CnPublication,CnPublicationFile,CnPublicationUrl,PartnersPublication,PartnersPublicationFile,PartnersPublicationUrl, \
+CountryNews,CountryNewsFile,CountryNewsUrl, \
+PartnersWebsite,PartnersWebsiteUrl,\
+PartnersNews,PartnersNewsFile,PartnersNewsUrl, \
+EppoCode,IssueKeyword, CommodityKeyword,IssueKeywordsRelate,CommodityKeywordsRelate, ContactType
 from django.forms.models import inlineformset_factory
 from django.forms.formsets import formset_factory
 from django.contrib.auth.models import User
@@ -27,12 +30,27 @@ import autocomplete_light_registry
 from django_markdown.widgets import MarkdownWidget
 
 
-
+class PublicationFileInline(admin.TabularInline):
+    model = PublicationFile
+    formset = inlineformset_factory(Publication,  PublicationFile,extra=1)
+    
+class PublicationUrlInline(admin.TabularInline):
+    model = PublicationUrl
+    formset = inlineformset_factory(Publication, PublicationUrl,extra=1)
+   
+class PublicationAdmin(admin.ModelAdmin):
+    inlines = [PublicationFileInline,PublicationUrlInline, ]
+    save_on_top = True
+    list_display = ('title',  'modify_date')
+    list_filter = ('title',  'modify_date')
+    prepopulated_fields = { 'slug': ['title'] }
+admin.site.register(Publication, PublicationAdmin)
 
 class PublicationInline(StackedDynamicInlineAdmin):
+    inlines = [PublicationFileInline,PublicationUrlInline, ]
     model = Publication
     prepopulated_fields = { 'slug': ['title'] }
-
+    
 
 class TransPublicationLibraryPageAdmin(StackedDynamicInlineAdmin):
     model = TransPublicationLibraryPage
@@ -56,6 +74,15 @@ class CountryPageAdmin(PageAdmin):
 
 admin.site.register(CountryPage, CountryPageAdmin)
 
+partnerspages_extra_fieldsets = ((None, {"fields": ("name", "short_description", "partner_slug",  "contact_point", "editors", )}),)
+
+class PartnersPageAdmin(PageAdmin):
+    fieldsets = deepcopy(PageAdmin.fieldsets) + partnerspages_extra_fieldsets
+    prepopulated_fields = { 'partner_slug': ['name'] }
+    # list_display = ('continent','name','iso','iso3', 'languages', 'currency_name')
+    # list_display_links = ('name',)
+
+admin.site.register(PartnersPage, PartnersPageAdmin)
 
 
 class PollChoiceInline(admin.TabularInline):
@@ -65,17 +92,17 @@ class PollChoiceInline(admin.TabularInline):
 class MyPollAdminForm(forms.ModelForm):
     class Meta:
         model = Poll
-        widgets = {
-          'polltext':MarkdownWidget() 
-         # models.TextField: {'widget': },
-        }
+#        widgets = {
+#          'polltext':MarkdownWidget() 
+#         # models.TextField: {'widget': },
+#        }
 
 
 class PollAdmin(admin.ModelAdmin):
     form = MyPollAdminForm
     fieldsets = [
         (None,               {'fields': ['question']}),
-        #(None,               {'fields': ['polltext'], 'classes': ['Textarea']}),
+        (None,               {'fields': ['polltext'], 'classes': ['Textarea']}),
         ('Date information', {'fields': ['pub_date'], 'classes': ['collapse']}),
         ('Closing Date', {'fields': ['closing_date'], 'classes': ['collapse']}),
         ('Groups', {'fields': ['userspoll'], 'classes': ['collapse']}),
@@ -88,8 +115,12 @@ class PollAdmin(admin.ModelAdmin):
     search_fields = ['question']
     list_filter = ['pub_date','question']
 	
-#admin.site.register(Poll, PollAdmin)
-admin.site.register(Poll, MarkdownModelAdmin)
+admin.site.register(Poll, PollAdmin)
+
+
+#admin.site.register(Poll, MarkdownModelAdmin)
+
+
 
 
 # forumposts_extra_fieldsets = ((None, {"fields": ("comments", "allow_comments")}),)
@@ -253,6 +284,19 @@ class WebsiteAdmin(admin.ModelAdmin):
     prepopulated_fields = { 'slug': ['title'] }
 admin.site.register(Website, WebsiteAdmin)
 
+class PartnersWebsiteUrlInline(admin.TabularInline):
+    model = PartnersWebsiteUrl
+    formset = inlineformset_factory(PartnersWebsite, PartnersWebsiteUrl,extra=1)
+
+class PartnersWebsiteAdmin(admin.ModelAdmin):
+    inlines = [PartnersWebsiteUrlInline ]
+    save_on_top = True
+    list_display = ('title', 'modify_date',   'partners')
+    list_filter = ('title',   'modify_date',  'partners')
+    search_fields = ('title', 'short_description')
+    prepopulated_fields = { 'slug': ['title'] }
+admin.site.register(PartnersWebsite, PartnersWebsiteAdmin)
+
 class PestFreeAreaFileInline(admin.TabularInline):
     model = PestFreeAreaFile
     formset = inlineformset_factory(PestFreeArea,  PestFreeAreaFile,extra=1)
@@ -286,6 +330,28 @@ class CnPublicationAdmin(admin.ModelAdmin):
     search_fields = ('title', 'short_description')
     prepopulated_fields = { 'slug': ['title'] }
 admin.site.register(CnPublication, CnPublicationAdmin)   
+
+
+class PartnersPublicationFileInline(admin.TabularInline):
+    model = PartnersPublicationFile
+    formset = inlineformset_factory(PartnersPublication,  PartnersPublicationFile,extra=1)
+    
+class PartnersPublicationUrlInline(admin.TabularInline):
+    model = PartnersPublicationUrl
+    formset = inlineformset_factory(PartnersPublication, PartnersPublicationUrl,extra=1)
+
+class PartnersPublicationAdmin(admin.ModelAdmin):
+    inlines = [PartnersPublicationFileInline,PartnersPublicationUrlInline]
+    save_on_top = True
+    list_display = ('title', 'publication_date', 'modify_date',   'partners')
+    list_filter = ('title', 'publication_date', 'modify_date',  'partners')
+    search_fields = ('title', 'short_description')
+    prepopulated_fields = { 'slug': ['title'] }
+admin.site.register(PartnersPublication, PartnersPublicationAdmin)  
+
+
+
+
 
 class ImplementationISPMFileInline(admin.TabularInline):
     model = ImplementationISPMFile
@@ -326,6 +392,22 @@ class  CountryNewsAdmin(admin.ModelAdmin):
     prepopulated_fields = { 'slug': ['title'] }
 admin.site.register( CountryNews,  CountryNewsAdmin)
 
+class PartnersNewsFileInline(admin.TabularInline):
+    model =  PartnersNewsFile
+    formset = inlineformset_factory( PartnersNews,   PartnersNewsFile,extra=1)
+    
+class  PartnersNewsUrlInline(admin.TabularInline):
+    model =  PartnersNewsUrl
+    formset = inlineformset_factory( PartnersNews,  PartnersNewsUrl,extra=1)
+ 
+class  PartnersNewsAdmin(admin.ModelAdmin):
+    inlines = [PartnersNewsFileInline,PartnersNewsUrlInline, ]
+    save_on_top = True
+    list_display = ('title', 'publication_date', 'modify_date',   'partners')
+    list_filter = ('title', 'publication_date', 'modify_date',  'partners')
+    search_fields = ('title', 'short_description')
+    prepopulated_fields = { 'slug': ['title'] }
+admin.site.register( PartnersNews,  PartnersNewsAdmin)
 
 
 # Translatable user-content  -----------------

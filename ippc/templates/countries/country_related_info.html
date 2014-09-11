@@ -1,0 +1,560 @@
+{% extends "base.html" %}
+{% load pages_tags translate_tags mezzanine_tags i18n future staticfiles accounts_tags %}
+
+{% block meta_title %}
+  {{ page.title }}
+{% endblock %}
+
+{% block breadcrumb_menu %}
+<li>
+  <a href="/">{% trans "Home" %}</a>
+  <span class="divider">/</span>
+</li>
+<li>
+  <a href="/countries/">{% trans "Countries" %}</a>
+  <span class="divider">/</span>
+</li>
+<li>
+  <a href="/countries/{{ page.title }}"> {{ page.title }}</a>
+  <span class="divider">/</span>
+</li>
+
+<li class="active">
+    {% trans "Related informations" %}
+</li>
+<li class="pull-right">
+  {% include "countries/country_selector.html" %}
+</li>
+{% endblock %}
+
+{% block main %}
+  
+  <h1>
+      {{ page.title }}
+  </h1> 
+
+  <div>
+  
+<script type="text/javascript" src="https://data.fao.org/developers/widgets/0.2.6/scripts/library-min.js"></script>
+<h2>Key Statistics</h2>
+<table class="table table-condensed"><caption>Economic and General</caption>
+<thead>
+<tr>
+    <th class="header"> </th>
+    <th class="header" style="with:20%;white-space:nowrap;">2000</th>
+    <th class="header" style="with:20%;white-space:nowrap;">Most Recent</th>
+    <th class="header" style="with:20%;white-space:nowrap;">(Year)</th>
+ </tr>
+</thead>
+<tbody>
+<tr class="odd">
+    <td>Total Population <span class="small quiet"><a target="_blank" href="http://data.fao.org/database?entryId=262b79ca-279c-4517-93de-ee3b7c7cb553">FAOSTAT</a></span><!--span class="small quiet">[1000]</span--></td>
+    <td id="td_pop_1" style="with:20%;white-space:nowrap;"><span id="population-faostat-value_0" class="indicatorValue"></span><i id="td_pop_1_f"  class="small quiet"><SPAN class=indicatorValue id="population-faostat-flag_0"></SPAN></i></td>
+    <td id="td_pop_2" style="with:20%;white-space:nowrap;"><span id="population-faostat-value_1" class="indicatorValue"></span><i id="td_pop_2_f" class="small quiet"><SPAN class=indicatorValue id="population-faostat-flag_1"></SPAN></i></td>
+    <td id="td_pop" style="with:20%;white-space:nowrap;"><span id="population-faostat-year_1" class="indicatorValue"></span></td>
+</tr>
+<tr class="even">
+  <td>Total Land <i class="small quiet">[1000 Ha]</i> <span class="small quiet"><a target="_blank" href="http://data.fao.org/database?entryId=262b79ca-279c-4517-93de-ee3b7c7cb553">FAOSTAT</a></span></td>
+  <td  id="td_land_1" style="with:20%;white-space:nowrap;"><span id="land-faostat-value_0" class="indicatorValue"></span><i  id="td_land_1_f" class="small quiet"><SPAN class=indicatorValue id="land-faostat-flag_0"></SPAN></i></td>
+  <td  id="td_land_2" style="with:20%;white-space:nowrap;"><span id="land-faostat-value_1" class="indicatorValue"></span><i   id="td_land_2_f" class="small quiet"><SPAN class=indicatorValue id="land-faostat-flag_1"></SPAN></i></td>
+  <td style="with:20%;white-space:nowrap;"><span id="land-faostat-year_1" class="indicatorValue"></span></td>
+</tr>
+<tr class="odd">
+   <td>Total Arable Land <i class="small quiet">[1000 Ha].</i> <span class="small quiet"><a target="_blank" href="http://data.fao.org/database?entryId=262b79ca-279c-4517-93de-ee3b7c7cb553">FAOSTAT</a></span></td>
+   <td   id="td_area_1" style="with:20%;white-space:nowrap;"><span id="arable-land-faostat-value_0" class="indicatorValue"></span> <i id="td_arable_1_f" class="small quiet"><SPAN class=indicatorValue id="arable-land-faostat-flag_0"></SPAN></i></td>
+   <td   id="td_area_2" style="with:20%;white-space:nowrap;"><span id="arable-land-faostat-value_1" class="indicatorValue"></span> <i id="td_arable_2_f" class="small quiet"><SPAN class=indicatorValue id="arable-land-faostat-flag_1"></SPAN></i></td>
+   <td style="with:20%;white-space:nowrap;"><span id="arable-land-faostat-year_1" class="indicatorValue"></span></td>
+</tr>
+<tr class="even">
+   <td>Total Agricultural area <i class="small quiet">[1000 Ha].</i> <span class="small quiet"><a target="_blank" href="http://data.fao.org/database?entryId=262b79ca-279c-4517-93de-ee3b7c7cb553">FAOSTAT</a></span></td>
+   <td  id="td_agr_1" style="with:20%;white-space:nowrap;"><span id="agricultural-area-faostat-value_0" class="indicatorValue"></span> <i id="td_agricultural_1_f" class="small quiet"><SPAN class=indicatorValue id="agricultural-area-faostat-flag_0"></SPAN></i></td>
+   <td  id="td_agr_2" style="with:20%;white-space:nowrap;"><span id="agricultural-area-faostat-value_1" class="indicatorValue"></span> <i id="td_agricultural_2_f" class="small quiet"><SPAN class=indicatorValue id="agricultural-area-faostat-flag_1"></SPAN></i></td>
+   <td style="with:20%;white-space:nowrap;"><span id="agricultural-area-faostat-year_1" class="indicatorValue"></span></td>
+</tr>
+<tr class="odd">
+   <td>GDP  <i class="small quiet">[millions of us dollars]</i> <span class="small quiet"><a target="_blank" href="http://data.worldbank.org/indicator/NY.GDP.MKTP.CD">WORLD BANK</a></span></td>
+   <td id="td_gdp_1" style="with:20%;white-space:nowrap;"><SPAN class=indicatorValue id=gdp-worldbank-value_0></SPAN> <i  id="td_gdp_1_f" class="small quiet"><SPAN class=indicatorValue id="gdp-worldbank-flag_0"></SPAN></i></td>
+   <td id="td_gdp_2" style="with:20%;white-space:nowrap;"><span id="gdp-worldbank-value_1" class="indicatorValue"></span> <i id="td_gdp_2_f" class="small quiet"><SPAN class=indicatorValue id="gdp-worldbank-flag_1"></SPAN></i></td>
+   <td style="with:20%;white-space:nowrap;"><span id="gdp-worldbank-year_1" class="indicatorValue"></span></td>
+</tr>
+<tr class="even">
+   <td>GNI <i class="small quiet">[millions of us dollars]</i> <span class="small quiet"><a target="_blank" href="http://data.worldbank.org/indicator/NY.GDP.MKTP.CD">WORLD BANK</a></span></td>
+   <td id="td_gni_1" style="with:20%;white-space:nowrap;"><SPAN class=indicatorValue id=gni-worldbank-value_0></SPAN> <i  id="td_gni_1_f" class="small quiet"><SPAN class=indicatorValue id="gni-worldbank-flag_0"></SPAN></i></td>
+   <td id="td_gni_2" style="with:20%;white-space:nowrap;"><span id="gni-worldbank-value_1" class="indicatorValue"></span> <i id="td_gni_2_f" class="small quiet"><SPAN class=indicatorValue id="gni-worldbank-flag_1"></SPAN></i></td>
+   <td style="with:20%;white-space:nowrap;"><span id="gni-worldbank-year_1" class="indicatorValue"></span></td>
+
+</tr>
+<tr class="even1">
+    <td colspan="4"><i>Source: <a href="http://data.fao.org" target="_blank">data.fao.org </a></i></td>
+</tr>
+</table>
+
+<table>
+    <tbody>
+    <tr>
+        <td><div style="width: 380px; height: 300px;" id="cropProduction"></div></td>
+        <td><div style="width: 380px; height: 300px;" id="grossProduction"></div></td>
+   </tr> <tr>
+        <td colSpan="2"><div style="width: 760px; height: 400px;" id="topTenMembers"></div></td>
+       
+</tr>
+         
+    <tr class="even1">
+    <td colspan="2"><i>Source: <a href="http://data.fao.org" target="_blank">data.fao.org </a></i></td>
+</tr>
+</tbody>
+</table>  </div>
+  <script type="text/javascript">
+fao.api.authKey = "62f11f47-7d9b-43ee-b0e7-8bb3377ea722";
+
+fao.use.verbose = true;
+fao.api.secure = true;
+fao.use(['dataselect','datamapper','localization','charts'],initDemo);
+
+function initDemo()
+{
+
+
+		fao.model.iso3='{{ iso3}}';
+fao.model.countryName='{{ page.title }}';
+
+	extractData();
+}
+
+function extractData()
+{if (!fao("@dataFlagMap")) {
+		new fao.widgets.LocalizationMap({
+			id : "dataFlagMap",
+			url : "/sites/irss.ippc.int/files/dataFlags.csv"
+		}).load();
+	}
+	fao.model.start_year = 2000;
+	fao.model.end_year = 2013;
+
+	if (fao("@gdp-worldbank") == undefined)
+	{
+		new fao.widgets.DataMapper({
+			id: "gdp-worldbank",
+			queryName:"irss:irss-gdp-worldbank",
+			params:{iso3:fao.model.iso3, start_year:fao.model.start_year, end_year:fao.model.end_year},
+			multiline: true,
+			mapping:{
+				Year:"#gdp-worldbank-year",
+				Value:"#gdp-worldbank-value"
+			}
+		}).load();
+	} else {
+		fao("@gdp-worldbank").params = {iso3:fao.model.iso3, start_year:fao.model.start_year, end_year:fao.model.end_year};
+		fao("@gdp-worldbank").load();
+	}
+
+	if (fao("@gni-worldbank") == undefined)
+	{
+		new fao.widgets.DataMapper({
+			id: "gni-worldbank",
+			queryName:"irss:irss-gni-worldbank",
+			params:{iso3:fao.model.iso3, start_year:fao.model.start_year, end_year:fao.model.end_year},
+			multiline: true,
+			mapping:{
+				Year:"#gni-worldbank-year",
+				Value:"#gni-worldbank-value"
+			}
+		}).load();
+	} else {
+		fao("@gni-worldbank").params = {iso3:fao.model.iso3, start_year:fao.model.start_year, end_year:fao.model.end_year};
+		fao("@gni-worldbank").load();
+	}
+
+	if (fao("@land-faostat") == undefined)
+	{
+		new fao.widgets.DataMapper({
+			id: "land-faostat",
+			queryName:"irss:irss-land-faostat",
+			params:{iso3:fao.model.iso3, start_year:fao.model.start_year, end_year:fao.model.end_year},
+			multiline: true,
+			mapping:{
+				Year:"#land-faostat-year",
+				Value:"#land-faostat-value"
+			}
+		}).load();
+	} else {
+		fao("@land-faostat").params = {iso3:fao.model.iso3, start_year:fao.model.start_year, end_year:fao.model.end_year};
+		fao("@land-faostat").load();
+	}
+
+	if (fao("@arable-land-faostat") == undefined)
+	{
+		new fao.widgets.DataMapper({
+			id: "arable-land-faostat",
+			queryName:"irss:irss-arable-land-faostat",
+			params:{iso3:fao.model.iso3, start_year:fao.model.start_year, end_year:fao.model.end_year},
+			multiline: true,
+			mapping:{
+				Year:"#arable-land-faostat-year",
+				Value:"#arable-land-faostat-value",
+				Flag : {
+					elementId : "#arable-land-faostat-flag",
+					map : fao("@dataFlagMap")
+				}
+			}
+		}).load();
+	} else {
+		fao("@arable-land-faostat").params = {iso3:fao.model.iso3, start_year:fao.model.start_year, end_year:fao.model.end_year};
+		fao("@arable-land-faostat").load();
+	}
+
+	if (fao("@agricultural-area-faostat") == undefined)
+	{
+		new fao.widgets.DataMapper({
+			id: "agricultural-area-faostat",
+			queryName:"irss:irss-agricultural-area-faostat",
+			params:{iso3:fao.model.iso3, start_year:fao.model.start_year, end_year:fao.model.end_year},
+			multiline: true,
+			mapping:{
+				Year:"#agricultural-area-faostat-year",
+				Value:"#agricultural-area-faostat-value",
+				Flag : {
+					elementId : "#agricultural-area-faostat-flag",
+					map : fao("@dataFlagMap")
+				}
+			}
+		}).load();
+	} else {
+		fao("@agricultural-area-faostat").params = {iso3:fao.model.iso3, start_year:fao.model.start_year, end_year:fao.model.end_year};
+		fao("@agricultural-area-faostat").load();
+	}
+
+	if (fao("@population-faostat") == undefined)
+	{
+		new fao.widgets.DataMapper({
+			id: "population-faostat",
+			queryName:"irss:irss-population-faostat",
+			params:{iso3:fao.model.iso3, start_year:fao.model.start_year, end_year:fao.model.end_year},
+			multiline: true,
+			mapping:{
+				Year:"#population-faostat-year",
+				Value:"#population-faostat-value",
+				Flag : {
+					elementId : "#population-faostat-flag",
+					map : fao("@dataFlagMap")
+				}
+			}
+		}).load();
+	} else {
+		fao("@population-faostat").params = {iso3:fao.model.iso3, start_year:fao.model.start_year, end_year:fao.model.end_year};
+		fao("@population-faostat").load();
+	}
+
+	if (fao("@cropProduction") == undefined)
+	{
+		new fao.widgets.HighCharts({
+			id : 'cropProduction',
+			queryName : 'faostat:crop-production-by-area-time',
+			params : {
+				iso3 : fao.model.iso3,
+				startYear : 2003,
+				endYear : 2011,
+				item1 : 'Rice, paddy',
+				item2 : 'Wheat',
+				item3 : 'Maize'
+			},
+
+			chart : {
+				type : 'line'
+			},
+			title : {
+				text : 'CROP PRODUCTION (tonnes)',
+				align : 'left'
+			},
+			exporting : {
+				enabled : true
+			},
+			subtitle : {
+				text : 'Source: FAOSTAT',
+				align : 'left'
+			},
+			xAxis : {
+				categories : [ '2003', '2004', '2005', '2006', '2007', '2008', '2009', '2010', '2011' ]
+			},
+			yAxis : {
+				min : 0,
+				title : {
+					text : ''
+				}
+			},
+			queryResultFilter : {
+				groupingField : 'item',
+				whereField : 'year',
+				selectField : 'production_qty_t',
+				pointNameField: 'year'
+			},
+			tooltip : {
+				formatter : function() {
+					return '<b>Production of ' + this.series.name + ' (tonnes)</b><br/>' + this.x + ': ' + this.y.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+				}
+			}
+		}).load();
+	} else {
+		fao("@cropProduction").conf.params.iso3 = fao.model.iso3;
+		fao("@cropProduction").load();
+	}
+
+	if (fao("@grossProduction") == undefined)
+	{
+		new fao.widgets.HighCharts({
+			id : 'grossProduction',
+			queryName : 'faostat:production-value-for-country',
+			params : {
+				iso3 : fao.model.iso3,
+				startYear : 2002,
+				endYear : 2011
+			},
+			queryResultFilter : {
+				groupingField : 'item',
+				whereField : 'year',
+				selectField : 'Gross_Production_Value_(constant_2004-2006_1000_I$)_[1000_Int._$]',
+				pointNameField: 'year'
+			},
+
+			chart : {
+				type : 'line'
+			},
+			title : {
+				text : 'GROSS PRODUCTION VALUE',
+				align : 'left'
+			},
+			exporting : {
+				enabled : true
+			},
+			subtitle : {
+				text : 'Source: FAOSTAT',
+				align : 'left'
+			},
+			xAxis : {
+				categories : [ '2002', '2003', '2004', '2005', '2006', '2007', '2008', '2009', '2010', '2011' ]
+			},
+			yAxis : {
+				min : 0,
+				title : {
+					text : ''
+				}
+			},
+			tooltip : {
+				formatter : function() {
+					return '<b>Gross Production Value </b><br /><b>(constant 2004-2006 1000 I$)</b><br/> <b>[1000 Int. $] - </b><b>' + this.series.name + '</b><br/>' + this.x + ': ' + this.y.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+				}
+			}
+		}).load();
+	} else {
+		fao("@grossProduction").conf.params.iso3 = fao.model.iso3;
+		fao("@grossProduction").load();
+	}
+        
+if (fao("@topTenMembers") == undefined) 
+	{
+		new fao.widgets.HighCharts({
+			id : 'topTenMembers',
+			queryName: "irss:irss-top-members-for-country",
+			params: {
+				sdwDatabase: "Faostat",
+				schema: "Faostat Production",
+				catalog: "sdw_faostat_q",
+				aggregateFunction: "AVG",
+				dimensionName: "Item",
+				yearFrom: fao.model.start_year,
+				yearTo: fao.model.end_year,
+				measureName: "m5510",
+				criteria: "TopCount",
+				topNCountries: "10",
+				datasetName: "CROPS",
+				areaName: fao.model.countryName
+			},
+			queryResultFilter : {
+				whereField : 'item',
+				selectField : 'value',
+				pointNameField: 'value'
+			},			
+			chart : {
+				type : 'column'
+			},
+			title : {
+				text : 'Top 10 items - ' + fao.model.countryName + " (Average " + fao.model.start_year + " - " + fao.model.end_year + ")",
+				align : 'left'
+			},
+			exporting : {
+				enabled : true
+			},
+			subtitle : {
+				useHTML: true,
+				text : 'Source: <a href="http://data.fao.org/dataset-data-filter?entryId=29920434-c74e-4ea2-beed-01b832e60609&tab=data" target="_blank">Crops, National Production (FAOSTAT)</a>',
+				align : 'left'
+			},
+			xAxis : {
+				labels: {
+					staggerLines: 2
+				}
+			},
+			yAxis : {
+				min : 0,
+				title : {
+					text : ''
+				}
+			},
+			series: [
+			         {
+			        	 name: "Production [t]"
+			         }
+	        ],
+			tooltip : {
+				formatter : function() {
+					return '<b>Production [t] - ' + this.x + '</b><br />' + this.y.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") + ' ( Average ' + fao.model.start_year + ':' + fao.model.end_year + ' )';
+				}
+			}
+		}).load();
+	} else {
+		fao("@topTenMembers").conf.title.text = 'Top 10 items - ' + fao.model.countryName + "(Average " + fao.model.start_year + " - " + fao.model.end_year + ")";
+		fao("@topTenMembers").conf.params.areaName = fao.model.countryName;
+		fao("@topTenMembers").conf.params.yearFrom = fao.model.start_year;
+		fao("@topTenMembers").conf.params.yearTo = fao.model.end_year;
+		fao("@topTenMembers").load();
+	}
+}
+
+/* <![CDATA[ */
+window.onload = function () {
+
+$browser_name= navigator.appName;
+
+
+$td_pop_1_f=document.getElementById('population-faostat-flag_0').innerHTML;
+if($td_pop_1_f=='')$td_pop_1_f=' <i class="small quiet">Official data</i>';
+else $td_pop_1_f=' <i class="small quiet">'+$td_pop_1_f+'</i>';
+$val_pop_1=document.getElementById('population-faostat-value_0').innerHTML*1000;
+$val_pop_1=$val_pop_1.toString().replace(/\B(?=(\d{3})+(?!\d))/g, " ");
+if($val_pop_1==0)$val_pop_1='<i class="small quiet">N/A</i>';
+document.getElementById('td_pop_1').innerHTML = $val_pop_1+$td_pop_1_f;
+
+$td_pop_2_f=document.getElementById('population-faostat-flag_1').innerHTML;
+if($td_pop_2_f=='')$td_pop_2_f=' <i  class="small quiet">Official data</i>';
+else $td_pop_2_f=' <i class="small quiet">'+$td_pop_2_f+'</i>';
+$val_pop_2=document.getElementById('population-faostat-value_1').innerHTML*1000;
+$val_pop_2=$val_pop_2.toString().replace(/\B(?=(\d{3})+(?!\d))/g, " ");
+if($val_pop_2==0)$val_pop_2='<i class="small quiet">N/A</i>';
+document.getElementById('td_pop_2').innerHTML = $val_pop_2+$td_pop_2_f;
+
+$val_land_1=document.getElementById('land-faostat-value_0').innerHTML;
+$val_land_2=document.getElementById('land-faostat-value_1').innerHTML;
+$td_land_1_f=document.getElementById('land-faostat-flag_0').innerHTML;
+
+if($td_land_1_f=='')$td_land_1_f=' <i  class="small quiet">Official data</i>';
+else $td_land_1_f=' <i class="small quiet">'+$td_land_1_f+'</i>';
+$td_land_2_f=document.getElementById('land-faostat-flag_1').innerHTML;
+if($td_land_2_f=='')$td_land_2_f=' <i  class="small quiet">Official data</i>';
+else $td_land_2_f=' <i class="small quiet">'+$td_land_2_f+'</i>';
+if($val_land_1==0 || $val_land_1=='')$val_land_1='<i class="small quiet">N/A</i>';
+document.getElementById('td_land_1').innerHTML = $val_land_1+$td_land_1_f;
+if($val_land_2==0 || $val_land_2=='')$val_land_2='<i class="small quiet">N/A</i>';
+document.getElementById('td_land_2').innerHTML = $val_land_2+$td_land_2_f;
+
+$val_area_1=document.getElementById('arable-land-faostat-value_0').innerHTML;
+$val_area_2=document.getElementById('arable-land-faostat-value_1').innerHTML;
+$td_area_1_f=document.getElementById('arable-land-faostat-flag_0').innerHTML;
+if($td_area_1_f=='')$td_area_1_f=' <i  class="small quiet">Official data</i>';
+else $td_area_1_f=' <i class="small quiet">'+$td_area_1_f+'</i>';
+$td_area_2_f=document.getElementById('agricultural-area-faostat-flag_1').innerHTML;
+if($td_area_2_f=='')$td_area_2_f=' <i  class="small quiet">Official data</i>';
+else $td_area_2_f=' <i class="small quiet">'+$td_area_2_f+'</i>';
+if($val_area_1==0 || $val_area_1=='')$val_area_1='<i class="small quiet">N/A</i>';
+document.getElementById('td_area_1').innerHTML = $val_area_1+$td_area_1_f;
+if($val_area_2==0 || $val_area_2=='')$val_area_2='<i class="small quiet">N/A</i>';
+document.getElementById('td_area_2').innerHTML = $val_area_2+$td_area_2_f;
+
+
+$val_agr_1=document.getElementById('agricultural-area-faostat-value_0').innerHTML;
+$val_agr_2=document.getElementById('agricultural-area-faostat-value_1').innerHTML;
+$td_agr_1_f=document.getElementById('agricultural-area-faostat-flag_0').innerHTML;
+if($td_agr_1_f=='')$td_agr_1_f=' <i  class="small quiet">Official data</i>';
+else $td_agr_1_f=' <i class="small quiet">'+$td_agr_1_f+'</i>';
+$td_agr_2_f=document.getElementById('agricultural-area-faostat-flag_1').innerHTML;
+if($td_agr_2_f=='')$td_agr_2_f=' <i  class="small quiet">Official data</i>';
+else $td_agr_2_f=' <i class="small quiet">'+$td_agr_2_f+'</i>';
+if($val_agr_1==0 || $val_agr_1=='')$val_agr_1='<i class="small quiet">N/A</i>';
+document.getElementById('td_agr_1').innerHTML = $val_agr_1+$td_agr_1_f;
+if($val_agr_2==0 || $val_agr_2=='')$val_agr_2='<i class="small quiet">N/A</i>';
+document.getElementById('td_agr_2').innerHTML = $val_agr_2+$td_agr_2_f;
+
+
+
+
+
+
+
+
+
+
+
+
+$val_gdp_1=Math.round(document.getElementById('gdp-worldbank-value_0').innerHTML/1000000);
+
+$val_gdp_1=$val_gdp_1.toString().replace(/\B(?=(\d{3})+(?!\d))/g, " ")
+ if($val_gdp_1==0)$val_gdp_1='<i class="small quiet">N/A</i>';
+ document.getElementById('td_gdp_1').innerHTML = $val_gdp_1+' <i class="small quiet">Estimated</i>';;
+
+ $val_gdp_2=Math.round(document.getElementById('gdp-worldbank-value_1').innerHTML/1000000);
+$val_gdp_2=$val_gdp_2.toString().replace(/\B(?=(\d{3})+(?!\d))/g, " ")
+ if($val_gdp_2==0)$val_gdp_2='<i class="small quiet">N/A</i>';
+ document.getElementById('td_gdp_2').innerHTML = $val_gdp_2+' <i class="small quiet">Estimated</i>';;
+
+
+$val_gni_1=Math.round(document.getElementById('gni-worldbank-value_0').innerHTML/1000000);
+$val_gni_1=$val_gni_1.toString().replace(/\B(?=(\d{3})+(?!\d))/g, " ")
+if($val_gni_1==0)
+$val_gni_1='<i class="small quiet">N/A</i>';
+ document.getElementById('td_gni_1').innerHTML = $val_gni_1+' <i class="small quiet">Estimated</i>';;
+
+ $val_gni_2=Math.round(document.getElementById('gni-worldbank-value_1').innerHTML/1000000);
+$val_gni_2=$val_gni_2.toString().replace(/\B(?=(\d{3})+(?!\d))/g, " ")
+if($val_gni_2==0)$val_gni_2='<i class="small quiet">N/A</i>';
+ document.getElementById('td_gni_2').innerHTML = $val_gni_2+' <i class="small quiet">Estimated</i>';;
+
+
+$grossProduction1=document.getElementById('grossProduction').innerHTML;
+if($grossProduction1=='')
+document.getElementById('grossProduction').innerHTML = '<b>Gross Production value:</b> <i class="small quiet">Data not available</i>';
+
+$cropProduction1=document.getElementById('cropProduction').innerHTML;
+if($cropProduction1=='')
+document.getElementById('cropProduction').innerHTML = '<b>Crop Production value:</b> <i class="small quiet">Data not available</i>';
+$top=document.getElementById('topTenMembers').innerHTML;
+if($top=='')
+document.getElementById('topTenMembers').innerHTML = '<b>Top Ten items value:</b> <i class="small quiet">Data not available</i>';
+
+}/* ]]> */
+	</script>
+  
+
+
+
+  
+{% endblock %}
+
+{% block local_nav %}
+<div class="panel">    
+    <ul class="nav nav-list">
+          <li class="nav-header"><a href="javascript:history.go(-1)">{% trans "« Go back" %}</a> </li>
+      <li class="nav-header">
+          
+       Map<br><iframe  width="300" height="150" frameborder="0" scrolling="no" marginheight="0" marginwidth="0" src="{{ cn_map }}"></iframe>
+                       
+      </li>
+      <li class="divider"></li>
+
+    
+    
+    </ul>
+</div>  
+  
+{% endblock local_nav %}
+
+{% block pageinfo %}
+{% endblock pageinfo %}

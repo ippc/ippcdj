@@ -5,15 +5,18 @@ from django.utils import timezone
 from django.core import mail
 from django.conf import settings
 from django.contrib.auth.models import User,Group
-from .models import EppoCode,EmailUtilityMessage, EmailUtilityMessageFile, Poll_Choice, Poll,PollVotes, IppcUserProfile,CountryPage, PestStatus, PestReport, IS_PUBLIC, IS_HIDDEN, Publication,\
-ReportingObligation, BASIC_REP_TYPE_CHOICES, EventReporting, EVT_REP_TYPE_CHOICES,Website,CnPublication,CountryNews, \
+from .models import PublicationLibrary,Publication,EppoCode,EmailUtilityMessage, EmailUtilityMessageFile, Poll_Choice, Poll,PollVotes, IppcUserProfile,\
+CountryPage,PartnersPage, PestStatus, PestReport, IS_PUBLIC, IS_HIDDEN, Publication,\
+ReportingObligation, BASIC_REP_TYPE_CHOICES, EventReporting, EVT_REP_TYPE_CHOICES,Website,CnPublication,PartnersPublication,CountryNews, \
 PestFreeArea,ImplementationISPM,REGIONS, IssueKeywordsRelate,CommodityKeywordsRelate,EventreportingFile,ReportingObligation_File
 from mezzanine.core.models import Displayable, CONTENT_STATUS_DRAFT, CONTENT_STATUS_PUBLISHED
-from .forms import PestReportForm, ReportingObligationForm, EventReportingForm, PestFreeAreaForm,\
+from .forms import PestReportForm,PublicationUrlFormSet,PublicationForm, PublicationFileFormSet, ReportingObligationForm, EventReportingForm, PestFreeAreaForm,\
 ImplementationISPMForm,IssueKeywordsRelateForm,CommodityKeywordsRelateForm,EventreportingFileFormSet,ReportingoblicationFileFormSet,\
 ImplementationISPMFileFormSet,PestFreeAreaFileFormSet, PestReportFileFormSet,WebsiteUrlFormSet,WebsiteForm, \
 EventreportingUrlFormSet, ReportingObligationUrlFormSet ,PestFreeAreaUrlFormSet,ImplementationISPMUrlFormSet,PestReportUrlFormSet,\
-CnPublicationUrlFormSet,CnPublicationForm, CnPublicationFileFormSet,EmailUtilityMessageForm,EmailUtilityMessageFileFormSet,\
+CnPublicationUrlFormSet,CnPublicationForm, CnPublicationFileFormSet,\
+PartnersPublicationUrlFormSet,PartnersPublicationForm, PartnersPublicationFileFormSet,\
+EmailUtilityMessageForm,EmailUtilityMessageFileFormSet,\
 CountryNewsUrlFormSet,CountryNewsForm, CountryNewsFileFormSet
 
 from django.views.generic import ListView, MonthArchiveView, YearArchiveView, DetailView, TemplateView, CreateView
@@ -53,6 +56,25 @@ class CountryView(TemplateView):
             # 'profile_user': self.kwargs['profile_user']
         })
         return context
+
+
+    
+class CountryRelatedView(TemplateView):
+    """ 
+    Individual country related info 
+    """
+    template_name = 'countries/country_related_info.html'
+    
+    def get_context_data(self, **kwargs): # http://stackoverflow.com/a/15515220
+        context = super(TemplateView, self).get_context_data(**kwargs)
+        countryo = get_object_or_404(CountryPage, name=self.kwargs['country'])
+        context['iso3'] =countryo.iso3 
+        context['cn_map'] =countryo.cn_map 
+        context.update({
+            'country': self.kwargs['country']
+        })
+        return context
+
 
 
 class PestReportListView(ListView):
@@ -151,10 +173,27 @@ class PublicationDetailView(DetailView):
     context_object_name = 'publication'
     template_name = 'pages/publication_detail.html'
     queryset = Publication.objects.filter(status=IS_PUBLIC)
+    
+    def get_context_data(self, **kwargs): # http://stackoverflow.com/a/15515220
+        context = super(PublicationDetailView, self).get_context_data(**kwargs)
+        publication = get_object_or_404(Publication, id=self.kwargs['pk'])
+    
+        print(publication.library_id)
+        publicationlibrary = get_object_or_404(PublicationLibrary, id=publication.library_id)
+        print(publicationlibrary.users)
+        print(publicationlibrary.groups)
+        context['users'] =publicationlibrary.users
+        context['groups'] = publicationlibrary.groups
+        context['login_required'] = publicationlibrary.login_required
+        print(context)
+        return context
+    
 import os
 import zipfile
 import StringIO
 from settings import PROJECT_ROOT
+from django.core.files.storage import default_storage
+
 class PublicationFilesListView(ListView):
     """
     Publications Files List
@@ -167,49 +206,69 @@ class PublicationFilesListView(ListView):
     allow_future = False
     allow_empty = True
     paginate_by = 30
-    
+
     def get_context_data(self, **kwargs):
         context = super(PublicationFilesListView, self).get_context_data(**kwargs)
         queryset = Publication.objects.filter(status=IS_PUBLIC,library_id=self.kwargs['id']).order_by('-modify_date', 'title')
-        filenames=[]
+        queryset2 = PublicationLibrary.objects.filter(id=self.kwargs['id'])
+        for p in queryset2:
+            context['titlepage']=p.title
+        filenames_all=[]
+        filenames_en=[]
+        filenames_es=[]
+        filenames_fr=[]
+        filenames_ar=[]
+        filenames_ru=[]
+        filenames_zh=[]
+        
+        langs=[]
+        langs.append(["en",filenames_en])
+        langs.append(["es",filenames_es])
+        langs.append(["fr",filenames_fr])
+        langs.append(["ar",filenames_ar])
+        langs.append(["ru",filenames_ru])
+        langs.append(["zh",filenames_zh])
+        
         for p in queryset:
-            filenames.append(p.file_en)
-
-        # Folder name in ZIP archive which contains the above files
-        # E.g [thearchive.zip]/somefiles/file2.txt
-        # FIXME: Set this to something better
-        zip_subdir = "archive_en"
-        zip_filename = "%s.zip" % zip_subdir
-        print(zip_filename)
-        # Open StringIO to grab in-memory ZIP contents
-        s = StringIO.StringIO()
+            filenames_all.append(p.file_en)
+            filenames_all.append(p.file_es)
+            filenames_all.append(p.file_fr)
+            filenames_all.append(p.file_ru)
+            filenames_all.append(p.file_zh)
+            filenames_all.append(p.file_ar)
+            filenames_en.append(p.file_en)
+            filenames_es.append(p.file_es)
+            filenames_fr.append(p.file_fr)
+            filenames_ar.append(p.file_ar)
+            filenames_ru.append(p.file_ru)
+            filenames_zh.append(p.file_zh)
+            
 
         # The zip compressor
-        zf = zipfile.ZipFile(s, "w")
-
-        for fpath in filenames:
-            # Calculate path for file in zip
-            print(fpath)
-            strfpath=os.path.join(PROJECT_ROOT, 'static/media/')+str(fpath)
-            aaa = strfpath.split('/');
-            fname=aaa[len(aaa)-1]
-            print(fname)
-            zip_path = os.path.join(zip_subdir, strfpath)
-            print(zip_path)
-            # Add file, at correct path
-            zf.write(strfpath, zip_path)
-
-        # Must close zip for all contents to be written
-        zf.close()
-
-    #    # Grab ZIP file from in-memory, make response with correct MIME-type
-        resp = HttpResponse(s.getvalue(), mimetype = "application/x-zip-compressed")
-        # ..and correct content-disposition
-        resp['Content-Disposition'] = 'attachment; filename=%s' % zip_filename
-
-        return resp    
-        ##context['latest']=queryset
-        ##return context
+        date = timezone.now().strftime('%Y%m%d%H%M%S')+"_"+str(self.kwargs['id'])
+        zip_all = zipfile.ZipFile("static/media/tmp/"+"archive_all_"+ date+".zip", "w")
+        for lang in langs:
+            zip_lang = zipfile.ZipFile("static/media/tmp/"+"archive_"+str(lang[0])+"_"+ date+".zip", "w")
+            for file_path in lang[1]:
+                strfpath=os.path.join(PROJECT_ROOT, 'static/media/')+str(file_path)
+                filename = strfpath.split('/');
+                fname=filename[len(filename)-1]
+                zip_lang.write(strfpath, fname)
+                zip_all.write(strfpath, fname)
+            
+            zip_lang.close()
+            context['zip_'+str(lang[0])]=zip_lang.filename
+            size=os.path.getsize(zip_lang.filename)
+            if size >182:
+                context['zip_'+str(lang[0])+'_s']=os.path.getsize(zip_lang.filename)
+        
+        zip_all.close()
+        
+        context['zip_all']=zip_all.filename
+        context['zip_all_s']=os.path.getsize(zip_all.filename)
+        
+        print(context)
+        return context
 
 @login_required
 @permission_required('ippc.add_pestreport', login_url="/accounts/login/")
@@ -776,6 +835,133 @@ def website_edit(request, country, id=None, template_name='countries/website_edi
     }, context_instance=RequestContext(request))
     
 
+
+
+
+
+
+
+class PartnersWebsiteDetailView(DetailView):
+    """ EventReporting detail page """
+    model = PartnersWebsite
+    context_object_name = 'website'
+    template_name = 'partners/website_detail.html'
+    queryset = PartnersWebsite.objects.filter()
+
+
+
+@login_required
+@permission_required('ippc.add_partnerswebsite', login_url="/accounts/login/")
+def partners_website_create(request, partner):
+    """ Create website """
+    user = request.user
+    author = user
+    partner=user.get_profile().partner
+    user_partner_slug = lower(slugify(partner))
+
+    form = PartnersWebsiteForm(request.POST or None, request.FILES)
+    issueform =IssueKeywordsRelateForm(request.POST)
+    commodityform =CommodityKeywordsRelateForm(request.POST)
+    
+         
+    if request.method == "POST":
+        u_form =PartnersWebsiteUrlFormSet(request.POST)
+        if form.is_valid() and u_form.is_valid():
+            new_website = form.save(commit=False)
+            new_website.author = request.user
+            new_website.author_id = author.id
+            form.save()
+            
+            issue_instance = issueform.save(commit=False)
+            issue_instance.content_object = new_website
+            issue_instance.save()
+            issueform.save_m2m()
+            
+            commodity_instance = commodityform.save(commit=False)
+            commodity_instance.content_object = new_website
+            commodity_instance.save()
+            commodityform.save_m2m()      
+              
+          
+            u_form.instance = new_website
+            u_form.save()
+            info(request, _("Successfully added Website."))
+            return redirect("partners-website-detail", partners=user_partner_slug, year=new_website.publish_date.strftime("%Y"), month=new_website.publish_date.strftime("%m"), slug=new_website.slug)
+        else:
+            return render_to_response('partners/website_create.html', {'form': form,'u_form': u_form,'issueform':issueform, 'commodityform':commodityform},#'entryform': entryform,'docform':myformset,
+             context_instance=RequestContext(request))
+
+          
+        
+    else:
+        form = PartnersWebsiteForm(initial={'country': country}, instance=PartnersWebsite())
+        issueform =IssueKeywordsRelateForm(request.POST)
+        commodityform =CommodityKeywordsRelateForm(request.POST)
+        u_form = PartnersWebsiteUrlFormSet()
+    
+    return render_to_response('partners/website_create.html', {'form': form,'u_form': u_form,'issueform':issueform, 'commodityform':commodityform},
+        context_instance=RequestContext(request))
+
+        
+
+@login_required
+@permission_required('ippc.change_partnerswebsite', login_url="/accounts/login/")
+def website_edit(request, partner, id=None, template_name='partners/website_edit.html'):
+    """ Edit  website """
+    user = request.user
+    author = user
+    partner = user.get_profile().partner
+    # country_id = PestReport.objects.filter(country__country_id=country.id)
+    user_partner_slug = lower(slugify(partner))
+    if id:
+        website = get_object_or_404(PartnersWebsite, partners=partner, pk=id)
+        issues = get_object_or_404(IssueKeywordsRelate, pk=website.issuename.all()[0].id)
+        commodities = get_object_or_404(CommodityKeywordsRelate, pk=website.commname.all()[0].id)
+    else:
+        website = PartnersWebsite(author=request.user)
+      
+    if request.POST:
+        form = PartnersWebsiteForm(request.POST,  request.FILES, instance=website)
+        issueform =IssueKeywordsRelateForm(request.POST,instance=issues)
+        commodityform =CommodityKeywordsRelateForm(request.POST,instance=commodities)
+        u_form = WebsiteUrlFormSet(request.POST,  instance=website)
+      
+        if form.is_valid()  and u_form.is_valid():
+            form.save()
+            issue_instance = issueform.save(commit=False)
+            issue_instance.content_object = website
+            issue_instance.save()
+            issueform.save_m2m()
+            
+            commodity_instance = commodityform.save(commit=False)
+            commodity_instance.content_object = website
+            commodity_instance.save()
+            commodityform.save_m2m() 
+    
+           
+            u_form.instance = website
+            u_form.save()
+            info(request, _("Successfully updated Website."))
+            return redirect("partners-website-detail", partners=user_partner_slug, year=website.publish_date.strftime("%Y"), month=website.publish_date.strftime("%m"), slug=website.slug)
+
+    else:
+        form = PartnersWebsiteForm(instance=website)
+        issueform =IssueKeywordsRelateForm(instance=issues)
+        commodityform =CommodityKeywordsRelateForm(instance=commodities)
+        u_form =PartnersWebsiteUrlFormSet( instance=website)
+      
+    return render_to_response(template_name, {
+        'form': form, 'u_form': u_form,'issueform': issueform,  'commodityform': commodityform, "website": website
+    }, context_instance=RequestContext(request))
+    
+
+
+
+
+
+
+
+
             
 class CnPublicationListView(ListView):
     """   Contry Publication """
@@ -921,6 +1107,161 @@ def country_publication_edit(request, country, id=None, template_name='countries
     return render_to_response(template_name, {
         'form': form, 'f_form':f_form,'u_form': u_form,'issueform': issueform,  'commodityform': commodityform, "cnpublication": cnpublication
     }, context_instance=RequestContext(request))            
+            
+
+
+
+class PartnersView(TemplateView):
+    """ 
+    Individual Partners homepage 
+    """
+    template_name = 'partners/partners_page.html'
+    
+    def get_context_data(self, **kwargs): # http://stackoverflow.com/a/15515220
+        context = super(TemplateView, self).get_context_data(**kwargs)
+        print(self.kwargs['partner'])
+        context.update({
+            'partner': self.kwargs['partner']
+            # 'editors': self.kwargs['editors']
+            # 'profile_user': self.kwargs['profile_user']
+        })
+        context['publications'] = PartnersPublication.objects.filter(partners__partner_slug=self.kwargs['partner'])
+       
+        return context
+    
+     
+    
+       
+   
+class PartnersPublicationDetailView(DetailView):
+    """ Partner Publication detail page """
+    model = PartnersPublication
+    context_object_name = 'partnerspublication'
+    template_name = 'partners/p_publication_detail.html'
+    queryset = PartnersPublication.objects.filter()
+   
+      
+    def get_context_data(self, **kwargs): # http://stackoverflow.com/a/15515220
+        context = super(PartnersPublicationDetailView, self).get_context_data(**kwargs)
+        page = get_object_or_404(PartnersPage, name=self.kwargs['partners'])
+        print(page.slug)
+        context['pagetitle'] =  page.name
+        context['pageslug'] =  page.slug
+       # context['page'] =  page.partner_slug
+        return context
+     
+
+            
+@login_required
+@permission_required('ippc.add_partnerspublication', login_url="/accounts/login/")
+def partner_publication_create(request, partner):
+    """ Create  partner Publication """
+    user = request.user
+    author = user
+    partner=user.get_profile().partner
+    user_partner_slug = lower(slugify(partner))
+
+    form = PartnersPublicationForm(request.POST or None, request.FILES)
+    issueform =IssueKeywordsRelateForm(request.POST)
+    commodityform =CommodityKeywordsRelateForm(request.POST)
+    
+         
+    if request.method == "POST":
+        f_form = PartnersPublicationFileFormSet(request.POST, request.FILES)
+        u_form = PartnersPublicationUrlFormSet(request.POST)
+        if form.is_valid() and f_form.is_valid() and u_form.is_valid():
+            new_partnerpublication = form.save(commit=False)
+            new_partnerpublication.author = request.user
+            new_partnerpublication.author_id = author.id
+            form.save()
+            
+            issue_instance = issueform.save(commit=False)
+            issue_instance.content_object = new_partnerpublication
+            issue_instance.save()
+            issueform.save_m2m()
+            
+            commodity_instance = commodityform.save(commit=False)
+            commodity_instance.content_object = new_partnerpublication
+            commodity_instance.save()
+            commodityform.save_m2m()      
+              
+            f_form.instance = new_partnerpublication
+            f_form.save()
+            u_form.instance = new_partnerpublication
+            u_form.save()
+            info(request, _("Successfully added publication."))
+            return redirect("partner-publication-detail", partners=user_partner_slug, year=new_partnerpublication.publish_date.strftime("%Y"), month=new_partnerpublication.publish_date.strftime("%m"), slug=new_partnerpublication.slug)
+        else:
+            return render_to_response('partners/p_publication_create.html', {'form': form,'f_form': f_form,'u_form': u_form,'issueform':issueform, 'commodityform':commodityform},#'entryform': entryform,'docform':myformset,
+             context_instance=RequestContext(request))
+
+          
+        
+    else:
+        form = PartnersPublicationForm(initial={'partner': partner}, instance=PartnersPublication())
+        issueform =IssueKeywordsRelateForm(request.POST)
+        commodityform =CommodityKeywordsRelateForm(request.POST)
+        f_form = PartnersPublicationFileFormSet()
+        u_form = PartnersPublicationUrlFormSet()
+    
+    return render_to_response('partners/p_publication_create.html', {'form': form,'f_form': f_form,'u_form': u_form,'issueform':issueform, 'commodityform':commodityform},
+        context_instance=RequestContext(request))
+
+        
+
+@login_required
+@permission_required('ippc.change_partnerspublication', login_url="/accounts/login/")
+def partner_publication_edit(request, partner, id=None, template_name='partners/p_publication_edit.html'):
+    """ Edit   partners Publication """
+    user = request.user
+    author = user
+    partner = user.get_profile().partner
+    # country_id = PestReport.objects.filter(country__country_id=country.id)
+    user_partner_slug = lower(slugify(partner))
+    if id:
+        partnerspublication = get_object_or_404(PartnersPublication, partners=partner, pk=id)
+        issues = get_object_or_404(IssueKeywordsRelate, pk=partnerspublication.issuename.all()[0].id)
+        commodities = get_object_or_404(CommodityKeywordsRelate, pk=partnerspublication.commname.all()[0].id)
+    else:
+        partnerspublication = PartnersPublication(author=request.user)
+      
+    if request.POST:
+        form =PartnersPublicationForm(request.POST,  request.FILES, instance=partnerspublication)
+        issueform =IssueKeywordsRelateForm(request.POST,instance=issues)
+        commodityform =CommodityKeywordsRelateForm(request.POST,instance=commodities)
+        f_form = PartnersPublicationFileFormSet(request.POST,  request.FILES,instance=partnerspublication)
+        u_form = PartnersPublicationUrlFormSet(request.POST,  instance=partnerspublication)
+      
+        if form.is_valid() and f_form.is_valid() and u_form.is_valid():
+            form.save()
+            issue_instance = issueform.save(commit=False)
+            issue_instance.content_object = partnerspublication
+            issue_instance.save()
+            issueform.save_m2m()
+            
+            commodity_instance = commodityform.save(commit=False)
+            commodity_instance.content_object = partnerspublication
+            commodity_instance.save()
+            commodityform.save_m2m() 
+    
+            f_form.instance = partnerspublication
+            f_form.save()
+            u_form.instance = partnerspublication
+            u_form.save()
+            info(request, _("Successfully updated publication."))
+            return redirect("partner-publication-detail", partners=user_partner_slug, year=partnerspublication.publish_date.strftime("%Y"), month=partnerspublication.publish_date.strftime("%m"), slug=partnerspublication.slug)
+
+    else:
+        form = PartnersPublicationForm(instance=partnerspublication)
+        issueform =IssueKeywordsRelateForm(instance=issues)
+        commodityform =CommodityKeywordsRelateForm(instance=commodities)
+        f_form = PartnersPublicationFileFormSet(instance=partnerspublication)
+        u_form = PartnersPublicationUrlFormSet( instance=partnerspublication)
+      
+    return render_to_response(template_name, {
+        'form': form, 'f_form':f_form,'u_form': u_form,'issueform': issueform,  'commodityform': commodityform, "partnerspublication": partnerspublication
+    }, context_instance=RequestContext(request))            
+                        
             
             
 class PestFreeAreaListView(ListView):
@@ -1371,8 +1712,187 @@ def countrynews_edit(request, country, id=None, template_name='countries/country
         'form': form,'f_form':f_form,'u_form': u_form,'issueform': issueform,'commodityform': commodityform,  "countrynews": countrynews
     }, context_instance=RequestContext(request))
    
+   
+   
+   
+   
+   
+   
+   
+class PartnersNewsDetailView(DetailView):
+    """ Partners News detail page """
+    model = PartnersNews
+    context_object_name = 'partnersnews'
+    template_name = 'partners/partnersnews_detail.html'
+    queryset = PartnersNews.objects.filter()
+
+
+
+@login_required
+@permission_required('ippc.add_partnersnews', login_url="/accounts/login/")
+def partnersnews_create(request, partner):
+    """ Create partnersnews """
+    user = request.user
+    author = user
+    partner=user.get_profile().partner
+    user_partner_slug = lower(slugify(partner))
+
+
+    form = PartnersNewsForm(request.POST)
+    issueform =IssueKeywordsRelateForm(request.POST)
+    commodityform =CommodityKeywordsRelateForm(request.POST)
     
+    if request.method == "POST":
+        f_form =PartnersNewsFileFormSet(request.POST, request.FILES)
+        u_form =PartnersNewsUrlFormSet(request.POST)
+        if form.is_valid() and f_form.is_valid() and u_form.is_valid():
+            new_partnersnews = form.save(commit=False)
+            new_partnersnews.author = request.user
+            new_partnersnews.author_id = author.id
+            form.save()
+            
+            issue_instance = issueform.save(commit=False)
+            issue_instance.content_object = new_partnersnews
+            issue_instance.save()
+            issueform.save_m2m()
+            
+            commodity_instance = commodityform.save(commit=False)
+            commodity_instance.content_object = new_partnersnews
+            commodity_instance.save()
+            commodityform.save_m2m()
+            
+            f_form.instance = new_partnersnews
+            f_form.save()
+            u_form.instance = new_partnersnews
+            u_form.save()
+            
+            info(request, _("Successfully created news."))
+            
+            return redirect("partner-news-detail", partners=user_partner_slug, year=new_partnersnews.publish_date.strftime("%Y"), month=new_partnersnews.publish_date.strftime("%m"), slug=new_partnersnews.slug)
+        else:
+             return render_to_response('partners/partnersnews_create.html', {'form': form,'f_form': f_form,'u_form': u_form,'issueform':issueform, 'commodityform':commodityform},
+             context_instance=RequestContext(request))
+    else:
+        form = PartnersNewsForm(initial={'partners': partner}, instance=PartnersNews())
+        issueform =IssueKeywordsRelateForm(request.POST)
+        commodityform =CommodityKeywordsRelateForm(request.POST)
+        f_form = PartnersNewsFileFormSet()
+        u_form = PartnersNewsUrlFormSet()
+
+    return render_to_response('partner/partnernews_create.html', {'form': form  ,'f_form': f_form,'u_form': u_form,'issueform':issueform, 'commodityform':commodityform},
+        context_instance=RequestContext(request))
+
+
+        
+# http://stackoverflow.com/a/1854453/412329
+@login_required
+@permission_required('ippc.change_partnernews', login_url="/accounts/login/")
+def partnernews_edit(request, partner, id=None, template_name='partners/partnernews_edit.html'):
+    """ Edit partner news """
+    user = request.user
+    author = user
+    partner = user.get_profile().partner
+    # country_id = PestReport.objects.filter(country__country_id=country.id)
+    user_partner_slug = lower(slugify(partner))
+    if id:
+        partnernews = get_object_or_404( PartnersNews,  partners= partner, pk=id)
+        issues = get_object_or_404(IssueKeywordsRelate, pk=partnernews.issuename.all()[0].id)
+        commodities = get_object_or_404(CommodityKeywordsRelate, pk=partnernews.commname.all()[0].id)
+       
+       # if pest_report.author != request.user:
+        #     return HttpResponseForbidden()
+    else:
+        partnernews =  PartnersNews(author=request.user)
+      
+    if request.POST:
+        form =  PartnersNewsForm(request.POST,  request.FILES, instance=partnernews)
+        issueform =IssueKeywordsRelateForm(request.POST, instance=issues)
+        commodityform =CommodityKeywordsRelateForm(request.POST, instance=commodities)
+        f_form =  PartnersNewsFileFormSet(request.POST,  request.FILES,instance=partnernews)
+        u_form =  PartnersNewsUrlFormSet(request.POST,  instance=partnernews)
+        if form.is_valid() and f_form.is_valid() and u_form.is_valid():
+            form.save()
+            issue_instance = issueform.save(commit=False)
+            issue_instance.content_object = partnernews
+            issue_instance.save()
+            issueform.save_m2m()
+            
+            commodity_instance = commodityform.save(commit=False)
+            commodity_instance.content_object = partnernews
+            commodity_instance.save()
+            commodityform.save_m2m() 
+            
+            f_form.instance = partnernews
+            f_form.save()
+            u_form.instance = partnernews
+            u_form.save()
+            # If the save was successful, success message and redirect to another page
+            # info(request, _("Successfully updated pest report."))
+            return redirect("partners-news-detail", partners=user_partner_slug, year=partnernews.publish_date.strftime("%Y"), month=partnernews.publish_date.strftime("%m"), slug=partnernews.slug)
+
+    else:
+        form = PartnersNewsForm(instance=partnernews)
+        issueform =IssueKeywordsRelateForm(instance=issues)
+        commodityform =CommodityKeywordsRelateForm(instance=commodities)
+        f_form = PartnersNewsFileFormSet(instance=partnernews)
+        u_form = PartnersNewsUrlFormSet(instance=partnernews)
+    return render_to_response(template_name, {
+        'form': form,'f_form':f_form,'u_form': u_form,'issueform': issueform,'commodityform': commodityform,  "partnernews": partnernews
+    }, context_instance=RequestContext(request))
+   
     
+   
+   
+   
+@login_required
+@permission_required('ippc.change_publication', login_url="/accounts/login/")
+def publication_edit(request, id=None, template_name='pages/publication_edit.html'):
+    """ Edit  Publication """
+    user = request.user
+    author = user
+    if id:
+        publication = get_object_or_404(Publication, pk=id)
+        issues = get_object_or_404(IssueKeywordsRelate, pk=publication.issuename.all()[0].id)
+        commodities = get_object_or_404(CommodityKeywordsRelate, pk=publication.commname.all()[0].id)
+    else:
+        publication = Publication(author=request.user)
+      
+    if request.POST:
+        form = PublicationForm(request.POST,  request.FILES, instance=publication)
+        issueform =IssueKeywordsRelateForm(request.POST,instance=issues)
+        commodityform =CommodityKeywordsRelateForm(request.POST,instance=commodities)
+        f_form = PublicationFileFormSet(request.POST,  request.FILES,instance=publication)
+        u_form = PublicationUrlFormSet(request.POST,  instance=publication)
+      
+        if form.is_valid() and f_form.is_valid() and u_form.is_valid():
+            form.save()
+            issue_instance = issueform.save(commit=False)
+            issue_instance.content_object = publication
+            issue_instance.save()
+            issueform.save_m2m()
+            
+            commodity_instance = commodityform.save(commit=False)
+            commodity_instance.content_object = publication
+            commodity_instance.save()
+            commodityform.save_m2m() 
+    
+            f_form.instance = publication
+            f_form.save()
+            u_form.instance = publication
+            u_form.save()
+            info(request, _("Successfully updated publication."))
+            return redirect("publication-detail", pk=publication.id)
+
+    else:
+        form = PublicationForm(instance=publication)
+        issueform =IssueKeywordsRelateForm(instance=issues)
+        commodityform =CommodityKeywordsRelateForm(instance=commodities)
+        f_form = PublicationFileFormSet(instance=publication)
+        u_form = PublicationUrlFormSet( instance=publication)
+      
+    return render_to_response(template_name, {
+        'form': form, 'f_form':f_form,'u_form': u_form,'issueform': issueform,  'commodityform': commodityform, "publication": publication
+    }, context_instance=RequestContext(request))       
     
     
 class CountryListView(ListView):

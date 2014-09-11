@@ -2,12 +2,16 @@
 
 from django import forms
 import datetime
-from .models import IppcUserProfile, PestStatus, PestReport,  CountryPage, \
+from .models import Publication,PublicationFile,PublicationUrl, IppcUserProfile, PestStatus, PestReport,  CountryPage, \
 ReportingObligation, EventReporting, PestFreeArea, ImplementationISPM, Website, \
 VERS_CHOICES,IssueKeywordsRelate,CommodityKeywordsRelate,\
 EventreportingFile, ReportingObligation_File,PestFreeAreaFile, ImplementationISPMFile,PestReportFile,\
 EventreportingUrl, ReportingObligationUrl,PestFreeAreaUrl, ImplementationISPMUrl,PestReportUrl,WebsiteUrl,\
-CnPublication,CnPublicationFile,CnPublicationUrl,CountryNews,CountryNewsFile,CountryNewsUrl, EmailUtilityMessage, EmailUtilityMessageFile
+CnPublication,CnPublicationFile,CnPublicationUrl,\
+PartnersWebsite,PartnersWebsiteUrl,\
+PartnersPublication,PartnersPublicationFile,PartnersPublicationUrl,\
+PartnersNews,PartnersNewsFile,PartnersNewsUrl, \
+CountryNews,CountryNewsFile,CountryNewsUrl, EmailUtilityMessage, EmailUtilityMessageFile
 
 from django.contrib.auth.models import User
 import autocomplete_light
@@ -182,7 +186,47 @@ class WebsiteForm(forms.ModelForm):
         widgets = {
             'country': forms.HiddenInput(),   
           }
+class PartnersWebsiteForm(forms.ModelForm):
+   # country = forms.ChoiceField(widget=forms.Select(), initial='country')
+    # =todo: https://docs.djangoproject.com/en/dev/ref/forms/api/#dynamic-initial-values
+   
+    class Meta:
+        model =  PartnersWebsite
+        fields = [
+            'title', 
+            'short_description',
+            'web_type',
+            'contact_for_more_information',
+            'partners',
+            ]
+        exclude = ('author', 'slug', 'publish_date',  'modify_date',  'old_id')
+        widgets = {
+            'partners': forms.HiddenInput(),   
+          }
+          
+class PublicationForm(forms.ModelForm):
 
+    # country = forms.ChoiceField(widget=forms.Select(), initial='country')
+    # =todo: https://docs.djangoproject.com/en/dev/ref/forms/api/#dynamic-initial-values
+
+    class Meta:
+        model = Publication
+        fields = [
+           'title', 
+           'library', 
+           'file_en',
+           'file_es',
+           'file_fr',
+           'file_ar',
+           'file_ru',
+           'file_zh',
+           'agenda_number',
+           'document_number',
+           'short_description',
+           'contact_for_more_information',
+           ]
+        exclude = ('author', 'slug', 'modify_date')
+      
 class CnPublicationForm(forms.ModelForm):
 
     # country = forms.ChoiceField(widget=forms.Select(), initial='country')
@@ -204,6 +248,27 @@ class CnPublicationForm(forms.ModelForm):
             'country': forms.HiddenInput(),   
             'publication_date': AdminDateWidget(),
         }
+class PartnersPublicationForm(forms.ModelForm):
+
+    # country = forms.ChoiceField(widget=forms.Select(), initial='country')
+    # =todo: https://docs.djangoproject.com/en/dev/ref/forms/api/#dynamic-initial-values
+
+    class Meta:
+        model = PartnersPublication
+        fields = [
+           'title', 
+           'publication_date', 
+           'agenda_number',
+           'document_number',
+            'short_description',
+           'contact_for_more_information',
+           'partners',
+           ]
+        exclude = ('author', 'slug', 'publish_date',  'modify_date')
+        widgets = {
+            'partners': forms.HiddenInput(),   
+            'publication_date': AdminDateWidget(),
+        }        
 class CountryNewsForm(forms.ModelForm):
     # country = forms.ChoiceField(widget=forms.Select(), initial='country')
     # =todo: https://docs.djangoproject.com/en/dev/ref/forms/api/#dynamic-initial-values
@@ -222,18 +287,45 @@ class CountryNewsForm(forms.ModelForm):
             'country': forms.HiddenInput(),
             'publication_date': AdminDateWidget(),
            }
+class PartnersNewsForm(forms.ModelForm):
+    # country = forms.ChoiceField(widget=forms.Select(), initial='country')
+    # =todo: https://docs.djangoproject.com/en/dev/ref/forms/api/#dynamic-initial-values
+    class Meta:
+        model = PartnersNews
+        fields = [
+           'title', 
+           'publication_date', 
+           'short_description',
+           'image',
+           'contact_for_more_information',
+           'partners',
+           ]
+        exclude = ('author', 'slug', 'publish_date',  'modify_date')
+        widgets = {
+            'partners': forms.HiddenInput(),
+            'publication_date': AdminDateWidget(),
+           }
            
+PublicationUrlFormSet  = inlineformset_factory(Publication,  PublicationUrl, extra=1)
+PublicationFileFormSet = inlineformset_factory(Publication,  PublicationFile,extra=1)
+                 
 CountryNewsUrlFormSet  = inlineformset_factory(CountryNews,  CountryNewsUrl, extra=1)
 CountryNewsFileFormSet = inlineformset_factory(CountryNews,  CountryNewsFile,extra=1)
-              
+PartnersNewsUrlFormSet  = inlineformset_factory(PartnersNews,  PartnersNewsUrl, extra=1)
+PartnersNewsFileFormSet = inlineformset_factory(PartnersNews,  PartnersNewsFile,extra=1)
+                  
 CnPublicationUrlFormSet  = inlineformset_factory(CnPublication,  CnPublicationUrl, extra=1)
 CnPublicationFileFormSet = inlineformset_factory(CnPublication,  CnPublicationFile,extra=1)
        
-        
+PartnersPublicationUrlFormSet  = inlineformset_factory(PartnersPublication,  PartnersPublicationUrl, extra=1)
+PartnersPublicationFileFormSet = inlineformset_factory(PartnersPublication,  PartnersPublicationFile,extra=1)
+       
+               
         
         
 WebsiteUrlFormSet  = inlineformset_factory(Website,  WebsiteUrl, extra=1)
-
+PartnersWebsiteUrlFormSet  = inlineformset_factory(PartnersWebsite,  PartnersWebsiteUrl, extra=1)
+ 
 EventreportingUrlFormSet  = inlineformset_factory(EventReporting,  EventreportingUrl, extra=1)
 EventreportingFileFormSet = inlineformset_factory(EventReporting,  EventreportingFile,extra=1)
 

@@ -1,0 +1,51 @@
+{% extends "base.html" %}
+{% load pages_tags translate_tags mezzanine_tags i18n future staticfiles accounts_tags %}
+
+{% block meta_title %}{% trans "New Publication" %} - {{ user.get_profile.partner.name}} {% endblock %}
+
+{% block body_class %}wide{% endblock %}
+
+{% block breadcrumb_menu %}
+<li>
+  <a href="/partners/">{% trans "partners" %}</a>
+  <span class="divider">/</span>
+</li>
+<li>
+  <a href="/partners/{{ user.get_profile.partner.name|slugify }}/">
+    {{ user.get_profile.partner.name }}
+  </a>
+  <span class="divider">/</span>
+</li>
+<li>
+  <a href="/partners/{{ user.get_profile.partner.name|slugify }}/publications/">{% trans "Publication" %}</a>
+  <span class="divider">/</span>
+</li>
+<li class="active">{% trans "Create New" %}</li>
+{% endblock %}
+
+{% block local_nav %}
+{% endblock local_nav %}
+
+{% block pageinfo %}
+{% endblock pageinfo %}
+
+{% block main %}
+
+<p class="pull-right">
+  <a href="javascript:history.go(-1)">{% trans "« Cancel and go back" %}</a>
+</p>
+
+<h1><span class="normal">{% trans "Create New Publication for" %}</span> {{ user.get_profile.partner.name }}</h1>
+
+<form class="customform" method="POST" action="" enctype="multipart/form-data">
+    {% csrf_token %}
+    <fieldset>
+        {% include "partners/p_publication_form.html" %}
+        <div class="form-actions">
+            <button type="submit" class="btn btn-info btn-large" tabindex="7">{% trans "Submit" %}</button> or <a href="javascript:history.go(-1)">{% trans "Cancel" %}</a>
+        </div>
+      
+    </fieldset>
+</form>
+
+{% endblock %}

@@ -20,10 +20,10 @@
   {# =todo: #}
   {# In workarea sidebar list pages accessible to each user [according to his permissions](http://stackoverflow.com/a/16016717) #}
   {# and only display page content if he is in the page's permission group. #}
-  {# {% if page.login_required %} #}
+    {# {% if page.login_required %}  #}
   {#  #}
-  {#   {% for group in request.user.groups.all %} #}
-  {#     {% if group in page.get_content_model.groups.all %} #}
+    {#   {% for group in request.user.groups.all %}  #}
+    {#     {% if group in page.get_content_model.groups.all %}  #}
   {#  #}
   {#       list of pages accessible to user #}
   {#        #}
@@ -48,7 +48,39 @@
       id="tree-menu-{{ page.html_id }}">
       
       {% load translate_tags %}
-    <a href="{{ page.get_absolute_url }}">
+      
+      {% if page.login_required %} 
+        {% if user.is_superuser or perms.ippc.change_publication  %}
+            <a href="{{ page.get_absolute_url }}">
+
+                {% with page.richtextpage|get_object_translation as translated_page %}
+                {% if translated_page.title %}
+                    {{ translated_page.title|safe }}
+                    {% else %}
+                    {{ page.title }}
+                {% endif %}
+                {% endwith %} {% if page.has_children_in_menu %}<i class="icon-plus"> </i> {% endif %}
+                </a> 
+        {% else %}
+         {% for group in request.user.groups.all %} 
+            {% if group in page.get_content_model.groups.all %} 
+                <a href="{{ page.get_absolute_url }}">  
+
+                {% with page.richtextpage|get_object_translation as translated_page %}
+                {% if translated_page.title %}
+                    {{ translated_page.title|safe }}
+                    {% else %}
+                    {{ page.title }}
+                {% endif %}
+                {% endwith %} {% if page.has_children_in_menu %}<i class="icon-plus"> </i> {% endif %}
+                </a> 
+            {% endif %}
+         {% endfor %}
+         
+              {% endif %}
+         
+         
+     {% else %}    <a href="{{ page.get_absolute_url }}"> 
         {# {% with page.richtextpage|get_object_translation as translated_page %}{{ translated_page.title|safe }}{% endwith %} #}
         
         {% with page.richtextpage|get_object_translation as translated_page %}
@@ -57,8 +89,8 @@
             {% else %}
             {{ page.title }}
         {% endif %}
-        {% endwith %}
-    </a>
+        {% endwith %} {% if page.has_children_in_menu %}<i class="icon-plus"> </i> {% endif %}
+    </a>{% endif %}
     {# wrap the next line with 'if page.is_current_or_ascendant' #}
     {# to only show child pages in the menu for the current page #}
     {% if page.is_current_or_ascendant %}

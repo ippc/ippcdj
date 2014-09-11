@@ -1,0 +1,120 @@
+{% extends "base.html" %}
+{% load pages_tags translate_tags mezzanine_tags i18n future staticfiles accounts_tags %}
+
+{% block meta_title %}
+  {{ page.title }}
+{% endblock %}
+
+{% block breadcrumb_menu %}
+<li>
+  <a href="/">{% trans "Home" %}</a>
+  <span class="divider">/</span>
+</li>
+<li>
+  <a href="/partners/">{% trans "Partners" %}</a>
+  <span class="divider">/</span>
+</li>
+<li class="active">
+      {{ page.title }}
+</li>
+
+{% endblock %}
+
+{% block main %}
+  {% if user.is_superuser %} 
+  <div class="pull-right">
+      <a class="btn btn-mini btn-info" href="/admin/ippc/partnerspage/{{ page.id }}">Edit page as Admin <small>(also contact point &amp; editors relation)</a><br>
+  </div>
+  {% endif %}
+
+  <h1>
+      {{ page.title }} </h1> 
+
+  <div class="panel contact-info">
+  <h2>{% trans "RPPO Contact Point: " %} 
+    <small>
+     {% for entry in page.get_content_model.contact_point.get_profile.contact_type.all %}
+      {{entry}}{% if forloop.last %} {% else %},{% endif %}
+    {% endfor %}
+    </small>
+  </h2>
+    {% include "accounts/account_contactpoint_details.html" %}
+  </div>
+ 
+  
+ 
+
+  {# if there are any editors defined for this country page, only admins can see them here #}
+  {% if page.get_content_model.editors.all and user.is_superuser %} 
+  <h3>Editors</h3>
+  <table class="table table-condensed table-striped">
+    <thead>
+      <tr>
+        <th>{% trans "Name" %}</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for editor in page.get_content_model.editors.all %}
+        <tr>
+          <td>{{ editor.get_profile.first_name }} {{ editor.get_profile.last_name }} <a class="btn btn-mini  pull-right" href="/admin/auth/user/{{ editor.get_profile.id }}">Edit User as Admin</a><br></td>
+        </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+  {% endif %}
+  
+ {# LINKs to add #}
+ 
+    
+      
+ 
+      
+  {% if perms.ippc.add_partnerspublication and request.user.get_profile.partner.name == page.title or user.is_superuser %}
+  <small><a class="btn btn-small btn-info" href="{% url 'partner-publication-create' page.title|slugify %}">+ {% trans "Add new publication" %}</a></small>
+{% endif %}
+ {% if perms.schedule.add_countrynews and request.user.get_profile.partner.name == page.title or user.is_superuser %}
+   <small>  <a class="btn btn-small btn-info" href="{% url 'country-news-create' page.title|slugify %}">+ {% trans "Add new news" %}</a>
+   </small>
+ {% endif %}
+
+ {% if perms.ippc.add_website and request.user.get_profile.partner.name == page.title or user.is_superuser %}
+   <small><a class="btn btn-small btn-info" href="{% url 'website-create' page.title|slugify %}">+ {% trans "Add new website" %}</a></small>
+ {% endif %}
+
+      
+ {# PUBLICATIONS TABLE #} 
+ {% if publications %}   
+  
+  <table class="table table-condensed table-striped" id="publications">
+  <thead>
+    <tr>
+      <th>{% trans "Title" %}</th>
+      <th>{% trans "Date Published" %}</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for object in publications %}
+    <tr>
+      <td><a href="{% url 'partner-publication-detail' object.partners.partner_slug object.publish_date|date:'Y' object.publish_date|date:'m'  object.slug %}">{{ object.title }}</a></td>
+      <td>{{ object.publish_date|date:"d M Y" }}
+
+        {% if user.is_superuser %} 
+            <a class="small pull-right" href="/admin/ippc/partnerspublication/{{ object.id }}"><i class="icon-edit"></i> Edit as Admin</a><br>
+        {% endif %}
+
+        {% if perms.ippc.change_partnerspublication and request.user.get_profile.partner.name == page.title %}
+            <a class="small pull-right" href="{% url 'partner-publication-edit' object.partners.partner_slug object.id %}"><i class="icon-edit"></i> Edit</a>
+         
+        {% else %}
+        {% endif %}
+        </td>
+    </tr>
+
+    {% endfor %}
+  </tbody>
+</table>
+  {% endif %}
+{% endblock %}
+
+{% block pageinfo %}
+{% endblock pageinfo %}

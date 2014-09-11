@@ -1,0 +1,111 @@
+{% extends "base.html" %}
+{% load pages_tags mezzanine_tags i18n future staticfiles accounts_tags %}
+
+{% block meta_title %}{% trans "Latest Publications" %}{% endblock %}
+
+{% block breadcrumb_menu %}
+<li><a href="/">{% trans "Home" %}</a><span class="divider">/</span></li>
+<li><a href="/partners/">Partners</a><span class="divider">/</span></li>
+<li>{{partnerspublication.partners.name}}<span class="divider">/</span></li>
+<li>Publications</a><span class="divider">/</span></li>
+<li class="active">{{ partnerspublication.title }}</li>
+{% endblock %}
+
+{% block local_nav %}
+<div class="well">
+  <p><a href="/{{ pageslug}}/">« {% trans "Back to " %}{{pagetitle}}</a></p>
+    {% if user.is_superuser %} 
+        <a class="btn btn-small btn-info" href="/admin/ippc/partnerspublications/{{ partnerspublication.id }}">Edit as Admin</a><br>
+    {% endif %}
+        
+    {% if perms.ippc.change_partnerspublication and request.user.get_profile.partner.name == partnerspublication.partners.name %}
+        <a class="btn btn-small btn-info" href="{% url 'partner-publication-edit' partnerspublication.partners.name|slugify partnerspublication.id %}"><i class="icon-edit icon-white"></i> Edit</a>
+    {% else %}
+    {% endif %}
+    
+    
+    
+   
+</div>
+{% endblock local_nav %}
+
+{% block pageinfo %}
+
+{% endblock pageinfo %}
+
+{% block main %}
+<h1>{{ partnerspublication.title }}</h1> 
+
+<dl class="dl-horizontal">
+ 
+ {% if partnerspublication.agenda_number %}
+  <dt>{% trans "Agenda number" %}</dt>
+  <dd>{{ partnerspublication.agenda_number }}</dd>
+  {% endif %}
+   {% if partnerspublication.document_number %}
+  <dt>{% trans "Document number" %}</dt>
+  <dd>{{ partnerspublication.document_number }}</dd>
+  {% endif %}
+  
+ {% if partnerspublication.short_description %}
+  <dt>{% trans "short description" %}</dt>
+  <dd>{{ partnerspublication.short_description }}</dd>
+  {% endif %}
+  
+  {% if partnerspublication.contact_for_more_information %}
+  <dt>{% trans "Contact for more information" %}</dt>
+  <dd>{{ partnerspublication.contact_for_more_information }}</dd>
+  {% endif %}
+  
+
+
+  
+
+  {% if partnerspublication.issuename %}
+  <dt>{% trans "Issue keywords" %}</dt>
+  <dd>
+  {% for entry in partnerspublication.issuename.all %}
+  <br/>
+  {% for e in entry.issuename.all %}
+   <br/>
+  {{e.name}}<br/>
+ {% endfor %} 
+{% endfor %}
+  </dd>
+  {% endif %}
+ 
+  
+  
+  {% if partnerspublication.commname %}
+  <dt>{% trans "Commodity keywords" %}</dt>
+  <dd>
+  {% for entry in partnerspublication.commname.all %}
+ 
+  {% for e in entry.commname.all %}
+  
+  {{e.name}}<br/>
+ {% endfor %} 
+{% endfor %}
+  </dd>
+  {% endif %}
+ 
+  
+ 
+  
+     
+  <dt>{% trans "Files" %}</dt>
+   {% for f in partnerspublication.partnerspublicationfile_set.all %} 
+    
+  <dd><a href="{{MEDIA_URL}}{{f.file.name}}">{{ f.description }}</a></dd>
+{% endfor %}
+
+
+    
+  <dt>{% trans "Website" %}</dt>
+   {% for f in partnerspublication.partnerspublicationurl_set.all %} 
+    
+  <dd><a href="{{MEDIA_URL}}{{f.url_for_more_information}}">{{ f.url_for_more_information }}</a></dd>
+{% endfor %}
+</dl>
+{% endblock %}
+

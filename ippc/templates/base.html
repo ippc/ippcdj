@@ -186,22 +186,19 @@ legend {font-weight:bold;}
     {% endblock trans %}
     {% endblock local_nav %}
     
-    {% block pageinfo %}
-    <div class="panel">
-        <h4>{% trans "Key Links &amp; Documents" %}</h4>
-        {# <ul> #}
-        {#     <li><a href="{% url 'sitemap' %}">{% trans "Sitemap" %}</a></li> #}
-        {# </ul> #}
+  
+    {% if page.id == 3 %}
+         {% include "pages/menus/tree_key_cn.html" %}
+    {% elif page.id == 522 %}
+         {% include "pages/menus/tree_logos.html" %}
+    {% elif page.id == 465 or  page.id == 466 or  page.id == 485 or page.parent_id == 466 or page.parent_id == 485 %}
+         {% include "pages/menus/tree_key_partners.html" %}
+   {% elif page.id == 322 or  page.parent_id == 322   or  page.parent_id == 323 or  page.parent_id == 345       or  page.parent_id == 449 or  page.parent_id == 427     or  page.parent_id == 429 or  page.parent_id == 459   or  page.parent_id == 455 or  page.parent_id == 445     %}
+       {% include "pages/menus/tree_key_core.html" %}
+         {% else %}
+
         
-        {% load translate_tags ippc_tags %}
-        {# {% with page.richtextpage|get_object_translation as translated_page %} #}
-        {#     {{ translated_page.content|richtext_filter|safe }} #}
-        {# {% endwith %} #}
-        
-        {% get_page "key-documents" "content" %}
-        
-    </div>
-    {% endblock pageinfo %}
+    {% endif %}
 </div>
 
 </div>

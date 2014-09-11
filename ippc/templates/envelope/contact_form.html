@@ -1,0 +1,21 @@
+{% load url from future %}
+{% load i18n %}
+{% load envelope_tags %}
+
+<form action="{% url 'envelope-contact' %}" method="post">
+{% csrf_token %}
+{% antispam_fields %}
+<fieldset>
+    <table>
+    <tbody>
+    {{ form }}
+    </tbody>
+    <tfoot>
+        <tr>
+        <td colspan="2">
+		<input type="submit" class="btn btn-info btn-large" tabindex="7" value="{% trans "Send email" %}" /></td>
+        </tr>
+    </tfoot>
+    </table>
+</fieldset>
+</form>

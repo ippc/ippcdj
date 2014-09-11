@@ -15,6 +15,67 @@
   <div class="row-fluid">
     <h3 class="normal">{% trans "International Plant Protection News" %}</h3>
   </div>
+   <!-- BEGIN =SLIDESHOW ================== -->    
+    <style type="text/css" media="screen">
+      .carousel ul li {display: none;}
+      .button-set a {cursor:pointer; padding:0.25em;}
+      .button-set a:hover, .button-set a:active, .button-set a:focus {color:#000;}
+    </style>
+    <noscript>
+    <style type="text/css" media="screen">
+      .carousel ul li {display:block;}
+    </style>
+    </noscript>
+    <div class="row-fluid">  
+        <div class="carousel">
+        <ul style="padding:0; margin:0;">
+        {% for entry in latest_news %}
+            {% if entry.keywords_string == 'hot topic' %}
+        
+        <li style="clear:both;">
+            {% if settings.BLOG_USE_FEATURED_IMAGE and entry.featured_image %}
+            <a href="{{ entry.get_absolute_url }}">
+              <img  style="float:left; padding:0 15px 10px 0;" src="{{ MEDIA_URL }}{% thumbnail entry.featured_image 360 200 %}">
+            </a>
+            {% endif %}
+        <h5>
+          <a class="dark" href="{{ entry.get_absolute_url }}">{{ entry.title }}</a><br>
+          <small>{{ entry.publish_date|timesince }} {% trans "ago" %}.</small>
+        </h5>
+        <p>{{ entry.content|truncatechars:148 }} <small><a href="{{ entry.get_absolute_url }}">{% trans "Continue reading…" %}</a></small></p>
+        </li>     {% endif %}
+        {% endfor %}               
+        </ul>
+        </div> <!-- /.carousel -->
+        <div class="button-set" style="float:right; text-align:right;">
+          <p>
+          <a onclick="myCarousel.prev();" title="Prior">&larr;prior</a>
+          <a id="carouselnumber0" onclick="myCarousel.goToSlide(0);" title="1">1</a>
+          <a id="carouselnumber1" onclick="myCarousel.goToSlide(1);" title="2">2</a>
+          <a id="carouselnumber2" onclick="myCarousel.goToSlide(2);" title="3">3</a>
+          <a id="carouselnumber3" onclick="myCarousel.goToSlide(3);" title="4">4</a>
+          <a id="carouselnumber4" onclick="myCarousel.goToSlide(4);" title="5">5</a>
+          <a onclick="myCarousel.next();" title="Next">next&rarr;</a>
+          <a href="/news/" title="See all news.">see all news</a>
+          <br>
+          <a onclick="myCarousel.stop();" title="Stop">&#x25FC;stop</a>
+          <a onclick="myCarousel.play();" title="Play">&#9658;play</a>
+          </p>
+         </div>
+        <!-- Minimal carousel script - https://github.com/wecodeio/minimal-carousel -->
+         <script type="text/javascript" src="/static/js/minimal-carousel.js"></script>
+         <script type="text/javascript">
+              var myCarousel = new Carousel({
+                  carousel: '.carousel',
+                  delay: 10,
+                  autoplay: true
+                });
+            </script>
+        </div> 
+    <!-- END =SLIDESHOW ================== -->
+   
+ <!-- or NEWS in BLOCKS ================== -->
+   
   <div class="row-fluid">
     {% for entry in latest_news %}
     <div class="span6">
@@ -45,21 +106,12 @@
   <div class="row-fluid">
     <p><a href="{% url 'page' 'news' %}">{% trans "See All News" %} »</a></p>
   </div>
-{% endblock %}
-
-{% block local_nav %}
-<div class="panel">
-  <h4><a href="{% url 'page' 'about' %}">{% trans "About" %}</a></h4>
-  <p>{% blocktrans %}The International Plant Protection Convention (IPPC) is an international agreement on plant health to which 179 signatories currently adhere. It aims to protect cultivated and wild plants by preventing the introduction and spread of pests. The Secretariat of the IPPC is provided by the Food and Agriculture Organization of the United Nations. See our Media Kit.{% endblocktrans %}asdf</p>
-</div>
-
-<div class="panel">
-  <h4>{% trans "Countries" %}</h4>
-  <p>{% blocktrans %}Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.{% endblocktrans %}</p>
-  {% include "countries/country_selector.html" %}
-</div>
-
-<div class="panel">
+    
+    
+<div class="row-fluid">
+  
+    <div class="span6">
+ <div class="panel">
   <h4>{% trans "Information For…" %}</h4>
   <ul>
     <li>Donors</li>
@@ -70,4 +122,64 @@
     <li>Media</li>
   </ul>
 </div>
+      </div>    
+     </div>
+    
+{% endblock %}
+
+{% block local_nav %}
+<div class="panel">
+  <h4><a href="{% url 'page' 'who-we-are' %}">{% trans "About" %}</a></h4>
+  <p>{% blocktrans %}The International Plant Protection Convention (IPPC) is an <a title="See the convention text" href="/convention-text">international agreement</a> on plant health to which <a href="http://www.fao.org/fileadmin/user_upload/legal/docs/4_004s-e.pdf">181 signatories</a> currently adhere.  It aims to protect cultivated and wild plants by preventing the introduction and spread of pests.  The <a href="about/secretariat">Secretariat</a> of the IPPC is provided by the <a href="http://fao.org">Food and Agriculture Organization of the United Nations</a>. See our <a href="/media-kit">Media Kit</a>.{% endblocktrans %}</p>
+</div>
+
+<div class="panel">
+  <h4><a href="{% url 'page' 'core-activities' %}">{% trans "Core Activities" %}</a></h4>
+ <p>
+  <ul>
+    <li><a href="/core-activities/governance/">{% blocktrans %}Governance{% endblocktrans %}</a></li>
+    <li><a href="/core-activities/">{% blocktrans %}Commission (CPM){% endblocktrans %}</a></li>
+    <li><a href="/core-activities/standards-setting">{% blocktrans %}Standard setting{% endblocktrans %}</a></li>
+    <li><a href="/core-activities/standards-setting/member-consultation-draft-ispms" style="color:#c00;">{% blocktrans %}Member consultation on draft ISPMs{% endblocktrans %}</a></li>
+    <li><a href="/core-activities/standards-setting/substantial-concerns-commenting-period-sccp-draft-ispms" style="color:#c00;">{% blocktrans %}Substantial Concerns Commenting Period (SCCP) on draft ISPMs{% endblocktrans %}</a></li>
+    <li><a href="/core-activities/standards-setting/ispms">{% blocktrans %}Adopted Standards{% endblocktrans %}</a></li>
+    <li><a href="/core-activities/information-exchange">{% blocktrans %}Information exchange{% endblocktrans %}</a></li>
+    <li><a href="/core-activities/capacity-development">{% blocktrans %}Capacity development{% endblocktrans %}</a></li>
+     <li><a href="/core-activities/dispute-settlement">{% blocktrans %}Dispute settlement{% endblocktrans %}</a></li>
+    
+
+ <li><a href="/core-activities/ephyto">{% blocktrans %}ePhyto{% endblocktrans %}</a></li>
+     </ul>
+    </p>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div class="panel">
+  <h4><a href="{% url 'page' 'countries' %}">{% trans "Countries" %}</a></h4>
+  <p>
+  <ul>
+      <li>{% blocktrans %}<a href="/countries/all/list-countries/">Complete List of Countries{% endblocktrans %}</a></li>
+      <li>{% blocktrans %} List of Contact Points{% endblocktrans %}</li>
+      <li>{% blocktrans %} <a href="/countries/pestreport">Pest Reports{% endblocktrans %}</a></li>
+      <li>{% blocktrans %}<a href="/countries/legislation">Legislation {% endblocktrans %}</a></li>
+      <li>{% blocktrans %}<a href="/countries/regulatedpests">List of regulated pests {% endblocktrans %}</a></li>
+  </ul>
+    </p>
+  {% include "countries/country_selector.html" %}
+
+
+
 {% endblock local_nav %}

@@ -72,13 +72,13 @@
 
 # Setting to turn on featured images for blog posts. Defaults to False.
 #
-# BLOG_USE_FEATURED_IMAGE = True
+BLOG_USE_FEATURED_IMAGE = True
 
 # If True, the south application will be automatically added to the
 # INSTALLED_APPS setting.
 USE_SOUTH = True
 
-
+PAGE_MENU_TEMPLATES_DEFAULT = [2]
 ########################
 # MAIN DJANGO SETTINGS #
 ########################
@@ -288,7 +288,8 @@ INSTALLED_APPS = (
     
     #"mezzanine.mobile",
     "schedule",
-    "django_markdown"
+    "django_markdown",
+    "envelope"
 
 )
 
@@ -403,8 +404,19 @@ EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 EMAIL_USE_TLS = True
 EMAIL_HOST = 'smtp.gmail.com'
 EMAIL_PORT = 587
-EMAIL_HOST_USER = 'pxxx@gmail.com'
-EMAIL_HOST_PASSWORD = 'xxx'
+EMAIL_HOST_USER = 'paola.sentinelli@gmail.com'
+EMAIL_HOST_PASSWORD = 'Polda1906'
+DEFAULT_FROM_EMAIL='paola.sentinelli@gmail.com'
+
+ENVELOPE_EMAIL_RECIPIENTS=['paola.sentinelli@fao.org']
+
+ENVELOPE_CONTACT_CHOICES = (
+    (10,    _("Secretariat")),
+    (None,  _("Website feedback")),
+)
+
+
+
 # http://codespatter.com/2009/04/10/how-to-add-locations-to-python-path-for-reusable-django-apps/
 # import sys
 # sys.path.insert(0, os.path.join(PROJECT_ROOT, "apps"))

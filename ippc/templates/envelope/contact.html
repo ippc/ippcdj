@@ -1,0 +1,31 @@
+{% extends "base.html" %}
+{% load envelope_tags %} 
+
+
+{% load pages_tags translate_tags mezzanine_tags i18n future staticfiles accounts_tags %}
+
+{% block meta_title %}{% trans "New email utility message" %} {% endblock %}
+
+{% block body_class %}wide{% endblock %}
+
+{% block breadcrumb_menu %}
+<li>
+  <a href="/home">{% trans "Home" %}</a>
+  <span class="divider">/</span>
+</li>
+<li class="active">{% trans "Contact us" %}</li>
+
+{% endblock %}
+
+{% block local_nav %}
+{% endblock local_nav %}
+
+{% block pageinfo %}
+{% endblock pageinfo %}
+
+{% block main %}
+<h1>Contact us</h1>
+{% render_contact_form %}
+{% endblock %}
+
+

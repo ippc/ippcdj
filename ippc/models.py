@@ -34,7 +34,9 @@ from django.db.models.signals import post_save
 
 from django.core.exceptions import ValidationError
 
+from mezzanine.utils.models import get_user_model_name
 
+   
 def user_unicode_patch(self):
     return '%s %s' % (self.first_name, self.last_name)
 
@@ -53,7 +55,7 @@ class PublicationLibrary(Page, RichText):
     groups = models.ManyToManyField(Group, 
         verbose_name=_("Groups this library is accessible to"), 
         related_name='publicationlibrarygroups', blank=True, null=True)
-
+    old_id = models.CharField(max_length=50, blank=True, null=True)
     class Meta:
         verbose_name = _("Publication Library")
         verbose_name_plural = _("Publication Libraries")
@@ -66,7 +68,45 @@ class PublicationLibrary(Page, RichText):
         permissions = ( 
             ("can_view", "View Publication Library"),
         )
+class IssueKeyword(models.Model):
+    """ IssueKeyword  """
+    name = models.CharField(_("Issue Keyword"), max_length=500)
+    def __unicode__(self):
+        return self.name
+class CommodityKeyword(models.Model):
+    """ CommodityKeyword """
+    name = models.CharField(_("Commodity Keyword"), max_length=500)
+    def __unicode__(self):
+        return self.name
 
+
+
+        
+class IssueKeywordsRelate(models.Model):
+    content_type = models.ForeignKey(ContentType)
+    object_id = models.PositiveIntegerField()
+    content_object = generic.GenericForeignKey('content_type', 'object_id')
+    issuename = models.ManyToManyField(IssueKeyword,
+        verbose_name=_("Issue Keywords"),
+        blank=True, null=True)
+
+class CommodityKeywordsRelate(models.Model):
+    content_type = models.ForeignKey(ContentType)
+    object_id = models.PositiveIntegerField()
+    content_object = generic.GenericForeignKey('content_type', 'object_id')
+    commname = models.ManyToManyField(CommodityKeyword,
+        verbose_name=_("Commodity Keywords"),
+        blank=True, null=True)    
+
+        
+def validate_file_extension(value):
+    if not (value.name.endswith('.pdf') or value.name.endswith('.doc')or value.name.endswith('.txt')
+        or value.name.endswith('.xls')   or value.name.endswith('.ppt') or value.name.endswith('.jpg')
+        or value.name.endswith('.png') or value.name.endswith('.gif') or value.name.endswith('.xlsx')
+        or value.name.endswith('.docx')or value.name.endswith('.pptx') or value.name.endswith('.zip')
+        or value.name.endswith('.rar')):
+        raise ValidationError(u'You can only upload files:  txt pdf ppt doc xls jpg png docx xlsx pptx zip rar.')
+           
 # used by Publications
 IS_HIDDEN = 1
 IS_PUBLIC = 2
@@ -121,6 +161,11 @@ class Publication(Orderable):
                                    blank=True)
     document_number = models.CharField(_("Document Number"), max_length=100,
                                   blank=True)
+    short_description = models.TextField(_("Short Description"),  blank=True, null=True)
+    contact_for_more_information = models.TextField(_("Contact for more information"), blank=True, null=True)    
+    issuename=generic.GenericRelation(IssueKeywordsRelate)
+    commname=generic.GenericRelation(CommodityKeywordsRelate)
+    old_id = models.CharField(max_length=50, blank=True, null=True)                              
     def __unicode__(self):
         return self.title
 
@@ -149,7 +194,27 @@ class Publication(Orderable):
                             # 'month': self.publish_date.strftime("%m"),
                             # 'day': self.pub_date.strftime("%d"),
                             'pk': self.pk})
+class PublicationFile(models.Model):
+    publication = models.ForeignKey(Publication)
+    description = models.CharField(max_length=255)
+    file = models.FileField(max_length=255,blank=True, help_text='10 MB maximum file size.', verbose_name='Upload a file', upload_to='files/publication/%Y/%m/%d/', validators=[validate_file_extension])
 
+    def __unicode__(self):  
+        return self.file.name  
+    def name(self):
+        return self.file.name
+    def filename(self):
+        return os.path.basename(self.file.name) 
+    def fileextension(self):
+        return os.path.splitext(self.file.name)[1]
+
+class PublicationUrl(models.Model):
+    publication = models.ForeignKey(Publication)
+    url_for_more_information = models.URLField(blank=True, null=True)
+    def __unicode__(self):  
+        return self.url_for_more_information  
+    def name(self):
+        return self.url_for_more_information
 
 class WorkAreaPage(Page, RichText):
     """ Work Area Pages with definable users and groups """
@@ -219,7 +284,8 @@ class CountryPage(Page):
     cn_flag = models.ImageField(_("Country flag"), upload_to="flags/", blank=True)
     cn_lat = models.CharField(_("Country latitude"), max_length=100, unique=True, blank=True, null=True)
     cn_long = models.CharField(_("Country longitute"),max_length=100, unique=True, blank=True, null=True)
-    
+    cn_map = models.CharField(_("Country Map"), max_length=550)
+   
         # =todo: 
     # contracting_party = boolean
     # territory_of = foreignkey to other country
@@ -227,7 +293,27 @@ class CountryPage(Page):
 
     def __unicode__(self):
         return u'%s' % (self.name,)
+    
+class PartnersPage(Page, RichText):
+    """ PartnersPage with definable names, slugs, editors and rppo contact point"""
+    class Meta:
+        verbose_name = _('Partners Page')
+        verbose_name_plural = _('Partners Pages')
+        ordering = ['name']
 
+    name = models.CharField(max_length=50, unique=True, blank=True, null=True)
+    short_description = models.CharField(_("Text"), max_length=550)
+    partner_slug = models.CharField(_("URL Slug"), max_length=100, 
+            unique=True, blank=True, null=True,
+            help_text=_("Leave blank to have the URL auto-generated from "
+                        "the title."))
+    contact_point = models.OneToOneField("auth.User", 
+            verbose_name=_("RPPO Chief Contact Point"), blank=True, null=True)
+    editors = models.ManyToManyField(User, verbose_name=_("RPPO Editors"), 
+        related_name='rppoeditors+', blank=True, null=True)
+   
+    def __unicode__(self):
+        return u'%s' % (self.name,)
 # do we need a table for this? or do http://djangosnippets.org/snippets/2753/ ?
 class PestStatus(models.Model):
     """ Pest Statuses """
@@ -255,35 +341,7 @@ class EppoCode(models.Model):
         return self.codename
 
         
-class IssueKeyword(models.Model):
-    """ IssueKeyword  """
-    name = models.CharField(_("Issue Keyword"), max_length=500)
-    def __unicode__(self):
-        return self.name
-class CommodityKeyword(models.Model):
-    """ CommodityKeyword """
-    name = models.CharField(_("Commodity Keyword"), max_length=500)
-    def __unicode__(self):
-        return self.name
 
-
-
-        
-class IssueKeywordsRelate(models.Model):
-    content_type = models.ForeignKey(ContentType)
-    object_id = models.PositiveIntegerField()
-    content_object = generic.GenericForeignKey('content_type', 'object_id')
-    issuename = models.ManyToManyField(IssueKeyword,
-        verbose_name=_("Issue Keywords"),
-        blank=True, null=True)
-
-class CommodityKeywordsRelate(models.Model):
-    content_type = models.ForeignKey(ContentType)
-    object_id = models.PositiveIntegerField()
-    content_object = generic.GenericForeignKey('content_type', 'object_id')
-    commname = models.ManyToManyField(CommodityKeyword,
-        verbose_name=_("Commodity Keywords"),
-        blank=True, null=True)    
 
 class ContactType(models.Model):
     """ Contact Types """
@@ -326,6 +384,7 @@ class IppcUserProfile(models.Model):
     address_country = CountryField(_("Address Country"), blank=True, null=True)
     # country is the 'tag' marking permissions for Contact Point and Editors
     country = models.ForeignKey(CountryPage, related_name="user_country_page", blank=True, null=True)
+    partner = models.ForeignKey(PartnersPage, related_name="user_partner_page", blank=True, null=True)
 
     phone = models.CharField(_("Phone"), blank=True, max_length=30)
     fax = models.CharField(_("Fax"), blank=True, max_length=30)
@@ -341,14 +400,7 @@ class IppcUserProfile(models.Model):
 #     (CONTENT_STATUS_DRAFT, _("Draft")),
 #     (CONTENT_STATUS_PUBLISHED, _("Published")),
 # )
-def validate_file_extension(value):
-    if not (value.name.endswith('.pdf') or value.name.endswith('.doc')or value.name.endswith('.txt')
-        or value.name.endswith('.xls')   or value.name.endswith('.ppt') or value.name.endswith('.jpg')
-        or value.name.endswith('.png') or value.name.endswith('.gif') or value.name.endswith('.xlsx')
-        or value.name.endswith('.docx')or value.name.endswith('.pptx') or value.name.endswith('.zip')
-        or value.name.endswith('.rar')):
-        raise ValidationError(u'You can only upload files:  txt pdf ppt doc xls jpg png docx xlsx pptx zip rar.')
-   
+
 REPORT_STATUS_NA = 1
 REPORT_STATUS_PRELIMINARY = 2
 REPORT_STATUS_FINAL = 3
@@ -558,7 +610,7 @@ class ReportingObligationUrl(models.Model):
         return self.url_for_more_information   
 
 class CnPublication(Displayable, models.Model):
-    """ ReportingObligation"""
+    """ CnPublication"""
     country = models.ForeignKey(CountryPage, related_name="cnpublication_country_page")
     author = models.ForeignKey(User, related_name="cnpublicatio_author")
     
@@ -629,6 +681,80 @@ class CnPublicationUrl(models.Model):
         return self.url_for_more_information  
     def name(self):
         return self.url_for_more_information   
+
+class PartnersPublication(Displayable, models.Model):
+    """ PartnerPublication"""
+    partners = models.ForeignKey(PartnersPage, related_name="partnerspublication_country_page")
+    author = models.ForeignKey(User, related_name="partnerspublication_author")
+    
+    # slug - provided by mezzanine.core.models.slugged (subclassed by displayable)
+    # title - provided by mezzanine.core.models.slugged (subclassed by displayable)
+    # status - provided by mezzanine.core.models.displayable
+    # publish_date - provided by mezzanine.core.models.displayable
+    
+    publication_date = models.DateTimeField(_("Publication date"), blank=True, null=True, editable=True)
+    agenda_number = models.CharField(_("Agenda Item Number"), max_length=100, blank=True)
+    document_number = models.CharField(_("Document Number"), max_length=100,  blank=True)
+    short_description = models.TextField(_("Short Description"),  blank=True, null=True)
+    contact_for_more_information = models.TextField(_("Contact for more information"), blank=True, null=True)    
+    modify_date = models.DateTimeField(_("Modified date"), blank=True, null=True, editable=False)
+    issuename=generic.GenericRelation(IssueKeywordsRelate)
+    commname=generic.GenericRelation(CommodityKeywordsRelate)
+    old_id = models.CharField(max_length=50)
+    # objects = models.Manager()
+    objects = SearchableManager()
+    search_fields = ("title", "short_description")
+
+    class Meta:
+        verbose_name_plural = _("Publications")
+        # abstract = True
+
+    def __unicode__(self):
+        return self.title
+
+    # http://devwiki.beloblotskiy.com/index.php5/Django:_Decoupling_the_URLs  
+    @models.permalink # or: get_absolute_url = models.permalink(get_absolute_url) below
+    def get_absolute_url(self): # "view on site" link will be visible in admin interface
+        """Construct the absolute URL for a partner publication."""
+        return ('partner-publication', (), {
+                            'partner': self.partner.name, # =todo: get self.country.name working
+                            'year': self.publish_date.strftime("%Y"),
+                            'month': self.publish_date.strftime("%m"),
+                            # 'day': self.pub_date.strftime("%d"),
+                            'slug': self.slug})
+            
+    def save(self, *args, **kwargs):
+        ''' On save, update timestamps '''
+        if not self.id:
+            self.publish_date = datetime.today()
+            # Newly created object, so set slug
+            self.slug = slugify(self.title)
+        self.modify_date = datetime.now()
+        super(PartnersPublication, self).save(*args, **kwargs)
+ 
+    
+class PartnersPublicationFile(models.Model):
+    partnerspublication = models.ForeignKey(PartnersPublication)
+    description = models.CharField(max_length=255)
+    file = models.FileField(max_length=255,blank=True, help_text='10 MB maximum file size.', verbose_name='Upload a file', upload_to='files/partner_publication/%Y/%m/%d/', validators=[validate_file_extension])
+
+    def __unicode__(self):  
+        return self.file.name  
+    def name(self):
+        return self.file.name
+    def filename(self):
+        return os.path.basename(self.file.name) 
+    def fileextension(self):
+        return os.path.splitext(self.file.name)[1]
+
+class PartnersPublicationUrl(models.Model):
+    partnerspublication = models.ForeignKey(PartnersPublication)
+    url_for_more_information = models.URLField(blank=True, null=True)
+    def __unicode__(self):  
+        return self.url_for_more_information  
+    def name(self):
+        return self.url_for_more_information   
+
 
 EVT_REP_1 = 1
 EVT_REP_2 = 2
@@ -806,7 +932,75 @@ class WebsiteUrl(models.Model):
         return self.url_for_more_information  
     def name(self):
         return self.url_for_more_information            
-   
+
+class PartnersWebsite(Displayable, models.Model):
+    """ Event Reporting"""
+    partners = models.ForeignKey(PartnersPage, related_name="partnerswebsite_partner_page")
+    author = models.ForeignKey(User, related_name="partnerswebsite__reporting_author")
+    
+    # slug - provided by mezzanine.core.models.slugged (subclassed by displayable)
+    # title - provided by mezzanine.core.models.slugged (subclassed by displayable)
+    # status - provided by mezzanine.core.models.displayable
+    # publish_date - provided by mezzanine.core.models.displayable
+    
+    web_type = models.IntegerField(_("Type of Website"), choices=WEB_TYPE_CHOICES, default=None)
+    short_description = models.TextField(_("Short Description"),  blank=True, null=True)
+    contact_for_more_information = models.TextField(_("Contact for more information"), blank=True, null=True)    
+    modify_date = models.DateTimeField(_("Modified date"), blank=True, null=True, editable=False)
+    issuename=generic.GenericRelation(IssueKeywordsRelate)
+    commname=generic.GenericRelation(CommodityKeywordsRelate)
+    old_id = models.CharField(max_length=50)
+    objects = SearchableManager()
+    
+    search_fields = ("title", "short_description")
+
+    class Meta:
+        verbose_name_plural = _("Websites")
+        # abstract = True
+
+    def __unicode__(self):
+        return self.title
+
+    # http://devwiki.beloblotskiy.com/index.php5/Django:_Decoupling_the_URLs  
+    #@models.permalink # or: get_absolute_url = models.permalink(get_absolute_url) below
+    #def get_absolute_url(self): # "view on site" link will be visible in admin interface
+    ##    """Construct the absolute URL for a Pest Report."""
+    #    return ('event-reporting-detail', (), {
+    #                        'country': self.country.name, # =todo: get self.country.name working
+    #                       'year': self.publish_date.strftime("%Y"),
+    #                        'month': self.publish_date.strftime("%m"),
+    #                        # 'day': self.pub_date.strftime("%d"),
+    #                        'slug': self.slug})
+            
+    def save(self, *args, **kwargs):
+        ''' On save, update timestamps '''
+        if not self.id:
+            self.publish_date = datetime.today()
+            # Newly created object, so set slug
+            self.slug = slugify(self.title)
+        self.modify_date = datetime.now()
+        super(PartnersWebsite, self).save(*args, **kwargs)
+
+    def filename(self):
+        return os.path.basename(self.file.name)
+    def event_rep_type_verbose(self):
+        return dict(WEB_TYPE_CHOICES)[self.web_type]
+  
+    @models.permalink
+    def get_absolute_url(self):
+        return ('upload-new', )
+
+
+
+class PartnersWebsiteUrl(models.Model):
+    partnerswebsite = models.ForeignKey(PartnersWebsite)
+    url_for_more_information = models.URLField(blank=True, null=True)
+    def __unicode__(self):  
+        return self.url_for_more_information  
+    def name(self):
+        return self.url_for_more_information    
+    
+    
 PFA_TYPE_1 = 1
 PFA_TYPE_2 = 2
 PFA_TYPE_1_CHOICES = (
@@ -1098,7 +1292,82 @@ class CountryNewsUrl(models.Model):
         return self.url_for_more_information  
     def name(self):
         return self.url_for_more_information
+    
+    
+class PartnersNews(Displayable, models.Model):
+    """ partnersNews"""
+    partners = models.ForeignKey(PartnersPage, related_name="partnersnews_partner_page")
+    author = models.ForeignKey(User, related_name="partnersnews_author")
+    
+    # slug - provided by mezzanine.core.models.slugged (subclassed by displayable)
+    # title - provided by mezzanine.core.models.slugged (subclassed by displayable)
+    # status - provided by mezzanine.core.models.displayable
+    # publish_date - provided by mezzanine.core.models.displayable
+    
+    short_description = models.TextField(_("Text"),  blank=True, null=True)
+    publication_date = models.DateTimeField(_("Publication date"), blank=True, null=True, editable=True)
+    image = models.ImageField(_("Image"), upload_to="countrynews/images/%Y/%m/", blank=True)
+    contact_for_more_information = models.TextField(_("Contact for more information"), blank=True, null=True)    
+    modify_date = models.DateTimeField(_("Modified date"), blank=True, null=True, editable=False)
+    issuename=generic.GenericRelation(IssueKeywordsRelate)
+    commname=generic.GenericRelation(CommodityKeywordsRelate)
+    objects = SearchableManager()
+    search_fields = ("title", "short_description")
 
+    class Meta:
+        verbose_name_plural = _("Country News")
+        # abstract = True
+
+    def __unicode__(self):
+        return self.title
+
+    # http://devwiki.beloblotskiy.com/index.php5/Django:_Decoupling_the_URLs  
+    @models.permalink # or: get_absolute_url = models.permalink(get_absolute_url) below
+    def get_absolute_url(self): # "view on site" link will be visible in admin interface
+        """Construct the absolute URL """
+        return ('partnersnews-detail', (), {
+                            'partner': self.partner.name, # =todo: get self.country.name working
+                            'year': self.publish_date.strftime("%Y"),
+                            'month': self.publish_date.strftime("%m"),
+                            # 'day': self.pub_date.strftime("%d"),
+                            'slug': self.slug})
+            
+    def save(self, *args, **kwargs):
+        ''' On save, update timestamps '''
+        if not self.id:
+            self.publish_date = datetime.today()
+            # Newly created object, so set slug
+            self.slug = slugify(self.title)
+        self.modify_date = datetime.now()
+        super(PartnersNews, self).save(*args, **kwargs)
+
+ 
+    def imagename(self):
+        return os.path.basename(self.image.name)
+
+class PartnersNewsFile(models.Model):
+    partnersnews = models.ForeignKey(PartnersNews)
+    description = models.CharField(max_length=255)
+    file = models.FileField(max_length=255,blank=True, help_text='10 MB maximum file size.', verbose_name='Upload a file', upload_to='files/partnersnews/%Y/%m/%d/', validators=[validate_file_extension])
+
+    def __unicode__(self):  
+        return self.file.name  
+    def name(self):
+        return self.file.name
+    def filename(self):
+        return os.path.basename(self.file.name) 
+    def fileextension(self):
+        return os.path.splitext(self.file.name)[1]
+  
+class PartnersNewsUrl(models.Model):
+    partnersnews = models.ForeignKey(PartnersNews)
+    url_for_more_information = models.URLField(blank=True, null=True)
+    def __unicode__(self):  
+        return self.url_for_more_information  
+    def name(self):
+        return self.url_for_more_information
+    
+    
 class Poll(models.Model):
     question = models.CharField(max_length=200)
     polltext = models.TextField(max_length=500,blank=True, null=True)
