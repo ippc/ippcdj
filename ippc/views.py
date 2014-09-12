@@ -7,7 +7,7 @@ from django.conf import settings
 from django.contrib.auth.models import User,Group
 from .models import PublicationLibrary,Publication,EppoCode,EmailUtilityMessage, EmailUtilityMessageFile, Poll_Choice, Poll,PollVotes, IppcUserProfile,\
 CountryPage,PartnersPage, PestStatus, PestReport, IS_PUBLIC, IS_HIDDEN, Publication,\
-ReportingObligation, BASIC_REP_TYPE_CHOICES, EventReporting, EVT_REP_TYPE_CHOICES,Website,CnPublication,PartnersPublication,CountryNews, \
+ReportingObligation, BASIC_REP_TYPE_CHOICES, EventReporting, EVT_REP_TYPE_CHOICES,Website,CnPublication,PartnersPublication,PartnersNews, PartnersWebsite,CountryNews, \
 PestFreeArea,ImplementationISPM,REGIONS, IssueKeywordsRelate,CommodityKeywordsRelate,EventreportingFile,ReportingObligation_File
 from mezzanine.core.models import Displayable, CONTENT_STATUS_DRAFT, CONTENT_STATUS_PUBLISHED
 from .forms import PestReportForm,PublicationUrlFormSet,PublicationForm, PublicationFileFormSet, ReportingObligationForm, EventReportingForm, PestFreeAreaForm,\
@@ -16,6 +16,7 @@ ImplementationISPMFileFormSet,PestFreeAreaFileFormSet, PestReportFileFormSet,Web
 EventreportingUrlFormSet, ReportingObligationUrlFormSet ,PestFreeAreaUrlFormSet,ImplementationISPMUrlFormSet,PestReportUrlFormSet,\
 CnPublicationUrlFormSet,CnPublicationForm, CnPublicationFileFormSet,\
 PartnersPublicationUrlFormSet,PartnersPublicationForm, PartnersPublicationFileFormSet,\
+PartnersNewsUrlFormSet,PartnersNewsForm, PartnersNewsFileFormSet,PartnersWebsiteUrlFormSet,PartnersWebsiteForm,\
 EmailUtilityMessageForm,EmailUtilityMessageFileFormSet,\
 CountryNewsUrlFormSet,CountryNewsForm, CountryNewsFileFormSet
 
@@ -848,11 +849,19 @@ class PartnersWebsiteDetailView(DetailView):
     template_name = 'partners/website_detail.html'
     queryset = PartnersWebsite.objects.filter()
 
-
+    def get_context_data(self, **kwargs): # http://stackoverflow.com/a/15515220
+        context = super(PartnersWebsiteDetailView, self).get_context_data(**kwargs)
+        page = get_object_or_404(PartnersPage, name=self.kwargs['partners'])
+        print(page.slug)
+        context['pagetitle'] =  page.name
+        context['pageslug'] =  page.slug
+       # context['page'] =  page.partner_slug
+        return context
+     
 
 @login_required
 @permission_required('ippc.add_partnerswebsite', login_url="/accounts/login/")
-def partners_website_create(request, partner):
+def partner_websites_create(request, partner):
     """ Create website """
     user = request.user
     author = user
@@ -886,7 +895,7 @@ def partners_website_create(request, partner):
             u_form.instance = new_website
             u_form.save()
             info(request, _("Successfully added Website."))
-            return redirect("partners-website-detail", partners=user_partner_slug, year=new_website.publish_date.strftime("%Y"), month=new_website.publish_date.strftime("%m"), slug=new_website.slug)
+            return redirect("partner-websites-detail", partners=user_partner_slug, year=new_website.publish_date.strftime("%Y"), month=new_website.publish_date.strftime("%m"), slug=new_website.slug)
         else:
             return render_to_response('partners/website_create.html', {'form': form,'u_form': u_form,'issueform':issueform, 'commodityform':commodityform},#'entryform': entryform,'docform':myformset,
              context_instance=RequestContext(request))
@@ -894,7 +903,7 @@ def partners_website_create(request, partner):
           
         
     else:
-        form = PartnersWebsiteForm(initial={'country': country}, instance=PartnersWebsite())
+        form = PartnersWebsiteForm(initial={'partners': partner}, instance=PartnersWebsite())
         issueform =IssueKeywordsRelateForm(request.POST)
         commodityform =CommodityKeywordsRelateForm(request.POST)
         u_form = PartnersWebsiteUrlFormSet()
@@ -906,7 +915,7 @@ def partners_website_create(request, partner):
 
 @login_required
 @permission_required('ippc.change_partnerswebsite', login_url="/accounts/login/")
-def website_edit(request, partner, id=None, template_name='partners/website_edit.html'):
+def partner_websites_edit(request, partner, id=None, template_name='partners/website_edit.html'):
     """ Edit  website """
     user = request.user
     author = user
@@ -924,8 +933,8 @@ def website_edit(request, partner, id=None, template_name='partners/website_edit
         form = PartnersWebsiteForm(request.POST,  request.FILES, instance=website)
         issueform =IssueKeywordsRelateForm(request.POST,instance=issues)
         commodityform =CommodityKeywordsRelateForm(request.POST,instance=commodities)
-        u_form = WebsiteUrlFormSet(request.POST,  instance=website)
-      
+        u_form = PartnersWebsiteUrlFormSet(request.POST,  instance=website)
+        
         if form.is_valid()  and u_form.is_valid():
             form.save()
             issue_instance = issueform.save(commit=False)
@@ -942,7 +951,7 @@ def website_edit(request, partner, id=None, template_name='partners/website_edit
             u_form.instance = website
             u_form.save()
             info(request, _("Successfully updated Website."))
-            return redirect("partners-website-detail", partners=user_partner_slug, year=website.publish_date.strftime("%Y"), month=website.publish_date.strftime("%m"), slug=website.slug)
+            return redirect("partner-websites-detail", partners=user_partner_slug, year=website.publish_date.strftime("%Y"), month=website.publish_date.strftime("%m"), slug=website.slug)
 
     else:
         form = PartnersWebsiteForm(instance=website)
@@ -1125,7 +1134,22 @@ class PartnersView(TemplateView):
             # 'editors': self.kwargs['editors']
             # 'profile_user': self.kwargs['profile_user']
         })
+        page = get_object_or_404(PartnersPage, name=self.kwargs['partner'])
+        #print(page.parent_id)
+        #context['pagetitle'] =  page.name
+        #context['pageslug'] =  page.slug
+        pageparent = get_object_or_404(PublicationLibrary, id=page.parent_id)
+        titleparent=pageparent.title
+        titleparent = titleparent.replace(" ", "-").lower()
+        context['content']  =page.content
+              
+        context['titleparent']  =pageparent.title
+        context['titleparentslug'] = titleparent
+        #context['pageslug'] =  page.slug
+        
         context['publications'] = PartnersPublication.objects.filter(partners__partner_slug=self.kwargs['partner'])
+        context['news'] = PartnersNews.objects.filter(partners__partner_slug=self.kwargs['partner'])
+        context['websites'] = PartnersWebsite.objects.filter(partners__partner_slug=self.kwargs['partner'])
        
         return context
     
@@ -1725,12 +1749,21 @@ class PartnersNewsDetailView(DetailView):
     context_object_name = 'partnersnews'
     template_name = 'partners/partnersnews_detail.html'
     queryset = PartnersNews.objects.filter()
-
+      
+    def get_context_data(self, **kwargs): # http://stackoverflow.com/a/15515220
+        context = super(PartnersNewsDetailView, self).get_context_data(**kwargs)
+        page = get_object_or_404(PartnersPage, name=self.kwargs['partners'])
+        print(page.slug)
+        context['pagetitle'] =  page.name
+        context['pageslug'] =  page.slug
+       # context['page'] =  page.partner_slug
+        return context
+     
 
 
 @login_required
 @permission_required('ippc.add_partnersnews', login_url="/accounts/login/")
-def partnersnews_create(request, partner):
+def partners_news_create(request, partner):
     """ Create partnersnews """
     user = request.user
     author = user
@@ -1779,15 +1812,15 @@ def partnersnews_create(request, partner):
         f_form = PartnersNewsFileFormSet()
         u_form = PartnersNewsUrlFormSet()
 
-    return render_to_response('partner/partnernews_create.html', {'form': form  ,'f_form': f_form,'u_form': u_form,'issueform':issueform, 'commodityform':commodityform},
+    return render_to_response('partners/partnersnews_create.html', {'form': form  ,'f_form': f_form,'u_form': u_form,'issueform':issueform, 'commodityform':commodityform},
         context_instance=RequestContext(request))
 
 
         
 # http://stackoverflow.com/a/1854453/412329
 @login_required
-@permission_required('ippc.change_partnernews', login_url="/accounts/login/")
-def partnernews_edit(request, partner, id=None, template_name='partners/partnernews_edit.html'):
+@permission_required('ippc.change_partnersnews', login_url="/accounts/login/")
+def partners_news_edit(request, partner, id=None, template_name='partners/partnersnews_edit.html'):
     """ Edit partner news """
     user = request.user
     author = user
@@ -1828,7 +1861,7 @@ def partnernews_edit(request, partner, id=None, template_name='partners/partnern
             u_form.save()
             # If the save was successful, success message and redirect to another page
             # info(request, _("Successfully updated pest report."))
-            return redirect("partners-news-detail", partners=user_partner_slug, year=partnernews.publish_date.strftime("%Y"), month=partnernews.publish_date.strftime("%m"), slug=partnernews.slug)
+            return redirect("partner-news-detail", partners=user_partner_slug, year=partnernews.publish_date.strftime("%Y"), month=partnernews.publish_date.strftime("%m"), slug=partnernews.slug)
 
     else:
         form = PartnersNewsForm(instance=partnernews)

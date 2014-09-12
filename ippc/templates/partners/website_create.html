@@ -1,7 +1,7 @@
 {% extends "base.html" %}
 {% load pages_tags translate_tags mezzanine_tags i18n future staticfiles accounts_tags %}
 
-{% block meta_title %}{% trans "New Publication" %} - {{ user.get_profile.partner.name}} {% endblock %}
+{% block meta_title %}{% trans "New website" %} - {{ user.get_profile.partner.name}} {% endblock %}
 
 {% block body_class %}wide{% endblock %}
 
@@ -10,11 +10,9 @@
   <a href="/partners/">{% trans "partners" %}</a>
   <span class="divider">/</span>
 </li>
-<li>
-    {{ user.get_profile.partner.name }} {% trans "Publication" %}
-  <span class="divider">/</span>
+<li class="active">
+    {{ user.get_profile.partner.name }} {% trans "Websites" %}: {% trans "Create New" %}
 </li>
-<li class="active">{% trans "Create New" %}</li>
 {% endblock %}
 
 {% block local_nav %}
@@ -29,12 +27,12 @@
   <a href="javascript:history.go(-1)">{% trans "« Cancel and go back" %}</a>
 </p>
 
-<h1><span class="normal">{% trans "Create New Publication for" %}</span> {{ user.get_profile.partner.name }}</h1>
+<h1><span class="normal">{% trans "Create New website for" %}</span> {{ user.get_profile.partner.name }}</h1>
 
 <form class="customform" method="POST" action="" enctype="multipart/form-data">
     {% csrf_token %}
     <fieldset>
-        {% include "partners/p_publication_form.html" %}
+        {% include "partners/website_form.html" %}
         <div class="form-actions">
             <button type="submit" class="btn btn-info btn-large" tabindex="7">{% trans "Submit" %}</button> or <a href="javascript:history.go(-1)">{% trans "Cancel" %}</a>
         </div>

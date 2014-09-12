@@ -1,0 +1,52 @@
+{% extends "base.html" %}
+{% load pages_tags translate_tags mezzanine_tags i18n future staticfiles accounts_tags %}
+
+{% block meta_title %}{% trans "Edit news" %} - {{ user.get_profile.partner.name}} {% endblock %}
+
+{% block body_class %}wide{% endblock %}
+
+{% block breadcrumb_menu %}
+<li>
+  <a href="/partners/">{% trans "partners" %}</a>
+  <span class="divider">/</span>
+</li>
+<li>
+  <a href="/partners/{{ user.get_profile.partner.name|slugify }}/">
+    {{ user.get_profile.partner.name }}
+  </a>
+  <span class="divider">/</span>
+</li>
+<li class="active">
+    {{ user.get_profile.partner.name }} {% trans "News" %}: {% trans "Editing" %} {{ partnernews.title }}
+</li>
+
+
+{% endblock %}
+
+{% block local_nav %}
+{% endblock local_nav %}
+
+{% block pageinfo %}
+{% endblock pageinfo %}
+
+{% block main %}
+
+<p class="pull-right">
+  <a href="javascript:history.go(-1)">{% trans "« Cancel and go back" %}</a>
+</p>
+
+<h1><small class="normal">{% trans "Editing" %}</small> {{ partnernews.title }} <br><small class="normal">{% trans "Last updated on" %} {{partnernews.modify_date}}</small></h1>
+
+<form enctype="multipart/form-data" class="customform" method="POST" action="">
+    {% csrf_token %}
+    <fieldset>
+        {% include "partners/partnersnews_form.html" %}
+        <div class="form-actions">
+            <button type="submit" class="btn btn-info btn-large">{% trans "Update News" %}</button> {% trans "or" %} <a href="javascript:history.go(-1)">{% trans "Cancel" %}</a>
+        </div>
+    </fieldset>
+</form>
+
+
+{% endblock %}
+

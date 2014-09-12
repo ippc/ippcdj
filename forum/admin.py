@@ -7,7 +7,8 @@ from django.utils.translation import ugettext_lazy as _
 from .models import ForumPost, ForumCategory
 from mezzanine.conf import settings
 from mezzanine.core.admin import DisplayableAdmin, OwnableAdmin
-
+from django.core import mail
+from django.core.mail import send_mail
 
 forumpost_fieldsets = deepcopy(DisplayableAdmin.fieldsets)
 forumpost_fieldsets[0][1]["fields"].insert(1, "categories")
@@ -25,7 +26,7 @@ forumpost_fieldsets.insert(1, (_("Other posts"), {
 forumpost_list_filter = deepcopy(DisplayableAdmin.list_filter) + ("categories",)
 
 
-class ForumPostAdmin(DisplayableAdmin, OwnableAdmin):
+class ForumPostAdmin(DisplayableAdmin,OwnableAdmin):
     """
     Admin class for forum posts.
     """
@@ -40,6 +41,8 @@ class ForumPostAdmin(DisplayableAdmin, OwnableAdmin):
         Super class ordering is important here - user must get saved first.
         """
         OwnableAdmin.save_form(self, request, form, change)
+       # message = mail.EmailMessage('test','ttttt','paola.sentinelli@gmail.com',  ['paola.sentinelli@gmail.com'], ['paola.sentinelli@gmail.com'])
+        #sent =message.send()
         return DisplayableAdmin.save_form(self, request, form, change)
 
 

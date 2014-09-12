@@ -30,6 +30,8 @@ import autocomplete_light_registry
 from django_markdown.widgets import MarkdownWidget
 
 
+    
+    
 class PublicationFileInline(admin.TabularInline):
     model = PublicationFile
     formset = inlineformset_factory(Publication,  PublicationFile,extra=1)
@@ -74,7 +76,7 @@ class CountryPageAdmin(PageAdmin):
 
 admin.site.register(CountryPage, CountryPageAdmin)
 
-partnerspages_extra_fieldsets = ((None, {"fields": ("name", "short_description", "partner_slug",  "contact_point", "editors", )}),)
+partnerspages_extra_fieldsets = ((None, {"fields": ("name","content", "short_description", "partner_slug",  "contact_point", "editors", )}),)
 
 class PartnersPageAdmin(PageAdmin):
     fieldsets = deepcopy(PageAdmin.fieldsets) + partnerspages_extra_fieldsets

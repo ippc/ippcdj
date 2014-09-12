@@ -1,0 +1,98 @@
+{% extends "base.html" %}
+{% load pages_tags mezzanine_tags i18n future staticfiles accounts_tags %}
+
+{% block meta_title %}{% trans "Latest Websites" %}{% endblock %}
+
+{% block breadcrumb_menu %}
+<li><a href="/">{% trans "Home" %}</a><span class="divider">/</span></li>
+<li><a href="/partners/">Partners</a><span class="divider">/</span></li>
+<li>{{website.partners.name}}<span class="divider">/</span></li>
+<li>Websites</a><span class="divider">/</span></li>
+<li class="active">{{ website.title }}</li>
+{% endblock %}
+
+{% block local_nav %}
+<div class="well">
+  <p><a href="/{{ pageslug}}/">« {% trans "Back to " %}{{pagetitle}}</a></p>
+    {% if user.is_superuser %} 
+        <a class="btn btn-small btn-info" href="/admin/ippc/partnerswebsite/{{ website.id }}">Edit as Admin</a><br>
+    {% endif %}
+    {% if perms.ippc.change_partnerswebsite and request.user.get_profile.partner.name == website.partners.name %}
+        <a class="btn btn-small btn-info" href="{% url 'partner-websites-edit' website.partners.name|slugify website.id %}"><i class="icon-edit icon-white"></i> Edit</a>
+    {% else %}
+    {% endif %}
+    
+    
+    
+   
+</div>
+{% endblock local_nav %}
+
+{% block pageinfo %}
+
+{% endblock pageinfo %}
+
+{% block main %}
+<h1>{{ website.title }}</h1> 
+
+<dl class="dl-horizontal">
+  {% if website.web_rep_type %}
+  <dt>{% trans "Type of Website" %}</dt>
+  <dd>
+    <ul class="unstyled nomargin">
+      <li>{{ website.web_type_verbose }}</li>
+    </ul>
+  </dd>
+  {% endif %}
+  
+
+ {% if website.short_description %}
+  <dt>{% trans "short description" %}</dt>
+  <dd>{{ website.short_description }}</dd>
+  {% endif %}
+  
+  {% if website.contact_for_more_information %}
+  <dt>{% trans "Contact for more information" %}</dt>
+  <dd>{{ website.contact_for_more_information }}</dd>
+  {% endif %}
+  
+
+
+  
+
+  {% if website.issuename %}
+  <dt>{% trans "Issue keywords" %}</dt>
+  <dd>
+  {% for entry in website.issuename.all %}
+  <br/>
+  {% for e in entry.issuename.all %}
+   <br/>
+  {{e.name}}<br/>
+ {% endfor %} 
+{% endfor %}
+  </dd>
+  {% endif %}
+ 
+  
+  
+  {% if website.commname %}
+  <dt>{% trans "Commodity keywords" %}</dt>
+  <dd>
+  {% for entry in website.commname.all %}
+ 
+  {% for e in entry.commname.all %}
+  
+  {{e.name}}<br/>
+ {% endfor %} 
+{% endfor %}
+  </dd>
+  {% endif %}
+    
+  <dt>{% trans "Website" %}</dt>
+   {% for f in website.partnerswebsiteurl_set.all %} 
+    
+  <dd><a href="{{MEDIA_URL}}{{f.url_for_more_information}}">{{ f.url_for_more_information }}</a></dd>
+{% endfor %}
+</dl>
+{% endblock %}
+

@@ -13,10 +13,10 @@ CountryListView,PublicationFilesListView,CountryRelatedView,\
 AdvancesSearchCNListView,publication_edit,\
 CnPublicationListView,CnPublicationDetailView,country_publication_create,country_publication_edit,\
 PartnersPublicationDetailView,  partner_publication_create,  partner_publication_edit,\
-PartnersWebsitesDetailView,  partner_websites_create,  partner_websites_edit,\
+PartnersWebsiteDetailView,  partner_websites_create,  partner_websites_edit,\
 CountryNewsListView,CountryNewsDetailView,countrynews_create,countrynews_edit,\
 CountryNewsListView,CountryNewsDetailView,countrynews_create,countrynews_edit,\
-PartnersNewsDetailView,partnersnews_create,partnersnews_edit,\
+PartnersNewsDetailView,partners_news_create,partners_news_edit,\
 PollListView,PollResultsView,PollDetailView,vote_poll,\
 email_send,EmailUtilityMessageDetailView,EmailUtilityMessageListView, \
 CountryRegionsPercentageListView,CountryStatsreportsListView,CountryStatsTotalreportsListView,CountryRegionsUsersListView,CountryTotalUsersListView
@@ -96,19 +96,7 @@ urlpatterns = patterns("",
     url(r'^countries/(?P<type>[\w-]+)$',
         view=AdvancesSearchCNListView.as_view(),
         name='advsearch'),
-    #-------------PARTNERS---------------------------
-    url(r'^partners/international-organizations/(?P<partner>[\w-]+)/$',
-        view=PartnersView.as_view(),
-        # view=country_view(),
-        name='partner'),
-    url(r'^partners/regional-plant-protection-organizations/(?P<partner>[\w-]+)/$',
-        view=PartnersView.as_view(),
-        # view=country_view(),
-        name='partner'), 
-    url(r'^liason/(?P<partner>[\w-]+)/$',
-        view=PartnersView.as_view(),
-        # view=country_view(),
-        name='partner'),     
+    
     #-------------------STATS------------------------    
    
     url(r'^countries/statistics/regionspercentage/$',
@@ -308,35 +296,40 @@ urlpatterns = patterns("",
     #    view=EventReportingHiddenListView.as_view(),
     #    name='event-reporting-hidden-list'),
 #-------------------------------------------#
-    # partner publications 
+
+#-------------PARTNERS---------------------------
+
+    url(r'^partners/international-organizations/(?P<partner>[\w-]+)/$',
+        view=PartnersView.as_view(),
+        name='partner'),
+    url(r'^partners/regional-plant-protection-organizations/(?P<partner>[\w-]+)/$',
+        view=PartnersView.as_view(),
+        name='partner'), 
+    url(r'^liason/organizations/(?P<partner>[\w-]+)/$',
+        view=PartnersView.as_view(),
+        name='partner'),     
 
     # partners publications detail
     url(r'^partners/(?P<partners>[\w-]+)/publications/(?P<year>\d+)/(?P<month>\d{2})/(?P<slug>[\w-]+)/$',
         view=PartnersPublicationDetailView.as_view(),
         name="partner-publication-detail"),
-        
      #partners publications create
     url(r'^partners/(?P<partners>[\w-]+)/publications/create/$',
         view=partner_publication_create,
         name='partner-publication-create'),
-        
     # partners publications edit
     url(r'^partners/(?P<partner>[\w-]+)/publications/edit/(?P<id>\d+)/$',
         view=partner_publication_edit,
         name='partner-publication-edit'),
-#-------------------------------------------#
-    # partner websites 
-
+    
     # partners websites detail
     url(r'^partners/(?P<partners>[\w-]+)/websites/(?P<year>\d+)/(?P<month>\d{2})/(?P<slug>[\w-]+)/$',
-        view=PartnersWebsitesDetailView.as_view(),
+        view=PartnersWebsiteDetailView.as_view(),
         name="partner-websites-detail"),
-        
      #partners websites create
-    url(r'^partners/(?P<partners>[\w-]+)/websites/create/$',
+    url(r'^partners/(?P<partner>[\w-]+)/websites/create/$',
         view=partner_websites_create,
         name='partner-websites-create'),
-        
     # partners websites edit
     url(r'^partners/(?P<partner>[\w-]+)/websites/edit/(?P<id>\d+)/$',
         view=partner_websites_edit,
@@ -346,16 +339,14 @@ urlpatterns = patterns("",
     url(r'^partners/(?P<partners>[\w-]+)/news/(?P<year>\d+)/(?P<month>\d{2})/(?P<slug>[\w-]+)/$',
         view=PartnersNewsDetailView.as_view(),
         name="partner-news-detail"),
-        
      #partners news create
-    url(r'^partners/(?P<partners>[\w-]+)/news/create/$',
-        view=partnernews_create,
+    url(r'^partners/(?P<partner>[\w-]+)/news/create/$',
+        view=partners_news_create,
         name='partner-news-create'),
-        
     # partners news edit
     url(r'^partners/(?P<partner>[\w-]+)/news/edit/(?P<id>\d+)/$',
-        view=partnernews_edit,
-        name='partner-websites-edit'),
+        view=partners_news_edit,
+        name='partner-news-edit'),
              
         
         

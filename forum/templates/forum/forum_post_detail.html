@@ -28,7 +28,7 @@
     {% endwith %}
         <span class="divider">/</span>
   </li>
-  <li class="active">{{ forum_post.title }}</li>
+  <li class="active">{{ forum_post.title }}
 {% endblock %}
 
 {% block main %}
@@ -44,8 +44,10 @@
     {% if group in forum_post.groups.all %}
       {{ block.super }}
 
-
-
+<p>
+{% if user.is_superuser or perms.forum.change_forumpost%} 
+            <a class="btn btn-small btn-info" href="/admin/forum/forumpost/{{ forum_post.id }}"><i class="icon-edit"></i> Edit as Admin</a><br>
+        {% endif %}</p>
 
 
 

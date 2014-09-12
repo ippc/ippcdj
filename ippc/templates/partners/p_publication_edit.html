@@ -15,13 +15,7 @@
   <span class="divider">/</span>
 </li>
 <li>
-  <a href="/partners/{{ partnerspublication.partners.partner_slug }}/">
-      {{ partnerspublication.country }}
-  </a>
-  <span class="divider">/</span>
-</li>
-<li>
-  <a href="/countries/{{ partnerspublication.partners.partner_slug }}/publications/">{% trans "Publications" %}</a>
+    {{ user.get_profile.partner.name }} {% trans "Publication" %}
   <span class="divider">/</span>
 </li>
 <li class="active">{% trans "Editing" %} {{ partnerspublication.title }}</li>

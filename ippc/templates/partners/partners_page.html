@@ -14,6 +14,11 @@
   <a href="/partners/">{% trans "Partners" %}</a>
   <span class="divider">/</span>
 </li>
+<li>
+  <a href="/partners/{{titleparentslug}}/">{{titleparent}}</a>
+  <span class="divider">/</span>
+</li>
+
 <li class="active">
       {{ page.title }}
 </li>
@@ -29,7 +34,7 @@
 
   <h1>
       {{ page.title }} </h1> 
-
+  <div>   {{ content|richtext_filter|safe }}</div>
   <div class="panel contact-info">
   <h2>{% trans "RPPO Contact Point: " %} 
     <small>
@@ -72,33 +77,41 @@
   {% if perms.ippc.add_partnerspublication and request.user.get_profile.partner.name == page.title or user.is_superuser %}
   <small><a class="btn btn-small btn-info" href="{% url 'partner-publication-create' page.title|slugify %}">+ {% trans "Add new publication" %}</a></small>
 {% endif %}
- {% if perms.schedule.add_countrynews and request.user.get_profile.partner.name == page.title or user.is_superuser %}
-   <small>  <a class="btn btn-small btn-info" href="{% url 'country-news-create' page.title|slugify %}">+ {% trans "Add new news" %}</a>
+ {% if perms.ippc.add_partnersnews and request.user.get_profile.partner.name == page.title or user.is_superuser %}
+   <small>  <a class="btn btn-small btn-info" href="{% url 'partner-news-create' page.title|slugify %}">+ {% trans "Add new news" %}</a>
    </small>
  {% endif %}
 
- {% if perms.ippc.add_website and request.user.get_profile.partner.name == page.title or user.is_superuser %}
-   <small><a class="btn btn-small btn-info" href="{% url 'website-create' page.title|slugify %}">+ {% trans "Add new website" %}</a></small>
+ {% if perms.ippc.add_partnerswebsite and request.user.get_profile.partner.name == page.title or user.is_superuser %}
+   <small><a class="btn btn-small btn-info" href="{% url 'partner-websites-create' page.title|slugify %}">+ {% trans "Add new website" %}</a></small>
  {% endif %}
 
       
  {# PUBLICATIONS TABLE #} 
- {% if publications %}   
+ {% if publications or news or websites %}   
   
   <table class="table table-condensed table-striped" id="publications">
-  <thead>
+ <thead>
     <tr>
       <th>{% trans "Title" %}</th>
+      <th>{% trans "Files/URLs" %}</th>
       <th>{% trans "Date Published" %}</th>
+      <th>{% trans "Type" %}</th>
     </tr>
   </thead>
   <tbody>
     {% for object in publications %}
     <tr>
       <td><a href="{% url 'partner-publication-detail' object.partners.partner_slug object.publish_date|date:'Y' object.publish_date|date:'m'  object.slug %}">{{ object.title }}</a></td>
-      <td>{{ object.publish_date|date:"d M Y" }}
+      <td> {% for f in object.partnerspublicationfile_set.all %} 
+    
+  <a href="{{MEDIA_URL}}{{f.file.name}}"><i class="icon-file"></i>{{ f.description }}</a><br>
+{% endfor %}
 
-        {% if user.is_superuser %} 
+</td>
+      <td>{{ object.publish_date|date:"d M Y" }}</td>
+      <td>{% trans "Publication" %}
+      {% if user.is_superuser %} 
             <a class="small pull-right" href="/admin/ippc/partnerspublication/{{ object.id }}"><i class="icon-edit"></i> Edit as Admin</a><br>
         {% endif %}
 
@@ -107,14 +120,64 @@
          
         {% else %}
         {% endif %}
+      </td>
+    </tr>
+
+    {% endfor %}
+    
+    
+    
+    {% for object in news %}
+    <tr>
+      <td><a href="{% url 'partner-news-detail' object.partners.partner_slug object.publish_date|date:'Y' object.publish_date|date:'m'  object.slug %}">{{ object.title }}</a></td>
+      <td></td>
+        <td>{{ object.publish_date|date:"d M Y" }}</td>
+        <td>{% trans "News" %}
+        {% if user.is_superuser %} 
+            <a class="small pull-right" href="/admin/ippc/partnersnews/{{ object.id }}"><i class="icon-edit"></i> Edit as Admin</a><br>
+        {% endif %}
+
+        {% if perms.ippc.change_partnersnews and request.user.get_profile.partner.name == page.title %}
+            <a class="small pull-right" href="{% url 'partner-news-edit' object.partners.partner_slug object.id %}"><i class="icon-edit"></i> Edit</a>
+         
+        {% else %}
+        {% endif %}
         </td>
     </tr>
 
     {% endfor %}
+     
+    {% for object in websites %}
+    <tr>
+      <td><a href="{% url 'partner-websites-detail' object.partners.partner_slug object.publish_date|date:'Y' object.publish_date|date:'m'  object.slug %}">{{ object.title }}</a></td>
+      <td>
+            {% for f in object.partnerswebsiteurl_set.all %} 
+<a href="{{MEDIA_URL}}{{f.url_for_more_information}}">{{ f.url_for_more_information }}</a><br>
+{% endfor %}
+          
+      </td>
+      <td>{{ object.publish_date|date:"d M Y" }}</td>
+      <td>{% trans "Website" %}
+        {% if user.is_superuser %} 
+            <a class="small pull-right" href="/admin/ippc/partnerswebsite/{{ object.id }}"><i class="icon-edit"></i> Edit as Admin</a><br>
+        {% endif %}
+
+        {% if perms.ippc.change_partnerswebsite and request.user.get_profile.partner.name == page.title %}
+            <a class="small pull-right" href="{% url 'partner-websites-edit' object.partners.partner_slug object.id %}"><i class="icon-edit"></i> Edit</a>
+         
+        {% else %}
+        {% endif %}
+        </td>
+    </tr>
+
+    {% endfor %}
+    
+    
   </tbody>
 </table>
   {% endif %}
-{% endblock %}
+
+ {% endblock %}
 
 {% block pageinfo %}
 {% endblock pageinfo %}
