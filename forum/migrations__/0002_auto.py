@@ -8,56 +8,8 @@ from django.db import models
 class Migration(SchemaMigration):
 
     def forwards(self, orm):
-        # Adding model 'ForumPost'
-        db.create_table(u'forum_forumpost', (
-            (u'id', self.gf('django.db.models.fields.AutoField')(primary_key=True)),
-            ('comments_count', self.gf('django.db.models.fields.IntegerField')(default=0)),
-            ('keywords_string', self.gf('django.db.models.fields.CharField')(max_length=500, blank=True)),
-            ('rating_count', self.gf('django.db.models.fields.IntegerField')(default=0)),
-            ('rating_sum', self.gf('django.db.models.fields.IntegerField')(default=0)),
-            ('rating_average', self.gf('django.db.models.fields.FloatField')(default=0)),
-            ('site', self.gf('django.db.models.fields.related.ForeignKey')(to=orm['sites.Site'])),
-            ('title', self.gf('django.db.models.fields.CharField')(max_length=500)),
-            ('slug', self.gf('django.db.models.fields.CharField')(max_length=2000, null=True, blank=True)),
-            ('_meta_title', self.gf('django.db.models.fields.CharField')(max_length=500, null=True, blank=True)),
-            ('description', self.gf('django.db.models.fields.TextField')(blank=True)),
-            ('gen_description', self.gf('django.db.models.fields.BooleanField')(default=True)),
-            ('status', self.gf('django.db.models.fields.IntegerField')(default=2)),
-            ('publish_date', self.gf('django.db.models.fields.DateTimeField')(null=True, blank=True)),
-            ('expiry_date', self.gf('django.db.models.fields.DateTimeField')(null=True, blank=True)),
-            ('short_url', self.gf('django.db.models.fields.URLField')(max_length=200, null=True, blank=True)),
-            ('in_sitemap', self.gf('django.db.models.fields.BooleanField')(default=True)),
-            ('content', self.gf('mezzanine.core.fields.RichTextField')()),
-            ('user', self.gf('django.db.models.fields.related.ForeignKey')(related_name='forumposts', to=orm['auth.User'])),
-            ('allow_comments', self.gf('django.db.models.fields.BooleanField')(default=True)),
-            ('featured_image', self.gf('mezzanine.core.fields.FileField')(max_length=255, null=True, blank=True)),
-            ('login_required', self.gf('django.db.models.fields.BooleanField')(default=True)),
-            ('keywords', self.gf('mezzanine.generic.fields.KeywordsField')(object_id_field='object_pk', to=orm['generic.AssignedKeyword'], frozen_by_south=True)),
-            ('comments', self.gf('mezzanine.generic.fields.CommentsField')(object_id_field='object_pk', to=orm['generic.ThreadedComment'], frozen_by_south=True)),
-            ('rating', self.gf('mezzanine.generic.fields.RatingField')(object_id_field='object_pk', to=orm['generic.Rating'], frozen_by_south=True)),
-        ))
-        db.send_create_signal(u'forum', ['ForumPost'])
-
-        # Adding M2M table for field categories on 'ForumPost'
-        m2m_table_name = db.shorten_name(u'forum_forumpost_categories')
-        db.create_table(m2m_table_name, (
-            ('id', models.AutoField(verbose_name='ID', primary_key=True, auto_created=True)),
-            ('forumpost', models.ForeignKey(orm[u'forum.forumpost'], null=False)),
-            ('forumcategory', models.ForeignKey(orm[u'forum.forumcategory'], null=False))
-        ))
-        db.create_unique(m2m_table_name, ['forumpost_id', 'forumcategory_id'])
-
-        # Adding M2M table for field related_posts on 'ForumPost'
-        m2m_table_name = db.shorten_name(u'forum_forumpost_related_posts')
-        db.create_table(m2m_table_name, (
-            ('id', models.AutoField(verbose_name='ID', primary_key=True, auto_created=True)),
-            ('from_forumpost', models.ForeignKey(orm[u'forum.forumpost'], null=False)),
-            ('to_forumpost', models.ForeignKey(orm[u'forum.forumpost'], null=False))
-        ))
-        db.create_unique(m2m_table_name, ['from_forumpost_id', 'to_forumpost_id'])
-
-        # Adding M2M table for field users on 'ForumPost'
-        m2m_table_name = db.shorten_name(u'forum_forumpost_users')
+        # Adding M2M table for field authors on 'ForumPost'
+        m2m_table_name = db.shorten_name(u'forum_forumpost_authors')
         db.create_table(m2m_table_name, (
             ('id', models.AutoField(verbose_name='ID', primary_key=True, auto_created=True)),
             ('forumpost', models.ForeignKey(orm[u'forum.forumpost'], null=False)),
@@ -65,54 +17,10 @@ class Migration(SchemaMigration):
         ))
         db.create_unique(m2m_table_name, ['forumpost_id', 'user_id'])
 
-        # Adding M2M table for field groups on 'ForumPost'
-        m2m_table_name = db.shorten_name(u'forum_forumpost_groups')
-        db.create_table(m2m_table_name, (
-            ('id', models.AutoField(verbose_name='ID', primary_key=True, auto_created=True)),
-            ('forumpost', models.ForeignKey(orm[u'forum.forumpost'], null=False)),
-            ('group', models.ForeignKey(orm[u'auth.group'], null=False))
-        ))
-        db.create_unique(m2m_table_name, ['forumpost_id', 'group_id'])
-
-        # Adding model 'ForumPostFiles'
-        db.create_table(u'forum_forumpostfiles', (
-            (u'id', self.gf('django.db.models.fields.AutoField')(primary_key=True)),
-            ('forum_post', self.gf('django.db.models.fields.related.ForeignKey')(to=orm['forum.ForumPost'])),
-            ('file', self.gf('django.db.models.fields.files.FileField')(max_length=255, blank=True)),
-        ))
-        db.send_create_signal(u'forum', ['ForumPostFiles'])
-
-        # Adding model 'ForumCategory'
-        db.create_table(u'forum_forumcategory', (
-            (u'id', self.gf('django.db.models.fields.AutoField')(primary_key=True)),
-            ('site', self.gf('django.db.models.fields.related.ForeignKey')(to=orm['sites.Site'])),
-            ('title', self.gf('django.db.models.fields.CharField')(max_length=500)),
-            ('slug', self.gf('django.db.models.fields.CharField')(max_length=2000, null=True, blank=True)),
-        ))
-        db.send_create_signal(u'forum', ['ForumCategory'])
-
 
     def backwards(self, orm):
-        # Deleting model 'ForumPost'
-        db.delete_table(u'forum_forumpost')
-
-        # Removing M2M table for field categories on 'ForumPost'
-        db.delete_table(db.shorten_name(u'forum_forumpost_categories'))
-
-        # Removing M2M table for field related_posts on 'ForumPost'
-        db.delete_table(db.shorten_name(u'forum_forumpost_related_posts'))
-
-        # Removing M2M table for field users on 'ForumPost'
-        db.delete_table(db.shorten_name(u'forum_forumpost_users'))
-
-        # Removing M2M table for field groups on 'ForumPost'
-        db.delete_table(db.shorten_name(u'forum_forumpost_groups'))
-
-        # Deleting model 'ForumPostFiles'
-        db.delete_table(u'forum_forumpostfiles')
-
-        # Deleting model 'ForumCategory'
-        db.delete_table(u'forum_forumcategory')
+        # Removing M2M table for field authors on 'ForumPost'
+        db.delete_table(db.shorten_name(u'forum_forumpost_authors'))
 
 
     models = {
@@ -179,6 +87,7 @@ class Migration(SchemaMigration):
             'Meta': {'ordering': "('-publish_date',)", 'object_name': 'ForumPost'},
             '_meta_title': ('django.db.models.fields.CharField', [], {'max_length': '500', 'null': 'True', 'blank': 'True'}),
             'allow_comments': ('django.db.models.fields.BooleanField', [], {'default': 'True'}),
+            'authors': ('django.db.models.fields.related.ManyToManyField', [], {'to': u"orm['auth.User']", 'symmetrical': 'False'}),
             'categories': ('django.db.models.fields.related.ManyToManyField', [], {'symmetrical': 'False', 'related_name': "'forumposts'", 'blank': 'True', 'to': u"orm['forum.ForumCategory']"}),
             'comments': ('mezzanine.generic.fields.CommentsField', [], {'object_id_field': "'object_pk'", 'to': u"orm['generic.ThreadedComment']", 'frozen_by_south': 'True'}),
             'comments_count': ('django.db.models.fields.IntegerField', [], {'default': '0'}),
@@ -206,12 +115,6 @@ class Migration(SchemaMigration):
             'title': ('django.db.models.fields.CharField', [], {'max_length': '500'}),
             'user': ('django.db.models.fields.related.ForeignKey', [], {'related_name': "'forumposts'", 'to': u"orm['auth.User']"}),
             'users': ('django.db.models.fields.related.ManyToManyField', [], {'blank': 'True', 'related_name': "'forumusers'", 'null': 'True', 'symmetrical': 'False', 'to': u"orm['auth.User']"})
-        },
-        u'forum.forumpostfiles': {
-            'Meta': {'object_name': 'ForumPostFiles'},
-            'file': ('django.db.models.fields.files.FileField', [], {'max_length': '255', 'blank': 'True'}),
-            'forum_post': ('django.db.models.fields.related.ForeignKey', [], {'to': u"orm['forum.ForumPost']"}),
-            u'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'})
         },
         u'generic.assignedkeyword': {
             'Meta': {'ordering': "('_order',)", 'object_name': 'AssignedKeyword'},

@@ -84,7 +84,23 @@
   {% block forum_post_detail_content %}
     {% editable forum_post.content %}
       {{ forum_post.content|richtext_filter|safe }}
+        {% if files %}
+        <p><strong>{% trans "Files" %}</strong></p>
+            {% for f in files %} 
+            <i class="icon-file"></i>
+            <a href="{{MEDIA_URL}}{{f.file.name}}">{{ f.filename }}</a><br>
+{% endfor %}
+
+     {% endif %}
+     
     {% endeditable %}
+    
+    
+   
+    
+   
+    
+
   {% endblock %}
 
   {% block forum_post_detail_keywords %}

@@ -60,7 +60,8 @@
 <dd>{{ emailmessage.subject }}</dd>
 
 <dt>{% trans "Message" %}</dt>
-<dd>{{ emailmessage.messagebody }}</dd>
+<dd>    {{ emailmessage.messagebody|richtext_filter|safe }}
+  </dd>
 
  <dt>{% trans "Attachments" %}</dt>
    {% for f in emailmessage.emailutilitymessagefile_set.all %} 

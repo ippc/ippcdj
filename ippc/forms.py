@@ -13,7 +13,7 @@ PartnersPublication,PartnersPublicationFile,PartnersPublicationUrl,\
 PartnersNews,PartnersNewsFile,PartnersNewsUrl, \
 CountryNews,CountryNewsFile,CountryNewsUrl, EmailUtilityMessage, EmailUtilityMessageFile
 
-from django.contrib.auth.models import User
+from django.contrib.auth.models import User,Group
 import autocomplete_light
 import autocomplete_light_registry
 from django.forms.models import inlineformset_factory
@@ -350,17 +350,18 @@ class EmailUtilityMessageForm(forms.ModelForm):
         model = EmailUtilityMessage
         fields = [
            'emailfrom',
-           'emailto',
-           'users',
-           'groups',
            'subject', 
            'messagebody',
-         
+           'emailto',
+           'users',
            ]
-        exclude = ( 'date','sent')
-        widgets = {
-            #'groups': forms.CheckboxSelectMultiple(),
-     }
+       
+        exclude = ( 'date','sent', 'groups',)
+       
+#        widgets = {
+#            'groups': forms.CheckboxSelectMultiple()
+#     }  
+     
 #  
 EmailUtilityMessageFileFormSet = inlineformset_factory(EmailUtilityMessage,  EmailUtilityMessageFile,extra=1)
 

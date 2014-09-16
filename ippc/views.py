@@ -5,7 +5,7 @@ from django.utils import timezone
 from django.core import mail
 from django.conf import settings
 from django.contrib.auth.models import User,Group
-from .models import PublicationLibrary,Publication,EppoCode,EmailUtilityMessage, EmailUtilityMessageFile, Poll_Choice, Poll,PollVotes, IppcUserProfile,\
+from .models import ContactType,PublicationLibrary,Publication,EppoCode,EmailUtilityMessage, EmailUtilityMessageFile, Poll_Choice, Poll,PollVotes, IppcUserProfile,\
 CountryPage,PartnersPage, PestStatus, PestReport, IS_PUBLIC, IS_HIDDEN, Publication,\
 ReportingObligation, BASIC_REP_TYPE_CHOICES, EventReporting, EVT_REP_TYPE_CHOICES,Website,CnPublication,PartnersPublication,PartnersNews, PartnersWebsite,CountryNews, \
 PestFreeArea,ImplementationISPM,REGIONS, IssueKeywordsRelate,CommodityKeywordsRelate,EventreportingFile,ReportingObligation_File
@@ -32,6 +32,7 @@ from django.utils.decorators import method_decorator
 from django.forms.models import inlineformset_factory
 from django.contrib.contenttypes.generic import generic_inlineformset_factory 
 from django.forms.formsets import formset_factory
+from compiler.pyassem import order_blocks
 import time
 from datetime import datetime
 
@@ -2548,7 +2549,42 @@ class EmailUtilityMessageDetailView(DetailView):
 def email_send(request):
     """ Create email to send """
     form = EmailUtilityMessageForm(request.POST)
-  
+    
+    g_set=[]
+    for g in Group.objects.filter():
+        users = g.user_set.all()
+        users_all=[]
+        users_all.append(str(g))
+        users_all.append(str(g.id))
+        for u in users:
+           users_u=[]
+           user_obj=User.objects.get(username=u)
+           userippc = get_object_or_404(IppcUserProfile, user_id=user_obj.id)
+           users_u.append(str(userippc.first_name))
+           users_u.append(str(userippc.last_name))
+           users_u.append(str(user_obj.email))
+           users_all.append(users_u)
+        g_set.append(users_all)
+    
+    cp_set=[]    
+    for h in range(1,5):
+        users_all=[]
+        cp=IppcUserProfile.objects.filter(contact_type=h)
+        cpname = get_object_or_404(ContactType,id=h)
+        users_all.append(str(cpname))
+        users_all.append(str(h))
+        cp=IppcUserProfile.objects.filter(contact_type=h)
+        for u in cp:
+               users_u=[]
+               user_obj=User.objects.get(id=u.user_id)
+               cn = get_object_or_404(CountryPage,id=u.country_id)
+               users_u.append(str(cn))
+               users_u.append(' ('+str(u.first_name)+' '+str(u.last_name)+') ')
+               users_u.append(str(user_obj.email))
+               users_all.append(users_u)
+        cp_set.append(users_all)
+    
+    
     if request.method == "POST":
         f_form =EmailUtilityMessageFileFormSet(request.POST, request.FILES)
         if form.is_valid() and f_form.is_valid():
@@ -2557,16 +2593,28 @@ def email_send(request):
                 user_obj=User.objects.get(id=u)
                 user_email=user_obj.email
                 emailto_all.append(str(user_email))
-            for g in request.POST.getlist('groups'):
-                group=Group.objects.get(id=g)
-                users = group.user_set.all()
-                for u in users:
-                   user_obj=User.objects.get(username=u)
-                   user_email=user_obj.email
-                   emailto_all.append(str(user_email))
+            for g in Group.objects.filter():
+                for uemail in request.POST.getlist('user_'+str(g.id)+'_0'):
+                    print(uemail)
+                    emailto_all.append(str(uemail))
+                    
+            for h in range(1,5):
+                  for uemail in request.POST.getlist('usercp_'+str(h)+'_0'):
+                     print(uemail)
+                     emailto_all.append(str(uemail))
+            
+#            for g in request.POST.getlist('groups'):
+#                group=Group.objects.get(id=g)
+#                users = group.user_set.all()
+#                for u in users:
+#                   user_obj=User.objects.get(username=u)
+#                   user_email=user_obj.email
+#                   emailto_all.append(str(user_email))
+            
             #save mail message in db
             new_emailmessage = form.save(commit=False)
             new_emailmessage.date=timezone.now()
+            new_emailmessage.emailto=emailto_all
             form.save()
             #save file to message in db
             f_form.instance = new_emailmessage
@@ -2579,6 +2627,8 @@ def email_send(request):
             for f in fileset:
                 pf='static/media/'+str(f.file)
                 message.attach_file(pf) 
+            message.content_subtype = "html" 
+            
             sent =message.send()
             #update status mail message in db
             new_emailmessage.sent=sent
@@ -2587,13 +2637,13 @@ def email_send(request):
             info(request, _("Email  sent."))
             return redirect("email-detail",new_emailmessage.id)
         else:
-             return render_to_response('emailutility/emailutility_send.html', {'form': form,'f_form': f_form},
+             return render_to_response('emailutility/emailutility_send.html', {'form': form,'f_form': f_form,'emailgroups':g_set,'emailcp':cp_set,},
              context_instance=RequestContext(request))
     else:
         form = EmailUtilityMessageForm(instance=EmailUtilityMessage())
         f_form =EmailUtilityMessageFileFormSet()
       
-    return render_to_response('emailutility/emailutility_send.html', {'form': form  ,'f_form': f_form},
+    return render_to_response('emailutility/emailutility_send.html', {'form': form  ,'f_form': f_form,'emailgroups':g_set,'emailcp':cp_set,},#'emailcpu':cpu_set,'emailcpi':cpi_set,'emailcpl':cpl_set
         context_instance=RequestContext(request))
 
    

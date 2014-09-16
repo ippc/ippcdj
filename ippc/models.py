@@ -1410,14 +1410,14 @@ class PollVotes(models.Model):
   
 class EmailUtilityMessage(models.Model):
     emailfrom = models.CharField(_("From: "),max_length=200,default=_("ippc@fao.org"),help_text=_("The email will be sent from ippc@fao.org, if you want you can specify an other sender email address."))
-    emailto = models.CharField(_("To: "),max_length=200,help_text=_("Enter the email addresses of recipients, separated by comma"))
+    emailto = models.CharField(_("Send to users that are not registered in IPPC: "),default=_("ippc@fao.org"),max_length=200,help_text=_("Enter the email addresses of recipients, separated by comma"))
     subject = models.CharField(_("Subject: "),max_length=200)
     messagebody = models.TextField(_("Message: "),max_length=500,blank=True, null=True)
     date = models.DateTimeField('date')
     sent =  models.BooleanField()
     #User.__unicode__ = user_unicode_patch
     users = models.ManyToManyField(User,
-            verbose_name=_("Send to users:"),help_text=_("CTRL/Command+mouseclick for more than 1 selection"),
+            verbose_name=_("Send to single users:"),help_text=_("CTRL/Command+mouseclick for more than 1 selection"),
             related_name='emailusers', blank=True, null=True)
     groups = models.ManyToManyField(Group,
             verbose_name=_("Send to groups:"),help_text=_("CTRL/Command+mouseclick for more than 1 selection"),

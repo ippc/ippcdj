@@ -3,7 +3,7 @@ from calendar import month_name
 from django.http import Http404
 from django.shortcuts import get_object_or_404
 
-from forum.models import ForumPost, ForumCategory
+from forum.models import ForumPost, ForumCategory,ForumPost_Files
 from forum.feeds import PostsRSS, PostsAtom
 from mezzanine.conf import settings
 from mezzanine.generic.models import Keyword
@@ -63,7 +63,12 @@ def forum_post_detail(request, slug, year=None, month=None, day=None,
     forum_posts = ForumPost.objects.published(
                                      for_user=request.user).select_related()
     forum_post = get_object_or_404(forum_posts, slug=slug)
-    context = {"forum_post": forum_post, "editable_obj": forum_post}
+    
+    #forum_post_files = get_object_or_404(forum_posts, slug=slug)
+    f = get_object_or_404(ForumPost, slug=slug)
+    files = ForumPost_Files.objects.filter( forum_post_id=f.id)
+    print(files)
+    context = {"forum_post": forum_post, "editable_obj": forum_post,"files":files}
     templates = [u"forum/forum_post_detail_%s.html" % unicode(slug), template]
     return render(request, templates, context)
 

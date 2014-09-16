@@ -9,15 +9,36 @@ from mezzanine.core.models import Displayable, Ownable, RichText, Slugged
 from mezzanine.generic.fields import CommentsField, RatingField
 from mezzanine.utils.models import AdminThumbMixin, upload_to
 
+from django.core.exceptions import ValidationError
+
+from mezzanine.utils.models import get_user_model_name
+from mezzanine.blog.models import BlogPost
+import os.path
+
+class ForumCategory(Slugged):
+    """
+    A category for grouping forum posts into a series.
+    """
+
+    class Meta:
+        verbose_name = _("Forum Category")
+        verbose_name_plural = _("Forum Categories")
+        ordering = ("title",)
+
+    @models.permalink
+    def get_absolute_url(self):
+        return ("forum_post_list_category", (), {"category": self.slug})
+
 
 class ForumPost(Displayable, Ownable, RichText, AdminThumbMixin):
     """
     A forum post.
     """
-
     categories = models.ManyToManyField("ForumCategory",
                                         verbose_name=_("Categories"),
                                         blank=True, related_name="forumposts")
+    
+    
     allow_comments = models.BooleanField(verbose_name=_("Allow comments"),
                                          default=True)
     comments = CommentsField(verbose_name=_("Comments"))
@@ -27,7 +48,7 @@ class ForumPost(Displayable, Ownable, RichText, AdminThumbMixin):
         format="Image", max_length=255, null=True, blank=True)
     related_posts = models.ManyToManyField("self",
                                  verbose_name=_("Related posts"), blank=True)
-
+    
     admin_thumb_field = "featured_image"
     
     users = models.ManyToManyField(User,
@@ -104,17 +125,24 @@ class ForumPost(Displayable, Ownable, RichText, AdminThumbMixin):
             setattr(self, "_keywords", keywords)
             return self._keywords
 
+def validate_file_extension(value):
+    if not (value.name.endswith('.pdf') or value.name.endswith('.doc')or value.name.endswith('.txt')
+        or value.name.endswith('.xls')   or value.name.endswith('.ppt') or value.name.endswith('.jpg')
+        or value.name.endswith('.png') or value.name.endswith('.gif') or value.name.endswith('.xlsx')
+        or value.name.endswith('.docx')or value.name.endswith('.pptx') or value.name.endswith('.zip')
+        or value.name.endswith('.rar')):
+        raise ValidationError(u'You can only upload files:  txt pdf ppt doc xls jpg png docx xlsx pptx zip rar.')
+        
+class ForumPost_Files(models.Model):
+    forum_post = models.ForeignKey(ForumPost)
+    file = models.FileField(max_length=255,blank=True, help_text='10 MB maximum file size.', verbose_name='Upload a file', upload_to='files/forum/%Y/%m/%d/', validators=[validate_file_extension])
 
-class ForumCategory(Slugged):
-    """
-    A category for grouping forum posts into a series.
-    """
-
-    class Meta:
-        verbose_name = _("Forum Category")
-        verbose_name_plural = _("Forum Categories")
-        ordering = ("title",)
-
-    @models.permalink
-    def get_absolute_url(self):
-        return ("forum_post_list_category", (), {"category": self.slug})
+    def __unicode__(self):  
+        return self.file.name  
+    def name(self):
+        return self.file.name
+    def filename(self):
+        return os.path.basename(self.file.name) 
+    def fileextension(self):
+        return os.path.splitext(self.file.name)[1]    
+    

@@ -404,11 +404,11 @@ EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 EMAIL_USE_TLS = True
 EMAIL_HOST = 'smtp.gmail.com'
 EMAIL_PORT = 587
-EMAIL_HOST_USER = 'xxxx@gmail.com'
-EMAIL_HOST_PASSWORD = 'xxxx'
+EMAIL_HOST_USER = 'xxx@gmail.com'
+EMAIL_HOST_PASSWORD = 'xxx'
 DEFAULT_FROM_EMAIL='xxx@gmail.com'
 
-ENVELOPE_EMAIL_RECIPIENTS=['xxxx@fao.org']
+ENVELOPE_EMAIL_RECIPIENTS=['xxx@fao.org']
 
 ENVELOPE_CONTACT_CHOICES = (
     (10,    _("Secretariat")),
