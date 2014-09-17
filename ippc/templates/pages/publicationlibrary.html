@@ -15,7 +15,7 @@
 
 {% block title %}
       {% with page.publicationlibrary|get_object_translation as translated_page %}
-          {{ translated_page.title|richtext_filter|safe }}
+          {{ translated_page.title|safe }}
       {% endwith %}
       {# {{ page.publicationlibrary.title }} #}
 {% endblock %}

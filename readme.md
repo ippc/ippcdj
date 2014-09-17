@@ -2,11 +2,15 @@
 
 ## Things to do
 
-- Merge our current work and update dev.ippc.int with forum and calendar
-    - Files in forum posts
-- Country pages:
-    - Prevent hidden report titles from appearing in search results
-    - Country RSS feeds
+- Calendar month select arrow links
+- **Fix admin links that have disappeared ¿due to jQuery conflict?**
+- Add permissions check so Admins can see any forum or publicationlibrary page without needing to be in same group
+- Fix add file label in pest report create
+- Files in forum posts
+- Add blog and forum category management page to admin: 
+    - http://127.0.0.1:8000/en/admin/blog/blogcategory/
+    - http://127.0.0.1:8000/en/admin/forum/forumcategory/
+    
 - Author field for publications
 - Start from Dj 1.6.5 (1.7?) and Mezzanine 3.1.5
     - Update to latest version of Mezzanine and make sure current functionality works
@@ -58,15 +62,11 @@
 - Phytosanitary.info refactor (use [original code](https://github.com/hypertexthero/phytosanitary)?)
 - Both phytosantiary.info and apppc.org will need to get SSL certificates for single sign-on to work securely: 
         > Even if the authentication with CAS is made using a mechanism which makes it difficult to interfere with, all authorized communication will subsequentely use a cookie identifing the session which can be used to hijack the connection. So you need to encrypt the communication. There is just no way around that if you want to enforce some sort of security.
-    
 - [Email utility](https://github.com/pinax/django-mailer)
     - Ability to insert user groups as well as individual users in `To:` field in `/admin/mailer/message/add/`
         - Use [admin actions](https://docs.djangoproject.com/en/1.5/ref/contrib/admin/actions/)?
         - [Custom admin form](http://stackoverflow.com/a/6099360/412329) overriding mailer's default form? Also see [this](http://djangosnippets.org/snippets/1650/) and [this](https://gist.github.com/luzfcb/1712348)
         - Custom email utility app and admin form calling django-mailer and groups?
-- Add blog and forum category management page to admin: 
-    - http://127.0.0.1:8000/en/admin/blog/blogcategory/
-    - http://127.0.0.1:8000/en/admin/forum/forumcategory/
 - Contact form
 - FAQ
 - Custom Work Area main page descriptions or announcements or links to particular utilities depending on user permissions. Probably need to use a custom template that appears on /work-area/ URL (like the /news/ which displays the custom blog).

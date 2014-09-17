@@ -74,14 +74,6 @@ class Migration(SchemaMigration):
         ))
         db.create_unique(m2m_table_name, ['forumpost_id', 'group_id'])
 
-        # Adding model 'ForumPostFiles'
-        db.create_table(u'forum_forumpostfiles', (
-            (u'id', self.gf('django.db.models.fields.AutoField')(primary_key=True)),
-            ('forum_post', self.gf('django.db.models.fields.related.ForeignKey')(to=orm['forum.ForumPost'])),
-            ('file', self.gf('django.db.models.fields.files.FileField')(max_length=255, blank=True)),
-        ))
-        db.send_create_signal(u'forum', ['ForumPostFiles'])
-
         # Adding model 'ForumCategory'
         db.create_table(u'forum_forumcategory', (
             (u'id', self.gf('django.db.models.fields.AutoField')(primary_key=True)),
@@ -107,9 +99,6 @@ class Migration(SchemaMigration):
 
         # Removing M2M table for field groups on 'ForumPost'
         db.delete_table(db.shorten_name(u'forum_forumpost_groups'))
-
-        # Deleting model 'ForumPostFiles'
-        db.delete_table(u'forum_forumpostfiles')
 
         # Deleting model 'ForumCategory'
         db.delete_table(u'forum_forumcategory')
@@ -206,12 +195,6 @@ class Migration(SchemaMigration):
             'title': ('django.db.models.fields.CharField', [], {'max_length': '500'}),
             'user': ('django.db.models.fields.related.ForeignKey', [], {'related_name': "'forumposts'", 'to': u"orm['auth.User']"}),
             'users': ('django.db.models.fields.related.ManyToManyField', [], {'blank': 'True', 'related_name': "'forumusers'", 'null': 'True', 'symmetrical': 'False', 'to': u"orm['auth.User']"})
-        },
-        u'forum.forumpostfiles': {
-            'Meta': {'object_name': 'ForumPostFiles'},
-            'file': ('django.db.models.fields.files.FileField', [], {'max_length': '255', 'blank': 'True'}),
-            'forum_post': ('django.db.models.fields.related.ForeignKey', [], {'to': u"orm['forum.ForumPost']"}),
-            u'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'})
         },
         u'generic.assignedkeyword': {
             'Meta': {'ordering': "('_order',)", 'object_name': 'AssignedKeyword'},

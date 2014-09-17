@@ -346,16 +346,20 @@ MIDDLEWARE_CLASSES = (
 LANGUAGE_CODE == 'en'
 # https://docs.djangoproject.com/en/1.3/ref/settings/#std:setting-LANGUAGES
 # http://pythonhosted.org/django-localeurl/usage.html
-from django.utils.translation import ugettext_lazy as _
-ugettext = lambda s: s
-#LANGUAGES = (
+
+# ugettext = lambda s: s
+# LANGUAGES = (
 #    ('en', ugettext('English')),
-#    ('fr', ugettext('Français')),
-#    ('es', ugettext('Español')),
-#    ('ru', ugettext('Ру�?�?кий')),
-#    ('ar', ugettext('العربية')),
-#    ('zh', ugettext('简体中文')),
-#)
+#    ('fr', ugettext('French')),
+#    ('es', ugettext('Spanish')),
+#    ('ru', ugettext('Russian')),
+#    ('ar', ugettext('Arabic')),
+#    ('zh', ugettext('Chinese')),
+# )
+
+# https://docs.djangoproject.com/en/1.5/ref/settings/#std:setting-LANGUAGES
+from django.utils.translation import ugettext_lazy as _
+
 LANGUAGES = (
     ('en', _('English')),
     ('fr', _('French')),
@@ -363,7 +367,7 @@ LANGUAGES = (
     ('ru', _('Russian')),
     ('ar', _('Arabic')),
     ('zh', _('Chinese')),
-  
+
 )
 
 # https://docs.djangoproject.com/en/dev/ref/settings/#locale-paths
@@ -377,8 +381,8 @@ FORUM_SLUG = 'forum'
 # FORUM_USE_FEATURED_IMAGE = 'True'
 # FORUM_URLS_DATE_FORMAT = 'month'
 COMMENTS_USE_RATINGS = False
-SITE_TITLE = ugettext("International Plant Protection Convention")
-SITE_TAGLINE = ugettext("Protecting the world's plant resources from pests")
+SITE_TITLE = _("International Plant Protection Convention")
+SITE_TAGLINE = _("Protecting the world's plant resources from pests")
 
 AUTH_PROFILE_MODULE = "ippc.IppcUserProfile"
 ACCOUNTS_PROFILE_VIEWS_ENABLED = True

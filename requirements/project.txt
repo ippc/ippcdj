@@ -1,33 +1,31 @@
 Django==1.5.1
+Drum==0.1.3
 Markdown==2.3.1
 Mezzanine==1.4.8
-Pillow==2.4.0
+MySQL-python==1.2.5
+Pillow==2.1.0 # For Windows needed to install Pillow from http://www.lfd.uci.edu/~gohlke/pythonlibs/
 Pygments==1.6
 South==0.8.4
 argparse==1.1
+bbcode==1.0.16
+beautifulsoup4==4.1.3
 bleach==1.2.2
-boto==2.6.0
 coverage==3.6
-distribute==0.6.34
 django-annoying==0.7.9
-django-attach==0.1.3
 django-attachments==0.3.1
 django-autocomplete-light==2.0.0a18
 django-countries==1.5
 django-countries-plus==0.1.5
 django-debug-toolbar==0.9.4
 django-guardian==1.1.1
-django-leaflet==0.13.5
+django-jfu==2.0.9
+django-leaflet==0.13.7
 django-localeurl==1.5
 django-mailer==0.1.0
-django-markdown==0.6.1
-django-mptt==0.6.1
-django-polymorphic==0.5.5
+django-markdown
 django-scheduler==0.7.2
-easy-thumbnails==2.0.1
-elementtree==1.2.7-20070827-preview
 filebrowser-safe==0.2.28
-geopy==0.95.1
+future==0.9.0
 grappelli-safe==0.2.22
 gunicorn==18.0
 html5lib==0.95
@@ -35,7 +33,8 @@ icalendar==3.0.1b2
 mailer==0.7
 mezzanine-file-collections==1.0.1
 mezzanine-pagedown==0.5
-mysql-python==1.2.3
+# mysql-python==1.2.5
+# MySQL-python==1.2.5 # first `yum install mysql-devel` then `pip2.7 install mysql-python` on RHEL dev server
 oauthlib==0.5.0
 psycopg2==2.4.2
 pygments-style-github==0.4
@@ -45,6 +44,8 @@ python-openid==2.2.5
 pytz==2014.4
 requests==1.2.3
 requests-oauthlib==0.3.2
-six==1.7.2
-vobject==0.8.1c
+six==1.7.3
+sphinx-me==0.2.1
+tzlocal==1.0
 wsgiref==0.1.2
+vobject==0.8.1c

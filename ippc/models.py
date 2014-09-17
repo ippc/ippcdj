@@ -603,7 +603,7 @@ class ReportingObligation_File(models.Model):
 
 class ReportingObligationUrl(models.Model):
     reportingobligation = models.ForeignKey(ReportingObligation)
-    url_for_more_information = models.URLField(blank=True, null=True)
+    url_for_more_information = models.URLField(blank=True, null=True,max_length=500)
     def __unicode__(self):  
         return self.url_for_more_information  
     def name(self):
@@ -676,7 +676,7 @@ class CnPublicationFile(models.Model):
 
 class CnPublicationUrl(models.Model):
     cnpublication = models.ForeignKey(CnPublication)
-    url_for_more_information = models.URLField(blank=True, null=True)
+    url_for_more_information = models.URLField(blank=True, null=True,max_length=500)
     def __unicode__(self):  
         return self.url_for_more_information  
     def name(self):
@@ -749,7 +749,7 @@ class PartnersPublicationFile(models.Model):
 
 class PartnersPublicationUrl(models.Model):
     partnerspublication = models.ForeignKey(PartnersPublication)
-    url_for_more_information = models.URLField(blank=True, null=True)
+    url_for_more_information = models.URLField(blank=True, null=True,max_length=500)
     def __unicode__(self):  
         return self.url_for_more_information  
     def name(self):
@@ -847,7 +847,7 @@ class EventreportingFile(models.Model):
 
 class EventreportingUrl(models.Model):
     eventreporting = models.ForeignKey(EventReporting)
-    url_for_more_information = models.URLField(blank=True, null=True)
+    url_for_more_information = models.URLField(blank=True, null=True,max_length=500)
     def __unicode__(self):  
         return self.url_for_more_information  
     def name(self):
@@ -927,7 +927,7 @@ class Website(Displayable, models.Model):
 
 class WebsiteUrl(models.Model):
     website = models.ForeignKey(Website)
-    url_for_more_information = models.URLField(blank=True, null=True)
+    url_for_more_information = models.URLField(blank=True, null=True,max_length=500)
     def __unicode__(self):  
         return self.url_for_more_information  
     def name(self):
@@ -994,7 +994,7 @@ class PartnersWebsite(Displayable, models.Model):
 
 class PartnersWebsiteUrl(models.Model):
     partnerswebsite = models.ForeignKey(PartnersWebsite)
-    url_for_more_information = models.URLField(blank=True, null=True)
+    url_for_more_information = models.URLField(blank=True, null=True,max_length=500)
     def __unicode__(self):  
         return self.url_for_more_information  
     def name(self):
@@ -1084,7 +1084,7 @@ class PestFreeAreaFile(models.Model):
 
 class PestFreeAreaUrl(models.Model):
     pfa = models.ForeignKey(PestFreeArea)
-    url_for_more_information = models.URLField(blank=True, null=True)
+    url_for_more_information = models.URLField(blank=True, null=True,max_length=500)
     def __unicode__(self):  
         return self.url_for_more_information  
     def name(self):
@@ -1214,7 +1214,7 @@ class ImplementationISPMFile(models.Model):
   
 class ImplementationISPMUrl(models.Model):
     implementationispm = models.ForeignKey(ImplementationISPM)
-    url_for_more_information = models.URLField(blank=True, null=True)
+    url_for_more_information = models.URLField(blank=True, null=True,max_length=500)
     def __unicode__(self):  
         return self.url_for_more_information  
     def name(self):
@@ -1287,7 +1287,7 @@ class CountryNewsFile(models.Model):
   
 class CountryNewsUrl(models.Model):
     countrynews = models.ForeignKey(CountryNews)
-    url_for_more_information = models.URLField(blank=True, null=True)
+    url_for_more_information = models.URLField(blank=True, null=True,max_length=500)
     def __unicode__(self):  
         return self.url_for_more_information  
     def name(self):
@@ -1361,7 +1361,7 @@ class PartnersNewsFile(models.Model):
   
 class PartnersNewsUrl(models.Model):
     partnersnews = models.ForeignKey(PartnersNews)
-    url_for_more_information = models.URLField(blank=True, null=True)
+    url_for_more_information = models.URLField(blank=True, null=True,max_length=500)
     def __unicode__(self):  
         return self.url_for_more_information  
     def name(self):
