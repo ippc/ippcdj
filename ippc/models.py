@@ -1239,7 +1239,7 @@ class CountryNews(Displayable, models.Model):
     commname=generic.GenericRelation(CommodityKeywordsRelate)
     objects = SearchableManager()
     search_fields = ("title", "short_description")
-
+    old_id = models.CharField(max_length=50)
     class Meta:
         verbose_name_plural = _("Country News")
         # abstract = True
@@ -1311,9 +1311,10 @@ class PartnersNews(Displayable, models.Model):
     modify_date = models.DateTimeField(_("Modified date"), blank=True, null=True, editable=False)
     issuename=generic.GenericRelation(IssueKeywordsRelate)
     commname=generic.GenericRelation(CommodityKeywordsRelate)
+    old_id = models.CharField(max_length=50)
     objects = SearchableManager()
     search_fields = ("title", "short_description")
-
+     
     class Meta:
         verbose_name_plural = _("Country News")
         # abstract = True

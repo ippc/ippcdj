@@ -2769,6 +2769,11 @@ class AdvancesSearchCNListView(ListView):
             context['link_to_item'] = 'implementationispm-detail'
             context['items']= ImplementationISPM.objects.all()
             context['counttotal'] =context['items'].count() 
+        elif self.kwargs['type'] == 'countrynews':
+            context['type_label'] = 'Country news'
+            context['link_to_item'] = 'country-news-detail'
+            context['items']= CountryNews.objects.all()
+            context['counttotal'] =context['items'].count() 
         
         
         
