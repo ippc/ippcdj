@@ -33,7 +33,7 @@
 {% endblock pageinfo %}
 
 {% block main %}
-<div class="calendarname">{{ calendar.name }}</div>
+<div class="calendarname"><h1>{% trans "Calendar of Events<" %}/h1></div>
 {% prevnext "year_calendar" calendar.slug periods.year "Y" %}
 <table class="table table-condensed table-striped" id="publications">
     <tr>
@@ -54,7 +54,7 @@
         <td>{% blocktrans with event.end|date:"d-m-Y" as end_date %}{{ end_date }}{% endblocktrans %}</td>
         <td>    <a  href="/events/event/{{event.id}}">{{event.title}}</a></td>
         <td>{{event.type_verbose}}</td>
-        <td>{{event.location}}</td>
+        <td>{{event.venuecity}} {{event.venuecountry}}  </td>
         {% if user.is_superuser or can_add %}
         <td><a class="small pull-right" href="{% url 'edit_event' 'event' event.calendar.slug event.id %}"><i class="icon-edit"></i> Edit</a>  </td>
         {% endif %}

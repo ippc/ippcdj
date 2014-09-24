@@ -1,5 +1,5 @@
 /*
-Here is the list of the major difference with other autocomplete scripts:
+Here issss the list of the major difference with other autocomplete scripts:
 
 - don't do anything but fire a signal when a choice is selected: it's
 left as an exercise to the developer to implement whatever he wants when

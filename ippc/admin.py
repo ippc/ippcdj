@@ -12,7 +12,7 @@ Publication,PublicationFile,PublicationUrl, ReportingObligation,EventReporting,P
 ImplementationISPMVersion, TransPublicationLibraryPage,Website,EventreportingFile,EventreportingUrl,\
 ReportingObligation_File, ReportingObligationUrl,ImplementationISPMUrl,ImplementationISPMFile,\
 PestFreeAreaFile, PestFreeAreaUrl, WebsiteUrl,PestReportUrl,PestReportFile,CnPublication,CnPublicationFile,CnPublicationUrl,PartnersPublication,PartnersPublicationFile,PartnersPublicationUrl, \
-CountryNews,CountryNewsFile,CountryNewsUrl, \
+CountryNews,CountryNewsFile,CountryNewsUrl,CommodityKeyword, \
 PartnersWebsite,PartnersWebsiteUrl,\
 PartnersNews,PartnersNewsFile,PartnersNewsUrl, \
 EppoCode,IssueKeyword, CommodityKeyword,IssueKeywordsRelate,CommodityKeywordsRelate, ContactType
@@ -27,10 +27,35 @@ from django_markdown.admin import MarkdownModelAdmin
 
 import autocomplete_light
 import autocomplete_light_registry
+autocomplete_light.autodiscover()
+
 from django_markdown.widgets import MarkdownWidget
 
 
-    
+class MyIssueKeywordsRelateAdminForm(forms.ModelForm):
+    class Meta:
+        model = IssueKeywordsRelate
+        widgets = {
+          'issuename': autocomplete_light.MultipleChoiceWidget ('IssueKeywordAutocomplete'),
+          }
+
+
+class IssueKeywordsRelateAdmin(admin.ModelAdmin):
+    form = MyIssueKeywordsRelateAdminForm
+    save_on_top = True
+admin.site.register(IssueKeywordsRelate, IssueKeywordsRelateAdmin)
+
+class MyCommodityKeywordsRelateAdminForm(forms.ModelForm):
+    class Meta:
+        model = CommodityKeywordsRelate
+        widgets = {
+          'commname': autocomplete_light.MultipleChoiceWidget ('CommodityKeywordAutocomplete'),
+          }
+
+class CommodityKeywordsRelateAdmin(admin.ModelAdmin):
+    form = MyCommodityKeywordsRelateAdminForm
+    save_on_top = True
+admin.site.register(CommodityKeywordsRelate, CommodityKeywordsRelateAdmin)   
     
 class PublicationFileInline(admin.TabularInline):
     model = PublicationFile
@@ -39,13 +64,16 @@ class PublicationFileInline(admin.TabularInline):
 class PublicationUrlInline(admin.TabularInline):
     model = PublicationUrl
     formset = inlineformset_factory(Publication, PublicationUrl,extra=1)
+
+publication_extra_fieldsets = ((None, {"fields": ("commname","issuename",)}),)
+
    
 class PublicationAdmin(admin.ModelAdmin):
     inlines = [PublicationFileInline,PublicationUrlInline, ]
     save_on_top = True
     list_display = ('title',  'modify_date')
     list_filter = ('title',  'modify_date')
-    prepopulated_fields = { 'slug': ['title'] }
+    prepopulated_fields = { 'slug': ['title']}
 admin.site.register(Publication, PublicationAdmin)
 
 class PublicationInline(StackedDynamicInlineAdmin):
@@ -197,30 +225,7 @@ class ContactTypeAdmin(admin.ModelAdmin):
     save_on_top = True
 admin.site.register(ContactType, ContactTypeAdmin)
 
-class MyIssueKeywordsRelateAdminForm(forms.ModelForm):
-    class Meta:
-        model = IssueKeywordsRelate
-        widgets = {
-          'issuename': autocomplete_light.MultipleChoiceWidget ('IssueKeywordAutocomplete'),
-          }
 
-
-class IssueKeywordsRelateAdmin(admin.ModelAdmin):
-    form = MyIssueKeywordsRelateAdminForm
-    save_on_top = True
-admin.site.register(IssueKeywordsRelate, IssueKeywordsRelateAdmin)
-
-class MyCommodityKeywordsRelateAdminForm(forms.ModelForm):
-    class Meta:
-        model = CommodityKeywordsRelate
-        widgets = {
-          'commname': autocomplete_light.MultipleChoiceWidget ('CommodityKeywordAutocomplete'),
-          }
-
-class CommodityKeywordsRelateAdmin(admin.ModelAdmin):
-    form = MyCommodityKeywordsRelateAdminForm
-    save_on_top = True
-admin.site.register(CommodityKeywordsRelate, CommodityKeywordsRelateAdmin)
 
 class EppoCodeAdmin(admin.ModelAdmin):
     save_on_top = True

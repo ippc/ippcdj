@@ -1882,12 +1882,16 @@ def partners_news_edit(request, partner, id=None, template_name='partners/partne
 @permission_required('ippc.change_publication', login_url="/accounts/login/")
 def publication_edit(request, id=None, template_name='pages/publication_edit.html'):
     """ Edit  Publication """
+    print(" Edit  Publication")
     user = request.user
     author = user
     if id:
         publication = get_object_or_404(Publication, pk=id)
-        issues = get_object_or_404(IssueKeywordsRelate, pk=publication.issuename.all()[0].id)
-        commodities = get_object_or_404(CommodityKeywordsRelate, pk=publication.commname.all()[0].id)
+        print(publication.issuename.length)
+    #    if publication.issuename:
+    #        print(publication.issuename.all[0])
+    #    issues = get_object_or_404(IssueKeywordsRelate, pk=publication.issuename.all()[0].id)
+    #    commodities = get_object_or_404(CommodityKeywordsRelate, pk=publication.commname.all()[0].id)
     else:
         publication = Publication(author=request.user)
       
@@ -2774,9 +2778,17 @@ class AdvancesSearchCNListView(ListView):
             context['link_to_item'] = 'country-news-detail'
             context['items']= CountryNews.objects.all()
             context['counttotal'] =context['items'].count() 
-        
-        
-        
+        elif self.kwargs['type'] == 'countrywebsites':
+            context['type_label'] = 'Country websites'
+            context['link_to_item'] = 'website-detail'
+            context['items']= Website.objects.all()
+            context['counttotal'] =context['items'].count() 
+        elif self.kwargs['type'] == 'cnpublication':
+            context['type_label'] = 'Country publication'
+            context['link_to_item'] = 'country-publication-detail'
+            context['items']= CnPublication.objects.all()
+            context['counttotal'] =context['items'].count() 
+         
         return context
 		
 		

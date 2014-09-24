@@ -64,7 +64,7 @@ def calendar_by_year(request, calendar_slug, year=None, template_name="schedule/
         can_add=1
    
     calendar = get_object_or_404(Calendar, slug=calendar_slug)
-    event_list= calendar.event_set.filter(start__year=date.year,country=-1)
+    event_list= calendar.event_set.filter(start__year=date.year,country=-1).order_by('start')
     period_objects = dict([(period.__name__.lower(), period(event_list, date)) for period in year])
     return render_to_response(template_name, {
         'periods': period_objects,

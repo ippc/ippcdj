@@ -129,27 +129,27 @@ class Publication(Orderable):
     title = models.CharField(_("Title"), blank=True, null=True, max_length=100)
     # author = models.ForeignKey(User, related_name="publication_author")
     file_en = models.FileField(_("File - English"), 
-            upload_to=upload_to("galleries.GalleryImage.file", "files/en/%Y/%m/"),
+            upload_to=upload_to("galleries.GalleryImage.file", "files/publication/en/%Y/%m/"),
             unique_for_date='modify_date', max_length=204, 
             blank=True, null=True)        
     file_es = models.FileField(_("File - Spanish"), 
-            upload_to=upload_to("galleries.GalleryImage.file", "files/es/%Y/%m/"),
+            upload_to=upload_to("galleries.GalleryImage.file", "files/publication/es/%Y/%m/"),
             unique_for_date='modify_date', max_length=204, 
             blank=True, null=True)        
     file_fr = models.FileField(_("File - French"), 
-            upload_to=upload_to("galleries.GalleryImage.file", "files/fr/%Y/%m/"),
+            upload_to=upload_to("galleries.GalleryImage.file", "files/publication/fr/%Y/%m/"),
             unique_for_date='modify_date', max_length=204, 
             blank=True, null=True)        
     file_ru = models.FileField(_("File - Russian"), 
-            upload_to=upload_to("galleries.GalleryImage.file", "files/ru/%Y/%m/"),
+            upload_to=upload_to("galleries.GalleryImage.file", "files/publication/ru/%Y/%m/"),
             unique_for_date='modify_date', max_length=204, 
             blank=True, null=True)        
     file_ar = models.FileField(_("File - Arabic"), 
-            upload_to=upload_to("galleries.GalleryImage.file", "files/ar/%Y/%m/"),
+            upload_to=upload_to("galleries.GalleryImage.file", "files/publication/ar/%Y/%m/"),
             unique_for_date='modify_date', max_length=204, 
             blank=True, null=True)        
     file_zh = models.FileField(_("File - Chinese"), 
-            upload_to=upload_to("galleries.GalleryImage.file", "files/zh/%Y/%m/"),
+            upload_to=upload_to("galleries.GalleryImage.file", "files/publication/zh/%Y/%m/"),
             unique_for_date='modify_date', max_length=204, 
             blank=True, null=True)        
     slug = models.SlugField(max_length=200, blank=True, null=True,
@@ -1019,6 +1019,7 @@ class PestFreeArea(Displayable, models.Model):
     
     short_description = models.TextField(_("Location and description of the area"),  blank=True, null=True)
     publication_date = models.DateTimeField(_("Publication date"), blank=True, null=True, editable=True)
+    pest_under_consideration = models.TextField(_("Pest under consideration"), blank=True, null=True)    
     pfa_type = models.IntegerField(_("Type of recognition"), choices=PFA_TYPE_1_CHOICES, default=None)
     #file = models.FileField(_("Additional information and Documentation"), upload_to="pestfreearea/%Y/%m/", blank=True)
     contact_for_more_information = models.TextField(_("Contact for more information"), blank=True, null=True)    
