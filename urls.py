@@ -1,7 +1,12 @@
+import autocomplete_light
+autocomplete_light.autodiscover()
 
 from django.conf.urls import patterns, include, url
-from django.contrib import admin
 
+
+
+from django.contrib import admin
+admin.autodiscover()
 from .ippc.views import PestReportListView, PestReportHiddenListView, \
 PestReportDetailView, CountryView,PartnersView, pest_report_create, pest_report_edit, PublicationDetailView,\
 PublicationListView,ReportingObligationListView, ReportingObligationDetailView,reporting_obligation_create, reporting_obligation_edit, \
@@ -23,9 +28,8 @@ CountryRegionsPercentageListView,CountryStatsreportsListView,CountryStatsTotalre
 from schedule.periods import Year, Month, Week, Day
 from mezzanine.core.views import direct_to_template
 import mezzanine_pagedown.urls
-import autocomplete_light
-autocomplete_light.autodiscover()
-admin.autodiscover()
+
+
 
 # Add the urlpatterns for any custom Django applications here.
 # You can also change the ``home`` view to add your own functionality

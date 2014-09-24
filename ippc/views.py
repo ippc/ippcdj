@@ -1,3 +1,6 @@
+import autocomplete_light
+autocomplete_light.autodiscover()
+
 from django.shortcuts import render
 from django.utils.translation import ugettext_lazy as _
 from django.contrib.messages import info, error

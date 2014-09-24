@@ -228,7 +228,7 @@ INSTALLED_APPS = (
     
     # /en/, /es/ etc in urls
     "localeurl",
-    
+    "autocomplete_light",
     "django.contrib.admin",
     "django.contrib.auth",
     "django.contrib.contenttypes",
@@ -281,7 +281,7 @@ INSTALLED_APPS = (
     
     # for email utility
     # http://stackoverflow.com/a/1823193/412329
-    "autocomplete_light",
+
     "leaflet",
     # debug toolbar
     # "debug_toolbar",

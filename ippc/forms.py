@@ -1,5 +1,11 @@
 # -*- coding: utf-8 -*-
 
+import autocomplete_light_registry
+import autocomplete_light
+autocomplete_light.autodiscover()
+
+
+
 from django import forms
 import datetime
 from .models import Publication,PublicationFile,PublicationUrl, IppcUserProfile, PestStatus, PestReport,  CountryPage, \
@@ -14,8 +20,6 @@ PartnersNews,PartnersNewsFile,PartnersNewsUrl, \
 CountryNews,CountryNewsFile,CountryNewsUrl, EmailUtilityMessage, EmailUtilityMessageFile
 
 from django.contrib.auth.models import User,Group
-import autocomplete_light
-import autocomplete_light_registry
 from django.forms.models import inlineformset_factory
 from django.forms.formsets import formset_factory
 from django.contrib.admin.widgets import AdminDateWidget 
