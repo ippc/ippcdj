@@ -8,60 +8,22 @@ from django.db import models
 class Migration(SchemaMigration):
 
     def forwards(self, orm):
-        # Adding model 'PartnersNewsUrl'
-        db.create_table(u'ippc_partnersnewsurl', (
-            (u'id', self.gf('django.db.models.fields.AutoField')(primary_key=True)),
-            ('partnersnews', self.gf('django.db.models.fields.related.ForeignKey')(to=orm['ippc.PartnersNews'])),
-            ('url_for_more_information', self.gf('django.db.models.fields.URLField')(max_length=200, null=True, blank=True)),
-        ))
-        db.send_create_signal(u'ippc', ['PartnersNewsUrl'])
+        # Adding field 'IppcUserProfile.expertize'
+        db.add_column(u'ippc_ippcuserprofile', 'expertize',
+                      self.gf('django.db.models.fields.TextField')(default='', null=True, blank=True),
+                      keep_default=False)
 
-        # Adding model 'PartnersNews'
-        db.create_table(u'ippc_partnersnews', (
-            (u'id', self.gf('django.db.models.fields.AutoField')(primary_key=True)),
-            ('keywords_string', self.gf('django.db.models.fields.CharField')(max_length=500, blank=True)),
-            ('site', self.gf('django.db.models.fields.related.ForeignKey')(to=orm['sites.Site'])),
-            ('title', self.gf('django.db.models.fields.CharField')(max_length=500)),
-            ('slug', self.gf('django.db.models.fields.CharField')(max_length=2000, null=True, blank=True)),
-            ('_meta_title', self.gf('django.db.models.fields.CharField')(max_length=500, null=True, blank=True)),
-            ('description', self.gf('django.db.models.fields.TextField')(blank=True)),
-            ('gen_description', self.gf('django.db.models.fields.BooleanField')(default=True)),
-            ('status', self.gf('django.db.models.fields.IntegerField')(default=2)),
-            ('publish_date', self.gf('django.db.models.fields.DateTimeField')(null=True, blank=True)),
-            ('expiry_date', self.gf('django.db.models.fields.DateTimeField')(null=True, blank=True)),
-            ('short_url', self.gf('django.db.models.fields.URLField')(max_length=200, null=True, blank=True)),
-            ('in_sitemap', self.gf('django.db.models.fields.BooleanField')(default=True)),
-            ('partners', self.gf('django.db.models.fields.related.ForeignKey')(related_name='partnersnews_partner_page', to=orm['ippc.PartnersPage'])),
-            ('author', self.gf('django.db.models.fields.related.ForeignKey')(related_name='partnersnews_author', to=orm['auth.User'])),
-            ('short_description', self.gf('django.db.models.fields.TextField')(null=True, blank=True)),
-            ('publication_date', self.gf('django.db.models.fields.DateTimeField')(null=True, blank=True)),
-            ('image', self.gf('django.db.models.fields.files.ImageField')(max_length=100, blank=True)),
-            ('contact_for_more_information', self.gf('django.db.models.fields.TextField')(null=True, blank=True)),
-            ('modify_date', self.gf('django.db.models.fields.DateTimeField')(null=True, blank=True)),
-            ('keywords', self.gf('mezzanine.generic.fields.KeywordsField')(object_id_field='object_pk', to=orm['generic.AssignedKeyword'], frozen_by_south=True)),
-        ))
-        db.send_create_signal(u'ippc', ['PartnersNews'])
 
-        # Adding model 'PartnersNewsFile'
-        db.create_table(u'ippc_partnersnewsfile', (
-            (u'id', self.gf('django.db.models.fields.AutoField')(primary_key=True)),
-            ('partnersnews', self.gf('django.db.models.fields.related.ForeignKey')(to=orm['ippc.PartnersNews'])),
-            ('description', self.gf('django.db.models.fields.CharField')(max_length=255)),
-            ('file', self.gf('django.db.models.fields.files.FileField')(max_length=255, blank=True)),
-        ))
-        db.send_create_signal(u'ippc', ['PartnersNewsFile'])
-
+        # Changing field 'IppcUserProfile.address2'
+        db.alter_column(u'ippc_ippcuserprofile', 'address2', self.gf('django.db.models.fields.TextField')(null=True))
 
     def backwards(self, orm):
-        # Deleting model 'PartnersNewsUrl'
-        db.delete_table(u'ippc_partnersnewsurl')
+        # Deleting field 'IppcUserProfile.expertize'
+        db.delete_column(u'ippc_ippcuserprofile', 'expertize')
 
-        # Deleting model 'PartnersNews'
-        db.delete_table(u'ippc_partnersnews')
 
-        # Deleting model 'PartnersNewsFile'
-        db.delete_table(u'ippc_partnersnewsfile')
-
+        # Changing field 'IppcUserProfile.address2'
+        db.alter_column(u'ippc_ippcuserprofile', 'address2', self.gf('django.db.models.fields.CharField')(default='', max_length=100))
 
     models = {
         u'auth.group': {
@@ -192,7 +154,7 @@ class Migration(SchemaMigration):
             'Meta': {'object_name': 'CnPublicationUrl'},
             'cnpublication': ('django.db.models.fields.related.ForeignKey', [], {'to': u"orm['ippc.CnPublication']"}),
             u'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
-            'url_for_more_information': ('django.db.models.fields.URLField', [], {'max_length': '200', 'null': 'True', 'blank': 'True'})
+            'url_for_more_information': ('django.db.models.fields.URLField', [], {'max_length': '500', 'null': 'True', 'blank': 'True'})
         },
         u'ippc.commoditykeyword': {
             'Meta': {'object_name': 'CommodityKeyword'},
@@ -226,6 +188,7 @@ class Migration(SchemaMigration):
             'keywords': ('mezzanine.generic.fields.KeywordsField', [], {'object_id_field': "'object_pk'", 'to': u"orm['generic.AssignedKeyword']", 'frozen_by_south': 'True'}),
             'keywords_string': ('django.db.models.fields.CharField', [], {'max_length': '500', 'blank': 'True'}),
             'modify_date': ('django.db.models.fields.DateTimeField', [], {'null': 'True', 'blank': 'True'}),
+            'old_id': ('django.db.models.fields.CharField', [], {'max_length': '50'}),
             'publication_date': ('django.db.models.fields.DateTimeField', [], {'null': 'True', 'blank': 'True'}),
             'publish_date': ('django.db.models.fields.DateTimeField', [], {'null': 'True', 'blank': 'True'}),
             'short_description': ('django.db.models.fields.TextField', [], {'null': 'True', 'blank': 'True'}),
@@ -246,7 +209,7 @@ class Migration(SchemaMigration):
             'Meta': {'object_name': 'CountryNewsUrl'},
             'countrynews': ('django.db.models.fields.related.ForeignKey', [], {'to': u"orm['ippc.CountryNews']"}),
             u'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
-            'url_for_more_information': ('django.db.models.fields.URLField', [], {'max_length': '200', 'null': 'True', 'blank': 'True'})
+            'url_for_more_information': ('django.db.models.fields.URLField', [], {'max_length': '500', 'null': 'True', 'blank': 'True'})
         },
         u'ippc.countrypage': {
             'Meta': {'ordering': "['name']", 'object_name': 'CountryPage', '_ormbases': [u'pages.Page']},
@@ -268,7 +231,7 @@ class Migration(SchemaMigration):
             'Meta': {'object_name': 'EmailUtilityMessage'},
             'date': ('django.db.models.fields.DateTimeField', [], {}),
             'emailfrom': ('django.db.models.fields.CharField', [], {'default': "u'ippc@fao.org'", 'max_length': '200'}),
-            'emailto': ('django.db.models.fields.CharField', [], {'max_length': '200'}),
+            'emailto': ('django.db.models.fields.CharField', [], {'default': "u'ippc@fao.org'", 'max_length': '200'}),
             'groups': ('django.db.models.fields.related.ManyToManyField', [], {'blank': 'True', 'related_name': "'emailgroups'", 'null': 'True', 'symmetrical': 'False', 'to': u"orm['auth.Group']"}),
             u'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
             'messagebody': ('django.db.models.fields.TextField', [], {'max_length': '500', 'null': 'True', 'blank': 'True'}),
@@ -330,7 +293,7 @@ class Migration(SchemaMigration):
             'Meta': {'object_name': 'EventreportingUrl'},
             'eventreporting': ('django.db.models.fields.related.ForeignKey', [], {'to': u"orm['ippc.EventReporting']"}),
             u'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
-            'url_for_more_information': ('django.db.models.fields.URLField', [], {'max_length': '200', 'null': 'True', 'blank': 'True'})
+            'url_for_more_information': ('django.db.models.fields.URLField', [], {'max_length': '500', 'null': 'True', 'blank': 'True'})
         },
         u'ippc.implementationispm': {
             'Meta': {'object_name': 'ImplementationISPM'},
@@ -373,7 +336,7 @@ class Migration(SchemaMigration):
             'Meta': {'object_name': 'ImplementationISPMUrl'},
             u'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
             'implementationispm': ('django.db.models.fields.related.ForeignKey', [], {'to': u"orm['ippc.ImplementationISPM']"}),
-            'url_for_more_information': ('django.db.models.fields.URLField', [], {'max_length': '200', 'null': 'True', 'blank': 'True'})
+            'url_for_more_information': ('django.db.models.fields.URLField', [], {'max_length': '500', 'null': 'True', 'blank': 'True'})
         },
         u'ippc.implementationispmversion': {
             'Meta': {'object_name': 'ImplementationISPMVersion'},
@@ -383,7 +346,7 @@ class Migration(SchemaMigration):
         u'ippc.ippcuserprofile': {
             'Meta': {'object_name': 'IppcUserProfile'},
             'address1': ('django.db.models.fields.CharField', [], {'max_length': '100', 'blank': 'True'}),
-            'address2': ('django.db.models.fields.CharField', [], {'max_length': '100', 'blank': 'True'}),
+            'address2': ('django.db.models.fields.TextField', [], {'default': "''", 'null': 'True', 'blank': 'True'}),
             'address_country': ('django_countries.fields.CountryField', [], {'max_length': '2', 'null': 'True', 'blank': 'True'}),
             'bio': ('django.db.models.fields.TextField', [], {'default': "''", 'null': 'True', 'blank': 'True'}),
             'city': ('django.db.models.fields.CharField', [], {'max_length': '100', 'blank': 'True'}),
@@ -391,6 +354,7 @@ class Migration(SchemaMigration):
             'country': ('django.db.models.fields.related.ForeignKey', [], {'blank': 'True', 'related_name': "'user_country_page'", 'null': 'True', 'to': u"orm['ippc.CountryPage']"}),
             'date_account_created': ('django.db.models.fields.DateTimeField', [], {'default': 'datetime.datetime.now'}),
             'email_address_alt': ('django.db.models.fields.EmailField', [], {'default': "''", 'max_length': '75', 'null': 'True', 'blank': 'True'}),
+            'expertize': ('django.db.models.fields.TextField', [], {'default': "''", 'null': 'True', 'blank': 'True'}),
             'fax': ('django.db.models.fields.CharField', [], {'max_length': '30', 'blank': 'True'}),
             'first_name': ('django.db.models.fields.CharField', [], {'max_length': '30'}),
             'gender': ('django.db.models.fields.PositiveSmallIntegerField', [], {'null': 'True', 'blank': 'True'}),
@@ -431,6 +395,7 @@ class Migration(SchemaMigration):
             'keywords': ('mezzanine.generic.fields.KeywordsField', [], {'object_id_field': "'object_pk'", 'to': u"orm['generic.AssignedKeyword']", 'frozen_by_south': 'True'}),
             'keywords_string': ('django.db.models.fields.CharField', [], {'max_length': '500', 'blank': 'True'}),
             'modify_date': ('django.db.models.fields.DateTimeField', [], {'null': 'True', 'blank': 'True'}),
+            'old_id': ('django.db.models.fields.CharField', [], {'max_length': '50'}),
             'partners': ('django.db.models.fields.related.ForeignKey', [], {'related_name': "'partnersnews_partner_page'", 'to': u"orm['ippc.PartnersPage']"}),
             'publication_date': ('django.db.models.fields.DateTimeField', [], {'null': 'True', 'blank': 'True'}),
             'publish_date': ('django.db.models.fields.DateTimeField', [], {'null': 'True', 'blank': 'True'}),
@@ -452,7 +417,7 @@ class Migration(SchemaMigration):
             'Meta': {'object_name': 'PartnersNewsUrl'},
             u'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
             'partnersnews': ('django.db.models.fields.related.ForeignKey', [], {'to': u"orm['ippc.PartnersNews']"}),
-            'url_for_more_information': ('django.db.models.fields.URLField', [], {'max_length': '200', 'null': 'True', 'blank': 'True'})
+            'url_for_more_information': ('django.db.models.fields.URLField', [], {'max_length': '500', 'null': 'True', 'blank': 'True'})
         },
         u'ippc.partnerspage': {
             'Meta': {'ordering': "['name']", 'object_name': 'PartnersPage', '_ormbases': [u'pages.Page']},
@@ -501,7 +466,7 @@ class Migration(SchemaMigration):
             'Meta': {'object_name': 'PartnersPublicationUrl'},
             u'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
             'partnerspublication': ('django.db.models.fields.related.ForeignKey', [], {'to': u"orm['ippc.PartnersPublication']"}),
-            'url_for_more_information': ('django.db.models.fields.URLField', [], {'max_length': '200', 'null': 'True', 'blank': 'True'})
+            'url_for_more_information': ('django.db.models.fields.URLField', [], {'max_length': '500', 'null': 'True', 'blank': 'True'})
         },
         u'ippc.partnerswebsite': {
             'Meta': {'object_name': 'PartnersWebsite'},
@@ -531,7 +496,7 @@ class Migration(SchemaMigration):
             'Meta': {'object_name': 'PartnersWebsiteUrl'},
             u'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
             'partnerswebsite': ('django.db.models.fields.related.ForeignKey', [], {'to': u"orm['ippc.PartnersWebsite']"}),
-            'url_for_more_information': ('django.db.models.fields.URLField', [], {'max_length': '200', 'null': 'True', 'blank': 'True'})
+            'url_for_more_information': ('django.db.models.fields.URLField', [], {'max_length': '500', 'null': 'True', 'blank': 'True'})
         },
         u'ippc.pestfreearea': {
             'Meta': {'object_name': 'PestFreeArea'},
@@ -548,6 +513,7 @@ class Migration(SchemaMigration):
             'keywords_string': ('django.db.models.fields.CharField', [], {'max_length': '500', 'blank': 'True'}),
             'modify_date': ('django.db.models.fields.DateTimeField', [], {'null': 'True', 'blank': 'True'}),
             'old_id': ('django.db.models.fields.CharField', [], {'max_length': '50'}),
+            'pest_under_consideration': ('django.db.models.fields.TextField', [], {'null': 'True', 'blank': 'True'}),
             'pfa_type': ('django.db.models.fields.IntegerField', [], {'default': 'None'}),
             'publication_date': ('django.db.models.fields.DateTimeField', [], {'null': 'True', 'blank': 'True'}),
             'publish_date': ('django.db.models.fields.DateTimeField', [], {'null': 'True', 'blank': 'True'}),
@@ -569,7 +535,7 @@ class Migration(SchemaMigration):
             'Meta': {'object_name': 'PestFreeAreaUrl'},
             u'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
             'pfa': ('django.db.models.fields.related.ForeignKey', [], {'to': u"orm['ippc.PestFreeArea']"}),
-            'url_for_more_information': ('django.db.models.fields.URLField', [], {'max_length': '200', 'null': 'True', 'blank': 'True'})
+            'url_for_more_information': ('django.db.models.fields.URLField', [], {'max_length': '500', 'null': 'True', 'blank': 'True'})
         },
         u'ippc.pestreport': {
             'Meta': {'object_name': 'PestReport'},
@@ -723,7 +689,7 @@ class Migration(SchemaMigration):
             'Meta': {'object_name': 'ReportingObligationUrl'},
             u'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
             'reportingobligation': ('django.db.models.fields.related.ForeignKey', [], {'to': u"orm['ippc.ReportingObligation']"}),
-            'url_for_more_information': ('django.db.models.fields.URLField', [], {'max_length': '200', 'null': 'True', 'blank': 'True'})
+            'url_for_more_information': ('django.db.models.fields.URLField', [], {'max_length': '500', 'null': 'True', 'blank': 'True'})
         },
         u'ippc.transfield': {
             'Meta': {'ordering': "('lang',)", 'object_name': 'TransField'},
@@ -824,7 +790,7 @@ class Migration(SchemaMigration):
         u'ippc.websiteurl': {
             'Meta': {'object_name': 'WebsiteUrl'},
             u'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
-            'url_for_more_information': ('django.db.models.fields.URLField', [], {'max_length': '200', 'null': 'True', 'blank': 'True'}),
+            'url_for_more_information': ('django.db.models.fields.URLField', [], {'max_length': '500', 'null': 'True', 'blank': 'True'}),
             'website': ('django.db.models.fields.related.ForeignKey', [], {'to': u"orm['ippc.Website']"})
         },
         u'ippc.workareapage': {

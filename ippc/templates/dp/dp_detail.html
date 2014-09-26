@@ -1,0 +1,144 @@
+{% extends "base.html" %}
+{% load pages_tags mezzanine_tags i18n future staticfiles accounts_tags %}
+
+{% block meta_title %}{% trans "Draft protocol" %}{% endblock %}
+
+{% block breadcrumb_menu %}
+<li><a href="/">{% trans "Home" %}</a><span class="divider">/</span></li>
+<li><a href="/expert-consultation-on-draft-diagnostic-protocols-ecdp/">DPs</a><span class="divider">/</span></li>
+<li class="active">{{ draftprotocol.title }}</li>
+{% endblock %}
+
+{% block local_nav %}
+<div class="well">
+  <p><a href="/expert-consultation-on-draft-diagnostic-protocols-ecdp/">« {% trans "Go Back " %}</a></p>
+    {% if user.is_superuser %} 
+        <a class="btn btn-small btn-info" href="/admin/ippc/draftprotocol/{{ draftprotocol.id }}">Edit as Admin</a><br>
+    {% endif %}
+    {% if perms.ippc.change_draftprotocol or  user.is_superuser%}
+        <a class="btn btn-small btn-info" href="{% url 'draftprotocol-edit'  draftprotocol.id %}"><i class="icon-edit icon-white"></i> Edit</a>
+    {% else %}
+    {% endif %}
+   
+</div>
+{% endblock local_nav %}
+
+{% block pageinfo %}
+{% endblock pageinfo %}
+
+{% block main %}
+
+{% if user.is_superuser or see_all_comment  or request.user in object.users.all %}
+<h1>{{ draftprotocol.title }}</h1> 
+{% if perms.ippc.change_draftprotocol or user.is_superuser%}
+    <a class="btn btn-small btn-info" href="">  Compiled comments</a>
+    <a class="btn btn-small btn-info" href="">  Download ZIP archive with CSV and comment attachments</a>
+{% endif %}
+<div class="panel panel-info">
+      <div class="alert alert-info">
+          <p><img  src="{{ draftprotocol.author.get_profile.picture }}" /></p>
+          <strong>{% trans "Moderator" %}: </strong>{{ draftprotocol.author.get_profile.first_name }} {{ draftprotocol.author.get_profile.last_name }}</a><br>
+          <strong>{% trans "Posted"%}: </strong> {% blocktrans with sometime=draftprotocol.publish_date|date:"d-m-Y" %}{{ sometime }}{% endblocktrans %}</p>
+      </div>
+      <div class="panel-body">
+          <p>{{ draftprotocol.summary }}</p>
+          <strong>{% trans "Deadline for comments, closing date" %}:</strong><br/>
+          <p style="color:red"> {% blocktrans with sometime=draftprotocol.closing_date|date:"d-m-Y" %}{{ sometime }}{% endblocktrans %}    </p>
+          <strong>{% trans "Attachment (comments on protocol text)" %}:</strong><br>
+          <a href="{{MEDIA_URL}}{{draftprotocol.filetext}}">{{ draftprotocol.filetextname}}</a><br>
+          <strong>{% trans "Attachment (comments on protocol figures)" %}:</strong><br>
+         <a href="{{MEDIA_URL}}{{draftprotocol.filefig}}">{{ draftprotocol.filefigname}}</a><br>
+         <strong>{% trans "Additional background documents" %}:</strong><br>
+          {% for f in draftprotocol.draftprotocolfile_set.all %} 
+          <a href="{{MEDIA_URL}}{{f.file.name}}">{{ f.description }}</a><br>
+          {% endfor %}
+      </div>
+</div>
+{% if draftprotocol.is_past_due %}
+{% else %}
+     {% if add_comment == 1 %} 
+      <a class="btn btn-small btn-info" href="{% url 'draftprotocol-comment-create' draftprotocol.id %}"> Add comment</a>
+     {% else %} 
+{% endif %}
+{% endif %}
+{% if comments %}
+  <h3>{% trans "Comments" %}:</h3>
+    {% for object in comments %}
+         {% if user.is_superuser or request.user == object.author  or see_all_comment %} 
+            <div>
+                {% if draftprotocol.is_past_due %}
+{% else %}<a class="btn btn-small btn-info" href="{% url 'draftprotocol-comment-edit' draftprotocol.id  object.id %}"> Edit comment</a><br/>
+           {% endif %}     <strong>name:</strong> {{object.author}}<br/>
+                <strong>Expertise:</strong> {{object.expertise}}<br/>
+                <strong>Institution</strong> {{object.institution}}<br/>
+                <strong>Comment</strong> {{object.comment}}<br/>
+                <strong>Attachments:</strong> <br/>
+                <a href="{{MEDIA_URL}}{{object.filefig}}">{{ object.filefigname}}</a><br>
+                <a href="{{MEDIA_URL}}{{object.filefig}}">{{ object.filefigname}}</a><br>
+             </div>
+        {% endif %}
+    {% endfor %}
+{% endif %}
+
+{% else %}
+
+    {% for group in request.user.groups.all %}
+     {% if group in object.groups.all %}
+<h1>{{ draftprotocol.title }}</h1> 
+{% if perms.ippc.change_draftprotocol or user.is_superuser%}
+    <a class="btn btn-small btn-info" href="">  Compiled comments</a>
+    <a class="btn btn-small btn-info" href="">  Download ZIP archive with CSV and comment attachments</a>
+{% endif %}
+<div class="panel panel-info">
+      <div class="alert alert-info">
+          <p><img  src="{{ draftprotocol.author.get_profile.picture }}" /></p>
+          <strong>{% trans "Moderator" %}: </strong>{{ draftprotocol.author.get_profile.first_name }} {{ draftprotocol.author.get_profile.last_name }}</a><br>
+          <strong>{% trans "Posted"%}: </strong> {% blocktrans with sometime=draftprotocol.publish_date|date:"d-m-Y" %}{{ sometime }}{% endblocktrans %}</p>
+      </div>
+      <div class="panel-body">
+          <p>{{ draftprotocol.summary }}</p>
+          <strong>{% trans "Deadline for comments, closing date" %}:</strong><br/>
+          <p style="color:red"> {% blocktrans with sometime=draftprotocol.closing_date|date:"d-m-Y" %}{{ sometime }}{% endblocktrans %}    </p>
+          <strong>{% trans "Attachment (comments on protocol text)" %}:</strong><br>
+          <a href="{{MEDIA_URL}}{{draftprotocol.filetext}}">{{ draftprotocol.filetextname}}</a><br>
+          <strong>{% trans "Attachment (comments on protocol figures)" %}:</strong><br>
+         <a href="{{MEDIA_URL}}{{draftprotocol.filefig}}">{{ draftprotocol.filefigname}}</a><br>
+         <strong>{% trans "Additional background documents" %}:</strong><br>
+          {% for f in draftprotocol.draftprotocolfile_set.all %} 
+          <a href="{{MEDIA_URL}}{{f.file.name}}">{{ f.description }}</a><br>
+          {% endfor %}
+      </div>
+</div>
+{% if draftprotocol.is_past_due %}
+{% else %}
+     {% if add_comment == 1 %} 
+      <a class="btn btn-small btn-info" href="{% url 'draftprotocol-comment-create' draftprotocol.id %}"> Add comment</a>
+     {% else %} 
+{% endif %}
+{% endif %}
+{% if comments %}
+  <h3>{% trans "Comments" %}:</h3>
+    {% for object in comments %}
+         {% if user.is_superuser or request.user == object.author  or see_all_comment %} 
+            <div>
+                {% if draftprotocol.is_past_due %}
+{% else %}<a class="btn btn-small btn-info" href="{% url 'draftprotocol-comment-edit' draftprotocol.id  object.id %}"> Edit comment</a><br/>
+           {% endif %} <strong>name:</strong> {{object.author}}<br/>
+                <strong>Expertise:</strong> {{object.expertise}}<br/>
+                <strong>Institution</strong> {{object.institution}}<br/>
+                <strong>Comment</strong> {{object.comment}}<br/>
+                <strong>Attachments:</strong> <br/>
+                <a href="{{MEDIA_URL}}{{object.filefig}}">{{ object.filefigname}}</a><br>
+                <a href="{{MEDIA_URL}}{{object.filefig}}">{{ object.filefigname}}</a><br>
+             </div>
+        {% endif %}
+    {% endfor %}
+{% endif %}
+     {% endif %}
+     {% endfor %}
+ 
+ 
+{% endif %}
+
+{% endblock %}
+

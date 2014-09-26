@@ -8,31 +8,61 @@ from django.db import models
 class Migration(SchemaMigration):
 
     def forwards(self, orm):
-        # Adding model 'PartnersPage'
-        db.create_table(u'ippc_partnerspage', (
-            (u'page_ptr', self.gf('django.db.models.fields.related.OneToOneField')(to=orm['pages.Page'], unique=True, primary_key=True)),
-            ('name', self.gf('django.db.models.fields.CharField')(max_length=50, unique=True, null=True, blank=True)),
-            ('partner_slug', self.gf('django.db.models.fields.CharField')(max_length=100, unique=True, null=True, blank=True)),
-            ('contact_point', self.gf('django.db.models.fields.related.OneToOneField')(to=orm['auth.User'], unique=True, null=True, blank=True)),
+        # Adding model 'DraftProtocol'
+        db.create_table(u'ippc_draftprotocol', (
+            (u'id', self.gf('django.db.models.fields.AutoField')(primary_key=True)),
+            ('keywords_string', self.gf('django.db.models.fields.CharField')(max_length=500, blank=True)),
+            ('site', self.gf('django.db.models.fields.related.ForeignKey')(to=orm['sites.Site'])),
+            ('title', self.gf('django.db.models.fields.CharField')(max_length=500)),
+            ('slug', self.gf('django.db.models.fields.CharField')(max_length=2000, null=True, blank=True)),
+            ('_meta_title', self.gf('django.db.models.fields.CharField')(max_length=500, null=True, blank=True)),
+            ('description', self.gf('django.db.models.fields.TextField')(blank=True)),
+            ('gen_description', self.gf('django.db.models.fields.BooleanField')(default=True)),
+            ('status', self.gf('django.db.models.fields.IntegerField')(default=2)),
+            ('publish_date', self.gf('django.db.models.fields.DateTimeField')(null=True, blank=True)),
+            ('expiry_date', self.gf('django.db.models.fields.DateTimeField')(null=True, blank=True)),
+            ('short_url', self.gf('django.db.models.fields.URLField')(max_length=200, null=True, blank=True)),
+            ('in_sitemap', self.gf('django.db.models.fields.BooleanField')(default=True)),
+            ('closing_date', self.gf('django.db.models.fields.DateTimeField')(null=True, blank=True)),
+            ('summary', self.gf('django.db.models.fields.TextField')(null=True, blank=True)),
+            ('filetext', self.gf('django.db.models.fields.files.FileField')(max_length=100, blank=True)),
+            ('filefig', self.gf('django.db.models.fields.files.FileField')(max_length=100, blank=True)),
+            ('old_id', self.gf('django.db.models.fields.CharField')(max_length=50)),
+            ('keywords', self.gf('mezzanine.generic.fields.KeywordsField')(object_id_field='object_pk', to=orm['generic.AssignedKeyword'], frozen_by_south=True)),
         ))
-        db.send_create_signal(u'ippc', ['PartnersPage'])
+        db.send_create_signal(u'ippc', ['DraftProtocol'])
 
-        # Adding M2M table for field editors on 'PartnersPage'
-        m2m_table_name = db.shorten_name(u'ippc_partnerspage_editors')
-        db.create_table(m2m_table_name, (
-            ('id', models.AutoField(verbose_name='ID', primary_key=True, auto_created=True)),
-            ('partnerspage', models.ForeignKey(orm[u'ippc.partnerspage'], null=False)),
-            ('user', models.ForeignKey(orm[u'auth.user'], null=False))
+        # Adding model 'DraftProtocolComment'
+        db.create_table(u'ippc_draftprotocolcomment', (
+            (u'id', self.gf('django.db.models.fields.AutoField')(primary_key=True)),
+            ('draftprotocol', self.gf('django.db.models.fields.related.ForeignKey')(to=orm['ippc.DraftProtocol'])),
+            ('expertise', self.gf('django.db.models.fields.TextField')(null=True, blank=True)),
+            ('institution', self.gf('django.db.models.fields.TextField')(null=True, blank=True)),
+            ('comment', self.gf('django.db.models.fields.TextField')(null=True, blank=True)),
+            ('filetext', self.gf('django.db.models.fields.files.FileField')(max_length=100, blank=True)),
+            ('filefig', self.gf('django.db.models.fields.files.FileField')(max_length=100, blank=True)),
         ))
-        db.create_unique(m2m_table_name, ['partnerspage_id', 'user_id'])
+        db.send_create_signal(u'ippc', ['DraftProtocolComment'])
+
+        # Adding model 'DraftProtocolFile'
+        db.create_table(u'ippc_draftprotocolfile', (
+            (u'id', self.gf('django.db.models.fields.AutoField')(primary_key=True)),
+            ('draftprotocol', self.gf('django.db.models.fields.related.ForeignKey')(to=orm['ippc.DraftProtocol'])),
+            ('description', self.gf('django.db.models.fields.CharField')(max_length=255)),
+            ('file', self.gf('django.db.models.fields.files.FileField')(max_length=255, blank=True)),
+        ))
+        db.send_create_signal(u'ippc', ['DraftProtocolFile'])
 
 
     def backwards(self, orm):
-        # Deleting model 'PartnersPage'
-        db.delete_table(u'ippc_partnerspage')
+        # Deleting model 'DraftProtocol'
+        db.delete_table(u'ippc_draftprotocol')
 
-        # Removing M2M table for field editors on 'PartnersPage'
-        db.delete_table(db.shorten_name(u'ippc_partnerspage_editors'))
+        # Deleting model 'DraftProtocolComment'
+        db.delete_table(u'ippc_draftprotocolcomment')
+
+        # Deleting model 'DraftProtocolFile'
+        db.delete_table(u'ippc_draftprotocolfile')
 
 
     models = {
@@ -164,7 +194,7 @@ class Migration(SchemaMigration):
             'Meta': {'object_name': 'CnPublicationUrl'},
             'cnpublication': ('django.db.models.fields.related.ForeignKey', [], {'to': u"orm['ippc.CnPublication']"}),
             u'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
-            'url_for_more_information': ('django.db.models.fields.URLField', [], {'max_length': '200', 'null': 'True', 'blank': 'True'})
+            'url_for_more_information': ('django.db.models.fields.URLField', [], {'max_length': '500', 'null': 'True', 'blank': 'True'})
         },
         u'ippc.commoditykeyword': {
             'Meta': {'object_name': 'CommodityKeyword'},
@@ -198,6 +228,7 @@ class Migration(SchemaMigration):
             'keywords': ('mezzanine.generic.fields.KeywordsField', [], {'object_id_field': "'object_pk'", 'to': u"orm['generic.AssignedKeyword']", 'frozen_by_south': 'True'}),
             'keywords_string': ('django.db.models.fields.CharField', [], {'max_length': '500', 'blank': 'True'}),
             'modify_date': ('django.db.models.fields.DateTimeField', [], {'null': 'True', 'blank': 'True'}),
+            'old_id': ('django.db.models.fields.CharField', [], {'max_length': '50'}),
             'publication_date': ('django.db.models.fields.DateTimeField', [], {'null': 'True', 'blank': 'True'}),
             'publish_date': ('django.db.models.fields.DateTimeField', [], {'null': 'True', 'blank': 'True'}),
             'short_description': ('django.db.models.fields.TextField', [], {'null': 'True', 'blank': 'True'}),
@@ -218,7 +249,7 @@ class Migration(SchemaMigration):
             'Meta': {'object_name': 'CountryNewsUrl'},
             'countrynews': ('django.db.models.fields.related.ForeignKey', [], {'to': u"orm['ippc.CountryNews']"}),
             u'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
-            'url_for_more_information': ('django.db.models.fields.URLField', [], {'max_length': '200', 'null': 'True', 'blank': 'True'})
+            'url_for_more_information': ('django.db.models.fields.URLField', [], {'max_length': '500', 'null': 'True', 'blank': 'True'})
         },
         u'ippc.countrypage': {
             'Meta': {'ordering': "['name']", 'object_name': 'CountryPage', '_ormbases': [u'pages.Page']},
@@ -236,11 +267,50 @@ class Migration(SchemaMigration):
             u'page_ptr': ('django.db.models.fields.related.OneToOneField', [], {'to': u"orm['pages.Page']", 'unique': 'True', 'primary_key': 'True'}),
             'region': ('django.db.models.fields.IntegerField', [], {'default': 'None'})
         },
+        u'ippc.draftprotocol': {
+            'Meta': {'object_name': 'DraftProtocol'},
+            '_meta_title': ('django.db.models.fields.CharField', [], {'max_length': '500', 'null': 'True', 'blank': 'True'}),
+            'closing_date': ('django.db.models.fields.DateTimeField', [], {'null': 'True', 'blank': 'True'}),
+            'description': ('django.db.models.fields.TextField', [], {'blank': 'True'}),
+            'expiry_date': ('django.db.models.fields.DateTimeField', [], {'null': 'True', 'blank': 'True'}),
+            'filefig': ('django.db.models.fields.files.FileField', [], {'max_length': '100', 'blank': 'True'}),
+            'filetext': ('django.db.models.fields.files.FileField', [], {'max_length': '100', 'blank': 'True'}),
+            'gen_description': ('django.db.models.fields.BooleanField', [], {'default': 'True'}),
+            u'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
+            'in_sitemap': ('django.db.models.fields.BooleanField', [], {'default': 'True'}),
+            'keywords': ('mezzanine.generic.fields.KeywordsField', [], {'object_id_field': "'object_pk'", 'to': u"orm['generic.AssignedKeyword']", 'frozen_by_south': 'True'}),
+            'keywords_string': ('django.db.models.fields.CharField', [], {'max_length': '500', 'blank': 'True'}),
+            'old_id': ('django.db.models.fields.CharField', [], {'max_length': '50'}),
+            'publish_date': ('django.db.models.fields.DateTimeField', [], {'null': 'True', 'blank': 'True'}),
+            'short_url': ('django.db.models.fields.URLField', [], {'max_length': '200', 'null': 'True', 'blank': 'True'}),
+            'site': ('django.db.models.fields.related.ForeignKey', [], {'to': u"orm['sites.Site']"}),
+            'slug': ('django.db.models.fields.CharField', [], {'max_length': '2000', 'null': 'True', 'blank': 'True'}),
+            'status': ('django.db.models.fields.IntegerField', [], {'default': '2'}),
+            'summary': ('django.db.models.fields.TextField', [], {'null': 'True', 'blank': 'True'}),
+            'title': ('django.db.models.fields.CharField', [], {'max_length': '500'})
+        },
+        u'ippc.draftprotocolcomment': {
+            'Meta': {'object_name': 'DraftProtocolComment'},
+            'comment': ('django.db.models.fields.TextField', [], {'null': 'True', 'blank': 'True'}),
+            'draftprotocol': ('django.db.models.fields.related.ForeignKey', [], {'to': u"orm['ippc.DraftProtocol']"}),
+            'expertise': ('django.db.models.fields.TextField', [], {'null': 'True', 'blank': 'True'}),
+            'filefig': ('django.db.models.fields.files.FileField', [], {'max_length': '100', 'blank': 'True'}),
+            'filetext': ('django.db.models.fields.files.FileField', [], {'max_length': '100', 'blank': 'True'}),
+            u'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
+            'institution': ('django.db.models.fields.TextField', [], {'null': 'True', 'blank': 'True'})
+        },
+        u'ippc.draftprotocolfile': {
+            'Meta': {'object_name': 'DraftProtocolFile'},
+            'description': ('django.db.models.fields.CharField', [], {'max_length': '255'}),
+            'draftprotocol': ('django.db.models.fields.related.ForeignKey', [], {'to': u"orm['ippc.DraftProtocol']"}),
+            'file': ('django.db.models.fields.files.FileField', [], {'max_length': '255', 'blank': 'True'}),
+            u'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'})
+        },
         u'ippc.emailutilitymessage': {
             'Meta': {'object_name': 'EmailUtilityMessage'},
             'date': ('django.db.models.fields.DateTimeField', [], {}),
             'emailfrom': ('django.db.models.fields.CharField', [], {'default': "u'ippc@fao.org'", 'max_length': '200'}),
-            'emailto': ('django.db.models.fields.CharField', [], {'max_length': '200'}),
+            'emailto': ('django.db.models.fields.CharField', [], {'default': "u'ippc@fao.org'", 'max_length': '200'}),
             'groups': ('django.db.models.fields.related.ManyToManyField', [], {'blank': 'True', 'related_name': "'emailgroups'", 'null': 'True', 'symmetrical': 'False', 'to': u"orm['auth.Group']"}),
             u'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
             'messagebody': ('django.db.models.fields.TextField', [], {'max_length': '500', 'null': 'True', 'blank': 'True'}),
@@ -302,7 +372,7 @@ class Migration(SchemaMigration):
             'Meta': {'object_name': 'EventreportingUrl'},
             'eventreporting': ('django.db.models.fields.related.ForeignKey', [], {'to': u"orm['ippc.EventReporting']"}),
             u'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
-            'url_for_more_information': ('django.db.models.fields.URLField', [], {'max_length': '200', 'null': 'True', 'blank': 'True'})
+            'url_for_more_information': ('django.db.models.fields.URLField', [], {'max_length': '500', 'null': 'True', 'blank': 'True'})
         },
         u'ippc.implementationispm': {
             'Meta': {'object_name': 'ImplementationISPM'},
@@ -345,7 +415,7 @@ class Migration(SchemaMigration):
             'Meta': {'object_name': 'ImplementationISPMUrl'},
             u'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
             'implementationispm': ('django.db.models.fields.related.ForeignKey', [], {'to': u"orm['ippc.ImplementationISPM']"}),
-            'url_for_more_information': ('django.db.models.fields.URLField', [], {'max_length': '200', 'null': 'True', 'blank': 'True'})
+            'url_for_more_information': ('django.db.models.fields.URLField', [], {'max_length': '500', 'null': 'True', 'blank': 'True'})
         },
         u'ippc.implementationispmversion': {
             'Meta': {'object_name': 'ImplementationISPMVersion'},
@@ -355,7 +425,7 @@ class Migration(SchemaMigration):
         u'ippc.ippcuserprofile': {
             'Meta': {'object_name': 'IppcUserProfile'},
             'address1': ('django.db.models.fields.CharField', [], {'max_length': '100', 'blank': 'True'}),
-            'address2': ('django.db.models.fields.CharField', [], {'max_length': '100', 'blank': 'True'}),
+            'address2': ('django.db.models.fields.TextField', [], {'default': "''", 'null': 'True', 'blank': 'True'}),
             'address_country': ('django_countries.fields.CountryField', [], {'max_length': '2', 'null': 'True', 'blank': 'True'}),
             'bio': ('django.db.models.fields.TextField', [], {'default': "''", 'null': 'True', 'blank': 'True'}),
             'city': ('django.db.models.fields.CharField', [], {'max_length': '100', 'blank': 'True'}),
@@ -363,12 +433,14 @@ class Migration(SchemaMigration):
             'country': ('django.db.models.fields.related.ForeignKey', [], {'blank': 'True', 'related_name': "'user_country_page'", 'null': 'True', 'to': u"orm['ippc.CountryPage']"}),
             'date_account_created': ('django.db.models.fields.DateTimeField', [], {'default': 'datetime.datetime.now'}),
             'email_address_alt': ('django.db.models.fields.EmailField', [], {'default': "''", 'max_length': '75', 'null': 'True', 'blank': 'True'}),
+            'expertize': ('django.db.models.fields.TextField', [], {'default': "''", 'null': 'True', 'blank': 'True'}),
             'fax': ('django.db.models.fields.CharField', [], {'max_length': '30', 'blank': 'True'}),
             'first_name': ('django.db.models.fields.CharField', [], {'max_length': '30'}),
             'gender': ('django.db.models.fields.PositiveSmallIntegerField', [], {'null': 'True', 'blank': 'True'}),
             u'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
             'last_name': ('django.db.models.fields.CharField', [], {'max_length': '30'}),
             'mobile': ('django.db.models.fields.CharField', [], {'max_length': '30', 'blank': 'True'}),
+            'partner': ('django.db.models.fields.related.ForeignKey', [], {'blank': 'True', 'related_name': "'user_partner_page'", 'null': 'True', 'to': u"orm['ippc.PartnersPage']"}),
             'phone': ('django.db.models.fields.CharField', [], {'max_length': '30', 'blank': 'True'}),
             'profile_photo': ('django.db.models.fields.files.FileField', [], {'max_length': '100', 'blank': 'True'}),
             'state': ('django.db.models.fields.CharField', [], {'max_length': '100', 'blank': 'True'}),
@@ -388,13 +460,122 @@ class Migration(SchemaMigration):
             'issuename': ('django.db.models.fields.related.ManyToManyField', [], {'symmetrical': 'False', 'to': u"orm['ippc.IssueKeyword']", 'null': 'True', 'blank': 'True'}),
             'object_id': ('django.db.models.fields.PositiveIntegerField', [], {})
         },
+        u'ippc.partnersnews': {
+            'Meta': {'object_name': 'PartnersNews'},
+            '_meta_title': ('django.db.models.fields.CharField', [], {'max_length': '500', 'null': 'True', 'blank': 'True'}),
+            'author': ('django.db.models.fields.related.ForeignKey', [], {'related_name': "'partnersnews_author'", 'to': u"orm['auth.User']"}),
+            'contact_for_more_information': ('django.db.models.fields.TextField', [], {'null': 'True', 'blank': 'True'}),
+            'description': ('django.db.models.fields.TextField', [], {'blank': 'True'}),
+            'expiry_date': ('django.db.models.fields.DateTimeField', [], {'null': 'True', 'blank': 'True'}),
+            'gen_description': ('django.db.models.fields.BooleanField', [], {'default': 'True'}),
+            u'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
+            'image': ('django.db.models.fields.files.ImageField', [], {'max_length': '100', 'blank': 'True'}),
+            'in_sitemap': ('django.db.models.fields.BooleanField', [], {'default': 'True'}),
+            'keywords': ('mezzanine.generic.fields.KeywordsField', [], {'object_id_field': "'object_pk'", 'to': u"orm['generic.AssignedKeyword']", 'frozen_by_south': 'True'}),
+            'keywords_string': ('django.db.models.fields.CharField', [], {'max_length': '500', 'blank': 'True'}),
+            'modify_date': ('django.db.models.fields.DateTimeField', [], {'null': 'True', 'blank': 'True'}),
+            'old_id': ('django.db.models.fields.CharField', [], {'max_length': '50'}),
+            'partners': ('django.db.models.fields.related.ForeignKey', [], {'related_name': "'partnersnews_partner_page'", 'to': u"orm['ippc.PartnersPage']"}),
+            'publication_date': ('django.db.models.fields.DateTimeField', [], {'null': 'True', 'blank': 'True'}),
+            'publish_date': ('django.db.models.fields.DateTimeField', [], {'null': 'True', 'blank': 'True'}),
+            'short_description': ('django.db.models.fields.TextField', [], {'null': 'True', 'blank': 'True'}),
+            'short_url': ('django.db.models.fields.URLField', [], {'max_length': '200', 'null': 'True', 'blank': 'True'}),
+            'site': ('django.db.models.fields.related.ForeignKey', [], {'to': u"orm['sites.Site']"}),
+            'slug': ('django.db.models.fields.CharField', [], {'max_length': '2000', 'null': 'True', 'blank': 'True'}),
+            'status': ('django.db.models.fields.IntegerField', [], {'default': '2'}),
+            'title': ('django.db.models.fields.CharField', [], {'max_length': '500'})
+        },
+        u'ippc.partnersnewsfile': {
+            'Meta': {'object_name': 'PartnersNewsFile'},
+            'description': ('django.db.models.fields.CharField', [], {'max_length': '255'}),
+            'file': ('django.db.models.fields.files.FileField', [], {'max_length': '255', 'blank': 'True'}),
+            u'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
+            'partnersnews': ('django.db.models.fields.related.ForeignKey', [], {'to': u"orm['ippc.PartnersNews']"})
+        },
+        u'ippc.partnersnewsurl': {
+            'Meta': {'object_name': 'PartnersNewsUrl'},
+            u'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
+            'partnersnews': ('django.db.models.fields.related.ForeignKey', [], {'to': u"orm['ippc.PartnersNews']"}),
+            'url_for_more_information': ('django.db.models.fields.URLField', [], {'max_length': '500', 'null': 'True', 'blank': 'True'})
+        },
         u'ippc.partnerspage': {
             'Meta': {'ordering': "['name']", 'object_name': 'PartnersPage', '_ormbases': [u'pages.Page']},
             'contact_point': ('django.db.models.fields.related.OneToOneField', [], {'to': u"orm['auth.User']", 'unique': 'True', 'null': 'True', 'blank': 'True'}),
+            'content': ('mezzanine.core.fields.RichTextField', [], {}),
             'editors': ('django.db.models.fields.related.ManyToManyField', [], {'blank': 'True', 'related_name': "'rppoeditors+'", 'null': 'True', 'symmetrical': 'False', 'to': u"orm['auth.User']"}),
             'name': ('django.db.models.fields.CharField', [], {'max_length': '50', 'unique': 'True', 'null': 'True', 'blank': 'True'}),
             u'page_ptr': ('django.db.models.fields.related.OneToOneField', [], {'to': u"orm['pages.Page']", 'unique': 'True', 'primary_key': 'True'}),
-            'partner_slug': ('django.db.models.fields.CharField', [], {'max_length': '100', 'unique': 'True', 'null': 'True', 'blank': 'True'})
+            'partner_slug': ('django.db.models.fields.CharField', [], {'max_length': '100', 'unique': 'True', 'null': 'True', 'blank': 'True'}),
+            'short_description': ('django.db.models.fields.CharField', [], {'max_length': '550'})
+        },
+        u'ippc.partnerspublication': {
+            'Meta': {'object_name': 'PartnersPublication'},
+            '_meta_title': ('django.db.models.fields.CharField', [], {'max_length': '500', 'null': 'True', 'blank': 'True'}),
+            'agenda_number': ('django.db.models.fields.CharField', [], {'max_length': '100', 'blank': 'True'}),
+            'author': ('django.db.models.fields.related.ForeignKey', [], {'related_name': "'partnerspublication_author'", 'to': u"orm['auth.User']"}),
+            'contact_for_more_information': ('django.db.models.fields.TextField', [], {'null': 'True', 'blank': 'True'}),
+            'description': ('django.db.models.fields.TextField', [], {'blank': 'True'}),
+            'document_number': ('django.db.models.fields.CharField', [], {'max_length': '100', 'blank': 'True'}),
+            'expiry_date': ('django.db.models.fields.DateTimeField', [], {'null': 'True', 'blank': 'True'}),
+            'gen_description': ('django.db.models.fields.BooleanField', [], {'default': 'True'}),
+            u'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
+            'in_sitemap': ('django.db.models.fields.BooleanField', [], {'default': 'True'}),
+            'keywords': ('mezzanine.generic.fields.KeywordsField', [], {'object_id_field': "'object_pk'", 'to': u"orm['generic.AssignedKeyword']", 'frozen_by_south': 'True'}),
+            'keywords_string': ('django.db.models.fields.CharField', [], {'max_length': '500', 'blank': 'True'}),
+            'modify_date': ('django.db.models.fields.DateTimeField', [], {'null': 'True', 'blank': 'True'}),
+            'old_id': ('django.db.models.fields.CharField', [], {'max_length': '50'}),
+            'partners': ('django.db.models.fields.related.ForeignKey', [], {'related_name': "'partnerspublication_country_page'", 'to': u"orm['ippc.PartnersPage']"}),
+            'publication_date': ('django.db.models.fields.DateTimeField', [], {'null': 'True', 'blank': 'True'}),
+            'publish_date': ('django.db.models.fields.DateTimeField', [], {'null': 'True', 'blank': 'True'}),
+            'short_description': ('django.db.models.fields.TextField', [], {'null': 'True', 'blank': 'True'}),
+            'short_url': ('django.db.models.fields.URLField', [], {'max_length': '200', 'null': 'True', 'blank': 'True'}),
+            'site': ('django.db.models.fields.related.ForeignKey', [], {'to': u"orm['sites.Site']"}),
+            'slug': ('django.db.models.fields.CharField', [], {'max_length': '2000', 'null': 'True', 'blank': 'True'}),
+            'status': ('django.db.models.fields.IntegerField', [], {'default': '2'}),
+            'title': ('django.db.models.fields.CharField', [], {'max_length': '500'})
+        },
+        u'ippc.partnerspublicationfile': {
+            'Meta': {'object_name': 'PartnersPublicationFile'},
+            'description': ('django.db.models.fields.CharField', [], {'max_length': '255'}),
+            'file': ('django.db.models.fields.files.FileField', [], {'max_length': '255', 'blank': 'True'}),
+            u'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
+            'partnerspublication': ('django.db.models.fields.related.ForeignKey', [], {'to': u"orm['ippc.PartnersPublication']"})
+        },
+        u'ippc.partnerspublicationurl': {
+            'Meta': {'object_name': 'PartnersPublicationUrl'},
+            u'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
+            'partnerspublication': ('django.db.models.fields.related.ForeignKey', [], {'to': u"orm['ippc.PartnersPublication']"}),
+            'url_for_more_information': ('django.db.models.fields.URLField', [], {'max_length': '500', 'null': 'True', 'blank': 'True'})
+        },
+        u'ippc.partnerswebsite': {
+            'Meta': {'object_name': 'PartnersWebsite'},
+            '_meta_title': ('django.db.models.fields.CharField', [], {'max_length': '500', 'null': 'True', 'blank': 'True'}),
+            'author': ('django.db.models.fields.related.ForeignKey', [], {'related_name': "'partnerswebsite__reporting_author'", 'to': u"orm['auth.User']"}),
+            'contact_for_more_information': ('django.db.models.fields.TextField', [], {'null': 'True', 'blank': 'True'}),
+            'description': ('django.db.models.fields.TextField', [], {'blank': 'True'}),
+            'expiry_date': ('django.db.models.fields.DateTimeField', [], {'null': 'True', 'blank': 'True'}),
+            'gen_description': ('django.db.models.fields.BooleanField', [], {'default': 'True'}),
+            u'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
+            'in_sitemap': ('django.db.models.fields.BooleanField', [], {'default': 'True'}),
+            'keywords': ('mezzanine.generic.fields.KeywordsField', [], {'object_id_field': "'object_pk'", 'to': u"orm['generic.AssignedKeyword']", 'frozen_by_south': 'True'}),
+            'keywords_string': ('django.db.models.fields.CharField', [], {'max_length': '500', 'blank': 'True'}),
+            'modify_date': ('django.db.models.fields.DateTimeField', [], {'null': 'True', 'blank': 'True'}),
+            'old_id': ('django.db.models.fields.CharField', [], {'max_length': '50'}),
+            'partners': ('django.db.models.fields.related.ForeignKey', [], {'related_name': "'partnerswebsite_partner_page'", 'to': u"orm['ippc.PartnersPage']"}),
+            'publish_date': ('django.db.models.fields.DateTimeField', [], {'null': 'True', 'blank': 'True'}),
+            'short_description': ('django.db.models.fields.TextField', [], {'null': 'True', 'blank': 'True'}),
+            'short_url': ('django.db.models.fields.URLField', [], {'max_length': '200', 'null': 'True', 'blank': 'True'}),
+            'site': ('django.db.models.fields.related.ForeignKey', [], {'to': u"orm['sites.Site']"}),
+            'slug': ('django.db.models.fields.CharField', [], {'max_length': '2000', 'null': 'True', 'blank': 'True'}),
+            'status': ('django.db.models.fields.IntegerField', [], {'default': '2'}),
+            'title': ('django.db.models.fields.CharField', [], {'max_length': '500'}),
+            'web_type': ('django.db.models.fields.IntegerField', [], {'default': 'None'})
+        },
+        u'ippc.partnerswebsiteurl': {
+            'Meta': {'object_name': 'PartnersWebsiteUrl'},
+            u'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
+            'partnerswebsite': ('django.db.models.fields.related.ForeignKey', [], {'to': u"orm['ippc.PartnersWebsite']"}),
+            'url_for_more_information': ('django.db.models.fields.URLField', [], {'max_length': '500', 'null': 'True', 'blank': 'True'})
         },
         u'ippc.pestfreearea': {
             'Meta': {'object_name': 'PestFreeArea'},
@@ -411,6 +592,7 @@ class Migration(SchemaMigration):
             'keywords_string': ('django.db.models.fields.CharField', [], {'max_length': '500', 'blank': 'True'}),
             'modify_date': ('django.db.models.fields.DateTimeField', [], {'null': 'True', 'blank': 'True'}),
             'old_id': ('django.db.models.fields.CharField', [], {'max_length': '50'}),
+            'pest_under_consideration': ('django.db.models.fields.TextField', [], {'null': 'True', 'blank': 'True'}),
             'pfa_type': ('django.db.models.fields.IntegerField', [], {'default': 'None'}),
             'publication_date': ('django.db.models.fields.DateTimeField', [], {'null': 'True', 'blank': 'True'}),
             'publish_date': ('django.db.models.fields.DateTimeField', [], {'null': 'True', 'blank': 'True'}),
@@ -432,7 +614,7 @@ class Migration(SchemaMigration):
             'Meta': {'object_name': 'PestFreeAreaUrl'},
             u'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
             'pfa': ('django.db.models.fields.related.ForeignKey', [], {'to': u"orm['ippc.PestFreeArea']"}),
-            'url_for_more_information': ('django.db.models.fields.URLField', [], {'max_length': '200', 'null': 'True', 'blank': 'True'})
+            'url_for_more_information': ('django.db.models.fields.URLField', [], {'max_length': '500', 'null': 'True', 'blank': 'True'})
         },
         u'ippc.pestreport': {
             'Meta': {'object_name': 'PestReport'},
@@ -586,7 +768,7 @@ class Migration(SchemaMigration):
             'Meta': {'object_name': 'ReportingObligationUrl'},
             u'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
             'reportingobligation': ('django.db.models.fields.related.ForeignKey', [], {'to': u"orm['ippc.ReportingObligation']"}),
-            'url_for_more_information': ('django.db.models.fields.URLField', [], {'max_length': '200', 'null': 'True', 'blank': 'True'})
+            'url_for_more_information': ('django.db.models.fields.URLField', [], {'max_length': '500', 'null': 'True', 'blank': 'True'})
         },
         u'ippc.transfield': {
             'Meta': {'ordering': "('lang',)", 'object_name': 'TransField'},
@@ -687,7 +869,7 @@ class Migration(SchemaMigration):
         u'ippc.websiteurl': {
             'Meta': {'object_name': 'WebsiteUrl'},
             u'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
-            'url_for_more_information': ('django.db.models.fields.URLField', [], {'max_length': '200', 'null': 'True', 'blank': 'True'}),
+            'url_for_more_information': ('django.db.models.fields.URLField', [], {'max_length': '500', 'null': 'True', 'blank': 'True'}),
             'website': ('django.db.models.fields.related.ForeignKey', [], {'to': u"orm['ippc.Website']"})
         },
         u'ippc.workareapage': {

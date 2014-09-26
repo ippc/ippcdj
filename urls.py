@@ -7,7 +7,7 @@ from django.conf.urls import patterns, include, url
 
 from django.contrib import admin
 admin.autodiscover()
-from .ippc.views import PestReportListView, PestReportHiddenListView, \
+from .ippc.views import PestReportListView, PestReportHiddenListView,\
 PestReportDetailView, CountryView,PartnersView, pest_report_create, pest_report_edit, PublicationDetailView,\
 PublicationListView,ReportingObligationListView, ReportingObligationDetailView,reporting_obligation_create, reporting_obligation_edit, \
 EventReportingListView, EventReportingDetailView,event_reporting_create, event_reporting_edit, \
@@ -23,7 +23,9 @@ CountryNewsListView,CountryNewsDetailView,countrynews_create,countrynews_edit,\
 CountryNewsListView,CountryNewsDetailView,countrynews_create,countrynews_edit,\
 PartnersNewsDetailView,partners_news_create,partners_news_edit,\
 PollListView,PollResultsView,PollDetailView,vote_poll,\
-email_send,EmailUtilityMessageDetailView,EmailUtilityMessageListView, \
+email_send,EmailUtilityMessageDetailView,EmailUtilityMessageListView,\
+DraftProtocolDetailView,  draftprotocol_create, draftprotocol_edit,\
+draftprotocol_comment_create,draftprotocol_comment_edit,PublicationLibraryView,\
 CountryRegionsPercentageListView,CountryStatsreportsListView,CountryStatsTotalreportsListView,CountryRegionsUsersListView,CountryTotalUsersListView
 from schedule.periods import Year, Month, Week, Day
 from mezzanine.core.views import direct_to_template
@@ -74,6 +76,8 @@ urlpatterns = patterns("",
         'schedule.views.calendar_by_cn',
         name="country_calendar",
         kwargs={'template_name': 'schedule/calendar_cn.html'}),
+        
+        
     url(r'^countries/(?P<country>[\w-]+)/(?P<calendar_slug>[-\w]+)/add/$',
         'schedule.views.create_or_edit_event',
         name='calendar_create_event'),
@@ -353,6 +357,41 @@ urlpatterns = patterns("",
         name='partner-news-edit'),
              
         
+      #-------------DPs---------------------------
+
+    
+    # DPs  detail
+    url(r'^expert-consultation-on-draft-diagnostic-protocols-ecdp/(?P<year>\d+)/(?P<month>\d{2})/(?P<slug>[\w-]+)/$',
+        view=DraftProtocolDetailView.as_view(),
+        name="draftprotocol-detail"),
+     #DPs create
+    url(r'^draftprotocol/create/$',
+        view=draftprotocol_create,
+        name='draftprotocol-create'),
+     #   DPsedit
+     url(r'^draftprotocol/edit/(?P<id>\d+)/$',
+        view=draftprotocol_edit,
+        name='draftprotocol-edit'),
+
+    # individual country home
+    url(r'^expert-consultation-on-draft-diagnostic-protocols-ecdp/$',
+        view=PublicationLibraryView.as_view(),
+        # view=country_view(),
+        name='country'),
+        
+    #-------------DPs Comments---------------------------
+
+    
+  
+     #DPs Comments create
+    url(r'^draftprotocolcomments/create/(?P<id>\d+)/$',
+        view=draftprotocol_comment_create,
+        name='draftprotocol-comment-create'),
+     # DPs Comments DPsedit
+     url(r'^draftprotocolcomments/edit/(?P<dp_id>\d+)/(?P<id>\d+)/$',
+        view=draftprotocol_comment_edit,
+        name='draftprotocol-comment-edit'),
+
         
 #-------------------------------------------#
     # CN news list

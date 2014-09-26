@@ -3,7 +3,7 @@
   
   {% if user.is_superuser %} 
   <div>
-      <a class="btn btn-small btn-info" href="/admin/auth/user/{{ page.get_content_model.contact_point.get_profile.id }}">Edit User as Admin</a><br>
+      <a class="btn btn-small btn-info" href="/admin/auth/user/{{ page.get_content_model.contact_point.get_profile.user_id }}">Edit User as Admin</a><br>
   </div>
   {% endif %}
   

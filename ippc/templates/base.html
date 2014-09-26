@@ -38,7 +38,6 @@
 <script src="{% static "mezzanine/js/"|add:settings.JQUERY_FILENAME %}"></script>
  <script src="{% static "js/bootstrap.js" %}"></script>
 <script src="{% static "js/bootstrap-extras.js" %}"></script>
-{% include 'autocomplete_light/static.html' %}
 <script src="{% static "js/chosen.jquery.min.js" %}"></script>
 <script src="{% static "js/jquery.min.js" %}"></script>
 
@@ -56,7 +55,7 @@
 {# 'add another' form field functionality #}
 <script src="{% static "js/jquery.formset.js" %}"></script>
 
-
+{% include 'autocomplete_light/static.html' %}
 {# {% block extra_js %}{% endblock %} #} {# MOVED TO BOTTOM #}
 {% endcompress %}
 <!--[if lt IE 9]>

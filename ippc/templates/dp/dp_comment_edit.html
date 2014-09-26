@@ -1,0 +1,41 @@
+{% extends "base.html" %}
+{% load pages_tags translate_tags mezzanine_tags i18n future staticfiles accounts_tags %}
+
+{% block meta_title %}{% trans "Edit Comment Protocol" %} {% endblock %}
+
+{% block body_class %}wide{% endblock %}
+
+{% block breadcrumb_menu %}
+
+<li><a href="/">{% trans "Home" %}</a><span class="divider">/</span></li>
+<li><a href="/expert-consultation-on-draft-diagnostic-protocols-ecdp/">DPs</a><span class="divider">/</span></li>
+<li class="active">{{ draftprotocol.title }}</li>
+<span class="divider">/</span></li>
+<li class="active">{% trans "Edit comment" %}</li>
+{% endblock %}
+
+{% block local_nav %}
+{% endblock local_nav %}
+
+{% block pageinfo %}
+{% endblock pageinfo %}
+
+{% block main %}
+<p class="pull-right">
+  <a href="javascript:history.go(-1)">{% trans "« Cancel and go back" %}</a>
+</p>
+<h1><small class="normal">{% trans "Editing Comment" %}</small></h1>
+
+<form enctype="multipart/form-data" class="customform" method="POST" action="">
+    {% csrf_token %}
+    <fieldset>
+        {% include "dp/dp_comment_form.html" %}
+        <div class="form-actions">
+            <button type="submit" class="btn btn-info btn-large">{% trans "Update Comment" %}</button> {% trans "or" %} <a href="javascript:history.go(-1)">{% trans "Cancel" %}</a>
+        </div>
+    </fieldset>
+</form>
+
+
+{% endblock %}
+

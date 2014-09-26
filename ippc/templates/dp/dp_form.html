@@ -1,0 +1,46 @@
+
+{% load pages_tags translate_tags mezzanine_tags ippc_tags i18n future staticfiles accounts_tags %} {# accounts_tags #}
+
+{% if form.non_field_errors or form.errors %}
+<div class="alert alert-error">{% trans "Please correct the errors below." %}
+<ul>
+{% for error in form.non_field_errors %}
+<li>{{ error }}</li>
+{% endfor %}
+{% for error in form.errors %}
+<li>{{ error }}</li>
+{% endfor %}
+</ul>
+</div>
+{% endif %}
+
+{% fields_for form %}
+
+
+   <fieldset>
+                <legend>Additional files</legend>
+                {{ f_form.management_form }}
+                {{ f_form.non_form_errors }}
+                {% for form in f_form %}
+                    {{ form.id }}
+                    <div class="inline {{ f_form.prefix }}">
+                       {% if  form.errors %}
+                       <div class="alert alert-error"> 
+                       {% endif %}
+                           
+                        {{ form.description.errors }}
+                        {{ form.description.label_tag }}
+                        {{ form.description }}
+                        {{ form.file.errors }}
+                        {{ form.file.label_tag }}
+                        {{ form.file }}
+                         {% if f_form.can_delete %}
+                {{ form.DELETE }}
+            {% endif %}
+                        {% if  f_form.errors %}
+                       </div> 
+                       {% endif %}
+                    </div>
+                {% endfor %}
+            </fieldset>
+ 

@@ -10,6 +10,7 @@ from django.conf import settings
 from django.contrib.auth.models import User,Group
 from .models import ContactType,PublicationLibrary,Publication,EppoCode,EmailUtilityMessage, EmailUtilityMessageFile, Poll_Choice, Poll,PollVotes, IppcUserProfile,\
 CountryPage,PartnersPage, PestStatus, PestReport, IS_PUBLIC, IS_HIDDEN, Publication,\
+DraftProtocol,DraftProtocolComments,\
 ReportingObligation, BASIC_REP_TYPE_CHOICES, EventReporting, EVT_REP_TYPE_CHOICES,Website,CnPublication,PartnersPublication,PartnersNews, PartnersWebsite,CountryNews, \
 PestFreeArea,ImplementationISPM,REGIONS, IssueKeywordsRelate,CommodityKeywordsRelate,EventreportingFile,ReportingObligation_File
 from mezzanine.core.models import Displayable, CONTENT_STATUS_DRAFT, CONTENT_STATUS_PUBLISHED
@@ -21,7 +22,8 @@ CnPublicationUrlFormSet,CnPublicationForm, CnPublicationFileFormSet,\
 PartnersPublicationUrlFormSet,PartnersPublicationForm, PartnersPublicationFileFormSet,\
 PartnersNewsUrlFormSet,PartnersNewsForm, PartnersNewsFileFormSet,PartnersWebsiteUrlFormSet,PartnersWebsiteForm,\
 EmailUtilityMessageForm,EmailUtilityMessageFileFormSet,\
-CountryNewsUrlFormSet,CountryNewsForm, CountryNewsFileFormSet
+CountryNewsUrlFormSet,CountryNewsForm, CountryNewsFileFormSet,\
+DraftProtocolForm,  DraftProtocolFileFormSet,DraftProtocolCommentsForm
 
 from django.views.generic import ListView, MonthArchiveView, YearArchiveView, DetailView, TemplateView, CreateView
 from django.core.urlresolvers import reverse
@@ -63,7 +65,25 @@ class CountryView(TemplateView):
         return context
 
 
-    
+class PublicationLibraryView(ListView):
+    """ 
+
+    """
+    template_name = 'pages/publicationlibrary.html'
+    queryset = DraftProtocol.objects.all()
+    def get_context_data(self, **kwargs): # http://stackoverflow.com/a/15515220
+        context = super(PublicationLibraryView, self).get_context_data(**kwargs)
+        queryset = DraftProtocol.objects.all()
+        context['latest1']=queryset
+        print(queryset)
+        return context
+    def get_queryset(self):
+        print('ssssssss')
+        queryset = DraftProtocol.objects.all()
+        
+        return  DraftProtocol.objects.all()
+
+
 class CountryRelatedView(TemplateView):
     """ 
     Individual country related info 
@@ -699,6 +719,186 @@ def event_reporting_edit(request, country, id=None, template_name='countries/eve
         'form': form, 'f_form':f_form,'u_form': u_form,'issueform': issueform,  'commodityform': commodityform, "event_reporting": event_reporting
     }, context_instance=RequestContext(request))
     
+
+
+class DraftProtocolListView(ListView):
+    """    DraftProtocol """
+    context_object_name = 'latest'
+    model = DraftProtocol
+    date_field = 'publish_date'
+    template_name = 'dp/dp_list.html'
+    queryset = DraftProtocol.objects.all().order_by('-publish_date', 'title')
+    
+    allow_future = False
+    allow_empty = True
+    paginate_by = 30
+
+class DraftProtocolDetailView(DetailView):
+    """ DraftProtocol detail page """
+    model = DraftProtocol
+    context_object_name = 'draftprotocol'
+    template_name = 'dp/dp_detail.html'
+    queryset = DraftProtocol.objects.filter()
+
+    def get_context_data(self, **kwargs): # http://stackoverflow.com/a/15515220
+        context = super(DraftProtocolDetailView, self).get_context_data(**kwargs)
+        draftprotocol = get_object_or_404(DraftProtocol,  slug=self.kwargs['slug'])
+        queryset = DraftProtocolComments.objects.filter(draftprotocol_id=draftprotocol.id)
+        add_comment= 1
+        see_all_comment= 0
+        
+        for obj in queryset:
+             if self.request.user == obj.author:
+                  add_comment=0
+        if self.request.user.groups.filter(name='IPPC Secretariat') or self.request.user.groups.filter(name='TPDPc') :
+            see_all_comment=1
+        
+         
+        context['comments'] =queryset
+        context['see_all_comment'] =see_all_comment
+        context['add_comment'] =add_comment
+        return context
+
+@login_required
+@permission_required('ippc.add_draftprotocol', login_url="/accounts/login/")
+def draftprotocol_create(request):
+    """ Create DraftProtocol """
+    user = request.user
+    author = user
+
+
+    form = DraftProtocolForm(request.POST or None, request.FILES)
+     
+    if request.method == "POST":
+        f_form = DraftProtocolFileFormSet(request.POST, request.FILES)
+        if form.is_valid() and f_form.is_valid() :
+            new_draftprotocol = form.save(commit=False)
+            new_draftprotocol.author = request.user
+            new_draftprotocol.author_id = author.id
+            form.save()
+            
+            f_form.instance = new_draftprotocol
+            f_form.save()
+           
+            info(request, _("Successfully added Draft Protocol."))
+            return redirect("draftprotocol-detail",  year=new_draftprotocol.publish_date.strftime("%Y"), month=new_draftprotocol.publish_date.strftime("%m"), slug=new_draftprotocol.slug)
+        else:
+            return render_to_response('dp/dp_create.html', {'form': form,'f_form': f_form,},#'entryform': entryform,'docform':myformset,
+             context_instance=RequestContext(request))
+
+          
+        
+    else:
+        form = DraftProtocolForm(instance=DraftProtocol())
+        f_form =DraftProtocolFileFormSet()
+      
+    return render_to_response('dp/dp_create.html', {'form': form,'f_form': f_form,},
+        context_instance=RequestContext(request))
+
+        
+
+@login_required
+@permission_required('ippc.change_draftprotocol', login_url="/accounts/login/")
+def draftprotocol_edit(request, id=None, template_name='dp/dp_edit.html'):
+    """ DraftProtocol """
+    user = request.user
+    author = user
+    if id:
+        draftprotocol = get_object_or_404(DraftProtocol,  pk=id)
+    else:
+        draftprotocol = DraftProtocol(author=request.user)
+      
+    if request.POST:
+        form = DraftProtocolForm(request.POST,  request.FILES, instance=draftprotocol)
+        f_form = DraftProtocolFileFormSet(request.POST,  request.FILES,instance=draftprotocol)
+
+      
+        if form.is_valid() and f_form.is_valid():
+            form.save()
+            f_form.instance = draftprotocol
+            f_form.save()
+            info(request, _("Successfully updated DraftProtocol."))
+            return redirect("draftprotocol-detail", year=draftprotocol.publish_date.strftime("%Y"), month=draftprotocol.publish_date.strftime("%m"), slug=draftprotocol.slug)
+
+    else:
+        form = DraftProtocolForm(instance=draftprotocol)
+        f_form = DraftProtocolFileFormSet(instance=draftprotocol)
+      
+      
+    return render_to_response(template_name, {
+        'form': form, 'f_form':f_form, "draftprotocol": draftprotocol
+    }, context_instance=RequestContext(request))
+    
+
+
+
+@login_required
+@permission_required('ippc.add_draftprotocolcomments', login_url="/accounts/login/")
+def draftprotocol_comment_create(request, id=None):
+    """ Create  draftprotocol comment"""
+    user = request.user
+    author = user
+    draftprotocol = get_object_or_404(DraftProtocol,  pk=id)
+    form = DraftProtocolCommentsForm(request.POST or None, request.FILES)
+     
+    if request.method == "POST":
+        if form.is_valid() :
+            new_draftprotocolComment = form.save(commit=False)
+            new_draftprotocolComment.author = request.user
+            new_draftprotocolComment.author_id = author.id
+            new_draftprotocolComment.title = request.user
+            new_draftprotocolComment.draftprotocol_id = id
+            
+            form.save()
+        
+           
+            info(request, _("Successfully added Comment."))
+            return redirect("draftprotocol-detail",  year=draftprotocol.publish_date.strftime("%Y"), month=draftprotocol.publish_date.strftime("%m"), slug=draftprotocol.slug)
+        else:
+            return render_to_response('dp/dp_comment_create.html', {'form': form,},
+             context_instance=RequestContext(request))
+    else:
+        form = DraftProtocolCommentsForm(initial={'draftprotocol': id},instance=DraftProtocolComments())
+      
+    return render_to_response('dp/dp_comment_create.html', {'form': form,'draftprotocol': id,},
+        context_instance=RequestContext(request))
+
+        
+
+@login_required
+@permission_required('ippc.change_draftprotocolcomments', login_url="/accounts/login/")
+def draftprotocol_comment_edit(request, id=None, dp_id=None, template_name='dp/dp_comment_edit.html'):
+    """ DraftProtocol comment edit"""
+    user = request.user
+    author = user
+    if id:
+        draftprotocolcomment = get_object_or_404(DraftProtocolComments,  pk=id)
+    else:
+        draftprotocolcomment = DraftProtocolComments(author=request.user)
+    
+    draftprotocol = get_object_or_404(DraftProtocol,  pk=dp_id)
+        
+      
+    if request.POST:
+        form = DraftProtocolCommentsForm(request.POST,  request.FILES, instance=draftprotocolcomment)
+        if form.is_valid() :
+            form.save()
+            f_form.instance = draftprotocolcomment
+            f_form.save()
+            info(request, _("Successfully updated DraftProtocol."))
+            return redirect("draftprotocol-detail", year=draftprotocol.publish_date.strftime("%Y"), month=draftprotocol.publish_date.strftime("%m"), slug=draftprotocol.slug)
+
+    else:
+        form = DraftProtocolCommentsForm(instance=draftprotocolcomment)
+        
+      
+      
+    return render_to_response(template_name, {
+        'form': form,  "draftprotocolcomment": draftprotocolcomment
+    }, context_instance=RequestContext(request))
+    
+
+
 
 class WebsiteListView(ListView):
     """ Website """

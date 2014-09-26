@@ -17,7 +17,8 @@ CnPublication,CnPublicationFile,CnPublicationUrl,\
 PartnersWebsite,PartnersWebsiteUrl,\
 PartnersPublication,PartnersPublicationFile,PartnersPublicationUrl,\
 PartnersNews,PartnersNewsFile,PartnersNewsUrl, \
-CountryNews,CountryNewsFile,CountryNewsUrl, EmailUtilityMessage, EmailUtilityMessageFile
+CountryNews,CountryNewsFile,CountryNewsUrl, EmailUtilityMessage, EmailUtilityMessageFile,\
+DraftProtocol,DraftProtocolFile,DraftProtocolComments
 
 from django.contrib.auth.models import User,Group
 from django.forms.models import inlineformset_factory
@@ -51,7 +52,7 @@ class PestReportForm(forms.ModelForm):
         widgets = {
             'country': forms.HiddenInput(),
             'report_number': forms.HiddenInput(),
-            'pest_identity': autocomplete_light.ChoiceWidget ('EppoCodeAutocomplete'),
+            'pest_identity': autocomplete_light.TextWidget ('EppoCodeAutocomplete'),
         }
 
 
@@ -346,8 +347,42 @@ PestReportUrlFormSet  = inlineformset_factory(PestReport,  PestReportUrl, extra=
 ReportingoblicationFileFormSet = inlineformset_factory(ReportingObligation,  ReportingObligation_File,extra=1)
 ReportingObligationUrlFormSet  = inlineformset_factory(ReportingObligation,  ReportingObligationUrl, extra=1)
 
-
-
+class DraftProtocolForm(forms.ModelForm):
+    class Meta:
+        model =  DraftProtocol
+        fields = [
+           'title', 
+           'closing_date', 
+           'summary',
+           'filetext',
+           'filefig',
+           'users', 
+           'groups', 
+           ]
+        exclude = ('author', 'slug', 'publish_date',  'modify_date')
+        widgets = {  
+            'closing_date': AdminDateWidget(),
+        
+        }
+DraftProtocolFileFormSet = inlineformset_factory(DraftProtocol,  DraftProtocolFile,extra=1)
+#
+class DraftProtocolCommentsForm(forms.ModelForm):
+    class Meta:
+        model =  DraftProtocolComments
+        fields = [
+           'draftprotocol', 
+           'expertise', 
+           'institution',
+           'comment',
+           'filetext',
+           'filefig',
+           ]
+        exclude = ('author', 'slug', 'publish_date',  'modify_date',  'title')
+        widgets = {   
+           'draftprotocol': forms.HiddenInput(),
+        }
+          
+       
 class EmailUtilityMessageForm(forms.ModelForm):
 
     class Meta:

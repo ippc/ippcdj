@@ -68,6 +68,9 @@ class PublicationLibrary(Page, RichText):
         permissions = ( 
             ("can_view", "View Publication Library"),
         )
+   
+        
+        
 class IssueKeyword(models.Model):
     """ IssueKeyword  """
     name = models.CharField(_("Issue Keyword"), max_length=500)
@@ -358,10 +361,19 @@ class IppcUserProfile(models.Model):
     """ User Profiles for IPPC"""
     
     GENDER_CHOICES = (
-        (1, _("Mr")),
-        (2, _("Ms")),
+        (1, _("Mr.")),
+        (2, _("Ms.")),
+        (3, _("Mrs.")),
+        (4, _("Professor.")),
+        (5, _("M.")),
+        (6, _("Mme.")),
+        (7, _("Dr.")),
+        (8, _("Sr.")),
+        (9, _("Sra.")),
+        
     )
-  
+
+
     user = models.OneToOneField("auth.User")
     title = models.CharField(_("Professional Title"), blank=True, null=True, max_length=100)
     first_name = models.CharField(_("First Name"), max_length=30)
@@ -372,12 +384,13 @@ class IppcUserProfile(models.Model):
         verbose_name=_("Contact Type"),
         related_name='contact_type+', blank=True, null=True,
         )
-    gender = models.PositiveSmallIntegerField(_("Gender"), choices=GENDER_CHOICES, blank=True, null=True)
+    gender = models.PositiveSmallIntegerField(_("Prefix"), choices=GENDER_CHOICES, blank=True, null=True)
     profile_photo = models.FileField(_("Profile Photo"), upload_to="profile_photos", blank=True)
     bio = models.TextField(_("Brief Biography"), default="", blank=True, null=True)
-
-    address1 = models.CharField(_("Address 1"), blank=True, max_length=100)
-    address2 = models.CharField(_("Address 2"), blank=True, max_length=100)
+    expertize = models.TextField(_("Description/expertise"), default="", blank=True, null=True)
+    
+    address1 = models.CharField(_("Organization"), blank=True, max_length=100)
+    address2 = models.TextField(_("Address"), default="", blank=True, null=True)
     city = models.CharField(_("City"), blank=True, max_length=100)
     state = models.CharField(_("State"), blank=True, max_length=100, help_text="or Province")
     zipcode = models.CharField(_("Zip Code"), blank=True, max_length=20)
@@ -513,6 +526,109 @@ class PestReportUrl(models.Model):
         return self.url_for_more_information  
     def name(self):
         return self.url_for_more_information
+    
+
+class DraftProtocol(Displayable, models.Model):
+    """ DraftProtocol"""
+    # slug - provided by mezzanine.core.models.slugged (subclassed by displayable)
+    # title - provided by mezzanine.core.models.slugged (subclassed by displayable)
+    # status - provided by mezzanine.core.models.displayable
+    # publish_date - provided by mezzanine.core.models.displayable
+ 
+    users = models.ManyToManyField(User, 
+        verbose_name=_("Users this DP is accessible to"), 
+        related_name='dpusers', blank=True, null=True)
+    groups = models.ManyToManyField(Group, 
+        verbose_name=_("Groups this DP is accessible to"), 
+        related_name='dpgroups', blank=True, null=True)
+    
+    closing_date = models.DateTimeField(_("Closing date"), blank=True, null=True)
+    summary = models.TextField(_("Summary or Short Description"), blank=True, null=True)
+    filetext = models.FileField(_("Attachment (comments on protocol text)"), upload_to="files/dp/%Y/%m/", blank=True)
+    filefig = models.FileField(_("Attachment (comments on protocol figures)"), upload_to="files/dp/%Y/%m/", blank=True)
+    old_id = models.CharField(max_length=50)
+  
+    objects = SearchableManager()
+    # attachments = AttachmentManager()
+    search_fields = ("title", "summary")
+
+    class Meta:
+        verbose_name_plural = _("Draft Protocols")
+        # abstract = True
+
+    def __unicode__(self):
+        return self.title
+
+    def filetextname(self):
+        return os.path.basename(self.filetext.name)
+    def filefigname(self):
+        return os.path.basename(self.filefig.name)
+   
+    def is_past_due(self):
+        if timezone.now() > self.closing_date:
+            return True
+        else: 
+            return False   
+        
+    # http://devwiki.beloblotskiy.com/index.php5/Django:_Decoupling_the_URLs  
+    @models.permalink # or: get_absolute_url = models.permalink(get_absolute_url) below
+    def get_absolute_url(self): # "view on site" link will be visible in admin interface
+        """Construct the absolute URL for a DraftProtocol."""
+        return ('draftprotocol-detail', (), {
+                            'year': self.publish_date.strftime("%Y"),
+                            'month': self.publish_date.strftime("%m"),
+                            'slug': self.slug})
+            
+    def save(self, *args, **kwargs):
+        ''' On save, update timestamps '''
+        if not self.id:
+            self.publish_date = datetime.today()
+            # Newly created object, so set slug
+            self.slug = slugify(self.title)
+        self.modify_date = datetime.now()
+        super(DraftProtocol, self).save(*args, **kwargs)
+
+class DraftProtocolFile(models.Model):
+    draftprotocol = models.ForeignKey(DraftProtocol)
+    description = models.CharField(max_length=255)
+    file = models.FileField(max_length=255,blank=True, help_text='10 MB maximum file size.', verbose_name='Upload Additional background documents', upload_to='files/dp/%Y/%m/%d/', validators=[validate_file_extension])
+
+    def __unicode__(self):  
+        return self.file.name  
+    def name(self):
+        return self.file.name
+    def filename(self):
+        return os.path.basename(self.file.name) 
+    def fileextension(self):
+        return os.path.splitext(self.file.name)[1]
+
+
+class DraftProtocolComments(Displayable, models.Model):
+    author = models.ForeignKey(User, related_name="draftprotocolcomments_author")
+    draftprotocol = models.ForeignKey(DraftProtocol)
+    expertise = models.TextField(_("Your Expertise On This Pest"), blank=True, null=True)
+    institution = models.TextField(_("Your Institution"), blank=True, null=True)
+    comment = models.TextField(_("Your Comment"), blank=True, null=True)
+    filetext = models.FileField(_("Attachment (comments on protocol text)"), upload_to="files/dp/comm/%Y/%m/", blank=True)
+    filefig = models.FileField(_("Attachment (comments on protocol figures)"), upload_to="files/dp/comm/%Y/%m/", blank=True)
+  
+    def __unicode__(self):  
+        return self.comment  
+    def name(self):
+        return self.comment    
+    def save(self, *args, **kwargs):
+        ''' On save, update timestamps '''
+        if not self.id:
+            self.publish_date = datetime.today()
+            # Newly created object, so set slug
+            self.slug = slugify(self.title)
+        self.modify_date = datetime.now()
+        super(DraftProtocolComments, self).save(*args, **kwargs)
+    def filetextname(self):
+        return os.path.basename(self.filetext.name)
+    def filefigname(self):
+        return os.path.basename(self.filefig.name)
+    
     
     
 # used by Reporting Obligation type

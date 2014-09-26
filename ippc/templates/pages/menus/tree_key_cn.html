@@ -1,5 +1,10 @@
 {% load i18n future pages_tags %}
  {% block pageinfo %}
+
+ {% if type_label %}
+ 
+ {% else %}
+ 
  <div class="panel">
        <h4>{% trans "Countries" %}</h4>
       
@@ -17,16 +22,18 @@
         </ul>
         <h4>{% trans "Key Links &amp; Documents" %}</h4>
        <ul>
-<li><a href="/publications/model-instrument-adherence-ippc" target="_blank">Model Instrument for Adherence to the IPPC</a></li>
-<li><a href="/publications/ipp-editor-nomination-request-nppos" target="_blank">IPP Editor - Nomination Request for NPPOs</a></li>
-<li><a href="/publications/ippc-statement-commitment" target="_blank">IPPC statement of commitment</a></li>
-<li><a href="/publications/role-ippc-official-contact-points" target="_blank">Role of the IPPC Official Contact Points</a></li>
-<li><a href="/publications/ippc-official-contact-point-notification-form" target="_blank">IPPC Official Contact Point notification form</a></li>
-<li><a href="/publications/national-pest-reporting-through-regional-plant-protection-organizations" target="_blank">National Pest Reporting through Regional Plant Protection Organizations</a></li>
+<li><a href="/publications/135/" target="_blank">Model Instrument for Adherence to the IPPC</a></li>
+<li><a href="/publications/24/" target="_blank">IPP Editor - Nomination Request for NPPOs</a></li>
+<li><a href="/publications/50/" target="_blank">IPPC statement of commitment</a></li>
+<li><a href="/publications/25/" target="_blank">Role of the IPPC Official Contact Points</a></li>
+<li><a href="/publications/26/" target="_blank">IPPC Official Contact Point notification form</a></li>
+<li><a href="/publications/27/" target="_blank">National Pest Reporting through Regional Plant Protection Organizations</a></li>
 <li><a href="https://www.ippc.int/countries/nppodirectory" target="_blank">Complete listing of all IPPC Contact Points in PDF format </a></li>
 <li><a href="http://www.fao.org/countryprofiles/iso3list/en/?lang=en" target="_blank">FAO Member Nations country codes and names</a></li>
 <li><a href="http://www.iso.org/iso/country_codes/iso_3166_code_lists/country_names_and_code_elements" target="_blank">List of ISO 2-digit codes </a></li>
 <li><a href="/nro-reports-and-statistics" target="_blank">National &amp; Regional Summary Statistics</li>
-<li><a href="/publications/editor-guide-international-phytosanitary-portal" target="_blank">Editor Guide to the International Phytosanitary Portal</a></li>
+<li><a href="/publications/29/" target="_blank">Editor Guide to the International Phytosanitary Portal</a></li>
     </div>
+{% endif %}
+  
      {% endblock pageinfo %}
