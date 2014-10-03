@@ -4,6 +4,7 @@
 {% if settings.COMMENTS_DISQUS_SHORTNAME %}
 {% include "generic/includes/disqus_comments.html" %}
 {% else %}
+
 <script>
 $(function() {
     $('.reply').click(function() {
@@ -14,6 +15,7 @@ $(function() {
 </script>
 <style>.input_id_honeypot {display:none !important;}</style>
 {% comment_thread object_for_comments %}
+    {% if  forum_post.allow_comments %}
 <h3>{% trans "New Comment" %}</h3>
 <form method="post" id="comment" action="{{ comment_url }}#comment">
     {% if not request.POST.replied_to %}
@@ -24,6 +26,6 @@ $(function() {
     <div class="form-actions">
         <input class="btn btn-primary btn-large" type="submit" value="{% trans "Comment" %}">
     </div>
-</form>
+</form>{% endif %}
 {% endif %}
 </div>

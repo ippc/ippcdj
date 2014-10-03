@@ -131,7 +131,9 @@
   {% endblock %}
 
   {% block forum_post_detail_comments %}
-    {% if forum_post.allow_comments %}{% comments_for forum_post %}{% endif %}
+    {#% if forum_post.allow_comments %#}
+        {% comments_for forum_post %}
+    {#% endif %#}
   {% endblock %}
 
 

@@ -373,7 +373,7 @@ LANGUAGES = (
 # https://docs.djangoproject.com/en/dev/ref/settings/#locale-paths
 LOCALE_PATHS = (os.path.join(PROJECT_ROOT, "conf/locale"),)
 
-SEARCH_MODEL_CHOICES = ("pages.Page", "blog.BlogPost", "ippc.PestReport", "forum.ForumPost")
+SEARCH_MODEL_CHOICES = ("pages.Page", "blog.BlogPost", "ippc.PestReport")
 
 # BLOG_SLUG = 'news'
 # BLOG_USE_FEATURED_IMAGE = 'True'
@@ -405,14 +405,17 @@ PAGEDOWN_MARKDOWN_EXTENSIONS = ('extra','codehilite','toc')
 
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 
-EMAIL_USE_TLS = True
-EMAIL_HOST = 'smtp.gmail.com'
-EMAIL_PORT = 587
-EMAIL_HOST_USER = 'xxx@gmail.com'
-EMAIL_HOST_PASSWORD = 'xxx'
-DEFAULT_FROM_EMAIL='xxx@gmail.com'
+#EMAIL_USE_TLS = True
+#EMAIL_HOST = 'smtp.gmail.com'
+#EMAIL_PORT = 587
+#EMAIL_HOST_USER = 'xxx@gmail.com'
+#EMAIL_HOST_PASSWORD = 'xxx'
+#DEFAULT_FROM_EMAIL='xxx@gmail.com'
+EMAIL_HOST = 'localhost'
+EMAIL_PORT = 25
+#EMAIL_USE_TLS = True
 
-ENVELOPE_EMAIL_RECIPIENTS=['xxx@fao.org']
+ENVELOPE_EMAIL_RECIPIENTS=['paola.sentinelli@fao.org']
 
 ENVELOPE_CONTACT_CHOICES = (
     (10,    _("Secretariat")),

@@ -7,7 +7,7 @@ from django.conf.urls import patterns, include, url
 
 from django.contrib import admin
 admin.autodiscover()
-from .ippc.views import PestReportListView, PestReportHiddenListView,\
+from .ippc.views import IppcUserProfileDetailView,profile_update, PestReportListView, PestReportHiddenListView,\
 PestReportDetailView, CountryView,PartnersView, pest_report_create, pest_report_edit, PublicationDetailView,\
 PublicationListView,ReportingObligationListView, ReportingObligationDetailView,reporting_obligation_create, reporting_obligation_edit, \
 EventReportingListView, EventReportingDetailView,event_reporting_create, event_reporting_edit, \
@@ -378,7 +378,12 @@ urlpatterns = patterns("",
         view=PublicationLibraryView.as_view(),
         # view=country_view(),
         name='country'),
-        
+    url(r'^about/secretariat/$',
+        view=PublicationLibraryView.as_view(),
+        # view=country_view(),
+        name='country'),
+    
+     
     #-------------DPs Comments---------------------------
 
     
@@ -422,7 +427,14 @@ urlpatterns = patterns("",
     #url(r'^countries/(?P<country>[\w-]+)/eventreporting/hidden/$',
     #    view=EventReportingHiddenListView.as_view(),
     #    name='event-reporting-hidden-list'),
-
+    #------------------USERS------------------
+    url(r'^users/(?P<pk>[\w-]+)/$',
+        view=IppcUserProfileDetailView.as_view(),
+        name="user-detail"),
+    url(r'^account/update/(?P<id>[\w-]+)/$',
+        view=profile_update,
+        name="profile-update"),
+         
 #-------------------------------------------#
    # pfa list
     url(r'^countries/(?P<country>[\w-]+)/pestfreeareas/$',

@@ -16,7 +16,7 @@
 {% trans "Publication date" %}: {{ poll.pub_date|date:"d M Y" }}<br>
 {% trans "Closing date" %}:  {{ poll.closing_date |date:"d M Y"}}</small></h1>
 {% if error_message %}<div class="alert alert-error"><p><strong>{{ error_message }}</strong></p></div>{% endif %}
-<p>{{ poll.polltext }}</p>
+<p>  {{ poll.polltext|richtext_filter|safe }}</p>
 <p></p>
    {% if poll.is_past_due %}
    {% else %} 
@@ -42,7 +42,7 @@
 {% trans "Publication date" %}: {{ poll.pub_date|date:"d M Y" }}<br>
 {% trans "Closing date" %}:  {{ poll.closing_date |date:"d M Y"}}</small></h1>
 {% if error_message %}<div class="alert alert-error"><p><strong>{{ error_message }}</strong></p></div>{% endif %}
-<p>{{ poll.polltext }}</p>
+<p>  {{ poll.polltext|richtext_filter|safe }}</p>
 <p></p>
    {% if poll.is_past_due %}
    {% else %} 

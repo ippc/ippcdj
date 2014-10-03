@@ -38,7 +38,7 @@
   
 {% if items %}
 
-{% ifequal link_to_item 'pest-report-detail' %}
+{% if  link_to_item == 'pest-report-detail' %}
 {% load leaflet_tags %}
 {% leaflet_js %}
         {% leaflet_css %}
@@ -142,8 +142,8 @@ var greenIcon = L.icon({
     {% for object in items %}
     <tr>
       <td><a href="{% url 'country' object.country.country_slug%}">{{ object.country }}</a></td>
-      <td>n </td>
-      <td>{{ object.modified_date|date:"d M Y" }}</td>
+      <td>{{ object.report_number}} </td>
+      <td>{{ object.modify_date|date:"d M Y" }}</td>
       <td>{{ object.pest_identity}} </td>
       <td>{{ object.hosts}} </td>
       <td>
@@ -159,6 +159,54 @@ var greenIcon = L.icon({
   </tbody>
 </table>
 
+{% elif link_to_item == 'contactpoint' %}
+<table data-url="data1.json"  class="table table-condensed table-striped" data-sort-name="country" data-sort-order="asc" id="publications">
+  <thead>
+    <tr>
+      <th data-field="country">{% trans "Country" %}{{type}}</th>
+      <th>{% trans "Type of contact" %}</th>
+      <th>{% trans "Prefix" %}</th>
+      <th>{% trans "First Name" %}</th>
+      <th>{% trans "Last Name" %}</th>
+      <th>{% trans "Email" %}</th>
+      <th>{% trans "Alternate E-mail" %}</th>
+      <th>{% trans "Address" %}</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for object in items %}
+    <tr>
+      <td> {% for c in cns %}
+          
+          {% if c.id == object.country_id %}
+          {{c}}
+          {% endif%}
+          
+       {% endfor %}</td>
+      <td>{% for o in object.contact_type.all %}
+          {{o}}
+       {% endfor %}</td>
+      <td>{{ object.gender.name }}</td>
+      <td>{{ object.first_name }}</td>
+      <td>{{ object.last_name }}</td>
+      <td>
+        {% for u in users %}
+          
+          {% if u.id == object.user_id %}
+          {{u.email}}
+          {% endif%}
+          
+       {% endfor %}</td>
+    
+      
+      </td>
+      <td>{{ object.email_address_alt }}</td>
+      <td>{{ object.address2 }}</td>
+    
+    </tr>
+    {% endfor %}
+  </tbody>
+</table>
 
 {% else %}
 <table class="table table-condensed table-striped" id="publications">
@@ -184,7 +232,7 @@ var greenIcon = L.icon({
 </table>
 
 
-{% endifequal %}
+{% endif %}
 {% else %}
 <p>No items available.</p>
 {% endif %}

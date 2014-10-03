@@ -4,6 +4,7 @@ from django.http import Http404
 from django.shortcuts import get_object_or_404
 
 from forum.models import ForumPost, ForumCategory,ForumPost_Files
+from ippc.models import IppcUserProfile
 from forum.feeds import PostsRSS, PostsAtom
 from mezzanine.conf import settings
 from mezzanine.generic.models import Keyword
@@ -53,6 +54,7 @@ def forum_post_list(request, tag=None, year=None, month=None, username=None,
     templates.append(template)
     return render(request, templates, context)
 
+from collections import defaultdict
 
 def forum_post_detail(request, slug, year=None, month=None, day=None,
                      template="forum/forum_post_detail.html"):
@@ -67,7 +69,7 @@ def forum_post_detail(request, slug, year=None, month=None, day=None,
     #forum_post_files = get_object_or_404(forum_posts, slug=slug)
     f = get_object_or_404(ForumPost, slug=slug)
     files = ForumPost_Files.objects.filter( forum_post_id=f.id)
-    print(files)
+    
     context = {"forum_post": forum_post, "editable_obj": forum_post,"files":files}
     templates = [u"forum/forum_post_detail_%s.html" % unicode(slug), template]
     return render(request, templates, context)

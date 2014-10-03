@@ -21,7 +21,7 @@
     {% if field.errors %} error{% endif %}">
     {{ field.label_tag }}
     <div class="controls">
-        {{ field }}
+{{ field}}
         {% if field.errors %}
         <span class="help-inline">
             {% for e in field.errors %}

@@ -9,7 +9,7 @@
   
   {% if page.get_content_model.contact_point.username == request.user.username %} 
   <div>
-        <a class="btn btn-large btn-info" style="" href="{% url "profile_update" %}">{% trans "Update your profile" %}</a>
+        <a class="btn btn-large btn-info" style="" href="/account/update/{{ page.get_content_model.contact_point.get_profile.id}}">{% trans "Update your profile" %}</a>
   </div>
   {% endif %}
   
@@ -21,9 +21,9 @@
   
   
   {% if page.get_content_model.contact_point.get_profile.profile_photo %}
-  <a href="{% url "profile_update" %}" title="Click to update your profile and add a picture."><img class="pull-right profile-picture" style="margin:0 0 20px 10px;" src="{{ MEDIA_URL }}{% thumbnail page.get_content_model.contact_point.get_profile.profile_photo 128 128 %}"></a>
+  <img class="pull-right profile-picture" style="margin:0 0 20px 10px;" src="{{ MEDIA_URL }}{% thumbnail page.get_content_model.contact_point.get_profile.profile_photo 128 128 %}">}}
   {% else %}
-  <a class="pull-right profile-picture" style="height:128px; width:128px; background:#eee;" href="{% url "profile_update" %}" title="Click to update your profile and add a picture."></a>
+  <a class="pull-right profile-picture" style="height:128px; width:128px; background:#eee;"></a>
   {% endif %}
 
 {# <ul class="unstyled"> #}

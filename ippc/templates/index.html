@@ -15,7 +15,7 @@
   <div class="row-fluid">
     <h3 class="normal">{% trans "International Plant Protection News" %}</h3>
   </div>
-   <!-- BEGIN =SLIDESHOW ================== -->    
+<div class="row-fluid"> <!-- BEGIN =SLIDESHOW ================== -->    
     <style type="text/css" media="screen">
       .carousel ul li {display: none;}
       .button-set a {cursor:pointer; padding:0.25em;}
@@ -26,25 +26,24 @@
       .carousel ul li {display:block;}
     </style>
     </noscript>
-    <div class="row-fluid">  
-        <div class="carousel">
+   <div class="carousel">
         <ul style="padding:0; margin:0;">
-        {% for entry in latest_news %}
-            {% if entry.keywords_string == 'hot topic' %}
-        
-        <li style="clear:both;">
-            {% if settings.BLOG_USE_FEATURED_IMAGE and entry.featured_image %}
-            <a href="{{ entry.get_absolute_url }}">
-              <img  style="float:left; padding:0 15px 10px 0;" src="{{ MEDIA_URL }}{% thumbnail entry.featured_image 360 200 %}">
-            </a>
+            {% for entry in latest_news|slice:":5" %}
+            {% if entry.keywords_string == '1' %}
+            <li style="clear:both;">
+                {% if settings.BLOG_USE_FEATURED_IMAGE and entry.featured_image %}
+                <a href="{{ entry.get_absolute_url }}">
+                  <img  style="float:left; padding:0 15px 10px 0;" src="{{ MEDIA_URL }}{% thumbnail entry.featured_image 360 200 %}">
+                </a>
+                {% endif %}
+            <h5>
+              <a class="dark" href="{{ entry.get_absolute_url }}">{{ entry.title }}</a><br>
+              <small>{{ entry.publish_date|timesince }} {% trans "ago" %}.</small>
+            </h5>
+            <p>{{ entry.content|truncatechars:148 }} <small><a href="{{ entry.get_absolute_url }}">{% trans "Continue reading…" %}</a></small></p>
+            </li>     
             {% endif %}
-        <h5>
-          <a class="dark" href="{{ entry.get_absolute_url }}">{{ entry.title }}</a><br>
-          <small>{{ entry.publish_date|timesince }} {% trans "ago" %}.</small>
-        </h5>
-        <p>{{ entry.content|truncatechars:148 }} <small><a href="{{ entry.get_absolute_url }}">{% trans "Continue reading…" %}</a></small></p>
-        </li>     {% endif %}
-        {% endfor %}               
+            {% endfor %}               
         </ul>
         </div> <!-- /.carousel -->
         <div class="button-set" style="float:right; text-align:right;">
@@ -56,7 +55,7 @@
           <a id="carouselnumber3" onclick="myCarousel.goToSlide(3);" title="4">4</a>
           <a id="carouselnumber4" onclick="myCarousel.goToSlide(4);" title="5">5</a>
           <a onclick="myCarousel.next();" title="Next">next&rarr;</a>
-          <a href="/news/" title="See all news.">see all news</a>
+          <a href="/blog/" title="See all news.">{% trans "See All News" %}</a>
           <br>
           <a onclick="myCarousel.stop();" title="Stop">&#x25FC;stop</a>
           <a onclick="myCarousel.play();" title="Play">&#9658;play</a>
@@ -71,13 +70,12 @@
                   autoplay: true
                 });
             </script>
-        </div> 
     <!-- END =SLIDESHOW ================== -->
    
  <!-- or NEWS in BLOCKS ================== -->
-   
+   </div>
   <div class="row-fluid">
-    {% for entry in latest_news %}
+    {% for entry in latest_news|slice:":4" %}
     <div class="span6">
       <div class="panel">
         
@@ -104,7 +102,7 @@
   {% endfor %}
   </div>
   <div class="row-fluid">
-    <p><a href="{% url 'page' 'news' %}">{% trans "See All News" %} »</a></p>
+    <p><a href="/blog/">{% trans "See All News" %} »</a></p>
   </div>
     
     
@@ -130,7 +128,7 @@
 {% block local_nav %}
 <div class="panel">
   <h4><a href="{% url 'page' 'who-we-are' %}">{% trans "About" %}</a></h4>
-  <p>{% blocktrans %}The International Plant Protection Convention (IPPC) is an <a title="See the convention text" href="about/convention-text">international agreement</a> on plant health to which <a href="http://www.fao.org/fileadmin/user_upload/legal/docs/4_004s-e.pdf">181 signatories</a> currently adhere.  It aims to protect cultivated and wild plants by preventing the introduction and spread of pests.  The <a href="about/secretariat">Secretariat</a> of the IPPC is provided by the <a href="http://fao.org">Food and Agriculture Organization of the United Nations</a>. See our <a href="/media-kit">Media Kit</a>.{% endblocktrans %}</p>
+  <p>{% blocktrans %}The International Plant Protection Convention (IPPC) is an <a title="See the convention text" href="/core-activities/governance/convention-text/">international agreement</a> on plant health to which <a href="http://www.fao.org/fileadmin/user_upload/legal/docs/4_004s-e.pdf">181 signatories</a> currently adhere.  It aims to protect cultivated and wild plants by preventing the introduction and spread of pests.  The <a href="about/secretariat">Secretariat</a> of the IPPC is provided by the <a href="http://fao.org">Food and Agriculture Organization of the United Nations</a>. See our <a href="/media-kit">Media Kit</a>.{% endblocktrans %}</p>
 </div>
 
 <div class="panel">
@@ -172,7 +170,7 @@
   <p>
   <ul>
       <li>{% blocktrans %}<a href="/countries/all/list-countries/">Complete List of Countries{% endblocktrans %}</a></li>
-      <li>{% blocktrans %} List of Contact Points{% endblocktrans %}</li>
+      <li>{% blocktrans %}<a href="/countries/contactpoints"> List of Contact Points{% endblocktrans %}</a></li>
       <li>{% blocktrans %} <a href="/countries/pestreport">Pest Reports{% endblocktrans %}</a></li>
       <li>{% blocktrans %}<a href="/countries/legislation">Legislation {% endblocktrans %}</a></li>
       <li>{% blocktrans %}<a href="/countries/regulatedpests">List of regulated pests {% endblocktrans %}</a></li>

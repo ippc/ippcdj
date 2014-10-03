@@ -54,7 +54,34 @@ class PestReportForm(forms.ModelForm):
             'report_number': forms.HiddenInput(),
             'pest_identity': autocomplete_light.TextWidget ('EppoCodeAutocomplete'),
         }
-
+        
+class IppcUserProfileForm(forms.ModelForm):
+    class Meta:
+        model = IppcUserProfile
+        fields = [
+ 
+            'gender',
+            'first_name',
+            'last_name', 
+            'address1',
+            'address2',
+            'address_country',
+            'bio', 
+            'expertize',
+            'phone',
+            'fax',
+            'mobile',
+            'email_address_alt',
+            ]
+        exclude = ('user', 'title', 'city', 'contact_type','state', 'zipcode', 'country', 'partner', 'date_account_created' )
+        
+class UserForm(forms.ModelForm):
+    class Meta:
+        model = User
+        fields = [
+            'email'
+        ]
+        
 
 class IssueKeywordsRelateForm(forms.ModelForm):
     class Meta:
@@ -225,6 +252,7 @@ class PublicationForm(forms.ModelForm):
            'file_ar',
            'file_ru',
            'file_zh',
+           'publication_date', 
            'agenda_number',
            'document_number',
            'short_description',

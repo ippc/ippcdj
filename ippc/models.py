@@ -158,12 +158,14 @@ class Publication(Orderable):
     slug = models.SlugField(max_length=200, blank=True, null=True,
             unique_for_date='modify_date')
     status = models.IntegerField(_("Status"), choices=PUBLICATION_STATUS_CHOICES, default=IS_PUBLIC)
+    
     modify_date = models.DateTimeField(_("Modified date"),
         blank=True, null=True, editable=False, auto_now=True)
     agenda_number = models.CharField(_("Agenda Item Number"), max_length=100,
                                    blank=True)
     document_number = models.CharField(_("Document Number"), max_length=100,
                                   blank=True)
+    publication_date = models.DateTimeField(_("Publication date"), blank=True, null=True, editable=True)
     short_description = models.TextField(_("Short Description"),  blank=True, null=True)
     contact_for_more_information = models.TextField(_("Contact for more information"), blank=True, null=True)    
     issuename=generic.GenericRelation(IssueKeywordsRelate)
@@ -1488,7 +1490,7 @@ class PartnersNewsUrl(models.Model):
     
 class Poll(models.Model):
     question = models.CharField(max_length=200)
-    polltext = models.TextField(max_length=500,blank=True, null=True)
+    polltext = models.TextField(blank=True, null=True)
     pub_date = models.DateTimeField('date published')
     closing_date = models.DateTimeField('close date',blank=True, null=True,)
     

@@ -17,7 +17,7 @@
         {% trans "Publication date" %}: {{ poll.pub_date|date:"d M Y" }}<br>
         {% trans "Closing date" %}:  {{ poll.closing_date |date:"d M Y"}}</small></h1>
 {% if error_message %}<div class="alert alert-error"><p><strong>{{ error_message }}</strong></p></div>{% endif %}
-<p>{{ poll.polltext }}</p>
+<p><p>  {{ poll.polltext|richtext_filter|safe }}</p></p>
 <p><strong>Results:</strong></p>
 <ul>
     {% for choice in poll.poll_choice_set.all %}
@@ -34,10 +34,10 @@
         </tr>  
     </thead>  
     <tbody>
-        {% for vote in votes %}
+        {% for vote in votes %}<tr>
     <td>{{ vote.user }} </td> 
     <td>{{ vote.choice}} </td> 
-    <td>{{ vote.comment }}</td>
+    <td>{{ vote.comment }}</td></tr>
     {% endfor %}
 </tbody>
 </table>
@@ -53,7 +53,7 @@
         {% trans "Publication date" %}: {{ poll.pub_date|date:"d M Y" }}<br>
         {% trans "Closing date" %}:  {{ poll.closing_date |date:"d M Y"}}</small></h1>
 {% if error_message %}<div class="alert alert-error"><p><strong>{{ error_message }}</strong></p></div>{% endif %}
-<p>{{ poll.polltext }}</p>
+<p><p>  {{ poll.polltext|richtext_filter|safe }}</p></p>
 <p><strong>Results:</strong></p>
 <ul>
     {% for choice in poll.poll_choice_set.all %}
@@ -70,10 +70,10 @@
         </tr>  
     </thead>  
     <tbody>
-        {% for vote in votes %}
+        {% for vote in votes %}<tr>
     <td>{{ vote.user }} </td> 
     <td>{{ vote.choice}} </td> 
-    <td>{{ vote.comment }}</td>
+    <td>{{ vote.comment }}</td></tr>
     {% endfor %}
 </tbody>
 </table>

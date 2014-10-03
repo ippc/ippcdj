@@ -2,13 +2,13 @@
 
 {% if request.user.is_authenticated %}
   {% if user.is_authenticated and user.is_staff %}
-        <a href="/admin">ADMIN site</a>
+        <a href="/admin/" class="btn btn-small btn-warning">ADMIN site</a>
   {% endif %}
     {% trans "Hello, " %}
     {% url "profile" request.user.username as profile_url %}
     {% if profile_url %}
         {# <a href="{{ profile_url }}">{{ request.user|username_or:"email" }}</a>! #}
-        <a href="{{ profile_url }}">{% if request.user.get_profile.first_name or request.user.get_profile.last_name %}{{ request.user.get_profile.first_name }} {{ request.user.get_profile.last_name }}{% else %}{{ request.user.username }}{% endif %}</a>!
+        <a href="/users/{{ request.user.get_profile.id }}"> {% if request.user.get_profile.first_name or request.user.get_profile.last_name %}{{ request.user.get_profile.first_name }} {{ request.user.get_profile.last_name }}{% else %}{{ request.user.username }}{% endif %}</a>!
         
         {# <br> #}
         {# <a href="{% url "profile_update" %}" #}
@@ -21,7 +21,7 @@
 {% else %}
     <a href="{% url "login" %}?next={{ request.path }}"
         class="btn btn-small btn-account">{% trans "Log in" %}</a>
-    {% trans "or" %}
+   <!-- {% trans "or" %}
     <a href="{% url "signup" %}?next={{ request.path }}"
-        class="btn btn-small btn-account">{% trans "Sign up" %}</a>
+        class="btn btn-small btn-account">{% trans "Sign up" %}</a-->
 {% endif %}

@@ -8,6 +8,7 @@ from django.utils import timezone
 from django.core import mail
 from django.conf import settings
 from django.contrib.auth.models import User,Group
+from django.contrib.auth.models import User,Group
 from .models import ContactType,PublicationLibrary,Publication,EppoCode,EmailUtilityMessage, EmailUtilityMessageFile, Poll_Choice, Poll,PollVotes, IppcUserProfile,\
 CountryPage,PartnersPage, PestStatus, PestReport, IS_PUBLIC, IS_HIDDEN, Publication,\
 DraftProtocol,DraftProtocolComments,\
@@ -23,7 +24,7 @@ PartnersPublicationUrlFormSet,PartnersPublicationForm, PartnersPublicationFileFo
 PartnersNewsUrlFormSet,PartnersNewsForm, PartnersNewsFileFormSet,PartnersWebsiteUrlFormSet,PartnersWebsiteForm,\
 EmailUtilityMessageForm,EmailUtilityMessageFileFormSet,\
 CountryNewsUrlFormSet,CountryNewsForm, CountryNewsFileFormSet,\
-DraftProtocolForm,  DraftProtocolFileFormSet,DraftProtocolCommentsForm
+DraftProtocolForm,  DraftProtocolFileFormSet,DraftProtocolCommentsForm,IppcUserProfileForm, UserForm
 
 from django.views.generic import ListView, MonthArchiveView, YearArchiveView, DetailView, TemplateView, CreateView
 from django.core.urlresolvers import reverse
@@ -75,12 +76,25 @@ class PublicationLibraryView(ListView):
         context = super(PublicationLibraryView, self).get_context_data(**kwargs)
         queryset = DraftProtocol.objects.all()
         context['latest1']=queryset
-        print(queryset)
+        
+        users_all=[]
+        for g in Group.objects.filter():
+            if g.name == 'IPPC Secretariat': 
+                users = g.user_set.all()
+                for u in users:
+                   users_u=[]
+                   user_obj=User.objects.get(username=u)
+                   userippc = get_object_or_404(IppcUserProfile, user_id=user_obj.id)
+                   users_u.append((unicode(userippc.last_name)))
+                   users_u.append((unicode(userippc.first_name)))
+                   users_u.append((userippc.profile_photo))
+                   users_u.append((userippc.title))
+                   users_u.append((user_obj.username))
+                   users_all.append(users_u)
+        context['secretariat']=users_all
         return context
     def get_queryset(self):
-        print('ssssssss')
         queryset = DraftProtocol.objects.all()
-        
         return  DraftProtocol.objects.all()
 
 
@@ -190,7 +204,7 @@ class PublicationListView(ListView):
     queryset = Publication.objects.filter(status=IS_PUBLIC).order_by('-modify_date', 'title')
     allow_future = False
     allow_empty = True
-    paginate_by = 30
+    paginate_by = 50
 
 class PublicationDetailView(DetailView):
     """ Publication detail page """
@@ -203,14 +217,10 @@ class PublicationDetailView(DetailView):
         context = super(PublicationDetailView, self).get_context_data(**kwargs)
         publication = get_object_or_404(Publication, id=self.kwargs['pk'])
     
-        print(publication.library_id)
         publicationlibrary = get_object_or_404(PublicationLibrary, id=publication.library_id)
-        print(publicationlibrary.users)
-        print(publicationlibrary.groups)
         context['users'] =publicationlibrary.users
         context['groups'] = publicationlibrary.groups
         context['login_required'] = publicationlibrary.login_required
-        print(context)
         return context
     
 import os
@@ -271,11 +281,11 @@ class PublicationFilesListView(ListView):
 
         # The zip compressor
         date = timezone.now().strftime('%Y%m%d%H%M%S')+"_"+str(self.kwargs['id'])
-        zip_all = zipfile.ZipFile("static/media/tmp/"+"archive_all_"+ date+".zip", "w")
+        zip_all = zipfile.ZipFile(PROJECT_ROOT+"/static/media/tmp/"+"archive_all_"+ date+".zip", "w")
         for lang in langs:
-            zip_lang = zipfile.ZipFile("static/media/tmp/"+"archive_"+str(lang[0])+"_"+ date+".zip", "w")
+            zip_lang = zipfile.ZipFile(PROJECT_ROOT+"/static/media/tmp/"+"archive_"+str(lang[0])+"_"+ date+".zip", "w")
             for file_path in lang[1]:
-                strfpath=os.path.join(PROJECT_ROOT, 'static/media/')+str(file_path)
+                strfpath=os.path.join(PROJECT_ROOT, PROJECT_ROOT+'/static/media/')+str(file_path)
                 filename = strfpath.split('/');
                 fname=filename[len(filename)-1]
                 zip_lang.write(strfpath, fname)
@@ -292,7 +302,6 @@ class PublicationFilesListView(ListView):
         context['zip_all']=zip_all.filename
         context['zip_all_s']=os.path.getsize(zip_all.filename)
         
-        print(context)
         return context
 
 @login_required
@@ -453,6 +462,37 @@ class ReportingObligationListView(ListView):
         context['basic_types'] =BASIC_REP_TYPE_CHOICES
         return context
    
+class IppcUserProfileDetailView(DetailView):
+    """  Reporting Obligation detail page """
+    model = IppcUserProfile
+    context_object_name = 'user'
+    template_name = 'accounts/account_profile.html'
+    queryset = IppcUserProfile.objects.filter()
+
+
+# http://stackoverflow.com/a/1854453/412329
+@login_required
+def profile_update(request ,id=None, template_name='accounts/account_profile_update.html'):
+    """ Edit Profile """
+    user = request.user
+    
+    if id:
+        profile = get_object_or_404(IppcUserProfile, pk=id)
+        userprofile = get_object_or_404(User, pk=profile.user_id)
+    if request.POST:
+        form = IppcUserProfileForm(request.POST,   instance=profile)
+        userform = UserForm(request.POST,  instance =request.user)
+        if form.is_valid() and userform.is_valid():
+            form.save()
+            userform.save()
+            return redirect("user-detail",id)
+    else:
+        form = IppcUserProfileForm(instance=profile)
+        userform = UserForm(request.POST,  instance=request.user)
+        
+    return render_to_response(template_name, {
+        'form': form, 'userform': userform,'email':request.user.email,
+    }, context_instance=RequestContext(request))
        
    
 class ReportingObligationDetailView(DetailView):
@@ -1056,7 +1096,6 @@ class PartnersWebsiteDetailView(DetailView):
     def get_context_data(self, **kwargs): # http://stackoverflow.com/a/15515220
         context = super(PartnersWebsiteDetailView, self).get_context_data(**kwargs)
         page = get_object_or_404(PartnersPage, name=self.kwargs['partners'])
-        print(page.slug)
         context['pagetitle'] =  page.name
         context['pageslug'] =  page.slug
        # context['page'] =  page.partner_slug
@@ -1332,16 +1371,12 @@ class PartnersView(TemplateView):
     
     def get_context_data(self, **kwargs): # http://stackoverflow.com/a/15515220
         context = super(TemplateView, self).get_context_data(**kwargs)
-        print(self.kwargs['partner'])
         context.update({
             'partner': self.kwargs['partner']
             # 'editors': self.kwargs['editors']
             # 'profile_user': self.kwargs['profile_user']
         })
         page = get_object_or_404(PartnersPage, name=self.kwargs['partner'])
-        #print(page.parent_id)
-        #context['pagetitle'] =  page.name
-        #context['pageslug'] =  page.slug
         pageparent = get_object_or_404(PublicationLibrary, id=page.parent_id)
         titleparent=pageparent.title
         titleparent = titleparent.replace(" ", "-").lower()
@@ -1372,7 +1407,6 @@ class PartnersPublicationDetailView(DetailView):
     def get_context_data(self, **kwargs): # http://stackoverflow.com/a/15515220
         context = super(PartnersPublicationDetailView, self).get_context_data(**kwargs)
         page = get_object_or_404(PartnersPage, name=self.kwargs['partners'])
-        print(page.slug)
         context['pagetitle'] =  page.name
         context['pageslug'] =  page.slug
        # context['page'] =  page.partner_slug
@@ -1957,7 +1991,6 @@ class PartnersNewsDetailView(DetailView):
     def get_context_data(self, **kwargs): # http://stackoverflow.com/a/15515220
         context = super(PartnersNewsDetailView, self).get_context_data(**kwargs)
         page = get_object_or_404(PartnersPage, name=self.kwargs['partners'])
-        print(page.slug)
         context['pagetitle'] =  page.name
         context['pageslug'] =  page.slug
        # context['page'] =  page.partner_slug
@@ -2085,12 +2118,11 @@ def partners_news_edit(request, partner, id=None, template_name='partners/partne
 @permission_required('ippc.change_publication', login_url="/accounts/login/")
 def publication_edit(request, id=None, template_name='pages/publication_edit.html'):
     """ Edit  Publication """
-    print(" Edit  Publication")
     user = request.user
     author = user
     if id:
         publication = get_object_or_404(Publication, pk=id)
-        print(publication.issuename.length)
+        
     #    if publication.issuename:
     #        print(publication.issuename.all[0])
     #    issues = get_object_or_404(IssueKeywordsRelate, pk=publication.issuename.all()[0].id)
@@ -2706,11 +2738,8 @@ class PollResultsView(DetailView):
     def get_context_data(self, **kwargs):
         context = super(PollResultsView, self).get_context_data(**kwargs)
         pollid=self.kwargs['pk']
-        print("-------")
-        print(pollid)
         votes=PollVotes.objects.filter(poll_id=pollid)
         context['votes']= votes
-        print(votes)
         return context
     
 def vote_poll(request, poll_id):
@@ -2767,9 +2796,9 @@ def email_send(request):
            users_u=[]
            user_obj=User.objects.get(username=u)
            userippc = get_object_or_404(IppcUserProfile, user_id=user_obj.id)
-           users_u.append(str(userippc.first_name))
-           users_u.append(str(userippc.last_name))
-           users_u.append(str(user_obj.email))
+           users_u.append((unicode(userippc.first_name)))
+           users_u.append((unicode(userippc.last_name)))
+           users_u.append((user_obj.email))
            users_all.append(users_u)
         g_set.append(users_all)
     
@@ -2786,7 +2815,7 @@ def email_send(request):
                user_obj=User.objects.get(id=u.user_id)
                cn = get_object_or_404(CountryPage,id=u.country_id)
                users_u.append(str(cn))
-               users_u.append(' ('+str(u.first_name)+' '+str(u.last_name)+') ')
+               users_u.append(' ('+(unicode(u.first_name))+' '+(unicode(u.last_name))+') ')
                users_u.append(str(user_obj.email))
                users_all.append(users_u)
         cp_set.append(users_all)
@@ -2802,23 +2831,12 @@ def email_send(request):
                 emailto_all.append(str(user_email))
             for g in Group.objects.filter():
                 for uemail in request.POST.getlist('user_'+str(g.id)+'_0'):
-                    print(uemail)
                     emailto_all.append(str(uemail))
                     
             for h in range(1,5):
                   for uemail in request.POST.getlist('usercp_'+str(h)+'_0'):
-                     print(uemail)
                      emailto_all.append(str(uemail))
             
-#            for g in request.POST.getlist('groups'):
-#                group=Group.objects.get(id=g)
-#                users = group.user_set.all()
-#                for u in users:
-#                   user_obj=User.objects.get(username=u)
-#                   user_email=user_obj.email
-#                   emailto_all.append(str(user_email))
-            
-            #save mail message in db
             new_emailmessage = form.save(commit=False)
             new_emailmessage.date=timezone.now()
             new_emailmessage.emailto=emailto_all
@@ -2826,9 +2844,10 @@ def email_send(request):
             #save file to message in db
             f_form.instance = new_emailmessage
             f_form.save()
+            #EmailMessage('Hello', 'Body goes here', 'from@example.com', ['to1@example.com', 'to2@example.com'], ['bcc@example.com'],  headers = {'Reply-To': 'another@example.com'})
             #send email message
             message = mail.EmailMessage(request.POST['subject'],request.POST['messagebody'],request.POST['emailfrom'],
-            emailto_all, ['paola.sentinelli@gmail.com'])
+            ['paola.sentinelli@fao.org',], ['paola.sentinelli@gmail.com'])#emailto_all for PROD, in TEST all to paola#
             # Attach a files to message
             fileset= EmailUtilityMessageFile.objects.filter(emailmessage_id=new_emailmessage.id)
             for f in fileset:
@@ -2877,7 +2896,6 @@ class AdvancesSearchCNListView(ListView):
                       '1PLAK':'Plantae;',
                       '1PROTK':'Protozoa;',
                       '1VIRUK':'Viruses and viroids;'}
-            #print( arrayGen)          
             cns= CountryPage.objects.all()
             maparray=[]
             tot_p=0
@@ -2889,24 +2907,25 @@ class AdvancesSearchCNListView(ListView):
                 maparray.append([str('<a href="'+cn.country_slug+'/pestreports/">'+cn.name)+': '+str(p)+'</a>',str(cn.cn_lat),str(cn.cn_long)])
               for pp in pests:
                   e=EppoCode.objects.filter(codename=pp.pest_identity)
-                  ecode=e[0].code
-                  codeparent=e[0].codeparent
-                  for h in range(1,10):
-                        e1=EppoCode.objects.filter(code=codeparent)
-                        if(e1.count()>0):
-                           if(e1[0].codeparent=='null'):
-                                 break
-                           else:
-                                ecode=e1[0].code
-                                codeparent=e1[0].codeparent
-                                h=h+1
-                  #print('--->')
-                  #print(codeparent)
-                  aaa=arrayGen[codeparent]
-                  aaa+=str(pp.id)+'*'
-                  arrayGen[codeparent]=aaa
-                  #print(arrayGen[codeparent])
-                 # print('<---')
+                  if e:
+                    ecode=e[0].code
+                    codeparent=e[0].codeparent
+                    for h in range(1,10):
+                          e1=EppoCode.objects.filter(code=codeparent)
+                          if(e1.count()>0):
+                             if(e1[0].codeparent=='null'):
+                                   break
+                             else:
+                                  ecode=e1[0].code
+                                  codeparent=e1[0].codeparent
+                                  h=h+1
+                    #print('--->')
+                    #print(codeparent)
+                    aaa=arrayGen[codeparent]
+                    aaa+=str(pp.id)+'*'
+                    arrayGen[codeparent]=aaa
+                    #print(arrayGen[codeparent])
+                   # print('<---')
             
             datachart=''
                
@@ -2914,13 +2933,25 @@ class AdvancesSearchCNListView(ListView):
                 s=arrayGen[h].split(';');
                 values=s[1].split('*');
                 val=len(values)-1
-                perc=(val*100/ tot_p)
+                perc=0
+                if tot_p>0:
+                    perc=(val*100/ tot_p)
                 datachart+= ' {  y: '+str(perc)+', legendText:"'+s[0]+'", label: "'+s[0]+' '+str(perc)+'%" },'
             context['datachart']=datachart
 #            
             context['map']=maparray
             
                 
+        elif self.kwargs['type'] == 'contactpoints':
+            context['type_label'] = 'Contact points'
+            context['users']=User.objects.all()
+            context['cns']=CountryPage.objects.all()
+         
+            context['items']=IppcUserProfile.objects.filter(contact_type='1')|IppcUserProfile.objects.filter(contact_type='2')|IppcUserProfile.objects.filter(contact_type='3')
+            context['counttotal'] =context['items'].count() 
+            context['link_to_item'] = 'contactpoint'
+            
+            
         elif self.kwargs['type'] == 'nppo':
             context['type_label'] = dict(BASIC_REP_TYPE_CHOICES)[1]
             context['link_to_item'] = 'reporting-obligation-detail'

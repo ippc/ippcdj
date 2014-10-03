@@ -7,7 +7,7 @@ from mezzanine.conf import settings
 from mezzanine.core.admin import TabularDynamicInlineAdmin, StackedDynamicInlineAdmin,DisplayableAdmin, OwnableAdmin
 
 
-from .models import PestStatus, PestReport, CountryPage, PartnersPage, WorkAreaPage, PublicationLibrary, \
+from .models import DraftProtocol, PestStatus, PestReport, CountryPage, PartnersPage, WorkAreaPage, PublicationLibrary, \
 Publication,PublicationFile,PublicationUrl, ReportingObligation,EventReporting,PestFreeArea,ImplementationISPM, Poll_Choice, Poll,\
 ImplementationISPMVersion, TransPublicationLibraryPage,Website,EventreportingFile,EventreportingUrl,\
 ReportingObligation_File, ReportingObligationUrl,ImplementationISPMUrl,ImplementationISPMFile,\
@@ -55,7 +55,7 @@ class CommodityKeywordsRelateAdmin(admin.ModelAdmin):
     form = MyCommodityKeywordsRelateAdminForm
     save_on_top = True
 admin.site.register(CommodityKeywordsRelate, CommodityKeywordsRelateAdmin)   
-    
+
 class PublicationFileInline(admin.TabularInline):
     model = PublicationFile
     formset = inlineformset_factory(Publication,  PublicationFile,extra=1)
@@ -64,10 +64,10 @@ class PublicationUrlInline(admin.TabularInline):
     model = PublicationUrl
     formset = inlineformset_factory(Publication, PublicationUrl,extra=1)
 
-publication_extra_fieldsets = ((None, {"fields": ("commname","issuename",)}),)
 
    
 class PublicationAdmin(admin.ModelAdmin):
+    #form = MyCommodityKeywordsRelateAdminForm
     inlines = [PublicationFileInline,PublicationUrlInline, ]
     save_on_top = True
     list_display = ('title',  'modify_date')
@@ -225,6 +225,12 @@ class ContactTypeAdmin(admin.ModelAdmin):
 admin.site.register(ContactType, ContactTypeAdmin)
 
 
+class DraftProtocolAdmin(admin.ModelAdmin):
+    save_on_top = True
+    list_display = ('title','publish_date')
+    list_filter = ('title','publish_date')
+    search_fields = ('title','publish_date')
+admin.site.register(DraftProtocol,DraftProtocolAdmin)
 
 class EppoCodeAdmin(admin.ModelAdmin):
     save_on_top = True

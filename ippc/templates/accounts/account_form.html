@@ -16,12 +16,26 @@
 {% endblock %}
 
 {% block main %}
+
 <fieldset>
-    <legend>{{ title }}</legend>
+    <legend>{% if title %}{{title}}{% else %}Update Profile{% endif %}</legend>
     <form method="post"{% if form.is_multipart %} enctype="multipart/form-data"{% endif %}>
     {% fields_for form %}
+    {% if title %}
+    {% else %}
+     <div class="control-group input_id_email">
+    <label for="id_email">Email addressss</label>
+    <div class="controls">
+    <input id="id_email" maxlength="75" name="email" type="text" value="{{email}}"/>
+    <span class="help-inline"></span>
+    </div>
+</div>
+
+    {% endif %}
+  
+
     <div class="form-actions">
-        <input class="btn btn-primary btn-large" type="submit" value="{{ title }}">
+        <input class="btn btn-primary btn-large" type="submit" value="{% if title %}{{title}}{% else%}Update{% endif%}">
     </div>
     </form>
 </fieldset>

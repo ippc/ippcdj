@@ -95,4 +95,9 @@
     {{ user.get_profile.mobile }} 
   </dd>
   {% endif %}
+  
+  {% if user.username == request.user.username %} 
+  <div>
+        <a class="btn btn-large btn-info" style="" href="/account/update/{{user.get_profile.id}}">{% trans "Update your profile" %}</a>
+  </div>{% endif %}
 {# </div> #}

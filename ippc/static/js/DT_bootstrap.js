@@ -148,7 +148,7 @@ if ( $.fn.DataTable.TableTools ) {
 
 
 /* Table initialisation */
-$(document).ready(function() {
+/*$(document).ready(function() {
 	$('#publications').dataTable( {
         // "sDom": "<'row'<'span6'l><'span6'f>r>t<'row'<'span6'i><'span6'p>>",
 		"sPaginationType": "bootstrap",
@@ -157,3 +157,20 @@ $(document).ready(function() {
 		}
 	} );
 } );
+*/
+
+  $(document).ready( function() {
+			       $('#publications').dataTable( {
+                                   "sPaginationType": "bootstrap",
+			         "oLanguage": {
+			           "sLengthMenu": 'Display <select>'+
+			             '<option value="20">20</option>'+
+			             '<option value="40">40</option>'+
+			             '<option value="60">60</option>'+
+			             '<option value="80">80</option>'+
+			             '<option value="100" selected>100</option>'+
+			             '<option value="-1">All</option>'+
+			             '</select> records'
+			         }
+			       } );
+			     } );

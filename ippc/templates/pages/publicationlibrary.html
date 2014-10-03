@@ -82,7 +82,8 @@
       {# {{ page.publicationlibrary.content|richtext_filter|safe }} #}
       {# {% endeditable %} #}
         {% include "pages/publicationtable.html" %}
-         {% if  page.id == 370 %}{# DPs #}
+        {% if  page.id == 321 %}  {% include "pages/memberstable.html" %} {% endif %} 
+        {% if  page.id == 370 %}{# DPs #}
              {% include "dp/dp_list.html" %}
         {% endif %} 
 {% endif %} {# page.publicationlibrary.login_required #}
