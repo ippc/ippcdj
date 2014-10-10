@@ -30,7 +30,14 @@
             <td><a href="{% url 'detail' poll.id %}">{{ poll.question }}</a></td>
             <td>Yes  </td>
             {% endif%}
-            <td><a href="{% url 'results' poll.id %}">Show results</a></td>
+            <td><a href="{% url 'results' poll.id %}">Show results</a> {% if user.is_superuser %} 
+            <a class="small pull-right" href="/admin/ippc/poll/{{ poll.id }}"><i class="icon-edit"></i> Edit as Admin</a><br>
+        {% endif %}
+
+        {% if perms.ippc.change_poll %}
+            <a class="small pull-right" href="/poll/edit/{{ poll.id }}"><i class="icon-edit"></i> Edit</a>
+
+            {% endif %}</td>
         </tr> 
 
     
@@ -45,7 +52,21 @@
             <td><a href="{% url 'detail' poll.id %}">{{ poll.question }}</a></td>
             <td>Yes  </td>
             {% endif%}
-            <td><a href="{% url 'results' poll.id %}">Show results</a></td>
+            <td><a href="{% url 'results' poll.id %}">Show results</a>
+             {% if user.is_superuser %} 
+            <a class="small pull-right" href="/admin/ippc/poll/{{ poll.id }}"><i class="icon-edit"></i> Edit as Admin</a><br>
+        {% endif %}
+
+        {% if perms.ippc.change_poll %}
+            <a class="small pull-right" href="/poll/edit/{{ poll.id }}"><i class="icon-edit"></i> Edit</a>
+
+            {% endif %}
+      
+                
+                
+            
+            
+            </td>
         </tr> 
 
         {% endif %}

@@ -22,7 +22,7 @@ PartnersWebsiteDetailView,  partner_websites_create,  partner_websites_edit,\
 CountryNewsListView,CountryNewsDetailView,countrynews_create,countrynews_edit,\
 CountryNewsListView,CountryNewsDetailView,countrynews_create,countrynews_edit,\
 PartnersNewsDetailView,partners_news_create,partners_news_edit,\
-PollListView,PollResultsView,PollDetailView,vote_poll,\
+PollListView,PollResultsView,PollDetailView,vote_poll,poll_edit,poll_create,\
 email_send,EmailUtilityMessageDetailView,EmailUtilityMessageListView,\
 DraftProtocolDetailView,  draftprotocol_create, draftprotocol_edit,\
 draftprotocol_comment_create,draftprotocol_comment_edit,PublicationLibraryView,\
@@ -129,6 +129,17 @@ urlpatterns = patterns("",
     url(r'^poll/(?P<pk>\d+)/$', PollDetailView.as_view(), name='detail'),
     url(r'^poll/(?P<pk>\d+)/results/$', PollResultsView.as_view(), name='results'),
     url(r'^poll/(?P<poll_id>\d+)/vote/$', vote_poll, name='vote'),
+    url(r'^poll/create/$',
+        view=poll_create,
+        name='poll-create'),
+    
+    url(r'^poll/edit/(?P<id>\d+)/$',
+        view=poll_edit,
+        name='poll-edit'),
+    
+    
+    
+    
     #--------------------------------------#
     #EMAIL:
     

@@ -90,7 +90,17 @@ legend {font-weight:bold;}
             })
         })
     </script>
- {% endif %}    
+ {% endif %} 
+ {% if c_form.prefix %}
+ <script type="text/javascript">
+        $(function() {
+            $(".inline.{{ c_form.prefix }}").formset({
+                prefix: "{{ c_form.prefix }}",
+            })
+        })
+       
+    </script>
+ {% endif %}  
 </head>
 <body id="{% block body_id %}body{% endblock %}" class="{% block body_class %}{% endblock %}">
 

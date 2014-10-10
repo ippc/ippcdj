@@ -21,6 +21,7 @@ ImplementationISPMFileFormSet,PestFreeAreaFileFormSet, PestReportFileFormSet,Web
 EventreportingUrlFormSet, ReportingObligationUrlFormSet ,PestFreeAreaUrlFormSet,ImplementationISPMUrlFormSet,PestReportUrlFormSet,\
 CnPublicationUrlFormSet,CnPublicationForm, CnPublicationFileFormSet,\
 PartnersPublicationUrlFormSet,PartnersPublicationForm, PartnersPublicationFileFormSet,\
+PollForm,Poll_ChoiceFormSet,\
 PartnersNewsUrlFormSet,PartnersNewsForm, PartnersNewsFileFormSet,PartnersWebsiteUrlFormSet,PartnersWebsiteForm,\
 EmailUtilityMessageForm,EmailUtilityMessageFileFormSet,\
 CountryNewsUrlFormSet,CountryNewsForm, CountryNewsFileFormSet,NotificationMessageRelateForm,\
@@ -2899,7 +2900,88 @@ class PollResultsView(DetailView):
         votes=PollVotes.objects.filter(poll_id=pollid)
         context['votes']= votes
         return context
+
+def send_pollnotification_message(id):
+    """ send_pollnotification_message """
+    #send notification to SC
+    poll = get_object_or_404(Poll,  pk=id)
+    emailto_all = ['']
+    for g in Group.objects.filter(id=4):
+        users = g.user_set.all()
+        for u in users:
+           user_obj=User.objects.get(username=u)
+           emailto_all.append(str(user_obj.email))
+    subject='IPPC POLL:  new poll: '+poll.question
+    textmessage='<p>Dear IPPC user,<br><br>a new poll has been posted and it is open for your answer ( selecting YES or NO) and comments:<br>    <br>Poll: '+poll.question+'<br><br>'+poll.polltext+'<br><br>You can view it at the following url: https://www.ippc.int/poll/'+str(id)+'<br><br>International Plant Protection Convention team </p>'
+
+    message = mail.EmailMessage(subject,textmessage,'paola.sentinelli@gmail.com',#from
+        ['paola.sentinelli@fao.org',], ['paola.sentinelli@gmail.com'])#emailto_all for PROD, in TEST all to paola#
+    print(textmessage)
+    message.content_subtype = "html" 
+    sent =message.send()
+        
+        
+
+
+@login_required
+@permission_required('ippc.add_poll', login_url="/accounts/login/")
+def poll_create(request):
+    """ Create Poll """
+    user = request.user
+    author = user
+
+    form = PollForm(request.POST)
+    if request.method == "POST":
+         c_form = Poll_ChoiceFormSet(request.POST)
+         if form.is_valid() and c_form.is_valid():
+            new_poll = form.save(commit=False)
+            form.save()
+           
+            c_form.instance = new_poll
+            c_form.save()
+            send_pollnotification_message(new_poll.id)
+            
+            info(request, _("Successfully created pest report."))
+            return redirect("detail", pk=new_poll.id)
+         else:
+             return render_to_response('polls/poll_create.html', {'form': form,'c_form': c_form,},
+             context_instance=RequestContext(request))
+       
+    else:
+        form = PollForm( instance=Poll())
+        c_form =Poll_ChoiceFormSet()
+    return render_to_response('polls/poll_create.html', {'form': form,'c_form': c_form},
+        context_instance=RequestContext(request))
+
+@login_required
+@permission_required('ippc.change_poll', login_url="/accounts/login/")
+def poll_edit(request, id=None, template_name='polls/poll_edit.html'):
+    """ Edit Poll """
+    if id:
+        poll = get_object_or_404(Poll,  pk=id)
+    else:
+        poll = Poll()
+      
+    if request.POST:
+
+        form =PollForm(request.POST, instance=poll)
+        c_form = Poll_ChoiceFormSet(request.POST,  instance=poll)
+        if form.is_valid() and c_form.is_valid():
+            form.save()
+            c_form.instance = poll
+            c_form.save()
+            send_pollnotification_message(id)
+
+            return redirect("detail", pk=id)
+    else:
+        form = PollForm(instance=poll)
+        c_form = Poll_ChoiceFormSet(instance=poll)
+        
+    return render_to_response(template_name, {
+        'form': form,'c_form':c_form, "poll": poll
+    }, context_instance=RequestContext(request))
     
+        
 def vote_poll(request, poll_id):
     p = get_object_or_404(Poll, pk=poll_id)
     if PollVotes.objects.filter(poll_id=poll_id, user_id=request.user.id).exists():

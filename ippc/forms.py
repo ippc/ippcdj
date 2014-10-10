@@ -18,7 +18,7 @@ PartnersWebsite,PartnersWebsiteUrl,\
 PartnersPublication,PartnersPublicationFile,PartnersPublicationUrl,\
 PartnersNews,PartnersNewsFile,PartnersNewsUrl, \
 CountryNews,CountryNewsFile,CountryNewsUrl, EmailUtilityMessage, EmailUtilityMessageFile,\
-DraftProtocol,DraftProtocolFile,DraftProtocolComments,NotificationMessageRelate
+DraftProtocol,DraftProtocolFile,DraftProtocolComments,NotificationMessageRelate,Poll,  Poll_Choice
 
 from django.contrib.auth.models import User,Group
 from django.forms.models import inlineformset_factory
@@ -409,7 +409,27 @@ class DraftProtocolCommentsForm(forms.ModelForm):
         widgets = {   
            'draftprotocol': forms.HiddenInput(),
         }
-          
+
+Poll_ChoiceFormSet = inlineformset_factory(Poll,  Poll_Choice,extra=1)
+
+class PollForm(forms.ModelForm):
+    class Meta:
+        model =  Poll
+        fields = [
+                'question',
+                'polltext',
+                'pub_date',
+                'closing_date',
+                'userspoll',
+                'groupspoll',
+                'login_required',
+                       ]
+        widgets = {
+            'pub_date': AdminDateWidget(),
+            'closing_date': AdminDateWidget(),
+        }          
+               
+        
 class EmailUtilityMessageForm(forms.ModelForm):
 
     class Meta:
@@ -437,3 +457,4 @@ class NotificationMessageRelateForm(forms.ModelForm):
            'partners', 
            'notifysecretariat',
            ]
+      
