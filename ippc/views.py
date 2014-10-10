@@ -322,12 +322,12 @@ class PublicationFilesListView(ListView):
             
             
             
-def send_notification_message(id,content_type,title,url):
+def send_notification_message(newitem,id,content_type,title,url):
     """ send_notification_message """
     notify_instance = get_object_or_404(NotificationMessageRelate, object_id=id,content_type__pk=content_type.id,)
     
     if notify_instance.notify:
-        print("send!!!")
+        #print("send!!!")
         emailto_all = ['']
         for cn in notify_instance.countries.all():
             countryo = get_object_or_404(CountryPage, page_ptr_id=cn.id)
@@ -338,13 +338,18 @@ def send_notification_message(id,content_type,title,url):
             user_obj=User.objects.get(id=countryo.contact_point_id)
             emailto_all.append(str(user_obj.email))
         if notify_instance.notifysecretariat :
-            print("sec!!!")
+            #print("sec!!!")
             emailto_all.append(str('ippc@fao.org'))
         print(emailto_all)
+        subject=''
+        if newitem:
+            subject='ADDED new content: ' +title
+        else:    
+            subject='UPDATE to: ' +title
         itemllink="https://www.ippc.int/countries/"+url
-        textmessage ='<table bgcolor="#FFFFFF" cellspacing="2" cellpadding="2" valign="top" width="100%" style="border-bottom: 1px solid #10501F;border-top: 1px solid #10501F;border-left: 1px solid #10501F;border-right: 1px solid #10501F"> <tr><td width="100%" bgcolor="#FFFFFF">Please be informed that the following information has been updated on the <b>International Phytosanitary Portal:</b> '+title+'-'+itemllink+'</td></tr><tr bgcolor="#FFFFFF"><td bgcolor="#FFFFFF"></td></tr><tr><td width="100%" bgcolor="#FFFFFF">If you no longer wish to receive these notifications, please notify this country\'s IPPC Contact Point.</td></tr></table>'
-
-        message = mail.EmailMessage('UPDATE to: ' +title,textmessage,'paola.sentinelli@gmail.com',#from
+        textmessage ='<table bgcolor="#FFFFFF" cellspacing="2" cellpadding="2" valign="top" width="100%" style="border-bottom: 1px solid #10501F;border-top: 1px solid #10501F;border-left: 1px solid #10501F;border-right: 1px solid #10501F"> <tr><td width="100%" bgcolor="#FFFFFF">Please be informed that the following information has been added/updated on the <b>International Phytosanitary Portal:</b><br>'+title+' ('+itemllink+')</td></tr><tr bgcolor="#FFFFFF"><td bgcolor="#FFFFFF"></td></tr><tr><td width="100%" bgcolor="#FFFFFF">If you no longer wish to receive these notifications, please notify this country\'s IPPC Contact Point.</td></tr></table>'
+        
+        message = mail.EmailMessage(subject,textmessage,'paola.sentinelli@gmail.com',#from
             ['paola.sentinelli@fao.org',], ['paola.sentinelli@gmail.com'])#emailto_all for PROD, in TEST all to paola#
         print(textmessage)
         message.content_subtype = "html" 
@@ -405,7 +410,7 @@ def pest_report_create(request, country):
             u_form.save()
             content_type = ContentType.objects.get_for_model(new_pest_report)
        
-            send_notification_message(new_pest_report.id,content_type,new_pest_report.title,user_country_slug+'/pestreports/'+str(new_pest_report.publish_date.strftime("%Y"))+'/'+str(new_pest_report.publish_date.strftime("%m"))+'/'+new_pest_report.slug+'/')
+            send_notification_message(true,new_pest_report.id,content_type,new_pest_report.title,user_country_slug+'/pestreports/'+str(new_pest_report.publish_date.strftime("%Y"))+'/'+str(new_pest_report.publish_date.strftime("%m"))+'/'+new_pest_report.slug+'/')
             
             info(request, _("Successfully created pest report."))
             
@@ -488,7 +493,7 @@ def pest_report_edit(request, country, id=None, template_name='countries/pest_re
             f_form.save()
             u_form.instance = pest_report
             u_form.save()
-            send_notification_message(id,content_type,pest_report.title,user_country_slug+'/pestreports/'+str(pest_report.publish_date.strftime("%Y"))+'/'+str(pest_report.publish_date.strftime("%m"))+'/'+pest_report.slug+'/')
+            send_notification_message(false,id,content_type,pest_report.title,user_country_slug+'/pestreports/'+str(pest_report.publish_date.strftime("%Y"))+'/'+str(pest_report.publish_date.strftime("%m"))+'/'+pest_report.slug+'/')
             
             # If the save was successful, success message and redirect to another page
             # info(request, _("Successfully updated pest report."))
@@ -620,7 +625,7 @@ def reporting_obligation_create(request, country,type):
             
             content_type = ContentType.objects.get_for_model(new_reporting_obligation)
        
-            send_notification_message(new_reporting_obligation.id,content_type,new_reporting_obligation.title,user_country_slug+'/reportingobligation/'+str(new_reporting_obligation.publish_date.strftime("%Y"))+'/'+str(new_reporting_obligation.publish_date.strftime("%m"))+'/'+new_reporting_obligation.slug+'/')
+            send_notification_message(true,new_reporting_obligation.id,content_type,new_reporting_obligation.title,user_country_slug+'/reportingobligation/'+str(new_reporting_obligation.publish_date.strftime("%Y"))+'/'+str(new_reporting_obligation.publish_date.strftime("%m"))+'/'+new_reporting_obligation.slug+'/')
             
             info(request, _("Successfully created Reporting obligation."))
             return redirect("reporting-obligation-detail", country=user_country_slug, year=new_reporting_obligation.publish_date.strftime("%Y"), month=new_reporting_obligation.publish_date.strftime("%m"), slug=new_reporting_obligation.slug)
@@ -689,7 +694,7 @@ def reporting_obligation_edit(request, country, id=None, template_name='countrie
             u_form.instance = reporting_obligation
             u_form.save()
             # If the save was successful, success message and redirect to another page
-            send_notification_message(id,content_type,reporting_obligation.title,user_country_slug+'/reportingobligation/'+str(reporting_obligation.publish_date.strftime("%Y"))+'/'+str(reporting_obligation.publish_date.strftime("%m"))+'/'+reporting_obligation.slug+'/')
+            send_notification_message(false,id,content_type,reporting_obligation.title,user_country_slug+'/reportingobligation/'+str(reporting_obligation.publish_date.strftime("%Y"))+'/'+str(reporting_obligation.publish_date.strftime("%m"))+'/'+reporting_obligation.slug+'/')
             
             info(request, _("Successfully updated Reporting obligation."))
             return redirect("reporting-obligation-detail", country=user_country_slug, year=reporting_obligation.publish_date.strftime("%Y"), month=reporting_obligation.publish_date.strftime("%m"), slug=reporting_obligation.slug)
@@ -787,7 +792,7 @@ def event_reporting_create(request, country,type):
             u_form.instance = new_event_reporting
             u_form.save()
             content_type = ContentType.objects.get_for_model(new_event_reporting)
-            send_notification_message(new_event_reporting.id,content_type,new_event_reporting.title,user_country_slug+'/eventreporting/'+str(new_event_reporting.publish_date.strftime("%Y"))+'/'+str(new_event_reporting.publish_date.strftime("%m"))+'/'+new_event_reporting.slug+'/')
+            send_notification_message(true,new_event_reporting.id,content_type,new_event_reporting.title,user_country_slug+'/eventreporting/'+str(new_event_reporting.publish_date.strftime("%Y"))+'/'+str(new_event_reporting.publish_date.strftime("%m"))+'/'+new_event_reporting.slug+'/')
             info(request, _("Successfully added Event reporting."))
             return redirect("event-reporting-detail", country=user_country_slug, year=new_event_reporting.publish_date.strftime("%Y"), month=new_event_reporting.publish_date.strftime("%m"), slug=new_event_reporting.slug)
         else:
@@ -857,7 +862,7 @@ def event_reporting_edit(request, country, id=None, template_name='countries/eve
             f_form.save()
             u_form.instance = event_reporting
             u_form.save()
-            send_notification_message(id,content_type,event_reporting.title,user_country_slug+'/eventreporting/'+str(event_reporting.publish_date.strftime("%Y"))+'/'+str(event_reporting.publish_date.strftime("%m"))+'/'+event_reporting.slug+'/')
+            send_notification_message(false,id,content_type,event_reporting.title,user_country_slug+'/eventreporting/'+str(event_reporting.publish_date.strftime("%Y"))+'/'+str(event_reporting.publish_date.strftime("%m"))+'/'+event_reporting.slug+'/')
             
             info(request, _("Successfully updated Event reporting."))
             return redirect("event-reporting-detail", country=user_country_slug, year=event_reporting.publish_date.strftime("%Y"), month=event_reporting.publish_date.strftime("%m"), slug=event_reporting.slug)
@@ -1722,7 +1727,7 @@ def pfa_create(request, country):
             u_form.instance = new_pfa
             u_form.save()
             content_type = ContentType.objects.get_for_model(new_pfa)
-            send_notification_message(new_pfa.id,content_type,new_pfa.title,user_country_slug+'/pestfreeareas/'+str(new_pfa.publish_date.strftime("%Y"))+'/'+str(new_pfa.publish_date.strftime("%m"))+'/'+new_pfa.slug+'/')
+            send_notification_message(true,new_pfa.id,content_type,new_pfa.title,user_country_slug+'/pestfreeareas/'+str(new_pfa.publish_date.strftime("%Y"))+'/'+str(new_pfa.publish_date.strftime("%m"))+'/'+new_pfa.slug+'/')
            
             info(request, _("Successfully created PestFreeArea."))
             
@@ -1795,7 +1800,7 @@ def pfa_edit(request, country, id=None, template_name='countries/pfa_edit.html')
             u_form.instance = pfa
             u_form.save()
             
-            send_notification_message(id,content_type,pfa.title,user_country_slug+'/pestfreeareas/'+str(pfa.publish_date.strftime("%Y"))+'/'+str(pfa.publish_date.strftime("%m"))+'/'+pfa.slug+'/')
+            send_notification_message(false,id,content_type,pfa.title,user_country_slug+'/pestfreeareas/'+str(pfa.publish_date.strftime("%Y"))+'/'+str(pfa.publish_date.strftime("%m"))+'/'+pfa.slug+'/')
             # If the save was successful, success message and redirect to another page
             # info(request, _("Successfully updated pest report."))
             return redirect("pfa-detail", country=user_country_slug, year=pfa.publish_date.strftime("%Y"), month=pfa.publish_date.strftime("%m"), slug=pfa.slug)
@@ -1892,7 +1897,7 @@ def implementationispm_create(request, country):
             u_form.instance = new_implementationispm
             u_form.save()
             content_type = ContentType.objects.get_for_model(new_implementationispm)
-            send_notification_message(new_implementationispm.id,content_type,new_implementationispm.title,user_country_slug+'/implementationispm/'+str(new_implementationispm.publish_date.strftime("%Y"))+'/'+str(new_implementationispm.publish_date.strftime("%m"))+'/'+new_implementationispm.slug+'/')
+            send_notification_message(true,new_implementationispm.id,content_type,new_implementationispm.title,user_country_slug+'/implementationispm/'+str(new_implementationispm.publish_date.strftime("%Y"))+'/'+str(new_implementationispm.publish_date.strftime("%m"))+'/'+new_implementationispm.slug+'/')
             info(request, _("Successfully created implementationispm."))
             
             return redirect("implementationispm-detail", country=user_country_slug, year=new_implementationispm.publish_date.strftime("%Y"), month=new_implementationispm.publish_date.strftime("%m"), slug=new_implementationispm.slug)
@@ -1962,7 +1967,7 @@ def implementationispm_edit(request, country, id=None, template_name='countries/
             f_form.save()
             u_form.instance = implementationispm
             u_form.save()
-            send_notification_message(id,content_type,implementationispm.title,user_country_slug+'/implementationispm/'+str(implementationispm.publish_date.strftime("%Y"))+'/'+str(implementationispm.publish_date.strftime("%m"))+'/'+implementationispm.slug+'/')
+            send_notification_message(false,id,content_type,implementationispm.title,user_country_slug+'/implementationispm/'+str(implementationispm.publish_date.strftime("%Y"))+'/'+str(implementationispm.publish_date.strftime("%m"))+'/'+implementationispm.slug+'/')
             
             # If the save was successful, success message and redirect to another page
             # info(request, _("Successfully updated pest report."))
