@@ -18,7 +18,7 @@ PartnersWebsite,PartnersWebsiteUrl,\
 PartnersPublication,PartnersPublicationFile,PartnersPublicationUrl,\
 PartnersNews,PartnersNewsFile,PartnersNewsUrl, \
 CountryNews,CountryNewsFile,CountryNewsUrl, EmailUtilityMessage, EmailUtilityMessageFile,\
-DraftProtocol,DraftProtocolFile,DraftProtocolComments
+DraftProtocol,DraftProtocolFile,DraftProtocolComments,NotificationMessageRelate
 
 from django.contrib.auth.models import User,Group
 from django.forms.models import inlineformset_factory
@@ -410,7 +410,6 @@ class DraftProtocolCommentsForm(forms.ModelForm):
            'draftprotocol': forms.HiddenInput(),
         }
           
-       
 class EmailUtilityMessageForm(forms.ModelForm):
 
     class Meta:
@@ -423,13 +422,18 @@ class EmailUtilityMessageForm(forms.ModelForm):
            'users',
            ]
        
-        exclude = ( 'date','sent', 'groups',)
-       
-#        widgets = {
-#            'groups': forms.CheckboxSelectMultiple()
-#     }  
-     
-#  
+        exclude = ( 'date','sent', 'groups',)       
 EmailUtilityMessageFileFormSet = inlineformset_factory(EmailUtilityMessage,  EmailUtilityMessageFile,extra=1)
 
-    
+
+
+
+class NotificationMessageRelateForm(forms.ModelForm):
+    class Meta:
+        model =  NotificationMessageRelate
+        fields = [
+           'notify',
+           'countries',
+           'partners', 
+           'notifysecretariat',
+           ]

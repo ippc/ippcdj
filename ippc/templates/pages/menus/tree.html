@@ -80,16 +80,40 @@
               {% endif %}
          
          
-     {% else %}    <a href="{{ page.get_absolute_url }}"> 
-        {# {% with page.richtextpage|get_object_translation as translated_page %}{{ translated_page.title|safe }}{% endwith %} #}
-        
-        {% with page.richtextpage|get_object_translation as translated_page %}
+     {% else %}    
+     <a href="{{ page.get_absolute_url }}"> 
+         {% if page.content_model == 'publicationlibrary'%}
+            {% with page.publicationlibrary|get_object_translation as translated_page %}
         {% if translated_page.title %}
             {{ translated_page.title|safe }}
             {% else %}
             {{ page.title }}
         {% endif %}
-        {% endwith %} {% if page.has_children_in_menu %}<i class="icon-plus"> </i> {% endif %}
+        {% endwith %}
+         {% elif page.content_model == 'richtextpage'%}
+            {% with page.richtextpage|get_object_translation as translated_page %}
+        {% if translated_page.title %}
+            {{ translated_page.title|safe }}
+            {% else %}
+            {{ page.title }}
+        {% endif %}
+        {% endwith %}
+         {% elif page.content_model == 'link'%}
+            {% with page.link|get_object_translation as translated_page %}
+        {% if translated_page.title %}
+            {{ translated_page.title|safe }}
+            {% else %}
+            {{ page.title }}
+        {% endif %}
+        {% endwith %}
+         {% else %}
+         {{ page.title }}
+        {% endif %}
+        
+        
+        
+        
+      {% if page.has_children_in_menu %}<i class="icon-plus"> </i> {% endif %}
     </a>{% endif %}
     {# wrap the next line with 'if page.is_current_or_ascendant' #}
     {# to only show child pages in the menu for the current page #}

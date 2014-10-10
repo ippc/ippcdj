@@ -8,7 +8,7 @@ from django.conf.urls import patterns, include, url
 from django.contrib import admin
 admin.autodiscover()
 from .ippc.views import IppcUserProfileDetailView,profile_update, PestReportListView, PestReportHiddenListView,\
-PestReportDetailView, CountryView,PartnersView, pest_report_create, pest_report_edit, PublicationDetailView,\
+PestReportDetailView, CountryView,PartnersView, pest_report_create, pest_report_edit, PublicationDetailView,PublicationDetail2View,\
 PublicationListView,ReportingObligationListView, ReportingObligationDetailView,reporting_obligation_create, reporting_obligation_edit, \
 EventReportingListView, EventReportingDetailView,event_reporting_create, event_reporting_edit, \
 PestFreeAreaListView, PestFreeAreaDetailView,pfa_create, pfa_edit,\
@@ -184,6 +184,10 @@ urlpatterns = patterns("",
     url(r'^publications/(?P<pk>\d+)/$',
         view=PublicationDetailView.as_view(),
         name='publication-detail'),
+    # publication detail
+    url(r'^publications/(?P<slug>[\w-]+)/$',
+        view=PublicationDetail2View.as_view(),
+        name='publication-detail'),    
     #-------------------------------------------#
   # publication list files
     url(r'^publications/(?P<id>\d+)/files/$',

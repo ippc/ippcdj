@@ -74,7 +74,7 @@
  
     <tr>
       <td><a href="{% url 'reporting-obligation-detail' object.country.country_slug object.publish_date|date:'Y' object.publish_date|date:'m'  object.slug %}">{{ object.title }}</a></td>
-      <td><a href="{% url 'reporting-obligation-detail' object.country.country_slug object.publish_date|date:'Y' object.publish_date|date:'m'  object.slug %}">{{ object.publish_date|date:"d M Y" }}</a>
+      <td><a href="{% url 'reporting-obligation-detail' object.country.country_slug object.publish_date|date:'Y' object.publish_date|date:'m'  object.slug %}">{{ object.publication_date|date:"d M Y" }}</a>
 
         {% if user.is_superuser %} 
             <a class="small pull-right" href="/admin/ippc/reportingobligation/{{ object.id }}"><i class="icon-edit"></i> Edit as Admin</a><br>

@@ -73,9 +73,9 @@
 {% for blog_post in blog_posts.object_list %}
 {% block blog_post_list_post_title %}
 {% editable blog_post.title %}
-<h2>
+<h4>
     <a href="{{ blog_post.get_absolute_url }}">{{ blog_post.title }}</a>
-</h2>
+</h4>
 {% endeditable %}
 {% endblock %}
 {% block blog_post_list_post_metainfo %}

@@ -11,7 +11,7 @@ from django.contrib.auth.models import User,Group
 from django.contrib.auth.models import User,Group
 from .models import ContactType,PublicationLibrary,Publication,EppoCode,EmailUtilityMessage, EmailUtilityMessageFile, Poll_Choice, Poll,PollVotes, IppcUserProfile,\
 CountryPage,PartnersPage, PestStatus, PestReport, IS_PUBLIC, IS_HIDDEN, Publication,\
-DraftProtocol,DraftProtocolComments,\
+DraftProtocol,DraftProtocolComments,NotificationMessageRelate,\
 ReportingObligation, BASIC_REP_TYPE_CHOICES, EventReporting, EVT_REP_TYPE_CHOICES,Website,CnPublication,PartnersPublication,PartnersNews, PartnersWebsite,CountryNews, \
 PestFreeArea,ImplementationISPM,REGIONS, IssueKeywordsRelate,CommodityKeywordsRelate,EventreportingFile,ReportingObligation_File
 from mezzanine.core.models import Displayable, CONTENT_STATUS_DRAFT, CONTENT_STATUS_PUBLISHED
@@ -23,7 +23,7 @@ CnPublicationUrlFormSet,CnPublicationForm, CnPublicationFileFormSet,\
 PartnersPublicationUrlFormSet,PartnersPublicationForm, PartnersPublicationFileFormSet,\
 PartnersNewsUrlFormSet,PartnersNewsForm, PartnersNewsFileFormSet,PartnersWebsiteUrlFormSet,PartnersWebsiteForm,\
 EmailUtilityMessageForm,EmailUtilityMessageFileFormSet,\
-CountryNewsUrlFormSet,CountryNewsForm, CountryNewsFileFormSet,\
+CountryNewsUrlFormSet,CountryNewsForm, CountryNewsFileFormSet,NotificationMessageRelateForm,\
 DraftProtocolForm,  DraftProtocolFileFormSet,DraftProtocolCommentsForm,IppcUserProfileForm, UserForm
 
 from django.views.generic import ListView, MonthArchiveView, YearArchiveView, DetailView, TemplateView, CreateView
@@ -41,7 +41,7 @@ from django.forms.formsets import formset_factory
 from compiler.pyassem import order_blocks
 import time
 from datetime import datetime
-
+from django.contrib.contenttypes.models import ContentType
 def get_profile():
     return IppcUserProfile.objects.all()
 
@@ -222,6 +222,22 @@ class PublicationDetailView(DetailView):
         context['groups'] = publicationlibrary.groups
         context['login_required'] = publicationlibrary.login_required
         return context
+class PublicationDetail2View(DetailView):
+    """ Publication detail page """
+    model = Publication
+    context_object_name = 'publication'
+    template_name = 'pages/publication_detail.html'
+    queryset = Publication.objects.filter(status=IS_PUBLIC)
+    
+    def get_context_data(self, **kwargs): # http://stackoverflow.com/a/15515220
+        context = super(PublicationDetail2View, self).get_context_data(**kwargs)
+        publication = get_object_or_404(Publication, slug=self.kwargs['slug'])
+    
+        publicationlibrary = get_object_or_404(PublicationLibrary, id=publication.library_id)
+        context['users'] =publicationlibrary.users
+        context['groups'] = publicationlibrary.groups
+        context['login_required'] = publicationlibrary.login_required
+        return context
     
 import os
 import zipfile
@@ -303,7 +319,38 @@ class PublicationFilesListView(ListView):
         context['zip_all_s']=os.path.getsize(zip_all.filename)
         
         return context
+            
+            
+            
+def send_notification_message(id,content_type,title,url):
+    """ send_notification_message """
+    notify_instance = get_object_or_404(NotificationMessageRelate, object_id=id,content_type__pk=content_type.id,)
+    
+    if notify_instance.notify:
+        print("send!!!")
+        emailto_all = ['']
+        for cn in notify_instance.countries.all():
+            countryo = get_object_or_404(CountryPage, page_ptr_id=cn.id)
+            user_obj=User.objects.get(id=countryo.contact_point_id)
+            emailto_all.append(str(user_obj.email))
+        for partner in notify_instance.partners.all():
+            countryo = get_object_or_404(PartnersPage, page_ptr_id=partner.id)
+            user_obj=User.objects.get(id=countryo.contact_point_id)
+            emailto_all.append(str(user_obj.email))
+        if notify_instance.notifysecretariat :
+            print("sec!!!")
+            emailto_all.append(str('ippc@fao.org'))
+        print(emailto_all)
+        itemllink="https://www.ippc.int/countries/"+url
+        textmessage ='<table bgcolor="#FFFFFF" cellspacing="2" cellpadding="2" valign="top" width="100%" style="border-bottom: 1px solid #10501F;border-top: 1px solid #10501F;border-left: 1px solid #10501F;border-right: 1px solid #10501F"> <tr><td width="100%" bgcolor="#FFFFFF">Please be informed that the following information has been updated on the <b>International Phytosanitary Portal:</b> '+title+'-'+itemllink+'</td></tr><tr bgcolor="#FFFFFF"><td bgcolor="#FFFFFF"></td></tr><tr><td width="100%" bgcolor="#FFFFFF">If you no longer wish to receive these notifications, please notify this country\'s IPPC Contact Point.</td></tr></table>'
 
+        message = mail.EmailMessage('UPDATE to: ' +title,textmessage,'paola.sentinelli@gmail.com',#from
+            ['paola.sentinelli@fao.org',], ['paola.sentinelli@gmail.com'])#emailto_all for PROD, in TEST all to paola#
+        print(textmessage)
+        message.content_subtype = "html" 
+        #sent =message.send()
+   
+ 
 @login_required
 @permission_required('ippc.add_pestreport', login_url="/accounts/login/")
 def pest_report_create(request, country):
@@ -316,6 +363,7 @@ def pest_report_create(request, country):
     form = PestReportForm(request.POST, request.FILES)
     issueform =IssueKeywordsRelateForm(request.POST)
     commodityform =CommodityKeywordsRelateForm(request.POST)
+    notifyrelateform =NotificationMessageRelateForm(request.POST)
         
     countryo = get_object_or_404(CountryPage, name=country)
     numberR=PestReport.objects.filter(country__country_slug=country).count()
@@ -324,7 +372,7 @@ def pest_report_create(request, country):
     if numberR<10 :
         pestnumber='0'+pestnumber
     report_number_val=countryo.iso3+'-'+pestnumber+'/1'
-    print   (report_number_val)     
+    #print   (report_number_val)     
    
     if request.method == "POST":
          f_form = PestReportFileFormSet(request.POST, request.FILES)
@@ -346,10 +394,18 @@ def pest_report_create(request, country):
             commodity_instance.save()
             commodityform.save_m2m()
             
+            notify_instance = notifyrelateform.save(commit=False)
+            notify_instance.content_object = new_pest_report
+            notify_instance.save()
+            notifyrelateform.save_m2m()
+            
             f_form.instance = new_pest_report
             f_form.save()
             u_form.instance = new_pest_report
             u_form.save()
+            
+            send_notification_message(id,content_type,new_pest_report.title,user_country_slug+'/pestreports/'+str(new_pest_report.publish_date.strftime("%Y"))+'/'+str(new_pest_report.publish_date.strftime("%m"))+'/'+new_pest_report.slug+'/')
+            
             info(request, _("Successfully created pest report."))
             
             if new_pest_report.status == CONTENT_STATUS_DRAFT:
@@ -357,16 +413,18 @@ def pest_report_create(request, country):
             else:
                 return redirect("pest-report-detail", country=user_country_slug, year=new_pest_report.publish_date.strftime("%Y"), month=new_pest_report.publish_date.strftime("%m"), slug=new_pest_report.slug)
          else:
-             return render_to_response('countries/pest_report_create.html', {'form': form,'f_form': f_form,'u_form': u_form,'issueform':issueform, 'commodityform':commodityform},
+             return render_to_response('countries/pest_report_create.html', {'form': form,'f_form': f_form,'u_form': u_form,'issueform':issueform, 'commodityform':commodityform,'notifyrelateform':notifyrelateform},
              context_instance=RequestContext(request))
        
     else:
         form = PestReportForm(initial={'country': country}, instance=PestReport())
         issueform =IssueKeywordsRelateForm(request.POST)
         commodityform =CommodityKeywordsRelateForm(request.POST)
+        notifyrelateform =NotificationMessageRelateForm(request.POST)
+   
         f_form =PestReportFileFormSet()
         u_form =PestReportUrlFormSet()
-    return render_to_response('countries/pest_report_create.html', {'form': form,'f_form': f_form,'u_form':u_form,'issueform':issueform, 'commodityform':commodityform},
+    return render_to_response('countries/pest_report_create.html', {'form': form,'f_form': f_form,'u_form':u_form,'issueform':issueform, 'commodityform':commodityform,'notifyrelateform':notifyrelateform},
         context_instance=RequestContext(request))
 
 
@@ -387,6 +445,9 @@ def pest_report_edit(request, country, id=None, template_name='countries/pest_re
         pest_report = get_object_or_404(PestReport, country=country, pk=id)
         issues = get_object_or_404(IssueKeywordsRelate, pk=pest_report.issuename.all()[0].id)
         commodities = get_object_or_404(CommodityKeywordsRelate, pk=pest_report.commname.all()[0].id)
+       
+        content_type = ContentType.objects.get_for_model(pest_report)
+        notifications = get_object_or_404(NotificationMessageRelate, object_id=id,content_type__pk=content_type.id,)
         
         rep_num=pest_report.report_number
         indexof=rep_num.rfind('/')
@@ -402,6 +463,7 @@ def pest_report_edit(request, country, id=None, template_name='countries/pest_re
         form = PestReportForm(request.POST,  request.FILES, instance=pest_report)
         issueform =IssueKeywordsRelateForm(request.POST, instance=issues)
         commodityform =CommodityKeywordsRelateForm(request.POST, instance=commodities)
+        notifyrelateform =NotificationMessageRelateForm(request.POST,instance=notifications)
         f_form = PestReportFileFormSet(request.POST,  request.FILES,instance=pest_report)
         u_form =PestReportUrlFormSet(request.POST,  instance=pest_report)
         if form.is_valid() and f_form.is_valid() and u_form.is_valid():
@@ -416,10 +478,17 @@ def pest_report_edit(request, country, id=None, template_name='countries/pest_re
             commodity_instance.save()
             commodityform.save_m2m() 
             
+            notify_instance = notifyrelateform.save(commit=False)
+            notify_instance.content_object = pest_report
+            notify_instance.save()
+            notifyrelateform.save_m2m()
+            
             f_form.instance = pest_report
             f_form.save()
             u_form.instance = pest_report
             u_form.save()
+            send_notification_message(id,content_type,pest_report.title,user_country_slug+'/pestreports/'+str(pest_report.publish_date.strftime("%Y"))+'/'+str(pest_report.publish_date.strftime("%m"))+'/'+pest_report.slug+'/')
+            
             # If the save was successful, success message and redirect to another page
             # info(request, _("Successfully updated pest report."))
             if pest_report.status == CONTENT_STATUS_DRAFT:
@@ -431,10 +500,11 @@ def pest_report_edit(request, country, id=None, template_name='countries/pest_re
         form = PestReportForm(instance=pest_report)
         issueform =IssueKeywordsRelateForm(instance=issues)
         commodityform =CommodityKeywordsRelateForm(instance=commodities)
+        notifyrelateform =NotificationMessageRelateForm(instance=notifications)
         f_form = PestReportFileFormSet(instance=pest_report)
         u_form = PestReportUrlFormSet(instance=pest_report)
     return render_to_response(template_name, {
-        'form': form,'f_form':f_form,'u_form':u_form,'issueform': issueform,'commodityform': commodityform,  "pest_report": pest_report
+        'form': form,'f_form':f_form,'u_form':u_form,'issueform': issueform,'commodityform': commodityform,  "pest_report": pest_report,'notifyrelateform':notifyrelateform
     }, context_instance=RequestContext(request))
 
 class ReportingObligationListView(ListView):
@@ -515,7 +585,8 @@ def reporting_obligation_create(request, country,type):
     form = ReportingObligationForm(request.POST, request.FILES)
     issueform =IssueKeywordsRelateForm(request.POST)
     commodityform =CommodityKeywordsRelateForm(request.POST)
-    
+    notifyrelateform =NotificationMessageRelateForm(request.POST)
+     
     if request.method == "POST":
          f_form = ReportingoblicationFileFormSet(request.POST, request.FILES)
          u_form = ReportingObligationUrlFormSet(request.POST)
@@ -536,23 +607,31 @@ def reporting_obligation_create(request, country,type):
             commodity_instance.save()
             commodityform.save_m2m()
             
+            notify_instance = notifyrelateform.save(commit=False)
+            notify_instance.content_object = new_reporting_obligation
+            notify_instance.save()
+            notifyrelateform.save_m2m()
+            
             f_form.instance = new_reporting_obligation
             f_form.save()
             u_form.instance = new_reporting_obligation
             u_form.save()
+            send_notification_message(id,content_type,new_reporting_obligation.title,user_country_slug+'/reportingobligation/'+str(new_reporting_obligation.publish_date.strftime("%Y"))+'/'+str(new_reporting_obligation.publish_date.strftime("%m"))+'/'+new_reporting_obligation.slug+'/')
+            
             info(request, _("Successfully created Reporting obligation."))
             return redirect("reporting-obligation-detail", country=user_country_slug, year=new_reporting_obligation.publish_date.strftime("%Y"), month=new_reporting_obligation.publish_date.strftime("%m"), slug=new_reporting_obligation.slug)
          else:
-            return render_to_response('countries/reporting_obligation_create.html', {'form': form,'f_form': f_form,'u_form': u_form,'issueform':issueform, 'commodityform':commodityform},
+            return render_to_response('countries/reporting_obligation_create.html', {'form': form,'f_form': f_form,'u_form': u_form,'issueform':issueform, 'commodityform':commodityform,'notifyrelateform':notifyrelateform},
              context_instance=RequestContext(request))
     else:
         form = ReportingObligationForm(initial={'country': country,'reporting_obligation_type': type}, instance=ReportingObligation())
         issueform =IssueKeywordsRelateForm(request.POST)
         commodityform =CommodityKeywordsRelateForm(request.POST)
+        notifyrelateform =NotificationMessageRelateForm(request.POST)
         f_form =ReportingoblicationFileFormSet()
         u_form =ReportingObligationUrlFormSet()
 
-    return render_to_response('countries/reporting_obligation_create.html', {'form': form  ,'f_form': f_form,'u_form': u_form,'issueform':issueform, 'commodityform':commodityform},
+    return render_to_response('countries/reporting_obligation_create.html', {'form': form  ,'f_form': f_form,'u_form': u_form,'issueform':issueform, 'commodityform':commodityform,'notifyrelateform':notifyrelateform},
         context_instance=RequestContext(request))
         
         
@@ -571,6 +650,9 @@ def reporting_obligation_edit(request, country, id=None, template_name='countrie
         reporting_obligation = get_object_or_404(ReportingObligation, country=country, pk=id)
         issues = get_object_or_404(IssueKeywordsRelate, pk=reporting_obligation.issuename.all()[0].id)
         commodities = get_object_or_404(CommodityKeywordsRelate, pk=reporting_obligation.commname.all()[0].id)
+        content_type = ContentType.objects.get_for_model(reporting_obligation)
+        notifications = get_object_or_404(NotificationMessageRelate, object_id=id,content_type__pk=content_type.id,)
+        
     else:
         reporting_obligation = ReportingObligation(author=request.user)
       
@@ -578,6 +660,7 @@ def reporting_obligation_edit(request, country, id=None, template_name='countrie
         form = ReportingObligationForm(request.POST, request.FILES, instance=reporting_obligation)
         issueform =IssueKeywordsRelateForm(request.POST, instance=issues)
         commodityform =CommodityKeywordsRelateForm(request.POST, instance=commodities)
+        notifyrelateform =NotificationMessageRelateForm(request.POST,instance=notifications)
         f_form = ReportingoblicationFileFormSet(request.POST,  request.FILES,instance=reporting_obligation)
         u_form =ReportingObligationUrlFormSet(request.POST,instance=reporting_obligation)
         if form.is_valid() and f_form.is_valid() and u_form.is_valid():
@@ -592,12 +675,18 @@ def reporting_obligation_edit(request, country, id=None, template_name='countrie
             commodity_instance.save()
             commodityform.save_m2m() 
             
+            notify_instance = notifyrelateform.save(commit=False)
+            notify_instance.content_object = reporting_obligation
+            notify_instance.save()
+            notifyrelateform.save_m2m()
+            
             f_form.instance = reporting_obligation
             f_form.save()
             u_form.instance = reporting_obligation
             u_form.save()
             # If the save was successful, success message and redirect to another page
-
+            send_notification_message(id,content_type,reporting_obligation.title,user_country_slug+'/reportingobligation/'+str(reporting_obligation.publish_date.strftime("%Y"))+'/'+str(reporting_obligation.publish_date.strftime("%m"))+'/'+reporting_obligation.slug+'/')
+            
             info(request, _("Successfully updated Reporting obligation."))
             return redirect("reporting-obligation-detail", country=user_country_slug, year=reporting_obligation.publish_date.strftime("%Y"), month=reporting_obligation.publish_date.strftime("%m"), slug=reporting_obligation.slug)
 
@@ -605,10 +694,11 @@ def reporting_obligation_edit(request, country, id=None, template_name='countrie
         form = ReportingObligationForm(instance=reporting_obligation)
         issueform =IssueKeywordsRelateForm(instance=issues)
         commodityform =CommodityKeywordsRelateForm(instance=commodities)
+        notifyrelateform =NotificationMessageRelateForm(instance=notifications)
         f_form = ReportingoblicationFileFormSet(instance=reporting_obligation)
         u_form = ReportingObligationUrlFormSet(instance=reporting_obligation)
     return render_to_response(template_name, {
-        'form': form,'f_form':f_form,'u_form': u_form,'issueform': issueform,'commodityform': commodityform,  "reporting_obligation": reporting_obligation
+        'form': form,'f_form':f_form,'u_form': u_form,'issueform': issueform,'commodityform': commodityform,  "reporting_obligation": reporting_obligation,'notifyrelateform':notifyrelateform
     }, context_instance=RequestContext(request))
 
 
@@ -661,6 +751,7 @@ def event_reporting_create(request, country,type):
     form = EventReportingForm(request.POST or None, request.FILES)
     issueform =IssueKeywordsRelateForm(request.POST)
     commodityform =CommodityKeywordsRelateForm(request.POST)
+    notifyrelateform =NotificationMessageRelateForm(request.POST)
     
     if request.method == "POST":
         f_form = EventreportingFileFormSet(request.POST, request.FILES)
@@ -681,15 +772,21 @@ def event_reporting_create(request, country,type):
             commodity_instance.content_object = new_event_reporting
             commodity_instance.save()
             commodityform.save_m2m()      
-              
+            
+            notification_instance = notifyrelateform.save(commit=False)
+            notification_instance.content_object = new_event_reporting
+            notification_instance.save()
+            notifyrelateform.save_m2m()
+            
             f_form.instance = new_event_reporting
             f_form.save()
             u_form.instance = new_event_reporting
             u_form.save()
+            send_notification_message(id,content_type,new_event_reporting.title,user_country_slug+'/eventreporting/'+str(new_event_reporting.publish_date.strftime("%Y"))+'/'+str(new_event_reporting.publish_date.strftime("%m"))+'/'+new_event_reporting.slug+'/')
             info(request, _("Successfully added Event reporting."))
             return redirect("event-reporting-detail", country=user_country_slug, year=new_event_reporting.publish_date.strftime("%Y"), month=new_event_reporting.publish_date.strftime("%m"), slug=new_event_reporting.slug)
         else:
-            return render_to_response('countries/event_reporting_create.html', {'form': form,'f_form': f_form,'u_form': u_form,'issueform':issueform, 'commodityform':commodityform},#'entryform': entryform,'docform':myformset,
+            return render_to_response('countries/event_reporting_create.html', {'form': form,'f_form': f_form,'u_form': u_form,'issueform':issueform, 'commodityform':commodityform,'notifyrelateform': notifyrelateform,},#'docform':myformset,
              context_instance=RequestContext(request))
 
           
@@ -698,10 +795,11 @@ def event_reporting_create(request, country,type):
         form = EventReportingForm(initial={'country': country,'event_rep_type': type}, instance=EventReporting())
         issueform =IssueKeywordsRelateForm(request.POST)
         commodityform =CommodityKeywordsRelateForm(request.POST)
+        notifyrelateform =NotificationMessageRelateForm(request.POST)
         f_form = EventreportingFileFormSet()
         u_form = EventreportingUrlFormSet()
     
-    return render_to_response('countries/event_reporting_create.html', {'form': form,'f_form': f_form,'u_form': u_form,'issueform':issueform, 'commodityform':commodityform},
+    return render_to_response('countries/event_reporting_create.html', {'form': form,'f_form': f_form,'u_form': u_form,'issueform':issueform, 'commodityform':commodityform,'notifyrelateform': notifyrelateform,},
         context_instance=RequestContext(request))
 
         
@@ -719,6 +817,9 @@ def event_reporting_edit(request, country, id=None, template_name='countries/eve
         event_reporting = get_object_or_404(EventReporting, country=country, pk=id)
         issues = get_object_or_404(IssueKeywordsRelate, pk=event_reporting.issuename.all()[0].id)
         commodities = get_object_or_404(CommodityKeywordsRelate, pk=event_reporting.commname.all()[0].id)
+        content_type = ContentType.objects.get_for_model(event_reporting)
+        notifications = get_object_or_404(NotificationMessageRelate, object_id=id,content_type__pk=content_type.id,)
+     
     else:
         event_reporting = EventReporting(author=request.user)
       
@@ -726,6 +827,7 @@ def event_reporting_edit(request, country, id=None, template_name='countries/eve
         form = EventReportingForm(request.POST,  request.FILES, instance=event_reporting)
         issueform =IssueKeywordsRelateForm(request.POST,instance=issues)
         commodityform =CommodityKeywordsRelateForm(request.POST,instance=commodities)
+        notifyrelateform =NotificationMessageRelateForm(request.POST,instance=notifications)
         f_form = EventreportingFileFormSet(request.POST,  request.FILES,instance=event_reporting)
         u_form = EventreportingUrlFormSet(request.POST,  instance=event_reporting)
       
@@ -740,11 +842,18 @@ def event_reporting_edit(request, country, id=None, template_name='countries/eve
             commodity_instance.content_object = event_reporting
             commodity_instance.save()
             commodityform.save_m2m() 
-    
+       
+            notification_instance = notifyrelateform.save(commit=False)
+            notification_instance.content_object = event_reporting
+            notification_instance.save()
+            notifyrelateform.save_m2m()
+            
             f_form.instance = event_reporting
             f_form.save()
             u_form.instance = event_reporting
             u_form.save()
+            send_notification_message(id,content_type,event_reporting.title,user_country_slug+'/eventreporting/'+str(event_reporting.publish_date.strftime("%Y"))+'/'+str(event_reporting.publish_date.strftime("%m"))+'/'+event_reporting.slug+'/')
+            
             info(request, _("Successfully updated Event reporting."))
             return redirect("event-reporting-detail", country=user_country_slug, year=event_reporting.publish_date.strftime("%Y"), month=event_reporting.publish_date.strftime("%m"), slug=event_reporting.slug)
 
@@ -752,11 +861,12 @@ def event_reporting_edit(request, country, id=None, template_name='countries/eve
         form = EventReportingForm(instance=event_reporting)
         issueform =IssueKeywordsRelateForm(instance=issues)
         commodityform =CommodityKeywordsRelateForm(instance=commodities)
+        notifyrelateform =NotificationMessageRelateForm(instance=notifications)
         f_form = EventreportingFileFormSet(instance=event_reporting)
         u_form = EventreportingUrlFormSet( instance=event_reporting)
       
     return render_to_response(template_name, {
-        'form': form, 'f_form':f_form,'u_form': u_form,'issueform': issueform,  'commodityform': commodityform, "event_reporting": event_reporting
+        'form': form, 'f_form':f_form,'u_form': u_form,'issueform': issueform,  'commodityform': commodityform, "event_reporting": event_reporting,'notifyrelateform':notifyrelateform
     }, context_instance=RequestContext(request))
     
 
@@ -1574,7 +1684,8 @@ def pfa_create(request, country):
     form = PestFreeAreaForm(request.POST)
     issueform =IssueKeywordsRelateForm(request.POST)
     commodityform =CommodityKeywordsRelateForm(request.POST)
-   
+    notifyrelateform =NotificationMessageRelateForm(request.POST)
+     
     if request.method == "POST":
          f_form = PestFreeAreaFileFormSet(request.POST, request.FILES)
          u_form = PestFreeAreaUrlFormSet(request.POST)
@@ -1595,27 +1706,34 @@ def pfa_create(request, country):
             commodity_instance.save()
             commodityform.save_m2m() 
             
+            notify_instance = notifyrelateform.save(commit=False)
+            notify_instance.content_object = new_pfa
+            notify_instance.save()
+            notifyrelateform.save_m2m()
+            
             f_form.instance = new_pfa
             f_form.save()
             
             u_form.instance = new_pfa
             u_form.save()
         
-            
+            send_notification_message(id,content_type,new_pfa.title,user_country_slug+'/pestfreeareas/'+str(new_pfa.publish_date.strftime("%Y"))+'/'+str(new_pfa.publish_date.strftime("%m"))+'/'+new_pfa.slug+'/')
+           
             info(request, _("Successfully created PestFreeArea."))
             
             return redirect("pfa-detail", country=user_country_slug, year=new_pfa.publish_date.strftime("%Y"), month=new_pfa.publish_date.strftime("%m"), slug=new_pfa.slug)
          else:
-             return render_to_response('countries/pfa_create.html', {'form': form,'f_form': f_form,'u_form': u_form,'issueform':issueform, 'commodityform':commodityform},
+             return render_to_response('countries/pfa_create.html', {'form': form,'f_form': f_form,'u_form': u_form,'issueform':issueform, 'commodityform':commodityform,'notifyrelateform':notifyrelateform},
              context_instance=RequestContext(request))
     else:
         form = PestFreeAreaForm(initial={'country': country}, instance=PestFreeArea())
         issueform =IssueKeywordsRelateForm(request.POST)
         commodityform =CommodityKeywordsRelateForm(request.POST)
+        notifyrelateform =NotificationMessageRelateForm(request.POST)
         f_form =PestFreeAreaFileFormSet()
         u_form = PestFreeAreaUrlFormSet()
 
-    return render_to_response('countries/pfa_create.html', {'form': form  ,'f_form': f_form,'u_form': u_form,'issueform':issueform, 'commodityform':commodityform},
+    return render_to_response('countries/pfa_create.html', {'form': form  ,'f_form': f_form,'u_form': u_form,'issueform':issueform, 'commodityform':commodityform,'notifyrelateform':notifyrelateform},
         context_instance=RequestContext(request))
 
 
@@ -1634,6 +1752,8 @@ def pfa_edit(request, country, id=None, template_name='countries/pfa_edit.html')
         pfa = get_object_or_404(PestFreeArea, country=country, pk=id)
         issues = get_object_or_404(IssueKeywordsRelate, pk=pfa.issuename.all()[0].id)
         commodities = get_object_or_404(CommodityKeywordsRelate, pk=pfa.commname.all()[0].id)
+        content_type = ContentType.objects.get_for_model(pfa)
+        notifications = get_object_or_404(NotificationMessageRelate, object_id=id,content_type__pk=content_type.id,)
        
         # if pest_report.author != request.user:
         #     return HttpResponseForbidden()
@@ -1645,6 +1765,7 @@ def pfa_edit(request, country, id=None, template_name='countries/pfa_edit.html')
         form = PestFreeAreaForm(request.POST,  request.FILES, instance=pfa)
         issueform =IssueKeywordsRelateForm(request.POST, instance=issues)
         commodityform =CommodityKeywordsRelateForm(request.POST, instance=commodities)
+        notifyrelateform =NotificationMessageRelateForm(request.POST,instance=notifications)
         f_form = PestFreeAreaFileFormSet(request.POST,  request.FILES,instance=pfa)
         u_form = PestFreeAreaUrlFormSet(request.POST,  instance=pfa)
         if form.is_valid() and f_form.is_valid() and u_form.is_valid():
@@ -1659,10 +1780,17 @@ def pfa_edit(request, country, id=None, template_name='countries/pfa_edit.html')
             commodity_instance.save()
             commodityform.save_m2m() 
             
+            notify_instance = notifyrelateform.save(commit=False)
+            notify_instance.content_object = pfa
+            notify_instance.save()
+            notifyrelateform.save_m2m()
+            
             f_form.instance = pfa
             f_form.save()
             u_form.instance = pfa
             u_form.save()
+            
+            send_notification_message(id,content_type,pfa.title,user_country_slug+'/pestfreeareas/'+str(pfa.publish_date.strftime("%Y"))+'/'+str(pfa.publish_date.strftime("%m"))+'/'+pfa.slug+'/')
             # If the save was successful, success message and redirect to another page
             # info(request, _("Successfully updated pest report."))
             return redirect("pfa-detail", country=user_country_slug, year=pfa.publish_date.strftime("%Y"), month=pfa.publish_date.strftime("%m"), slug=pfa.slug)
@@ -1671,11 +1799,12 @@ def pfa_edit(request, country, id=None, template_name='countries/pfa_edit.html')
         form = PestFreeAreaForm(instance=pfa)
         issueform =IssueKeywordsRelateForm(instance=issues)
         commodityform =CommodityKeywordsRelateForm(instance=commodities)
+        notifyrelateform =NotificationMessageRelateForm(instance=notifications)
         f_form = PestFreeAreaFileFormSet(instance=pfa)
         u_form = PestFreeAreaUrlFormSet(instance=pfa)
         
     return render_to_response(template_name, {
-        'form': form,'f_form':f_form,'u_form':u_form,'issueform': issueform,'commodityform': commodityform,  "pfa": pfa
+        'form': form,'f_form':f_form,'u_form':u_form,'issueform': issueform,'commodityform': commodityform,  "pfa": pfa,'notifyrelateform':notifyrelateform
     }, context_instance=RequestContext(request))
     
 
@@ -1727,7 +1856,8 @@ def implementationispm_create(request, country):
     form = ImplementationISPMForm(request.POST)
     issueform =IssueKeywordsRelateForm(request.POST)
     commodityform =CommodityKeywordsRelateForm(request.POST)
-    
+    notifyrelateform =NotificationMessageRelateForm(request.POST)
+     
     if request.method == "POST":
         f_form =ImplementationISPMFileFormSet(request.POST, request.FILES)
         u_form =ImplementationISPMUrlFormSet(request.POST)
@@ -1747,25 +1877,31 @@ def implementationispm_create(request, country):
             commodity_instance.save()
             commodityform.save_m2m()
             
+            notify_instance = notifyrelateform.save(commit=False)
+            notify_instance.content_object = new_implementationispm
+            notify_instance.save()
+            notifyrelateform.save_m2m()
+            
             f_form.instance = new_implementationispm
             f_form.save()
             u_form.instance = new_implementationispm
             u_form.save()
-            
+            send_notification_message(id,content_type,new_implementationispm.title,user_country_slug+'/implementationispm/'+str(new_implementationispm.publish_date.strftime("%Y"))+'/'+str(new_implementationispm.publish_date.strftime("%m"))+'/'+new_implementationispm.slug+'/')
             info(request, _("Successfully created implementationispm."))
             
             return redirect("implementationispm-detail", country=user_country_slug, year=new_implementationispm.publish_date.strftime("%Y"), month=new_implementationispm.publish_date.strftime("%m"), slug=new_implementationispm.slug)
         else:
-             return render_to_response('countries/implementationispm_create.html', {'form': form,'f_form': f_form,'u_form': u_form,'issueform':issueform, 'commodityform':commodityform},
+             return render_to_response('countries/implementationispm_create.html', {'form': form,'f_form': f_form,'u_form': u_form,'issueform':issueform, 'commodityform':commodityform,'notifyrelateform':notifyrelateform},
              context_instance=RequestContext(request))
     else:
         form = ImplementationISPMForm(initial={'country': country}, instance=ImplementationISPM())
         issueform =IssueKeywordsRelateForm(request.POST)
         commodityform =CommodityKeywordsRelateForm(request.POST)
+        notifyrelateform =NotificationMessageRelateForm(request.POST)
         f_form =ImplementationISPMFileFormSet()
         u_form =ImplementationISPMUrlFormSet()
 
-    return render_to_response('countries/implementationispm_create.html', {'form': form  ,'f_form': f_form,'u_form': u_form,'issueform':issueform, 'commodityform':commodityform},
+    return render_to_response('countries/implementationispm_create.html', {'form': form  ,'f_form': f_form,'u_form': u_form,'issueform':issueform, 'commodityform':commodityform,'notifyrelateform':notifyrelateform},
         context_instance=RequestContext(request))
 
 
@@ -1784,6 +1920,8 @@ def implementationispm_edit(request, country, id=None, template_name='countries/
         implementationispm = get_object_or_404(ImplementationISPM, country=country, pk=id)
         issues = get_object_or_404(IssueKeywordsRelate, pk=implementationispm.issuename.all()[0].id)
         commodities = get_object_or_404(CommodityKeywordsRelate, pk=implementationispm.commname.all()[0].id)
+        content_type = ContentType.objects.get_for_model(implementationispm)
+        notifications = get_object_or_404(NotificationMessageRelate, object_id=id,content_type__pk=content_type.id,)
        
        # if pest_report.author != request.user:
         #     return HttpResponseForbidden()
@@ -1794,6 +1932,7 @@ def implementationispm_edit(request, country, id=None, template_name='countries/
         form = ImplementationISPMForm(request.POST,  request.FILES, instance=implementationispm)
         issueform =IssueKeywordsRelateForm(request.POST, instance=issues)
         commodityform =CommodityKeywordsRelateForm(request.POST, instance=commodities)
+        notifyrelateform =NotificationMessageRelateForm(request.POST,instance=notifications)
         f_form = ImplementationISPMFileFormSet(request.POST,  request.FILES,instance=implementationispm)
         u_form = ImplementationISPMUrlFormSet(request.POST,  instance=implementationispm)
         if form.is_valid() and f_form.is_valid() and u_form.is_valid():
@@ -1808,10 +1947,17 @@ def implementationispm_edit(request, country, id=None, template_name='countries/
             commodity_instance.save()
             commodityform.save_m2m() 
             
+            notify_instance = notifyrelateform.save(commit=False)
+            notify_instance.content_object = implementationispm
+            notify_instance.save()
+            notifyrelateform.save_m2m()
+            
             f_form.instance = implementationispm
             f_form.save()
             u_form.instance = implementationispm
             u_form.save()
+            send_notification_message(id,content_type,implementationispm.title,user_country_slug+'/implementationispm/'+str(implementationispm.publish_date.strftime("%Y"))+'/'+str(implementationispm.publish_date.strftime("%m"))+'/'+implementationispm.slug+'/')
+            
             # If the save was successful, success message and redirect to another page
             # info(request, _("Successfully updated pest report."))
             return redirect("implementationispm-detail", country=user_country_slug, year=implementationispm.publish_date.strftime("%Y"), month=implementationispm.publish_date.strftime("%m"), slug=implementationispm.slug)
@@ -1820,10 +1966,11 @@ def implementationispm_edit(request, country, id=None, template_name='countries/
         form = ImplementationISPMForm(instance=implementationispm)
         issueform =IssueKeywordsRelateForm(instance=issues)
         commodityform =CommodityKeywordsRelateForm(instance=commodities)
+        notifyrelateform =NotificationMessageRelateForm(instance=notifications)
         f_form = ImplementationISPMFileFormSet(instance=implementationispm)
         u_form = ImplementationISPMUrlFormSet(instance=implementationispm)
     return render_to_response(template_name, {
-        'form': form,'f_form':f_form,'u_form': u_form,'issueform': issueform,'commodityform': commodityform,  "implementationispm": implementationispm
+        'form': form,'f_form':f_form,'u_form': u_form,'issueform': issueform,'commodityform': commodityform,  "implementationispm": implementationispm,'notifyrelateform':notifyrelateform
     }, context_instance=RequestContext(request))
 
     #/**************************************************************/
@@ -2905,40 +3052,38 @@ class AdvancesSearchCNListView(ListView):
               tot_p+=p
               if p>0:
                 maparray.append([str('<a href="'+cn.country_slug+'/pestreports/">'+cn.name)+': '+str(p)+'</a>',str(cn.cn_lat),str(cn.cn_long)])
-              for pp in pests:
-                  e=EppoCode.objects.filter(codename=pp.pest_identity)
-                  if e:
-                    ecode=e[0].code
-                    codeparent=e[0].codeparent
-                    for h in range(1,10):
-                          e1=EppoCode.objects.filter(code=codeparent)
-                          if(e1.count()>0):
-                             if(e1[0].codeparent=='null'):
-                                   break
-                             else:
-                                  ecode=e1[0].code
-                                  codeparent=e1[0].codeparent
-                                  h=h+1
-                    #print('--->')
-                    #print(codeparent)
-                    aaa=arrayGen[codeparent]
-                    aaa+=str(pp.id)+'*'
-                    arrayGen[codeparent]=aaa
-                    #print(arrayGen[codeparent])
-                   # print('<---')
-            
-            datachart=''
-               
-            for h in arrayGen:
-                s=arrayGen[h].split(';');
-                values=s[1].split('*');
-                val=len(values)-1
-                perc=0
-                if tot_p>0:
-                    perc=(val*100/ tot_p)
-                datachart+= ' {  y: '+str(perc)+', legendText:"'+s[0]+'", label: "'+s[0]+' '+str(perc)+'%" },'
-            context['datachart']=datachart
+#              for pp in pests:
+#                  e=EppoCode.objects.filter(codename=pp.pest_identity)
+#                  if e:
+#                    ecode=e[0].code
+#                    codeparent=e[0].codeparent
+#                    for h in range(1,10):
+#                          e1=EppoCode.objects.filter(code=codeparent)
+#                          if(e1.count()>0):
+#                             if(e1[0].codeparent=='null'):
+#                                   break
+#                             else:
+#                                  ecode=e1[0].code
+#                                  codeparent=e1[0].codeparent
+#                                  h=h+1
+#                    
+#                    aaa=arrayGen[codeparent]
+#                    aaa+=str(pp.id)+'*'
+#                    arrayGen[codeparent]=aaa
+#                   
 #            
+#            datachart=''
+               
+#            for h in arrayGen:
+#                s=arrayGen[h].split(';');
+#                values=s[1].split('*');
+#                val=len(values)-1
+#                perc=0
+#                if tot_p>0:
+#                    perc=(val*100/ tot_p)
+#                datachart+= ' {  y: '+str(perc)+', legendText:"'+s[0]+'", label: "'+s[0]+' '+str(perc)+'%" },'
+#            context['datachart']=datachart
+##            
             context['map']=maparray
             
                 

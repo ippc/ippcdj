@@ -102,6 +102,107 @@ class CommodityKeywordsRelate(models.Model):
         blank=True, null=True)    
 
         
+
+
+CP_NCP_T_TYPE_0 = 'N/A'
+CP_NCP_T_TYPE_1 = 'CP'
+CP_NCP_T_TYPE_2 = 'NCP'
+CP_NCP_T_TYPE_3 = 'T'
+CP_NCP_TYPE_CHOICES = (
+    (CP_NCP_T_TYPE_1, _("Contracting party")),
+    (CP_NCP_T_TYPE_2, _("Non-Contracting party")),
+    (CP_NCP_T_TYPE_3, _("Territory")),
+)
+REGION_1 = 1
+REGION_2 = 2
+REGION_3 = 3
+REGION_4 = 4
+REGION_5 = 5
+REGION_6 = 6
+REGION_7 = 7
+REGIONS = (
+    (REGION_1, _("Africa")),
+    (REGION_2, _("Asia")),
+    (REGION_3, _("Europe")),
+    (REGION_4, _("Latin America and Caribbean")),
+    (REGION_5, _("Near East")),
+    (REGION_6, _("North America")),
+    (REGION_7, _("South West Pacific")),
+)
+
+
+
+class CountryPage(Page):
+    """ Country Pages with definable names, slugs, editors and contact point"""
+    class Meta:
+        verbose_name = _('Country Page')
+        verbose_name_plural = _('Country Pages')
+        ordering = ['name']
+
+    iso = models.CharField(max_length=2, unique=True, blank=True, null=True)
+    iso3 = models.CharField(max_length=3, unique=True, blank=True, null=True)
+    name = models.CharField(max_length=50, unique=True, blank=True, null=True)
+    country_slug = models.CharField(_("Country URL Slug"), max_length=100, 
+            unique=True, blank=True, null=True,
+            help_text=_("Leave blank to have the URL auto-generated from "
+                        "the title."))
+    contact_point = models.OneToOneField("auth.User", 
+            verbose_name=_("Country Chief Contact Point"), blank=True, null=True)
+    editors = models.ManyToManyField(User, verbose_name=_("Country Editors"), 
+        related_name='countryeditors+', blank=True, null=True)
+    cp_ncp_t_type = models.CharField(_("Contracting or Non-Contracting party"),max_length=3, choices=CP_NCP_TYPE_CHOICES, default=CP_NCP_T_TYPE_0)
+    region = models.IntegerField(_("Region"), choices=REGIONS, default=None)
+    cn_flag = models.ImageField(_("Country flag"), upload_to="flags/", blank=True)
+    cn_lat = models.CharField(_("Country latitude"), max_length=100, unique=True, blank=True, null=True)
+    cn_long = models.CharField(_("Country longitute"),max_length=100, unique=True, blank=True, null=True)
+    cn_map = models.CharField(_("Country Map"), max_length=550)
+   
+        # =todo: 
+    # contracting_party = boolean
+    # territory_of = foreignkey to other country
+    # flag
+
+    def __unicode__(self):
+        return u'%s' % (self.name,)
+    
+class PartnersPage(Page, RichText):
+    """ PartnersPage with definable names, slugs, editors and rppo contact point"""
+    class Meta:
+        verbose_name = _('Partners Page')
+        verbose_name_plural = _('Partners Pages')
+        ordering = ['name']
+
+    name = models.CharField(max_length=50, unique=True, blank=True, null=True)
+    short_description = models.CharField(_("Text"), max_length=550)
+    partner_slug = models.CharField(_("URL Slug"), max_length=100, 
+            unique=True, blank=True, null=True,
+            help_text=_("Leave blank to have the URL auto-generated from "
+                        "the title."))
+    contact_point = models.OneToOneField("auth.User", 
+            verbose_name=_("RPPO Chief Contact Point"), blank=True, null=True)
+    editors = models.ManyToManyField(User, verbose_name=_("RPPO Editors"), 
+        related_name='rppoeditors+', blank=True, null=True)
+   
+    def __unicode__(self):
+        return u'%s' % (self.name,)
+    
+    
+       
+        
+class NotificationMessageRelate(models.Model):
+    content_type = models.ForeignKey(ContentType)
+    object_id = models.PositiveIntegerField()
+    content_object = generic.GenericForeignKey('content_type', 'object_id')
+    countries = models.ManyToManyField(CountryPage,
+        verbose_name=_("Country you want to notify"),
+        related_name='notificatiocountries', blank=True, null=True)
+    partners = models.ManyToManyField(PartnersPage,
+        verbose_name=_("partners: RPPOs, IOs, Liasons you want to notify"),
+        related_name='notificatiopartners', blank=True, null=True)
+    notifysecretariat =  models.BooleanField( verbose_name=_("Notify Secretariat"),help_text='check if you want to notify Secretariat',)
+    notify =  models.BooleanField(help_text='check if you want to send out the notification')
+        
+
 def validate_file_extension(value):
     if not (value.name.endswith('.pdf') or value.name.endswith('.doc')or value.name.endswith('.txt')
         or value.name.endswith('.xls')   or value.name.endswith('.ppt') or value.name.endswith('.jpg')
@@ -237,88 +338,6 @@ class WorkAreaPage(Page, RichText):
             ("can_view", "View Work Area Page"),
         )
 
-
-CP_NCP_T_TYPE_0 = 'N/A'
-CP_NCP_T_TYPE_1 = 'CP'
-CP_NCP_T_TYPE_2 = 'NCP'
-CP_NCP_T_TYPE_3 = 'T'
-CP_NCP_TYPE_CHOICES = (
-    (CP_NCP_T_TYPE_1, _("Contracting party")),
-    (CP_NCP_T_TYPE_2, _("Non-Contracting party")),
-    (CP_NCP_T_TYPE_3, _("Territory")),
-)
-REGION_1 = 1
-REGION_2 = 2
-REGION_3 = 3
-REGION_4 = 4
-REGION_5 = 5
-REGION_6 = 6
-REGION_7 = 7
-REGIONS = (
-    (REGION_1, _("Africa")),
-    (REGION_2, _("Asia")),
-    (REGION_3, _("Europe")),
-    (REGION_4, _("Latin America and Caribbean")),
-    (REGION_5, _("Near East")),
-    (REGION_6, _("North America")),
-    (REGION_7, _("South West Pacific")),
-)
-
-
-
-class CountryPage(Page):
-    """ Country Pages with definable names, slugs, editors and contact point"""
-    class Meta:
-        verbose_name = _('Country Page')
-        verbose_name_plural = _('Country Pages')
-        ordering = ['name']
-
-    iso = models.CharField(max_length=2, unique=True, blank=True, null=True)
-    iso3 = models.CharField(max_length=3, unique=True, blank=True, null=True)
-    name = models.CharField(max_length=50, unique=True, blank=True, null=True)
-    country_slug = models.CharField(_("Country URL Slug"), max_length=100, 
-            unique=True, blank=True, null=True,
-            help_text=_("Leave blank to have the URL auto-generated from "
-                        "the title."))
-    contact_point = models.OneToOneField("auth.User", 
-            verbose_name=_("Country Chief Contact Point"), blank=True, null=True)
-    editors = models.ManyToManyField(User, verbose_name=_("Country Editors"), 
-        related_name='countryeditors+', blank=True, null=True)
-    cp_ncp_t_type = models.CharField(_("Contracting or Non-Contracting party"),max_length=3, choices=CP_NCP_TYPE_CHOICES, default=CP_NCP_T_TYPE_0)
-    region = models.IntegerField(_("Region"), choices=REGIONS, default=None)
-    cn_flag = models.ImageField(_("Country flag"), upload_to="flags/", blank=True)
-    cn_lat = models.CharField(_("Country latitude"), max_length=100, unique=True, blank=True, null=True)
-    cn_long = models.CharField(_("Country longitute"),max_length=100, unique=True, blank=True, null=True)
-    cn_map = models.CharField(_("Country Map"), max_length=550)
-   
-        # =todo: 
-    # contracting_party = boolean
-    # territory_of = foreignkey to other country
-    # flag
-
-    def __unicode__(self):
-        return u'%s' % (self.name,)
-    
-class PartnersPage(Page, RichText):
-    """ PartnersPage with definable names, slugs, editors and rppo contact point"""
-    class Meta:
-        verbose_name = _('Partners Page')
-        verbose_name_plural = _('Partners Pages')
-        ordering = ['name']
-
-    name = models.CharField(max_length=50, unique=True, blank=True, null=True)
-    short_description = models.CharField(_("Text"), max_length=550)
-    partner_slug = models.CharField(_("URL Slug"), max_length=100, 
-            unique=True, blank=True, null=True,
-            help_text=_("Leave blank to have the URL auto-generated from "
-                        "the title."))
-    contact_point = models.OneToOneField("auth.User", 
-            verbose_name=_("RPPO Chief Contact Point"), blank=True, null=True)
-    editors = models.ManyToManyField(User, verbose_name=_("RPPO Editors"), 
-        related_name='rppoeditors+', blank=True, null=True)
-   
-    def __unicode__(self):
-        return u'%s' % (self.name,)
 # do we need a table for this? or do http://djangosnippets.org/snippets/2753/ ?
 class PestStatus(models.Model):
     """ Pest Statuses """
@@ -462,6 +481,7 @@ class PestReport(Displayable, models.Model):
     
     commname=generic.GenericRelation(CommodityKeywordsRelate)
     issuename=generic.GenericRelation(IssueKeywordsRelate)
+    notification=generic.GenericRelation(NotificationMessageRelate)
     old_id = models.CharField(max_length=50)
     # =todo:
     # commodity_groups = 
@@ -666,6 +686,7 @@ class ReportingObligation(Displayable, models.Model):
     #url_for_more_information = models.URLField(max_length=500,blank=True, null=True)
     modify_date = models.DateTimeField(_("Modified date"), blank=True, null=True, editable=False)
     issuename=generic.GenericRelation(IssueKeywordsRelate)
+    notification=generic.GenericRelation(NotificationMessageRelate)
     commname=generic.GenericRelation(CommodityKeywordsRelate)
   
     
@@ -907,6 +928,7 @@ class EventReporting(Displayable, models.Model):
     modify_date = models.DateTimeField(_("Modified date"), blank=True, null=True, editable=False)
     issuename=generic.GenericRelation(IssueKeywordsRelate)
     commname=generic.GenericRelation(CommodityKeywordsRelate)
+    notification=generic.GenericRelation(NotificationMessageRelate)
     old_id = models.CharField(max_length=50)
     objects = SearchableManager()
     
@@ -1147,6 +1169,7 @@ class PestFreeArea(Displayable, models.Model):
     
     issuename=generic.GenericRelation(IssueKeywordsRelate)
     commname=generic.GenericRelation(CommodityKeywordsRelate)
+    notification=generic.GenericRelation(NotificationMessageRelate)
     old_id = models.CharField(max_length=50)
     # =todo:
     # commodity_groups = 
@@ -1271,6 +1294,7 @@ class ImplementationISPM(Displayable, models.Model):
     
     issuename=generic.GenericRelation(IssueKeywordsRelate)
     commname=generic.GenericRelation(CommodityKeywordsRelate)
+    notification=generic.GenericRelation(NotificationMessageRelate)
     old_id = models.CharField(max_length=50)
     # =todo:
     # commodity_groups = 
@@ -1559,7 +1583,8 @@ class EmailUtilityMessageFile(models.Model):
     def fileextension(self):
         return os.path.splitext(self.file.name)[1]
              
-        
+
+     
 class Translatable(models.Model):
     """ Translations of user-generated content - https://gist.github.com/renyi/3596248"""
     lang = models.CharField(max_length=5, choices=settings.LANGUAGES)
