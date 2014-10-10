@@ -348,7 +348,7 @@ def send_notification_message(id,content_type,title,url):
             ['paola.sentinelli@fao.org',], ['paola.sentinelli@gmail.com'])#emailto_all for PROD, in TEST all to paola#
         print(textmessage)
         message.content_subtype = "html" 
-        #sent =message.send()
+        sent =message.send()
    
  
 @login_required
@@ -403,8 +403,9 @@ def pest_report_create(request, country):
             f_form.save()
             u_form.instance = new_pest_report
             u_form.save()
-            
-            send_notification_message(id,content_type,new_pest_report.title,user_country_slug+'/pestreports/'+str(new_pest_report.publish_date.strftime("%Y"))+'/'+str(new_pest_report.publish_date.strftime("%m"))+'/'+new_pest_report.slug+'/')
+            content_type = ContentType.objects.get_for_model(new_pest_report)
+       
+            send_notification_message(new_pest_report.id,content_type,new_pest_report.title,user_country_slug+'/pestreports/'+str(new_pest_report.publish_date.strftime("%Y"))+'/'+str(new_pest_report.publish_date.strftime("%m"))+'/'+new_pest_report.slug+'/')
             
             info(request, _("Successfully created pest report."))
             
@@ -616,7 +617,10 @@ def reporting_obligation_create(request, country,type):
             f_form.save()
             u_form.instance = new_reporting_obligation
             u_form.save()
-            send_notification_message(id,content_type,new_reporting_obligation.title,user_country_slug+'/reportingobligation/'+str(new_reporting_obligation.publish_date.strftime("%Y"))+'/'+str(new_reporting_obligation.publish_date.strftime("%m"))+'/'+new_reporting_obligation.slug+'/')
+            
+            content_type = ContentType.objects.get_for_model(new_reporting_obligation)
+       
+            send_notification_message(new_reporting_obligation.id,content_type,new_reporting_obligation.title,user_country_slug+'/reportingobligation/'+str(new_reporting_obligation.publish_date.strftime("%Y"))+'/'+str(new_reporting_obligation.publish_date.strftime("%m"))+'/'+new_reporting_obligation.slug+'/')
             
             info(request, _("Successfully created Reporting obligation."))
             return redirect("reporting-obligation-detail", country=user_country_slug, year=new_reporting_obligation.publish_date.strftime("%Y"), month=new_reporting_obligation.publish_date.strftime("%m"), slug=new_reporting_obligation.slug)
@@ -782,7 +786,8 @@ def event_reporting_create(request, country,type):
             f_form.save()
             u_form.instance = new_event_reporting
             u_form.save()
-            send_notification_message(id,content_type,new_event_reporting.title,user_country_slug+'/eventreporting/'+str(new_event_reporting.publish_date.strftime("%Y"))+'/'+str(new_event_reporting.publish_date.strftime("%m"))+'/'+new_event_reporting.slug+'/')
+            content_type = ContentType.objects.get_for_model(new_event_reporting)
+            send_notification_message(new_event_reporting.id,content_type,new_event_reporting.title,user_country_slug+'/eventreporting/'+str(new_event_reporting.publish_date.strftime("%Y"))+'/'+str(new_event_reporting.publish_date.strftime("%m"))+'/'+new_event_reporting.slug+'/')
             info(request, _("Successfully added Event reporting."))
             return redirect("event-reporting-detail", country=user_country_slug, year=new_event_reporting.publish_date.strftime("%Y"), month=new_event_reporting.publish_date.strftime("%m"), slug=new_event_reporting.slug)
         else:
@@ -1716,8 +1721,8 @@ def pfa_create(request, country):
             
             u_form.instance = new_pfa
             u_form.save()
-        
-            send_notification_message(id,content_type,new_pfa.title,user_country_slug+'/pestfreeareas/'+str(new_pfa.publish_date.strftime("%Y"))+'/'+str(new_pfa.publish_date.strftime("%m"))+'/'+new_pfa.slug+'/')
+            content_type = ContentType.objects.get_for_model(new_pfa)
+            send_notification_message(new_pfa.id,content_type,new_pfa.title,user_country_slug+'/pestfreeareas/'+str(new_pfa.publish_date.strftime("%Y"))+'/'+str(new_pfa.publish_date.strftime("%m"))+'/'+new_pfa.slug+'/')
            
             info(request, _("Successfully created PestFreeArea."))
             
@@ -1886,7 +1891,8 @@ def implementationispm_create(request, country):
             f_form.save()
             u_form.instance = new_implementationispm
             u_form.save()
-            send_notification_message(id,content_type,new_implementationispm.title,user_country_slug+'/implementationispm/'+str(new_implementationispm.publish_date.strftime("%Y"))+'/'+str(new_implementationispm.publish_date.strftime("%m"))+'/'+new_implementationispm.slug+'/')
+            content_type = ContentType.objects.get_for_model(new_implementationispm)
+            send_notification_message(new_implementationispm.id,content_type,new_implementationispm.title,user_country_slug+'/implementationispm/'+str(new_implementationispm.publish_date.strftime("%Y"))+'/'+str(new_implementationispm.publish_date.strftime("%m"))+'/'+new_implementationispm.slug+'/')
             info(request, _("Successfully created implementationispm."))
             
             return redirect("implementationispm-detail", country=user_country_slug, year=new_implementationispm.publish_date.strftime("%Y"), month=new_implementationispm.publish_date.strftime("%m"), slug=new_implementationispm.slug)
