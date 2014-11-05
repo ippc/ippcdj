@@ -25,7 +25,7 @@ PartnersNewsDetailView,partners_news_create,partners_news_edit,\
 PollListView,PollResultsView,PollDetailView,vote_poll,poll_edit,poll_create,\
 email_send,EmailUtilityMessageDetailView,EmailUtilityMessageListView,\
 DraftProtocolDetailView,  draftprotocol_create, draftprotocol_edit,\
-draftprotocol_comment_create,draftprotocol_comment_edit,PublicationLibraryView,\
+draftprotocol_comment_create,draftprotocol_comment_edit,PublicationLibraryView,commenta,\
 CountryRegionsPercentageListView,CountryStatsreportsListView,CountryStatsTotalreportsListView,CountryRegionsUsersListView,CountryTotalUsersListView
 from schedule.periods import Year, Month, Week, Day
 from mezzanine.core.views import direct_to_template
@@ -528,6 +528,9 @@ urlpatterns = patterns("",
     # commented out like the others, so it's the default. You only need
     # one homepage pattern, so if you use a different one, comment this
     # one out.
+    url(r'^comment/$',
+        view=commenta,
+        name='commenta'),
 
     url("^$", direct_to_template, {"template": "index.html"}, name="home"),
 

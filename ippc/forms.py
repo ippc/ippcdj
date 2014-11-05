@@ -1,8 +1,8 @@
 # -*- coding: utf-8 -*-
 
-import autocomplete_light_registry
+#import autocomplete_light_registry
 import autocomplete_light
-autocomplete_light.autodiscover()
+#autocomplete_light.autodiscover()
 
 
 
@@ -52,7 +52,7 @@ class PestReportForm(forms.ModelForm):
         widgets = {
             'country': forms.HiddenInput(),
             'report_number': forms.HiddenInput(),
-            'pest_identity': autocomplete_light.TextWidget ('EppoCodeAutocomplete'),
+            'pest_identity': autocomplete_light.ChoiceWidget('EppoCodeAutocomplete'),
         }
         
 class IppcUserProfileForm(forms.ModelForm):

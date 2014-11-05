@@ -26,7 +26,7 @@ from django_markdown.admin import MarkdownModelAdmin
 
 
 import autocomplete_light
-import autocomplete_light_registry
+#import autocomplete_light_registry
 
 from django_markdown.widgets import MarkdownWidget
 

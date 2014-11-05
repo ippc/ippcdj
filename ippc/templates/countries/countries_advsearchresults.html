@@ -1,5 +1,8 @@
 {% extends "base.html" %}
 {% load pages_tags mezzanine_tags i18n future staticfiles accounts_tags %}
+{% block extra_css %}
+  <link rel="stylesheet" href="{% static "css/DT_bootstrap.css" %}">
+{% endblock %}
 
 {% block meta_title %}
   {% trans "Search results for: " %}: 
@@ -35,7 +38,16 @@
   
 </h1> 
 
-  
+ 
+{% if item == 'pestreportstat' %}
+
+ 
+<div id="chartContainer" style="height: 300px; width: 100%;">
+    </div>   
+ 
+{% endif %}
+
+
 {% if items %}
 
 {% if  link_to_item == 'pest-report-detail' %}
@@ -79,13 +91,13 @@
   </script>
   <script src='{% static "/static/canvasjs/canvasjs.min.js" %}'></script>
 
-<table><tr>
+<!--table><tr>
         <td><div id="map" style="width: 550px; height: 350px"></div></td>
-        <td></td></tr></table>
+        <td></td></tr></table-->
 
 
-    <script src="http://cdn.leafletjs.com/leaflet-0.7/leaflet.js">
-    </script>
+    <!--script src="http://cdn.leafletjs.com/leaflet-0.7/leaflet.js">
+    </script-->
 
     <script>
 var greenIcon = L.icon({
@@ -114,7 +126,7 @@ var greenIcon = L.icon({
             }).addTo(map);
 
 		for (var i = 0; i < planes.length; i++) {
-			marker = new L.marker([planes[i][1],planes[i][2]], {icon: greenIcon})
+			marker = new L.marker([planes[i][1],planes[i][2]])
 				.bindPopup(planes[i][0])
 				.addTo(map);
                         
@@ -122,8 +134,100 @@ var greenIcon = L.icon({
 		}
                
     </script>
-<!--div id="chartContainer" style="height: 300px; width: 100%;">
-    </div-->   
+ 
+   
+    <script src="https://maps.googleapis.com/maps/api/js?v=3.exp"></script>
+    <script>
+// This example creates circles on the map, representing
+// populations in North America.
+
+// First, create an object containing LatLng and population for each city.
+var citymap = {};
+   {% autoescape off %}
+                        {{map1}}
+                   {% endautoescape %}  
+var cityCircle;
+
+function initialize() {
+  // Create the map.
+  var mapOptions = {
+    zoom: 2,
+    center: new google.maps.LatLng(37.09024, 37.712891),
+    mapTypeId: google.maps.MapTypeId.TERRAIN
+  };
+
+
+ 
+
+
+  var map = new google.maps.Map(document.getElementById('map-canvas'),      mapOptions);
+
+  // Construct the circle for each value in citymap.
+  // Note: We scale the area of the circle based on the population.
+  for (var city in citymap) {
+    var populationOptions = {
+      strokeColor: '#FF0000',
+      strokeOpacity: 0.8,
+      strokeWeight: 2,
+      fillColor: '#FF0000',
+      fillOpacity: 0.35,
+      map: map,
+      center: citymap[city].center,
+      radius: Math.sqrt(citymap[city].population) * 100000,
+    };
+
+
+    // Add the circle for this city to the map.
+    cityCircle = new google.maps.Circle(populationOptions);
+	
+	var marker = new google.maps.Marker({
+      position: citymap[city].center,
+	
+  icon: {
+      path: google.maps.SymbolPath.CIRCLE,
+      scale: 1
+    },      map: map,
+      title: citymap[city].text,
+	  html:citymap[city].html
+	  
+  }); 
+ 
+   google.maps.event.addListener(marker, "click", function () {
+                // alert(this.html);
+                infowindow.setContent(this.html);
+                infowindow.open(map, this);
+            });
+  
+  }  
+
+
+infowindow = new google.maps.InfoWindow({
+                content: "loading..."
+            });
+    }
+google.maps.event.addDomListener(window, 'load', initialize);
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    </script>
+       <div id="map-canvas" style="height: 550px; width: 950px;"></div>
+    
+    
+    
+    
+    
  
 <table class="table table-condensed table-striped" id="publications">
   <thead>
@@ -238,7 +342,10 @@ var greenIcon = L.icon({
 {% endif %}
 
 {% endblock %}
-
+{% block extra_js %}
+  <script src="{% static "js/jquery.dataTables.js" %}"></script>
+  <script src="{% static "js/DT_bootstrap.js" %}"></script>
+{% endblock %}
 {# {% block extra_js %} #}
 {#   <script src="{% static "js/jquery.dataTables.js" %}"></script> #}
 {#   <script src="{% static "js/DT_bootstrap.js" %}"></script> #}
