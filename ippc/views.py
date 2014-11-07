@@ -3190,8 +3190,6 @@ class AdvancesSearchCNListView(ListView):
                     maparray.append([str('<a href="'+cn.country_slug+'/pestreports/">'+cn.name)+': '+str(p)+'</a>',str(cn.cn_lat),str(cn.cn_long)])
                     maparray1+='citymap[\''+str(cn.country_slug)+'\'] = {center: new google.maps.LatLng('+str(cn.cn_lat)+','+str(cn.cn_long)+'), text:\''+str(cn.name)+': '+str(p)+''+'\', html:\''+str('<a href="'+cn.country_slug+'/pestreports/">'+cn.name)+': '+str(p)+'</a>'+'\',  population:' +str(p)+'};'
               
-            
-           
             context['map']=maparray
             context['map1']=maparray1
             
@@ -3255,8 +3253,7 @@ class AdvancesSearchCNListView(ListView):
             context['items']=IppcUserProfile.objects.filter(contact_type='1')|IppcUserProfile.objects.filter(contact_type='2')|IppcUserProfile.objects.filter(contact_type='3')
             context['counttotal'] =context['items'].count() 
             context['link_to_item'] = 'contactpoint'
-            
-            
+                 
         elif self.kwargs['type'] == 'nppo':
             context['type_label'] = dict(BASIC_REP_TYPE_CHOICES)[1]
             context['link_to_item'] = 'reporting-obligation-detail'
@@ -3329,7 +3326,43 @@ class AdvancesSearchCNListView(ListView):
             context['counttotal'] =context['items'].count() 
          
         return context
-		
-		
-		
+import csv
+from django.http import HttpResponse	
+
+def contactPointExtractor(request):
+    # Create the HttpResponse object with the appropriate CSV header.
+    contacts=IppcUserProfile.objects.filter(contact_type='1')|IppcUserProfile.objects.filter(contact_type='2')|IppcUserProfile.objects.filter(contact_type='3')
+    users=User.objects.all()
+    cns=CountryPage.objects.all()
+             
+    response = HttpResponse(content_type='text/csv')
+    response['Content-Disposition'] = 'attachment; filename="somefilename.csv"'
+
+    writer = csv.writer(response)
+    writer.writerow(['Country', 'Contact Type', 'Prefix', 'First Name','Last Name','Email','Alternate E-mail','Address'])
+   
+    for c in contacts:
+        country=''
+        c_type=''
+        for cn in cns:          
+            if cn.id == c.country_id:
+               country = cn
+        print (c.contact_type)      
+        for o in c.contact_type.all():
+            c_type=o
+        c_gender=c.gender
+        c_first_name= c.first_name
+        c_last_name= c.last_name
+        c_email=''
+        for u in users:
+            if u.id == c.user_id:
+              u.email
+        c_emailalt =c.email_address_alt
+        c_address=c.address1
+        
+        writer.writerow([country,c_type,c_gender, unicode(c_first_name), unicode(c_last_name),c_email,c_emailalt,unicode(c_address)])
+
+    return response	
+
+
 	

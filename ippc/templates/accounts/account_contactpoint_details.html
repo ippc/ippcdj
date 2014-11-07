@@ -12,7 +12,7 @@
   {% endif %}
   
   {% if page.get_content_model.contact_point.get_profile.profile_photo %}
-  <img class="pull-left profile-picture" style="margin:0 0 20px 10px;" src="{{ MEDIA_URL }}{% thumbnail page.get_content_model.contact_point.get_profile.profile_photo 128 128 %}">}}
+  <img class="pull-left profile-picture" style="margin:0 0 20px 10px;" src="{{ MEDIA_URL }}{% thumbnail page.get_content_model.contact_point.get_profile.profile_photo 128 128 %}">
   {% else %}
   <a class="pull-left profile-picture" style="height:128px; width:128px; background:#eee;"></a>
   {% endif %}
@@ -89,10 +89,20 @@
   
   
   {% if page.get_content_model.contact_point.get_profile.bio %}
-  
-  <dd><strong>{% trans "Brief Biography" %}:</strong>
-    {{ page.get_content_model.contact_point.get_profile.bio }} 
-  </dd>
+    <script type="text/javascript">
+    function toggle_visibility(id) {
+       var e = document.getElementById(id);
+       if(e.style.display == 'block')
+          e.style.display = 'none';
+       else
+          e.style.display = 'block';
+    }
+    </script>
+
+  <dd>
+   <a href="#bio" onclick="javascript:toggle_visibility('bio');"><strong>{% trans "Brief Biography" %}:</strong>
+   <div id="bio" style="display:none;">{{ page.get_content_model.contact_point.get_profile.bio }} 
+  </div></dd>
   {% endif %}
   
 

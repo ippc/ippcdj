@@ -410,7 +410,7 @@ class IppcUserProfile(models.Model):
     bio = models.TextField(_("Brief Biography"), default="", blank=True, null=True)
     expertize = models.TextField(_("Description/expertise"), default="", blank=True, null=True)
     
-    address1 = models.CharField(_("Organization"), blank=True, max_length=100)
+    address1 = models.CharField(_("Organization"), blank=True, max_length=250)
     address2 = models.TextField(_("Address"), default="", blank=True, null=True)
     city = models.CharField(_("City"), blank=True, max_length=100)
     state = models.CharField(_("State"), blank=True, max_length=100, help_text="or Province")
@@ -420,9 +420,9 @@ class IppcUserProfile(models.Model):
     country = models.ForeignKey(CountryPage, related_name="user_country_page", blank=True, null=True)
     partner = models.ForeignKey(PartnersPage, related_name="user_partner_page", blank=True, null=True)
 
-    phone = models.CharField(_("Phone"), blank=True, max_length=30)
-    fax = models.CharField(_("Fax"), blank=True, max_length=30)
-    mobile = models.CharField(_("Mobile"), blank=True, max_length=30)
+    phone = models.CharField(_("Phone"), blank=True, max_length=80)
+    fax = models.CharField(_("Fax"), blank=True, max_length=80)
+    mobile = models.CharField(_("Mobile"), blank=True, max_length=80)
     
     date_account_created = models.DateTimeField(_("Member Since"), default=datetime.now, editable=False)
 
@@ -662,7 +662,7 @@ BASIC_REP_TYPE_CHOICES = (
     (BASIC_REP_1, _("Description of the NPPO (Art. IV.4)")), 
     (BASIC_REP_2, _("Entry points (Art. VII.2d)")),
     (BASIC_REP_3, _("List of regulated pests (Art. VII.2i)")),
-    (BASIC_REP_4, _("Phytosanitary Restrictions/Legislation")),
+    (BASIC_REP_4, _("Phytosanitary Restrictions/Legislation/Prohibitions")),
 )
 
 

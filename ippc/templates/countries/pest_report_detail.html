@@ -119,24 +119,24 @@
   <dd>{{ report.contact_for_more_information }}</dd>
   {% endif %}
   
-  
+   {% if report.pestreportfile_set.all %}   
    <dt>{% trans "Report files" %}</dt>
    {% for f in report.pestreportfile_set.all %} 
     
   <dd><a href="{{MEDIA_URL}}{{f.file.name}}">{{ f.description }}</a></dd>
 {% endfor %}
-
-    
+    {% endif %}
+  {% if report.pestreporturl_set.all %}   
   <dt>{% trans "Website" %}</dt>
    {% for f in report.pestreporturl_set.all %} 
     
   <dd><a href="{{MEDIA_URL}}{{f.url_for_more_information}}">{{ f.url_for_more_information }}</a></dd>
 {% endfor %}
   
+    {% endif %}
   
   
-  
-   {% if report.issuename %}
+   {% if report.issuename.all %}
   <dt>{% trans "Issue keywords" %}</dt>
   <dd>
   {% for entry in report.issuename.all %}
@@ -151,7 +151,7 @@
  
   
   
-  {% if report.commname %}
+  {% if report.commname.all %}
   <dt>{% trans "Commodity keywords" %}</dt>
   <dd>
   {% for entry in report.commname.all %}
@@ -165,8 +165,8 @@
   {% endif %}
  
   
-<dt>{% trans "Author" %}</dt>
-  <dd>{{ report.author.get_profile.first_name }} {{ report.author.get_profile.last_name }}</dd>
+<!--dt>{% trans "Author" %}</dt>
+  <dd>{{ report.author.get_profile.first_name }} {{ report.author.get_profile.last_name }}</dd-->
   
 </dl>
 

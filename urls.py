@@ -25,7 +25,7 @@ PartnersNewsDetailView,partners_news_create,partners_news_edit,\
 PollListView,PollResultsView,PollDetailView,vote_poll,poll_edit,poll_create,\
 email_send,EmailUtilityMessageDetailView,EmailUtilityMessageListView,\
 DraftProtocolDetailView,  draftprotocol_create, draftprotocol_edit,\
-draftprotocol_comment_create,draftprotocol_comment_edit,PublicationLibraryView,commenta,\
+draftprotocol_comment_create,draftprotocol_comment_edit,PublicationLibraryView,commenta,contactPointExtractor,\
 CountryRegionsPercentageListView,CountryStatsreportsListView,CountryStatsTotalreportsListView,CountryRegionsUsersListView,CountryTotalUsersListView
 from schedule.periods import Year, Month, Week, Day
 from mezzanine.core.views import direct_to_template
@@ -104,6 +104,10 @@ urlpatterns = patterns("",
     url(r'^countries/(?P<type>[\w-]+)$',
         view=AdvancesSearchCNListView.as_view(),
         name='advsearch'),
+     url(r'^countriescontacts/extractor/',
+        view=contactPointExtractor,
+        name='contactextractor'),
+        
     
     #-------------------STATS------------------------    
    

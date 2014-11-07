@@ -51,26 +51,26 @@
   <dt>{% trans "Publication date" %}</dt>
   <dd>{% blocktrans with sometime=reportingobligation.publication_date|date:"d-m-Y" %}{{ sometime }}{% endblocktrans %}</dd>
   {% endif %}
- {% if reportingobligation.short_description %}
+ {% if reportingobligation.short_description != ''  and reportingobligation.short_description != ' '   %}
   <dt>{% trans "short description" %}</dt>
-  <dd>{{ reportingobligation.short_description }}</dd>
+  <dd>->{{ reportingobligation.short_description }}<--</dd>
   {% endif %}
   
-  {% if reportingobligation.contact_for_more_information %}
+  {% if reportingobligation.contact_for_more_information != ''  and reportingobligation.contact_for_more_information != ' ' %}
   <dt>{% trans "Contact for more information" %}</dt>
   <dd>{{ reportingobligation.contact_for_more_information }}</dd>
   {% endif %}
   
   {% if reportingobligation.author %}  
-  <dt>{% trans "Author" %}</dt>
-  <dd>{{ reportingobligation.author.get_profile.first_name }} {{ reportingobligation.author.get_profile.last_name }}</dd>
+  <!--dt>{% trans "Author" %}</dt>
+  <dd>{{ reportingobligation.author.get_profile.first_name }} {{ reportingobligation.author.get_profile.last_name }}</dd-->
   {% endif %}
     
  
   
  
   
-   {% if reportingobligation.issuename %}
+   {% if reportingobligation.issuename.all %}
   <dt>{% trans "Issue keywords" %}</dt>
   <dd>
   {% for entry in reportingobligation.issuename.all %}
@@ -85,7 +85,7 @@
  
   
   
-  {% if reportingobligation.commname %}
+  {% if reportingobligation.commname.all %}
   <dt>{% trans "Commodity keywords" %}</dt>
   <dd>
   {% for entry in reportingobligation.commname.all %}
@@ -101,20 +101,21 @@
   
  
   
-
+  {% if reportingobligation.reportingobligation_file_set.all %}
    
   <dt>{% trans "Report files" %}</dt>
    {% for f in reportingobligation.reportingobligation_file_set.all %} 
     
   <dd><a href="{{MEDIA_URL}}{{f.file.name}}">{{ f.description }}</a></dd>
 {% endfor %}
+  {% endif %}
 
-
-    
+   {% if reportingobligation.reportingobligationurl_set.all %}
+   
   <dt>{% trans "Website" %}</dt>
    {% for f in reportingobligation.reportingobligationurl_set.all %} 
     
   <dd><a href="{{MEDIA_URL}}{{f.url_for_more_information}}">{{ f.url_for_more_information }}</a></dd>
-{% endfor %}
+{% endfor %}  {% endif %}
 </dl>
 {% endblock %}
