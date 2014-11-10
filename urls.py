@@ -212,9 +212,10 @@ urlpatterns = patterns("",
     #-------------------------------------------#
     
     # reporting obligation list
-    url(r'^countries/(?P<country>[\w-]+)/reportingobligation/$',
+    url(r'^countries/(?P<country>[\w-]+)/reportingobligation/(?P<type>[\w-]+)$',
         view=ReportingObligationListView.as_view(),
         name='reporting-obligation-list'),
+
 
     # reporting obligation list showing hidden reports 
     #url(r'^countries/(?P<country>[\w-]+)/reportingobligation/hidden/$',
@@ -237,7 +238,7 @@ urlpatterns = patterns("",
         name='reporting-obligation-edit'),
     #-------------------------------------------#
     # event reporting list
-    url(r'^countries/(?P<country>[\w-]+)/eventreporting/$',
+    url(r'^countries/(?P<country>[\w-]+)/eventreporting/(?P<type>[\w-]+)$',
         view=EventReportingListView.as_view(),
         name='event-reporting-list'),
 

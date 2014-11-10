@@ -578,14 +578,23 @@ class ReportingObligationListView(ListView):
         """ only return pest reports from the specific country """
         # self.country = get_object_or_404(CountryPage, country=self.kwargs['country'])
         self.country = self.kwargs['country']
+        self.type = self.kwargs['type']
         # CountryPage country_slug == country URL parameter keyword argument
-        return ReportingObligation.objects.filter(country__country_slug=self.country)
+        return ReportingObligation.objects.filter(country__country_slug=self.country,reporting_obligation_type=self.kwargs['type'])
     
     def get_context_data(self, **kwargs): # http://stackoverflow.com/a/15515220
         context = super(ReportingObligationListView, self).get_context_data(**kwargs)
         context['country'] = self.kwargs['country']
         context['basic_types'] =BASIC_REP_TYPE_CHOICES
+        context['current_type'] =int(self.kwargs['type'])
         return context
+   
+   
+ 
+
+   
+   
+   
    
 class IppcUserProfileDetailView(DetailView):
     """  Reporting Obligation detail page """
@@ -776,13 +785,15 @@ class EventReportingListView(ListView):
         """ only return pest reports from the specific country """
         # self.country = get_object_or_404(CountryPage, country=self.kwargs['country'])
         self.country = self.kwargs['country']
+        self.type = self.kwargs['type']
         # CountryPage country_slug == country URL parameter keyword argument
-        return EventReporting.objects.filter(country__country_slug=self.country)
+        return EventReporting.objects.filter(country__country_slug=self.country,event_rep_type=self.kwargs['type'])
     
     def get_context_data(self, **kwargs): # http://stackoverflow.com/a/15515220
         context = super(EventReportingListView, self).get_context_data(**kwargs)
         context['country'] = self.kwargs['country']
         context['event_types'] =EVT_REP_TYPE_CHOICES
+        context['current_type'] =int(self.kwargs['type'])
         return context
    
        

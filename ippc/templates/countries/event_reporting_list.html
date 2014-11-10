@@ -35,9 +35,12 @@
   <a href="javascript:history.go(-1)">{% trans "« Go back" %}</a>
  </p>
 
-  
+{% if latest %}
+{% for key, val in event_types %}
+{% ifequal key current_type %}
+
 <h1>
-  <small class="normal">{% trans "Event Reports from" %}</small>
+  <small class="normal">{{val}}{% trans "  from" %}</small>
   {{ page.title }}
 </h1> 
  
@@ -45,25 +48,24 @@
 
 
  
-{% if latest %}
-{% for key, val in event_types %}
+
 <table class="table table-condensed table-striped" id="publications">
   <tbody>
-   <tr>
-       <td colspan="2"><b class="pull-left">{{val}}</b> 
-           {% if perms.ippc.add_eventreporting and request.user.get_profile.country.name == page.title %}
-           <small  class="pull-right">
+     {% if perms.ippc.add_eventreporting and request.user.get_profile.country.name == page.title %}
+      <tr>
+       <td colspan="2">
+          <small  class="pull-right">
                <a class="btn btn-small btn-info" href="{% url 'event-reporting-create' page.title|slugify key %}">+ {% trans "Add new" %}</a>
            </small>
-           {% endif %}
        </td>
-   </tr>
+        </tr> 
+    {% endif %}
    <tr>
         <th>{% trans "Title" %}</th>
         <th>{% trans "Last updated" %}</th>
    </tr>
-    {% for object in latest %}
-    {% ifequal object.event_rep_type key %}
+    {% for object in latest %}<br>
+    {% if object.event_rep_type == key  %}
     <tr>
       <td><a href="{% url 'event-reporting-detail' object.country.country_slug object.publish_date|date:'Y' object.publish_date|date:'m'  object.slug %}">{{ object.title }}</a></td>
       <td>{{ object.modify_date|date:"d M Y" }}
@@ -79,10 +81,10 @@
         </td>
      </tr>
    
-        {% endifequal %}
+        {% endif %}
       {% endfor %}
     </tbody>
-  </table>
+  </table>        {% endifequal %}
 {% endfor %} 
    <hr> 
 

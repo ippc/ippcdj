@@ -64,11 +64,11 @@
   
 
 
-  <dt>{% trans "Author" %}</dt>
-  <dd>{{ eventreporting.author.get_profile.first_name }} {{ eventreporting.author.get_profile.last_name }}</dd>
+  <!--dt>{% trans "Author" %}</dt>
+  <dd>{{ eventreporting.author.get_profile.first_name }} {{ eventreporting.author.get_profile.last_name }}</dd-->
   
 
-  {% if eventreporting.issuename %}
+  {% if eventreporting.issuename.all %}
   <dt>{% trans "Issue keywords" %}</dt>
   <dd>
   {% for entry in eventreporting.issuename.all %}
@@ -83,7 +83,7 @@
  
   
   
-  {% if eventreporting.commname %}
+  {% if eventreporting.commname.all %}
   <dt>{% trans "Commodity keywords" %}</dt>
   <dd>
   {% for entry in eventreporting.commname.all %}
@@ -99,6 +99,7 @@
   
  
   
+  {% if eventreporting.eventreportingfile_set.all %}
   
    
   <dt>{% trans "Report files" %}</dt>
@@ -106,13 +107,14 @@
     
   <dd><a href="{{MEDIA_URL}}{{f.file.name}}">{{ f.description }}</a></dd>
 {% endfor %}
-
-    
+  {% endif %}
+    {% if eventreporting.eventreportingurl_set.all %} 
+   
   <dt>{% trans "Website" %}</dt>
    {% for f in eventreporting.eventreportingurl_set.all %} 
     
   <dd><a href="{{MEDIA_URL}}{{f.url_for_more_information}}">{{ f.url_for_more_information }}</a></dd>
-{% endfor %}
+{% endfor %}  {% endif %}
 </dl>
 {% endblock %}
 
