@@ -32,48 +32,45 @@
 {% block local_nav %}
 {% endblock local_nav %}
 
-{% block pageinfo %}
-{% endblock pageinfo %}
+
 
 {% block main %}
-
-<p class="pull-right">
-  <a href="javascript:history.go(-1)">{% trans "« Go back" %}</a>
-</p>
-
 <h1>
   <small class="normal">{% trans "Countries list" %} 
   {% if region_name %}
   from {{region_name}}
   {% endif %}</small>
-  </h1> 
+  </h1> <div   class="span7 middle">
 <p class="small">
-            <span class="icn-contracting">&#160; &#160; </span>  = Contracting parties ({{number_of_cp}}). Visit the website of <a href="http://www.fao.org/fileadmin/user_upload/legal/docs/5_004s-e.pdf">FAO Legal</a>
-          <br />
-        <span class="icn-contracting">&#160; &#160; </span>  = Non-Contracting Party
-          <br />
-            <span class="icn-territory">&#160; &#160; </span>  = Territory</p>
+<span class="icn-contracting">&#160; &#160; </span>  = Contracting parties ({{number_of_cp}}). Visit the website of <a href="http://www.fao.org/fileadmin/user_upload/legal/docs/5_004s-e.pdf">FAO Legal</a>
+<br />
+<span class="icn-noncontracting">&#160; &#160; </span>  = Non-Contracting Party
+<br />
+<span class="icn-territory">&#160; &#160; </span>  = Territory</p>
+<br />
+
+
+
 {% if latest %}
-
-    {% for object in countries %}
-    {% if  object.cp_ncp_t_type == 'CP' %}
-     <span class="icn-contracting">&#160; &#160; </span>
-    {% elif object.cp_ncp_t_type == 'NCP' %}
-      <span class="icn-noncontracting">&#160; &#160; </span>
-    {% elif  object.cp_ncp_t_type == 'T' %}
-      <span class="icn-territory">&#160; &#160; </span>
-    {% endif %}
-    
-   
-   
-   <a href="/{{ object.slug}}" >{{ object.name }}</a><!--image src="{{MEDIA_URL}}{{  object.cn_flag }}"/-->
-    <br/>
-    {% endfor %}
-
-
-
+<table class="table table-condensed table-striped" id="publications">
+<tbody>
+{% for object in countries %}
+    {% if object.name != '-' %} 
+           <tr><td>
+            {% if  object.cp_ncp_t_type == 'CP' %}
+        <span class="icn-contracting">&#160; &#160; </span>
+        {% elif object.cp_ncp_t_type == 'NCP' %}
+        <span class="icn-noncontracting">&#160; &#160; </span>
+        {% elif  object.cp_ncp_t_type == 'T' %}
+        <span class="icn-territory">&#160; &#160; </span>
+        {% endif %}
+        <a href="/{{ object.slug}}/" >{{ object.name }}</a>
+           </td></tr>{% endif %}
+ {% endfor %}
+</tbody>
+</table>
 {% else %}
-<p>***</p>
 {% endif %}
 
 {% endblock %}
+</div>

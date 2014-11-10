@@ -1,5 +1,5 @@
-import autocomplete_light
-autocomplete_light.autodiscover()
+#import autocomplete_light
+#autocomplete_light.autodiscover()
 
 from django.shortcuts import render
 from django.utils.translation import ugettext_lazy as _
@@ -7,7 +7,7 @@ from django.contrib.messages import info, error
 from django.utils import timezone
 from django.core import mail
 from django.conf import settings
-from django.contrib.auth.models import User,Group
+
 from django.contrib.auth.models import User,Group
 from .models import ContactType,PublicationLibrary,Publication,EppoCode,EmailUtilityMessage, EmailUtilityMessageFile, Poll_Choice, Poll,PollVotes, IppcUserProfile,\
 CountryPage,PartnersPage, PestStatus, PestReport, IS_PUBLIC, IS_HIDDEN, Publication,\
@@ -41,14 +41,62 @@ from django.contrib.contenttypes.generic import generic_inlineformset_factory
 from django.forms.formsets import formset_factory
 from compiler.pyassem import order_blocks
 import time
+from django.http import HttpResponse
 from datetime import datetime
 from django.contrib.contenttypes.models import ContentType
+from mezzanine.generic import views as myview
 def get_profile():
     return IppcUserProfile.objects.all()
 
 # def pest_report_country():
 #     return PestReport.objects.all()
+def commenta(request, template="generic/comments.html"):
+    """
+    Handle a ``ThreadedCommentForm`` submission and redirect back to its
+    related object.
+    """
+    response = myview.initial_validation(request, "comment")
+    if isinstance(response, HttpResponse):
+        return response
+    obj, post_data = response
+    print(obj.categories)
+    emailto_all=[]
+    #notification to Secretariat of comments
+    for g in obj.groups.all():
+       group=Group.objects.get(id=g.id)
+       emailto_all.append(str('paola.sentinelli@fao.org'))
+
+    subject='IPPC new comment on: '+str(obj)  
+    #print(request.POST['name'])
+    text=request.POST['name']+' has commented on: '+str(obj) +'<br><hr><br>'+request.POST['comment']
     
+    
+    #TO FIX with real message
+    notifificationmessage = mail.EmailMessage(subject,text,'paola.sentinelli@gmail.com',  ['paola.sentinelli@gmail.com'], ['paola.sentinelli@gmail.com'])
+    notifificationmessage.content_subtype = "html"  
+    sent =notifificationmessage.send()
+
+    
+    form = myview.ThreadedCommentForm(request, obj, post_data)
+    if form.is_valid():
+        url = obj.get_absolute_url()
+        if myview.is_spam(request, form, url):
+            return redirect(url)
+        comment = form.save(request)
+        response = redirect(myview.add_cache_bypass(comment.get_absolute_url()))
+        # Store commenter's details in a cookie for 90 days.
+        for field in myview.ThreadedCommentForm.cookie_fields:
+            cookie_name = myview.ThreadedCommentForm.cookie_prefix + field
+            cookie_value = post_data.get(field, "")
+            myview.set_cookie(response, cookie_name, cookie_value)
+        return response
+    elif request.is_ajax() and form.errors:
+        return HttpResponse(dumps({"errors": form.errors}))
+    # Show errors with stand-alone comment form.
+    context = {"obj": obj, "posted_comment_form": form}
+    response = render(request, template, context)
+    return response
+
 class CountryView(TemplateView):
     """ 
     Individual country homepage 
@@ -343,7 +391,7 @@ def send_notification_message(newitem,id,content_type,title,url):
             emailto_all.append(str('ippc@fao.org'))
         print(emailto_all)
         subject=''
-        if newitem:
+        if newitem==1:
             subject='ADDED new content: ' +title
         else:    
             subject='UPDATE to: ' +title
@@ -411,7 +459,7 @@ def pest_report_create(request, country):
             u_form.save()
             content_type = ContentType.objects.get_for_model(new_pest_report)
        
-            send_notification_message(true,new_pest_report.id,content_type,new_pest_report.title,user_country_slug+'/pestreports/'+str(new_pest_report.publish_date.strftime("%Y"))+'/'+str(new_pest_report.publish_date.strftime("%m"))+'/'+new_pest_report.slug+'/')
+            send_notification_message(1,new_pest_report.id,content_type,new_pest_report.title,user_country_slug+'/pestreports/'+str(new_pest_report.publish_date.strftime("%Y"))+'/'+str(new_pest_report.publish_date.strftime("%m"))+'/'+new_pest_report.slug+'/')
             
             info(request, _("Successfully created pest report."))
             
@@ -494,7 +542,7 @@ def pest_report_edit(request, country, id=None, template_name='countries/pest_re
             f_form.save()
             u_form.instance = pest_report
             u_form.save()
-            send_notification_message(false,id,content_type,pest_report.title,user_country_slug+'/pestreports/'+str(pest_report.publish_date.strftime("%Y"))+'/'+str(pest_report.publish_date.strftime("%m"))+'/'+pest_report.slug+'/')
+            send_notification_message(0,id,content_type,pest_report.title,user_country_slug+'/pestreports/'+str(pest_report.publish_date.strftime("%Y"))+'/'+str(pest_report.publish_date.strftime("%m"))+'/'+pest_report.slug+'/')
             
             # If the save was successful, success message and redirect to another page
             # info(request, _("Successfully updated pest report."))
@@ -530,14 +578,23 @@ class ReportingObligationListView(ListView):
         """ only return pest reports from the specific country """
         # self.country = get_object_or_404(CountryPage, country=self.kwargs['country'])
         self.country = self.kwargs['country']
+        self.type = self.kwargs['type']
         # CountryPage country_slug == country URL parameter keyword argument
-        return ReportingObligation.objects.filter(country__country_slug=self.country)
+        return ReportingObligation.objects.filter(country__country_slug=self.country,reporting_obligation_type=self.kwargs['type'])
     
     def get_context_data(self, **kwargs): # http://stackoverflow.com/a/15515220
         context = super(ReportingObligationListView, self).get_context_data(**kwargs)
         context['country'] = self.kwargs['country']
         context['basic_types'] =BASIC_REP_TYPE_CHOICES
+        context['current_type'] =int(self.kwargs['type'])
         return context
+   
+   
+ 
+
+   
+   
+   
    
 class IppcUserProfileDetailView(DetailView):
     """  Reporting Obligation detail page """
@@ -626,7 +683,7 @@ def reporting_obligation_create(request, country,type):
             
             content_type = ContentType.objects.get_for_model(new_reporting_obligation)
        
-            send_notification_message(true,new_reporting_obligation.id,content_type,new_reporting_obligation.title,user_country_slug+'/reportingobligation/'+str(new_reporting_obligation.publish_date.strftime("%Y"))+'/'+str(new_reporting_obligation.publish_date.strftime("%m"))+'/'+new_reporting_obligation.slug+'/')
+            send_notification_message(1,new_reporting_obligation.id,content_type,new_reporting_obligation.title,user_country_slug+'/reportingobligation/'+str(new_reporting_obligation.publish_date.strftime("%Y"))+'/'+str(new_reporting_obligation.publish_date.strftime("%m"))+'/'+new_reporting_obligation.slug+'/')
             
             info(request, _("Successfully created Reporting obligation."))
             return redirect("reporting-obligation-detail", country=user_country_slug, year=new_reporting_obligation.publish_date.strftime("%Y"), month=new_reporting_obligation.publish_date.strftime("%m"), slug=new_reporting_obligation.slug)
@@ -695,7 +752,7 @@ def reporting_obligation_edit(request, country, id=None, template_name='countrie
             u_form.instance = reporting_obligation
             u_form.save()
             # If the save was successful, success message and redirect to another page
-            send_notification_message(false,id,content_type,reporting_obligation.title,user_country_slug+'/reportingobligation/'+str(reporting_obligation.publish_date.strftime("%Y"))+'/'+str(reporting_obligation.publish_date.strftime("%m"))+'/'+reporting_obligation.slug+'/')
+            send_notification_message(0,id,content_type,reporting_obligation.title,user_country_slug+'/reportingobligation/'+str(reporting_obligation.publish_date.strftime("%Y"))+'/'+str(reporting_obligation.publish_date.strftime("%m"))+'/'+reporting_obligation.slug+'/')
             
             info(request, _("Successfully updated Reporting obligation."))
             return redirect("reporting-obligation-detail", country=user_country_slug, year=reporting_obligation.publish_date.strftime("%Y"), month=reporting_obligation.publish_date.strftime("%m"), slug=reporting_obligation.slug)
@@ -728,13 +785,15 @@ class EventReportingListView(ListView):
         """ only return pest reports from the specific country """
         # self.country = get_object_or_404(CountryPage, country=self.kwargs['country'])
         self.country = self.kwargs['country']
+        self.type = self.kwargs['type']
         # CountryPage country_slug == country URL parameter keyword argument
-        return EventReporting.objects.filter(country__country_slug=self.country)
+        return EventReporting.objects.filter(country__country_slug=self.country,event_rep_type=self.kwargs['type'])
     
     def get_context_data(self, **kwargs): # http://stackoverflow.com/a/15515220
         context = super(EventReportingListView, self).get_context_data(**kwargs)
         context['country'] = self.kwargs['country']
         context['event_types'] =EVT_REP_TYPE_CHOICES
+        context['current_type'] =int(self.kwargs['type'])
         return context
    
        
@@ -793,7 +852,7 @@ def event_reporting_create(request, country,type):
             u_form.instance = new_event_reporting
             u_form.save()
             content_type = ContentType.objects.get_for_model(new_event_reporting)
-            send_notification_message(true,new_event_reporting.id,content_type,new_event_reporting.title,user_country_slug+'/eventreporting/'+str(new_event_reporting.publish_date.strftime("%Y"))+'/'+str(new_event_reporting.publish_date.strftime("%m"))+'/'+new_event_reporting.slug+'/')
+            send_notification_message(1,new_event_reporting.id,content_type,new_event_reporting.title,user_country_slug+'/eventreporting/'+str(new_event_reporting.publish_date.strftime("%Y"))+'/'+str(new_event_reporting.publish_date.strftime("%m"))+'/'+new_event_reporting.slug+'/')
             info(request, _("Successfully added Event reporting."))
             return redirect("event-reporting-detail", country=user_country_slug, year=new_event_reporting.publish_date.strftime("%Y"), month=new_event_reporting.publish_date.strftime("%m"), slug=new_event_reporting.slug)
         else:
@@ -863,7 +922,7 @@ def event_reporting_edit(request, country, id=None, template_name='countries/eve
             f_form.save()
             u_form.instance = event_reporting
             u_form.save()
-            send_notification_message(false,id,content_type,event_reporting.title,user_country_slug+'/eventreporting/'+str(event_reporting.publish_date.strftime("%Y"))+'/'+str(event_reporting.publish_date.strftime("%m"))+'/'+event_reporting.slug+'/')
+            send_notification_message(0,id,content_type,event_reporting.title,user_country_slug+'/eventreporting/'+str(event_reporting.publish_date.strftime("%Y"))+'/'+str(event_reporting.publish_date.strftime("%m"))+'/'+event_reporting.slug+'/')
             
             info(request, _("Successfully updated Event reporting."))
             return redirect("event-reporting-detail", country=user_country_slug, year=event_reporting.publish_date.strftime("%Y"), month=event_reporting.publish_date.strftime("%m"), slug=event_reporting.slug)
@@ -1728,7 +1787,7 @@ def pfa_create(request, country):
             u_form.instance = new_pfa
             u_form.save()
             content_type = ContentType.objects.get_for_model(new_pfa)
-            send_notification_message(true,new_pfa.id,content_type,new_pfa.title,user_country_slug+'/pestfreeareas/'+str(new_pfa.publish_date.strftime("%Y"))+'/'+str(new_pfa.publish_date.strftime("%m"))+'/'+new_pfa.slug+'/')
+            send_notification_message(1,new_pfa.id,content_type,new_pfa.title,user_country_slug+'/pestfreeareas/'+str(new_pfa.publish_date.strftime("%Y"))+'/'+str(new_pfa.publish_date.strftime("%m"))+'/'+new_pfa.slug+'/')
            
             info(request, _("Successfully created PestFreeArea."))
             
@@ -1801,7 +1860,7 @@ def pfa_edit(request, country, id=None, template_name='countries/pfa_edit.html')
             u_form.instance = pfa
             u_form.save()
             
-            send_notification_message(false,id,content_type,pfa.title,user_country_slug+'/pestfreeareas/'+str(pfa.publish_date.strftime("%Y"))+'/'+str(pfa.publish_date.strftime("%m"))+'/'+pfa.slug+'/')
+            send_notification_message(0,id,content_type,pfa.title,user_country_slug+'/pestfreeareas/'+str(pfa.publish_date.strftime("%Y"))+'/'+str(pfa.publish_date.strftime("%m"))+'/'+pfa.slug+'/')
             # If the save was successful, success message and redirect to another page
             # info(request, _("Successfully updated pest report."))
             return redirect("pfa-detail", country=user_country_slug, year=pfa.publish_date.strftime("%Y"), month=pfa.publish_date.strftime("%m"), slug=pfa.slug)
@@ -1898,7 +1957,7 @@ def implementationispm_create(request, country):
             u_form.instance = new_implementationispm
             u_form.save()
             content_type = ContentType.objects.get_for_model(new_implementationispm)
-            send_notification_message(true,new_implementationispm.id,content_type,new_implementationispm.title,user_country_slug+'/implementationispm/'+str(new_implementationispm.publish_date.strftime("%Y"))+'/'+str(new_implementationispm.publish_date.strftime("%m"))+'/'+new_implementationispm.slug+'/')
+            send_notification_message(1,new_implementationispm.id,content_type,new_implementationispm.title,user_country_slug+'/implementationispm/'+str(new_implementationispm.publish_date.strftime("%Y"))+'/'+str(new_implementationispm.publish_date.strftime("%m"))+'/'+new_implementationispm.slug+'/')
             info(request, _("Successfully created implementationispm."))
             
             return redirect("implementationispm-detail", country=user_country_slug, year=new_implementationispm.publish_date.strftime("%Y"), month=new_implementationispm.publish_date.strftime("%m"), slug=new_implementationispm.slug)
@@ -1968,7 +2027,7 @@ def implementationispm_edit(request, country, id=None, template_name='countries/
             f_form.save()
             u_form.instance = implementationispm
             u_form.save()
-            send_notification_message(false,id,content_type,implementationispm.title,user_country_slug+'/implementationispm/'+str(implementationispm.publish_date.strftime("%Y"))+'/'+str(implementationispm.publish_date.strftime("%m"))+'/'+implementationispm.slug+'/')
+            send_notification_message(0,id,content_type,implementationispm.title,user_country_slug+'/implementationispm/'+str(implementationispm.publish_date.strftime("%Y"))+'/'+str(implementationispm.publish_date.strftime("%m"))+'/'+implementationispm.slug+'/')
             
             # If the save was successful, success message and redirect to another page
             # info(request, _("Successfully updated pest report."))
@@ -3128,6 +3187,27 @@ class AdvancesSearchCNListView(ListView):
             context['link_to_item'] = 'pest-report-detail'
             context['items']= PestReport.objects.all()
             context['counttotal'] =context['items'].count() 
+           
+            cns= CountryPage.objects.all()
+            maparray=[]
+            maparray1=""
+            tot_p=0
+            for cn in cns:
+              pests=PestReport.objects.filter(country_id=cn.id)
+              p=pests.count()
+              tot_p+=p
+              if p>0:
+                  if cn>0:
+                    maparray.append([str('<a href="'+cn.country_slug+'/pestreports/">'+cn.name)+': '+str(p)+'</a>',str(cn.cn_lat),str(cn.cn_long)])
+                    maparray1+='citymap[\''+str(cn.country_slug)+'\'] = {center: new google.maps.LatLng('+str(cn.cn_lat)+','+str(cn.cn_long)+'), text:\''+str(cn.name)+': '+str(p)+''+'\', html:\''+str('<a href="'+cn.country_slug+'/pestreports/">'+cn.name)+': '+str(p)+'</a>'+'\',  population:' +str(p)+'};'
+              
+            context['map']=maparray
+            context['map1']=maparray1
+            
+        if self.kwargs['type'] == 'pestreportstat':
+            context['type_label'] = 'Official pest report (Art. VIII.1a)'
+            context['item'] = 'pestreportstat'
+            context['link_to_item'] = 'pest-report-detail'
             arrayGen={'1ANIMK':'Animalia;',
                       '1ARCAK':'Archaea;',
                       '1BACTK':'Bacteria;',
@@ -3137,49 +3217,45 @@ class AdvancesSearchCNListView(ListView):
                       '1PROTK':'Protozoa;',
                       '1VIRUK':'Viruses and viroids;'}
             cns= CountryPage.objects.all()
-            maparray=[]
+          
             tot_p=0
             for cn in cns:
               pests=PestReport.objects.filter(country_id=cn.id)
               p=pests.count()
               tot_p+=p
-              if p>0:
-                maparray.append([str('<a href="'+cn.country_slug+'/pestreports/">'+cn.name)+': '+str(p)+'</a>',str(cn.cn_lat),str(cn.cn_long)])
-#              for pp in pests:
-#                  e=EppoCode.objects.filter(codename=pp.pest_identity)
-#                  if e:
-#                    ecode=e[0].code
-#                    codeparent=e[0].codeparent
-#                    for h in range(1,10):
-#                          e1=EppoCode.objects.filter(code=codeparent)
-#                          if(e1.count()>0):
-#                             if(e1[0].codeparent=='null'):
-#                                   break
-#                             else:
-#                                  ecode=e1[0].code
-#                                  codeparent=e1[0].codeparent
-#                                  h=h+1
-#                    
-#                    aaa=arrayGen[codeparent]
-#                    aaa+=str(pp.id)+'*'
-#                    arrayGen[codeparent]=aaa
-#                   
-#            
-#            datachart=''
-               
-#            for h in arrayGen:
-#                s=arrayGen[h].split(';');
-#                values=s[1].split('*');
-#                val=len(values)-1
-#                perc=0
-#                if tot_p>0:
-#                    perc=(val*100/ tot_p)
-#                datachart+= ' {  y: '+str(perc)+', legendText:"'+s[0]+'", label: "'+s[0]+' '+str(perc)+'%" },'
-#            context['datachart']=datachart
-##            
-            context['map']=maparray
+              for pp in pests:
+                  e=EppoCode.objects.filter(codename=pp.pest_identity)
+                  if e:
+                    ecode=e[0].code
+                    codeparent=e[0].codeparent
+                    for h in range(1,10):
+                          e1=EppoCode.objects.filter(code=codeparent)
+                          if(e1.count()>0):
+                             if(e1[0].codeparent=='null'):
+                                   break
+                             else:
+                                  ecode=e1[0].code
+                                  codeparent=e1[0].codeparent
+                                  h=h+1
+                    
+                    aaa=arrayGen[codeparent]
+                    aaa+=str(pp.id)+'*'
+                    arrayGen[codeparent]=aaa
+                   
             
-                
+            datachart=''
+               
+            for h in arrayGen:
+                s=arrayGen[h].split(';');
+                values=s[1].split('*');
+                val=len(values)-1
+                perc=0
+                if tot_p>0:
+                    perc=(val*100/ tot_p)
+                datachart+= ' {  y: '+str(perc)+', legendText:"'+s[0]+'", label: "'+s[0]+' '+str(perc)+'%" },'
+            context['datachart']=datachart
+
+            
         elif self.kwargs['type'] == 'contactpoints':
             context['type_label'] = 'Contact points'
             context['users']=User.objects.all()
@@ -3188,8 +3264,7 @@ class AdvancesSearchCNListView(ListView):
             context['items']=IppcUserProfile.objects.filter(contact_type='1')|IppcUserProfile.objects.filter(contact_type='2')|IppcUserProfile.objects.filter(contact_type='3')
             context['counttotal'] =context['items'].count() 
             context['link_to_item'] = 'contactpoint'
-            
-            
+                 
         elif self.kwargs['type'] == 'nppo':
             context['type_label'] = dict(BASIC_REP_TYPE_CHOICES)[1]
             context['link_to_item'] = 'reporting-obligation-detail'
@@ -3262,7 +3337,43 @@ class AdvancesSearchCNListView(ListView):
             context['counttotal'] =context['items'].count() 
          
         return context
-		
-		
-		
+import csv
+from django.http import HttpResponse	
+
+def contactPointExtractor(request):
+    # Create the HttpResponse object with the appropriate CSV header.
+    contacts=IppcUserProfile.objects.filter(contact_type='1')|IppcUserProfile.objects.filter(contact_type='2')|IppcUserProfile.objects.filter(contact_type='3')
+    users=User.objects.all()
+    cns=CountryPage.objects.all()
+             
+    response = HttpResponse(content_type='text/csv')
+    response['Content-Disposition'] = 'attachment; filename="somefilename.csv"'
+
+    writer = csv.writer(response)
+    writer.writerow(['Country', 'Contact Type', 'Prefix', 'First Name','Last Name','Email','Alternate E-mail','Address'])
+   
+    for c in contacts:
+        country=''
+        c_type=''
+        for cn in cns:          
+            if cn.id == c.country_id:
+               country = cn
+        print (c.contact_type)      
+        for o in c.contact_type.all():
+            c_type=o
+        c_gender=c.gender
+        c_first_name= c.first_name
+        c_last_name= c.last_name
+        c_email=''
+        for u in users:
+            if u.id == c.user_id:
+              u.email
+        c_emailalt =c.email_address_alt
+        c_address=c.address1
+        
+        writer.writerow([country,c_type,c_gender, unicode(c_first_name), unicode(c_last_name),c_email,c_emailalt,unicode(c_address)])
+
+    return response	
+
+
 	

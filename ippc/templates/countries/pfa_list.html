@@ -63,14 +63,14 @@
   <thead>
     <tr>
       <th>{% trans "Title" %}</th>
-      <th>{% trans "Date Published" %}</th>
+      <th>{% trans "Last updated" %}</th>
     </tr>
   </thead>
   <tbody>
     {% for object in latest %}
     <tr>
       <td><a href="{% url 'pfa-detail' object.country.country_slug object.publish_date|date:'Y' object.publish_date|date:'m'  object.slug %}">{{ object.title }}</a></td>
-      <td><a href="{% url 'pfa-detail' object.country.country_slug object.publish_date|date:'Y' object.publish_date|date:'m'  object.slug %}">{{ object.publish_date|date:"d M Y" }}</a>
+      <td>{{ object.modify_date|date:"d M Y" }}
 
         {% if user.is_superuser %} 
             <a class="small pull-right" href="/admin/ippc/pestfreearea/{{ object.id }}"><i class="icon-edit"></i> Edit as Admin</a><br>

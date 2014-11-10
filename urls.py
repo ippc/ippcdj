@@ -25,7 +25,7 @@ PartnersNewsDetailView,partners_news_create,partners_news_edit,\
 PollListView,PollResultsView,PollDetailView,vote_poll,poll_edit,poll_create,\
 email_send,EmailUtilityMessageDetailView,EmailUtilityMessageListView,\
 DraftProtocolDetailView,  draftprotocol_create, draftprotocol_edit,\
-draftprotocol_comment_create,draftprotocol_comment_edit,PublicationLibraryView,\
+draftprotocol_comment_create,draftprotocol_comment_edit,PublicationLibraryView,commenta,contactPointExtractor,\
 CountryRegionsPercentageListView,CountryStatsreportsListView,CountryStatsTotalreportsListView,CountryRegionsUsersListView,CountryTotalUsersListView
 from schedule.periods import Year, Month, Week, Day
 from mezzanine.core.views import direct_to_template
@@ -104,6 +104,10 @@ urlpatterns = patterns("",
     url(r'^countries/(?P<type>[\w-]+)$',
         view=AdvancesSearchCNListView.as_view(),
         name='advsearch'),
+     url(r'^countriescontacts/extractor/',
+        view=contactPointExtractor,
+        name='contactextractor'),
+        
     
     #-------------------STATS------------------------    
    
@@ -208,9 +212,10 @@ urlpatterns = patterns("",
     #-------------------------------------------#
     
     # reporting obligation list
-    url(r'^countries/(?P<country>[\w-]+)/reportingobligation/$',
+    url(r'^countries/(?P<country>[\w-]+)/reportingobligation/(?P<type>[\w-]+)$',
         view=ReportingObligationListView.as_view(),
         name='reporting-obligation-list'),
+
 
     # reporting obligation list showing hidden reports 
     #url(r'^countries/(?P<country>[\w-]+)/reportingobligation/hidden/$',
@@ -233,7 +238,7 @@ urlpatterns = patterns("",
         name='reporting-obligation-edit'),
     #-------------------------------------------#
     # event reporting list
-    url(r'^countries/(?P<country>[\w-]+)/eventreporting/$',
+    url(r'^countries/(?P<country>[\w-]+)/eventreporting/(?P<type>[\w-]+)$',
         view=EventReportingListView.as_view(),
         name='event-reporting-list'),
 
@@ -528,6 +533,9 @@ urlpatterns = patterns("",
     # commented out like the others, so it's the default. You only need
     # one homepage pattern, so if you use a different one, comment this
     # one out.
+    url(r'^comment/$',
+        view=commenta,
+        name='commenta'),
 
     url("^$", direct_to_template, {"template": "index.html"}, name="home"),
 

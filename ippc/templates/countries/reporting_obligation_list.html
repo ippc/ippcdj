@@ -35,36 +35,32 @@
   <a href="javascript:history.go(-1)">{% trans "« Go back" %}</a>
  </p>
 
-  
-<h1>
-  <small class="normal">{% trans "Reporting Obligations from" %}</small>
+
+{% if latest %}
+{% for key, val in basic_types %}
+{% ifequal key current_type %}
+
+ <h1>
+  <small class="normal">{{val}}{% trans "  from" %}</small>
   {{ page.title }}
 </h1> 
  
 
-
-
- 
-{% if latest %}
-
-{% for key, val in basic_types %}
-
-
 <table class="table table-condensed table-striped" id="publications">
   <tbody>
-   <tr>
-       <td colspan="2"><b class="pull-left">{{val}}</b> 
-           {% if perms.ippc.add_reportingobligation and request.user.get_profile.country.name == page.title %}
+     {% if perms.ippc.add_reportingobligation and request.user.get_profile.country.name == page.title %}
+         <tr>
+       <td colspan="2">
            <small  class="pull-right">
                <a class="btn btn-small btn-info" href="{% url 'reporting-obligation-create' page.title|slugify key %}">+ {% trans "Add new" %}</a>
     </small>
-           {% endif %}
+       
        </td>
    </tr>
-
+    {% endif %}
      <tr>
        <th style="font-weight:normal;">{% trans "Title" %}</th>
-       <th style="font-weight:normal;">{% trans "Date Published" %}</th>
+       <th style="font-weight:normal;">{% trans "Last updated" %}</th>
      </tr>
      
     {% for object in latest %}
@@ -74,7 +70,7 @@
  
     <tr>
       <td><a href="{% url 'reporting-obligation-detail' object.country.country_slug object.publish_date|date:'Y' object.publish_date|date:'m'  object.slug %}">{{ object.title }}</a></td>
-      <td><a href="{% url 'reporting-obligation-detail' object.country.country_slug object.publish_date|date:'Y' object.publish_date|date:'m'  object.slug %}">{{ object.publication_date|date:"d M Y" }}</a>
+      <td>{{ object.modify_date|date:"d M Y" }}
 
         {% if user.is_superuser %} 
             <a class="small pull-right" href="/admin/ippc/reportingobligation/{{ object.id }}"><i class="icon-edit"></i> Edit as Admin</a><br>
@@ -91,7 +87,7 @@
         {% endifequal %}
       {% endfor %}
     </tbody>
-  </table>
+  </table>{% endifequal %}
 {% endfor %} 
    <hr> 
 
