@@ -52,27 +52,27 @@
       {% if page.login_required %} 
         {% if user.is_superuser or perms.ippc.change_publication  %}
             <a href="{{ page.get_absolute_url }}">
-
+                {% if page.has_children_in_menu %}<i class="icon-plus"> </i> {% endif %}
                 {% with page.richtextpage|get_object_translation as translated_page %}
                 {% if translated_page.title %}
                     {{ translated_page.title|safe }}
                     {% else %}
                     {{ page.title }}
                 {% endif %}
-                {% endwith %} {% if page.has_children_in_menu %}<i class="icon-plus"> </i> {% endif %}
+                {% endwith %} 
                 </a> 
         {% else %}
          {% for group in request.user.groups.all %} 
             {% if group in page.get_content_model.groups.all %} 
                 <a href="{{ page.get_absolute_url }}">  
-
+                  {% if page.has_children_in_menu %}<i class="icon-plus"> </i> {% endif %}
                 {% with page.richtextpage|get_object_translation as translated_page %}
                 {% if translated_page.title %}
                     {{ translated_page.title|safe }}
                     {% else %}
                     {{ page.title }}
                 {% endif %}
-                {% endwith %} {% if page.has_children_in_menu %}<i class="icon-plus"> </i> {% endif %}
+                {% endwith %} 
                 </a> 
             {% endif %}
          {% endfor %}
@@ -82,6 +82,7 @@
          
      {% else %}    
      <a href="{{ page.get_absolute_url }}"> 
+      {% if page.has_children_in_menu %}<i class="icon-plus"> </i> {% endif %}
          {% if page.content_model == 'publicationlibrary'%}
             {% with page.publicationlibrary|get_object_translation as translated_page %}
         {% if translated_page.title %}
@@ -113,7 +114,7 @@
         
         
         
-      {% if page.has_children_in_menu %}<i class="icon-plus"> </i> {% endif %}
+      
     </a>{% endif %}
     {# wrap the next line with 'if page.is_current_or_ascendant' #}
     {# to only show child pages in the menu for the current page #}
