@@ -31,7 +31,7 @@
 {% if tag %}
     {% trans "Tag:" %} {{ tag }}
 {% else %}{% if category %}
-    {% trans "Category:" %} {{ category }}
+    <!--{% trans "Category:" %} {{ category }}-->
 {% else %}{% if year or month %}
     {% if month %}{{ month }}, {% endif %}{{ year }}
 {% else %}{% if author %}
@@ -48,11 +48,11 @@
     {% block blog_post_list_filterinfo %}
     <p>
     {% if tag %}
-        {% trans "Viewing posts tagged" %} <strong>{{ tag }}</strong>
+        {% trans "Viewing tagged as: " %} <strong>{{ tag }}</strong>
     {% else %}{% if category %}
-        {% trans "Viewing posts for the category" %} <strong>{{ category }}</strong>
+       <!-- {% trans "Viewing posts for the category" %} <strong>{{ category }}</strong>-->
     {% else %}{% if year or month %}
-        {% trans "Viewing posts from" %} <strong>{% if month %}{{ month }}, {% endif %}
+        {% trans "Viewing items from" %} <strong>{% if month %}{{ month }}, {% endif %}
         {{ year }}</strong>
     {% else %}{% if author %}
         {% trans "Viewing posts by" %}

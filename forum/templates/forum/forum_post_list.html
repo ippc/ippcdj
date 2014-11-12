@@ -85,13 +85,16 @@
     <tr>
       <th> </th>
       <th>{% trans "Topic" %}</th>
+      <th>{% trans "Category" %}</th>
       <th>{% trans "Posted by" %}</th>
       <th>{% trans "Date" %}</th>
-      <th>comments</th>
+      <th>{% trans "Comments" %}</th>
     </tr>
   </thead>
   <tbody>
    {% for forum_post in forum_posts.object_list %}
+     {% for group in request.user.groups.all %}
+      {% if group in forum_post.groups.all %}
     <tr>
         <td>
             {% if forum_post.allow_comments %}
@@ -101,14 +104,15 @@
             {% endif%} 
         </td>
         <td> <a href="{{ forum_post.get_absolute_url }}">{{ forum_post.title }}</a> 
-    {# {% with forum_post.categories.all as categories %} #}
-    {# {% if categories %} #}
-    {# {% trans "in" %} #}
-    {# {% for category in categories %} #}
-    {# <a href="{% url "forum_post_list_category" category.slug %}">{{ category }}</a> #}
-    {# {% endfor %} #}
-    {# {% endif %} #}
-    {# {% endwith %} #}
+            </td> <td>
+    {% with forum_post.categories.all as categories %} 
+     {% if categories %} 
+ 
+     {% for category in categories %} 
+     <a href="{% url "forum_post_list_category" category.slug %}">{{ category }}</a> 
+     {% endfor %} 
+     {% endif %} 
+    {% endwith %} 
    </td>
         <td>{% with forum_post.user as author %}
     <a href="{% url "forum_post_list_author" author %}">{{ author.get_full_name|default:author.username }}</a>
@@ -131,7 +135,7 @@
             <a class="small pull-right" href="/admin/forum/forumpost/{{ forum_post.id }}"><i class="icon-edit"></i> Edit as Admin</a><br>
         {% endif %}
     </td>
-    </tr>
+    </tr>  {% endif %}  {% endfor %}  
     {% endfor %}  
   </tbody>
 </table>

@@ -9,11 +9,16 @@
     function toggle_visibility(id) {
        
        var e = document.getElementById(id);
+       var e2 = document.getElementById('title_'+id);
        
-       if(e.style.display == 'block')
+       if(e.style.display == 'block'){
           e.style.display = 'none';
-       else
+          e2.style.display = 'block';
+       }
+       else{
+          e2.style.display = 'none';
           e.style.display = 'block';
+      }
     }
 
 </script>
@@ -32,10 +37,11 @@
 {% with page.publicationlibrary.publications.all as publications %}
   {% for publication in publications %}
     <tr id="media-file-{{ publication.id }}">
-        <td><a href="#{{ publication.id }}" onclick="javascript:toggle_visibility({{ publication.id }});">show/hide Details</td>
+        <td><a href="#{{ publication.id }}" onclick="javascript:toggle_visibility({{ publication.id }});">{% trans "show/hide Details" %}</td>
         <td>{{ publication.document_number }}</td>
-        <td><a href="{% url 'publication-detail' publication.pk %}">{{ publication.title }}</a>
+        <td><a id="title_{{ publication.id }}" href="{% url 'publication-detail' publication.pk %}">{{ publication.title }}</a>
            <div id="{{ publication.id }}" style="display:none;">
+               <a href="{% url 'publication-detail' publication.pk %}">{{ publication.title }}</a>
                     {% if publication.file_en %}
                     <a href="{{ MEDIA_URL }}{{ publication.file_en }}">En</a>
                     {% endif %}

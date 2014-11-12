@@ -1,6 +1,6 @@
 {% extends "base.html" %}
-{% load scheduletags i18n %}
 
+{% load scheduletags i18n %}
 
 
 {% block breadcrumb_menu %}
@@ -33,12 +33,16 @@
 {% endblock pageinfo %}
 
 {% block main %}
-<div class="calendarname"><h1>{% trans "Calendar of Events<" %}/h1></div>
-{% prevnext "year_calendar" calendar.slug periods.year "Y" %}
-<table class="table table-condensed table-striped" id="publications">
+<div class="calendarname"><h1>{% trans "Calendar of Events<" %}/h1></div><br><br>
+
+{% prevnext "year_calendar" calendar.slug periods.year "Y" %}<br><br>
+
+<table  data-url="data1.json"  class="table table-condensed table-striped" id="publications">
+  <thead>
+<th>
     <tr>
-        <th>Start date</th>
-        <th>End date</th>
+        <th style="white-space: nowrap">Start date</th>
+        <th style="white-space: nowrap">End date</th>
         <th>Activity</th>
         <th>Type</th>
         <th>Location</th>
@@ -46,22 +50,35 @@
         <th> </th>
         {% endif %}
     </tr>
+  </thead>
+  <tbody>
 
+    {% for m in months_list %}
+    <tr>  <td colspan="5"><strong>{{m.1}}</strong></td></tr>
+    {% for e in event_list2 %}
+        {% if e.0 == m.0 %}
+            {% for event in e.1 %}
 
-    {% for event in event_list %}
-    <tr>
-        <td>{% blocktrans with event.start|date:"d-m-Y" as start_date %}{{ start_date }}{% endblocktrans %}</td>
-        <td>{% blocktrans with event.end|date:"d-m-Y" as end_date %}{{ end_date }}{% endblocktrans %}</td>
-        <td>    <a  href="/events/event/{{event.id}}">{{event.title}}</a></td>
-        <td>{{event.type_verbose}}</td>
-        <td>{{event.location}} {{event.venuecity}} {{event.venuecountry}}  </td>
-        {% if user.is_superuser or can_add %}
-        <td><a class="small pull-right" href="{% url 'edit_event' 'event' event.calendar.slug event.id %}"><i class="icon-edit"></i> Edit</a>  </td>
-        {% endif %}
-    </tr>
-
-
+                <tr>
+                    <td style="white-space: nowrap"><small>{% blocktrans with event.start|date:"d-m-Y" as start_date %}{{ start_date }}{% endblocktrans %}</small></td>
+                    <td style="white-space: nowrap"><small>{% blocktrans with event.end|date:"d-m-Y" as end_date %}{{ end_date }}{% endblocktrans %}</small></td>
+                    <td>    <a  href="/events/event/{{event.id}}">{{event.title}}</a></td>
+                    <td>{{event.type_verbose}}</td>
+                    <td>{{event.location}} {{event.venuecity}} {{event.venuecountry}}  
+                    {% if user.is_superuser or can_add %}
+                      <a class="small pull-right" href="{% url 'edit_event' 'event' event.calendar.slug event.id %}"><i class="icon-edit"></i> Edit</a>  
+                    {% endif %}
+                </td>
+                </tr>
+            {% endfor %}
+        {% endif%}
     {% endfor %}
+    {% endfor %}
+     
+    
+    
+    
+      </tbody>
 </table>
 
 <!--div class="tablewrapper">

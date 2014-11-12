@@ -85,6 +85,7 @@ class TransPublicationLibraryPageAdmin(StackedDynamicInlineAdmin):
     model = TransPublicationLibraryPage
     fields = ("lang", "title", "content")
 
+from django.http import HttpResponseRedirect
 
 class PublicationLibraryAdmin(PageAdmin):
     inlines = (PublicationInline, TransPublicationLibraryPageAdmin,)
