@@ -82,7 +82,7 @@
             <li>{% blocktrans with event.end|date:"d-m-Y" as end_date %}{{ end_date }}{% endblocktrans %}</li>
         </ul>
     </dd>
-    {% if event.description %}
+    {% if event.description|length > 2 %}
     <dt>{% trans "Description" %}</dt>
     <dd>
         <ul class="unstyled nomargin">
@@ -90,43 +90,52 @@
         </ul>
     </dd>
     {% endif %}
+      {% if event.category_verbose|length > 2%}
+  
     <dt>{% trans "Category" %}</dt>
     <dd>
         <ul class="unstyled nomargin">
             <li>{{event.category_verbose}}</li>
         </ul>
-    </dd>
+    </dd> {% endif %}
+     {% if event.type_verbose|length > 2%}
     <dt>{% trans "Type" %}</dt>
     <dd>
         <ul class="unstyled nomargin">
             <li>{{event.type_verbose}}</li>
         </ul>
-    </dd>
-    <dt>{% trans "Venue city" %}</dt>
+    </dd> {% endif %}
+    {% if event.venuecity|length > 2%}
+   <dt>{% trans "Venue city" %}</dt>
     <dd>
         <ul class="unstyled nomargin">
             <li>{{event.venuecity}}</li>
         </ul>
     </dd>
+    {% endif %}
+    {% if event.venuecountry|length > 2%}
     <dt>{% trans "Venue country" %}</dt>
     <dd>
         <ul class="unstyled nomargin">
             <li>{{event.venuecountry}}</li>
         </ul>
     </dd>
-
+    {% endif %}
+    {% if event.organizer|length > 2%}
+ 
     <dt>{% trans "Organizer" %}</dt>
     <dd>
         <ul class="unstyled nomargin">
             <li>{{event.organizer}}</li>
         </ul>
     </dd>
-    <dt>{% trans "Created on" %}</dt>
+     {% endif %}
+     <!--dt>{% trans "Created on" %}</dt>
     <dd>{% blocktrans with sometime=event.created_on|date:"d-m-Y" %}{{ sometime }}{% endblocktrans %}</dd>
     <dt>{% trans "Updated on" %}</dt>
-    <dd>{% blocktrans with sometime=event.updated_on|date:"d-m-Y" %}{{ sometime }}{% endblocktrans %}</dd>
+    <dd>{% blocktrans with sometime=event.updated_on|date:"d-m-Y" %}{{ sometime }}{% endblocktrans %}</dd-->
 
-    {% if event.issuename %}
+    {% if event.issuename.all %}
     <dt>{% trans "Issue keywords" %}</dt>
     <dd>
         {% for entry in event.issuename.all %}
@@ -140,13 +149,16 @@
     {% endif %}
 
 
-
+{% if event.eventfile_set.all %}
+    
     <dt>{% trans "Event files" %}</dt>  <dd> <ul class="unstyled nomargin">
             {% for f in event.eventfile_set.all %} 
 
             <li><a href="{{MEDIA_URL}}{{f.file.name}}">{{ f.description }}</a></li>
             {% endfor %}
         </ul></dd>
+         {% endif %}
+{% if event.eventurl_set.all %}
     <dt>{% trans "Event websites/urls" %}</dt>
     <dd> <ul class="unstyled nomargin">
             {% for u in event.eventurl_set.all %} 
@@ -154,7 +166,7 @@
             <li> <a href="{{ u.url_for_more_information }}">{{ u.url_for_more_information }}</a></li>
             {% endfor %}  
         </ul></dd>
-
+    {% endif %}
 
 
 

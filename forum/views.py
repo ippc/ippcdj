@@ -47,7 +47,7 @@ def forum_post_list(request, tag=None, year=None, month=None, username=None,
     prefetch = ("categories", "keywords__keyword")
     forum_posts = forum_posts.select_related("user").prefetch_related(*prefetch)
     forum_posts = paginate(forum_posts, request.GET.get("page", 1),
-                          settings.FORUM_POST_PER_PAGE,
+                          150,#settings.FORUM_POST_PER_PAGE,
                           settings.MAX_PAGING_LINKS)
     context = {"forum_posts": forum_posts, "year": year, "month": month,
                "tag": tag, "category": category, "author": author}

@@ -346,8 +346,10 @@ class PublicationFilesListView(ListView):
 
         # The zip compressor
         date = timezone.now().strftime('%Y%m%d%H%M%S')+"_"+str(self.kwargs['id'])
+        zip_all1 ="/static/media/tmp/"+"archive_all_"+ date+".zip"
         zip_all = zipfile.ZipFile(PROJECT_ROOT+"/static/media/tmp/"+"archive_all_"+ date+".zip", "w")
         for lang in langs:
+            zip_lang1 = "/static/media/tmp/"+"archive_"+str(lang[0])+"_"+ date+".zip"
             zip_lang = zipfile.ZipFile(PROJECT_ROOT+"/static/media/tmp/"+"archive_"+str(lang[0])+"_"+ date+".zip", "w")
             for file_path in lang[1]:
                 strfpath=os.path.join(PROJECT_ROOT, PROJECT_ROOT+'/static/media/')+str(file_path)
@@ -357,14 +359,14 @@ class PublicationFilesListView(ListView):
                 zip_all.write(strfpath, fname)
             
             zip_lang.close()
-            context['zip_'+str(lang[0])]=zip_lang.filename
+            context['zip_'+str(lang[0])]=zip_lang1
             size=os.path.getsize(zip_lang.filename)
             if size >182:
                 context['zip_'+str(lang[0])+'_s']=os.path.getsize(zip_lang.filename)
         
         zip_all.close()
         
-        context['zip_all']=zip_all.filename
+        context['zip_all']=zip_all1
         context['zip_all_s']=os.path.getsize(zip_all.filename)
         
         return context
@@ -3150,7 +3152,7 @@ def email_send(request):
             # Attach a files to message
             fileset= EmailUtilityMessageFile.objects.filter(emailmessage_id=new_emailmessage.id)
             for f in fileset:
-                pf='static/media/'+str(f.file)
+                pf=PROJECT_ROOT+'/static/media/'+str(f.file)
                 message.attach_file(pf) 
             message.content_subtype = "html" 
             

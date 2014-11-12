@@ -65,12 +65,27 @@ def calendar_by_year(request, calendar_slug, year=None, template_name="schedule/
    
     calendar = get_object_or_404(Calendar, slug=calendar_slug)
     event_list= calendar.event_set.filter(start__year=date.year,country=-1).order_by('start')
+    event_list2=[]
+    months_list = []
+    for m in range(1,13):
+        months_list.append((m, datetime.date(2014, m, 1).strftime('%B')))
+        monthevents=[]
+        for e in event_list:
+            print('month')
+            print(e.start.month )  
+            if e.start.month == m:
+                monthevents.append(e)
+        event_list2.append((m,monthevents))
+        
+    print(event_list2)
     period_objects = dict([(period.__name__.lower(), period(event_list, date)) for period in year])
     return render_to_response(template_name, {
         'periods': period_objects,
         'calendar': calendar,
         'weekday_names': weekday_names,
         'event_list': event_list,
+        'months_list': months_list,
+        'event_list2': event_list2,
         'can_add': can_add,
         'here': quote(request.get_full_path()),
     }, context_instance=RequestContext(request), )

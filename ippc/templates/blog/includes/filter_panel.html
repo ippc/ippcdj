@@ -8,7 +8,7 @@
 {% blog_recent_posts 5 as recent_posts %}
 {% if recent_posts %}
 <div class="panel">
-  <h3>{% trans "Recent Posts" %}</h3>
+  <h3>{% trans "Latest" %}</h3>
   <ul class="unstyled recent-posts">
   {% for recent_post in recent_posts %}
   <li><a href="{{ recent_post.get_absolute_url }}"
@@ -40,7 +40,7 @@
 {% block blog_categories %}
 {% blog_categories as categories %}
 {% if categories %}
-<div class="panel">
+<!--div class="panel">
   <h3>{% trans "Categories" %}</h3>
   <ul class="unstyled">
   {% for category in categories %}
@@ -48,7 +48,7 @@
       >{{ category }}</a> ({{ category.post_count }})</li>
   {% endfor %}
   </ul>
-</div>
+</div-->
 {% endif %}
 {% endblock %}
 

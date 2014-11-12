@@ -73,6 +73,8 @@
 # Setting to turn on featured images for blog posts. Defaults to False.
 #
 BLOG_USE_FEATURED_IMAGE = True
+CALLS_USE_FEATURED_IMAGE = True
+NEWS_USE_FEATURED_IMAGE = True
 
 # If True, the south application will be automatically added to the
 # INSTALLED_APPS setting.
@@ -265,6 +267,8 @@ INSTALLED_APPS = (
 
     # forum application, based on mezzanine.blog
     "forum",
+    "calls",
+    "news",
     # or, even better, attachments that can be related to any model type
     
     # https://github.com/bartTC/django-attachments
@@ -373,10 +377,11 @@ LANGUAGES = (
 # https://docs.djangoproject.com/en/dev/ref/settings/#locale-paths
 LOCALE_PATHS = (os.path.join(PROJECT_ROOT, "conf/locale"),)
 
-SEARCH_MODEL_CHOICES = ("pages.Page", "blog.BlogPost", "ippc.PestReport")
-
+SEARCH_MODEL_CHOICES = ("pages.Page", "news.NewsPost","calls.CallsPost","ippc.Publication", "ippc.ReportingObligation","ippc.EventReporting","ippc.PestReport")
+CALLS_SLUG = 'calls'
+NEWS_SLUG = 'news'
 # BLOG_SLUG = 'news'
-# BLOG_USE_FEATURED_IMAGE = 'True'
+#CALLS_USE_FEATURED_IMAGE = 'True'
 FORUM_SLUG = 'forum'
 # FORUM_USE_FEATURED_IMAGE = 'True'
 # FORUM_URLS_DATE_FORMAT = 'month'
