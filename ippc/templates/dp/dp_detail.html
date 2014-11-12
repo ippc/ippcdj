@@ -10,7 +10,7 @@
 {% endblock %}
 
 {% block local_nav %}
-<div class="well">
+<div class="well localnav">
   <p><a href="/expert-consultation-on-draft-diagnostic-protocols-ecdp/">« {% trans "Go Back " %}</a></p>
     {% if user.is_superuser %} 
         <a class="btn btn-small btn-info" href="/admin/ippc/draftprotocol/{{ draftprotocol.id }}">Edit as Admin</a><br>

@@ -83,25 +83,27 @@
    
      <tr>
           <td>   {% for key, val in basic_types %}   
-              <a href="/countries/{{page.title|slugify}}/reportingobligation/{{key}}">{{val}}</a>
             {% if perms.ippc.add_reportingobligation and request.user.get_profile.country.name == page.title or user.is_superuser %}
               <small><a class="btn btn-mini" href="{% url 'reporting-obligation-create' page.title|slugify key %}">+ {% trans "Add new" %}</a></small>
              {% endif %}
+              <a href="/countries/{{page.title|slugify}}/reportingobligation/{{key}}">{{val}}</a>
+
                <br>
              {% endfor %} 
-             
+              {% if perms.ippc.add_pestreport and request.user.get_profile.country.name == page.title or user.is_superuser %}
+                <small><a class="btn btn-mini" href="{% url 'pest-report-create' page.title|slugify %}">+ {% trans "Add new" %}</a></small>
+              {% else %}
+              {% endif %}             
              <a href="{% url 'pest-report-list' page.title|slugify %}">Official Pest Reports</a> 
-            {% if perms.ippc.add_pestreport and request.user.get_profile.country.name == page.title or user.is_superuser %}
-              <small><a class="btn btn-mini" href="{% url 'pest-report-create' page.title|slugify %}">+ {% trans "Add new" %}</a></small>
-            {% else %}
-            {% endif %}
+
       </td>  
       <td>   
          {% for key, val in event_types %}
-          <a href="/countries/{{page.title|slugify}}/eventreporting/{{key}}">{{val}}</a>
           {% if perms.ippc.add_eventreporting and request.user.get_profile.country.name == page.title or user.is_superuser %}
             <small><a class="btn btn-mini" href="{% url 'event-reporting-create' page.title|slugify key %}">+ {% trans "Add new" %}</a></small>
-          {% endif %} 
+          {% endif %}
+          <a href="/countries/{{page.title|slugify}}/eventreporting/{{key}}">{{val}}</a>
+          
           <br>
         {% endfor %} 
         </td>
@@ -132,56 +134,80 @@
       </li-->
       <li class="nav-header">
           {% trans " Related Official Information" %}
-      
       </li>
-      <li><a href="{% url 'country-publication-list' page.title|slugify %}">Publication</a> 
-        {% if perms.ippc.add_cnpublication and request.user.get_profile.country.name == page.title or user.is_superuser %}
-          <small><a class="btn btn-mini" href="{% url 'country-publication-create' page.title|slugify %}">+ {% trans "Add new" %}</a></small>
-        {% endif %}
+      <li>
+        <small>
+          {% if perms.ippc.add_cnpublication and request.user.get_profile.country.name == page.title or user.is_superuser %}
+            <a class="btn btn-mini" href="{% url 'country-publication-create' page.title|slugify %}">+ {% trans "Add new" %}</a>
+          {% endif %}
+          <a href="{% url 'country-publication-list' page.title|slugify %}">Publication</a> 
+        </small>
       </li>
    
-      <li> <a href="/countries/{{page.title|slugify }}/countrynews/">{% trans "News Item" %}</a>
-        {% if perms.schedule.add_countrynews and request.user.get_profile.country.name == page.title or user.is_superuser %}
-          <small>  <a class="btn btn-mini" href="{% url 'country-news-create' page.title|slugify %}">+ {% trans "Add new" %}</a>
-          </small>
-        {% endif %}
-      </li><li> <a href="/countries/{{page.title|slugify }}/calendar/">{% trans "Events" %}</a>
-        {% if perms.schedule.add_event and request.user.get_profile.country.name == page.title or user.is_superuser %}
-          <small>  <a class="btn btn-mini" href="{% url 'calendar_create_event' page.title|slugify 'calendar' %}">+ {% trans "Add new" %}</a>
-          </small>
-        {% endif %}
+      <li>
+        <small>
+          {% if perms.ippc.add_countrynews and request.user.get_profile.country.name == page.title or user.is_superuser %}
+            <a class="btn btn-mini" href="{% url 'country-news-create' page.title|slugify %}">+ {% trans "Add new" %}</a>
+          {% endif %}
+          <a href="/countries/{{page.title|slugify }}/countrynews/">{% trans "News Item" %}</a>
+        </small>
       </li>
-      <li><a href="{% url 'website-list' page.title|slugify %}">Website</a> 
-        {% if perms.ippc.add_website and request.user.get_profile.country.name == page.title or user.is_superuser %}
-          <small><a class="btn btn-mini" href="{% url 'website-create' page.title|slugify %}">+ {% trans "Add new" %}</a></small>
-        {% endif %}
+      <li>
+        <small>
+          {% if perms.schedule.add_event and request.user.get_profile.country.name == page.title or user.is_superuser %}
+            <a class="btn btn-mini" href="{% url 'calendar_create_event' page.title|slugify 'calendar' %}">+ {% trans "Add new" %}</a>
+          {% endif %}
+          <a href="/countries/{{page.title|slugify }}/calendar/">{% trans "Events" %}</a>
+        </small>
+      </li>
+      <li>
+        <small>
+          {% if perms.ippc.add_website and request.user.get_profile.country.name == page.title or user.is_superuser %}
+            <a class="btn btn-mini" href="{% url 'website-create' page.title|slugify %}">+ {% trans "Add new" %}</a>
+          {% endif %}
+          <a href="{% url 'website-list' page.title|slugify %}">Website</a> 
+        </small>
       </li>
        <li>
-        <a href="{% url 'pfa-list' page.title|slugify %}">Pest-Free Area</a>         
-        {% if perms.ippc.add_pestfreearea and request.user.get_profile.country.name == page.title or user.is_superuser %}
-          <small><a class="btn btn-mini " href="{% url 'pfa-create' page.title|slugify %}">+ {% trans "Add new" %}</a></small>
-        {% else %}
-        {% endif %}
+          <small>
+            {% if perms.ippc.add_pestfreearea and request.user.get_profile.country.name == page.title or user.is_superuser %}
+              <a class="btn btn-mini " href="{% url 'pfa-create' page.title|slugify %}">+ {% trans "Add new" %}</a>
+            {% endif %}
+            <a href="{% url 'pfa-list' page.title|slugify %}">Pest-Free Area</a>         
+          </small>
       </li>
 
-       <li><a href="{% url 'implementationispm-list' page.title|slugify %}">Implementation of ISPM 15</a> 
-        {% if perms.ippc.add_implementationispm and request.user.get_profile.country.name == page.title or user.is_superuser %}
-          <small><a class="btn btn-mini" href="{% url 'implementationispm-create' page.title|slugify %}">+ {% trans "Add new" %}</a></small>
-        {% endif %}
+       <li>
+         <small>
+           {% if perms.ippc.add_implementationispm and request.user.get_profile.country.name == page.title or user.is_superuser %}
+             <a class="btn btn-mini" href="{% url 'implementationispm-create' page.title|slugify %}">+ {% trans "Add new" %}</a>
+           {% endif %}
+           <a href="{% url 'implementationispm-list' page.title|slugify %}">Implementation of ISPM 15</a> 
+         </small>
       </li>
       
-      <li><a href="http://phytosanitary.info/user/login?destination=node/add" target="_blank">Project <span class="small">(go to phytosanitary.info)</span></a></li>
+      <li>
+        <small>
+          <a href="http://phytosanitary.info/user/login?destination=node/add" target="_blank">Project <span class="small">(go to phytosanitary.info)</span></a>
+        </small>
+      </li>
   
      <li class="divider"></li>
         <li class="nav-header">
            {% trans "FAO Country Profile Data" %}
       </li>
-      <li><a href="/countries/{{page.title|slugify }}/relatedinformations/">Map</a> 
-      <li><a href="/countries/{{page.title|slugify }}/relatedinformations/">Statistics</a>
-            <ul class="nav nav-list"><li>General statistics</li>
-          <li>Production data</li> </ul>
-      
-    </li>
+      <li>
+        <small><a href="/countries/{{page.title|slugify }}/relatedinformations/">Map</a></small> 
+      </li>
+      <li>
+        <small>
+          <a href="/countries/{{page.title|slugify }}/relatedinformations/">Statistics</a>
+              <ul>
+                <li>General statistics</li>
+                <li>Production data</li> 
+              </ul>
+        </small>
+      </li>
     </ul>
 </div>  
   {# =todo: link to this country's RSS feed here. #}

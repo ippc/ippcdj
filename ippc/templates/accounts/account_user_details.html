@@ -1,7 +1,7 @@
 {% load i18n future mezzanine_tags accounts_tags %}
 {# <div class="panel contact-info"> #}
   {% if user.get_profile.profile_photo %}
-  <a href="{% url "profile_update" %}" title="Click to update your profile and add a picture."><img class="pull-right profile-picture" style="margin:0 0 20px 10px;" src="{{ MEDIA_URL }}{% thumbnail user.get_profile.profile_photo 128 128 %}"></a>
+  <a href="/account/update/{{user.get_profile.id}}" title="Click to update your profile and add a picture."><img class="pull-right profile-picture" style="margin:0 0 20px 10px;" src="{{ MEDIA_URL }}{% thumbnail user.get_profile.profile_photo 128 128 %}"></a>
   {% else %}
   <a class="pull-right profile-picture" style="height:128px; width:128px; background:#eee;" href="{% url "profile_update" %}" title="Click to update your profile and add a picture."></a>
   {% endif %}

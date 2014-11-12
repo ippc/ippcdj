@@ -12,7 +12,7 @@
 {% endblock %}
 
 {% block local_nav %}
-<div class="well">
+<div class="well localnav">
   <p><a href="/countries/{{ implementationispm.country.name|slugify }}/implementationispm/">« {% trans "Back to" %} {% trans "Implementation of ISPM 15" %}</a></p>
     {% if user.is_superuser %} 
         <a class="btn btn-small btn-info" href="/admin/ippc/implementationispm/{{ implementationispm.id }}">Edit as Admin</a><br>

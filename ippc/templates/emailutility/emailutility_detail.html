@@ -11,7 +11,7 @@
 {% endblock %}
 
 {% block local_nav %}
-<div class="well">
+<div class="well localnav">
   <p><a href="/emailutility/all/">« {% trans "Back to" %} {% trans "Email list" %}</a></p>
       {% if perms.ippc.add_emailutilitymessage or user.is_superuser%}
         <a class="btn btn-small btn-info" href="/emailutility/send"><i class="icon-edit icon-white"></i> Create New Email Message</a>

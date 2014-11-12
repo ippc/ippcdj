@@ -12,7 +12,7 @@
 {% endblock %}
 
 {% block local_nav %}
-<div class="well">
+<div class="well localnav">
   <p><a href="/countries/{{ website.country.name|slugify }}/websites/">« {% trans "Back to" %} {% trans "Websites" %}</a></p>
     {% if user.is_superuser %} 
         <a class="btn btn-small btn-info" href="/admin/ippc/websites/{{ website.id }}">Edit as Admin</a><br>
