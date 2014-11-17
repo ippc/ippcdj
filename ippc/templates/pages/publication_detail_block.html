@@ -75,29 +75,29 @@
           
           
           
-           {% if publication.contact_for_more_information %}
+  {% if publication.contact_for_more_information %}
   <dt>{% trans "Contact for more information" %}</dt>
   <dd>{{ publication.contact_for_more_information }}</dd>
   {% endif %}
   
-  
-   <dt>{% trans "Additional files" %}</dt>
-   {% for f in publication.publicationfile_set.all %} 
-    
-  <dd><a href="{{MEDIA_URL}}{{f.file.name}}">{{ f.description }}</a></dd>
-{% endfor %}
+  {% if publication.publicationfile_set.all %}
+     <dt>{% trans "Additional files" %}</dt>
+     {% for f in publication.publicationfile_set.all %} 
+       <dd><a href="{{MEDIA_URL}}{{f.file.name}}">{{ f.description }}</a></dd>
+     {% endfor %}
+   {% endif %}
 
-    
-  <dt>{% trans "Links" %}</dt>
-   {% for f in publication.publicationurl_set.all %} 
-    
-  <dd><a href="{{MEDIA_URL}}{{f.url_for_more_information}}">{{ f.url_for_more_information }}</a></dd>
-{% endfor %}
+  {% if publication.publicationurl_set.all %}
+    <dt>{% trans "Links" %}</dt>
+    {% for f in publication.publicationurl_set.all %} 
+      <dd><a href="{{MEDIA_URL}}{{f.url_for_more_information}}">{{ f.url_for_more_information }}</a></dd>
+    {% endfor %}
+  {% endif %}
   
   
   
   
-   {% if publication.issuename %}
+   {% if publication.issuename.all %}
   <dt>{% trans "Issue keywords" %}</dt>
   <dd>
   {% for entry in publication.issuename.all %}
@@ -112,7 +112,7 @@
  
   
   
-  {% if publication.commname %}
+  {% if publication.commname.all %}
   <dt>{% trans "Commodity keywords" %}</dt>
   <dd>
   {% for entry in publication.commname.all %}
