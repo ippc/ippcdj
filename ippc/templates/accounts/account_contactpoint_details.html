@@ -1,14 +1,14 @@
 {% load i18n future mezzanine_tags accounts_tags %}
   {% if user.is_superuser %} 
-  <div>
+  <div class="pull-right">
       <a class="btn btn-small btn-info" href="/admin/auth/user/{{ page.get_content_model.contact_point.get_profile.user_id }}">Edit User as Admin</a><br>
   </div>
   {% endif %}
   
   {% if page.get_content_model.contact_point.username == request.user.username %} 
-  <div>
-        <a class="btn btn-large btn-info" style="" href="/account/update/{{ page.get_content_model.contact_point.get_profile.id}}">{% trans "Update your profile" %}</a>
-  </div>
+    <div class="pull-right">
+      <a class="btn btn-large btn-info" style="" href="/account/update/{{ page.get_content_model.contact_point.get_profile.id}}">{% trans "Update your profile" %}</a>
+    </div>
   {% endif %}
   
   {% if page.get_content_model.contact_point.get_profile.profile_photo %}
@@ -73,7 +73,7 @@
   </dd>
   {% endif %}
   
-  <dd><strong>{% trans "Email" %}</strong>{{ page.get_content_model.contact_point.email }}</dd>
+  <dd><strong>{% trans "Email" %}:</strong> {{ page.get_content_model.contact_point.email }}</dd>
   {% if page.get_content_model.contact_point.get_profile.email_address_alt %}
   
   <dd><strong>{% trans "Alternate Email" %}:</strong>

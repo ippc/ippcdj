@@ -14,31 +14,38 @@
 
 <dl class="dl-horizontal">
   {% if user.is_superuser %} 
-  <dt>{% trans "Username" %}</dt> 
-  <dd>{{ user.username }}</dd>
+    <dt>{% trans "Username" %}</dt> 
+    <dd>{{ user.username }}</dd>
   {% endif %}
   
-  <dt>{% trans "Email" %}</dt>
-  <dd>{{ user.email }}</dd>
+  {% if user.get_profile.email %}
+    <dt>{% trans "Email" %}</dt>
+    <dd>{{ user.email }}</dd>
+  {% endif %}
   
   {% if user.get_profile.title %}
-  <dt>{% trans "Title" %}</dt>
-  <dd>
-    {{ user.get_profile.title }} 
-  </dd>
+    <dt>{% trans "Title" %}</dt>
+    <dd>
+      {{ user.get_profile.title }} 
+    </dd>
   {% endif %}
 
-  <dt>{% trans "Name" %}</dt>
-  <dd>
-    {{ user.get_profile.get_gender_display }}
-    {# {{ user.get_full_name }}  #}
-    {{ user.get_profile.first_name }} 
-    <span class="caps">{{ user.get_profile.last_name }}</span>
-  </dd>
+  {% if user.get_profile.first_name %}
+    <dt>{% trans "Name" %}</dt>
+    <dd>
+      {% if user.get_profile.get_gender_display %}
+        {{ user.get_profile.get_gender_display }}
+      {% endif %}
+      {# {{ user.get_full_name }}  #}
+      {{ user.get_profile.first_name }} 
+      <span class="caps">{{ user.get_profile.last_name }}</span>
+    </dd>
+  {% endif %}
+  
   
   <dt>{% trans "Member Since" %}</dt>
   <dd>
-        {% blocktrans with sometime=user.get_profile.date_account_created|date:"d M Y" %}{{ sometime }}{% endblocktrans %}
+    {% blocktrans with sometime=user.get_profile.date_account_created|date:"d M Y" %}{{ sometime }}{% endblocktrans %}
   </dd>
   
   {% if user.get_profile.email_address_alt %}
@@ -71,6 +78,8 @@
   <dt>{% trans "IPPC Country" %}</dt>
   <dd>
     <b>{{ user.get_profile.country.name }}</b>
+    {# todo: link to country page if user is contact point #}
+    {# <a href="/countries/{{ user.get_profile.country.name | slugify }}">{{ user.get_profile.country.name}}</a>     #}
   </dd>
   {% endif %}
 
