@@ -103,7 +103,7 @@ urlpatterns = patterns("",
         # view=country_view(),
         name='country-list'),
     # advanced results of reporting list
-    url(r'^countries/(?P<type>[\w-]+)/$',
+    url(r'^countries/all/(?P<type>[\w-]+)/$',
         view=AdvancesSearchCNListView.as_view(),
         name='advsearch'),
      url(r'^countriescontacts/extractor/$',
