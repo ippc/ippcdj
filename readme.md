@@ -2,11 +2,6 @@
 
 ## Things to do
 
-- Calendar month select arrow links
-- **Fix admin links that have disappeared ¿due to jQuery conflict?**
-- Add permissions check so Admins can see any forum or publicationlibrary page without needing to be in same group
-- Fix add file label in pest report create
-- Files in forum posts
 - Add blog and forum category management page to admin: 
     - http://127.0.0.1:8000/en/admin/blog/blogcategory/
     - http://127.0.0.1:8000/en/admin/forum/forumcategory/
