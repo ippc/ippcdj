@@ -1,3 +1,8 @@
+/*
+    IPPC 4.0 stylesheet
+    last update: 2014-11-25
+*/
+
 body {
     padding-top:10px; 
     padding-bottom:5em; 
@@ -57,47 +62,13 @@ img {box-shadow:none;}
 .tleft {text-align:left;}
 
 input.search-query {width:20em !important;}
-select#id_pest_status {min-height:30em; height:auto;}
+select#id_pest_status, select#id_countries, select#id_partners {min-height:30em; height:auto;}
 select#selectcountry {max-width:350px;}
+legend {font-weight:bold;}
+fieldset {}
 /*ul.nav li.dropdown:hover ul.dropdown-menu {display:inline;}*/
 
-.icn-noncontracting {background:url(/static/img/icons.gif) no-repeat 0 -1056px !important; color:#630 !important;} 
-.icn-territory {background:url(/static/img/icons.gif) no-repeat 0 -2508px !important;}
-.icn-contracting {background:url(/static/img/icons.gif) no-repeat 0 -66px !important;}
 
-
-ul#regionsmap {position:relative; list-style:none; margin:0 !important; padding:0 !important; background-image: url(/static/img/worldmap-small-faoregions.gif); background-repeat:no-repeat; height: 94px; width: 205px;}
-ul#regionsmap li {position:absolute; text-decoration:none;}
-ul#regionsmap li a:hover span {text-indent:0; color:#000; background-color:#F4F4F4; font-weight:bold; position:absolute; border:1px solid #ddd; margin:0; padding:2px; line-height:1.3em; font-size:0.8em;}
-
-li#africa a, li#asia a, li#southwestpacific a, li#europe a, li#northamerica a, li#latinamericacaribbean a, li#neareast a {position:absolute; text-decoration:none;}
-li#africa a span, li#asia a span, li#southwestpacific a span, li#europe a span, li#northamerica a span, li#latinamericacaribbean a span, li#neareast a span {display:none;}
-li#africa a:hover, li#asia a:hover, li#southwestpacific a:hover, li#europe a:hover, li#northamerica a:hover, li#latinamericacaribbean a:hover, li#neareast a:hover {position:absolute; top:0; left:0; background:none; border:none; cursor:pointer;}
-li#africa a:hover span, li#asia a:hover span, li#southwestpacific a:hover span, li#europe a:hover span, li#northamerica a:hover span, li#latinamericacaribbean a:hover span, li#neareast a:hover span {display: block;}
-
-li#africa {left:59px; top:46px;}
-li#africa a {width:40px; height:42px;}
-
-li#asia {left:100px; top:2px;}
-li#asia a {width:76px; height:44px;}
-
-li#southwestpacific {left:122px; top:43px;}
-li#southwestpacific a {width:60px; height:40px;}
-
-li#europe {left:65px; top:2px;}
-li#europe a {width:42px; height:29px;}
-
-li#northamerica {left:0px; top:2px;}
-li#northamerica a {width:54px; height:37px;}
-
-li#latinamericacaribbean {left:0; top:35px;}
-li#latinamericacaribbean a {width:48px; height:55px;}
-
-li#neareast {left:80px; top:24px;}
-li#neareast a {width:30px; height:20px;}
-
-
- 
 /* pygments github code styles  */
 .codehilite .gd { color: #000000; background-color: #ffdddd } /* Generic.Deleted */
 .codehilite .ge { color: #000000; font-style: italic } /* Generic.Emph */
@@ -150,6 +121,49 @@ li#neareast a {width:30px; height:20px;}
 .codehilite .vc { color: #008080 } /* Name.Variable.Class */
 .codehilite .vg { color: #008080 } /* Name.Variable.Global */
 .codehilite .vi { color: #008080 } /* Name.Variable.Instance */
-.codehilite .il { color: #009999 } /* Literal.Number.;
-    padding-left: 0;
+.codehilite .il { color: #009999 } /* Literal.Number.Integer.Long */
+
+/*a {color:#060 !important;}*/
+.dl-horizontal dt {white-space:normal;}
+    
+.printlogo {display:none;}
+
+@media print {
+  * {
+    color: #000 !important;
+    text-shadow: none !important;
+    background: transparent !important;
+    box-shadow: none !important;
+  }
+  .row-fluid .span8, .span6 .container-fluid, footer {width:100%;}
+  a,
+  a:visited {
+    text-decoration: underline;
+  }
+  a[href]:after {
+/*    content: " (" attr(href) ")";*/
+    content: "";
+  }
+  abbr[title]:after {
+/*    content: " (" attr(title) ")";*/
+    content: "";
+  }
+  .ir a:after,
+  a[href^="javascript:"]:after,
+  a[href^="#"]:after {
+    content: "";
+  }
+  #selectcountry,
+  .btn,
+  .navbar-search,
+  .languagebar,
+  .localnav,
+  .span4 .right,
+  footer .nav-pills,
+  footer .text-left
+  {
+      display:none !important;
+  }
+  .printlogo {display:inline-block; float:left; padding-right:5px;}
+  a.brand {padding-left:0 !important; margin-left:0 !important; text-decoration:none;}
 }
