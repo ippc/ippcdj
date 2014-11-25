@@ -62,6 +62,13 @@
   </dd>
   {% endif %}
   
+  {% if user.get_profile.expertize %}
+  <dt>{% trans "Expertise" %}</dt>
+  <dd>
+    {{ user.get_profile.expertize }} 
+    <span style="color:red;">=todo: change model field name to the correct spelling which is <i>experti<strong>s</strong>e</i></span>
+  </dd>
+  {% endif %}
 
   <dt>{% trans "Address" %}</dt>
   <dd>
