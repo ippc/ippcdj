@@ -38,7 +38,7 @@
 {% endblock  %}
 
 {% block local_nav %}
-<div class="well">
+<div class="well localnav">
     {% if is_contryeevent %}
     <p><a href="/countries/{{ event.country.name|slugify }}/calendar/">« {% trans "Back to" %}</a></p>
     {% else %}    

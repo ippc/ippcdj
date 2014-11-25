@@ -12,8 +12,8 @@
 
 
 
-{% block local_nav %} 
-<div class="well"> 
+{% block local_nav %}
+<div class="well localnav"> 
     <p><a href="javascript:history.go(-1)">{% trans "« Go back" %}</a></p>
     {% if user.is_superuser or perms.ippc.change_publication  %}
          <a class="btn btn-small btn-info" href="/admin/ippc/publication/{{publication.id}}"><i class="icon-edit icon-white"></i> Edit</a>     

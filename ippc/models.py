@@ -408,6 +408,7 @@ class IppcUserProfile(models.Model):
     gender = models.PositiveSmallIntegerField(_("Prefix"), choices=GENDER_CHOICES, blank=True, null=True)
     profile_photo = models.FileField(_("Profile Photo"), upload_to="profile_photos", blank=True)
     bio = models.TextField(_("Brief Biography"), default="", blank=True, null=True)
+    # should be expertise, but we can just change the label for now
     expertize = models.TextField(_("Description/expertise"), default="", blank=True, null=True)
     
     address1 = models.CharField(_("Organization"), blank=True, max_length=250)
