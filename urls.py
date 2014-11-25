@@ -344,7 +344,7 @@ urlpatterns = patterns("",
         view=PartnersPublicationDetailView.as_view(),
         name="partner-publication-detail"),
      #partners publications create
-    url(r'^partners/(?P<partners>[\w-]+)/publications/create/$',
+    url(r'^partners/(?P<partner>[\w-]+)/publications/create/$',
         view=partner_publication_create,
         name='partner-publication-create'),
     # partners publications edit

@@ -207,7 +207,7 @@ def validate_file_extension(value):
     if not (value.name.endswith('.pdf') or value.name.endswith('.doc')or value.name.endswith('.txt')
         or value.name.endswith('.xls')   or value.name.endswith('.ppt') or value.name.endswith('.jpg')
         or value.name.endswith('.png') or value.name.endswith('.gif') or value.name.endswith('.xlsx')
-        or value.name.endswith('.docx')or value.name.endswith('.pptx') or value.name.endswith('.zip')
+        or value.name.endswith('.docx')or value.name.endswith('.ppt') or value.name.endswith('.pptx') or value.name.endswith('.zip')
         or value.name.endswith('.rar')):
         raise ValidationError(u'You can only upload files:  txt pdf ppt doc xls jpg png docx xlsx pptx zip rar.')
            
@@ -230,7 +230,7 @@ class Publication(Orderable):
     library = models.ForeignKey("PublicationLibrary", 
         related_name="publications") # related_name=publications...
         # ..is used in publicationlibrary template
-    title = models.CharField(_("Title"), blank=True, null=True, max_length=100)
+    title = models.CharField(_("Title"), blank=True, null=True, max_length=250)
     # author = models.ForeignKey(User, related_name="publication_author")
     file_en = models.FileField(_("File - English"), 
             upload_to=upload_to("galleries.GalleryImage.file", "files/publication/en/%Y/%m/"),

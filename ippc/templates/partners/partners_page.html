@@ -63,8 +63,7 @@
     <tbody>
       {% for editor in page.get_content_model.editors.all %}
         <tr>
-          <td>{{ editor.get_profile.first_name }} {{ editor.get_profile.last_name }} <a class="btn btn-mini  pull-right" href="/admin/auth/user/{{ editor.get_profile.id }}">Edit User as Admin</a><br></td>
-        </tr>
+ <td>{{ editor.get_profile.first_name }} {{ editor.get_profile.last_name }} <a class="btn btn-mini  pull-right" href="/admin/auth/user/{{ editor.get_profile.user_id }}">Edit User as Admin</a><br></td>       </tr>
       {% endfor %}
     </tbody>
   </table>
@@ -75,16 +74,16 @@
     
       
  
-      
-  {% if perms.ippc.add_partnerspublication and request.user.get_profile.partner.name == page.title or user.is_superuser %}
+{{ request.user.get_profile.partner.name }}--{{ page.get_content_model.name }}  --{{perms.ippc.add_partnerspublication}}    
+  {% if perms.ippc.add_partnerspublication and request.user.get_profile.partner.name == page.get_content_model.name or user.is_superuser %}
   <small><a class="btn btn-small btn-info" href="{% url 'partner-publication-create' page.title|slugify %}">+ {% trans "Add new publication" %}</a></small>
 {% endif %}
- {% if perms.ippc.add_partnersnews and request.user.get_profile.partner.name == page.title or user.is_superuser %}
+ {% if perms.ippc.add_partnersnews and request.user.get_profile.partner.name == page.get_content_model.name or user.is_superuser %}
    <small>  <a class="btn btn-small btn-info" href="{% url 'partner-news-create' page.title|slugify %}">+ {% trans "Add new news" %}</a>
    </small>
  {% endif %}
 
- {% if perms.ippc.add_partnerswebsite and request.user.get_profile.partner.name == page.title or user.is_superuser %}
+ {% if perms.ippc.add_partnerswebsite and request.user.get_profile.partner.name == page.get_content_model.name or user.is_superuser %}
    <small><a class="btn btn-small btn-info" href="{% url 'partner-websites-create' page.title|slugify %}">+ {% trans "Add new website" %}</a></small>
  {% endif %}
 
