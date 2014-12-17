@@ -20,7 +20,13 @@
   </a>
   <span class="divider">/</span>
 </li>
-<li class="active">{% trans "Event Reports" %}</li>
+<li class="active">
+  {% for key, val in event_types %}
+    {% ifequal key current_type %}
+      {{val}}
+    {% endifequal %}
+  {% endfor %}
+</li>
 {% endblock %}
 
 {% block local_nav %}
@@ -53,7 +59,7 @@
   <tbody>
      {% if perms.ippc.add_eventreporting and request.user.get_profile.country.name == page.title %}
       <tr>
-       <td colspan="2">
+       <td colspan="3">
           <small  class="pull-right">
                <a class="btn btn-small btn-info" href="{% url 'event-reporting-create' page.title|slugify key %}">+ {% trans "Add new" %}</a>
            </small>
@@ -62,12 +68,14 @@
     {% endif %}
    <tr>
         <th>{% trans "Title" %}</th>
-        <th>{% trans "Last updated" %}</th>
+        <th>{% trans "Publication Date" %}</th>
+        <th>{% trans "Last Updated" %}</th>
    </tr>
     {% for object in latest %}<br>
     {% if object.event_rep_type == key  %}
     <tr>
       <td><a href="{% url 'event-reporting-detail' object.country.country_slug object.publish_date|date:'Y' object.publish_date|date:'m'  object.slug %}">{{ object.title }}</a></td>
+      <td>{{ object.publish_date|date:"d M Y" }}</td>
       <td>{{ object.modify_date|date:"d M Y" }}
         {% if user.is_superuser %} 
             <a class="small pull-right" href="/admin/ippc/eventreporting/{{ object.id }}"><i class="icon-edit"></i> Edit as Admin</a><br>

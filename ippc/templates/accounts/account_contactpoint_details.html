@@ -100,7 +100,7 @@
     </script>
 
   <dd>
-   <a href="#bio" onclick="javascript:toggle_visibility('bio');"><strong>{% trans "Brief Biography" %}:</strong>
+   <a href="#bio" onclick="javascript:toggle_visibility('bio');"><strong>{% trans "Brief Biography" %} <small>(click to display)</small>:</strong></a>
    <div id="bio" style="display:none;">{{ page.get_content_model.contact_point.get_profile.bio }} 
   </div></dd>
   {% endif %}

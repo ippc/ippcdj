@@ -7,13 +7,16 @@
 <li><a href="/">{% trans "Home" %}</a><span class="divider">/</span></li>
 <li><a href="/countries/">Countries</a><span class="divider">/</span></li>
 <li><a href="/countries/{{eventreporting.country.name|slugify}}/">{{eventreporting.country.name}}</a><span class="divider">/</span></li>
-<li><a href="/countries/{{eventreporting.country.name|slugify}}/eventreporting/">Event Reportings</a><span class="divider">/</span></li>
-<li class="active">{{ eventreporting.title }}</li>
+<li><a href="/countries/{{eventreporting.country.name|slugify}}/eventreporting/{{eventreporting.event_rep_type}}">{{eventreporting.get_event_rep_type_display}}</a><span class="divider">/</span></li>
+{# This: https://docs.djangoproject.com/en/dev/ref/models/instances/#django.db.models.Model.get_FOO_display #}
+<li class="active">
+  {{ eventreporting.title}}
+</li>
 {% endblock %}
 
 {% block local_nav %}
 <div class="well localnav">
-  <p><a href="/countries/{{ eventreporting.country.name|slugify }}/eventreporting/">« {% trans "Back to" %} {% trans "Event Reportings" %}</a></p>
+  <p><a href="/countries/{{eventreporting.country.name|slugify}}/eventreporting/{{eventreporting.event_rep_type}}">« {% trans "Go Back" %}</a></p>
     {% if user.is_superuser %} 
         <a class="btn btn-small btn-info" href="/admin/ippc/eventreporting/{{ eventreporting.id }}">Edit as Admin</a><br>
     {% endif %}
@@ -48,17 +51,22 @@
   {% endif %}
   
   {% if eventreporting.publication_date %}
-  <dt>{% trans "Publication date" %}</dt>
+  <dt>{% trans "Publication Date" %}</dt>
   <dd>{% blocktrans with sometime=eventreporting.publication_date|date:"d-m-Y" %}{{ sometime }}{% endblocktrans %}</dd>
   {% endif %}
+
+  {% if eventreporting.modify_date %}
+  <dt>{% trans "Last Updated" %}</dt>
+  <dd>{{ eventreporting.modify_date }}</dd>
+    {% endif %}
   
  {% if eventreporting.short_description %}
-  <dt>{% trans "short description" %}</dt>
-  <dd>{{ eventreporting.short_description }}</dd>
+  <dt>{% trans "Short Description" %}</dt>
+  <dd>{{ eventreporting.short_description|richtext_filter|safe }}</dd>
   {% endif %}
   
   {% if eventreporting.contact_for_more_information %}
-  <dt>{% trans "Contact for more information" %}</dt>
+  <dt>{% trans "Contact for Info" %}</dt>
   <dd>{{ eventreporting.contact_for_more_information }}</dd>
   {% endif %}
   
@@ -113,7 +121,7 @@
   <dt>{% trans "Website" %}</dt>
    {% for f in eventreporting.eventreportingurl_set.all %} 
     
-  <dd><a href="{{MEDIA_URL}}{{f.url_for_more_information}}">{{ f.url_for_more_information }}</a></dd>
+  <dd><a href="{{f.url_for_more_information}}">{{ f.url_for_more_information }}</a></dd>
 {% endfor %}  {% endif %}
 </dl>
 {% endblock %}

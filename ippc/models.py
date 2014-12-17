@@ -660,10 +660,10 @@ BASIC_REP_2 = 2
 BASIC_REP_3 = 3
 BASIC_REP_4 = 4
 BASIC_REP_TYPE_CHOICES = (
-    (BASIC_REP_1, _("Description of the NPPO (Art. IV.4)")), 
-    (BASIC_REP_2, _("Entry points (Art. VII.2d)")),
-    (BASIC_REP_3, _("List of regulated pests (Art. VII.2i)")),
-    (BASIC_REP_4, _("Phytosanitary Restrictions/Legislation/Prohibitions")),
+    (BASIC_REP_1, _("Description of the NPPO")), 
+    (BASIC_REP_4, _("Legislation: Phytosanitary Requirements/Restrictions/Prohibitions")),
+    (BASIC_REP_2, _("Entry Points")),
+    (BASIC_REP_3, _("List of Regulated Pests")),
 )
 
 
@@ -902,11 +902,11 @@ EVT_REP_3 = 3
 EVT_REP_4 = 4
 EVT_REP_5 = 5
 EVT_REP_TYPE_CHOICES = (
-    (EVT_REP_1, _("Emergency Actions (Art. VII 6)")), 
-    (EVT_REP_2, _("Non-compliance")),
     (EVT_REP_3, _("Organizational Arrangements of Plant Protection")),
-    (EVT_REP_4, _("Pest status")),
     (EVT_REP_5, _("Rationale for Phytosanitary Requirements")),
+    (EVT_REP_2, _("Non-compliance")),
+    (EVT_REP_4, _("Pest status")),
+    (EVT_REP_1, _("Emergency Actions")), 
 )
           
 
@@ -936,7 +936,7 @@ class EventReporting(Displayable, models.Model):
     search_fields = ("title", "short_description")
 
     class Meta:
-        verbose_name_plural = _("Event Reportings")
+        verbose_name_plural = _("Contact for Info")
         # abstract = True
 
     def __unicode__(self):

@@ -59,10 +59,10 @@
 {# {% endif %} #}
 
 <dl class="dl-horizontal">
-  <dt>{% trans "Published" %}</dt>
+  <dt>{% trans "Publication Date" %}</dt>
   <dd>{% blocktrans with sometime=report.publish_date|date:"D, d M Y, H:i" %}{{ sometime }}{% endblocktrans %}</dd>
   
-  <dt>{% trans "Last Modified" %}</dt>
+  <dt>{% trans "Last Updated" %}</dt>
   <dd>{{ report.modify_date }}</dd>
   
   <dt>{% trans "Report Number" %}</dt>
@@ -98,7 +98,7 @@
   {% endif %}
   
  {% if report.geographical_distribution %}
-  <dt>{% trans "Geographical Distribution" %}</dt>
+  <dt title="Geographical Distribution">{% trans "Geographical Distribution" %}</dt>
   <dd>{{ report.geographical_distribution }}</dd>
   {% endif %}
   
@@ -115,7 +115,7 @@
   {% endif %}
 
   {% if report.contact_for_more_information %}
-  <dt>{% trans "Contact for more information" %}</dt>
+  <dt>{% trans "Contact for info" %}</dt>
   <dd>{{ report.contact_for_more_information }}</dd>
   {% endif %}
   
@@ -130,7 +130,7 @@
   <dt>{% trans "Website" %}</dt>
    {% for f in report.pestreporturl_set.all %} 
     
-  <dd><a href="{{MEDIA_URL}}{{f.url_for_more_information}}">{{ f.url_for_more_information }}</a></dd>
+  <dd><a href="{{f.url_for_more_information}}">{{ f.url_for_more_information }}</a></dd>
 {% endfor %}
   
     {% endif %}

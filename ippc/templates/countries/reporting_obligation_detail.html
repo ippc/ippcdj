@@ -7,13 +7,15 @@
 <li><a href="/">{% trans "Home" %}</a><span class="divider">/</span></li>
 <li><a href="/countries/">Countries</a><span class="divider">/</span></li>
 <li><a href="/countries/{{reportingobligation.country.name|slugify}}/">{{reportingobligation.country.name}}</a><span class="divider">/</span></li>
-<li><a href="/countries/{{reportingobligation.country.name|slugify}}/reportingobligation/">Reporting Obligation</a><span class="divider">/</span></li>
+<li><a href="/countries/{{reportingobligation.country.name|slugify}}/reportingobligation/{{reportingobligation.reporting_obligation_type}}">{{reportingobligation.get_reporting_obligation_type_display}}</a><span class="divider">/</span></li> 
+{# This: https://docs.djangoproject.com/en/dev/ref/models/instances/#django.db.models.Model.get_FOO_display #}
 <li class="active">{{ reportingobligation.title }}</li>
+
 {% endblock %}
 
 {% block local_nav %}
 <div class="well localnav">
-  <p><a href="/countries/{{ reportingobligation.country.name|slugify }}/reportingobligation/"> {% trans "Back to" %} {% trans "Reporting Obligations" %}</a></p>
+  <p><a href="/countries/{{reportingobligation.country.name|slugify}}/reportingobligation/{{reportingobligation.reporting_obligation_type}}"> {% trans "Go Back" %}</a></p>
     {% if user.is_superuser %} 
         <a class="btn btn-small btn-info" href="/admin/ippc/reportingobligation/{{ reportingobligation.id }}">Edit as Admin</a><br>
     {% endif %}
@@ -23,9 +25,6 @@
         {# <a class="btn" href="{% url 'reporting-obligation-edit' reportingobligation.id %}"><i class="icon-edit"></i> Edit</a> #}
     {% else %}
     {% endif %}
-    
-    
-    
    
 </div>
 {% endblock local_nav %}
@@ -38,6 +37,7 @@
 <h1>{{ reportingobligation.title }}</h1> 
 
 <dl class="dl-horizontal">
+{# <dl> #}
   {% if reportingobligation.report_obligation_type %}
   <dt>{% trans "Reporting Obligation" %}</dt>
   <dd>
@@ -48,55 +48,58 @@
   {% endif %}
   
  {% if reportingobligation.publication_date %}
-  <dt>{% trans "Publication date" %}</dt>
+  <dt>{% trans "Publication Date" %}</dt>
   <dd>{% blocktrans with sometime=reportingobligation.publication_date|date:"d-m-Y" %}{{ sometime }}{% endblocktrans %}</dd>
+{% endif %}
+
+  {% if reportingobligation.modify_date %}
+    <dt>{% trans "Last Updated" %}</dt>
+    <dd>{% blocktrans with sometime=reportingobligation.modify_date|date:"d-m-Y" %}{{ sometime }}{% endblocktrans %}</dd>
   {% endif %}
+
+
  {% if reportingobligation.short_description != ''  and reportingobligation.short_description != ' '   %}
-  <dt>{% trans "short description" %}</dt>
-  <dd>->{{ reportingobligation.short_description }}<--</dd>
+  <dt>{% trans "Short Description" %}</dt>
+  <dd>{{ reportingobligation.short_description }}</dd>
   {% endif %}
   
   {% if reportingobligation.contact_for_more_information != ''  and reportingobligation.contact_for_more_information != ' ' %}
-  <dt>{% trans "Contact for more information" %}</dt>
+  <dt>{% trans "Contact for Info" %}</dt>
   <dd>{{ reportingobligation.contact_for_more_information }}</dd>
   {% endif %}
   
-  {% if reportingobligation.author %}  
-  <!--dt>{% trans "Author" %}</dt>
-  <dd>{{ reportingobligation.author.get_profile.first_name }} {{ reportingobligation.author.get_profile.last_name }}</dd-->
-  {% endif %}
+  {# {% if reportingobligation.author %}   #}
+  {# <dt>{% trans "Author" %}</dt> #}
+  {# <dd>{{ reportingobligation.author.get_profile.first_name }} {{ reportingobligation.author.get_profile.last_name }}</dd> #}
+  {# {% endif %} #}
     
  
   
  
   
-   {% if reportingobligation.issuename.all %}
-  <dt>{% trans "Issue keywords" %}</dt>
-  <dd>
-  {% for entry in reportingobligation.issuename.all %}
-  <br/>
-  {% for e in entry.issuename.all %}
-   <br/>
-  {{e.name}}<br/>
- {% endfor %} 
-{% endfor %}
+  {% if reportingobligation.issuename.all %}
+    <dt>{% trans "Keywords" %}</dt>
+    <dd>
+      {% for entry in reportingobligation.issuename.all %}
+        {% for e in entry.issuename.all %}
+          {{e.name}}
+        {% endfor %} 
+      {% endfor %}
   </dd>
   {% endif %}
  
   
   
-  {% if reportingobligation.commname.all %}
-  <dt>{% trans "Commodity keywords" %}</dt>
-  <dd>
-  {% for entry in reportingobligation.commname.all %}
- 
-  {% for e in entry.commname.all %}
-  
-  {{e.name}}<br/>
- {% endfor %} 
-{% endfor %}
-  </dd>
-  {% endif %}
+  {# {% if reportingobligation.commname.all %} #}
+  {# <dt>{% trans "Commodity keywords" %}</dt> #}
+  {# <dd> #}
+  {#     {% for entry in reportingobligation.commname.all %} #}
+  {#       {% for e in entry.commname.all %} #}
+  {#         {{e.name}}, #}
+  {#       {% endfor %} #}
+  {#     {% endfor %} #}
+  {# </dd> #}
+  {# {% endif %} #}
  
   
  
@@ -115,7 +118,7 @@
   <dt>{% trans "Website" %}</dt>
    {% for f in reportingobligation.reportingobligationurl_set.all %} 
     
-  <dd><a href="{{MEDIA_URL}}{{f.url_for_more_information}}">{{ f.url_for_more_information }}</a></dd>
+  <dd><a href="{{f.url_for_more_information}}">{{ f.url_for_more_information }}</a></dd>
 {% endfor %}  {% endif %}
 </dl>
 {% endblock %}

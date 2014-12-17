@@ -49,12 +49,12 @@
   
 
  {% if website.short_description %}
-  <dt>{% trans "short description" %}</dt>
+  <dt>{% trans "Short Description" %}</dt>
   <dd>{{ website.short_description }}</dd>
   {% endif %}
   
   {% if website.contact_for_more_information %}
-  <dt>{% trans "Contact for more information" %}</dt>
+  <dt>{% trans "Contact for Info" %}</dt>
   <dd>{{ website.contact_for_more_information }}</dd>
   {% endif %}
   
@@ -77,30 +77,25 @@
  
   
   
-  {% if website.commname %}
-  <dt>{% trans "Commodity keywords" %}</dt>
-  <dd>
-  {% for entry in website.commname.all %}
+{#   {% if website.commname %} #}
+{#   <dt>{% trans "Commodity keywords" %}</dt> #}
+{#   <dd> #}
+{#   {% for entry in website.commname.all %} #}
+{#   #}
+{#   {% for e in entry.commname.all %} #}
+{#    #}
+{#   {{e.name}}<br/> #}
+{#  {% endfor %}  #}
+{# {% endfor %} #}
+{#   </dd> #}
+{#   {% endif %} #}
  
-  {% for e in entry.commname.all %}
-  
-  {{e.name}}<br/>
- {% endfor %} 
-{% endfor %}
-  </dd>
-  {% endif %}
- 
-  
- 
-  
-  
-
-    
   <dt>{% trans "Website" %}</dt>
    {% for f in website.websiteurl_set.all %} 
     
-  <dd><a href="{{MEDIA_URL}}{{f.url_for_more_information}}">{{ f.url_for_more_information }}</a></dd>
+  <dd><a href="{{f.url_for_more_information}}">{{ f.url_for_more_information }}</a></dd>
 {% endfor %}
+
 </dl>
 {% endblock %}
 

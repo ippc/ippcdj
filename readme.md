@@ -2,10 +2,12 @@
 
 ## Things to do
 
+- Content (data) migration (ongoing)
+- User registration open but behind login-required and super-user required so only admins can add new users, who get notification emails to confirm account and set own password. OR, user registration open to all, but need approval by admins. i.e. Account registration & [activation](http://mezzanine.jupo.org/docs/user-accounts.html#account-approval) system?
+    - Setup auto-sending of messages to new users, with possible custom messages for NPPOs and Editors
 - Add blog and forum category management page to admin: 
     - http://127.0.0.1:8000/en/admin/blog/blogcategory/
     - http://127.0.0.1:8000/en/admin/forum/forumcategory/
-    
 - Author field for publications
 - Start from Dj 1.6.5 (1.7?) and Mezzanine 3.1.5
     - Update to latest version of Mezzanine and make sure current functionality works
@@ -46,28 +48,13 @@
             - APPPC country
     2. [All websites run off the same application instance](http://stackoverflow.com/questions/1581602/django-sharing-authentication-across-two-sites-that-are-on-different-domains) with [custom authentication backend](http://stackoverflow.com/questions/1404131/how-to-get-unique-users-across-multiple-django-sites-powered-by-the-sites-fram)
 
-- Homepage design
-    - ¿'Add Pest Report' button in countries for NPPOs, visible even when user is logged out. Once user logs in, if they're an NPPO, they are redirected to the pest report form for their country?
-    - Photos
-- User registration open but behind login-required and super-user required so only admins can add new users, who get notification emails to confirm account and set own password. OR, user registration open to all, but need approval by admins. i.e. Account registration & [activation](http://mezzanine.jupo.org/docs/user-accounts.html#account-approval) system?
-    - Setup auto-sending of messages to new users, with possible custom messages for NPPOs and Editors
-
 - [IRSS](https://github.com/ASKBOT/askbot-devel) refactor
     - The easiest way to implement this is probably to use [CAS-Provider and CAS-consumer](http://stackoverflow.com/a/4663223) or [django-cas](https://bitbucket.org/cpcc/django-cas/overview). Another option: [mama-cas](https://github.com/jbittel/django-mama-cas). Relevant documentation pages: [multiple databases](https://docs.djangoproject.com/en/1.5/topics/db/multi-db/), [authentication](https://docs.djangoproject.com/en/1.5/topics/auth/customizing/), [multiple sites framework](https://docs.djangoproject.com/en/1.5/ref/contrib/sites/). See also [this blog post](http://reinout.vanrees.org/weblog/2014/05/09/authentication-python-web.html).
 - Phytosanitary.info refactor (use [original code](https://github.com/hypertexthero/phytosanitary)?)
 - Both phytosantiary.info and apppc.org will need to get SSL certificates for single sign-on to work securely: 
         > Even if the authentication with CAS is made using a mechanism which makes it difficult to interfere with, all authorized communication will subsequentely use a cookie identifing the session which can be used to hijack the connection. So you need to encrypt the communication. There is just no way around that if you want to enforce some sort of security.
-- [Email utility](https://github.com/pinax/django-mailer)
-    - Ability to insert user groups as well as individual users in `To:` field in `/admin/mailer/message/add/`
-        - Use [admin actions](https://docs.djangoproject.com/en/1.5/ref/contrib/admin/actions/)?
-        - [Custom admin form](http://stackoverflow.com/a/6099360/412329) overriding mailer's default form? Also see [this](http://djangosnippets.org/snippets/1650/) and [this](https://gist.github.com/luzfcb/1712348)
-        - Custom email utility app and admin form calling django-mailer and groups?
-- Contact form
 - FAQ
-- Custom Work Area main page descriptions or announcements or links to particular utilities depending on user permissions. Probably need to use a custom template that appears on /work-area/ URL (like the /news/ which displays the custom blog).
 - Last modified date for pages
-- Content (data) migration
-- ¿Use jQuery [multi-file-upload](https://github.com/sigurdga/django-jquery-file-upload) functionality for uploading images and files to be inserted in pages and blog posts, [with additional fields for each file](https://github.com/blueimp/jQuery-File-Upload/wiki/How-to-submit-additional-form-data) if required? Or probably best to have own files table that can be related to any model, such as **[django-attach](https://github.com/peterkuma/django-attach/tree/master/example_project)** or **[django-jfu](https://github.com/Alem/django-jfu)**.
 - Order permission groups alphabetically in admin
 - Setup proper permissions (nginx is currently running as root — not good) so that static media, including user-uploaded files are served through Nginx. Document nginx/gunicorn/supervisor setup (currently running gunicorn with deprecated `gunicorn_django -b 0.0.0.0:8000` command — get it running and working with recommended command instead)
 - Setup working fabric script for easy deployment that does the following after running `fab deploy dev`:
@@ -76,16 +63,7 @@
     3. Collect static files to locations to be served on dev server
     4. Restart gunicorn and nginx 
 - [Versioning](https://django-simple-history.readthedocs.org/en/latest/) of all page content?
-- [Pest Report mapping](http://leafletjs.com/examples/choropleth.html)
-    - <http://blog.thematicmapping.org/2008/04/thematic-mapping-with-geojson.html>
-    - <http://blog.thematicmapping.org/2012/11/how-to-minify-geojson-files.html>
-    - Examples:
-        - [Geochart](https://developers.google.com/chart/interactive/docs/gallery/geochart)
-        - [Income levels example](http://humangeo.github.io/leaflet-dvf/examples/html/incomelevels.html)
-        - [Top Cities](http://techslides.com/leaflet-map-with-utfgrid-and-php-served-mbtiles/)
-- [Download multiple files](http://stackoverflow.com/a/12951557/412329)
 - [wiki.ippc.int](http://www.nomachetejuggling.com/2012/05/15/personal-wiki-using-github-and-gollum-on-os-x/)
-- Use [Chosen](http://harvesthq.github.io/chosen/) to make globalnav dropdowns friedly. Also in admin. There's a [Django app](https://github.com/theatlantic/django-chosen), too. 
 - If no publication or agenda numbers exist, don't show header or cells
 - Automatic local table of contents for pages with headers with IDs? <http://css-tricks.com/automatic-table-of-contents/> 
 
