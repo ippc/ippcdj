@@ -2,10 +2,10 @@
 
 {% if request.user.is_authenticated %}
   {% if user.is_authenticated and user.is_staff %}
-        <a href="/admin/" class="btn btn-small btn-warning">ADMIN site</a>
+        <a href="/admin/" class="btn btn-small btn-warning">Admin Area</a>
   {% endif %}
   
-  {% if user.is_authenticated and perms.ippc.add_reportingobligation %}
+  {% if user.is_authenticated and perms.ippc.add_reportingobligation and not user.is_staff %}
         <a href="/countries/{{ user.get_profile.country.name | slugify }}/" class="btn btn-small btn-warning">{% trans "Edit Country Information" %}</a>
             {# <a href="/countries/{{ user.get_profile.country.name | slugify }}">{{ user.get_profile.country.name}}</a>     #}
   {% endif %}

@@ -1,3 +1,6 @@
+{% comment %}
+  
+
 {% load i18n future pages_tags %}
 {% spaceless %}
 {% if page_branch_in_menu %}
@@ -5,11 +8,11 @@
 {% if branch_level == 0 %}
 <ul class="nav nav-collapse pull-left" style="clear:both;">
     {% for page in page_branch %}
-    {% if not has_home and page.is_primary and forloop.first %}
-    <li class="{% if on_home %} active{% endif %}" id="dropdown-menu-home">
-        <a href="{% url "home" %}">{% trans "Home" %}</a>
-    </li>
-    {% endif %}
+    {# {% if not has_home and page.is_primary and forloop.first %} #}
+    {# <li class="{% if on_home %} active{% endif %}" id="dropdown-menu-home"> #}
+    {#     <a href="{% url "home" %}">{% trans "Home" %}</a> #}
+    {# </li> #}
+    {# {% endif %} #}
     {% if page.in_menu %}
     <li class="dropdown{% if page.is_current_or_ascendant %} active{% endif %}"
         id="dropdown-menu-{{ page.html_id }}">
@@ -21,7 +24,7 @@
     </li>
     {% endif %}
     {% endfor %}
-    <li class="divider-vertical"></li>
+    {# <li class="divider-vertical"></li> #}
 </ul>
 {% endif %}
 
@@ -40,11 +43,11 @@
 
 {% endif %}
 {% endspaceless %}
-
+{% endcomment %}
 
 {# https://groups.google.com/d/msg/mezzanine-users/h1nc86hPTWQ/hqx2nsSlrdMJ #}
 
-{% comment %}
+
   
 
 
@@ -119,5 +122,3 @@
 
 {% endif %}
 {% endspaceless %}
-
-{% endcomment %}
