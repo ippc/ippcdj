@@ -216,7 +216,7 @@ Dev server exlqaippc2.ext.fao.org setup and configuration for IPPC 4.0 prototype
 2. change directory to ~/projects/ippcdj-env and activate virtualenv with `. bin/activate`
 3. change directory to ~/projects/ippcdj-env/ippcdj_repo
 4. pull changes `git pull`
-5. move any static media to proper serving location `python manage.py collectstatic`
+5. <del>move any static media to proper serving location `python manage.py collectstatic`</del> Not necessary anymore as we have configured nginx to look in the right places for static media.
 6. run any data migrations on the database:
 
         python manage.py schemamigration ippc --auto
