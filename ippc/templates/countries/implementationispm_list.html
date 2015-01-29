@@ -26,7 +26,7 @@
   </a>
   <span class="divider">/</span>
 </li>
-<li class="active">{% trans "implementation ispms" %}</li>
+<li class="active">{% trans "Implementation of ISPM 15" %}</li>
 {% endblock %}
 
 {% block local_nav %}
@@ -41,7 +41,7 @@
   <a href="javascript:history.go(-1)">{% trans "« Go back" %}</a>
   {% if perms.ippc.add_implementationispm and request.user.get_profile.country.name == page.title %}
   <br>
-  <small><a class="btn btn-small btn-info" href="{% url 'implementationispm-create' page.title|slugify %}">+ {% trans "Add new pest free area" %}</a></small>
+  <small><a class="btn btn-small btn-info" href="{% url 'implementationispm-create' page.title|slugify %}">+ {% trans "Add new" %}</a></small>
   <br>
  
   {% else %}
@@ -49,7 +49,7 @@
 </p>
 
 <h1>
-  <small class="normal">{% trans "Implementationispm from" %}</small>
+  <small class="normal">{% trans "Implementation of ISPM 15" %}</small>
   {# {% with latest|first as first_object %} #}
   {#   {{ first_object.country.name }} #}
   {# {% endwith %} #}

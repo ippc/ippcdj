@@ -49,7 +49,7 @@
 </h1> 
 
 
-
+{% if event_list %}
 <table class="table table-condensed table-striped" id="publications">
    <thead> <tr>
         <th>Start date</th>
@@ -60,7 +60,6 @@
     </tr>
 </thead>
  <tbody>
-  {% if event_list %}
     {% for event in event_list %}
     <tr>
         <td>{% blocktrans with event.start|date:"d-m-Y" as start_date %}{{ start_date }}{% endblocktrans %}</td>

@@ -53,12 +53,12 @@
   {% endif %}
   
  {% if pfa.short_description %}
-  <dt>{% trans "short description" %}</dt>
-  <dd>{{ pfa.short_description }}</dd>
+  <dt>{% trans "Short Description" %}</dt>
+  <dd>{{ pfa.short_description|richtext_filter|safe }}</dd>
   {% endif %}
   
   {% if pfa.contact_for_more_information %}
-  <dt>{% trans "Contact for more information" %}</dt>
+  <dt>{% trans "Contact for Info" %}</dt>
   <dd>{{ pfa.contact_for_more_information }}</dd>
   {% endif %}
   <dt>{% trans "Author" %}</dt>
@@ -107,7 +107,7 @@
   <dt>{% trans "Website" %}</dt>
    {% for f in pfa.pestfreeareaurl_set.all %} 
     
-  <dd><a href="{{MEDIA_URL}}{{f.url_for_more_information}}">{{ f.url_for_more_information }}</a></dd>
+  <dd><a href="{{f.url_for_more_information}}">{{ f.url_for_more_information }}</a></dd>
 {% endfor %}
   
  

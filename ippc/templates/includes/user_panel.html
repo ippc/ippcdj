@@ -1,7 +1,7 @@
 {% load mezzanine_tags i18n %}
 {% ifinstalled mezzanine.accounts %}
 <div class="muted small">
-    <a href="{% url 'sitemap' %}">{% trans "Sitemap" %}</a> | <a href="{% url 'page' 'faq' %}">{% trans "FAQ" %}</a> |
+    <a href="{% url 'sitemap' %}">{% trans "Sitemap" %}</a> | <a href="{% url 'page' 'faq' %}">{% trans "FAQ" %}</a> | <a href="{% url 'contact' %}">{% trans "Contact" %}</a> |
     {% include "accounts/includes/user_panel.html" %}
 </div>
 {% endifinstalled %}

@@ -221,17 +221,16 @@
 
 <div class="span6 muted">
     <ul class="nav nav-pills small">
-        <li><a href="{% url 'home' %}">{% trans "Home" %}</a></li>
-        <li><a href="{% url 'contact' %}">{% trans "Contact us" %}</a></li>
-        <!--li><a href="{% url 'page' 'feeds' %}">{% trans "RSS feeds" %}</a></li-->
-        <li><a href="{% url 'page' 'legal' %}">{% trans "Copyright & Disclaimer" %}</a></li>
-        <!--li><a href="{% url 'page' 'colophon' %}">{% trans "About this site" %}</a-->
+        {# <li><a href="{% url 'contact' %}">{% trans "Contact us" %}</a></li> #}
+        {# <!--li><a href="{% url 'page' 'feeds' %}">{% trans "RSS feeds" %}</a></li--> #}
+        {# <li><a href="{% url 'page' 'legal' %}">{% trans "Copyright & Disclaimer" %}</a></li> #}
+        {# <!--li><a href="{% url 'page' 'colophon' %}">{% trans "About this site" %}</a--> #}
     </ul>
-        <p class="text-left">{% trans "IPPC on Social Media:" %} <a href="http://www.facebook.com/pages/IPPC-Protecting-the-worlds-plant-resources-from-pests/113230338690380" class="icn-facebook">Facebook</a> | <a href="https://twitter.com/ippcnews" class="icn-twitter">Twitter</a></p>
+    <p class="text-left">{% trans "IPPC on Social Media:" %} <a href="http://www.facebook.com/pages/IPPC-Protecting-the-worlds-plant-resources-from-pests/113230338690380" class="icn-facebook">Facebook</a> | <a href="https://twitter.com/ippcnews" class="icn-twitter">Twitter</a></p>
 </div>
     
-<div class="span6 text-right muted small">
-    {% trans "The IPPC Secretariat is hosted &amp; provided by" %} <a href="http://www.fao.org">FAO</a>. <a style="vertical-align:middle;" class="imglink" href="http://www.fao.org"><img class="faologo" src="{% static "img/fao-logo.gif" %}" alt="{% trans "Food and Agriculture Organization Logo" %}" height="58" width="58"></a>
+<div class="span6 text-right muted">
+    {% trans "The IPPC Secretariat is hosted &amp; provided by" %} <a href="http://www.fao.org">FAO</a>. <a style="vertical-align:bottom;" class="imglink" href="http://www.fao.org"><img class="faologo" src="{% static "img/fao-logo.gif" %}" alt="{% trans "Food and Agriculture Organization Logo" %}" height="58" width="58"></a><br><a style="margin-right:66px;" href="{% url 'page' 'legal' %}">{% trans "Copyright & Disclaimer" %}</a>
 </div>
 
 
