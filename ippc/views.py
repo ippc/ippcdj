@@ -352,7 +352,7 @@ class PublicationFilesListView(ListView):
             zip_lang1 = "/static/media/tmp/"+"archive_"+str(lang[0])+"_"+ date+".zip"
             zip_lang = zipfile.ZipFile(PROJECT_ROOT+"/static/media/tmp/"+"archive_"+str(lang[0])+"_"+ date+".zip", "w")
             for file_path in lang[1]:
-                strfpath=os.path.join(PROJECT_ROOT, PROJECT_ROOT+'/static/media/')+str(file_path)
+                strfpath=os.path.join('/work/projects/ippcdj-env/public/', '/work/projects/ippcdj-env/public/static/media/')+str(file_path)
                 filename = strfpath.split('/');
                 fname=filename[len(filename)-1]
                 zip_lang.write(strfpath, fname)
@@ -500,8 +500,6 @@ def pest_report_edit(request, country, id=None, template_name='countries/pest_re
     
     if id:
         pest_report = get_object_or_404(PestReport, country=country, pk=id)
-        issues = get_object_or_404(IssueKeywordsRelate, pk=pest_report.issuename.all()[0].id)
-        commodities = get_object_or_404(CommodityKeywordsRelate, pk=pest_report.commname.all()[0].id)
        
         content_type = ContentType.objects.get_for_model(pest_report)
         notifications = get_object_or_404(NotificationMessageRelate, object_id=id,content_type__pk=content_type.id,)
@@ -518,8 +516,16 @@ def pest_report_edit(request, country, id=None, template_name='countries/pest_re
 
     if request.POST:
         form = PestReportForm(request.POST,  request.FILES, instance=pest_report)
-        issueform =IssueKeywordsRelateForm(request.POST, instance=issues)
-        commodityform =CommodityKeywordsRelateForm(request.POST, instance=commodities)
+        if pest_report.issuename.count()>0:
+            issues = get_object_or_404(IssueKeywordsRelate, pk=pest_report.issuename.all()[0].id)
+            issueform =IssueKeywordsRelateForm(request.POST,instance=issues)
+        else:
+            issueform =IssueKeywordsRelateForm(request.POST)
+        if pest_report.commname.count()>0:
+            commodities = get_object_or_404(CommodityKeywordsRelate, pk=pest_report.commname.all()[0].id)
+            commodityform =CommodityKeywordsRelateForm(request.POST,instance=commodities)
+        else:
+            commodityform =CommodityKeywordsRelateForm(request.POST)
         notifyrelateform =NotificationMessageRelateForm(request.POST,instance=notifications)
         f_form = PestReportFileFormSet(request.POST,  request.FILES,instance=pest_report)
         u_form =PestReportUrlFormSet(request.POST,  instance=pest_report)
@@ -555,8 +561,16 @@ def pest_report_edit(request, country, id=None, template_name='countries/pest_re
 
     else:
         form = PestReportForm(instance=pest_report)
-        issueform =IssueKeywordsRelateForm(instance=issues)
-        commodityform =CommodityKeywordsRelateForm(instance=commodities)
+        if pest_report.issuename.count()>0:
+            issues = get_object_or_404(IssueKeywordsRelate, pk=pest_report.issuename.all()[0].id)
+            issueform =IssueKeywordsRelateForm( instance=issues)
+        else:
+            issueform =IssueKeywordsRelateForm( )
+        if pest_report.commname.count()>0:
+            commodities = get_object_or_404(CommodityKeywordsRelate, pk=pest_report.commname.all()[0].id)
+            commodityform =CommodityKeywordsRelateForm( instance=commodities)
+        else:
+            commodityform =CommodityKeywordsRelateForm()
         notifyrelateform =NotificationMessageRelateForm(instance=notifications)
         f_form = PestReportFileFormSet(instance=pest_report)
         u_form = PestReportUrlFormSet(instance=pest_report)
@@ -717,8 +731,6 @@ def reporting_obligation_edit(request, country, id=None, template_name='countrie
     user_country_slug = lower(slugify(country))
     if id:
         reporting_obligation = get_object_or_404(ReportingObligation, country=country, pk=id)
-        issues = get_object_or_404(IssueKeywordsRelate, pk=reporting_obligation.issuename.all()[0].id)
-        commodities = get_object_or_404(CommodityKeywordsRelate, pk=reporting_obligation.commname.all()[0].id)
         content_type = ContentType.objects.get_for_model(reporting_obligation)
         notifications = get_object_or_404(NotificationMessageRelate, object_id=id,content_type__pk=content_type.id,)
         
@@ -727,8 +739,16 @@ def reporting_obligation_edit(request, country, id=None, template_name='countrie
       
     if request.POST:
         form = ReportingObligationForm(request.POST, request.FILES, instance=reporting_obligation)
-        issueform =IssueKeywordsRelateForm(request.POST, instance=issues)
-        commodityform =CommodityKeywordsRelateForm(request.POST, instance=commodities)
+        if reporting_obligation.issuename.count()>0:
+            issues = get_object_or_404(IssueKeywordsRelate, pk=reporting_obligation.issuename.all()[0].id)
+            issueform =IssueKeywordsRelateForm(request.POST,instance=issues)
+        else:
+            issueform =IssueKeywordsRelateForm(request.POST)
+        if reporting_obligation.commname.count()>0:
+            commodities = get_object_or_404(CommodityKeywordsRelate, pk=reporting_obligation.commname.all()[0].id)
+            commodityform =CommodityKeywordsRelateForm(request.POST,instance=commodities)
+        else:
+            commodityform =CommodityKeywordsRelateForm(request.POST)
         notifyrelateform =NotificationMessageRelateForm(request.POST,instance=notifications)
         f_form = ReportingoblicationFileFormSet(request.POST,  request.FILES,instance=reporting_obligation)
         u_form =ReportingObligationUrlFormSet(request.POST,instance=reporting_obligation)
@@ -761,8 +781,16 @@ def reporting_obligation_edit(request, country, id=None, template_name='countrie
 
     else:
         form = ReportingObligationForm(instance=reporting_obligation)
-        issueform =IssueKeywordsRelateForm(instance=issues)
-        commodityform =CommodityKeywordsRelateForm(instance=commodities)
+        if reporting_obligation.issuename.count()>0:
+            issues = get_object_or_404(IssueKeywordsRelate, pk=reporting_obligation.issuename.all()[0].id)
+            issueform =IssueKeywordsRelateForm( instance=issues)
+        else:
+            issueform =IssueKeywordsRelateForm( )
+        if reporting_obligation.commname.count()>0:
+            commodities = get_object_or_404(CommodityKeywordsRelate, pk=reporting_obligation.commname.all()[0].id)
+            commodityform =CommodityKeywordsRelateForm( instance=commodities)
+        else:
+            commodityform =CommodityKeywordsRelateForm()
         notifyrelateform =NotificationMessageRelateForm(instance=notifications)
         f_form = ReportingoblicationFileFormSet(instance=reporting_obligation)
         u_form = ReportingObligationUrlFormSet(instance=reporting_obligation)
@@ -887,8 +915,6 @@ def event_reporting_edit(request, country, id=None, template_name='countries/eve
     user_country_slug = lower(slugify(country))
     if id:
         event_reporting = get_object_or_404(EventReporting, country=country, pk=id)
-        issues = get_object_or_404(IssueKeywordsRelate, pk=event_reporting.issuename.all()[0].id)
-        commodities = get_object_or_404(CommodityKeywordsRelate, pk=event_reporting.commname.all()[0].id)
         content_type = ContentType.objects.get_for_model(event_reporting)
         notifications = get_object_or_404(NotificationMessageRelate, object_id=id,content_type__pk=content_type.id,)
      
@@ -897,8 +923,17 @@ def event_reporting_edit(request, country, id=None, template_name='countries/eve
       
     if request.POST:
         form = EventReportingForm(request.POST,  request.FILES, instance=event_reporting)
-        issueform =IssueKeywordsRelateForm(request.POST,instance=issues)
-        commodityform =CommodityKeywordsRelateForm(request.POST,instance=commodities)
+        if event_reporting.issuename.count()>0:
+            issues = get_object_or_404(IssueKeywordsRelate, pk=event_reporting.issuename.all()[0].id)
+            issueform =IssueKeywordsRelateForm(request.POST,instance=issues)
+        else:
+            issueform =IssueKeywordsRelateForm(request.POST)
+        if event_reporting.commname.count()>0:
+            commodities = get_object_or_404(CommodityKeywordsRelate, pk=event_reporting.commname.all()[0].id)
+            commodityform =CommodityKeywordsRelateForm(request.POST,instance=commodities)
+        else:
+            commodityform =CommodityKeywordsRelateForm(request.POST)
+            
         notifyrelateform =NotificationMessageRelateForm(request.POST,instance=notifications)
         f_form = EventreportingFileFormSet(request.POST,  request.FILES,instance=event_reporting)
         u_form = EventreportingUrlFormSet(request.POST,  instance=event_reporting)
@@ -931,8 +966,16 @@ def event_reporting_edit(request, country, id=None, template_name='countries/eve
 
     else:
         form = EventReportingForm(instance=event_reporting)
-        issueform =IssueKeywordsRelateForm(instance=issues)
-        commodityform =CommodityKeywordsRelateForm(instance=commodities)
+        if event_reporting.issuename.count()>0:
+            issues = get_object_or_404(IssueKeywordsRelate, pk=event_reporting.issuename.all()[0].id)
+            issueform =IssueKeywordsRelateForm( instance=issues)
+        else:
+            issueform =IssueKeywordsRelateForm( )
+        if event_reporting.commname.count()>0:
+            commodities = get_object_or_404(CommodityKeywordsRelate, pk=event_reporting.commname.all()[0].id)
+            commodityform =CommodityKeywordsRelateForm( instance=commodities)
+        else:
+            commodityform =CommodityKeywordsRelateForm()
         notifyrelateform =NotificationMessageRelateForm(instance=notifications)
         f_form = EventreportingFileFormSet(instance=event_reporting)
         u_form = EventreportingUrlFormSet( instance=event_reporting)
@@ -1222,15 +1265,22 @@ def website_edit(request, country, id=None, template_name='countries/website_edi
     user_country_slug = lower(slugify(country))
     if id:
         website = get_object_or_404(Website, country=country, pk=id)
-        issues = get_object_or_404(IssueKeywordsRelate, pk=website.issuename.all()[0].id)
-        commodities = get_object_or_404(CommodityKeywordsRelate, pk=website.commname.all()[0].id)
+     
     else:
         website = Website(author=request.user)
       
     if request.POST:
         form = WebsiteForm(request.POST,  request.FILES, instance=website)
-        issueform =IssueKeywordsRelateForm(request.POST,instance=issues)
-        commodityform =CommodityKeywordsRelateForm(request.POST,instance=commodities)
+        if website.issuename.count()>0:
+            issues = get_object_or_404(IssueKeywordsRelate, pk=website.issuename.all()[0].id)
+            issueform =IssueKeywordsRelateForm(request.POST,instance=issues)
+        else:
+            issueform =IssueKeywordsRelateForm(request.POST)
+        if website.commname.count()>0:
+            commodities = get_object_or_404(CommodityKeywordsRelate, pk=website.commname.all()[0].id)
+            commodityform =CommodityKeywordsRelateForm(request.POST,instance=commodities)
+        else:
+            commodityform =CommodityKeywordsRelateForm(request.POST)
         u_form = WebsiteUrlFormSet(request.POST,  instance=website)
       
         if form.is_valid()  and u_form.is_valid():
@@ -1253,8 +1303,16 @@ def website_edit(request, country, id=None, template_name='countries/website_edi
 
     else:
         form = WebsiteForm(instance=website)
-        issueform =IssueKeywordsRelateForm(instance=issues)
-        commodityform =CommodityKeywordsRelateForm(instance=commodities)
+        if website.issuename.count()>0:
+            issues = get_object_or_404(IssueKeywordsRelate, pk=website.issuename.all()[0].id)
+            issueform =IssueKeywordsRelateForm( instance=issues)
+        else:
+            issueform =IssueKeywordsRelateForm( )
+        if website.commname.count()>0:
+            commodities = get_object_or_404(CommodityKeywordsRelate, pk=website.commname.all()[0].id)
+            commodityform =CommodityKeywordsRelateForm( instance=commodities)
+        else:
+            commodityform =CommodityKeywordsRelateForm()
         u_form = WebsiteUrlFormSet( instance=website)
       
     return render_to_response(template_name, {
@@ -1349,15 +1407,22 @@ def partner_websites_edit(request, partner, id=None, template_name='partners/web
     user_partner_slug = lower(slugify(partner))
     if id:
         website = get_object_or_404(PartnersWebsite, partners=partner, pk=id)
-        issues = get_object_or_404(IssueKeywordsRelate, pk=website.issuename.all()[0].id)
-        commodities = get_object_or_404(CommodityKeywordsRelate, pk=website.commname.all()[0].id)
     else:
         website = PartnersWebsite(author=request.user)
       
     if request.POST:
         form = PartnersWebsiteForm(request.POST,  request.FILES, instance=website)
-        issueform =IssueKeywordsRelateForm(request.POST,instance=issues)
-        commodityform =CommodityKeywordsRelateForm(request.POST,instance=commodities)
+        if website.issuename.count()>0:
+            issues = get_object_or_404(IssueKeywordsRelate, pk=website.issuename.all()[0].id)
+            issueform =IssueKeywordsRelateForm(request.POST,instance=issues)
+        else:
+            issueform =IssueKeywordsRelateForm(request.POST)
+        if website.commname.count()>0:
+            commodities = get_object_or_404(CommodityKeywordsRelate, pk=website.commname.all()[0].id)
+            commodityform =CommodityKeywordsRelateForm(request.POST,instance=commodities)
+        else:
+            commodityform =CommodityKeywordsRelateForm(request.POST)
+        
         u_form = PartnersWebsiteUrlFormSet(request.POST,  instance=website)
         
         if form.is_valid()  and u_form.is_valid():
@@ -1380,8 +1445,16 @@ def partner_websites_edit(request, partner, id=None, template_name='partners/web
 
     else:
         form = PartnersWebsiteForm(instance=website)
-        issueform =IssueKeywordsRelateForm(instance=issues)
-        commodityform =CommodityKeywordsRelateForm(instance=commodities)
+        if website.issuename.count()>0:
+            issues = get_object_or_404(IssueKeywordsRelate, pk=website.issuename.all()[0].id)
+            issueform =IssueKeywordsRelateForm( instance=issues)
+        else:
+            issueform =IssueKeywordsRelateForm( )
+        if website.commname.count()>0:
+            commodities = get_object_or_404(CommodityKeywordsRelate, pk=website.commname.all()[0].id)
+            commodityform =CommodityKeywordsRelateForm( instance=commodities)
+        else:
+            commodityform =CommodityKeywordsRelateForm()
         u_form =PartnersWebsiteUrlFormSet( instance=website)
       
     return render_to_response(template_name, {
@@ -1500,15 +1573,22 @@ def country_publication_edit(request, country, id=None, template_name='countries
     user_country_slug = lower(slugify(country))
     if id:
         cnpublication = get_object_or_404(CnPublication, country=country, pk=id)
-        issues = get_object_or_404(IssueKeywordsRelate, pk=cnpublication.issuename.all()[0].id)
-        commodities = get_object_or_404(CommodityKeywordsRelate, pk=cnpublication.commname.all()[0].id)
     else:
         cnpublication = CnPublication(author=request.user)
       
     if request.POST:
         form = CnPublicationForm(request.POST,  request.FILES, instance=cnpublication)
-        issueform =IssueKeywordsRelateForm(request.POST,instance=issues)
-        commodityform =CommodityKeywordsRelateForm(request.POST,instance=commodities)
+        if cnpublication.issuename.count()>0:
+            issues = get_object_or_404(IssueKeywordsRelate, pk=cnpublication.issuename.all()[0].id)
+            issueform =IssueKeywordsRelateForm(request.POST,instance=issues)
+        else:
+            issueform =IssueKeywordsRelateForm(request.POST)
+        if cnpublication.commname.count()>0:
+            commodities = get_object_or_404(CommodityKeywordsRelate, pk=cnpublication.commname.all()[0].id)
+            commodityform =CommodityKeywordsRelateForm(request.POST,instance=commodities)
+        else:
+            commodityform =CommodityKeywordsRelateForm(request.POST)
+        
         f_form = CnPublicationFileFormSet(request.POST,  request.FILES,instance=cnpublication)
         u_form = CnPublicationUrlFormSet(request.POST,  instance=cnpublication)
       
@@ -1533,8 +1613,16 @@ def country_publication_edit(request, country, id=None, template_name='countries
 
     else:
         form = CnPublicationForm(instance=cnpublication)
-        issueform =IssueKeywordsRelateForm(instance=issues)
-        commodityform =CommodityKeywordsRelateForm(instance=commodities)
+        if cnpublication.issuename.count()>0:
+            issues = get_object_or_404(IssueKeywordsRelate, pk=cnpublication.issuename.all()[0].id)
+            issueform =IssueKeywordsRelateForm( instance=issues)
+        else:
+            issueform =IssueKeywordsRelateForm( )
+        if cnpublication.commname.count()>0:
+            commodities = get_object_or_404(CommodityKeywordsRelate, pk=cnpublication.commname.all()[0].id)
+            commodityform =CommodityKeywordsRelateForm( instance=commodities)
+        else:
+            commodityform =CommodityKeywordsRelateForm()
         f_form = CnPublicationFileFormSet(instance=cnpublication)
         u_form = CnPublicationUrlFormSet( instance=cnpublication)
       
@@ -1664,15 +1752,21 @@ def partner_publication_edit(request, partner, id=None, template_name='partners/
     user_partner_slug = lower(slugify(partner))
     if id:
         partnerspublication = get_object_or_404(PartnersPublication, partners=partner, pk=id)
-        issues = get_object_or_404(IssueKeywordsRelate, pk=partnerspublication.issuename.all()[0].id)
-        commodities = get_object_or_404(CommodityKeywordsRelate, pk=partnerspublication.commname.all()[0].id)
     else:
         partnerspublication = PartnersPublication(author=request.user)
       
     if request.POST:
         form =PartnersPublicationForm(request.POST,  request.FILES, instance=partnerspublication)
-        issueform =IssueKeywordsRelateForm(request.POST,instance=issues)
-        commodityform =CommodityKeywordsRelateForm(request.POST,instance=commodities)
+        if partnerspublication.issuename.count()>0:
+            issues = get_object_or_404(IssueKeywordsRelate, pk=partnerspublication.issuename.all()[0].id)
+            issueform =IssueKeywordsRelateForm(request.POST,instance=issues)
+        else:
+            issueform =IssueKeywordsRelateForm(request.POST)
+        if partnerspublication.commname.count()>0:
+            commodities = get_object_or_404(CommodityKeywordsRelate, pk=partnerspublication.commname.all()[0].id)
+            commodityform =CommodityKeywordsRelateForm(request.POST,instance=commodities)
+        else:
+            commodityform =CommodityKeywordsRelateForm(request.POST) 
         f_form = PartnersPublicationFileFormSet(request.POST,  request.FILES,instance=partnerspublication)
         u_form = PartnersPublicationUrlFormSet(request.POST,  instance=partnerspublication)
       
@@ -1697,8 +1791,16 @@ def partner_publication_edit(request, partner, id=None, template_name='partners/
 
     else:
         form = PartnersPublicationForm(instance=partnerspublication)
-        issueform =IssueKeywordsRelateForm(instance=issues)
-        commodityform =CommodityKeywordsRelateForm(instance=commodities)
+        if partnerspublication.issuename.count()>0:
+            issues = get_object_or_404(IssueKeywordsRelate, pk=partnerspublication.issuename.all()[0].id)
+            issueform =IssueKeywordsRelateForm( instance=issues)
+        else:
+            issueform =IssueKeywordsRelateForm( )
+        if partnerspublication.commname.count()>0:
+            commodities = get_object_or_404(CommodityKeywordsRelate, pk=partnerspublication.commname.all()[0].id)
+            commodityform =CommodityKeywordsRelateForm( instance=commodities)
+        else:
+            commodityform =CommodityKeywordsRelateForm()
         f_form = PartnersPublicationFileFormSet(instance=partnerspublication)
         u_form = PartnersPublicationUrlFormSet( instance=partnerspublication)
       
@@ -1822,8 +1924,6 @@ def pfa_edit(request, country, id=None, template_name='countries/pfa_edit.html')
     user_country_slug = lower(slugify(country))
     if id:
         pfa = get_object_or_404(PestFreeArea, country=country, pk=id)
-        issues = get_object_or_404(IssueKeywordsRelate, pk=pfa.issuename.all()[0].id)
-        commodities = get_object_or_404(CommodityKeywordsRelate, pk=pfa.commname.all()[0].id)
         content_type = ContentType.objects.get_for_model(pfa)
         notifications = get_object_or_404(NotificationMessageRelate, object_id=id,content_type__pk=content_type.id,)
        
@@ -1835,8 +1935,16 @@ def pfa_edit(request, country, id=None, template_name='countries/pfa_edit.html')
     if request.POST:
 
         form = PestFreeAreaForm(request.POST,  request.FILES, instance=pfa)
-        issueform =IssueKeywordsRelateForm(request.POST, instance=issues)
-        commodityform =CommodityKeywordsRelateForm(request.POST, instance=commodities)
+        if pfa.issuename.count()>0:
+            issues = get_object_or_404(IssueKeywordsRelate, pk=pfa.issuename.all()[0].id)
+            issueform =IssueKeywordsRelateForm(request.POST,instance=issues)
+        else:
+            issueform =IssueKeywordsRelateForm(request.POST)
+        if pfa.commname.count()>0:
+            commodities = get_object_or_404(CommodityKeywordsRelate, pk=pfa.commname.all()[0].id)
+            commodityform =CommodityKeywordsRelateForm(request.POST,instance=commodities)
+        else:
+            commodityform =CommodityKeywordsRelateForm(request.POST)
         notifyrelateform =NotificationMessageRelateForm(request.POST,instance=notifications)
         f_form = PestFreeAreaFileFormSet(request.POST,  request.FILES,instance=pfa)
         u_form = PestFreeAreaUrlFormSet(request.POST,  instance=pfa)
@@ -1869,8 +1977,16 @@ def pfa_edit(request, country, id=None, template_name='countries/pfa_edit.html')
 
     else:
         form = PestFreeAreaForm(instance=pfa)
-        issueform =IssueKeywordsRelateForm(instance=issues)
-        commodityform =CommodityKeywordsRelateForm(instance=commodities)
+        if pfa.issuename.count()>0:
+            issues = get_object_or_404(IssueKeywordsRelate, pk=pfa.issuename.all()[0].id)
+            issueform =IssueKeywordsRelateForm( instance=issues)
+        else:
+            issueform =IssueKeywordsRelateForm( )
+        if pfa.commname.count()>0:
+            commodities = get_object_or_404(CommodityKeywordsRelate, pk=pfa.commname.all()[0].id)
+            commodityform =CommodityKeywordsRelateForm( instance=commodities)
+        else:
+            commodityform =CommodityKeywordsRelateForm()
         notifyrelateform =NotificationMessageRelateForm(instance=notifications)
         f_form = PestFreeAreaFileFormSet(instance=pfa)
         u_form = PestFreeAreaUrlFormSet(instance=pfa)
@@ -1991,8 +2107,6 @@ def implementationispm_edit(request, country, id=None, template_name='countries/
     user_country_slug = lower(slugify(country))
     if id:
         implementationispm = get_object_or_404(ImplementationISPM, country=country, pk=id)
-        issues = get_object_or_404(IssueKeywordsRelate, pk=implementationispm.issuename.all()[0].id)
-        commodities = get_object_or_404(CommodityKeywordsRelate, pk=implementationispm.commname.all()[0].id)
         content_type = ContentType.objects.get_for_model(implementationispm)
         notifications = get_object_or_404(NotificationMessageRelate, object_id=id,content_type__pk=content_type.id,)
        
@@ -2003,8 +2117,17 @@ def implementationispm_edit(request, country, id=None, template_name='countries/
       
     if request.POST:
         form = ImplementationISPMForm(request.POST,  request.FILES, instance=implementationispm)
-        issueform =IssueKeywordsRelateForm(request.POST, instance=issues)
-        commodityform =CommodityKeywordsRelateForm(request.POST, instance=commodities)
+        if implementationispm.issuename.count()>0:
+            issues = get_object_or_404(IssueKeywordsRelate, pk=implementationispm.issuename.all()[0].id)
+            issueform =IssueKeywordsRelateForm(request.POST,instance=issues)
+        else:
+            issueform =IssueKeywordsRelateForm(request.POST)
+        if implementationispm.commname.count()>0:
+            commodities = get_object_or_404(CommodityKeywordsRelate, pk=implementationispm.commname.all()[0].id)
+            commodityform =CommodityKeywordsRelateForm(request.POST,instance=commodities)
+        else:
+            commodityform =CommodityKeywordsRelateForm(request.POST)
+        
         notifyrelateform =NotificationMessageRelateForm(request.POST,instance=notifications)
         f_form = ImplementationISPMFileFormSet(request.POST,  request.FILES,instance=implementationispm)
         u_form = ImplementationISPMUrlFormSet(request.POST,  instance=implementationispm)
@@ -2037,8 +2160,16 @@ def implementationispm_edit(request, country, id=None, template_name='countries/
 
     else:
         form = ImplementationISPMForm(instance=implementationispm)
-        issueform =IssueKeywordsRelateForm(instance=issues)
-        commodityform =CommodityKeywordsRelateForm(instance=commodities)
+        if implementationispm.issuename.count()>0:
+            issues = get_object_or_404(IssueKeywordsRelate, pk=implementationispm.issuename.all()[0].id)
+            issueform =IssueKeywordsRelateForm( instance=issues)
+        else:
+            issueform =IssueKeywordsRelateForm( )
+        if implementationispm.commname.count()>0:
+            commodities = get_object_or_404(CommodityKeywordsRelate, pk=implementationispm.commname.all()[0].id)
+            commodityform =CommodityKeywordsRelateForm( instance=commodities)
+        else:
+            commodityform =CommodityKeywordsRelateForm()
         notifyrelateform =NotificationMessageRelateForm(instance=notifications)
         f_form = ImplementationISPMFileFormSet(instance=implementationispm)
         u_form = ImplementationISPMUrlFormSet(instance=implementationispm)
@@ -2150,9 +2281,6 @@ def countrynews_edit(request, country, id=None, template_name='countries/country
     user_country_slug = lower(slugify(country))
     if id:
         countrynews = get_object_or_404(CountryNews, country=country, pk=id)
-        issues = get_object_or_404(IssueKeywordsRelate, pk=countrynews.issuename.all()[0].id)
-        commodities = get_object_or_404(CommodityKeywordsRelate, pk=countrynews.commname.all()[0].id)
-       
        # if pest_report.author != request.user:
         #     return HttpResponseForbidden()
     else:
@@ -2160,8 +2288,16 @@ def countrynews_edit(request, country, id=None, template_name='countries/country
       
     if request.POST:
         form = CountryNewsForm(request.POST,  request.FILES, instance=countrynews)
-        issueform =IssueKeywordsRelateForm(request.POST, instance=issues)
-        commodityform =CommodityKeywordsRelateForm(request.POST, instance=commodities)
+        if countrynews.issuename.count()>0:
+            issues = get_object_or_404(IssueKeywordsRelate, pk=countrynews.issuename.all()[0].id)
+            issueform =IssueKeywordsRelateForm(request.POST,instance=issues)
+        else:
+            issueform =IssueKeywordsRelateForm(request.POST)
+        if cnpublication.commname.count()>0:
+            commodities = get_object_or_404(CommodityKeywordsRelate, pk=countrynews.commname.all()[0].id)
+            commodityform =CommodityKeywordsRelateForm(request.POST,instance=commodities)
+        else:
+            commodityform =CommodityKeywordsRelateForm(request.POST)
         f_form = CountryNewsFileFormSet(request.POST,  request.FILES,instance=countrynews)
         u_form = CountryNewsUrlFormSet(request.POST,  instance=countrynews)
         if form.is_valid() and f_form.is_valid() and u_form.is_valid():
@@ -2186,8 +2322,17 @@ def countrynews_edit(request, country, id=None, template_name='countries/country
 
     else:
         form = CountryNewsForm(instance=countrynews)
-        issueform =IssueKeywordsRelateForm(instance=issues)
-        commodityform =CommodityKeywordsRelateForm(instance=commodities)
+        if countrynews.issuename.count()>0:
+            issues = get_object_or_404(IssueKeywordsRelate, pk=countrynews.issuename.all()[0].id)
+            issueform =IssueKeywordsRelateForm(instance=issues)
+        else:
+            issueform =IssueKeywordsRelateForm( )
+        if cnpublication.commname.count()>0:
+            commodities = get_object_or_404(CommodityKeywordsRelate, pk=countrynews.commname.all()[0].id)
+            commodityform =CommodityKeywordsRelateForm( instance=commodities)
+        else:
+            commodityform =CommodityKeywordsRelateForm( )
+      
         f_form = CountryNewsFileFormSet(instance=countrynews)
         u_form = CountryNewsUrlFormSet(instance=countrynews)
     return render_to_response(template_name, {
@@ -2286,18 +2431,21 @@ def partners_news_edit(request, partner, id=None, template_name='partners/partne
     user_partner_slug = lower(slugify(partner))
     if id:
         partnernews = get_object_or_404( PartnersNews,  partners= partner, pk=id)
-        issues = get_object_or_404(IssueKeywordsRelate, pk=partnernews.issuename.all()[0].id)
-        commodities = get_object_or_404(CommodityKeywordsRelate, pk=partnernews.commname.all()[0].id)
-       
-       # if pest_report.author != request.user:
-        #     return HttpResponseForbidden()
     else:
         partnernews =  PartnersNews(author=request.user)
       
     if request.POST:
         form =  PartnersNewsForm(request.POST,  request.FILES, instance=partnernews)
-        issueform =IssueKeywordsRelateForm(request.POST, instance=issues)
-        commodityform =CommodityKeywordsRelateForm(request.POST, instance=commodities)
+        if partnernews.issuename.count()>0:
+            issues = get_object_or_404(IssueKeywordsRelate, pk=partnernews.issuename.all()[0].id)
+            issueform =IssueKeywordsRelateForm(request.POST,instance=issues)
+        else:
+            issueform =IssueKeywordsRelateForm(request.POST)
+        if partnernews.commname.count()>0:
+            commodities = get_object_or_404(CommodityKeywordsRelate, pk=partnernews.commname.all()[0].id)
+            commodityform =CommodityKeywordsRelateForm(request.POST,instance=commodities)
+        else:
+            commodityform =CommodityKeywordsRelateForm(request.POST)
         f_form =  PartnersNewsFileFormSet(request.POST,  request.FILES,instance=partnernews)
         u_form =  PartnersNewsUrlFormSet(request.POST,  instance=partnernews)
         if form.is_valid() and f_form.is_valid() and u_form.is_valid():
@@ -2322,8 +2470,16 @@ def partners_news_edit(request, partner, id=None, template_name='partners/partne
 
     else:
         form = PartnersNewsForm(instance=partnernews)
-        issueform =IssueKeywordsRelateForm(instance=issues)
-        commodityform =CommodityKeywordsRelateForm(instance=commodities)
+        if partnernews.issuename.count()>0:
+            issues = get_object_or_404(IssueKeywordsRelate, pk=partnernews.issuename.all()[0].id)
+            issueform =IssueKeywordsRelateForm( instance=issues)
+        else:
+            issueform =IssueKeywordsRelateForm( )
+        if partnernews.commname.count()>0:
+            commodities = get_object_or_404(CommodityKeywordsRelate, pk=partnernews.commname.all()[0].id)
+            commodityform =CommodityKeywordsRelateForm( instance=commodities)
+        else:
+            commodityform =CommodityKeywordsRelateForm()
         f_form = PartnersNewsFileFormSet(instance=partnernews)
         u_form = PartnersNewsUrlFormSet(instance=partnernews)
     return render_to_response(template_name, {
@@ -2352,8 +2508,16 @@ def publication_edit(request, id=None, template_name='pages/publication_edit.htm
       
     if request.POST:
         form = PublicationForm(request.POST,  request.FILES, instance=publication)
-        issueform =IssueKeywordsRelateForm(request.POST,instance=issues)
-        commodityform =CommodityKeywordsRelateForm(request.POST,instance=commodities)
+        if publication.issuename.count()>0:
+            issues = get_object_or_404(IssueKeywordsRelate, pk=publication.issuename.all()[0].id)
+            issueform =IssueKeywordsRelateForm(request.POST,instance=issues)
+        else:
+            issueform =IssueKeywordsRelateForm(request.POST)
+        if publication.commname.count()>0:
+            commodities = get_object_or_404(CommodityKeywordsRelate, pk=publication.commname.all()[0].id)
+            commodityform =CommodityKeywordsRelateForm(request.POST,instance=commodities)
+        else:
+            commodityform =CommodityKeywordsRelateForm(request.POST)
         f_form = PublicationFileFormSet(request.POST,  request.FILES,instance=publication)
         u_form = PublicationUrlFormSet(request.POST,  instance=publication)
       
@@ -2378,8 +2542,17 @@ def publication_edit(request, id=None, template_name='pages/publication_edit.htm
 
     else:
         form = PublicationForm(instance=publication)
-        issueform =IssueKeywordsRelateForm(instance=issues)
-        commodityform =CommodityKeywordsRelateForm(instance=commodities)
+        
+        if publication.issuename.count()>0:
+            issues = get_object_or_404(IssueKeywordsRelate, pk=publication.issuename.all()[0].id)
+            issueform =IssueKeywordsRelateForm( instance=issues)
+        else:
+            issueform =IssueKeywordsRelateForm( )
+        if publication.commname.count()>0:
+            commodities = get_object_or_404(CommodityKeywordsRelate, pk=publication.commname.all()[0].id)
+            commodityform =CommodityKeywordsRelateForm( instance=commodities)
+        else:
+            commodityform =CommodityKeywordsRelateForm()
         f_form = PublicationFileFormSet(instance=publication)
         u_form = PublicationUrlFormSet( instance=publication)
       
@@ -3263,7 +3436,7 @@ class AdvancesSearchCNListView(ListView):
             context['users']=User.objects.all()
             context['cns']=CountryPage.objects.all()
          
-            context['items']=IppcUserProfile.objects.filter(contact_type='1')|IppcUserProfile.objects.filter(contact_type='2')|IppcUserProfile.objects.filter(contact_type='3')
+            context['items']=IppcUserProfile.objects.filter(contact_type='1')|IppcUserProfile.objects.filter(contact_type='2')|IppcUserProfile.objects.filter(contact_type='3')|IppcUserProfile.objects.filter(contact_type='4')
             context['counttotal'] =context['items'].count() 
             context['link_to_item'] = 'contactpoint'
                  
@@ -3344,7 +3517,7 @@ from django.http import HttpResponse
 
 def contactPointExtractor(request):
     # Create the HttpResponse object with the appropriate CSV header.
-    contacts=IppcUserProfile.objects.filter(contact_type='1')|IppcUserProfile.objects.filter(contact_type='2')|IppcUserProfile.objects.filter(contact_type='3')
+    contacts=IppcUserProfile.objects.filter(contact_type='1')|IppcUserProfile.objects.filter(contact_type='2')|IppcUserProfile.objects.filter(contact_type='3')|IppcUserProfile.objects.filter(contact_type='4')
     users=User.objects.all()
     cns=CountryPage.objects.all()
              
