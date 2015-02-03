@@ -40,14 +40,17 @@
   {% if region_name %}
   from {{region_name}}
   {% endif %}</small>
-  </h1> <div   class="span7 middle">
-<p class="small">
-<span class="icn-contracting">&#160; &#160; </span>  = Contracting parties ({{number_of_cp}}). Visit the website of <a href="http://www.fao.org/fileadmin/user_upload/legal/docs/5_004s-e.pdf">FAO Legal</a>
-<br />
-<span class="icn-noncontracting">&#160; &#160; </span>  = Non-Contracting Party
-<br />
-<span class="icn-territory">&#160; &#160; </span>  = Territory</p>
-<br />
+  </h1> 
+<div class="span7 middle">
+	<p>There are currently <strong>{{ number_of_cp }}</strong> contracting parties. Visit the <a href="http://www.fao.org/fileadmin/user_upload/legal/docs/5_004s-e.pdf">FAO Legal</a> website for details.</p>
+	
+<p>
+	<span class="icn-adoptedbadge">Contracting parties</span> 
+	<br />
+	<span class="icn-noncontracting">Non-Contracting</span>
+	<br />
+	<span class="icn-territory">Territory</span>
+</p>
 
 
 
@@ -58,11 +61,11 @@
     {% if object.name != '-' %} 
            <tr><td>
             {% if  object.cp_ncp_t_type == 'CP' %}
-        <span class="icn-contracting">&#160; &#160; </span>
+        <span class="icn-adoptedbadge quiet small"></span>
         {% elif object.cp_ncp_t_type == 'NCP' %}
-        <span class="icn-noncontracting">&#160; &#160; </span>
+        <span class="icn-noncontracting quiet small"></span>
         {% elif  object.cp_ncp_t_type == 'T' %}
-        <span class="icn-territory">&#160; &#160; </span>
+        <span class="icn-territory quiet small"></span>
         {% endif %}
         <a href="/{{ object.slug}}/" >{{ object.name }}</a>
            </td></tr>{% endif %}
