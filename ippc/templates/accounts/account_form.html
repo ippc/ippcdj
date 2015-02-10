@@ -1,13 +1,13 @@
 {% extends "base.html" %}
 {% load i18n mezzanine_tags %}
 
-{% block meta_title %}IPPC Account Profile{% endblock %}
-{# {% block title %}{{ title }}{% endblock %} #}
+{% block meta_title %}{{ title }}{% endblock %}
+{% block title %}{{ title }}{% endblock %}
 {% block body_id %}account{% endblock %}
 
 {% block breadcrumb_menu %}
 {{ block.super }}
-<li>Profile: <b>{% if request.user.get_profile.first_name or request.user.get_profile.last_name %}{{ request.user.get_profile.first_name }} {{ request.user.get_profile.last_name }}{% else %}{{ request.user.username }}{% endif %}</b></li>
+<li><b>{% if request.user.get_profile.first_name or request.user.get_profile.last_name %}{{ request.user.get_profile.first_name }} {{ request.user.get_profile.last_name }}{% else %}{{ request.user.username }}{% endif %}</b></li>
 {% endblock %}
 
 {% block local_nav %}
@@ -22,6 +22,8 @@
     <form method="post"{% if form.is_multipart %} enctype="multipart/form-data"{% endif %}>
 
     {% fields_for form %}
+
+		{# Not sure what IF block below is for? —Simon #}
 		{% if title %}
 			{% else %}
 		 <div class="control-group input_id_email">
@@ -33,6 +35,7 @@
 		 </div>
 		{% endif %}
   
+	
 
     <div class="form-actions">
         <input class="btn btn-primary btn-large" type="submit" value="{% if title %}{{title}}{% else%}Update{% endif%}">

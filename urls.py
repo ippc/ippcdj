@@ -580,13 +580,12 @@ urlpatterns = patterns("",
     # ``mezzanine.urls``.
 
 
-
     # User registration open but behind [staff_member_required](http://stackoverflow.com/a/2694116) (we create overrides mezzanine's http://127.0.0.1:8000/en/account/signup/ URL so logged-in staff member only can see it) so only staff can add new users, who get notification emails to confirm account and set own password. Another option: <https://stackoverflow.com/questions/11774647/use-staff-member-required-decorator-but-without-being-redirected-to-the-admin-i>
 
-    # url("^/account/signup/$", login_required("mezzanine.accounts.views.signup"), name="signup"),
-
+    # url("^account/signup/$", login_required("mezzanine.accounts.views.signup"), name="signup"),
 
     ("^", include("mezzanine.urls")),
+
 
     # MOUNTING MEZZANINE UNDER A PREFIX
     # ---------------------------------
