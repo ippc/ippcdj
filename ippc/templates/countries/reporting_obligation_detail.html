@@ -58,9 +58,9 @@
   {% endif %}
 
 
- {% if reportingobligation.short_description != ''  and reportingobligation.short_description != ' '   %}
+ {% if reportingobligation.short_description != ''  and reportingobligation.short_description != ''   %}
   <dt>{% trans "Short Description" %}</dt>
-  <dd>{{ reportingobligation.short_description }}</dd>
+  <dd>{{ reportingobligation.short_description|richtext_filter|safe }}</dd>
   {% endif %}
   
   {% if reportingobligation.contact_for_more_information != ''  and reportingobligation.contact_for_more_information != ' ' %}

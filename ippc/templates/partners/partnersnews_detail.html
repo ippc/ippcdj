@@ -51,7 +51,7 @@
 
  {% if partnersnews.short_description %}
   <dt>{% trans "Description of the mark" %}</dt>
-  <dd>{{ partnersnews.short_description }}</dd>
+  <dd>{{ partnersnews.short_description|richtext_filter|safe }}</dd>
   {% endif %}
   
 

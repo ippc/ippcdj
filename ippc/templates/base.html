@@ -193,7 +193,9 @@
 <div class="span4 right">
     {% block local_nav %}
     {% block trans %}
-    <div class="panel tree">{% page_menu "pages/menus/tree.html" %}</div>
+    <div class="panel tree">
+			{% page_menu "pages/menus/tree.html" %}
+		</div>
     {% endblock trans %}
     {% endblock local_nav %}
     
@@ -207,8 +209,6 @@
    {% elif page.id == 322 or  page.parent_id == 322   or  page.parent_id == 323 or  page.parent_id == 345       or  page.parent_id == 449 or  page.parent_id == 427     or  page.parent_id == 429 or  page.parent_id == 459   or  page.parent_id == 455 or  page.parent_id == 445     %}
        {% include "pages/menus/tree_key_core.html" %}
          {% else %}
-
-        
     {% endif %}
 </div>
 
