@@ -3,7 +3,8 @@ autocomplete_light.autodiscover()
 
 from django.conf.urls import patterns, include, url
 
-
+# from django.contrib.auth.decorators import login_required
+# from django.contrib.admin.views.decorators import staff_member_required
 
 from django.contrib import admin
 admin.autodiscover()
@@ -577,6 +578,13 @@ urlpatterns = patterns("",
     # ``mezzanine.urls``, go right ahead and take the parts you want
     # from it, and use them directly below instead of using
     # ``mezzanine.urls``.
+
+
+
+    # User registration open but behind [staff_member_required](http://stackoverflow.com/a/2694116) (we create overrides mezzanine's http://127.0.0.1:8000/en/account/signup/ URL so logged-in staff member only can see it) so only staff can add new users, who get notification emails to confirm account and set own password. Another option: <https://stackoverflow.com/questions/11774647/use-staff-member-required-decorator-but-without-being-redirected-to-the-admin-i>
+
+    # url("^/account/signup/$", login_required("mezzanine.accounts.views.signup"), name="signup"),
+
 
     ("^", include("mezzanine.urls")),
 

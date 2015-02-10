@@ -38,10 +38,12 @@
     <span class="caps">{{ profile_user.get_profile.last_name }}</span>
   </dd>
   
+	{% if user.get_profile.date_account_created %}  
   <dt>{% trans "Member Since" %}</dt>
   <dd>
         {% blocktrans with sometime=profile_user.get_profile.date_account_created|date:"d M Y" %}{{ sometime }}{% endblocktrans %}
   </dd>
+	{% endif %}
   
   {% if profile_user.get_profile.email_address_alt %}
   <dt>{% trans "Alternate Email" %}</dt>

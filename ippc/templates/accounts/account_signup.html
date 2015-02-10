@@ -8,8 +8,11 @@
 {% else %}
     {{ block.super }}
     {% if settings.ACCOUNTS_VERIFICATION_REQUIRED %}
-    <p>{% trans "After signing up, you'll receive an email with a link you need to click, in order to activate your account." %}</p>
+			<p>{% trans "After signing up, you'll receive an email with a link you need to click, in order to activate your account." %}</p>
     {% endif %}
+		{% if settings.ACCOUNTS_APPROVAL_REQUIRED %}
+		   <p>{% trans "Note that account approval by the IPPC Secretariat is required for your account to be activated." %}</p>
+		{% endif %}
 {% endif %}
 
 {% endblock %}
