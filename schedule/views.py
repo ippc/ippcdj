@@ -376,7 +376,7 @@ def create_or_edit_event(request, country, calendar_slug, event_id=None, next=No
         is_secretariat=1
     if user.groups.filter(name='Country editor'):
         is_contryeditor=1
-    
+    issueform =IssueKeywordsRelateForm(request.POST)
     calendar = get_object_or_404(Calendar, slug=calendar_slug)
     if event_id is not None:
         instance = get_object_or_404(Event, id=event_id)
@@ -387,7 +387,12 @@ def create_or_edit_event(request, country, calendar_slug, event_id=None, next=No
             is_contryeevent=1
         if (is_secretariat==1 and is_contryeevent==0):
             can_add_edit=1       
-        issues = get_object_or_404(IssueKeywordsRelate, pk=instance.issuename.all()[0].id)
+        if instance.issuename.count()>0:
+            issues = get_object_or_404(IssueKeywordsRelate, pk=instance.issuename.all()[0].id)
+            issueform =IssueKeywordsRelateForm(request.POST,instance=issues)
+        else:
+            issueform =IssueKeywordsRelateForm(request.POST)
+ 
     else:
         instance = Event()
         if is_contryeditor==1:
@@ -400,9 +405,9 @@ def create_or_edit_event(request, country, calendar_slug, event_id=None, next=No
     if request.method == "POST":
        f_form = EventFileFormSet(request.POST, request.FILES,instance=instance)
        u_form = EventUrlFormSet(request.POST, instance=instance)
-       issueform =IssueKeywordsRelateForm(request.POST,instance=issues)
+       #issueform =IssueKeywordsRelateForm(request.POST,instance=issues)
     else:
-       issueform =IssueKeywordsRelateForm(instance=issues)
+       # issueform =IssueKeywordsRelateForm(instance=issues)
        f_form = EventFileFormSet(instance=instance)
        u_form = EventUrlFormSet(instance=instance)
        

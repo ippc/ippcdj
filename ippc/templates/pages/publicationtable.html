@@ -67,10 +67,10 @@
                       Zh
                     </a>
                     {% endif %}
-               <br> {{ publication.short_description|richtext_filter|safe }}
+                  <br> {{ publication.short_description|richtext_filter|safe }}
            </div>
        </td>
-
+   
      
         <td>{{ publication.publication_date|date:"d M Y"  }}</td>
 
@@ -102,7 +102,11 @@
          <th style="width:15%;">{% trans "Agenda #" %}</th>
        {# {% endif %} #}
        <th>{% trans "Title" %}</th>
-       <th>{% trans "Files" %}</th>
+          <th>{% trans "Files" %}</th>
+      
+       {% if publication.publicationurl_set.all %}
+      <th>{% trans "Links" %}</th>
+        {% endif %}
        <th>{% trans "Publication date" %}</th>
      </tr>
    </thead>
@@ -162,19 +166,58 @@
           Zh
         </a>
         {% endif %}
-        {# <div class="media-body"> #}
-        {#     <strong><a href="{{ MEDIA_URL }}{{ file.file }}"> #}
-        {#         {{ file.title|default:file.file.filename }} #}
-        {#     </a></strong> #}
-        {#     <p>{{ file.description }}</strong> #}
-        {# </div> #}
-      </td>
-        <td>{{ publication.publication_date|date:"d M Y"  }}</td>
-
-    </tr>        {% endif %}
+        {% if publication.publicationfile_set.all %}
+            {% for f in publication.publicationfile_set.all %} 
+                <a href="{{MEDIA_URL}}{{f.file.name}}">{{ f.description }}</a>
+            {% endfor %}
+        {% endif %}
+      </td>  
+      {% if publication.publicationurl_set.all %} 
+      <td>
+        {% for f in publication.publicationurl_set.all %} 
+            <a href="{{f.url_for_more_information}}">{{ f.url_for_more_information }}</a>
+        {% endfor %}
+      </td>  
+      {% endif %}
+      <td>{{ publication.publication_date|date:"d M Y"  }}</td>
+    </tr>        
+    {% endif %}
   {% endfor %} {# publication in publications #}
   </tbody>
 </table>
+
+
+
+
+
+
+  
+                  
+
+
+                    
+                    
+                    
+                    
+                    
+              
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
       <p align='right'>
 <a href='/publications/{{page.id}}/files' target='_blank'><i class="icon-download"></i>  Download multiple files</a></p>

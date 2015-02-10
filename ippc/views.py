@@ -502,7 +502,7 @@ def pest_report_edit(request, country, id=None, template_name='countries/pest_re
         pest_report = get_object_or_404(PestReport, country=country, pk=id)
        
         content_type = ContentType.objects.get_for_model(pest_report)
-        notifications = get_object_or_404(NotificationMessageRelate, object_id=id,content_type__pk=content_type.id,)
+        notifications = get_object_or_404(NotificationMessageRelate, object_id=id,content_type__pk=content_type.id)
         
         rep_num=pest_report.report_number
         indexof=rep_num.rfind('/')
@@ -732,8 +732,10 @@ def reporting_obligation_edit(request, country, id=None, template_name='countrie
     if id:
         reporting_obligation = get_object_or_404(ReportingObligation, country=country, pk=id)
         content_type = ContentType.objects.get_for_model(reporting_obligation)
-        notifications = get_object_or_404(NotificationMessageRelate, object_id=id,content_type__pk=content_type.id,)
-        
+        try:
+            notifications = get_object_or_404(NotificationMessageRelate, object_id=id,content_type__pk=content_type.id)
+        except:
+            notifications = None
     else:
         reporting_obligation = ReportingObligation(author=request.user)
       
@@ -916,8 +918,10 @@ def event_reporting_edit(request, country, id=None, template_name='countries/eve
     if id:
         event_reporting = get_object_or_404(EventReporting, country=country, pk=id)
         content_type = ContentType.objects.get_for_model(event_reporting)
-        notifications = get_object_or_404(NotificationMessageRelate, object_id=id,content_type__pk=content_type.id,)
-     
+        try:
+            notifications = get_object_or_404(NotificationMessageRelate, object_id=id,content_type__pk=content_type.id)
+        except:
+            notifications = None
     else:
         event_reporting = EventReporting(author=request.user)
       
@@ -1925,8 +1929,10 @@ def pfa_edit(request, country, id=None, template_name='countries/pfa_edit.html')
     if id:
         pfa = get_object_or_404(PestFreeArea, country=country, pk=id)
         content_type = ContentType.objects.get_for_model(pfa)
-        notifications = get_object_or_404(NotificationMessageRelate, object_id=id,content_type__pk=content_type.id,)
-       
+        try:
+            notifications = get_object_or_404(NotificationMessageRelate, object_id=id,content_type__pk=content_type.id)
+        except:
+            notifications = None
         # if pest_report.author != request.user:
         #     return HttpResponseForbidden()
     else:
@@ -2108,8 +2114,10 @@ def implementationispm_edit(request, country, id=None, template_name='countries/
     if id:
         implementationispm = get_object_or_404(ImplementationISPM, country=country, pk=id)
         content_type = ContentType.objects.get_for_model(implementationispm)
-        notifications = get_object_or_404(NotificationMessageRelate, object_id=id,content_type__pk=content_type.id,)
-       
+        try:
+            notifications = get_object_or_404(NotificationMessageRelate, object_id=id,content_type__pk=content_type.id)
+        except:
+            notifications = None
        # if pest_report.author != request.user:
         #     return HttpResponseForbidden()
     else:

@@ -32,9 +32,9 @@
 {% block calls_post_detail_postedby %}
 {% editable calls_post.publish_date %}
 <h6>
-    {% trans "Posted by" %}:
+    {% trans "Posted " %}
     {% with calls_post.user as author %}
-    <a href="{% url "calls_post_list_author" author %}">{{ author.get_full_name|default:author.username }}</a>
+    <!--a href="{% url "calls_post_list_author" author %}">{{ author.get_full_name|default:author.username }}</a-->
     {% endwith %}
     {# {% blocktrans with sometime=calls_post.publish_date|timesince %}{{ sometime }} ago{% endblocktrans %} #}
     {% blocktrans with sometime=calls_post.publish_date|date:"D, d M Y, H:i" %}on {{ sometime }}{% endblocktrans %}    

@@ -32,9 +32,10 @@
 {% block news_post_detail_postedby %}
 {% editable news_post.publish_date %}
 <h6>
-    {% trans "Posted by" %}:
+    {#% trans "Posted by: " %}#}
+    {% trans "Posted " %}
     {% with news_post.user as author %}
-    <a href="{% url "news_post_list_author" author %}">{{ author.get_full_name|default:author.username }}</a>
+    <!--a href="{% url "news_post_list_author" author %}">{{ author.get_full_name|default:author.username }}</a-->
     {% endwith %}
     {# {% blocktrans with sometime=news_post.publish_date|timesince %}{{ sometime }} ago{% endblocktrans %} #}
     {% blocktrans with sometime=news_post.publish_date|date:"D, d M Y, H:i" %}on {{ sometime }}{% endblocktrans %}    
@@ -58,7 +59,7 @@
 {% endblock %}
 
 {% block news_post_detail_featured_image %}
-{% if blog_post.featured_image %}{#settings.news_USE_FEATURED_IMAGE and #}
+{% if news_post.featured_image %}{#settings.news_USE_FEATURED_IMAGE and #}
   <p><img src="{{ MEDIA_URL }}{% thumbnail news_post.featured_image 500 0 %}"></p>
 {% endif %}
 {% endblock %}

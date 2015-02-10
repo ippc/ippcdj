@@ -143,9 +143,89 @@ fieldset {}
     
 .printlogo {display:none;}
 
-.icn-facebook, .icn-twitter {background:url(/static/img/icons.png) no-repeat top left; padding:1px 0 0 20px !important;}
-.icn-facebook {background-position:0 0;} 
-.icn-twitter {background-position:0 -17px;} 
+/* =Icons ------------------------------------------ See http://hypertexthero.com/ippc/work/icons.html for documentation */
+
+/* First we define the background image containing all the icons */
+.icn-addnew-inline, .icn-adoptedbadge, .icn-blank, .icn-bookmark, .icn-contact-add, .icn-copylink, .icn-doc, .icn-edit, .icn-email-add, .icn-error, .icn-event-add, .icn-feed, .icn-group-add, .icn-img, .icn-keyword-add, .icn-news-add, .icn-noncontracting, .testmapNCP,.icn-page-add, .icn-page-delete, .icn-page-edit, .icn-pdf, .icn-pestreport-add, .icn-ppt, .icn-preview, .icn-project-add, .icn-project, .icn-publication-add, .icn-required, .icn-subscribe, .icn-translatable, .icn-txt, .icn-user-add, .icn-warning, .icn-www-add, .icn-www, .icn-xls, .icn-zip, .icn-success,.icn-territory,.testmapT,.icn-backtotop, .icn-delete, .icn-lock, .icn-facebook, .icn-twitter {background:url(/static/img/icons.gif) no-repeat top left; padding:1px 0 2px 20px !important; /*font-size:0.9em;*/}
+
+/* Then we assign the background position of each particular icon on the image above with X and Y coordinates. */
+.icn-addnew-inline {background-position:0 0;} 
+.icn-adoptedbadge {background-position:0 -66px; color:#693 !important;} 
+.icn-blank {background-position:0 -132px;} 
+.icn-bookmark {background-position:0 -198px;} 
+.icn-contact-add {background-position:0 -264px;} 
+.icn-copylink {background-position:0 -330px;} 
+.icn-doc {background-position:0 -396px;} 
+.icn-edit {background-position:0 -462px;} 
+.icn-email-add {background-position:0 -528px;} 
+.icn-error {background-position:0 -594px; font-size:0.95em; color:#8a1f11;} 
+.icn-event-add {background-position:0 -660px;} 
+.icn-feed {background-position:0 -726px;} 
+.icn-group-add {background-position:0 -792px;} 
+.icn-img {background-position:0 -858px;} 
+.icn-keyword-add {background-position:0 -924px;} 
+.icn-news-add {background-position:0 -990px;} 
+.testmapNCP {background:url(/static/img/icons.gif) no-repeat 0 -1056px !important; color:#630 !important;} 
+.icn-noncontracting {background:url(/static/img/icons.gif) no-repeat 0 -1056px !important; color:#630 !important;} 
+.icn-page-add {background-position:0 -1122px;} 
+.icn-page-delete {background-position:0 -1188px;} 
+.icn-page-edit {background-position:0 -1254px;} 
+.icn-pdf {background-position:0 -1320px;} 
+.icn-pestreport-add {background-position:0 -1386px;} 
+.icn-ppt {background-position:0 -1452px;} 
+.icn-preview {background-position:0 -1518px;} 
+.icn-project-add {background-position:0 -1584px;} 
+.icn-project {background-position:0 -1650px;} 
+.icn-publication-add {background-position:0 -1716px;} 
+.icn-required {background-position:0 -1782px;} 
+.icn-subscribe {background-position:0 -1848px;} 
+.icn-translatable {background-position:0 -1914px;} 
+.icn-txt {background-position:0 -1980px;} 
+.icn-user-add {background-position:0 -2046px;} 
+.icn-warning {background-position:0 -2112px; font-size:0.95em; color:#514721;} 
+.icn-www-add {background-position:0 -2178px;} 
+.icn-www {background-position:0 -2244px;} 
+.icn-xls {background-position:0 -2310px;} 
+.icn-zip {background-position:0 -2376px;}
+.icn-success {background-position:0 -2442px; font-size:0.95em; color:#264409;}
+.icn-territory {background:url(/static/img/icons.gif) no-repeat 0 -2508px !important;}
+.testmapT {background:url(/static/img/icons.gif) no-repeat 0 -2508px !important;}
+.icn-backtotop {background-position:0 -2574px;}
+.icn-delete {background-position:0 -2640px;}
+.icn-lock {background-position:0 -2710px;}
+.icn-twitter {background-position:0 -2705px;}
+.icn-facebook {background-position:0 -2772px;}
+
+
+p.backtotop a {background:url(/static/img/icons.gif) no-repeat 0 -2574px; padding:1px 0 2px 20px !important; }
+/* =regionsmap =map  ---------------------------------------- */
+ul#regionsmap {position:relative; list-style:none; margin:0 0 0 0.5em !important; padding:0 !important; background-image: url(/static/img/worldmap-small-faoregions.gif); background-repeat:no-repeat; height: 94px; width: 205px;}
+ul#regionsmap li {position:absolute; text-decoration:none;}
+ul#regionsmap li a:hover span {text-indent:0; color:#000; background-color:#F4F4F4; font-weight:bold; position:absolute; border:1px solid #ddd; margin:0; padding:2px; line-height:1.3em; font-size:0.8em;}
+
+li#africa a, li#asia a, li#southwestpacific a, li#europe a, li#northamerica a, li#latinamericacaribbean a, li#neareast a {position:absolute; text-decoration:none;}
+li#africa a span, li#asia a span, li#southwestpacific a span, li#europe a span, li#northamerica a span, li#latinamericacaribbean a span, li#neareast a span {display:none;}
+li#africa a:hover, li#asia a:hover, li#southwestpacific a:hover, li#europe a:hover, li#northamerica a:hover, li#latinamericacaribbean a:hover, li#neareast a:hover {position:absolute; top:0; left:0; background:none; border:none; cursor:pointer;}
+li#africa a:hover span, li#asia a:hover span, li#southwestpacific a:hover span, li#europe a:hover span, li#northamerica a:hover span, li#latinamericacaribbean a:hover span, li#neareast a:hover span {display: block;}
+
+li#africa {left:59px; top:46px;}
+li#africa a {width:40px; height:42px;}
+li#asia {left:100px; top:2px;}
+li#asia a {width:76px; height:44px;}
+li#southwestpacific {left:122px; top:43px;}
+li#southwestpacific a {width:60px; height:40px;}
+li#europe {left:65px; top:2px;}
+li#europe a {width:42px; height:29px;}
+li#northamerica {left:0px; top:2px;}
+li#northamerica a {width:54px; height:37px;}
+li#latinamericacaribbean {left:0; top:35px;}
+li#latinamericacaribbean a {width:48px; height:55px;}
+li#neareast {left:80px; top:24px;}
+li#neareast a {width:30px; height:20px;}
+
+/*.icn-facebook, .icn-twitter {background:url(/static/img/icons.png) no-repeat top left; padding:1px 0 0 20px !important;}*/
+/*.icn-facebook {background-position:0 0;} */
+/*.icn-twitter {background-position:0 -17px;}*/
 
 @media print {
   * {
@@ -186,3 +266,4 @@ fieldset {}
   .printlogo {display:inline-block; float:left; padding-right:5px;}
   a.brand {padding-left:0 !important; margin-left:0 !important; text-decoration:none;}
 }
+

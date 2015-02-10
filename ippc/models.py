@@ -91,7 +91,10 @@ class IssueKeywordsRelate(models.Model):
     content_object = generic.GenericForeignKey('content_type', 'object_id')
     issuename = models.ManyToManyField(IssueKeyword,
         verbose_name=_("Issue Keywords"),
-        blank=True, null=True)
+        blank=True, null=True, 
+        help_text=_("Type at least two letters, then select and \
+        press enter to input existing keywords, or write new ones\
+         separated by a comma."))
 
 class CommodityKeywordsRelate(models.Model):
     content_type = models.ForeignKey(ContentType)
@@ -99,7 +102,10 @@ class CommodityKeywordsRelate(models.Model):
     content_object = generic.GenericForeignKey('content_type', 'object_id')
     commname = models.ManyToManyField(CommodityKeyword,
         verbose_name=_("Commodity Keywords"),
-        blank=True, null=True)    
+        blank=True, null=True,
+        help_text=_("Type at least two letters, then select and \
+        press enter to input existing keywords, or write new ones\
+         separated by a comma."))
 
         
 
