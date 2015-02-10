@@ -102,7 +102,7 @@
 
  {% if implementationispm.short_description %}
   <dt>{% trans "Description of the mark" %}</dt>
-  <dd>{{ implementationispm.short_description }}</dd>
+  <dd>{{ implementationispm.short_description|richtext_filter|safe }}</dd>
   {% endif %}
    {% if implementationispm.file %}
   <dt>{% trans "Report file" %}</dt>
