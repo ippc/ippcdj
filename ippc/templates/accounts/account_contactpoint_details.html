@@ -19,17 +19,17 @@
 
 
 <dl class="dl-horizontal">
-  {% if user.is_superuser or page.get_content_model.contact_point.username == request.user.username %} 
+  {# {% if user.is_superuser or page.get_content_model.contact_point.username == request.user.username %}  #}
   <!--dt>{% trans "Username" %}</strong> 
   <dd>{{ page.get_content_model.contact_point.username }}</dd-->
-  {% endif %}
+  {# {% endif %} #}
   
 
 
   <!--dt>{% trans "Name" %}</dt-->
   <dd><h6>
     {% if page.get_content_model.contact_point.get_profile.get_gender_display %}
-    {{ page.get_content_model.contact_point.get_profile.get_gender_display }}
+			{{ page.get_content_model.contact_point.get_profile.get_gender_display }}
     {% endif %}
     {# {{ page.get_content_model.contact_point.get_full_name }}  #}
     {{ page.get_content_model.contact_point.get_profile.first_name }} 
