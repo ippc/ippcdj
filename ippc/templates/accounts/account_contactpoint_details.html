@@ -73,18 +73,21 @@
   </dd>
   {% endif %}
   
+	{% if page.get_content_model.contact_point.email %}
   <dd><strong>{% trans "Email" %}:</strong> {{ page.get_content_model.contact_point.email }}</dd>
+  {% endif %}
+	
   {% if page.get_content_model.contact_point.get_profile.email_address_alt %}
-  
   <dd><strong>{% trans "Alternate Email" %}:</strong>
     {{ page.get_content_model.contact_point.get_profile.email_address_alt }} 
   </dd>
-  {% endif %}
-  
-    
-  <dd><strong>{% trans "Nomination received" %}:</strong>
+  <dd><strong>{% trans "Member Since" %}:</strong>
         {% blocktrans with sometime=page.get_content_model.contact_point.get_profile.date_account_created|date:"d M Y" %}{{ sometime }}{% endblocktrans %}
   </dd>
+	
+  {% endif %}
+  
+
   
   
   
