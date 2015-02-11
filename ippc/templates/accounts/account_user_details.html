@@ -2,9 +2,9 @@
 {# <div class="panel contact-info"> #}
 {% if user.is_authenticated %}
   {% if user.get_profile.profile_photo %}
-  <a href="/account/update/{{user.get_profile.id}}" title="Click to update your profile and add a picture."><img class="pull-right profile-picture" style="margin:0 0 20px 10px;" src="{{ MEDIA_URL }}{% thumbnail user.get_profile.profile_photo 128 128 %}"></a>
+  <a href="{% url 'profile_update' %}" title="{% trans 'Update Profile and add a picture.' %}"><img class="pull-right profile-picture" style="margin:0 0 20px 10px;" src="{{ MEDIA_URL }}{% thumbnail user.get_profile.profile_photo 128 128 %}"></a>
   {% else %}
-  <a class="pull-right profile-picture" style="height:128px; width:128px; background:#eee;" href="{% url "profile_update" %}" title="Click to update your profile and add a picture."></a>
+  <a class="pull-right profile-picture" style="height:128px; width:128px; background:#eee;" href="{% url "profile_update" %}" title="Click to {% trans "Update Profile" %} and add a picture."></a>
   {% endif %}
 {% endif %}
 {# <ul class="unstyled"> #}
@@ -86,14 +86,14 @@
   </dd>
   {% endif %}
 	
-  {% if user.get_profile.country %}
-  <dt>{% trans "IPPC Country" %}</dt>
-  <dd>
-    <b>{{ user.get_profile.country.name }}</b>
+  {# {% if user.get_profile.country %} #}
+  {# <dt>{% trans "IPPC Country" %}</dt> #}
+  {# <dd> #}
+    {# <b>{{ user.get_profile.country.name }}</b> #}
     {# todo: link to country page if user is contact point #}
     {# <a href="/countries/{{ user.get_profile.country.name | slugify }}">{{ user.get_profile.country.name}}</a>     #}
-  </dd>
-  {% endif %}
+  {# </dd> #}
+  {# {% endif %} #}
 
   
   {% if user.get_profile.phone %}
@@ -117,9 +117,9 @@
   </dd>
   {% endif %}
   
-  {% if user.is_authenticated and user.username == request.user.username %} 
-  <div>
-        <a class="btn btn-large btn-info" style="" href="/account/update/{{user.get_profile.id}}">{% trans "Update your profile" %}</a>
-  </div>
-	{% endif %}
+	{#   {% if user.is_authenticated and user.username == request.user.username %}  #}
+	{#   <div> #}
+	{#         <a class="btn btn-large btn-info" style="" href="/account/update/{{user.get_profile.id}}">{% trans "Update Profile" %}</a> #}
+	{#   </div> #}
+	{# {% endif %} #}
 {# </div> #}

@@ -65,12 +65,10 @@
   <dt>{% trans "Issue keywords" %}</dt>
   <dd>
   {% for entry in partnerspublication.issuename.all %}
-  <br/>
-  {% for e in entry.issuename.all %}
-   <br/>
-  {{e.name}}<br/>
- {% endfor %} 
-{% endfor %}
+		{% for e in entry.issuename.all %}
+			<i class="icon-tag"></i> {{e.name}}
+		{% endfor %} 
+	{% endfor %}
   </dd>
   {% endif %}
  
@@ -80,12 +78,10 @@
   <dt>{% trans "Commodity keywords" %}</dt>
   <dd>
   {% for entry in partnerspublication.commname.all %}
- 
-  {% for e in entry.commname.all %}
-  
-  {{e.name}}<br/>
- {% endfor %} 
-{% endfor %}
+		{% for e in entry.commname.all %}
+			<i class="icon-tag"></i> {{e.name}}
+		{% endfor %} 
+	{% endfor %}
   </dd>
   {% endif %}
  

@@ -139,10 +139,8 @@
     <dt>{% trans "Issue keywords" %}</dt>
     <dd>
         {% for entry in event.issuename.all %}
-        <br/>
         {% for e in entry.issuename.all %}
-        <br/>
-        {{e.name}}<br/>
+						<i class="icon-tag"></i> {{e.name}}
         {% endfor %} 
         {% endfor %}
     </dd>

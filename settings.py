@@ -399,6 +399,18 @@ ACCOUNTS_PROFILE_FORM_EXCLUDE_FIELDS = (
     "date_account_created",
     "country",
     "title",
+    "gender",
+    "address_country",
+    "user",
+    "username",
+    "title",
+    "city",
+    "contact_type",
+    "state",
+    "zipcode",
+    "country",
+    "partner",
+    "date_account_created",
 )
 
 

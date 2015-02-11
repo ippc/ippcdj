@@ -9,7 +9,7 @@
   
   {% if editor.username == request.user.username %} 
   <div>
-        <a class="btn btn-large btn-info" style="" href="{% url "profile_update" %}">{% trans "Update your profile" %}</a>
+        <a class="btn btn-large btn-info" style="" href="{% url "profile_update" %}">{% trans "Update Profile" %}</a>
   </div>
   {% endif %}
   
@@ -21,9 +21,9 @@
   
   
   {% if editor.get_profile.profile_photo %}
-  <a href="{% url "profile_update" %}" title="Click to update your profile and add a picture."><img class="pull-right profile-picture" style="margin:0 0 20px 10px;" src="{{ MEDIA_URL }}{% thumbnail editor.get_profile.profile_photo 128 128 %}"></a>
+  <a href="{% url "profile_update" %}" title="Click to {% trans "Update Profile" %} and add a picture."><img class="pull-right profile-picture" style="margin:0 0 20px 10px;" src="{{ MEDIA_URL }}{% thumbnail editor.get_profile.profile_photo 128 128 %}"></a>
   {% else %}
-  <a class="pull-right profile-picture" style="height:128px; width:128px; background:#eee;" href="{% url "profile_update" %}" title="Click to update your profile and add a picture."></a>
+  <a class="pull-right profile-picture" style="height:128px; width:128px; background:#eee;" href="{% url "profile_update" %}" title="Click to {% trans "Update Profile" %} and add a picture."></a>
   {% endif %}
 
 {# <ul class="unstyled"> #}

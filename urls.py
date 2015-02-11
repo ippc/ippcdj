@@ -454,9 +454,9 @@ urlpatterns = patterns("",
     url(r'^users/(?P<pk>[\w-]+)/$',
         view=IppcUserProfileDetailView.as_view(),
         name="user-detail"),
-    url(r'^account/update/(?P<id>[\w-]+)/$',
-        view=profile_update,
-        name="profile-update"),
+    # url(r'^account/update/(?P<id>[\w-]+)/$',
+    #     view=profile_update,
+    #     name="profile-update"),
          
 #-------------------------------------------#
    # pfa list

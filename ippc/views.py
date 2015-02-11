@@ -25,7 +25,7 @@ PollForm,Poll_ChoiceFormSet,\
 PartnersNewsUrlFormSet,PartnersNewsForm, PartnersNewsFileFormSet,PartnersWebsiteUrlFormSet,PartnersWebsiteForm,\
 EmailUtilityMessageForm,EmailUtilityMessageFileFormSet,\
 CountryNewsUrlFormSet,CountryNewsForm, CountryNewsFileFormSet,NotificationMessageRelateForm,\
-DraftProtocolForm,  DraftProtocolFileFormSet,DraftProtocolCommentsForm,IppcUserProfileForm, UserForm
+DraftProtocolForm,  DraftProtocolFileFormSet,DraftProtocolCommentsForm,IppcUserProfileForm# , UserForm
 
 from django.views.generic import ListView, MonthArchiveView, YearArchiveView, DetailView, TemplateView, CreateView
 from django.core.urlresolvers import reverse
@@ -613,36 +613,54 @@ class ReportingObligationListView(ListView):
    
    
 class IppcUserProfileDetailView(DetailView):
-    """  Reporting Obligation detail page """
+    """  Profile """
     model = IppcUserProfile
     context_object_name = 'user'
     template_name = 'accounts/account_profile.html'
     queryset = IppcUserProfile.objects.filter()
 
 
-# http://stackoverflow.com/a/1854453/412329
 @login_required
-def profile_update(request ,id=None, template_name='accounts/account_profile_update.html'):
-    """ Edit Profile """
-    user = request.user
-    
-    if id:
-        profile = get_object_or_404(IppcUserProfile, pk=id)
-        userprofile = get_object_or_404(User, pk=profile.user_id)
-    if request.POST:
-        form = IppcUserProfileForm(request.POST,   instance=profile)
-        userform = UserForm(request.POST,  instance =request.user)
-        if form.is_valid() and userform.is_valid():
-            form.save()
-            userform.save()
-            return redirect("user-detail",id)
-    else:
-        form = IppcUserProfileForm(instance=profile)
-        userform = UserForm(request.POST,  instance=request.user)
-        
-    return render_to_response(template_name, {
-        'form': form, 'userform': userform,'email':request.user.email,
-    }, context_instance=RequestContext(request))
+def profile_update(request, template="accounts/account_profile_update.html"):
+    """
+    Profile update form.
+    """
+    profile_form = get_profile_form()
+    form = profile_form(request.POST or None, request.FILES or None,
+                        instance=request.user)
+    if request.method == "POST" and form.is_valid():
+        user = form.save()
+        info(request, _("Profile updated"))
+        try:
+            return redirect("profile", username=user.username)
+        except NoReverseMatch:
+            return redirect("profile_update")
+    context = {"form": form, "title": _("Update Profile")}
+    return render(request, template, context)
+
+# http://stackoverflow.com/a/1854453/412329
+# @login_required
+# def profile_update(request ,id=None, template_name='accounts/account_profile_update.html'):
+#     """ Edit Profile """
+#     user = request.user
+#
+#     if id:
+#         profile = get_object_or_404(IppcUserProfile, pk=id)
+#         userprofile = get_object_or_404(User, pk=profile.user_id)
+#     if request.POST:
+#         form = IppcUserProfileForm(request.POST,   instance=profile)
+#         userform = UserForm(request.POST, instance=request.user)
+#         if form.is_valid() and userform.is_valid():
+#             form.save()
+#             userform.save()
+#             return redirect("user-detail",id)
+#     else:
+#         form = IppcUserProfileForm(instance=profile)
+#         userform = UserForm(request.POST, instance=request.user)
+#
+#     return render_to_response(template_name, {
+#         'form': form, 'userform': userform,'email':request.user.email,
+#     }, context_instance=RequestContext(request))
        
    
 class ReportingObligationDetailView(DetailView):

@@ -59,7 +59,6 @@ class IppcUserProfileForm(forms.ModelForm):
     class Meta:
         model = IppcUserProfile
         fields = [
- 
             'gender',
             'first_name',
             'last_name', 
@@ -73,14 +72,15 @@ class IppcUserProfileForm(forms.ModelForm):
             'mobile',
             'email_address_alt',
             ]
-        exclude = ('user', 'title', 'city', 'contact_type','state', 'zipcode', 'country', 'partner', 'date_account_created' )
+            # needed to add these to ACCOUNTS_PROFILE_FORM_EXCLUDE_FIELDS in settins.py
+        exclude = ('user', 'username', 'title', 'city', 'contact_type','state', 'zipcode', 'country', 'partner', 'date_account_created',)
         
-class UserForm(forms.ModelForm):
-    class Meta:
-        model = User
-        fields = [
-            'email'
-        ]
+# class UserForm(forms.ModelForm):
+#     class Meta:
+#         model = User
+#         fields = [
+#             'email'
+#         ]
         
 
 class IssueKeywordsRelateForm(forms.ModelForm):
