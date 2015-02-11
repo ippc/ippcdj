@@ -19,11 +19,18 @@
     <dd>{{ user.username }}</dd>
   {% endif %}
   
-  {% if user.get_profile.email %}
+  {% if user.email %}
     <dt>{% trans "Email" %}</dt>
     <dd>{{ user.email }}</dd>
   {% endif %}
   
+  {% if user.get_profile.email_address_alt %}
+  <dt>{% trans "Alternate Email" %}</dt>
+  <dd>
+    {{ user.get_profile.email_address_alt }} 
+  </dd>
+  {% endif %}
+	
   {% if user.get_profile.title %}
     <dt>{% trans "Title" %}</dt>
     <dd>
@@ -41,21 +48,6 @@
       {{ user.get_profile.first_name }} 
       <span class="caps">{{ user.get_profile.last_name }}</span>
     </dd>
-  {% endif %}
-  
-
-{% if user.get_profile.date_account_created %}  
-  <dt>{% trans "Member Since" %}</dt>
-  <dd>
-    {% blocktrans with sometime=user.get_profile.date_account_created|date:"d M Y" %}{{ sometime }}{% endblocktrans %}
-  </dd>
-{% endif %}
-
-  {% if user.get_profile.email_address_alt %}
-  <dt>{% trans "Alternate Email" %}</dt>
-  <dd>
-    {{ user.get_profile.email_address_alt }} 
-  </dd>
   {% endif %}
   
   {% if user.get_profile.bio %}
@@ -117,6 +109,14 @@
   </dd>
   {% endif %}
   
+	{% if user.get_profile.date_account_created %}  
+	  <dt>{% trans "Member Since" %}</dt>
+	  <dd>
+	    {% blocktrans with sometime=user.get_profile.date_account_created|date:"d M Y" %}{{ sometime }}{% endblocktrans %}
+	  </dd>
+	{% endif %}
+	
+	
 	{#   {% if user.is_authenticated and user.username == request.user.username %}  #}
 	{#   <div> #}
 	{#         <a class="btn btn-large btn-info" style="" href="/account/update/{{user.get_profile.id}}">{% trans "Update Profile" %}</a> #}
