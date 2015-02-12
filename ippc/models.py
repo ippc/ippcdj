@@ -358,10 +358,10 @@ class PestStatus(models.Model):
 
 class PreferredLanguages(models.Model):
     """ PreferredLanguages """
-    status = models.CharField(_("Preferred Languages"), max_length=500)
+    preferredlanguage = models.CharField(_("Preferred Languages"), max_length=500)
 
     def __unicode__(self):
-        return self.status
+        return self.preferredlanguage
         
     class Meta:
         verbose_name_plural = _("Preferred Languages")
@@ -441,10 +441,11 @@ class IppcUserProfile(models.Model):
     phone = models.CharField(_("Phone"), blank=True, max_length=80)
     fax = models.CharField(_("Fax"), blank=True, max_length=80)
     mobile = models.CharField(_("Mobile"), blank=True, max_length=80)
+ 
     preferredlanguage = models.ManyToManyField(PreferredLanguages,
-        verbose_name=_("Preferred Correspondence Language(s)"),
+        verbose_name=_("Preferred Languages"),
         related_name='preferredlanguages+', blank=True, null=True,
-        help_text=_(""))
+        )
     date_account_created = models.DateTimeField(_("Member Since"), default=datetime.now, editable=False)
 
 

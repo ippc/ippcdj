@@ -10,7 +10,7 @@ from django import forms
 import datetime
 from .models import Publication,PublicationFile,PublicationUrl, IppcUserProfile, PestStatus, PestReport,  CountryPage, \
 ReportingObligation, EventReporting, PestFreeArea, ImplementationISPM, Website, \
-VERS_CHOICES,IssueKeywordsRelate,CommodityKeywordsRelate,\
+VERS_CHOICES,IssueKeywordsRelate,CommodityKeywordsRelate,PreferredLanguages,\
 EventreportingFile, ReportingObligation_File,PestFreeAreaFile, ImplementationISPMFile,PestReportFile,\
 EventreportingUrl, ReportingObligationUrl,PestFreeAreaUrl, ImplementationISPMUrl,PestReportUrl,WebsiteUrl,\
 CnPublication,CnPublicationFile,CnPublicationUrl,\
@@ -70,12 +70,12 @@ class IppcUserProfileForm(forms.ModelForm):
             'mobile',
             'email_address_alt',
             'profile_photo',
-            'preferredlanguage'
+          
             ]
 
             # needed to add these to ACCOUNTS_PROFILE_FORM_EXCLUDE_FIELDS in settins.py
-        exclude = ('user', 'username', 'first_name','last_name',  'title', 'city', 'contact_type','state', 'zipcode', 'country', 'partner', 'date_account_created' )
-        
+        exclude = ('user', 'preferredlanguage','username', 'first_name','last_name', 'contact_type',  'title', 'city', 'state', 'zipcode', 'country', 'partner', 'date_account_created' )
+        # = forms.ModelMultipleChoiceField(queryset=PreferredLanguages.objects.all())
 # class UserForm(forms.ModelForm):
 #     class Meta:
 #         model = User
