@@ -72,12 +72,9 @@ class IppcUserProfileForm(forms.ModelForm):
             'profile_photo',
             'preferredlanguage'
             ]
-<<<<<<< HEAD
-        exclude = ('user',  'first_name','last_name',  'title', 'city', 'contact_type','state', 'zipcode', 'country', 'partner', 'date_account_created' )
-=======
+
             # needed to add these to ACCOUNTS_PROFILE_FORM_EXCLUDE_FIELDS in settins.py
-        exclude = ('user', 'username', 'title', 'city', 'contact_type','state', 'zipcode', 'country', 'partner', 'date_account_created',)
->>>>>>> 8df8adc21cbbc3e72966e91fe7b4134bd56cb835
+        exclude = ('user', 'username', 'first_name','last_name',  'title', 'city', 'contact_type','state', 'zipcode', 'country', 'partner', 'date_account_created' )
         
 # class UserForm(forms.ModelForm):
 #     class Meta:
