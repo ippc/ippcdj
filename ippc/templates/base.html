@@ -193,22 +193,32 @@
 <div class="span4 right">
     {% block local_nav %}
     {% block trans %}
-    <div class="panel tree">
-			{% page_menu "pages/menus/tree.html" %}
-		</div>
+    
     {% endblock trans %}
     {% endblock local_nav %}
     
-  
+
     {% if page.id == 3 %}
-         {% include "pages/menus/tree_key_cn.html" %}
+        {% include "pages/menus/tree_key_cn.html" %}
     {% elif page.id == 522 %}
-         {% include "pages/menus/tree_logos.html" %}
+        <div class="panel tree">
+            {% page_menu "pages/menus/tree.html" %}
+        </div>
+        {% include "pages/menus/tree_logos.html" %}
     {% elif page.id == 465 or  page.id == 466 or  page.id == 485 or page.parent_id == 466 or page.parent_id == 485 %}
-         {% include "pages/menus/tree_key_partners.html" %}
-   {% elif page.id == 322 or  page.parent_id == 322   or  page.parent_id == 323 or  page.parent_id == 345       or  page.parent_id == 449 or  page.parent_id == 427     or  page.parent_id == 429 or  page.parent_id == 459   or  page.parent_id == 455 or  page.parent_id == 445     %}
-       {% include "pages/menus/tree_key_core.html" %}
-         {% else %}
+        <div class="panel tree">
+            {% page_menu "pages/menus/tree.html" %}
+        </div> 
+        {% include "pages/menus/tree_key_partners.html" %}
+    {% elif page.id == 322 or  page.parent_id == 322   or  page.parent_id == 323 or  page.parent_id == 345       or  page.parent_id == 449 or  page.parent_id == 427     or  page.parent_id == 429 or  page.parent_id == 459   or  page.parent_id == 455 or  page.parent_id == 445     %}
+        <div class="panel tree">
+            {% page_menu "pages/menus/tree.html" %}
+        </div> 
+        {% include "pages/menus/tree_key_core.html" %}
+    {% else %}
+    <div class="panel tree">
+        {% page_menu "pages/menus/tree.html" %}
+    </div> 
     {% endif %}
 </div>
 

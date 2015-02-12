@@ -356,6 +356,17 @@ class PestStatus(models.Model):
         verbose_name_plural = _("Pest Statuses")
     pass
 
+class PreferredLanguages(models.Model):
+    """ PreferredLanguages """
+    status = models.CharField(_("Preferred Languages"), max_length=500)
+
+    def __unicode__(self):
+        return self.status
+        
+    class Meta:
+        verbose_name_plural = _("Preferred Languages")
+    pass
+
 class EppoCode(models.Model):
     """ Eppo Code """
     codename = models.CharField(_("Eppo code"), max_length=250)
@@ -430,7 +441,10 @@ class IppcUserProfile(models.Model):
     phone = models.CharField(_("Phone"), blank=True, max_length=80)
     fax = models.CharField(_("Fax"), blank=True, max_length=80)
     mobile = models.CharField(_("Mobile"), blank=True, max_length=80)
-    
+    preferredlanguage = models.ManyToManyField(PreferredLanguages,
+        verbose_name=_("Preferred Correspondence Language(s)"),
+        related_name='preferredlanguages+', blank=True, null=True,
+        help_text=_(""))
     date_account_created = models.DateTimeField(_("Member Since"), default=datetime.now, editable=False)
 
 

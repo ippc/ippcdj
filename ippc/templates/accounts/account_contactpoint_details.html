@@ -80,7 +80,12 @@
     {{ page.get_content_model.contact_point.get_profile.email_address_alt }} 
   </dd>
   {% endif %}
-  
+     {% if page.get_content_model.contact_point.get_profile.get_preferredlanguage_display %}
+     <dd><strong>{% trans "Preferred Correspondence Language(s)" %}:</strong>
+    {{ page.get_content_model.contact_point.get_profile.get_preferredlanguage_display }} 
+  </dd>
+    {% endif %}
+
     
   <dd><strong>{% trans "Nomination received" %}:</strong>
         {% blocktrans with sometime=page.get_content_model.contact_point.get_profile.date_account_created|date:"d M Y" %}{{ sometime }}{% endblocktrans %}
@@ -106,6 +111,24 @@
   {% endif %}
   
 
+  
+  
+    {% if page.get_content_model.contact_point.get_profile.expertize %}
+    <script type="text/javascript">
+    function toggle_visibility(id) {
+       var e = document.getElementById(id);
+       if(e.style.display == 'block')
+          e.style.display = 'none';
+       else
+          e.style.display = 'block';
+    }
+    </script>
+
+  <dd>
+   <a href="#bio" onclick="javascript:toggle_visibility('expertize');"><strong>{% trans "Expertize" %} <small>(click to display)</small>:</strong></a>
+   <div id="expertize" style="display:none;">{{ page.get_content_model.contact_point.get_profile.expertize }} 
+  </div></dd>
+  {% endif %}
   
   
   {% if page.get_content_model.contact_point.get_profile.country %}

@@ -61,8 +61,6 @@ class IppcUserProfileForm(forms.ModelForm):
         fields = [
  
             'gender',
-            'first_name',
-            'last_name', 
             'address1',
             'address2',
             'address_country',
@@ -72,8 +70,10 @@ class IppcUserProfileForm(forms.ModelForm):
             'fax',
             'mobile',
             'email_address_alt',
+            'profile_photo',
+            'preferredlanguage'
             ]
-        exclude = ('user', 'title', 'city', 'contact_type','state', 'zipcode', 'country', 'partner', 'date_account_created' )
+        exclude = ('user',  'first_name','last_name',  'title', 'city', 'contact_type','state', 'zipcode', 'country', 'partner', 'date_account_created' )
         
 class UserForm(forms.ModelForm):
     class Meta:
