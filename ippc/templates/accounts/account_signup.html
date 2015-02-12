@@ -1,15 +1,26 @@
 {% extends "accounts/account_form.html" %}
 {% load i18n %}
 
+{% block breadcrumb_menu %}
+
+{% endblock %}
+
 {% block main %}
 
-{% if request.user.is_authenticated %}
-    <p>{% trans "You're already logged in. If you'd like to create a new account, you'll need to log out first." %}</p>
-{% else %}
-    {{ block.super }}
-    {% if settings.ACCOUNTS_VERIFICATION_REQUIRED %}
-    <p>{% trans "After signing up, you'll receive an email with a link you need to click, in order to activate your account." %}</p>
-    {% endif %}
+{% if request.user.is_authenticated and request.user.is_staff %}
+    {# <p>{% trans "You're already logged in. If you'd like to create a new account, you'll need to log out first." %}</p>  #}
+{# {% else %} #}
+		
+		{# {% if request.user.is_staff %} #}
+			{{ block.super }}
+			{% if settings.ACCOUNTS_VERIFICATION_REQUIRED %}
+				{# <p>{% trans "After signing up, you'll receive an email with a link you need to click, in order to activate your account." %}</p> #}
+				<p>{% trans "After creating a user they'll receive an email with a link to click in order to activate their account." %}</p>
+		  	{# <p>{% trans "Approval by the IPPC Secretariat is required for your account to be activated and you will receive a notification email when it is." %}</p> #}
+			{% endif %}
+		{# {% endif %} #}
+		{% else %}
+		<p>You must be logged in and a staff member to access this page.</p>
 {% endif %}
 
 {% endblock %}

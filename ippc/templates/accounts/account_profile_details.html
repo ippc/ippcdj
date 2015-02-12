@@ -1,9 +1,9 @@
 {% load i18n future mezzanine_tags accounts_tags %}
 {# <div class="panel contact-info"> #}
   {% if profile_user.get_profile.profile_photo %}
-  <a href="{% url "profile_update" %}" title="Click to update your profile and add a picture."><img class="pull-right profile-picture" style="margin:0 0 20px 10px;" src="{{ MEDIA_URL }}{% thumbnail profile_user.get_profile.profile_photo 128 128 %}"></a>
+  <a href="{% url "profile_update" %}" title="Click to {% trans "Update Profile" %} and add a picture."><img class="pull-right profile-picture" style="margin:0 0 20px 10px;" src="{{ MEDIA_URL }}{% thumbnail profile_user.get_profile.profile_photo 128 128 %}"></a>
   {% else %}
-  <a class="pull-right profile-picture" style="height:128px; width:128px; background:#eee;" href="{% url "profile_update" %}" title="Click to update your profile and add a picture."></a>
+  <a class="pull-right profile-picture" style="height:128px; width:128px; background:#eee;" href="{% url "profile_update" %}" title="Click to {% trans "Update Profile" %} and add a picture."></a>
   {% endif %}
 
 {# <ul class="unstyled"> #}
@@ -38,10 +38,12 @@
     <span class="caps">{{ profile_user.get_profile.last_name }}</span>
   </dd>
   
+	{% if user.get_profile.date_account_created %}  
   <dt>{% trans "Member Since" %}</dt>
   <dd>
         {% blocktrans with sometime=profile_user.get_profile.date_account_created|date:"d M Y" %}{{ sometime }}{% endblocktrans %}
   </dd>
+	{% endif %}
   
   {% if profile_user.get_profile.email_address_alt %}
   <dt>{% trans "Alternate Email" %}</dt>

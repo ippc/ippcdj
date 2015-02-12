@@ -571,7 +571,7 @@ msgstr ""
 #: ippc/templates/accounts/account_contactpoint_details.html:12
 #: ippc/templates/accounts/account_editor_details.html:12
 #: ippc/templates/accounts/account_profile.html:28
-msgid "Update your profile"
+msgid "Update Profile"
 msgstr ""
 
 #: ippc/templates/accounts/account_contactpoint_details.html:37

@@ -6,15 +6,14 @@
   {% endif %}
   
   {% if user.is_authenticated and perms.ippc.add_reportingobligation and not user.is_staff %}
-        <a href="/countries/{{ user.get_profile.country.name | slugify }}/" class="btn btn-small btn-warning">{% trans "Edit Country Information" %}</a>
+        <a href="/countries/{{ user.get_profile.country.name | slugify }}/" class="btn btn-small btn-warning" title="{% trans 'Go to your country page to upload or update information.' %}"><i class="icon-edit icon-white"></i> {% trans "Country Info" %}</a> <a class="btn btn-small btn-warning" href="{% url 'profile_update' %}" title="{% trans 'Update Profile, including contact information.' %}"><i class="icon-edit icon-white"></i> {% trans 'Profile' %}</a>
             {# <a href="/countries/{{ user.get_profile.country.name | slugify }}">{{ user.get_profile.country.name}}</a>     #}
   {% endif %}
   
-    {% trans "Hello, " %}
     {% url "profile" request.user.username as profile_url %}
     {% if profile_url %}
         {# <a href="{{ profile_url }}">{{ request.user|username_or:"email" }}</a>! #}
-        <a href="/users/{{ request.user.get_profile.id }}"> {% if request.user.get_profile.first_name or request.user.get_profile.last_name %}{{ request.user.get_profile.first_name }} {{ request.user.get_profile.last_name }}{% else %}{{ request.user.username }}{% endif %}</a>!
+        <a href="{% url 'profile_redirect' %}" title="{% trans 'See your IPPC user profile, including contact information.' %}"> {% if request.user.get_profile.first_name or request.user.get_profile.last_name %}{{ request.user.get_profile.first_name }} {{ request.user.get_profile.last_name }}{% else %}{{ request.user.username }}{% endif %}</a>
         
         {# <br> #}
         {# <a href="{% url "profile_update" %}" #}
@@ -27,7 +26,7 @@
 {% else %}
     <a href="{% url "login" %}?next={{ request.path }}"
         class="btn btn-small btn-info btn-account">{% trans "Log in" %}</a>
-   <!-- {% trans "or" %}
-    <a href="{% url "signup" %}?next={{ request.path }}"
-        class="btn btn-small btn-account">{% trans "Sign up" %}</a-->
+    {# {% trans "or" %} #}
+    {# <a href="{% url "signup" %}?next={{ request.path }}" #}
+        {# class="btn btn-small btn-account">{% trans "Sign up" %}</a> #}
 {% endif %}

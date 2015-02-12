@@ -3,7 +3,7 @@
 ## Things to do
 
 - Content (data) migration (ongoing)
-- User registration open but behind login-required and super-user required so only admins can add new users, who get notification emails to confirm account and set own password. OR, user registration open to all, but need approval by admins. i.e. Account registration & [activation](http://mezzanine.jupo.org/docs/user-accounts.html#account-approval) system?
+- User registration open but behind login-required and super-user required so only admins can add new users, who get notification emails to confirm account and set own password. OR, user registration open to all, but need approval by admins. i.e. Account registration & [activation](http://mezzanine.jupo.org/docs/user-accounts.html#account-approval) system? Probably will use [this](http://django-authtools.readthedocs.org/en/latest/how-to/invitation-email.html) or [this](https://stackoverflow.com/questions/3441725/sending-emails-when-a-user-is-activated-in-the-django-admin), or **use mezzanine's existing signup system, with the registration URL behind an additional login** (I'm [trying the latter](http://www.b-list.org/weblog/2007/nov/06/urlconf/), but having trouble protecting the [/account/signup/](http://dev.ippc.int/en/account/signup/) URL [with `staff_member_required`)](http://stackoverflow.com/a/2694116). Will continue trying.
     - Setup auto-sending of messages to new users, with possible custom messages for NPPOs and Editors
 - Add blog and forum category management page to admin: 
     - http://127.0.0.1:8000/en/admin/blog/blogcategory/
@@ -212,25 +212,44 @@ Edit the django.po file for each language in `ippcdj_repo/conf/locale/` and then
 
 Dev server exlqaippc2.ext.fao.org setup and configuration for IPPC 4.0 prototype at <http://dev.ippc.int/en/> (only available within FAO network). To update code (eventually this will all be done with one command which fires a fabric script such as `fab deploy dev`):
 
-1. ssh into dev server
-2. change directory to ~/projects/ippcdj-env and activate virtualenv with `. bin/activate`
-3. change directory to ~/projects/ippcdj-env/ippcdj_repo
-4. pull changes `git pull`
+
+1. ssh root@hqldvippc2.hq.un.fao.org
+
+		ssh root@hqldvippc2.hq.un.fao.org
+
+2. Change directory to the project and activate virtualenv
+
+		cd /work/projects/ippcdj-env && . bin/activate
+
+3. Change to repository directory
+
+		cd	ippcdj_repo/
+
+4. Pull latest changes. If you get a warning about overwriting existing changes, do `git stash save --keep-index` then `git stash drop` <http://stackoverflow.com/a/14318266>
+
+		git pull
+
 5. <del>move any static media to proper serving location `python manage.py collectstatic`</del> Not necessary anymore as we have configured nginx to look in the right places for static media.
-6. run any data migrations on the database:
+
+6. <del>Run any data migrations on the database:</del> Right now we're just transfering the whole dump from dev to the MySQL server when models are updated. 
 
         python manage.py schemamigration ippc --auto
         python  manage.py migrate ippc
 
-    See also: <http://stackoverflow.com/questions/2862979/easiest-way-to-rename-a-model-using-django-south>
+7. Compile and make translations 
 
-7. Compile translations
+		python manage.py makemessages --all
+		python manage.py compilemessages
 
-        python manage.py makemessages --all
-        python manage.py compilemessages
+8. Stop and restart [Gunicorn](http://gunicorn-docs.readthedocs.org/en/latest/run.html) application server (todo: find way to do this gracefully, so existing processes, such as a user submitting a form, don't fail:
 
-8. Kill [gunicorn](http://gunicorn-docs.readthedocs.org/en/latest/run.html) process `pkill gunicorn` then restart it `gunicorn_django --daemon -b 0.0.0.0:8000`
-9. Stop nginx `service nginx stop` then restart `service nginx start`
+		pkill gunicorn
+		gunicorn_django --daemon -b 0.0.0.0:8000
+
+9. Restart Nginx reverse-proxy server (web-facing) server
+
+		service nginx restart
+
 
 ## Example Nginx Configuration
 

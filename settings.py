@@ -393,10 +393,24 @@ AUTH_PROFILE_MODULE = "ippc.IppcUserProfile"
 ACCOUNTS_PROFILE_VIEWS_ENABLED = True
 ACCOUNTS_MIN_PASSWORD_LENGTH = 8
 ACCOUNTS_VERIFICATION_REQUIRED = True
+# ACCOUNTS_APPROVAL_REQUIRED = False
+# ACCOUNTS_APPROVAL_EMAILS = 'simon.griffee@fao.org, paola.sentinelli@fao.org'
 ACCOUNTS_PROFILE_FORM_EXCLUDE_FIELDS = (
     "date_account_created",
     "country",
     "title",
+    "gender",
+    "address_country",
+    "user",
+    "username",
+    "title",
+    "city",
+    "contact_type",
+    "state",
+    "zipcode",
+    "country",
+    "partner",
+    "date_account_created",
 )
 
 
@@ -417,7 +431,7 @@ EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 #EMAIL_HOST_PASSWORD = 'xxx'
 #DEFAULT_FROM_EMAIL='xxx@gmail.com'
 EMAIL_HOST = 'localhost'
-EMAIL_PORT = 25
+EMAIL_PORT = 1025
 #EMAIL_USE_TLS = True
 
 ENVELOPE_EMAIL_RECIPIENTS=['paola.sentinelli@fao.org']

@@ -22,11 +22,11 @@
 
 {% include "accounts/account_user_details.html" %}
 
-{% if profile_user == request.user %}
+{# {% if profile_user == request.user %} #}
 <p class="form-actions">
-<a class="btn btn-large btn-info" style="" href="{% url "profile_update" %}">{% trans "Update your profile" %}</a>
+<a class="btn btn-large btn-info" style="" href="{% url "profile_update" %}">{% trans "Update Profile" %}</a>
 </p>
-{% endif %}
+{# {% endif %} #}
 
 {% endblock %}
 
