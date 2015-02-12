@@ -1,0 +1,63 @@
+{% extends "base.html" %}
+{% load i18n mezzanine_tags %}
+
+{% block meta_title %}{{ title }}{% endblock %}
+{% block title %}{{ title }}{% endblock %}
+{% block body_id %}account{% endblock %}
+
+{% block breadcrumb_menu %}
+{{ block.super }}
+<li><b>{% if request.user.get_profile.first_name or request.user.get_profile.last_name %}{{ request.user.get_profile.first_name }} {{ request.user.get_profile.last_name }}{% else %}{{ request.user.username }}{% endif %}</b></li>
+{% endblock %}
+
+{% block local_nav %}
+{% endblock %}
+{% block pageinfo %}
+{% endblock %}
+
+{% block main %}
+
+<fieldset>
+    {# <legend>IPPC Account Profile</legend> #}
+    <form method="post"{% if form.is_multipart %} enctype="multipart/form-data"{% endif %}>
+
+		{# {% fields_for userform %} #}
+
+    {% fields_for form %}
+		
+		{# Lets show the forgot password link _by the password field_, goddamit. #}
+		{% if request.user.is_authenticated %}
+		{% else %}
+				{% if request.get_full_path = "/en/account/password/reset/?next=/en/account/update/" %}
+				{% else %}
+					{% url "mezzanine_password_reset" as password_reset_url %}
+					{% url "profile_update" as profile_update_url %}
+					{% blocktrans %}
+						<p><a href="{{ password_reset_url }}?next={{ profile_update_url }}">Forgot your password</a>?</p>
+					{% endblocktrans %}
+				{% endif %}
+				
+				
+		{% endif %}
+		
+		{# Not sure what IF block below is for? —Simon #}
+		{# {% if title %} #}
+		{# 	{% else %} #}
+		{#  <div class="control-group input_id_email"> #}
+		{# 	 <label for="id_email">Email address</label> #}
+		{# 	 <div class="controls"> #}
+		{# 		 <input id="id_email" maxlength="75" name="email" type="text" value="{{email}}"/> #}
+		{# 		 <span class="help-inline"></span> #}
+		{# 	 </div> #}
+		{#  </div> #}
+		{# {% endif %} #}
+  
+    <div class="form-actions">
+        <input class="btn btn-primary btn-large" type="submit" value="{% if title %}{{title}}{% else%}Update{% endif%}">
+    </div>
+    </form>
+</fieldset>
+{% endblock %}
+
+
+
