@@ -6,7 +6,7 @@
   {% endif %}
   
   {% if user.is_authenticated and perms.ippc.add_reportingobligation and not user.is_staff %}
-        <a href="/countries/{{ user.get_profile.country.name | slugify }}/" class="btn btn-small btn-warning" title="{% trans 'Go to your country page to upload or update information.' %}"><i class="icon-edit icon-white"></i> {% trans "Country Info" %}</a> <a class="btn btn-small btn-warning" href="{% url 'profile_update' %}" title="{% trans 'Update Profile, including contact information.' %}"><i class="icon-edit icon-white"></i> {% trans 'Profile' %}</a>
+        <a href="/countries/{{ user.get_profile.country.name | slugify }}/" class="btn btn-small btn-warning" title="{% trans 'Go to your country page to upload or update information.' %}">{# <i class="icon-edit icon-white"></i> #}{% trans "Edit Country Information" %}</a> {# <a class="btn btn-small btn-warning" href="{% url 'profile_update' %}" title="{% trans 'Update Profile, including contact information.' %}"><i class="icon-edit icon-white"></i> {% trans 'Profile' %}</a> #}
             {# <a href="/countries/{{ user.get_profile.country.name | slugify }}">{{ user.get_profile.country.name}}</a>     #}
   {% endif %}
   
