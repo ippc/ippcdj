@@ -3,14 +3,15 @@
 ## Things to do
 
 - Content (data) migration (ongoing)
-- User registration open but behind login-required and super-user required so only admins can add new users, who get notification emails to confirm account and set own password. OR, user registration open to all, but need approval by admins. i.e. Account registration & [activation](http://mezzanine.jupo.org/docs/user-accounts.html#account-approval) system? Probably will use [this](http://django-authtools.readthedocs.org/en/latest/how-to/invitation-email.html) or [this](https://stackoverflow.com/questions/3441725/sending-emails-when-a-user-is-activated-in-the-django-admin), or **use mezzanine's existing signup system, with the registration URL behind an additional login** (I'm [trying the latter](http://www.b-list.org/weblog/2007/nov/06/urlconf/), but having trouble protecting the [/account/signup/](http://dev.ippc.int/en/account/signup/) URL [with `staff_member_required`)](http://stackoverflow.com/a/2694116). Will continue trying.
-    - Setup auto-sending of messages to new users, with possible custom messages for NPPOs and Editors
+- User registration open but behind login-required and staff-user required. The URL to add new users is `/account/signup/`
 - Add blog and forum category management page to admin: 
     - http://127.0.0.1:8000/en/admin/blog/blogcategory/
     - http://127.0.0.1:8000/en/admin/forum/forumcategory/
-- Author field for publications
-- Start from Dj 1.6.5 (1.7?) and Mezzanine 3.1.5
+- Eventually update to Mezzanine 3.1.5
     - Update to latest version of Mezzanine and make sure current functionality works
+- FAQ
+- Setup proper permissions (nginx is currently running as root — not good) so that static media, including user-uploaded files are served through Nginx. Document nginx/gunicorn/supervisor setup (currently running gunicorn with deprecated `gunicorn_django -b 0.0.0.0:8000` command — get it running and working with recommended command instead)
+- Last modified date for pages
 - The All Our Users Database. Two options:
     1. Create[Single Sign-On](https://docs.djangoproject.com/en/1.5/topics/auth/customizing/) (see also [this](https://meta.discourse.org/t/sso-example-for-django/14258) and [this](https://github.com/Bouke/django-federated-login/tree/master/example)) and **[this](https://gist.github.com/kenbolton/4946936)** - a separate Accounts database to be used by all IPPC-related apps for authentication and authorization. The database should contain two tables:
         - Users (authentication - recognizes who you are)
@@ -47,16 +48,12 @@
             - User(Fk to Users)
             - APPPC country
     2. [All websites run off the same application instance](http://stackoverflow.com/questions/1581602/django-sharing-authentication-across-two-sites-that-are-on-different-domains) with [custom authentication backend](http://stackoverflow.com/questions/1404131/how-to-get-unique-users-across-multiple-django-sites-powered-by-the-sites-fram)
-
 - [IRSS](https://github.com/ASKBOT/askbot-devel) refactor
     - The easiest way to implement this is probably to use [CAS-Provider and CAS-consumer](http://stackoverflow.com/a/4663223) or [django-cas](https://bitbucket.org/cpcc/django-cas/overview). Another option: [mama-cas](https://github.com/jbittel/django-mama-cas). Relevant documentation pages: [multiple databases](https://docs.djangoproject.com/en/1.5/topics/db/multi-db/), [authentication](https://docs.djangoproject.com/en/1.5/topics/auth/customizing/), [multiple sites framework](https://docs.djangoproject.com/en/1.5/ref/contrib/sites/). See also [this blog post](http://reinout.vanrees.org/weblog/2014/05/09/authentication-python-web.html).
 - Phytosanitary.info refactor (use [original code](https://github.com/hypertexthero/phytosanitary)?)
 - Both phytosantiary.info and apppc.org will need to get SSL certificates for single sign-on to work securely: 
         > Even if the authentication with CAS is made using a mechanism which makes it difficult to interfere with, all authorized communication will subsequentely use a cookie identifing the session which can be used to hijack the connection. So you need to encrypt the communication. There is just no way around that if you want to enforce some sort of security.
-- FAQ
-- Last modified date for pages
 - Order permission groups alphabetically in admin
-- Setup proper permissions (nginx is currently running as root — not good) so that static media, including user-uploaded files are served through Nginx. Document nginx/gunicorn/supervisor setup (currently running gunicorn with deprecated `gunicorn_django -b 0.0.0.0:8000` command — get it running and working with recommended command instead)
 - Setup working fabric script for easy deployment that does the following after running `fab deploy dev`:
     1. Adds, commits and pushes files to Github (for future: if tests pass)
     2. Logs in to dev.ippc.int, activates application virtualenv and pulls changes from Github
