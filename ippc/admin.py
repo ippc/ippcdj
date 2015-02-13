@@ -12,7 +12,7 @@ Publication,PublicationFile,PublicationUrl, ReportingObligation,EventReporting,P
 ImplementationISPMVersion, TransPublicationLibraryPage,Website,EventreportingFile,EventreportingUrl,\
 ReportingObligation_File, ReportingObligationUrl,ImplementationISPMUrl,ImplementationISPMFile,\
 PestFreeAreaFile, PestFreeAreaUrl, WebsiteUrl,PestReportUrl,PestReportFile,CnPublication,CnPublicationFile,CnPublicationUrl,PartnersPublication,PartnersPublicationFile,PartnersPublicationUrl, \
-CountryNews,CountryNewsFile,CountryNewsUrl,CommodityKeyword, \
+CountryNews,CountryNewsFile,CountryNewsUrl,CommodityKeyword,PreferredLanguages,  \
 PartnersWebsite,PartnersWebsiteUrl,\
 PartnersNews,PartnersNewsFile,PartnersNewsUrl, \
 EppoCode,IssueKeyword, CommodityKeyword,IssueKeywordsRelate,CommodityKeywordsRelate, ContactType
@@ -219,6 +219,11 @@ class PestReportAdmin(admin.ModelAdmin):
 
 admin.site.register(PestStatus, PestStatusAdmin)
 admin.site.register(PestReport, PestReportAdmin)
+
+class PreferredLanguagesAdmin(admin.ModelAdmin):
+    """Options for the PreferredLanguages field of users"""
+    save_on_top = True
+admin.site.register(PreferredLanguages, PreferredLanguagesAdmin)
 
 class ContactTypeAdmin(admin.ModelAdmin):
     """Options for the pest status field of Pest Reports"""

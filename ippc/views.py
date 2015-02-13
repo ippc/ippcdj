@@ -289,6 +289,8 @@ class PublicationDetail2View(DetailView):
         return context
     
 import os
+import shutil
+
 import zipfile
 import StringIO
 from settings import PROJECT_ROOT
@@ -306,7 +308,7 @@ class PublicationFilesListView(ListView):
     allow_future = False
     allow_empty = True
     paginate_by = 30
-
+ 
     def get_context_data(self, **kwargs):
         context = super(PublicationFilesListView, self).get_context_data(**kwargs)
         queryset = Publication.objects.filter(status=IS_PUBLIC,library_id=self.kwargs['id']).order_by('-modify_date', 'title')
@@ -343,7 +345,7 @@ class PublicationFilesListView(ListView):
             filenames_ru.append(p.file_ru)
             filenames_zh.append(p.file_zh)
             
-
+        
         # The zip compressor
         date = timezone.now().strftime('%Y%m%d%H%M%S')+"_"+str(self.kwargs['id'])
         zip_all1 ="/static/media/tmp/"+"archive_all_"+ date+".zip"
@@ -368,6 +370,14 @@ class PublicationFilesListView(ListView):
         
         context['zip_all']=zip_all1
         context['zip_all_s']=os.path.getsize(zip_all.filename)
+        
+        destination = '/work/projects/ippcdj-env/public/static/media/tmp/'
+        src_files = os.listdir(PROJECT_ROOT+"/static/media/tmp/")
+        for file_name in src_files:
+            full_file_name = os.path.join(PROJECT_ROOT+"/static/media/tmp/", file_name)
+            if (os.path.isfile(full_file_name)):
+                 shutil.move(full_file_name, destination)
+        source = PROJECT_ROOT+"/static/media/tmp/"
         
         return context
             

@@ -8,33 +8,13 @@ from django.db import models
 class Migration(SchemaMigration):
 
     def forwards(self, orm):
-        # Adding M2M table for field users on 'DraftProtocol'
-        m2m_table_name = db.shorten_name(u'ippc_draftprotocol_users')
-        db.create_table(m2m_table_name, (
-            ('id', models.AutoField(verbose_name='ID', primary_key=True, auto_created=True)),
-            ('draftprotocol', models.ForeignKey(orm[u'ippc.draftprotocol'], null=False)),
-            ('user', models.ForeignKey(orm[u'auth.user'], null=False))
+        # Adding model 'PreferredLanguages'
+        db.create_table(u'ippc_preferredlanguages', (
+            (u'id', self.gf('django.db.models.fields.AutoField')(primary_key=True)),
+            ('status', self.gf('django.db.models.fields.CharField')(max_length=500)),
         ))
-        db.create_unique(m2m_table_name, ['draftprotocol_id', 'user_id'])
-
-        # Adding M2M table for field groups on 'DraftProtocol'
-        m2m_table_name = db.shorten_name(u'ippc_draftprotocol_groups')
-        db.create_table(m2m_table_name, (
-            ('id', models.AutoField(verbose_name='ID', primary_key=True, auto_created=True)),
-            ('draftprotocol', models.ForeignKey(orm[u'ippc.draftprotocol'], null=False)),
-            ('group', models.ForeignKey(orm[u'auth.group'], null=False))
-        ))
-        db.create_unique(m2m_table_name, ['draftprotocol_id', 'group_id'])
-
-
-    def backwards(self, orm):
-        # Removing M2M table for field users on 'DraftProtocol'
-        db.delete_table(db.shorten_name(u'ippc_draftprotocol_users'))
-
-        # Removing M2M table for field groups on 'DraftProtocol'
-        db.delete_table(db.shorten_name(u'ippc_draftprotocol_groups'))
-
-
+        db.send_create_signal(u'ippc', ['PreferredLanguages'])
+    
     models = {
         u'auth.group': {
             'Meta': {'object_name': 'Group'},
@@ -261,15 +241,29 @@ class Migration(SchemaMigration):
             'title': ('django.db.models.fields.CharField', [], {'max_length': '500'}),
             'users': ('django.db.models.fields.related.ManyToManyField', [], {'blank': 'True', 'related_name': "'dpusers'", 'null': 'True', 'symmetrical': 'False', 'to': u"orm['auth.User']"})
         },
-        u'ippc.draftprotocolcomment': {
-            'Meta': {'object_name': 'DraftProtocolComment'},
+        u'ippc.draftprotocolcomments': {
+            'Meta': {'object_name': 'DraftProtocolComments'},
+            '_meta_title': ('django.db.models.fields.CharField', [], {'max_length': '500', 'null': 'True', 'blank': 'True'}),
+            'author': ('django.db.models.fields.related.ForeignKey', [], {'related_name': "'draftprotocolcomments_author'", 'to': u"orm['auth.User']"}),
             'comment': ('django.db.models.fields.TextField', [], {'null': 'True', 'blank': 'True'}),
+            'description': ('django.db.models.fields.TextField', [], {'blank': 'True'}),
             'draftprotocol': ('django.db.models.fields.related.ForeignKey', [], {'to': u"orm['ippc.DraftProtocol']"}),
             'expertise': ('django.db.models.fields.TextField', [], {'null': 'True', 'blank': 'True'}),
+            'expiry_date': ('django.db.models.fields.DateTimeField', [], {'null': 'True', 'blank': 'True'}),
             'filefig': ('django.db.models.fields.files.FileField', [], {'max_length': '100', 'blank': 'True'}),
             'filetext': ('django.db.models.fields.files.FileField', [], {'max_length': '100', 'blank': 'True'}),
+            'gen_description': ('django.db.models.fields.BooleanField', [], {'default': 'True'}),
             u'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
-            'institution': ('django.db.models.fields.TextField', [], {'null': 'True', 'blank': 'True'})
+            'in_sitemap': ('django.db.models.fields.BooleanField', [], {'default': 'True'}),
+            'institution': ('django.db.models.fields.TextField', [], {'null': 'True', 'blank': 'True'}),
+            'keywords': ('mezzanine.generic.fields.KeywordsField', [], {'object_id_field': "'object_pk'", 'to': u"orm['generic.AssignedKeyword']", 'frozen_by_south': 'True'}),
+            'keywords_string': ('django.db.models.fields.CharField', [], {'max_length': '500', 'blank': 'True'}),
+            'publish_date': ('django.db.models.fields.DateTimeField', [], {'null': 'True', 'blank': 'True'}),
+            'short_url': ('django.db.models.fields.URLField', [], {'max_length': '200', 'null': 'True', 'blank': 'True'}),
+            'site': ('django.db.models.fields.related.ForeignKey', [], {'to': u"orm['sites.Site']"}),
+            'slug': ('django.db.models.fields.CharField', [], {'max_length': '2000', 'null': 'True', 'blank': 'True'}),
+            'status': ('django.db.models.fields.IntegerField', [], {'default': '2'}),
+            'title': ('django.db.models.fields.CharField', [], {'max_length': '500'})
         },
         u'ippc.draftprotocolfile': {
             'Meta': {'object_name': 'DraftProtocolFile'},
@@ -396,7 +390,7 @@ class Migration(SchemaMigration):
         },
         u'ippc.ippcuserprofile': {
             'Meta': {'object_name': 'IppcUserProfile'},
-            'address1': ('django.db.models.fields.CharField', [], {'max_length': '100', 'blank': 'True'}),
+            'address1': ('django.db.models.fields.CharField', [], {'max_length': '250', 'blank': 'True'}),
             'address2': ('django.db.models.fields.TextField', [], {'default': "''", 'null': 'True', 'blank': 'True'}),
             'address_country': ('django_countries.fields.CountryField', [], {'max_length': '2', 'null': 'True', 'blank': 'True'}),
             'bio': ('django.db.models.fields.TextField', [], {'default': "''", 'null': 'True', 'blank': 'True'}),
@@ -406,14 +400,15 @@ class Migration(SchemaMigration):
             'date_account_created': ('django.db.models.fields.DateTimeField', [], {'default': 'datetime.datetime.now'}),
             'email_address_alt': ('django.db.models.fields.EmailField', [], {'default': "''", 'max_length': '75', 'null': 'True', 'blank': 'True'}),
             'expertize': ('django.db.models.fields.TextField', [], {'default': "''", 'null': 'True', 'blank': 'True'}),
-            'fax': ('django.db.models.fields.CharField', [], {'max_length': '30', 'blank': 'True'}),
+            'fax': ('django.db.models.fields.CharField', [], {'max_length': '80', 'blank': 'True'}),
             'first_name': ('django.db.models.fields.CharField', [], {'max_length': '30'}),
             'gender': ('django.db.models.fields.PositiveSmallIntegerField', [], {'null': 'True', 'blank': 'True'}),
             u'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
             'last_name': ('django.db.models.fields.CharField', [], {'max_length': '30'}),
-            'mobile': ('django.db.models.fields.CharField', [], {'max_length': '30', 'blank': 'True'}),
+            'mobile': ('django.db.models.fields.CharField', [], {'max_length': '80', 'blank': 'True'}),
             'partner': ('django.db.models.fields.related.ForeignKey', [], {'blank': 'True', 'related_name': "'user_partner_page'", 'null': 'True', 'to': u"orm['ippc.PartnersPage']"}),
-            'phone': ('django.db.models.fields.CharField', [], {'max_length': '30', 'blank': 'True'}),
+            'phone': ('django.db.models.fields.CharField', [], {'max_length': '80', 'blank': 'True'}),
+            'preferredlanguage': ('django.db.models.fields.related.ManyToManyField', [], {'blank': 'True', 'related_name': "'preferredlanguages+'", 'null': 'True', 'symmetrical': 'False', 'to': u"orm['ippc.PreferredLanguages']"}),
             'profile_photo': ('django.db.models.fields.files.FileField', [], {'max_length': '100', 'blank': 'True'}),
             'state': ('django.db.models.fields.CharField', [], {'max_length': '100', 'blank': 'True'}),
             'title': ('django.db.models.fields.CharField', [], {'max_length': '100', 'null': 'True', 'blank': 'True'}),
@@ -431,6 +426,16 @@ class Migration(SchemaMigration):
             u'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
             'issuename': ('django.db.models.fields.related.ManyToManyField', [], {'symmetrical': 'False', 'to': u"orm['ippc.IssueKeyword']", 'null': 'True', 'blank': 'True'}),
             'object_id': ('django.db.models.fields.PositiveIntegerField', [], {})
+        },
+        u'ippc.notificationmessagerelate': {
+            'Meta': {'object_name': 'NotificationMessageRelate'},
+            'content_type': ('django.db.models.fields.related.ForeignKey', [], {'to': u"orm['contenttypes.ContentType']"}),
+            'countries': ('django.db.models.fields.related.ManyToManyField', [], {'blank': 'True', 'related_name': "'notificatiocountries'", 'null': 'True', 'symmetrical': 'False', 'to': u"orm['ippc.CountryPage']"}),
+            u'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
+            'notify': ('django.db.models.fields.BooleanField', [], {'default': 'False'}),
+            'notifysecretariat': ('django.db.models.fields.BooleanField', [], {'default': 'False'}),
+            'object_id': ('django.db.models.fields.PositiveIntegerField', [], {}),
+            'partners': ('django.db.models.fields.related.ManyToManyField', [], {'blank': 'True', 'related_name': "'notificatiopartners'", 'null': 'True', 'symmetrical': 'False', 'to': u"orm['ippc.PartnersPage']"})
         },
         u'ippc.partnersnews': {
             'Meta': {'object_name': 'PartnersNews'},
@@ -642,7 +647,7 @@ class Migration(SchemaMigration):
             'groupspoll': ('django.db.models.fields.related.ManyToManyField', [], {'blank': 'True', 'related_name': "'pollgroups'", 'null': 'True', 'symmetrical': 'False', 'to': u"orm['auth.Group']"}),
             u'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
             'login_required': ('django.db.models.fields.BooleanField', [], {'default': 'True'}),
-            'polltext': ('django.db.models.fields.TextField', [], {'max_length': '500', 'null': 'True', 'blank': 'True'}),
+            'polltext': ('django.db.models.fields.TextField', [], {'null': 'True', 'blank': 'True'}),
             'pub_date': ('django.db.models.fields.DateTimeField', [], {}),
             'question': ('django.db.models.fields.CharField', [], {'max_length': '200'}),
             'userspoll': ('django.db.models.fields.related.ManyToManyField', [], {'blank': 'True', 'related_name': "'pollusers'", 'null': 'True', 'symmetrical': 'False', 'to': u"orm['auth.User']"})
@@ -662,6 +667,11 @@ class Migration(SchemaMigration):
             'poll': ('django.db.models.fields.related.ForeignKey', [], {'to': u"orm['ippc.Poll']"}),
             'user': ('django.db.models.fields.related.ForeignKey', [], {'to': u"orm['auth.User']"})
         },
+        u'ippc.preferredlanguages': {
+            'Meta': {'object_name': 'PreferredLanguages'},
+            u'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
+            'status': ('django.db.models.fields.CharField', [], {'max_length': '500'})
+        },
         u'ippc.publication': {
             'Meta': {'ordering': "('_order',)", 'object_name': 'Publication'},
             '_order': ('django.db.models.fields.IntegerField', [], {'null': 'True'}),
@@ -678,10 +688,11 @@ class Migration(SchemaMigration):
             'library': ('django.db.models.fields.related.ForeignKey', [], {'related_name': "'publications'", 'to': u"orm['ippc.PublicationLibrary']"}),
             'modify_date': ('django.db.models.fields.DateTimeField', [], {'auto_now': 'True', 'null': 'True', 'blank': 'True'}),
             'old_id': ('django.db.models.fields.CharField', [], {'max_length': '50', 'null': 'True', 'blank': 'True'}),
+            'publication_date': ('django.db.models.fields.DateTimeField', [], {'null': 'True', 'blank': 'True'}),
             'short_description': ('django.db.models.fields.TextField', [], {'null': 'True', 'blank': 'True'}),
             'slug': ('django.db.models.fields.SlugField', [], {'max_length': '200', 'null': 'True', 'blank': 'True'}),
             'status': ('django.db.models.fields.IntegerField', [], {'default': '2'}),
-            'title': ('django.db.models.fields.CharField', [], {'max_length': '100', 'null': 'True', 'blank': 'True'})
+            'title': ('django.db.models.fields.CharField', [], {'max_length': '250', 'null': 'True', 'blank': 'True'})
         },
         u'ippc.publicationfile': {
             'Meta': {'object_name': 'PublicationFile'},
