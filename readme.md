@@ -2,6 +2,7 @@
 
 ## Things to do
 
+- Redirect new users to account/profile page and ask them to set a password in the email message.
 - Content (data) migration (ongoing)
 - User registration open but behind login-required and staff-user required. The URL to add new users is `/account/signup/`
 - Add blog and forum category management page to admin: 

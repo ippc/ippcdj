@@ -2,5 +2,6 @@
 {% block main %}
 {% trans "An IPPC account has been created for you." %}
 {% trans "Please use the link below to activate it." %}
+{# todo: After activating it, please set your password at account/profile #}
 http://{{ request.get_host }}{{ verify_url }}
 {% endblock %}
