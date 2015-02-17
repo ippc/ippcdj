@@ -85,9 +85,8 @@
     {% if event.description|length > 2 %}
     <dt>{% trans "Description" %}</dt>
     <dd>
-        <ul class="unstyled nomargin">
-            <li>{{event.description}}</li>
-        </ul>
+               {{event.description|richtext_filter|safe }}
+           
     </dd>
     {% endif %}
       {% if event.category_verbose|length > 2%}
