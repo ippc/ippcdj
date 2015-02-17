@@ -1,2 +1,2 @@
 {% load i18n %}
-{% trans "Activate your account" %}
+{% trans "Activate your account created for you at https://www.ippc.int" %}

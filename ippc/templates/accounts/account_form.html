@@ -19,9 +19,16 @@
 
 <fieldset>
     {# <legend>IPPC Account Profile</legend> #}
+{% if 'account/signup/' in request.path %} 
+{% else %}
+    {% if request.user.get_profile.first_name or request.user.get_profile.last_name %}
+    <b>{% trans "First Name" %}: </b>{{request.user.get_profile.first_name}}<br/>
+    <b>{% trans "Last Name" %}: </b>{{request.user.get_profile.last_name}}<br/>
+    <b>{% trans "Username" %}: </b>{{request.user.get_profile.user}}<br/>
+    {% endif %}  
+{% endif %}
     <form method="post"{% if form.is_multipart %} enctype="multipart/form-data"{% endif %}>
-
-		{# {% fields_for userform %} #}
+    {# {% fields_for userform %} #}
 
     {% fields_for form %}
 		

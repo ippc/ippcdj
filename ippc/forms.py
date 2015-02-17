@@ -72,9 +72,9 @@ class IppcUserProfileForm(forms.ModelForm):
             'profile_photo',
           
             ]
-
-            # needed to add these to ACCOUNTS_PROFILE_FORM_EXCLUDE_FIELDS in settins.py
-        exclude = ('user', 'preferredlanguage','username', 'first_name','last_name', 'contact_type',  'title', 'city', 'state', 'zipcode', 'country', 'partner', 'date_account_created' )
+        #print(model)    
+        # needed to add these to ACCOUNTS_PROFILE_FORM_EXCLUDE_FIELDS in settins.py
+        #exclude = ('user', 'preferredlanguage','username', 'first_name','last_name', 'contact_type',  'title', 'city', 'state', 'zipcode', 'country', 'partner', 'date_account_created' )
         # = forms.ModelMultipleChoiceField(queryset=PreferredLanguages.objects.all())
 # class UserForm(forms.ModelForm):
 #     class Meta:

@@ -3,4 +3,14 @@
 {% trans "An IPPC account has been created for you." %}
 {% trans "Please use the link below to activate it, then set your password in your profile page." %}
 http://{{ request.get_host }}{{ verify_url }}account/update/
+
+{% trans "After setting your password, you will be able to log in at https://www.ippc.int." %}
+
+{% trans "Information Exchange (IPPC) team" %}
+
+{% trans "The IPPC is an international treaty to secure action to prevent the spread and introduction of pests of plants and plant products, and to promote appropriate measures for their control. It is governed by the Commission on Phytosanitary Measures (CPM) which adopts International Standards for Phytosanitary Measures (ISPMs). The CPM established the IPP as the forum for national reporting and exchange of more general information among the phytosanitary community. The IPPC Secretariat coordinates the activities of the Convention and is hosted by FAO." %}
 {% endblock %}
+
+
+
+

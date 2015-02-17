@@ -13,30 +13,56 @@
 {% csrf_token %}
 {% endnevercache %}
 
+
 {% for field in form_for_fields %}
-{% if field.is_hidden %}
-{{ field }}
-{% else %}
-<div class="control-group input_{{ field.id_for_label }} {{ field.field.type }}
-    {% if field.errors %} error{% endif %}">
-    {% if field.id_for_label == "id_preferredlanguage" %}
-          
- {% else %}
- {{ field.label_tag }}
-    <div class="controls">
-        
-{{ field }} 
+    {% if field.is_hidden %}
+        {{ field }}
+    {% else %}
+    
+  <div class="control-group input_{{ field.id_for_label }} {{ field.field.type }} {% if field.errors %} error{% endif %}">
+
+  {% if 'account/update/' in request.path and field.id_for_label == "id_first_name"%} 
+    {{ field.label_tag }}
+    <input id="id_first_name" name="first_name" maxlength="30" type="text" readonly value="{{ request.user.get_profile.first_name}}" /> 
         {% if field.errors %}
+            <span class="help-inline">
+                {% for e in field.errors %}
+                {% if not forloop.first %} / {% endif %}{{ e }}
+                {% endfor %}
+            </span>
+        {% else %}
+            <span class="help-inline">{{ field.help_text }}</span>
+        {% endif %}
+  {% elif 'account/update/' in request.path and field.id_for_label == "id_last_name"%} 
+    {{ field.label_tag }}
+    <input id="id_last_name" maxlength="30" name="last_name" type="text" readonly value="{{ request.user.get_profile.last_name}}" /> 
+        {% if field.errors %}
+               <span class="help-inline">
+                   {% for e in field.errors %}
+                   {% if not forloop.first %} / {% endif %}{{ e }}
+                   {% endfor %}
+               </span>
+           {% else %}
+               <span class="help-inline">{{ field.help_text }}</span>
+           {% endif %}
+  {% else %}
+ 
+ {{ field.label_tag }}
+ <div class="controls">
+    {{ field }} 
+    {% if field.errors %}
         <span class="help-inline">
             {% for e in field.errors %}
             {% if not forloop.first %} / {% endif %}{{ e }}
             {% endfor %}
         </span>
-        {% else %}
+    {% else %}
         <span class="help-inline">{{ field.help_text }}</span>
-        {% endif %}
+    {% endif %}
         
-    </div>  {% endif %}
+    </div>     
+ {% endif %}
 </div>
+
 {% endif %}
 {% endfor %}

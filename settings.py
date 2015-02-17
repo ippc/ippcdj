@@ -395,22 +395,23 @@ ACCOUNTS_MIN_PASSWORD_LENGTH = 8
 ACCOUNTS_VERIFICATION_REQUIRED = True
 # ACCOUNTS_APPROVAL_REQUIRED = False
 # ACCOUNTS_APPROVAL_EMAILS = 'simon.griffee@fao.org, paola.sentinelli@fao.org'
+   
 ACCOUNTS_PROFILE_FORM_EXCLUDE_FIELDS = (
-    "date_account_created",
-    "country",
-    "title",
-    "gender",
-    "address_country",
-    "user",
+#    "user",
     "username",
+#    "first_name",
+#    "last_name",
+    "gender",
     "title",
-    "city",
     "contact_type",
+    "address_country",
+    "city",
     "state",
     "zipcode",
     "country",
     "partner",
     "date_account_created",
+    "preferredlanguage",
 )
 
 
