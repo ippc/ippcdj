@@ -9,5 +9,6 @@
 {% endfor %}
 <br>
 <p>{% trans "Please use the link below to activate it." %}</p>
+{# todo: After activating it, please set your password at account/profile #}
 <p><a href="http://{{ request.get_host }}{{ change_url }}">http://{{ request.get_host }}{{ change_url }}</a></p>
 {% endblock %}

@@ -1,6 +1,6 @@
 /*
     IPPC 4.0 stylesheet
-    last update: 2014-12-18
+    last update: 2015-02-16
 */
 
 body {
@@ -227,6 +227,8 @@ li#neareast a {width:30px; height:20px;}
 /*.icn-facebook, .icn-twitter {background:url(/static/img/icons.png) no-repeat top left; padding:1px 0 0 20px !important;}*/
 /*.icn-facebook {background-position:0 0;} */
 /*.icn-twitter {background-position:0 -17px;}*/
+
+div.input_id_password1, div.input_id_password2 {background:#eee; padding:1em;}
 
 @media print {
   * {

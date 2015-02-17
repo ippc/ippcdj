@@ -166,8 +166,18 @@
 {% nevercache %}
 {% for message in messages %}
 <div class="alert alert-{{ message.tags }}" data-alert="alert">
-    <a class="close" href="#" onclick="$(this).parent().fadeOut('fast'); return false;">×</a>{{ message }}
+    <a class="close" href="#" onclick="$(this).parent().fadeOut('fast'); return false;">×</a>
+		{% if message.message == "Successfully signed up" %}
+		  {{ "You have successfully activated your account! <b style='color:#060;'>Please set a new password below &darr;</b>" }}
+		{# {% elif message.message == "Item removed from wishlist" %} #}
+		  {# {{ "Item removed from your Favorites" }} #}
+		{% else %}
+			{{ message }}
+		{% endif %}
 </div>
+
+
+
 {% endfor %}
 {% endnevercache %}
 

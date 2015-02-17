@@ -1,6 +1,6 @@
 {% load i18n %}
 {% block main %}
 {% trans "An IPPC account has been created for you." %}
-{% trans "Please use the link below to activate it." %}
-http://{{ request.get_host }}{{ verify_url }}
+{% trans "Please use the link below to activate it, then set your password in your profile page." %}
+http://{{ request.get_host }}{{ verify_url }}account/update/
 {% endblock %}

@@ -7,5 +7,6 @@
 {% for field, value in user|profile_fields %}{{ field }}: {{ value|linebreaksbr }}
 {% endfor %}
 {% trans "Please use the link below to activate it." %}
+{# todo: After activating it, please set your password at account/profile #}
 http://{{ request.get_host }}{{ change_url }}
 {% endblock %}
