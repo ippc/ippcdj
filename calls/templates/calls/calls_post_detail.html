@@ -24,7 +24,9 @@
 {# =note: the sidebar is in the filter_panel.html include #}
 
 {% block main %}
-{% if user.is_superuser or perms.calls.add_callspost  %} 
+
+{% if user.is_superuser or perms.calls.add_callspost and request.user.get_profile.user_id  == calls_post.user_id %} 
+
     <div class="pull-right">
         <a class="btn btn-info btn-small" href="/admin/calls/callspost/{{ calls_post.id }}">Edit as Admin</a><br>
     </div>

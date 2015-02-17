@@ -1,5 +1,6 @@
 {% load mezzanine_tags staticfiles i18n %}
-{%if page.id == 321 %}
+
+{% if  page.id == 321 or  page.id == 350 or  page.id == 339 or  page.id == 356 or page.id == 355 or page.id == 353 or page.id == 354 or   page.id == 357 %} 
 <script type="text/javascript">
     function toggle_visibility(id) {
        
@@ -12,10 +13,9 @@
     }
 
 </script>
-<p><a href="#secretariat" onclick="javascript:toggle_visibility('secretariatdiv');">show/hide Full list of Secretariat</a><p>
+<p><a href="#secretariat" onclick="javascript:toggle_visibility('secretariatdiv');">show/hide Full list of Contacts</a><p>
 <div id="secretariatdiv" style="display:none;">     
 <table class="table table-condensed table-striped table-bordered" id="secretariat">
- 
    <thead>
      <tr>
        <th>{% trans "Last Name" %}</th>
@@ -25,27 +25,137 @@
      </tr>
    </thead>
    <tbody>
-
+{% if  page.id == 321 %} 
  {% for user in secretariat %}
     <tr>
         <td>{{user.0}}{{user.5}}</td>
         <td>{{user.1}}</td>
-      
-        
-        <td>  {% if user.2 %}
-  <img class="profile-picture" style="margin:0 0 20px 10px;" src="{{ MEDIA_URL }}{% thumbnail user.2 30 30 %}">
-  {% else %}
-  <a class="profile-picture" style="height:30px; width:30px; background:#eee;"></a>
-  {% endif %}</a></td>
-                
-          <td>{{user.3}}</td>
-
-        
+        <td>{% if user.2 %}
+          <img class="profile-picture" style="margin:0 0 20px 10px;" src="{{ MEDIA_URL }}{% thumbnail user.2 30 30 %}">
+            {% else %}
+          <a class="profile-picture" style="height:30px; width:30px; background:#eee;"></a>
+            {% endif %}</a>
+        </td>
+        <td>{{user.3}}</td>
     </tr>
   {% endfor %} 
+  {% endif %}
+  
+  {% if  page.id == 350 %} {{users_sc}}
+ {% for user in users_sc %}
+    <tr>
+        <td>{{user.0}}{{user.5}}</td>
+        <td>{{user.1}}</td>
+        <td>{% if user.2 %}
+          <img class="profile-picture" style="margin:0 0 20px 10px;" src="{{ MEDIA_URL }}{% thumbnail user.2 30 30 %}">
+            {% else %}
+          <a class="profile-picture" style="height:30px; width:30px; background:#eee;"></a>
+            {% endif %}</a>
+        </td>
+        <td>{{user.3}}</td>
+    </tr>
+  {% endfor %} 
+  {% endif %}
+  
+  {% if  page.id == 339 %} 
+ {% for user in users_bureau %}
+    <tr>
+        <td>{{user.0}}{{user.5}}</td>
+        <td>{{user.1}}</td>
+        <td>{% if user.2 %}
+          <img class="profile-picture" style="margin:0 0 20px 10px;" src="{{ MEDIA_URL }}{% thumbnail user.2 30 30 %}">
+            {% else %}
+          <a class="profile-picture" style="height:30px; width:30px; background:#eee;"></a>
+            {% endif %}</a>
+        </td>
+        <td>{{user.3}}</td>
+    </tr>
+  {% endfor %} 
+  {% endif %}
+  
+  {% if  page.id == 356 %} 
+ {% for user in users_tpdp %}
+    <tr>
+        <td>{{user.0}}{{user.5}}</td>
+        <td>{{user.1}}</td>
+        <td>{% if user.2 %}
+          <img class="profile-picture" style="margin:0 0 20px 10px;" src="{{ MEDIA_URL }}{% thumbnail user.2 30 30 %}">
+            {% else %}
+          <a class="profile-picture" style="height:30px; width:30px; background:#eee;"></a>
+            {% endif %}</a>
+        </td>
+        <td>{{user.3}}</td>
+    </tr>
+  {% endfor %} 
+  {% endif %}
+  
+  {% if  page.id == 355 %} 
+ {% for user in users_tpfq %}
+    <tr>
+        <td>{{user.0}}{{user.5}}</td>
+        <td>{{user.1}}</td>
+        <td>{% if user.2 %}
+          <img class="profile-picture" style="margin:0 0 20px 10px;" src="{{ MEDIA_URL }}{% thumbnail user.2 30 30 %}">
+            {% else %}
+          <a class="profile-picture" style="height:30px; width:30px; background:#eee;"></a>
+            {% endif %}</a>
+        </td>
+        <td>{{user.3}}</td>
+    </tr>
+  {% endfor %} 
+  {% endif %}
+  
+  {% if  page.id == 353 %} 
+ {% for user in users_tpff %}
+    <tr>
+        <td>{{user.0}}{{user.5}}</td>
+        <td>{{user.1}}</td>
+        <td>{% if user.2 %}
+          <img class="profile-picture" style="margin:0 0 20px 10px;" src="{{ MEDIA_URL }}{% thumbnail user.2 30 30 %}">
+            {% else %}
+          <a class="profile-picture" style="height:30px; width:30px; background:#eee;"></a>
+            {% endif %}</a>
+        </td>
+        <td>{{user.3}}</td>
+    </tr>
+  {% endfor %} 
+  {% endif %}
+  
+  {% if  page.id == 354 %} 
+ {% for user in users_tpg %}
+    <tr>
+        <td>{{user.0}}{{user.5}}</td>
+        <td>{{user.1}}</td>
+        <td>{% if user.2 %}
+          <img class="profile-picture" style="margin:0 0 20px 10px;" src="{{ MEDIA_URL }}{% thumbnail user.2 30 30 %}">
+            {% else %}
+          <a class="profile-picture" style="height:30px; width:30px; background:#eee;"></a>
+            {% endif %}</a>
+        </td>
+        <td>{{user.3}}</td>
+    </tr>
+  {% endfor %} 
+  {% endif %}
+  
+  {% if  page.id == 357 %} 
+ {% for user in users_tppt %}
+    <tr>
+        <td>{{user.0}}{{user.5}}</td>
+        <td>{{user.1}}</td>
+        <td>{% if user.2 %}
+          <img class="profile-picture" style="margin:0 0 20px 10px;" src="{{ MEDIA_URL }}{% thumbnail user.2 30 30 %}">
+            {% else %}
+          <a class="profile-picture" style="height:30px; width:30px; background:#eee;"></a>
+            {% endif %}</a>
+        </td>
+        <td>{{user.3}}</td>
+    </tr>
+  {% endfor %} 
+  {% endif %}
+  
   </tbody>
 </table>
     </div>
 
 
-{%endif%}
+{% endif %}

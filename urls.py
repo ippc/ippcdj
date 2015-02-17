@@ -405,6 +405,38 @@ urlpatterns = patterns("",
         view=PublicationLibraryView.as_view(),
         # view=country_view(),
         name='country'),
+    url(r'^core-activities/standards-setting/standards-committee/$',
+        view=PublicationLibraryView.as_view(),
+        # view=country_view(),
+        name='country'),
+    url(r'^core-activities/standards-setting/expert-drafting-groups/technical-panels/technical-panel-diagnostic-protocols/$',
+        view=PublicationLibraryView.as_view(),
+        # view=country_view(),
+        name='country'),
+        
+    url(r'^core-activities/standards-setting/expert-drafting-groups/technical-panels/technical-panel-forest-quarantine/$',
+        view=PublicationLibraryView.as_view(),
+        # view=country_view(),
+        name='country'),
+        
+    url(r'^core-activities/standards-setting/expert-drafting-groups/technical-panels/technical-panel-phytosanitary-treatments/$',
+        view=PublicationLibraryView.as_view(),
+        # view=country_view(),
+        name='country'),
+    url(r'^core-activities/standards-setting/expert-drafting-groups/technical-panels/technical-panel-glossary-phytosanitary-terms-ispm-5/$',
+        view=PublicationLibraryView.as_view(),
+        # view=country_view(),
+        name='country'),
+    url(r'^core-activities/standards-setting/expert-drafting-groups/technical-panels/technical-panel-fruit-flies/$',
+        view=PublicationLibraryView.as_view(),
+        # view=country_view(),
+        name='country'),
+    url(r'^core-activities/governance/bureau/$',
+        view=PublicationLibraryView.as_view(),
+        # view=country_view(),
+        name='country'),
+        
+        
     
      
     #-------------DPs Comments---------------------------

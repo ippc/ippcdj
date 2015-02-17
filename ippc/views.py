@@ -126,7 +126,14 @@ class PublicationLibraryView(ListView):
         queryset = DraftProtocol.objects.all()
         context['latest1']=queryset
         
-        users_all=[]
+        users_sec=[]
+        users_sc=[] 
+        users_bureau=[]
+        users_tpfq=[]
+        users_tpdp=[]
+        users_tpff=[]
+        users_tpg=[]
+        users_tppt=[]
         for g in Group.objects.filter():
             if g.name == 'IPPC Secretariat': 
                 users = g.user_set.all()
@@ -139,8 +146,102 @@ class PublicationLibraryView(ListView):
                    users_u.append((userippc.profile_photo))
                    users_u.append((userippc.title))
                    users_u.append((user_obj.username))
-                   users_all.append(users_u)
-        context['secretariat']=users_all
+                   users_sec.append(users_u)
+            if g.name == 'Standards committee':
+                users = g.user_set.all()
+                for u in users:
+                   users_u=[]
+                   user_obj=User.objects.get(username=u)
+                   userippc = get_object_or_404(IppcUserProfile, user_id=user_obj.id)
+                   users_u.append((unicode(userippc.last_name)))
+                   users_u.append((unicode(userippc.first_name)))
+                   users_u.append((userippc.profile_photo))
+                   users_u.append((userippc.title))
+                   users_u.append((user_obj.username))
+                   users_sc.append(users_u)
+          
+            if g.name == 'Bureau': 
+                users = g.user_set.all()
+                for u in users:
+                   users_u=[]
+                   user_obj=User.objects.get(username=u)
+                   userippc = get_object_or_404(IppcUserProfile, user_id=user_obj.id)
+                   users_u.append((unicode(userippc.last_name)))
+                   users_u.append((unicode(userippc.first_name)))
+                   users_u.append((userippc.profile_photo))
+                   users_u.append((userippc.title))
+                   users_u.append((user_obj.username))
+                   users_bureau.append(users_u)
+            if g.name == 'TPDP': 
+                users = g.user_set.all()
+                for u in users:
+                   users_u=[]
+                   user_obj=User.objects.get(username=u)
+                   userippc = get_object_or_404(IppcUserProfile, user_id=user_obj.id)
+                   users_u.append((unicode(userippc.last_name)))
+                   users_u.append((unicode(userippc.first_name)))
+                   users_u.append((userippc.profile_photo))
+                   users_u.append((userippc.title))
+                   users_u.append((user_obj.username))
+                   users_tpdp.append(users_u)
+            if g.name == 'TPFQ': 
+                users = g.user_set.all()
+                for u in users:
+                   users_u=[]
+                   user_obj=User.objects.get(username=u)
+                   userippc = get_object_or_404(IppcUserProfile, user_id=user_obj.id)
+                   users_u.append((unicode(userippc.last_name)))
+                   users_u.append((unicode(userippc.first_name)))
+                   users_u.append((userippc.profile_photo))
+                   users_u.append((userippc.title))
+                   users_u.append((user_obj.username))
+                   users_tpfq.append(users_u)
+            if g.name == 'TPFF': 
+                users = g.user_set.all()
+                for u in users:
+                   users_u=[]
+                   user_obj=User.objects.get(username=u)
+                   userippc = get_object_or_404(IppcUserProfile, user_id=user_obj.id)
+                   users_u.append((unicode(userippc.last_name)))
+                   users_u.append((unicode(userippc.first_name)))
+                   users_u.append((userippc.profile_photo))
+                   users_u.append((userippc.title))
+                   users_u.append((user_obj.username))
+                   users_tpff.append(users_u)
+            if g.name == 'TPG': 
+                users = g.user_set.all()
+                for u in users:
+                   users_u=[]
+                   user_obj=User.objects.get(username=u)
+                   userippc = get_object_or_404(IppcUserProfile, user_id=user_obj.id)
+                   users_u.append((unicode(userippc.last_name)))
+                   users_u.append((unicode(userippc.first_name)))
+                   users_u.append((userippc.profile_photo))
+                   users_u.append((userippc.title))
+                   users_u.append((user_obj.username))
+                   users_tpg.append(users_u)
+            if g.name == 'TPPT': 
+                users = g.user_set.all()
+                for u in users:
+                   users_u=[]
+                   user_obj=User.objects.get(username=u)
+                   userippc = get_object_or_404(IppcUserProfile, user_id=user_obj.id)
+                   users_u.append((unicode(userippc.last_name)))
+                   users_u.append((unicode(userippc.first_name)))
+                   users_u.append((userippc.profile_photo))
+                   users_u.append((userippc.title))
+                   users_u.append((user_obj.username))
+                   users_tppt.append(users_u)
+            
+        
+        context['secretariat']=users_sec
+        context['users_sc']=users_sc
+        context['users_bureau']=users_bureau
+        context['users_tpdp']=users_tpdp
+        context['users_tpff']=users_tpff
+        context['users_tppt']=users_tppt
+        context['users_tpg']=users_tpg
+        context['users_tpfq']=users_tpfq
         return context
     def get_queryset(self):
         queryset = DraftProtocol.objects.all()

@@ -71,10 +71,6 @@
   
  {# LINKs to add #}
  
-    
-      
- 
-{{ request.user.get_profile.partner.name }}--{{ page.get_content_model.name }}  --{{perms.ippc.add_partnerspublication}}    
   {% if perms.ippc.add_partnerspublication and request.user.get_profile.partner.name == page.get_content_model.name or user.is_superuser %}
   <small><a class="btn btn-small btn-info" href="{% url 'partner-publication-create' page.title|slugify %}">+ {% trans "Add new publication" %}</a></small>
 {% endif %}

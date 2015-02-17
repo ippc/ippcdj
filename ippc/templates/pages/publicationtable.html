@@ -102,11 +102,7 @@
          <th style="width:15%;">{% trans "Agenda #" %}</th>
        {# {% endif %} #}
        <th>{% trans "Title" %}</th>
-          <th>{% trans "Files" %}</th>
-      
-       {% if publication.publicationurl_set.all %}
-      <th>{% trans "Links" %}</th>
-        {% endif %}
+       <th>{% trans "Files" %}</th>
        <th>{% trans "Publication date" %}</th>
      </tr>
    </thead>
@@ -171,14 +167,12 @@
                 <a href="{{MEDIA_URL}}{{f.file.name}}">{{ f.description }}</a>
             {% endfor %}
         {% endif %}
-      </td>  
       {% if publication.publicationurl_set.all %} 
-      <td>
         {% for f in publication.publicationurl_set.all %} 
-            <a href="{{f.url_for_more_information}}">{{ f.url_for_more_information }}</a>
+            <a href="{{f.url_for_more_information}}">Link</a>
         {% endfor %}
-      </td>  
       {% endif %}
+      </td>  
       <td>{{ publication.publication_date|date:"d M Y"  }}</td>
     </tr>        
     {% endif %}
