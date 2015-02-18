@@ -37,7 +37,7 @@ mezzanine-pagedown==0.5
 # mysql-python==1.2.5
 # MySQL-python==1.2.5 # first `yum install mysql-devel` then `pip2.7 install mysql-python` on RHEL dev server
 oauthlib==0.5.0
-psycopg2==2.4.2
+# psycopg2==2.4.2
 pygments-style-github==0.4
 # pysqlite==2.6.3
 python-dateutil==2.2
