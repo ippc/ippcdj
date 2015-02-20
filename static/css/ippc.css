@@ -29,7 +29,7 @@ a.brand {
 div.navbar, div.navbar-fixed-top {position:relative !important;}
 div.navbar-inner {border-radius:0; min-height:25px;}
 
-li#dropdown-menu-work-area {font-weight:bold; border-radius:2px;}
+li#dropdown-menu-work-area {font-weight:bold; border-radius:2px; background:#D8EDF8;}
 /*li#dropdown-menu-work-area a {color:#fff !important; text-shadow:none !important; border-shadow:none !important;}*/
 li#dropdown-menu-work-area.active a {color:#333 !important;}
 

@@ -2,7 +2,8 @@ Django==1.5.12
 Drum==0.1.3
 Markdown==2.3.1
 Mezzanine==1.4.8
-MySQL-python==1.2.5
+# MySQL-python
+mysql-connector-python
 Pillow==2.1.0 # For Windows needed to install Pillow from http://www.lfd.uci.edu/~gohlke/pythonlibs/
 Pygments==1.6
 South==0.8.4
@@ -35,9 +36,10 @@ mailer==0.7
 mezzanine-file-collections==1.0.1
 mezzanine-pagedown==0.5
 # mysql-python==1.2.5
-# MySQL-python==1.2.5 # first `yum install mysql-devel` then `pip2.7 install mysql-python` on RHEL dev server
+# MySQL-python==1.2.5 # first `yum install mysql-devel` then `pip2.7 install mysql-python` on RHEL dev server.
+# On production needed to do this: `yum install python27-MySQL-python.x86_64` http://stackoverflow.com/a/20268913
 oauthlib==0.5.0
-psycopg2==2.4.2
+# psycopg2==2.4.2
 pygments-style-github==0.4
 # pysqlite==2.6.3
 python-dateutil==2.2
