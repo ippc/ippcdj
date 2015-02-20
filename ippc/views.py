@@ -256,9 +256,10 @@ class CountryRelatedView(TemplateView):
     
     def get_context_data(self, **kwargs): # http://stackoverflow.com/a/15515220
         context = super(TemplateView, self).get_context_data(**kwargs)
-        countryo = get_object_or_404(CountryPage, name=self.kwargs['country'])
-        context['iso3'] =countryo.iso3 
-        context['cn_map'] =countryo.cn_map 
+        print(self.kwargs['country'])
+        countryo= CountryPage.objects.filter(country_slug=self.kwargs['country'])
+        context['iso3'] =countryo[0].iso3 
+        context['cn_map'] =countryo[0].cn_map 
         context.update({
             'country': self.kwargs['country']
         })

@@ -14,12 +14,78 @@
 {# </ul> #}
 
 <dl class="dl-horizontal">
+  {% for entry in user1 %}
+  {{entry }}
+  {% endfor %}
+   
   {% if user.is_superuser %} 
     <dt>{% trans "Username" %}</dt> 
     <dd>{{ user.username }}</dd>
   {% endif %}
+ 
+  {% if user.get_profile.first_name %}
+    <dt>{% trans "Name" %}</dt>
+    <dd>
+      {% if user.get_profile.get_gender_display %}
+        {{ user.get_profile.get_gender_display }}
+      {% endif %}
+      {{ user.get_profile.first_name }} 
+      <span class="caps">{{ user.get_profile.last_name }}</span>
+    </dd>
+  {% endif %}
+   {% if user.get_profile.contact_type.all %}
+    <dt>{% trans "Contact type" %}</dt>
+    <dd>
+    {% for entry in user.get_profile.contact_type.all %}
+        {{entry}}{% if forloop.last %} {% else %},{% endif %}
+      {% endfor %}
+    
+    </dd>
+  {% endif %}
+    	
+  {% if user.get_profile.title %}
+    <dt>{% trans "Title" %}</dt>
+    <dd>
+      {{ user.get_profile.title }} 
+    </dd>
+  {% endif %}
+    
+
+ 
   
-  {% if user.email %}
+  
+  
+  
+
+  {% if user.get_profile.address1 %}  
+  <dt>{% trans "Organization" %}</dt>
+  <dd>
+  {{ user.get_profile.address1 }}
+  </dd>  {% endif %}
+  
+  {% if user.get_profile.address1 or user.get_profile.address %}  
+  <dt>{% trans "Address" %}</dt>
+  <dd>
+   
+    {% if user.get_profile.address2 %}   {{ user.get_profile.address2|richtext_filter|safe }}<br>{% endif %}
+    </dd>
+  {% endif %}
+  
+    {#{% if user.get_profile.city %}{{ user.get_profile.city }}<br>{% endif %} #}
+    {#{% if user.get_profile.city %}{{ user.get_profile.city }}<br>{% endif %} #}
+    {#{% if user.get_profile.state %}{{ user.get_profile.state }}<br>{% endif %} #}
+    {#{% if user.get_profile.zipcode %}{{ user.get_profile.zipcode }}<br>{% endif %} #}
+    {#{% if user.get_profile.address_country.name %}{{ user.get_profile.address_country.name }}{% endif %} #}
+ 
+  {# {% if user.get_profile.country %} #}
+  {# <dt>{% trans "IPPC Country" %}</dt> #}
+  {# <dd> #}
+    {# <b>{{ user.get_profile.country.name }}</b> #}
+    {# todo: link to country page if user is contact point #}
+    {# <a href="/countries/{{ user.get_profile.country.name | slugify }}">{{ user.get_profile.country.name}}</a>     #}
+  {# </dd> #}
+  {# {% endif %} #}
+{% if user.email %}
     <dt>{% trans "Email" %}</dt>
     <dd>{{ user.email }}</dd>
   {% endif %}
@@ -30,63 +96,6 @@
     {{ user.get_profile.email_address_alt }} 
   </dd>
   {% endif %}
-	
-  {% if user.get_profile.title %}
-    <dt>{% trans "Title" %}</dt>
-    <dd>
-      {{ user.get_profile.title }} 
-    </dd>
-  {% endif %}
-
-  {% if user.get_profile.first_name %}
-    <dt>{% trans "Name" %}</dt>
-    <dd>
-      {% if user.get_profile.get_gender_display %}
-        {{ user.get_profile.get_gender_display }}
-      {% endif %}
-      {# {{ user.get_full_name }}  #}
-      {{ user.get_profile.first_name }} 
-      <span class="caps">{{ user.get_profile.last_name }}</span>
-    </dd>
-  {% endif %}
-  
-  {% if user.get_profile.bio %}
-  <dt>{% trans "Brief Biography" %}</dt>
-  <dd>
-    {{ user.get_profile.bio }} 
-  </dd>
-  {% endif %}
-  
-  {% if user.get_profile.expertize %}
-  <dt>{% trans "Expertise" %}</dt>
-  <dd>
-    {{ user.get_profile.expertize }} 
-    <span style="color:red;">=todo: change model field name to the correct spelling which is <i>experti<strong>s</strong>e</i></span>
-  </dd>
-  {% endif %}
-
-	{% if user.get_profile.address %}  
-  <dt>{% trans "Address" %}</dt>
-  <dd>
-    {% if user_get_profile.address1 %}{{ user.get_profile.address1 }}<br>{% endif %}
-    {% if user.get_profile.address2 %}{{ user.get_profile.address2 }}<br>{% endif %}
-    {% if user.get_profile.city %}{{ user.get_profile.city }}<br>{% endif %}
-    {% if user.get_profile.city %}{{ user.get_profile.city }}<br>{% endif %}
-    {% if user.get_profile.state %}{{ user.get_profile.state }}<br>{% endif %}
-    {% if user.get_profile.zipcode %}{{ user.get_profile.zipcode }}<br>{% endif %}
-    {% if user.get_profile.address_country.name %}{{ user.get_profile.address_country.name }}{% endif %}
-  </dd>
-  {% endif %}
-	
-  {# {% if user.get_profile.country %} #}
-  {# <dt>{% trans "IPPC Country" %}</dt> #}
-  {# <dd> #}
-    {# <b>{{ user.get_profile.country.name }}</b> #}
-    {# todo: link to country page if user is contact point #}
-    {# <a href="/countries/{{ user.get_profile.country.name | slugify }}">{{ user.get_profile.country.name}}</a>     #}
-  {# </dd> #}
-  {# {% endif %} #}
-
   
   {% if user.get_profile.phone %}
   <dt>{% trans "Phone" %}</dt>
@@ -108,6 +117,38 @@
     {{ user.get_profile.mobile }} 
   </dd>
   {% endif %}
+  
+   {% if user.get_profile.preferredlanguage.all %}
+    <dt>{% trans "Preferred languages" %}</dt>
+    <dd>
+    {% for entry in user.get_profile.preferredlanguage.all %}
+        {{entry}}{% if forloop.last %} {% else %},{% endif %}
+      {% endfor %}
+    
+    </dd>
+  {% endif %}
+    {% if user.get_profile.website %}
+    <dt>{% trans "Website" %}</dt>
+    <dd>
+       <a href="{{ user.get_profile.website }} ">{{ user.get_profile.website }}</a>
+ 
+    
+    </dd>
+  {% endif %}
+  {% if user.get_profile.bio %}
+  <dt>{% trans "Brief Biography" %}</dt>
+  <dd>
+    {{ user.get_profile.bio }} 
+  </dd>
+  {% endif %}
+  
+  {% if user.get_profile.expertise %}
+  <dt>{% trans "Expertise" %}</dt>
+  <dd>
+    {{ user.get_profile.expertise }} 
+  </dd>
+  {% endif %}
+  
   
 	{% if user.get_profile.date_account_created %}  
 	  <dt>{% trans "Member Since" %}</dt>

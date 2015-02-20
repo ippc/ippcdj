@@ -426,7 +426,7 @@ class IppcUserProfile(models.Model):
     profile_photo = models.FileField(_("Profile Photo"), upload_to="profile_photos", blank=True)
     bio = models.TextField(_("Brief Biography"), default="", blank=True, null=True)
     # should be expertise, but we can just change the label for now
-    expertize = models.TextField(_("Description/expertise"), default="", blank=True, null=True)
+    expertise = models.TextField(_("Description/expertise"), default="", blank=True, null=True)
     
     address1 = models.CharField(_("Organization"), blank=True, max_length=250)
     address2 = models.TextField(_("Address"), default="", blank=True, null=True)
@@ -446,6 +446,7 @@ class IppcUserProfile(models.Model):
         verbose_name=_("Preferred Languages"),
         related_name='preferredlanguages+', blank=True, null=True,
         )
+    website = models.URLField(_("Website"),blank=True, null=True)
     date_account_created = models.DateTimeField(_("Member Since"), default=datetime.now, editable=False)
 
 

@@ -25,40 +25,32 @@
   </thead>
   <tbody>
     {% for object in latest1 %}
-     {% if user.is_superuser or request.user in object.users.all %} 
-       
-    <tr>
-      <td><a href="{% url 'draftprotocol-detail' object.publish_date|date:'Y' object.publish_date|date:'m'  object.slug %}">{{ object.title }}</a></td>
-      <td>{% if object.is_past_due %}
-          CLOSED
-         {% else %}
-        OPEN
-        {% endif %}
-      </td>
-      <td><a href="{% url 'draftprotocol-detail' object.publish_date|date:'Y' object.publish_date|date:'m'  object.slug %}">{{ object.closing_date|date:"d M Y" }}</a>
-        {% if user.is_superuser %} 
-            <a class="small pull-right" href="/admin/ippc/draftprotocol/{{ object.id }}"><i class="icon-edit"></i> Edit as Admin</a><br>
-        {% endif %}
-        {% if user.is_superuser or perms.ippc.change_draftprotocol  %}
-            <a class="small pull-right" href="{% url 'draftprotocol-edit' object.id %}"><i class="icon-edit"></i> Edit</a>
-        {% else %}
-        {% endif %}
-        </td>
-    </tr>
-       {% endif %}
-    
-      {% for group in request.user.groups.all %}
+     {% if user.is_superuser or perms.ippc.change_publication %} 
+            <tr>
+                <td><a href="{% url 'draftprotocol-detail' object.publish_date|date:'Y' object.publish_date|date:'m'  object.slug %}">{{ object.title }}</a></td>
+                <td>{% if object.is_past_due %}
+                  CLOSED
+                    {% else %}
+                   OPEN
+                   {% endif %}</td>
+                           <td><a href="{% url 'draftprotocol-detail' object.publish_date|date:'Y' object.publish_date|date:'m'  object.slug %}">{{ object.closing_date|date:"d M Y" }}</a>
+                  {% if user.is_superuser %} 
+                      <a class="small pull-right" href="/admin/ippc/draftprotocol/{{ object.id }}"><i class="icon-edit"></i> Edit as Admin</a><br>
+                  {% endif %}
+                  {% if user.is_superuser or perms.ippc.change_publication  %}
+                      <a class="small pull-right" href="{% url 'draftprotocol-edit' object.id %}"><i class="icon-edit"></i> Edit</a>
+                  {% else %}
+                  {% endif %}
+                  </td>
+              </tr>
+           {% endif %}
+          {% for group in request.user.groups.all %}
            {% if group in object.groups.all %}
     
-     
+     {% if object.is_past_due %}
     <tr>
       <td><a href="{% url 'draftprotocol-detail' object.publish_date|date:'Y' object.publish_date|date:'m'  object.slug %}">{{ object.title }}</a></td>
-      <td>{% if object.is_past_due %}
-          CLOSED
-         {% else %}
-        OPEN
-        {% endif %}
-      </td>
+      <td>OPEN</td>
       <td><a href="{% url 'draftprotocol-detail' object.publish_date|date:'Y' object.publish_date|date:'m'  object.slug %}">{{ object.closing_date|date:"d M Y" }}</a>
         {% if user.is_superuser %} 
             <a class="small pull-right" href="/admin/ippc/draftprotocol/{{ object.id }}"><i class="icon-edit"></i> Edit as Admin</a><br>
@@ -69,51 +61,22 @@
         {% endif %}
         </td>
     </tr>
-    
-    
-    {% endif %}
-    
- {% endfor %}
- 
- 
-    {% endfor %}
-  </tbody>
-</table>
+     {% endif %}
 
-
-{% if is_paginated %}
-  {% if page_obj.has_other_pages %}
-    <div class="pagination">
-    <ul>
-    <li class="disabled page-info">
-        <a>{% trans "Page" %} {{ page_obj.number }} {% trans "of" %} {{ page_obj.paginator.num_pages }}</a>
-    </li>
-    <li class="prev previous{% if not page_obj.has_previous %} disabled{% endif %}">
-        <a{% if page_obj.has_previous %} href="{% url 'draftprotocol-list' page.title|slugify %}?page={{ page_obj.previous_page_number }}"{% endif %}>&larr;</a>
-    </li>
-    {% for page in page_obj.paginator.page_range %}
-        {% if page %}
-            <li class="{% ifequal page page_obj.number %}active{% endifequal %}"><a href="?page={{ page }}">{{ page }}</a></li>
-        {% else %}
-            <li class="disabled"><a href="#">…</a></li>
-        {% endif %}
-    {% endfor %}
-    <li class="next{% if not page_obj.has_next %} disabled{% endif %}">
-        <a{% if page_obj.has_next %} href="{% url 'draftprotocol-list' page.title|slugify %}?page={{ page_obj.next_page_number }}"{% endif %}>&rarr;</a>
-    </li>
-    </ul>
-    </div>
-  {% endif %}
+  
+    
 {% endif %}
+ 
+ 
+    {% endfor %}
 
+
+
+{% endfor %}  </tbody>
+</table>
 
 {% else %}
 <p>No draftprotocol reports available.</p>
 {% endif %}
 
 {% endblock %}
-
-{# {% block extra_js %} #}
-{#   <script src="{% static "js/jquery.dataTables.js" %}"></script> #}
-{#   <script src="{% static "js/DT_bootstrap.js" %}"></script> #}
-{# {% endblock %} #}

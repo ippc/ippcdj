@@ -64,12 +64,13 @@ class IppcUserProfileForm(forms.ModelForm):
             'address2',
             'address_country',
             'bio', 
-            'expertize',
+            'expertise',
             'phone',
             'fax',
             'mobile',
             'email_address_alt',
             'profile_photo',
+            'website',
           
             ]
         #print(model)    

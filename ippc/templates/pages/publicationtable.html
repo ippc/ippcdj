@@ -40,9 +40,9 @@
     <tr id="media-file-{{ publication.id }}">
         <td><a href="#{{ publication.id }}" onclick="javascript:toggle_visibility({{ publication.id }});">{% trans "show/hide Details" %}</td>
         <td>{{ publication.document_number }}</td>
-        <td><a id="title_{{ publication.id }}" href="{% url 'publication-detail' publication.pk %}">{{ publication.title }}</a>
+        <td><a id="title_{{ publication.id }}" href="{% url 'publication-detail' publication.slug %}">{{ publication.title }}</a>
            <div id="{{ publication.id }}" style="display:none;">
-               <a href="{% url 'publication-detail' publication.pk %}">{{ publication.title }}</a>
+               <a href="{% url 'publication-detail' publication.slug %}">{{ publication.title }}</a>
                     {% if publication.file_en %}
                     <a href="{{ MEDIA_URL }}{{ publication.file_en }}">En</a>
                     {% endif %}
@@ -119,7 +119,7 @@
       {# {% if publication.agenda_number %} #}
         <td>{{ publication.agenda_number }}</td>
       {# {% endif %} #}
-      <td><a href="{% url 'publication-detail' publication.pk %}">{{ publication.title }}</a></td>
+      <td><a href="{% url 'publication-detail' publication.slug %}">{{ publication.title }}</a></td>
 
       <td>
         {% if publication.file_en %}
