@@ -225,6 +225,53 @@
             {% page_menu "pages/menus/tree.html" %}
         </div> 
         {% include "pages/menus/tree_key_core.html" %}
+		{# FAQ page show/hide #}
+		{% elif	page.id == 858 %} 
+			<style type="text/css" media="screen">
+				h2 {margin-top:2em;}
+				h3 {font-size:1.3em; line-height:1.5em;}
+				.darkheadings a {color:#000; text-decoration:none;}
+			</style>
+    		{# =todo: Make links to local anchors (other FAQ questions) open the answer div on the same page - http://stackoverflow.com/questions/4648446/jquery-load-retrieve-page-div-by-id-in-anchor-link #}
+			<script type="text/javascript">
+				// SHOW/HIDE/TOGGLE script
+    		// ============
+
+
+		    $(document).ready(function(){
+			        $("div.answer").hide();
+			        $("h3").click(function(){
+			            $(this).next().toggle("fast");
+			            // trying to get the H3 to turn black when clicking: http://api.jquery.com/toggleClass/
+			            $(this).toggleClass("darkheadings");
+			            // stopping local anchor from being followed so the page doesn't jump
+			            // return false;
+			        });
+
+			        // http://stackoverflow.com/questions/2848627/use-anchor-to-display-div
+			        $(function() {
+			            if(location.hash != "") {
+			                // $(location.hash + ":hidden").toggle('fast').prev("h3").toggleClass('darkheadings');
+			                				$(location.hash).next("div").toggle("fast").prev("h3").toggleClass("darkheadings");
+			            }
+			        });
+
+			        // http://andylangton.co.uk/jquery-show-hidecomment by morvi on 10.01.2010 at 23:46
+			        $("a.hideall").click(function() {
+			            $("div.answer").hide("fast");
+			            $("h3").removeClass("darkheadings");
+			        });
+			        $("a.showall").click(function() {
+			            $("div.answer").show("fast");
+			            $("h3").addClass("darkheadings");
+			        });
+
+			    });
+			</script>
+			<p class="floatright showhideanswers" style="margin-right:3em;">
+			    <a class="showall" href="#">Show all answers</a><br>
+			    <a class="hideall" href="#">Hide all answers</a>
+			</p>
     {% else %}
     <div class="panel tree">
         {% page_menu "pages/menus/tree.html" %}
@@ -271,11 +318,23 @@
 {% compress js %}
 
 {# better country selector using chosen - http://harvesthq.github.io/chosen/ #}
-<!--script type="text/javascript" charset="utf-8">
+<script type="text/javascript" charset="utf-8">
   $(".chosen-select").chosen()  
-</script-->
+</script>
 
 {% block extra_js %}{% endblock %}
 {% endcompress %}
+{% comment %} Google Analytics 
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+  ga('create', 'UA-26969258-1', 'auto');
+  ga('send', 'pageview');
+
+</script>
+{% endcomment %}
 </body>
 </html>

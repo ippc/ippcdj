@@ -16,6 +16,9 @@ body {
 }
 div.container-fluid {max-width:1200px; text-align:left; margin:0 auto;}
  /*url(/static/img/background.jpg) repeat 0 0;*/
+
+*:target {background:#ffc;}
+
 a.brand {
     font-size:1em !important; 
     vertical-align:middle; 
