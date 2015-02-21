@@ -416,7 +416,7 @@ ACCOUNTS_PROFILE_FORM_EXCLUDE_FIELDS = (
 )
 
 
-ALLOWED_HOSTS = "127.0.0.1:8000"
+ALLOWED_HOSTS = ["127.0.0.1:8000"]
 
 RICHTEXT_WIDGET_CLASS = 'mezzanine_pagedown.widgets.PageDownWidget'
 # RICHTEXT_WIDGET_CLASS = 'mezzanine.core.forms.TinyMceWidget'
