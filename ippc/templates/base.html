@@ -52,9 +52,6 @@
 
 <script type="text/javascript" src="/static/admin/js/admin/DateTimeShortcuts.js"></script>
 
-
-
-
 {% include 'autocomplete_light/static.html' %}
 {# 'add another' form field functionality #}
 <script src="{% static "js/jquery.formset.js" %}"></script>
@@ -64,7 +61,6 @@
 <!--[if lt IE 9]>
 <script src="{% static "js/html5shiv.js" %}"></script>
 <![endif]-->
-
 
 {% if f_form.prefix %}
  <script type="text/javascript">
@@ -97,12 +93,13 @@
     </script>
  {% endif %}  
 </head>
+
 <body id="{% block body_id %}body{% endblock %}" class="{% block body_class %}{% endblock %}">
 
 <div class="navbar navbar-fixed-top">
 <div class="navbar-inner">
 <div class="container-fluid">
-
+	<p style="margin:0;" class="alert alert-success">We are currently transitioning to a redesigned website. Please be patient in the next few days. More information will be provided shortly.</p>
     {# language bar #}
     {# http://pythonhosted.org/django-localeurl/usage.html #}
     {% load localeurl_tags %}
