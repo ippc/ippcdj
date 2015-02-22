@@ -103,7 +103,6 @@
 <div class="navbar-inner">
 <div class="container-fluid">
 
-
     {# language bar #}
     {# http://pythonhosted.org/django-localeurl/usage.html #}
     {% load localeurl_tags %}
@@ -163,6 +162,14 @@
 
 <div class="container-fluid">
 
+{% block bread %}
+<ul class="breadcrumb">
+{% spaceless %}
+{% block breadcrumb_menu %}{% page_menu "pages/menus/breadcrumb.html" %}{% endblock %}
+{% endspaceless %}
+</ul>
+{% endblock bread %}
+
 {% nevercache %}
 {% for message in messages %}
 <div class="alert alert-{{ message.tags }}" data-alert="alert">
@@ -175,19 +182,8 @@
 			{{ message }}
 		{% endif %}
 </div>
-
-
-
 {% endfor %}
 {% endnevercache %}
-
-{% block bread %}
-<ul class="breadcrumb">
-{% spaceless %}
-{% block breadcrumb_menu %}{% page_menu "pages/menus/breadcrumb.html" %}{% endblock %}
-{% endspaceless %}
-</ul>
-{% endblock bread %}
 
 <h2>{% block title %}{% endblock %}</h2>
 
@@ -202,11 +198,9 @@
 
 <div class="span4 right">
     {% block local_nav %}
-    {% block trans %}
-    
-    {% endblock trans %}
+			{% block trans %}
+			{% endblock trans %}
     {% endblock local_nav %}
-    
 
     {% if page.id == 3 %}
         {% include "pages/menus/tree_key_cn.html" %}
@@ -220,7 +214,7 @@
             {% page_menu "pages/menus/tree.html" %}
         </div> 
         {% include "pages/menus/tree_key_partners.html" %}
-    {% elif page.id == 322 or  page.parent_id == 322   or  page.parent_id == 323 or  page.parent_id == 345       or  page.parent_id == 449 or  page.parent_id == 427     or  page.parent_id == 429 or  page.parent_id == 459   or  page.parent_id == 455 or  page.parent_id == 445     %}
+    {% elif page.id == 322 or  page.parent_id == 322   or  page.parent_id == 323 or  page.parent_id == 345       or  page.parent_id == 449 or  page.parent_id == 427 or  page.parent_id == 429 or  page.parent_id == 459   or  page.parent_id == 455 or  page.parent_id == 445 %}
         <div class="panel tree">
             {% page_menu "pages/menus/tree.html" %}
         </div> 
@@ -273,7 +267,7 @@
 			    <a class="hideall" href="#">Hide all answers</a>
 			</p>
     {% else %}
-    <div class="panel tree">
+    <div class="tree">
         {% page_menu "pages/menus/tree.html" %}
     </div> 
     {% endif %}

@@ -11,6 +11,7 @@
 {% endblock %}
 
 {% block local_nav %}
+		<p class="alert alert-success pull-right"><span class="label label-important">Note:</span> We are currently transitioning to a redesigned website. If this is your first time logging in, you need to reset your password by going to the <a href="{{ password_reset_url }}?next={{ profile_update_url }}">forgot password page</a>, entering the email address associated with your IPPC account and clicking the <em>Password Reset</em> button. You will then receive an email with a link you need to click in order to log in and set your password.</p>
 {% endblock %}
 {% block pageinfo %}
 {% endblock %}
@@ -29,7 +30,7 @@
 {% endif %}
     <form method="post"{% if form.is_multipart %} enctype="multipart/form-data"{% endif %}>
     {# {% fields_for userform %} #}
-
+		
     {% fields_for form %}
 		
 		{# Lets show the forgot password link _by the password field_, goddamit. #}
@@ -40,9 +41,7 @@
 					{% url "mezzanine_password_reset" as password_reset_url %}
 					{% url "profile_update" as profile_update_url %}
 					{% blocktrans %}
-						<p><a href="{{ password_reset_url }}?next={{ profile_update_url }}">Forgot your password</a>?</p> 
-						
-						<p class="alert alert-success"><span class="label label-important">Note:</span> We are currently transitioning to a redesigned website. If this is your first time logging in, you need to reset your password by going to the <a href="{{ password_reset_url }}?next={{ profile_update_url }}">forgot password page</a>, entering the email address associated with your IPPC account and clicking the Password Reset button. You will then receive an email with a link you need to click in order to log in and set your password.</p>
+						<p><a href="{{ password_reset_url }}?next={{ profile_update_url }}">Forgot your password</a>?</p>
 					{% endblocktrans %}
 				{% endif %}
 				

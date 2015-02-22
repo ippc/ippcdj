@@ -2,16 +2,14 @@
 
 ## Things to do
 
-- Redirect new users to account/profile page and ask them to set a password in the email message.
-- Content (data) migration (ongoing)
+- FAQ update
 - User registration open but behind login-required and staff-user required. The URL to add new users is `/account/signup/`
 - Add blog and forum category management page to admin: 
     - http://127.0.0.1:8000/en/admin/blog/blogcategory/
     - http://127.0.0.1:8000/en/admin/forum/forumcategory/
 - Eventually update to Mezzanine 3.1.5
     - Update to latest version of Mezzanine and make sure current functionality works
-- FAQ
-- Setup proper permissions (nginx is currently running as root — not good) so that static media, including user-uploaded files are served through Nginx. Document nginx/gunicorn/supervisor setup (currently running gunicorn with deprecated `gunicorn_django -b 0.0.0.0:8000` command — get it running and working with recommended command instead)
+- Document nginx/gunicorn/supervisor setup (currently running gunicorn with deprecated `gunicorn_django -b 0.0.0.0:8000` command — get it running and working with recommended command instead)
 - Last modified date for pages
 - The All Our Users Database. Two options:
     1. Create[Single Sign-On](https://docs.djangoproject.com/en/1.5/topics/auth/customizing/) (see also [this](https://meta.discourse.org/t/sso-example-for-django/14258) and [this](https://github.com/Bouke/django-federated-login/tree/master/example)) and **[this](https://gist.github.com/kenbolton/4946936)** - a separate Accounts database to be used by all IPPC-related apps for authentication and authorization. The database should contain two tables:
@@ -60,10 +58,9 @@
     2. Logs in to dev.ippc.int, activates application virtualenv and pulls changes from Github
     3. Collect static files to locations to be served on dev server
     4. Restart gunicorn and nginx 
+- If no publication or agenda numbers exist, don't show header or cells
 - [Versioning](https://django-simple-history.readthedocs.org/en/latest/) of all page content?
 - [wiki.ippc.int](http://www.nomachetejuggling.com/2012/05/15/personal-wiki-using-github-and-gollum-on-os-x/)
-- If no publication or agenda numbers exist, don't show header or cells
-- Automatic local table of contents for pages with headers with IDs? <http://css-tricks.com/automatic-table-of-contents/> 
 
 ## Installation / Setup
 
