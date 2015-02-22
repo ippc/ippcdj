@@ -54,6 +54,8 @@ ul.languagebar > li > a {border-radius:0 0 5px 5px;}
 }
 .dl-horizontal dd {border-bottom:1px solid #eee;}
 
+.panel {font-size:0.9em;}
+
 div#publications_length label, 
 div#publications_filter label, 
 div#publications_info, 

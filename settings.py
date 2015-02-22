@@ -395,7 +395,7 @@ ACCOUNTS_PROFILE_VIEWS_ENABLED = True
 ACCOUNTS_MIN_PASSWORD_LENGTH = 8
 ACCOUNTS_VERIFICATION_REQUIRED = True
 # ACCOUNTS_APPROVAL_REQUIRED = False
-# ACCOUNTS_APPROVAL_EMAILS = 'simon.griffee@fao.org, paola.sentinelli@fao.org'
+# ACCOUNTS_APPROVAL_EMAILS = 'name@email.tld'
    
 ACCOUNTS_PROFILE_FORM_EXCLUDE_FIELDS = (
 #    "user",
@@ -415,9 +415,6 @@ ACCOUNTS_PROFILE_FORM_EXCLUDE_FIELDS = (
     "preferredlanguage",
 )
 
-
-ALLOWED_HOSTS = ["127.0.0.1:8000"]
-
 RICHTEXT_WIDGET_CLASS = 'mezzanine_pagedown.widgets.PageDownWidget'
 # RICHTEXT_WIDGET_CLASS = 'mezzanine.core.forms.TinyMceWidget'
 RICHTEXT_FILTER = 'mezzanine_pagedown.filters.custom'
@@ -435,8 +432,6 @@ EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 EMAIL_HOST = 'localhost'
 EMAIL_PORT = 1025
 #EMAIL_USE_TLS = True
-
-ENVELOPE_EMAIL_RECIPIENTS=['paola.sentinelli@fao.org']
 
 ENVELOPE_CONTACT_CHOICES = (
     (10,    _("Secretariat")),
