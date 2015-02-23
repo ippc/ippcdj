@@ -274,35 +274,21 @@
 </div>
 
 <footer>
-<div class="container-fluid">
-{% page_menu "pages/menus/footer.html" %}
-
-<div class="span6 muted">
-    <ul class="nav nav-pills small">
-        {# <li><a href="{% url 'contact' %}">{% trans "Contact us" %}</a></li> #}
-        {# <!--li><a href="{% url 'page' 'feeds' %}">{% trans "RSS feeds" %}</a></li--> #}
-        {# <li><a href="{% url 'page' 'legal' %}">{% trans "Copyright & Disclaimer" %}</a></li> #}
-        {# <!--li><a href="{% url 'page' 'colophon' %}">{% trans "About this site" %}</a--> #}
-    </ul>
-    <p class="text-left">{% trans "IPPC on Social Media:" %} <a href="http://www.facebook.com/pages/IPPC-Protecting-the-worlds-plant-resources-from-pests/113230338690380" class="icn-facebook">Facebook</a> | <a href="https://twitter.com/ippcnews" class="icn-twitter">Twitter</a></p>
-</div>
+	<div class="container-fluid">
+		{% page_menu "pages/menus/footer.html" %}
+			<div class="span6 muted left">
+			    <p class="text-left">{% trans "IPPC on Social Media:" %} <a href="http://www.facebook.com/pages/IPPC-Protecting-the-worlds-plant-resources-from-pests/113230338690380" class="icn-facebook">Facebook</a> | <a href="https://twitter.com/ippcnews" class="icn-twitter">Twitter</a></p>
+			</div>
     
-<div class="span6 text-right muted">
-    {% trans "The IPPC Secretariat is hosted &amp; provided by" %} <a href="http://www.fao.org">FAO</a>. <a style="vertical-align:bottom;" class="imglink" href="http://www.fao.org"><img class="faologo" src="{% static "img/fao-logo.gif" %}" alt="{% trans "Food and Agriculture Organization Logo" %}" height="58" width="58"></a><br><a style="margin-right:66px;" href="{% url 'page' 'legal' %}">{% trans "Copyright & Disclaimer" %}</a>
-</div>
-
-
-    {# {% trans "Powered by" %} #}
-    {# <a href="http://mezzanine.jupo.org">Mezzanine</a>{% ifinstalled cartridge.shop %}, #}
-    {# <a href="http://cartridge.jupo.org">Cartridge</a>{% endifinstalled %} #}
-    {# {% trans "and" %} #}
-    {# <a href="http://www.djangoproject.com">Django</a> #}
-    {# <span class="separator">|</span> #}
-    {# {% trans "Theme by" %} <a href="http://twitter.github.com/bootstrap/">Bootstrap</a> #}
-    {# {% ifinstalled mezzanine.mobile %} #}
-    {# <span class="separator">|</span> #}
-    {# <a href="{% url "set_device" "mobile" %}?next={{ request.path }}">{% trans "View Mobile Site" %}</a> #}
-    {# {% endifinstalled %} #}
+			<div class="span5 right muted small">
+				<p class="text-right">
+			    {% trans "The IPPC Secretariat is hosted &amp; provided by" %} <a href="http://www.fao.org">FAO</a>
+					<a style="vertical-align:bottom;" class="imglink" href="http://www.fao.org"><img class="faologo" src="{% static "img/fao-logo.gif" %}" alt="{% trans "Food and Agriculture Organization Logo" %}" height="58" width="58"></a>
+					<br>
+										<a style="margin-right:66px;" href="{% url 'page' 'legal' %}">{% trans "Copyright & Disclaimer" %}</a>
+				</p>
+			</div>
+	</div>
 </footer>
 
 {# {% include "includes/footer_scripts.html" %} #}
