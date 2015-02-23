@@ -383,7 +383,7 @@ SITE_TITLE = _("International Plant Protection Convention")
 SITE_TAGLINE = _("Protecting the world's plant resources from pests")
 
 AUTH_PROFILE_MODULE = "ippc.IppcUserProfile"
-ACCOUNTS_PROFILE_VIEWS_ENABLED = False
+ACCOUNTS_PROFILE_VIEWS_ENABLED = True
 ACCOUNTS_MIN_PASSWORD_LENGTH = 8
 ACCOUNTS_VERIFICATION_REQUIRED = True
 # ACCOUNTS_APPROVAL_REQUIRED = False
