@@ -395,7 +395,7 @@ import shutil
 
 import zipfile
 import StringIO
-from settings import PROJECT_ROOT
+from settings import PROJECT_ROOT, MEDIA_ROOT
 from django.core.files.storage import default_storage
 
 class PublicationFilesListView(ListView):
@@ -451,10 +451,10 @@ class PublicationFilesListView(ListView):
         # The zip compressor
         date = timezone.now().strftime('%Y%m%d%H%M%S')+"_"+str(self.kwargs['id'])
         zip_all1 ="/static/media/tmp/"+"archive_all_"+ date+".zip"
-        zip_all = zipfile.ZipFile(PROJECT_ROOT+"/static/media/tmp/"+"archive_all_"+ date+".zip", "w")
+        zip_all = zipfile.ZipFile(MEDIA_ROOT+"/tmp/"+"archive_all_"+ date+".zip", "w")
         for lang in langs:
             zip_lang1 = "/static/media/tmp/"+"archive_"+str(lang[0])+"_"+ date+".zip"
-            zip_lang = zipfile.ZipFile(PROJECT_ROOT+"/static/media/tmp/"+"archive_"+str(lang[0])+"_"+ date+".zip", "w")
+            zip_lang = zipfile.ZipFile(MEDIA_ROOT+"/tmp/"+"archive_"+str(lang[0])+"_"+ date+".zip", "w")
             for file_path in lang[1]:
                 strfpath=os.path.join('/work/projects/ippcdj-env/public/', '/work/projects/ippcdj-env/public/static/media/')+str(file_path)
                 filename = strfpath.split('/');
@@ -474,12 +474,12 @@ class PublicationFilesListView(ListView):
         context['zip_all_s']=os.path.getsize(zip_all.filename)
         
         destination = '/work/projects/ippcdj-env/public/static/media/tmp/'
-        src_files = os.listdir(PROJECT_ROOT+"/static/media/tmp/")
+        src_files = os.listdir(MEDIA_ROOT+"/tmp/")
         for file_name in src_files:
-            full_file_name = os.path.join(PROJECT_ROOT+"/static/media/tmp/", file_name)
+            full_file_name = os.path.join(MEDIA_ROOT+"/tmp/", file_name)
             if (os.path.isfile(full_file_name)):
                  shutil.move(full_file_name, destination)
-        source = PROJECT_ROOT+"/static/media/tmp/"
+        source = MEDIA_ROOT+"/tmp/"
         
         return context
             
@@ -3463,7 +3463,7 @@ def email_send(request):
             # Attach a files to message
             fileset= EmailUtilityMessageFile.objects.filter(emailmessage_id=new_emailmessage.id)
             for f in fileset:
-                pf=PROJECT_ROOT+'/static/media/'+str(f.file)
+                pf=MEDIA_ROOT+'/static/media/'+str(f.file)
                 message.attach_file(pf) 
             message.content_subtype = "html" 
             
