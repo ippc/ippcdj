@@ -6,6 +6,7 @@
 
 {% block breadcrumb_menu %}
 <li class="active">{% trans "Home: Plant Protection News" %}</li>
+<li class="pull-right">{% include "countries/country_selector.html" %}</li>
 {% endblock %}
 
 {% block main %}
@@ -101,7 +102,7 @@
 
 <div class="panel">
   <h4><a href="{% url 'page' 'countries' %}">{% trans "Countries" %}</a></h4>
-  <p>
+	{% include "countries/country_selector.html" %}
   <ul>
       <li>{% blocktrans %}<a href="/countries/all/list-countries/">Complete List of Countries{% endblocktrans %}</a></li>
       <li>{% blocktrans %}<a href="/countries/all/contactpoints">List of Contact Points{% endblocktrans %}</a></li>
@@ -109,10 +110,9 @@
       <li>{% blocktrans %}<a href="/countries/all/legislation">Legislation {% endblocktrans %}</a></li>
       <li>{% blocktrans %}<a href="/countries/all/regulatedpests">List of regulated pests {% endblocktrans %}</a></li>
   </ul>
-    </p>
-		
-  {% include "countries/country_selector.html" %}
+</div>
 
+<div class="panel">
   <h4><a href="http://irss.ippc.int/helpdesk">{% trans "IRSS Helpdesk" %}</a></h4>
 		<ul>
 			<li><a href="http://irss.ippc.int/question/where-can-i-find-report-irss-survey-review-implementation-guidelines-lists-regulated-pests">Where can I find the report of the IRSS Survey: Review of the implementation of Guidelines on lists of regulated pests (ISPM19:2003) and Pest reporting (ISPM17:2002)?</a>
