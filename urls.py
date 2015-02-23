@@ -32,6 +32,9 @@ from schedule.periods import Year, Month, Week, Day
 from mezzanine.core.views import direct_to_template
 import mezzanine_pagedown.urls
 
+# http://django-envelope.readthedocs.org/en/latest/customization.html
+# from envelope.views import ContactView
+
 
 
 # Add the urlpatterns for any custom Django applications here.
@@ -55,9 +58,14 @@ urlpatterns = patterns("",
     # url(r'^forum/(?P<slug>[\w-]+)/$',
     #     view=ForumPostDetailView.as_view(),
     #     name="forum-post-detail"),
-    url(r'^contact/',    include('envelope.urls')),
+    # url(r'^contact/',    include('envelope.urls')),
+    # url(r'^contact/', ContactView.as_view(
+    #     template_name="envelope/contact_form.html",
+    #     success_url="/thankyou/",
+    # )),
     url("^sitemap/$", direct_to_template, {"template": "sitemap.html"}, name="sitemap"),
     url("^contact/$", direct_to_template, {"template": "contact.html"}, name="contact"),
+    url("^thankyou/$", direct_to_template, {"template": "thankyou.html"}, name="thankyou"),
     # url("^feeds/$", direct_to_template, {"template": "feeds.html"}, name="feeds"),
     # url("^legal/$", direct_to_template, {"template": "legal.html"}, name="legal"),
     # url("^colophon/$", direct_to_template, {"template": "colophon.html"}, name="colophon"),
