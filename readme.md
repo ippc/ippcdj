@@ -2,7 +2,9 @@
 
 ## Things to do
 
-- FAQ update
+- Tune Nginx
+- Setup [auto-restart](https://github.com/hypertexthero/itwishlist/blob/master/docs/documentation.md#commands-to-restart-itippcint-and-related-software-upon-hardware-restart----hardwarerestart) of Nginx and Gunicorn in case server goes down
+- Finish FAQ update and send to translation
 - User registration open but behind login-required and staff-user required. The URL to add new users is `/account/signup/`
 - Add blog and forum category management page to admin: 
     - http://127.0.0.1:8000/en/admin/blog/blogcategory/
