@@ -98,7 +98,9 @@
 
 <div class="navbar navbar-fixed-top">
 <div class="navbar-inner">
+
 <div class="container-fluid">
+
 	<p style="margin:0;" class="alert alert-success small">We are currently transitioning to a redesigned website. Please be patient in the next few days. More information will be provided shortly.</p>
     {# language bar #}
     {# http://pythonhosted.org/django-localeurl/usage.html #}
@@ -153,132 +155,132 @@
       {% page_menu "pages/menus/dropdown.html" %}
     </div>
     
-</div>
-</div>
-</div>
+</div> {# /.navbar navbar-fixed-top #}
+</div> {# /.navbar-inner #}
+</div> {# /.container-fluid #}
 
 <div class="container-fluid">
 
-{% block bread %}
-<ul class="breadcrumb">
-{% spaceless %}
-{% block breadcrumb_menu %}{% page_menu "pages/menus/breadcrumb.html" %}{% endblock %}
-{% endspaceless %}
-</ul>
-{% endblock bread %}
+	{% block bread %}
+	<ul class="breadcrumb">
+	{% spaceless %}
+	{% block breadcrumb_menu %}{% page_menu "pages/menus/breadcrumb.html" %}{% endblock %}
+	{% endspaceless %}
+	</ul>
+	{% endblock bread %}
 
-{% nevercache %}
-{% for message in messages %}
-<div class="alert alert-{{ message.tags }}" data-alert="alert">
-    <a class="close" href="#" onclick="$(this).parent().fadeOut('fast'); return false;">×</a>
-		{% if message.message == "Successfully signed up" %}
-		  {{ "You have successfully activated your account! <b style='color:#060;'>Please set a new password below &darr;</b>" }}
-		{# {% elif message.message == "Item removed from wishlist" %} #}
-		  {# {{ "Item removed from your Favorites" }} #}
-		{% else %}
-			{{ message }}
-		{% endif %}
-</div>
-{% endfor %}
-{% endnevercache %}
+	{% nevercache %}
+	{% for message in messages %}
+	<div class="alert alert-{{ message.tags }}" data-alert="alert">
+	    <a class="close" href="#" onclick="$(this).parent().fadeOut('fast'); return false;">×</a>
+			{% if message.message == "Successfully signed up" %}
+			  {{ "You have successfully activated your account! <b style='color:#060;'>Please set a new password below &darr;</b>" }}
+			{# {% elif message.message == "Item removed from wishlist" %} #}
+			  {# {{ "Item removed from your Favorites" }} #}
+			{% else %}
+				{{ message }}
+			{% endif %}
+	</div>
+	{% endfor %}
+	{% endnevercache %}
 
-<h2>{% block title %}{% endblock %}</h2>
+	<h2>{% block title %}{% endblock %}</h2>
 
-</div>
+</div> {# /.container-fluid #}
 
 <div class="container-fluid">
+	
 <div class="row-fluid">
+	<div class="span8 middle">
+	    {% block main %}{% endblock %}
+	</div>
 
-<div class="span8 middle">
-    {% block main %}{% endblock %}
-</div>
+	<div class="span4 right">
+	    {% block local_nav %}
+				{% block trans %}
+				{% endblock trans %}
+	    {% endblock local_nav %}
 
-<div class="span4 right">
-    {% block local_nav %}
-			{% block trans %}
-			{% endblock trans %}
-    {% endblock local_nav %}
+	    {% if page.id == 3 %}
+	        {% include "pages/menus/tree_key_cn.html" %}
+	    {% elif page.id == 522 %}
+	        <div class="panel tree">
+	            {% page_menu "pages/menus/tree.html" %}
+	        </div>
+	        {% include "pages/menus/tree_logos.html" %}
+	    {% elif page.id == 465 or  page.id == 466 or  page.id == 485 or page.parent_id == 466 or page.parent_id == 485 %}
+	        <div class="panel tree">
+	            {% page_menu "pages/menus/tree.html" %}
+	        </div> 
+	        {% include "pages/menus/tree_key_partners.html" %}
+			{% elif page.id == 322 or  page.parent_id == 322   or  page.parent_id == 323 or  page.parent_id == 345       or  page.parent_id == 449 or  page.parent_id == 427 or  page.parent_id == 429 or  page.parent_id == 459   or  page.parent_id == 455 or  page.parent_id == 445 %}
+	        <div class="panel tree">
+	            {% page_menu "pages/menus/tree.html" %}
+	        </div> 
+	        {% include "pages/menus/tree_key_core.html" %}
 
-    {% if page.id == 3 %}
-        {% include "pages/menus/tree_key_cn.html" %}
-    {% elif page.id == 522 %}
-        <div class="panel tree">
-            {% page_menu "pages/menus/tree.html" %}
-        </div>
-        {% include "pages/menus/tree_logos.html" %}
-    {% elif page.id == 465 or  page.id == 466 or  page.id == 485 or page.parent_id == 466 or page.parent_id == 485 %}
-        <div class="panel tree">
-            {% page_menu "pages/menus/tree.html" %}
-        </div> 
-        {% include "pages/menus/tree_key_partners.html" %}
-    {% elif page.id == 322 or  page.parent_id == 322   or  page.parent_id == 323 or  page.parent_id == 345       or  page.parent_id == 449 or  page.parent_id == 427 or  page.parent_id == 429 or  page.parent_id == 459   or  page.parent_id == 455 or  page.parent_id == 445 %}
-        <div class="panel tree">
-            {% page_menu "pages/menus/tree.html" %}
-        </div> 
-        {% include "pages/menus/tree_key_core.html" %}
+			{# FAQ page show/hide ================= #}
+			{% elif	page.id == 858 %} 
+				<style type="text/css" media="screen">
+					h2 {margin:1em 0 0;}
+					h3 {font-size:1.3em; line-height:1.5em;}
+					h3 a {font-weight:normal;}
+					.darkheadings a {color:#000; text-decoration:none; font-weight:bold; font-style:italic;}
+				</style>
+	    		{# =todo: Make links to local anchors (other FAQ questions) open the answer div on the same page - http://stackoverflow.com/questions/4648446/jquery-load-retrieve-page-div-by-id-in-anchor-link #}
+				<script type="text/javascript">
+					// SHOW/HIDE/TOGGLE script
+	    		// ============
+			    $(document).ready(function(){
+				        $("div.answer").hide();
+				        $("h3").click(function(){
+				            $(this).next().toggle("fast");
+				            // trying to get the H3 to turn black when clicking: http://api.jquery.com/toggleClass/
+				            $(this).toggleClass("darkheadings");
+				            // stopping local anchor from being followed so the page doesn't jump
+				            // return false;
+				        });
 
-		{# FAQ page show/hide ================= #}
-		{% elif	page.id == 858 %} 
-			<style type="text/css" media="screen">
-				h2 {margin:1em 0 0;}
-				h3 {font-size:1.3em; line-height:1.5em;}
-				h3 a {font-weight:normal;}
-				.darkheadings a {color:#000; text-decoration:none; font-weight:bold; font-style:italic;}
-			</style>
-    		{# =todo: Make links to local anchors (other FAQ questions) open the answer div on the same page - http://stackoverflow.com/questions/4648446/jquery-load-retrieve-page-div-by-id-in-anchor-link #}
-			<script type="text/javascript">
-				// SHOW/HIDE/TOGGLE script
-    		// ============
-		    $(document).ready(function(){
-			        $("div.answer").hide();
-			        $("h3").click(function(){
-			            $(this).next().toggle("fast");
-			            // trying to get the H3 to turn black when clicking: http://api.jquery.com/toggleClass/
-			            $(this).toggleClass("darkheadings");
-			            // stopping local anchor from being followed so the page doesn't jump
-			            // return false;
-			        });
+				        // http://stackoverflow.com/questions/2848627/use-anchor-to-display-div
+				        $(function() {
+				            if(location.hash != "") {
+				                // $(location.hash + ":hidden").toggle('fast').prev("h3").toggleClass('darkheadings');
+				                				$(location.hash).next("div").toggle("fast").prev("h3").toggleClass("darkheadings");
+				            }
+				        });
 
-			        // http://stackoverflow.com/questions/2848627/use-anchor-to-display-div
-			        $(function() {
-			            if(location.hash != "") {
-			                // $(location.hash + ":hidden").toggle('fast').prev("h3").toggleClass('darkheadings');
-			                				$(location.hash).next("div").toggle("fast").prev("h3").toggleClass("darkheadings");
-			            }
-			        });
+				        // http://andylangton.co.uk/jquery-show-hidecomment by morvi on 10.01.2010 at 23:46
+				        $("a.hideall").click(function() {
+				            $("div.answer").hide("fast");
+				            $("h3").removeClass("darkheadings");
+				        });
+				        $("a.showall").click(function() {
+				            $("div.answer").show("fast");
+				            $("h3").addClass("darkheadings");
+				        });
 
-			        // http://andylangton.co.uk/jquery-show-hidecomment by morvi on 10.01.2010 at 23:46
-			        $("a.hideall").click(function() {
-			            $("div.answer").hide("fast");
-			            $("h3").removeClass("darkheadings");
-			        });
-			        $("a.showall").click(function() {
-			            $("div.answer").show("fast");
-			            $("h3").addClass("darkheadings");
-			        });
+				    });
+				</script>
+				<p class="floatright showhideanswers" style="margin-right:3em;">
+				    <a class="showall" href="#">Show all answers</a><br>
+				    <a class="hideall" href="#">Hide all answers</a>
+				</p>
+	    {% else %}
+	    <div class="tree">
+	        {% page_menu "pages/menus/tree.html" %}
+	    </div> 
+	    {% endif %}
+	</div> {# /.span4 right #}
 
-			    });
-			</script>
-			<p class="floatright showhideanswers" style="margin-right:3em;">
-			    <a class="showall" href="#">Show all answers</a><br>
-			    <a class="hideall" href="#">Hide all answers</a>
-			</p>
-    {% else %}
-    <div class="tree">
-        {% page_menu "pages/menus/tree.html" %}
-    </div> 
-    {% endif %}
-</div>
-
-</div>
-</div>
+</div> {# /.container-fluid #}
+</div> {# /.row-fluid #}
 
 <footer>
 	<div class="container-fluid">
 		{% page_menu "pages/menus/footer.html" %}
 			<div class="span6 muted left">
 			    <p class="text-left">{% trans "IPPC on Social Media:" %} <a href="http://www.facebook.com/pages/IPPC-Protecting-the-worlds-plant-resources-from-pests/113230338690380" class="icn-facebook">Facebook</a> | <a href="https://twitter.com/ippcnews" class="icn-twitter">Twitter</a></p>
-			</div>
+			</div> {# /.span6 muted left #}
     
 			<div class="span5 right muted small">
 				<p class="text-right">
@@ -287,9 +289,9 @@
 					<br>
 										<a style="margin-right:66px;" href="{% url 'page' 'legal' %}">{% trans "Copyright & Disclaimer" %}</a>
 				</p>
-			</div>
+			</div> {# /.span5 right muted small #}
 	</div>
-</footer>
+</footer> {# /.container-fluid #}
 
 {# {% include "includes/footer_scripts.html" %} #}
 {% compress js %}
@@ -312,5 +314,6 @@
   ga('send', 'pageview');
 
 </script>
+
 </body>
 </html>
