@@ -216,19 +216,19 @@
             {% page_menu "pages/menus/tree.html" %}
         </div> 
         {% include "pages/menus/tree_key_core.html" %}
-		{# FAQ page show/hide #}
+
+		{# FAQ page show/hide ================= #}
 		{% elif	page.id == 858 %} 
 			<style type="text/css" media="screen">
-				h2 {margin-top:2em;}
+				h2 {margin:1em 0 0;}
 				h3 {font-size:1.3em; line-height:1.5em;}
-				.darkheadings a {color:#000; text-decoration:none;}
+				h3 a {font-weight:normal;}
+				.darkheadings a {color:#000; text-decoration:none; font-weight:bold; font-style:italic;}
 			</style>
     		{# =todo: Make links to local anchors (other FAQ questions) open the answer div on the same page - http://stackoverflow.com/questions/4648446/jquery-load-retrieve-page-div-by-id-in-anchor-link #}
 			<script type="text/javascript">
 				// SHOW/HIDE/TOGGLE script
     		// ============
-
-
 		    $(document).ready(function(){
 			        $("div.answer").hide();
 			        $("h3").click(function(){
