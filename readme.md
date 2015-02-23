@@ -233,7 +233,8 @@ Dev server exlqaippc2.ext.fao.org setup and configuration for IPPC 4.0 prototype
 
 7. Compile and make translations 
 
-		python manage.py makemessages --all
+		python manage.py makemessages --all  
+		
 		python manage.py compilemessages
 
 8. Stop and restart [Gunicorn](http://gunicorn-docs.readthedocs.org/en/latest/run.html) application server (todo: find way to do this gracefully, so existing processes, such as a user submitting a form, don't fail:
