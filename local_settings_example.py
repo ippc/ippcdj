@@ -18,6 +18,17 @@ DATABASES = {
     }
 }
 
+# People who get code error notifications.
+# In the format (('Full Name', 'email@example.com'),
+#                ('Full Name', 'anotheremail@example.com'))
+ADMINS = (
+    # ('Your Name', 'your_email@domain.com'),
+)
+MANAGERS = ADMINS
+
+# MAKE SURE TO UNCOMMENT THIS IF YOU ARE USING SSL
+# SSL_ENABLED = True
+
 # Absolute path to the directory that holds media.
 # Example: "/home/media/media.lawrence.com/"
 MEDIA_ROOT = ""
