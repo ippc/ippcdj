@@ -184,7 +184,7 @@ If you add new fields or change certain values of existing ones such as blank or
 
 2. Everytime you make a change in your models do the following:
 
-        python manage.py schemamigration ippc --auto
+        python manage.py schemamigration ippc --auto  
         python manage.py migrate ippc
 
 3. If you want to revert to a previous migration, look for the previous migration number in ippc/migrations and replace #### with the migration number in the following command:
@@ -238,8 +238,8 @@ Dev server exlqaippc2.ext.fao.org setup and configuration for IPPC 4.0 prototype
 
 8. Stop and restart [Gunicorn](http://gunicorn-docs.readthedocs.org/en/latest/run.html) application server (todo: find way to do this gracefully, so existing processes, such as a user submitting a form, don't fail:
 
-		pkill gunicorn
-		gunicorn_django --daemon -b 0.0.0.0:8000
+		pkill gunicorn  
+		gunicorn_django -b 0.0.0.0:8000 --daemon --log-file /var/log/nginx/gunicorn-beta-ippc-error.log
 
 9. Restart Nginx reverse-proxy server (web-facing) server
 
