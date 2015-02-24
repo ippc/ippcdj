@@ -72,7 +72,8 @@ def commenta(request, template="generic/comments.html"):
     
     
     #TO FIX with real message
-    notifificationmessage = mail.EmailMessage(subject,text,'paola.sentinelli@gmail.com',  ['paola.sentinelli@gmail.com'], ['paola.sentinelli@gmail.com'])
+    #notifificationmessage = mail.EmailMessage(subject,text,'paola.sentinelli@fao.org', emailto_all, ['paola.sentinelli@fao.org'])
+    notifificationmessage = mail.EmailMessage(subject,text,'ippc@fao.org', emailto_all, ['paola.sentinelli@fao.org'])
     notifificationmessage.content_subtype = "html"  
     sent =notifificationmessage.send()
 
@@ -395,7 +396,7 @@ import shutil
 
 import zipfile
 import StringIO
-from settings import PROJECT_ROOT
+from settings import PROJECT_ROOT, MEDIA_ROOT
 from django.core.files.storage import default_storage
 
 class PublicationFilesListView(ListView):
@@ -451,10 +452,10 @@ class PublicationFilesListView(ListView):
         # The zip compressor
         date = timezone.now().strftime('%Y%m%d%H%M%S')+"_"+str(self.kwargs['id'])
         zip_all1 ="/static/media/tmp/"+"archive_all_"+ date+".zip"
-        zip_all = zipfile.ZipFile(PROJECT_ROOT+"/static/media/tmp/"+"archive_all_"+ date+".zip", "w")
+        zip_all = zipfile.ZipFile(MEDIA_ROOT+"/tmp/"+"archive_all_"+ date+".zip", "w")
         for lang in langs:
             zip_lang1 = "/static/media/tmp/"+"archive_"+str(lang[0])+"_"+ date+".zip"
-            zip_lang = zipfile.ZipFile(PROJECT_ROOT+"/static/media/tmp/"+"archive_"+str(lang[0])+"_"+ date+".zip", "w")
+            zip_lang = zipfile.ZipFile(MEDIA_ROOT+"/tmp/"+"archive_"+str(lang[0])+"_"+ date+".zip", "w")
             for file_path in lang[1]:
                 strfpath=os.path.join('/work/projects/ippcdj-env/public/', '/work/projects/ippcdj-env/public/static/media/')+str(file_path)
                 filename = strfpath.split('/');
@@ -474,12 +475,12 @@ class PublicationFilesListView(ListView):
         context['zip_all_s']=os.path.getsize(zip_all.filename)
         
         destination = '/work/projects/ippcdj-env/public/static/media/tmp/'
-        src_files = os.listdir(PROJECT_ROOT+"/static/media/tmp/")
+        src_files = os.listdir(MEDIA_ROOT+"/tmp/")
         for file_name in src_files:
-            full_file_name = os.path.join(PROJECT_ROOT+"/static/media/tmp/", file_name)
-            if (os.path.isfile(full_file_name)):
-                 shutil.move(full_file_name, destination)
-        source = PROJECT_ROOT+"/static/media/tmp/"
+            full_file_name = os.path.join(MEDIA_ROOT+"/tmp/", file_name)
+            #if (os.path.isfile(full_file_name)):
+            #     shutil.move(full_file_name, destination)
+        source = MEDIA_ROOT+"/tmp/"
         
         return context
             
@@ -512,8 +513,10 @@ def send_notification_message(newitem,id,content_type,title,url):
         itemllink="https://www.ippc.int/countries/"+url
         textmessage ='<table bgcolor="#FFFFFF" cellspacing="2" cellpadding="2" valign="top" width="100%" style="border-bottom: 1px solid #10501F;border-top: 1px solid #10501F;border-left: 1px solid #10501F;border-right: 1px solid #10501F"> <tr><td width="100%" bgcolor="#FFFFFF">Please be informed that the following information has been added/updated on the <b>International Phytosanitary Portal:</b><br>'+title+' ('+itemllink+')</td></tr><tr bgcolor="#FFFFFF"><td bgcolor="#FFFFFF"></td></tr><tr><td width="100%" bgcolor="#FFFFFF">If you no longer wish to receive these notifications, please notify this country\'s IPPC Contact Point.</td></tr></table>'
         
-        message = mail.EmailMessage(subject,textmessage,'paola.sentinelli@gmail.com',#from
-            ['paola.sentinelli@fao.org',], ['paola.sentinelli@gmail.com'])#emailto_all for PROD, in TEST all to paola#
+        #message = mail.EmailMessage(subject,textmessage,'paola.sentinelli@fao.org',#from
+        #    ['paola.sentinelli@fao.org',], ['paola.sentinelli@fao.org'])#emailto_all for PROD, in TEST all to paola#
+        message = mail.EmailMessage(subject,textmessage,'ippc@fao.org',#from
+            emailto_all, ['paola.sentinelli@fao.org'])#emailto_all for PROD, in TEST all to paola#
         print(textmessage)
         message.content_subtype = "html" 
         sent =message.send()
@@ -3286,9 +3289,11 @@ def send_pollnotification_message(id):
     subject='IPPC POLL:  new poll: '+poll.question
     textmessage='<p>Dear IPPC user,<br><br>a new poll has been posted and it is open for your answer ( selecting YES or NO) and comments:<br>    <br>Poll: '+poll.question+'<br><br>'+poll.polltext+'<br><br>You can view it at the following url: https://www.ippc.int/poll/'+str(id)+'<br><br>International Plant Protection Convention team </p>'
 
-    message = mail.EmailMessage(subject,textmessage,'paola.sentinelli@gmail.com',#from
-        ['paola.sentinelli@fao.org',], ['paola.sentinelli@gmail.com'])#emailto_all for PROD, in TEST all to paola#
-    print(textmessage)
+    #message = mail.EmailMessage(subject,textmessage,'paola.sentinelli@fao.org',#from
+    #    ['paola.sentinelli@fao.org',], ['paola.sentinelli@fao.org'])#emailto_all for PROD, in TEST all to paola#
+    message = mail.EmailMessage(subject,textmessage,'ippc@fao.org',#from
+        [emailto_all], ['paola.sentinelli@fao.org'])#emailto_all for PROD, in TEST all to paola#
+    
     message.content_subtype = "html" 
     sent =message.send()
         
@@ -3458,12 +3463,14 @@ def email_send(request):
             f_form.save()
             #EmailMessage('Hello', 'Body goes here', 'from@example.com', ['to1@example.com', 'to2@example.com'], ['bcc@example.com'],  headers = {'Reply-To': 'another@example.com'})
             #send email message
+            #message = mail.EmailMessage(request.POST['subject'],request.POST['messagebody'],request.POST['emailfrom'],
+            #['paola.sentinelli@fao.org',], ['paola.sentinelli@fao.org'])#emailto_all for PROD, in TEST all to paola#
             message = mail.EmailMessage(request.POST['subject'],request.POST['messagebody'],request.POST['emailfrom'],
-            ['paola.sentinelli@fao.org',], ['paola.sentinelli@gmail.com'])#emailto_all for PROD, in TEST all to paola#
+            emailto_all, ['paola.sentinelli@fao.org'])#emailto_all for PROD, in TEST all to paola#
             # Attach a files to message
             fileset= EmailUtilityMessageFile.objects.filter(emailmessage_id=new_emailmessage.id)
             for f in fileset:
-                pf=PROJECT_ROOT+'/static/media/'+str(f.file)
+                pf=MEDIA_ROOT+str(f.file)
                 message.attach_file(pf) 
             message.content_subtype = "html" 
             
@@ -3684,7 +3691,7 @@ def contactPointExtractor(request):
         c_emailalt =c.email_address_alt
         c_address=c.address1
         
-        writer.writerow([country,c_type,c_gender, unicode(c_first_name), unicode(c_last_name),c_email,c_emailalt,unicode(c_address)])
+        writer.writerow([country,c_type,c_gender, c_first_name.encode('utf-8'), c_last_name.encode('utf-8'),c_email,c_emailalt,c_address.encode('utf-8')])
 
     return response	
 

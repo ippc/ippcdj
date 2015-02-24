@@ -68,7 +68,7 @@ class ForumPostAdmin(DisplayableAdmin,OwnableAdmin):
             subject='IPPC FORUM: '+category+' - new discussion: '+request.POST['title']       
             text='Dear IPPC user,\na new discussion has been posted in the '+category+' Forum.\nDiscussion:'+ request.POST['title']+'\nPost:'+request.POST['content']+'\nYou can view it at the following url: http://127.0.0.1:8100/forum/'+request.POST['slug']+'\n-- International Plant Protection Convention team  \n'
             #TO FIX with real message
-            notifificationmessage = mail.EmailMessage(subject,text,'paola.sentinelli@gmail.com',  ['paola.sentinelli@gmail.com'], ['paola.sentinelli@gmail.com'])
+            notifificationmessage = mail.EmailMessage(subject,text,'ippc@fao.org',  emailto_all, ['paola.sentinelli@fao.org'])
             notifificationmessage.content_subtype = "html"  
             sent =notifificationmessage.send()
         return DisplayableAdmin.save_form(self, request, form, change)
