@@ -240,6 +240,7 @@ Dev server exlqaippc2.ext.fao.org setup and configuration for IPPC 4.0 prototype
 
 8. Stop and restart [Gunicorn](http://gunicorn-docs.readthedocs.org/en/latest/run.html) application server (todo: find way to do this gracefully, so existing processes, such as a user submitting a form, don't fail:
 
+<!--		ps aux |grep gunicorn | awk '{ print $2 }' |xargs kill -HUP  -->
 		pkill gunicorn  
 		gunicorn_django -b 0.0.0.0:8000 --daemon --log-file /var/log/nginx/gunicorn-beta-ippc-error.log
 
