@@ -11,11 +11,26 @@
         <strong>
             {% if comment.url %}
             <a href="{{ comment.url }}">
-                <img src="{% gravatar_url comment.email %}">
+                {# <img src="{% gravatar_url comment.email %}"> #}
+
+							  {% url "profile" request.user.username as profile_url %}
+								{% if profile_user.get_profile.profile_photo %}
+							  <a href="{{ profile_url }}"><img class="pull-right profile-picture" style="margin:0 0 20px 10px;" src="{{ MEDIA_URL }}{% thumbnail profile_user.get_profile.profile_photo 48 48 %}"></a>
+							  {% else %}
+							  <a class="pull-right profile-picture" style="height:48px; width:48px; background:#eee;" href="{{ profile_url }}"></a>
+							  {% endif %}
+								
                 {{ comment.user_name }}
             </a>
             {% else %}
-            <img src="{% gravatar_url comment.email %}">
+            {# <img src="{% gravatar_url comment.email %}"> #}
+						
+						{% if profile_user.get_profile.profile_photo %}
+					  <a href="{{ profile_url }}"><img class="pull-right profile-picture" style="margin:0 0 20px 10px;" src="{{ MEDIA_URL }}{% thumbnail profile_user.get_profile.profile_photo 48 48 %}"></a>
+					  {% else %}
+					  <a class="pull-right profile-picture" style="height:48px; width:48px; background:#eee;" href="{{ profile_url }}"></a>
+					  {% endif %}
+						
             {{ comment.user_name }}
             {% endif %}
         </strong>
@@ -44,11 +59,23 @@
         <strong>
             {% if comment.url %}
             <a href="{{ comment.url }}">
-                <img src="{% gravatar_url comment.email %}">
+                {# <img src="{% gravatar_url comment.email %}"> #}
+								{% if profile_user.get_profile.profile_photo %}
+							  <a href="{{ profile_url }}"><img class="pull-right profile-picture" style="margin:0 0 20px 10px;" src="{{ MEDIA_URL }}{% thumbnail profile_user.get_profile.profile_photo 48 48 %}"></a>
+							  {% else %}
+							  <a class="pull-right profile-picture" style="height:48px; width:48px; background:#eee;" href="{{ profile_url }}"></a>
+							  {% endif %}
+								
                 {{ comment.user_name }}
             </a>
             {% else %}
-            <img src="{% gravatar_url comment.email %}">
+            {# <img src="{% gravatar_url comment.email %}"> #}
+						{% if profile_user.get_profile.profile_photo %}
+					  <a href="{{ profile_url }}"><img class="pull-right profile-picture" style="margin:0 0 20px 10px;" src="{{ MEDIA_URL }}{% thumbnail profile_user.get_profile.profile_photo 48 48 %}"></a>
+					  {% else %}
+					  <a class="pull-right profile-picture" style="height:48px; width:48px; background:#eee;" href="{{ profile_url }}"></a>
+					  {% endif %}
+						
             {{ comment.user_name }}
             {% endif %}
         </strong>
