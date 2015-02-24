@@ -251,19 +251,20 @@ Dev server exlqaippc2.ext.fao.org setup and configuration for IPPC 4.0 prototype
 				alias /work/projects/ippcdj-env/lib/python2.7/site-packages/django/contrib;
 			}
 			
-			location /static/media { # STATIC_URL
-				alias /work/projects/ippcdj-env/public/static/media; # STATIC_ROOT
-			# expires 30d;
+			location /static/media {
+				alias /work/projects/ippcdj-env/public/static/media;
 			}
 			
-			location /static { # STATIC_URL
-				alias /work/projects/ippcdj-env/ippcdj_repo/static; # STATIC_ROOT
-			# expires 30d;
+			location /static {
+				alias /work/projects/ippcdj-env/ippcdj_repo/static;
 			}
 			
-			location /largefiles { # largefiles folder
-				alias /work/projects/ippcdj-env/public/largefiles; # STATIC_ROOT
-			# expires 30d;
+			location /largefiles {
+				alias /work/projects/ippcdj-env/public/largefiles;
+			}
+			
+			location /robots.txt {
+				alias /work/projects/ippcdj-env/ippcdj_repo/static/robots.txt;
 			}
 			
 			location / {
