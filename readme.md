@@ -2,10 +2,15 @@
 
 ## Things to do
 
-- Tune Nginx
 - Setup [auto-restart](https://github.com/hypertexthero/itwishlist/blob/master/docs/documentation.md#commands-to-restart-itippcint-and-related-software-upon-hardware-restart----hardwarerestart) of Nginx and Gunicorn in case server goes down
+- Setup daily auto backup of MySQL. Look at moving DB to dedicated DB servers.
+- Tag 4.0.0 release
+- About Secretariat page should have links to profiles
 - Finish FAQ update and send to translation
-- User registration open but behind login-required and staff-user required. The URL to add new users is `/account/signup/`
+- Login as user app
+- File upload field for forum comments
+- <del>User registration open but behind login-required and staff-user required.</del> The URL to add new users is `/account/signup/`
+- Setup [Versioning](https://django-simple-history.readthedocs.org/en/latest/) of all page content
 - Add blog and forum category management page to admin: 
     - http://127.0.0.1:8000/en/admin/blog/blogcategory/
     - http://127.0.0.1:8000/en/admin/forum/forumcategory/
@@ -13,42 +18,6 @@
     - Update to latest version of Mezzanine and make sure current functionality works
 - Document nginx/gunicorn/supervisor setup (currently running gunicorn with deprecated `gunicorn_django -b 0.0.0.0:8000` command — get it running and working with recommended command instead)
 - Last modified date for pages
-- The All Our Users Database. Two options:
-    1. Create[Single Sign-On](https://docs.djangoproject.com/en/1.5/topics/auth/customizing/) (see also [this](https://meta.discourse.org/t/sso-example-for-django/14258) and [this](https://github.com/Bouke/django-federated-login/tree/master/example)) and **[this](https://gist.github.com/kenbolton/4946936)** - a separate Accounts database to be used by all IPPC-related apps for authentication and authorization. The database should contain two tables:
-        - Users (authentication - recognizes who you are)
-            - ID
-            - first name
-            - last name
-            - login/nickname
-            - email
-            - hashed password
-            - salt
-            - creation timestamp
-            - update timestamp
-            - account state (verified, disabled, etc)
-        - Groups (knows what you are allowed to do, or what you allow others to do)
-
-        Then, each application contains a profile app that extends the above Accounts DB authentication defaults:
-    
-        - IPPC
-            - User(Fk to Accounts)
-            - IPPC Country
-            - Telephone
-            - Alternate email
-        - Phyto
-            - User(Fk to Users)
-            - CV
-            - Date Joined
-        - Ocs
-            - User(Fk to Users)
-            - Document Title
-            - Revision
-            - Comment
-            - Version
-        - Apppc
-            - User(Fk to Users)
-            - APPPC country
-    2. [All websites run off the same application instance](http://stackoverflow.com/questions/1581602/django-sharing-authentication-across-two-sites-that-are-on-different-domains) with [custom authentication backend](http://stackoverflow.com/questions/1404131/how-to-get-unique-users-across-multiple-django-sites-powered-by-the-sites-fram)
 - [IRSS](https://github.com/ASKBOT/askbot-devel) refactor
     - The easiest way to implement this is probably to use [CAS-Provider and CAS-consumer](http://stackoverflow.com/a/4663223) or [django-cas](https://bitbucket.org/cpcc/django-cas/overview). Another option: [mama-cas](https://github.com/jbittel/django-mama-cas). Relevant documentation pages: [multiple databases](https://docs.djangoproject.com/en/1.5/topics/db/multi-db/), [authentication](https://docs.djangoproject.com/en/1.5/topics/auth/customizing/), [multiple sites framework](https://docs.djangoproject.com/en/1.5/ref/contrib/sites/). See also [this blog post](http://reinout.vanrees.org/weblog/2014/05/09/authentication-python-web.html).
 - Phytosanitary.info refactor (use [original code](https://github.com/hypertexthero/phytosanitary)?)
@@ -61,7 +30,6 @@
     3. Collect static files to locations to be served on dev server
     4. Restart gunicorn and nginx 
 - If no publication or agenda numbers exist, don't show header or cells
-- [Versioning](https://django-simple-history.readthedocs.org/en/latest/) of all page content?
 - [wiki.ippc.int](http://www.nomachetejuggling.com/2012/05/15/personal-wiki-using-github-and-gollum-on-os-x/)
 
 ## Installation / Setup
@@ -90,7 +58,7 @@ GitHub accounts are for codebase repository. Copies of codebase repository are a
 
 1. Each developer's computer
 2. dev.ippc.int server
-3. ippc.int server
+3. www.ippc.int server
 
 We're using a [**hared repository** model](https://help.github.com/articles/what-is-a-good-git-workflow) and the main IPPC code is at 
 
@@ -174,28 +142,6 @@ Then, [here's a basic guide](http://rogerdudler.github.io/git-guide/) (below is 
 
 **IPPC Repository:** <https://github.com/hypertexthero/ippcdj> - The master branch that should eventually be the same code that is live at production website. Another, likely better, option is to create an IPPC Organization page and move this there. 
 
-## Data migrations using South app after changing models
-
-Make sure 'south' is present in your INSTALLED_APPS IN settings.py.
-
-If you add new fields or change certain values of existing ones such as blank or null in the ippc application, you need to do a data migration to synchronize the database:
-
-1. If you followed the Installation / Setup steps above go to step 2. Otherwise run the following in the terminal:
-
-        python manage.py convert_to_south ippc
-
-2. Everytime you make a change in your models do the following:
-
-        python manage.py schemamigration ippc --auto  
-        python manage.py migrate ippc
-
-3. If you want to revert to a previous migration, look for the previous migration number in ippc/migrations and replace #### with the migration number in the following command:
-
-        manage.py migrate your_app ####
-
-
-If you mess up or want an overview to understand what south is doing, see [here](http://stackoverflow.com/a/4840262)
-
 ## Translation updates for non-user-generated site content
 
 <https://docs.djangoproject.com/en/dev/topics/i18n/translation/>
@@ -238,11 +184,17 @@ Dev server exlqaippc2.ext.fao.org setup and configuration for IPPC 4.0 prototype
 		python manage.py makemessages --all  
 		python manage.py compilemessages
 
-8. Stop and restart [Gunicorn](http://gunicorn-docs.readthedocs.org/en/latest/run.html) application server (todo: find way to do this gracefully, so existing processes, such as a user submitting a form, don't fail:
+8. Stop and restart [Gunicorn](http://gunicorn-docs.readthedocs.org/en/latest/run.html) application server:
 
-<!--		ps aux |grep gunicorn | awk '{ print $2 }' |xargs kill -HUP  -->
+		# This command should reload Gunicorn gracefully:  
+		ps aux |grep gunicorn | awk '{ print $2 }' |xargs kill -HUP  
+		# If that doesn't work, do:  
+		ps aux | grep gunicorn  
+		# The replace <pid> with the process number, for example, kill -HUP 10745  
+		kill -HUP <pid>   
+		# If the above don't work, just do the following (site will go down briefly):  
 		pkill gunicorn  
-		gunicorn_django -b 0.0.0.0:8000 --daemon --log-file /var/log/nginx/gunicorn-beta-ippc-error.log
+		gunicorn_django -b 0.0.0.0:8000 --daemon --log-file /var/log/nginx/gunicorn-beta-ippc-error.log  
 
 9. Restart Nginx reverse-proxy server (web-facing) server
 
@@ -251,59 +203,137 @@ Dev server exlqaippc2.ext.fao.org setup and configuration for IPPC 4.0 prototype
 
 ## Example Nginx Configuration
 
-    # phpmyadmin.site.tld (dev only to aid management of MySQL DB. Do not install in production.)
-    server {
-        listen xxx.xxx.x.xxx:80;
-        server_name phpmyadmin.site.tld;
-        
-        root /path/to/phpmyadmin;
-        index index.html index.php;
-        
-        location / {
-                index index.html index.htm index.php;
-            }
-            
-        location ~ \.php$ {
-            expires    off;
-            include /etc/nginx/fastcgi_params;
-            fastcgi_pass    127.0.0.1:9000;
-            fastcgi_index   index.php;
-            fastcgi_param   SCRIPT_FILENAME  /path/to/phpmyadmin/$fastcgi_script_name;
-        }
-    }
-    
-    
-    # dev.site.tld
-    server {
-      listen xxx.xxx.x.xxx:80;
-      server_name dev.site.tld;
-      access_log  /var/log/nginx/dev_site_tld.log;
-      
-      location /admin/media/ {
-          # this changes depending on your python version
-          root /path/to/env/lib/python2.7/site-packages/django/contrib;
-      }
-      
-      location /static/media { # STATIC_URL
-          alias /path/to/env/repo/static/media; # STATIC_ROOT
-          expires 30d;
-      }
-      
-      location /static { # STATIC_URL
-          alias /path/to/env/repo/static; # STATIC_ROOT
-          expires 30d;
-      }
-      
-      location / {
-          proxy_pass http://127.0.0.1:8000;
-          proxy_set_header Host $host;
-          proxy_set_header X-Real-IP $remote_addr;
-          proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
-          }
-          
-      # what to serve if upstream is not available or crashes
-      error_page 500 502 503 504 /media/50x.html;
-    }
+		# http://stackoverflow.com/a/24820722
+		map $http_user_agent $limit_bots {
+		     default 0;
+		     ~*(google|bing|yandex|msnbot) 1;
+		     ~*(AltaVista|Googlebot|Slurp|BlackWidow|Bot|ChinaClaw|Custo|DISCo|Download|Demon|eCatch|EirGrabber|EmailSiphon|EmailWolf|SuperHTTP|Surfbot|WebWhacker) 1;
+		     ~*(Express|WebPictures|ExtractorPro|EyeNetIE|FlashGet|GetRight|GetWeb!|Go!Zilla|Go-Ahead-Got-It|GrabNet|Grafula|HMView|Go!Zilla|Go-Ahead-Got-It) 1;
+		     ~*(rafula|HMView|HTTrack|Stripper|Sucker|Indy|InterGET|Ninja|JetCar|Spider|larbin|LeechFTP|Downloader|tool|Navroad|NearSite|NetAnts|tAkeOut|WWWOFFLE) 1;
+		     ~*(GrabNet|NetSpider|Vampire|NetZIP|Octopus|Offline|PageGrabber|Foto|pavuk|pcBrowser|RealDownload|ReGet|SiteSnagger|SmartDownload|SuperBot|WebSpider) 1;
+		     ~*(Teleport|VoidEYE|Collector|WebAuto|WebCopier|WebFetch|WebGo|WebLeacher|WebReaper|WebSauger|eXtractor|Quester|WebStripper|WebZIP|Wget|Widow|Zeus) 1;
+		     ~*(Twengabot|htmlparser|libwww|Python|perl|urllib|scan|Curl|email|PycURL|Pyth|PyQ|WebCollector|WebCopy|webcraw) 1;
+		 } 
+		 
+		# http://stackoverflow.com/a/18338015
+		ssl_certificate      /etc/pki/tls/certs/name.of.your.cert.chained.crt;
+		ssl_certificate_key  /etc/pki/tls/private/name_of_your_key.key;
+		ssl_session_timeout  5m;
+		ssl_protocols  SSLv3 TLSv1;
+		ssl_ciphers  ALL:!ADH:!EXPORT56:RC4+RSA:+HIGH:+MEDIUM:+EXP;
+		ssl_prefer_server_ciphers   on;
+		
+		index index.php index.htm index.html;
+		
+		## www.domain.tld ####################
+		
+		# redirect http://domain.tld and https://domain.tld to https://www.domain.tld
+		server {
+		       listen xxx.xx.xx.xxx:80;
+					 listen xxx.xx.xx.xxx:443 ssl;
+					 server_name domain.tld;
+		       return 301 https://www.domain.tld$request_uri;
+		}
+		
+		# redirect http://www.domain.tld to https://www.domain.tld
+		server {
+		       listen xxx.xx.xx.xxx:80;
+					 server_name www.domain.tld;
+		       return 301 https://$server_name$request_uri;
+		}
+		
+		server {
+			listen xxx.xx.xx.xxx:443 ssl;
+			server_name www.domain.tld;
+			root /work/projects/ippcdj-env/public;
+			
+			location /admin/media/ {
+				alias /work/projects/ippcdj-env/lib/python2.7/site-packages/django/contrib;
+			}
+			
+			location /static/media { # STATIC_URL
+				alias /work/projects/ippcdj-env/public/static/media; # STATIC_ROOT
+			# expires 30d;
+			}
+			
+			location /static { # STATIC_URL
+				alias /work/projects/ippcdj-env/ippcdj_repo/static; # STATIC_ROOT
+			# expires 30d;
+			}
+			
+			location /largefiles { # largefiles folder
+				alias /work/projects/ippcdj-env/public/largefiles; # STATIC_ROOT
+			# expires 30d;
+			}
+			
+			location / {
+				proxy_set_header X-Real-IP  $remote_addr;
+				proxy_set_header X-Forwarded-For $remote_addr;
+				proxy_set_header Host $host;
+				proxy_pass http://127.0.0.1:8000;
+			}
+	
+			# Deny illegal Host headers
+			# http://stackoverflow.com/a/17477436
+			 if ($host !~* ^(domain.tld|www.domain.tld)$ ) {
+			   return 444;
+			 }
+			 
+			# Deny annoying bots (see mapping at top of file)
+			# http://stackoverflow.com/a/24820722
+			if ($limit_bots = 1) {
+			 	return 403;
+			}
+			
+			# what to serve if upstream is not available or crashes
+			error_page 500 502 503 504 /var/www/html/index.html;
+			
+			# don't display .htaccess files
+			location ~ /\.ht {
+				deny all;
+			}	
+		}
+		
+		## html.staticsitedomain.tld ####################
+		server {
+			listen xxx.xx.xx.xxx:80;
+			server_name html.staticsitedomain.tld;
+			root /var/www/html/html.staticsitedomain.tld;
+			index index.php index.htm index.html;
+	
+			location / {
+				try_files $uri $uri/ /index.php?q=$uri&$args;
+			}
+			
+			location ~ /\.ht {
+				deny all;
+			}
+		}
+		
+		## www.phpsitedomain.tld ####################
+		server {
+			listen xxx.xx.xx.xxx:80;
+			server_name phpsitedomain.tld www.phpsitedomain.tld;
+			root /opt/lampp/htdocs/prodsite;
+			
+			location / {
+				try_files $uri $uri/ /index.php?q=$uri&$args;
+		  }
+			
+		  location ~ \.php$ {
+		    expires    off;
+		    include /etc/nginx/fastcgi_params;
+		    fastcgi_pass    127.0.0.1:9000;
+		    fastcgi_index   index.php;
+		    fastcgi_param   SCRIPT_FILENAME  $document_root$fastcgi_script_name;
+		  }
+			
+			location ~ /\.ht {
+				deny all;
+			}
+			error_page 500 502 503 504 /var/www/html/index.html;
+		}
+
 
 ## MariaDB (MySQL)
 
@@ -318,12 +348,21 @@ Start:
 
 - Implemented using [django-guardian](https://github.com/lukaszb/django-guardian)
 
-**Server Architecture**
+## Server Architecture
 
     Request ----> Reverse-Proxy Server (Nginx)
                      |
                       \                           
                        `-> App Server (Gunicorn). 127.0.0.1:8081 --> Django app
+
+**php-fpm**
+
+The Django site runs behing a Nginx reverse-proxy server which routes dynamic (non-static requests such as img, pdf, css, js, etc) requests to Gunicorn application server, which routes them to the Django app. Other Drupal/PHP sites on the same server receiving requests from Nginx use php-fpm, which [needs to be running](http://stackoverflow.com/a/20620190):
+
+	service php-fpm status
+	service php-fpm start
+	# Sometimes php-fpm might have broken instances running, preventing a restart. This command is a clean way to clear them out and restart php-fpm
+	killall -9 php-fpm; service php-fpm restart
 
 **Current Software Stack**
 
