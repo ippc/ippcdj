@@ -22,6 +22,7 @@ django-guardian==1.1.1
 django-jfu==2.0.9
 django-leaflet==0.13.7
 django-localeurl==1.5
+django-loginas==0.1.5
 django-mailer==0.1.0
 django-markdown
 django-envelope
