@@ -1,15 +1,11 @@
 /*
-    IPPC 4.0 stylesheet
-    last update: 2015-02-16
+    IPPC 4.0.0 stylesheet
 */
 
 body {
-/*    padding-top:10px;*/
     padding-top:0;
-/*    border-top:10px solid #060;*/
     padding-bottom:5em; 
     background:#fff;
-/*    background:#fff;*/
     color:#000; 
     font-family:verdana, sans-serif;
     text-align:center;
@@ -18,11 +14,12 @@ body {
 /* typography tweaks ================= */
 
 h2 {font-size:1.7em;}
+h3 {font-size:1.5em;}
 
 div.container-fluid {max-width:1200px; text-align:left; margin:0 auto;}
  /*url(/static/img/background.jpg) repeat 0 0;*/
 
-*:target {background:#ffc;}
+*:target {background:#F2FFEF;}
 
 a.brand {
     font-size:1em !important; 
