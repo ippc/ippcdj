@@ -286,7 +286,8 @@ INSTALLED_APPS = (
     #"mezzanine.mobile",
     "schedule",
     "django_markdown",
-    "envelope"
+    "envelope",
+    "loginas",
 
 )
 

@@ -565,6 +565,10 @@ urlpatterns = patterns("",
         view=commenta,
         name='commenta'),
 
+
+    url(r"^login/user/(?P<user_id>.+)/$", "loginas.views.user_login", name="loginas-user-login"),
+
+
 #-------------------------------------------#
     # pagedown for markdown wysiwyg
     ("^pagedown/", include(mezzanine_pagedown.urls)),

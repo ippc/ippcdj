@@ -15,7 +15,8 @@ PestFreeAreaFile, PestFreeAreaUrl, WebsiteUrl,PestReportUrl,PestReportFile,CnPub
 CountryNews,CountryNewsFile,CountryNewsUrl,CommodityKeyword,PreferredLanguages,  \
 PartnersWebsite,PartnersWebsiteUrl,\
 PartnersNews,PartnersNewsFile,PartnersNewsUrl, \
-EppoCode,IssueKeyword, CommodityKeyword,IssueKeywordsRelate,CommodityKeywordsRelate, ContactType
+EppoCode,IssueKeyword, CommodityKeyword,IssueKeywordsRelate,CommodityKeywordsRelate, ContactType, \
+IppcUserProfile
 from django.forms.models import inlineformset_factory
 from django.forms.formsets import formset_factory
 from django.contrib.auth.models import User
@@ -30,6 +31,10 @@ import autocomplete_light
 
 from django_markdown.widgets import MarkdownWidget
 
+# for login as user
+class IppcUserProfileAdmin(admin.ModelAdmin):
+    change_form_template = 'loginas/change_form.html'
+    
 
 class MyIssueKeywordsRelateAdminForm(forms.ModelForm):
     class Meta:

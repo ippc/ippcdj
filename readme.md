@@ -7,8 +7,8 @@
 - Tag 4.0.0 release
 - About Secretariat page should have links to profiles
 - Finish FAQ update and send to translation
-- Login as user app
 - File upload field for forum comments
+- Make own gravatar_url tag to use instead of Mezzanine's in order to be able to serve over SSL
 - <del>User registration open but behind login-required and staff-user required.</del> The URL to add new users is `/account/signup/`
 - Setup [Versioning](https://django-simple-history.readthedocs.org/en/latest/) of all page content
 - Add blog and forum category management page to admin: 
