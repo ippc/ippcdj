@@ -32,6 +32,9 @@ from schedule.periods import Year, Month, Week, Day
 from mezzanine.core.views import direct_to_template
 import mezzanine_pagedown.urls
 
+# http://django-envelope.readthedocs.org/en/latest/customization.html
+# from envelope.views import ContactView
+
 
 
 # Add the urlpatterns for any custom Django applications here.
@@ -55,9 +58,14 @@ urlpatterns = patterns("",
     # url(r'^forum/(?P<slug>[\w-]+)/$',
     #     view=ForumPostDetailView.as_view(),
     #     name="forum-post-detail"),
-    url(r'^contact/',    include('envelope.urls')),
+    # url(r'^contact/',    include('envelope.urls')),
+    # url(r'^contact/', ContactView.as_view(
+    #     template_name="envelope/contact_form.html",
+    #     success_url="/thankyou/",
+    # )),
     url("^sitemap/$", direct_to_template, {"template": "sitemap.html"}, name="sitemap"),
     url("^contact/$", direct_to_template, {"template": "contact.html"}, name="contact"),
+    url("^thankyou/$", direct_to_template, {"template": "thankyou.html"}, name="thankyou"),
     # url("^feeds/$", direct_to_template, {"template": "feeds.html"}, name="feeds"),
     # url("^legal/$", direct_to_template, {"template": "legal.html"}, name="legal"),
     # url("^colophon/$", direct_to_template, {"template": "colophon.html"}, name="colophon"),
@@ -551,6 +559,12 @@ urlpatterns = patterns("",
    url(r'^publication/edit/(?P<id>\d+)/$',
         view=publication_edit,
         name='publication-edit'),
+
+# forum comments? boh! https://github.com/ippc/ippcdj/commit/184131f38d4a7e24bcbe3fa7b2be97ae0c321a5d#diff-de6dd4b4c889fe0882cfd3f6df5aa451R531 
+    url(r'^comment/$',
+        view=commenta,
+        name='commenta'),
+
 #-------------------------------------------#
     # pagedown for markdown wysiwyg
     ("^pagedown/", include(mezzanine_pagedown.urls)),
@@ -568,9 +582,6 @@ urlpatterns = patterns("",
     # commented out like the others, so it's the default. You only need
     # one homepage pattern, so if you use a different one, comment this
     # one out.
-    url(r'^comment/$',
-        view=commenta,
-        name='commenta'),
 
     url("^$", direct_to_template, {"template": "index.html"}, name="home"),
 
@@ -611,11 +622,6 @@ urlpatterns = patterns("",
     # from it, and use them directly below instead of using
     # ``mezzanine.urls``.
 
-
-    # User registration open but behind [staff_member_required](http://stackoverflow.com/a/2694116) (we create overrides mezzanine's http://127.0.0.1:8000/en/account/signup/ URL so logged-in staff member only can see it) so only staff can add new users, who get notification emails to confirm account and set own password. Another option: <https://stackoverflow.com/questions/11774647/use-staff-member-required-decorator-but-without-being-redirected-to-the-admin-i>
-
-    # url("^account/signup/$", login_required("mezzanine.accounts.views.signup"), name="signup"),
-
     ("^", include("mezzanine.urls")),
 
 
@@ -636,10 +642,6 @@ urlpatterns = patterns("",
     # ("^%s/" % settings.SITE_PREFIX, include("mezzanine.urls"))
 
 )
-
-
-
-
 
 # Adds ``STATIC_URL`` to the context of error pages, so that error
 # pages can use JS, CSS and images.

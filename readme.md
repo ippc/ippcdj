@@ -2,16 +2,16 @@
 
 ## Things to do
 
-- Redirect new users to account/profile page and ask them to set a password in the email message.
-- Content (data) migration (ongoing)
+- Tune Nginx
+- Setup [auto-restart](https://github.com/hypertexthero/itwishlist/blob/master/docs/documentation.md#commands-to-restart-itippcint-and-related-software-upon-hardware-restart----hardwarerestart) of Nginx and Gunicorn in case server goes down
+- Finish FAQ update and send to translation
 - User registration open but behind login-required and staff-user required. The URL to add new users is `/account/signup/`
 - Add blog and forum category management page to admin: 
     - http://127.0.0.1:8000/en/admin/blog/blogcategory/
     - http://127.0.0.1:8000/en/admin/forum/forumcategory/
 - Eventually update to Mezzanine 3.1.5
     - Update to latest version of Mezzanine and make sure current functionality works
-- FAQ
-- Setup proper permissions (nginx is currently running as root — not good) so that static media, including user-uploaded files are served through Nginx. Document nginx/gunicorn/supervisor setup (currently running gunicorn with deprecated `gunicorn_django -b 0.0.0.0:8000` command — get it running and working with recommended command instead)
+- Document nginx/gunicorn/supervisor setup (currently running gunicorn with deprecated `gunicorn_django -b 0.0.0.0:8000` command — get it running and working with recommended command instead)
 - Last modified date for pages
 - The All Our Users Database. Two options:
     1. Create[Single Sign-On](https://docs.djangoproject.com/en/1.5/topics/auth/customizing/) (see also [this](https://meta.discourse.org/t/sso-example-for-django/14258) and [this](https://github.com/Bouke/django-federated-login/tree/master/example)) and **[this](https://gist.github.com/kenbolton/4946936)** - a separate Accounts database to be used by all IPPC-related apps for authentication and authorization. The database should contain two tables:
@@ -60,10 +60,9 @@
     2. Logs in to dev.ippc.int, activates application virtualenv and pulls changes from Github
     3. Collect static files to locations to be served on dev server
     4. Restart gunicorn and nginx 
+- If no publication or agenda numbers exist, don't show header or cells
 - [Versioning](https://django-simple-history.readthedocs.org/en/latest/) of all page content?
 - [wiki.ippc.int](http://www.nomachetejuggling.com/2012/05/15/personal-wiki-using-github-and-gollum-on-os-x/)
-- If no publication or agenda numbers exist, don't show header or cells
-- Automatic local table of contents for pages with headers with IDs? <http://css-tricks.com/automatic-table-of-contents/> 
 
 ## Installation / Setup
 
@@ -187,7 +186,7 @@ If you add new fields or change certain values of existing ones such as blank or
 
 2. Everytime you make a change in your models do the following:
 
-        python manage.py schemamigration ippc --auto
+        python manage.py schemamigration ippc --auto  
         python manage.py migrate ippc
 
 3. If you want to revert to a previous migration, look for the previous migration number in ippc/migrations and replace #### with the migration number in the following command:
@@ -203,7 +202,7 @@ If you mess up or want an overview to understand what south is doing, see [here]
 
 Edit the django.po file for each language in `ippcdj_repo/conf/locale/` and then run the following commands in the terminal to compile the translation files: 
 
-    python manage.py makemessages --all
+    python manage.py makemessages --all  
     python manage.py compilemessages
 
 ## Deployment & Data Migrations
@@ -236,13 +235,13 @@ Dev server exlqaippc2.ext.fao.org setup and configuration for IPPC 4.0 prototype
 
 7. Compile and make translations 
 
-		python manage.py makemessages --all
+		python manage.py makemessages --all  
 		python manage.py compilemessages
 
 8. Stop and restart [Gunicorn](http://gunicorn-docs.readthedocs.org/en/latest/run.html) application server (todo: find way to do this gracefully, so existing processes, such as a user submitting a form, don't fail:
 
-		pkill gunicorn
-		gunicorn_django --daemon -b 0.0.0.0:8000
+		pkill gunicorn  
+		gunicorn_django -b 0.0.0.0:8000 --daemon --log-file /var/log/nginx/gunicorn-beta-ippc-error.log
 
 9. Restart Nginx reverse-proxy server (web-facing) server
 

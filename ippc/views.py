@@ -480,6 +480,7 @@ class PublicationFilesListView(ListView):
             full_file_name = os.path.join(MEDIA_ROOT+"/tmp/", file_name)
             #if (os.path.isfile(full_file_name)):
             #     shutil.move(full_file_name, destination)
+            
         source = MEDIA_ROOT+"/tmp/"
         
         return context

@@ -11,6 +11,7 @@
 {% endblock %}
 
 {% block local_nav %}
+		<p class="alert alert-success pull-right"><strong class="label label-important">Note</strong> If this is your first time logging in to the new redesigned IPPC website, you may need to reset your password by going to the <a href="/en/account/password/reset/?next=/en/account/update/">forgot password page</a>, entering the email address associated with your IPPC account and clicking the <em>Password Reset</em> button. <br><br>You will then receive an email with a link you need to click in order to log in and set your password. <br><br>After logging in with this link, please enter your password in the two password fields, scroll down and click <em>Update Profile</em>.</p>
 {% endblock %}
 {% block pageinfo %}
 {% endblock %}
@@ -29,7 +30,7 @@
 {% endif %}
     <form method="post"{% if form.is_multipart %} enctype="multipart/form-data"{% endif %}>
     {# {% fields_for userform %} #}
-
+		
     {% fields_for form %}
 		
 		{# Lets show the forgot password link _by the password field_, goddamit. #}
@@ -43,8 +44,6 @@
 						<p><a href="{{ password_reset_url }}?next={{ profile_update_url }}">Forgot your password</a>?</p>
 					{% endblocktrans %}
 				{% endif %}
-				
-				
 		{% endif %}
 		
 		{# Not sure what IF block below is for? —Simon #}
@@ -60,7 +59,7 @@
 		{# {% endif %} #}
   
     <div class="form-actions">
-        <input class="btn btn-primary btn-large" type="submit" value="{% if title %}{{title}}{% else%}Update{% endif%}">
+        <input class="btn btn-info btn-large" type="submit" value="{% if title %}{{title}}{% else%}Update{% endif%}">
     </div>
     </form>
 </fieldset>

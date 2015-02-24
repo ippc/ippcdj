@@ -14,8 +14,16 @@ body {
     font-family:verdana, sans-serif;
     text-align:center;
 }
+
+/* typography tweaks ================= */
+
+h2 {font-size:1.7em;}
+
 div.container-fluid {max-width:1200px; text-align:left; margin:0 auto;}
  /*url(/static/img/background.jpg) repeat 0 0;*/
+
+*:target {background:#ffc;}
+
 a.brand {
     font-size:1em !important; 
     vertical-align:middle; 
@@ -50,6 +58,8 @@ ul.languagebar > li > a {border-radius:0 0 5px 5px;}
     white-space: nowrap;
 }
 .dl-horizontal dd {border-bottom:1px solid #eee;}
+
+.panel {font-size:0.9em;}
 
 div#publications_length label, 
 div#publications_filter label, 

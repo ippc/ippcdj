@@ -85,14 +85,6 @@ PAGE_MENU_TEMPLATES_DEFAULT = [2]
 # MAIN DJANGO SETTINGS #
 ########################
 
-# People who get code error notifications.
-# In the format (('Full Name', 'email@example.com'),
-#                ('Full Name', 'anotheremail@example.com'))
-ADMINS = (
-    # ('Your Name', 'your_email@domain.com'),
-)
-MANAGERS = ADMINS
-
 # Local time zone for this installation. Choices can be found here:
 # http://en.wikipedia.org/wiki/List_of_tz_zones_by_name
 # although not all choices may be available on all operating systems.
@@ -343,7 +335,7 @@ MIDDLEWARE_CLASSES = (
     "mezzanine.core.middleware.AdminLoginInterfaceSelectorMiddleware",
     "mezzanine.core.middleware.SitePermissionMiddleware",
     # Uncomment the following if using any of the SSL settings:
-    # "mezzanine.core.middleware.SSLRedirectMiddleware",
+    "mezzanine.core.middleware.SSLRedirectMiddleware",
     "mezzanine.pages.middleware.PageMiddleware",
     "mezzanine.core.middleware.FetchFromCacheMiddleware",
 )
@@ -395,7 +387,7 @@ ACCOUNTS_PROFILE_VIEWS_ENABLED = True
 ACCOUNTS_MIN_PASSWORD_LENGTH = 8
 ACCOUNTS_VERIFICATION_REQUIRED = True
 # ACCOUNTS_APPROVAL_REQUIRED = False
-# ACCOUNTS_APPROVAL_EMAILS = 'simon.griffee@fao.org, paola.sentinelli@fao.org'
+# ACCOUNTS_APPROVAL_EMAILS = 'name@email.tld'
    
 ACCOUNTS_PROFILE_FORM_EXCLUDE_FIELDS = (
 #    "user",
@@ -415,9 +407,6 @@ ACCOUNTS_PROFILE_FORM_EXCLUDE_FIELDS = (
     "preferredlanguage",
 )
 
-
-ALLOWED_HOSTS = "127.0.0.1:8000"
-
 RICHTEXT_WIDGET_CLASS = 'mezzanine_pagedown.widgets.PageDownWidget'
 # RICHTEXT_WIDGET_CLASS = 'mezzanine.core.forms.TinyMceWidget'
 RICHTEXT_FILTER = 'mezzanine_pagedown.filters.custom'
@@ -435,8 +424,6 @@ EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 EMAIL_HOST = 'localhost'
 EMAIL_PORT = 1025
 #EMAIL_USE_TLS = True
-
-ENVELOPE_EMAIL_RECIPIENTS=['paola.sentinelli@fao.org']
 
 ENVELOPE_CONTACT_CHOICES = (
     (10,    _("Secretariat")),

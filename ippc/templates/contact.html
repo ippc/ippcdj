@@ -9,7 +9,15 @@
 {% endblock %}
 
 {% block main %}
-<h2>{% trans "Contact IPPC" %}</h2>
-    
-    
+	<h2>{% trans "Contact IPPC" %}</h2>
+	{# {% load envelope_tags %} #}
+	{# {% render_contact_form %}     #}
+	
+	<address>
+		<strong>Email:</strong> <a href="mailto:ippc@fao.org">ippc@fao.org</a> <small class="alert alert-warning">We will respond as soon as possible. Please check the <a href="/faq/">FAQ</a> before emailing.</small><br>
+		<strong>Address:</strong> International Plant Protection Convention Secretariat,<br>
+		Food and Agriculture Organization of the United Nations,<br>
+		AGDI, Viale delle Terme di Caracalla,<br>
+		00153 Rome, Italy
+	</address>
 {% endblock %}

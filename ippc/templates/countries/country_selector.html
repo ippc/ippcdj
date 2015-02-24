@@ -1,8 +1,8 @@
 {% load ippc_tags pages_tags translate_tags mezzanine_tags i18n future staticfiles accounts_tags %}
 
 <form action="">
-<select data-placeholder="Choose a Country..." tabindex="3" class="chosen-select" id="selectcountry">
-  <option value="">-- {% trans "Choose a Country" %} --</option>
+<select data-placeholder="Go to Country..." tabindex="3" class="chosen-select" id="selectcountry">
+  <option value="">{% trans "Go to Country" %}</option>
   {% get_latest ippc.CountryPage 250 as country_pages %}
   {% for page in country_pages %}
   <option value="/countries/{{ page.countrypage.get_content_model.country_slug }}">{{ page.countrypage.get_content_model.name }}</option>    
