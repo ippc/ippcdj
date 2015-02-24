@@ -2,10 +2,14 @@
 
 {% load i18n %}
 
+{% block meta_title %}
+	{% trans "Page not found" %}
+{% endblock %}
+
 {% block title %}
-{% trans "Page not found" %}
+	{% trans "Page not found" %}
 {% endblock %}
 
 {% block main %}
-{% trans "The page you requested could not be found. Please try the search bar above." %}
+	{% trans "The page you requested could not be found. Please try the search bar above." %}
 {% endblock %}

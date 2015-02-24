@@ -2,10 +2,14 @@
 
 {% load i18n %}
 
+{% block meta_title %}
+	{% trans "Error" %}
+{% endblock %}
+
 {% block title %}
-{% trans "Error" %}
+	{% trans "Error" %}
 {% endblock %}
 
 {% block main %}
-{% trans "An error has occurred. The site administrators have been automatically notified and will work on fixing it as soon as possible. We apologize for the inconvenience." %}
+	{% trans "An error has occurred. The site administrators have been automatically notified and will work on fixing it as soon as possible. We apologize for the inconvenience." %}
 {% endblock %}
