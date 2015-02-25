@@ -13,7 +13,9 @@
 {% endmetablock %}{% endblock %}
 
 {% block title %}
-{% editable news_post.title %}{{ news_post.title }}{% endeditable %}
+{# {% editable news_post.title %} #}
+{{ news_post.title }}
+{# {% endeditable %} #}
 {% endblock %}
 
 {% block breadcrumb_menu %}
@@ -30,7 +32,7 @@
     </div>
 {% endif %}
 {% block news_post_detail_postedby %}
-{% editable news_post.publish_date %}
+{# {% editable news_post.publish_date %} #}
 <h6>
     {#% trans "Posted by: " %}#}
     {% trans "Posted " %}
@@ -40,23 +42,23 @@
     {# {% blocktrans with sometime=news_post.publish_date|timesince %}{{ sometime }} ago{% endblocktrans %} #}
     {% blocktrans with sometime=news_post.publish_date|date:"D, d M Y, H:i" %}on {{ sometime }}{% endblocktrans %}    
 </h6>
-{% endeditable %}
+{# {% endeditable %} #}
 {% endblock %}
-{% block news_post_detail_commentlink %}
-<p>
-    {% if news_post.allow_comments %}
-        {% if settings.COMMENTS_DISQUS_SHORTNAME %}
-            (<a href="{{ news_post.get_absolute_url }}#disqus_thread"
-                data-disqus-identifier="{% disqus_id_for news_post %}">{% spaceless %}
-                {% trans "Comments" %}
-            {% endspaceless %}</a>)
-        {% else %}(<a href="#comments">{% spaceless %}
-            {% blocktrans count comments_count=news_post.comments_count %}{{ comments_count }} comment{% plural %}{{ comments_count }} comments{% endblocktrans %}
-            {% endspaceless %}</a>)
-        {% endif %}
-    {% endif %}
-</p>
-{% endblock %}
+{# {% block news_post_detail_commentlink %} #}
+{# <p> #}
+{#     {% if news_post.allow_comments %} #}
+{#         {% if settings.COMMENTS_DISQUS_SHORTNAME %} #}
+{#             (<a href="{{ news_post.get_absolute_url }}#disqus_thread" #}
+{#                 data-disqus-identifier="{% disqus_id_for news_post %}">{% spaceless %} #}
+{#                 {% trans "Comments" %} #}
+{#             {% endspaceless %}</a>) #}
+{#         {% else %}(<a href="#comments">{% spaceless %} #}
+{#             {% blocktrans count comments_count=news_post.comments_count %}{{ comments_count }} comment{% plural %}{{ comments_count }} comments{% endblocktrans %} #}
+{#             {% endspaceless %}</a>) #}
+{#         {% endif %} #}
+{#     {% endif %} #}
+{# </p> #}
+{# {% endblock %} #}
 
 {% block news_post_detail_featured_image %}
 {% if news_post.featured_image %}{#settings.news_USE_FEATURED_IMAGE and #}
@@ -64,14 +66,14 @@
 {% endif %}
 {% endblock %}
 
-{% if settings.COMMENTS_DISQUS_SHORTNAME %}
-{% include "generic/includes/disqus_counts.html" %}
-{% endif %}
+{# {% if settings.COMMENTS_DISQUS_SHORTNAME %} #}
+{# {% include "generic/includes/disqus_counts.html" %} #}
+{# {% endif %} #}
 
 {% block news_post_detail_content %}
-{% editable news_post.content %}
+{# {% editable news_post.content %} #}
 {{ news_post.content|richtext_filter|safe }}
-{% endeditable %}
+{# {% endeditable %} #}
 {% endblock %}
 
 {% block news_post_detail_keywords %}
@@ -128,8 +130,8 @@
 {% endif %}
 {% endblock %}
 
-{% block news_post_detail_comments %}
-{% if news_post.allow_comments %}{% comments_for news_post %}{% endif %}
-{% endblock %}
+{# {% block news_post_detail_comments %} #}
+{# {% if news_post.allow_comments %}{% comments_for news_post %}{% endif %} #}
+{# {% endblock %} #}
 
 {% endblock %}
