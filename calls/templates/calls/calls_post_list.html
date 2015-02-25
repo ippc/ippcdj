@@ -63,23 +63,23 @@
 {% else %}
     {% if page %}
     {% block calls_post_list_pagecontent %}
-    {% editable page.richtextpage.content %}
+    {# {% editable page.richtextpage.content %} #}
     {{ page.richtextpage.content|richtext_filter|safe }}
-    {% endeditable %}
+    {# {% endeditable %} #}
     {% endblock %}
     {% endif %}
 {% endif %}
 
 {% for calls_post in calls_posts.object_list %}
 {% block calls_post_list_post_title %}
-{% editable calls_post.title %}
+{# {% editable calls_post.title %} #}
 <h4>
     <a href="{{ calls_post.get_absolute_url }}">{{ calls_post.title }}</a>
 </h4>
-{% endeditable %}
+{# {% endeditable %} #}
 {% endblock %}
 {% block calls_post_list_post_metainfo %}
-{% editable calls_post.publish_date %}
+{# {% editable calls_post.publish_date %} #}
 <h6>
     {% trans "Posted " %}
     {% with calls_post.category.all as categories %}
@@ -93,7 +93,7 @@
     {% blocktrans with sometime=calls_post.publish_date|timesince %}{{ sometime }} ago{% endblocktrans %}
     {# {% blocktrans with thetime=calls_post.publish_date|date:"D, d M Y, H:i" %} <span class="normal">on</span> {{ thetime }}{% endblocktrans %} #}
 </h6>
-{% endeditable %}
+{# {% endeditable %} #}
 {% endblock %}
 
 {% if calls_post.featured_image %}{#and settings.CALLS_USE_FEATURED_IMAGE and #}
@@ -103,9 +103,9 @@
 {% endif %}
 
 {% block calls_post_list_post_content %}
-{% editable calls_post.content %}
+{# {% editable calls_post.content %} #}
 {{ calls_post.description_from_content|safe }}
-{% endeditable %}
+{# {% endeditable %} #}
 {% endblock %}
 
 {% block calls_post_list_post_links %}

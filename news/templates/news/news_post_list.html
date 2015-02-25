@@ -63,23 +63,23 @@
 {% else %}
     {% if page %}
     {% block news_post_list_pagecontent %}
-    {% editable page.richtextpage.content %}
+    {# {% editable page.richtextpage.content %} #}
     {{ page.richtextpage.content|richtext_filter|safe }}
-    {% endeditable %}
+    {# {% endeditable %} #}
     {% endblock %}
     {% endif %}
 {% endif %}
 
 {% for news_post in news_posts.object_list %}
 {% block news_post_list_post_title %}
-{% editable news_post.title %}
+{# {% editable news_post.title %} #}
 <h4>
     <a href="{{ news_post.get_absolute_url }}">{{ news_post.title }}</a>
 </h4>
-{% endeditable %}
+{# {% endeditable %} #}
 {% endblock %}
 {% block news_post_list_post_metainfo %}
-{% editable news_post.publish_date %}
+{# {% editable news_post.publish_date %} #}
 <h6>
     {% trans "Posted " %}
     {% with news_post.category.all as categories %}
@@ -93,7 +93,7 @@
     {% blocktrans with sometime=news_post.publish_date|timesince %}{{ sometime }} ago{% endblocktrans %}
     {# {% blocktrans with thetime=news_post.publish_date|date:"D, d M Y, H:i" %} <span class="normal">on</span> {{ thetime }}{% endblocktrans %} #}
 </h6>
-{% endeditable %}
+{# {% endeditable %} #}
 {% endblock %}
 
 {% if  news_post.featured_image %}{#settings.news_USE_FEATURED_IMAGE and #}
@@ -103,9 +103,9 @@
 {% endif %}
 
 {% block news_post_list_post_content %}
-{% editable news_post.content %}
+{# {% editable news_post.content %} #}
 {{ news_post.description_from_content|safe }}
-{% endeditable %}
+{# {% endeditable %} #}
 {% endblock %}
 
 {% block news_post_list_post_links %}

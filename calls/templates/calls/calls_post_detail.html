@@ -45,21 +45,21 @@
 </h6>
 {# {% endeditable %} #}
 {% endblock %}
-{# {% block calls_post_detail_commentlink %} #}
-{# <p> #}
-{#     {% if calls_post.allow_comments %} #}
-{#         {% if settings.COMMENTS_DISQUS_SHORTNAME %} #}
-{#             (<a href="{{ calls_post.get_absolute_url }}#disqus_thread" #}
-{#                 data-disqus-identifier="{% disqus_id_for calls_post %}">{% spaceless %} #}
-{#                 {% trans "Comments" %} #}
-{#             {% endspaceless %}</a>) #}
-{#         {% else %}(<a href="#comments">{% spaceless %} #}
-{#             {% blocktrans count comments_count=calls_post.comments_count %}{{ comments_count }} comment{% plural %}{{ comments_count }} comments{% endblocktrans %} #}
-{#             {% endspaceless %}</a>) #}
-{#         {% endif %} #}
-{#     {% endif %} #}
-{# </p> #}
-{# {% endblock %} #}
+{% block calls_post_detail_commentlink %}
+<p>
+    {% if calls_post.allow_comments %}
+        {% if settings.COMMENTS_DISQUS_SHORTNAME %}
+            (<a href="{{ calls_post.get_absolute_url }}#disqus_thread"
+                data-disqus-identifier="{% disqus_id_for calls_post %}">{% spaceless %}
+                {% trans "Comments" %}
+            {% endspaceless %}</a>)
+        {% else %}(<a href="#comments">{% spaceless %}
+            {% blocktrans count comments_count=calls_post.comments_count %}{{ comments_count }} comment{% plural %}{{ comments_count }} comments{% endblocktrans %}
+            {% endspaceless %}</a>)
+        {% endif %}
+    {% endif %}
+</p>
+{% endblock %}
 
 {% block calls_post_detail_featured_image %}
 {% if  calls_post.featured_image %} {#settings.CALLS_USE_FEATURED_IMAGE and#}
@@ -67,9 +67,9 @@
 {% endif %}
 {% endblock %}
 
-{# {% if settings.COMMENTS_DISQUS_SHORTNAME %} #}
-{# {% include "generic/includes/disqus_counts.html" %} #}
-{# {% endif %} #}
+{% if settings.COMMENTS_DISQUS_SHORTNAME %}
+{% include "generic/includes/disqus_counts.html" %}
+{% endif %}
 
 {% block calls_post_detail_content %}
 {# {% editable calls_post.content %} #}
@@ -131,8 +131,8 @@
 {% endif %}
 {% endblock %}
 
-{# {% block calls_post_detail_comments %} #}
-{# {% if calls_post.allow_comments %}{% comments_for calls_post %}{% endif %} #}
-{# {% endblock %} #}
+{% block calls_post_detail_comments %}
+{% if calls_post.allow_comments %}{% comments_for calls_post %}{% endif %}
+{% endblock %}
 
 {% endblock %}
