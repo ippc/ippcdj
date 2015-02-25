@@ -29,7 +29,7 @@
 <h1>{{ emailmessage.subject }}</h1> 
 <dl class="dl-horizontal">
 <dt>{% trans "Sent date" %}</dt>
-<dd>{% blocktrans with sometime=emailmessage.date|date:"d-m-Y" %}{{ sometime }}{% endblocktrans %}</dd>
+<dd>{{ sometime }}  {{emailmessage.date|date:"d-m-Y"}} at {{emailmessage.date|date:"H:m:s"}} CET</dd>
 
 <dt>{% trans "Sent satus" %}</dt>
 <dd>{% if emailmessage.sent %}

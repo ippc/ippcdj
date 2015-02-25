@@ -50,7 +50,7 @@
     {% for object in latest %}
     <tr>
       <td><a href="{% url 'email-detail'  object.id %}">{{ object.subject }}</a></td>
-      <td>{{ object.date|date:"d M Y" }}</td>
+      <td>{{ object.date|date:"d M Y" }} at {{object.date|date:"H:m:s"}} CET</td>
       <td>      
             {% if object.sent %}
             <i class="icon-ok"></i> 
