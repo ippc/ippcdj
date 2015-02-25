@@ -121,26 +121,26 @@
     <br>
     {% endif %}
     <a href="{{ calls_post.get_absolute_url }}">{% trans "read more" %}</a>
-    /
-    {% if settings.COMMENTS_DISQUS_SHORTNAME %}
-    <a href="{{ calls_post.get_absolute_url }}#disqus_thread"
-        data-disqus-identifier="{% disqus_id_for calls_post %}">
-        {% trans "Comments" %}
-    </a>
-    {% else %}
-    <a href="{{ calls_post.get_absolute_url }}#comments">
-        {% blocktrans count comments_count=calls_post.comments_count %}{{ comments_count }} comment{% plural %}{{ comments_count }} comments{% endblocktrans %}
-    </a>
-    {% endif %}
+    {# / #}
+    {# {% if settings.COMMENTS_DISQUS_SHORTNAME %} #}
+    {# <a href="{{ calls_post.get_absolute_url }}#disqus_thread" #}
+    {#     data-disqus-identifier="{% disqus_id_for calls_post %}"> #}
+    {#     {% trans "Comments" %} #}
+    {# </a> #}
+    {# {% else %} #}
+    {# <a href="{{ calls_post.get_absolute_url }}#comments"> #}
+    {#     {% blocktrans count comments_count=calls_post.comments_count %}{{ comments_count }} comment{% plural %}{{ comments_count }} comments{% endblocktrans %} #}
+    {# </a> #}
+    {# {% endif %} #}
 </p>
 {% endblock %}
 {% endfor %}
 
 {% pagination_for calls_posts %}
 
-{% if settings.COMMENTS_DISQUS_SHORTNAME %}
-{% include "generic/includes/disqus_counts.html" %}
-{% endif %}
+{# {% if settings.COMMENTS_DISQUS_SHORTNAME %} #}
+{# {% include "generic/includes/disqus_counts.html" %} #}
+{# {% endif %} #}
 
 {% endblock %}
 

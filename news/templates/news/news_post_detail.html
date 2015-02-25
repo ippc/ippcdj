@@ -44,21 +44,21 @@
 </h6>
 {# {% endeditable %} #}
 {% endblock %}
-{% block news_post_detail_commentlink %}
-<p>
-    {% if news_post.allow_comments %}
-        {% if settings.COMMENTS_DISQUS_SHORTNAME %}
-            (<a href="{{ news_post.get_absolute_url }}#disqus_thread"
-                data-disqus-identifier="{% disqus_id_for news_post %}">{% spaceless %}
-                {% trans "Comments" %}
-            {% endspaceless %}</a>)
-        {% else %}(<a href="#comments">{% spaceless %}
-            {% blocktrans count comments_count=news_post.comments_count %}{{ comments_count }} comment{% plural %}{{ comments_count }} comments{% endblocktrans %}
-            {% endspaceless %}</a>)
-        {% endif %}
-    {% endif %}
-</p>
-{% endblock %}
+{# {% block news_post_detail_commentlink %} #}
+{# <p> #}
+{#     {% if news_post.allow_comments %} #}
+{#         {% if settings.COMMENTS_DISQUS_SHORTNAME %} #}
+{#             (<a href="{{ news_post.get_absolute_url }}#disqus_thread" #}
+{#                 data-disqus-identifier="{% disqus_id_for news_post %}">{% spaceless %} #}
+{#                 {% trans "Comments" %} #}
+{#             {% endspaceless %}</a>) #}
+{#         {% else %}(<a href="#comments">{% spaceless %} #}
+{#             {% blocktrans count comments_count=news_post.comments_count %}{{ comments_count }} comment{% plural %}{{ comments_count }} comments{% endblocktrans %} #}
+{#             {% endspaceless %}</a>) #}
+{#         {% endif %} #}
+{#     {% endif %} #}
+{# </p> #}
+{# {% endblock %} #}
 
 {% block news_post_detail_featured_image %}
 {% if news_post.featured_image %}{#settings.news_USE_FEATURED_IMAGE and #}
@@ -66,9 +66,9 @@
 {% endif %}
 {% endblock %}
 
-{% if settings.COMMENTS_DISQUS_SHORTNAME %}
-{% include "generic/includes/disqus_counts.html" %}
-{% endif %}
+{# {% if settings.COMMENTS_DISQUS_SHORTNAME %} #}
+{# {% include "generic/includes/disqus_counts.html" %} #}
+{# {% endif %} #}
 
 {% block news_post_detail_content %}
 {# {% editable news_post.content %} #}
@@ -130,8 +130,8 @@
 {% endif %}
 {% endblock %}
 
-{% block news_post_detail_comments %}
-{% if news_post.allow_comments %}{% comments_for news_post %}{% endif %}
-{% endblock %}
+{# {% block news_post_detail_comments %} #}
+{# {% if news_post.allow_comments %}{% comments_for news_post %}{% endif %} #}
+{# {% endblock %} #}
 
 {% endblock %}
