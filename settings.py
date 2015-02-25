@@ -430,7 +430,7 @@ ENVELOPE_CONTACT_CHOICES = (
     (10,    _("Secretariat")),
     (None,  _("Website feedback")),
 )
-
+ENVELOPE_USE_HTML_EMAIL = False
 
 
 # http://codespatter.com/2009/04/10/how-to-add-locations-to-python-path-for-reusable-django-apps/
