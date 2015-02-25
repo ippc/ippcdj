@@ -1577,7 +1577,7 @@ class PollVotes(models.Model):
   
 class EmailUtilityMessage(models.Model):
     emailfrom = models.CharField(_("From: "),max_length=200,default=_("ippc@fao.org"),help_text=_("The email will be sent from ippc@fao.org, if you want you can specify an other sender email address."))
-    emailto = models.TextField(_("Send to users that are not registered in IPPC: "),default=_("ippc@fao.org"),help_text=_("Enter the email addresses of recipients, separated by comma"))
+    emailto = models.TextField(_("Send to users that are not registered in IPPC: "),default=_("ippc@fao.org"),help_text=_("Please leave ippc@fao.org for the form to work, and enter email addresses of addition recipients, separated by comma. Example: ippc@fao.org, someone@somewhere.tld, etc@etc.tld"))
     subject = models.CharField(_("Subject: "),max_length=200)
     messagebody = models.TextField(_("Message: "),max_length=500,blank=True, null=True)
     date = models.DateTimeField('date')
