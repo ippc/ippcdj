@@ -11,9 +11,7 @@
 - Make own gravatar_url tag to use instead of Mezzanine's in order to be able to serve over SSL
 - <del>User registration open but behind login-required and staff-user required.</del> The URL to add new users is `/account/signup/`
 - Setup [Versioning](https://django-simple-history.readthedocs.org/en/latest/) of all page content
-- Add blog and forum category management page to admin: 
-    - http://127.0.0.1:8000/en/admin/blog/blogcategory/
-    - http://127.0.0.1:8000/en/admin/forum/forumcategory/
+- Remove the unused Blog app from admin
 - Eventually update to Mezzanine 3.1.5
     - Update to latest version of Mezzanine and make sure current functionality works
 - Document nginx/gunicorn/supervisor setup (currently running gunicorn with deprecated `gunicorn_django -b 0.0.0.0:8000` command — get it running and working with recommended command instead)

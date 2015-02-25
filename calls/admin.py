@@ -11,7 +11,7 @@ from mezzanine.core.admin import DisplayableAdmin, OwnableAdmin
 
 callspost_fieldsets = deepcopy(DisplayableAdmin.fieldsets)
 callspost_fieldsets[0][1]["fields"].insert(1, "categories")
-callspost_fieldsets[0][1]["fields"].extend(["content", "allow_comments"])
+callspost_fieldsets[0][1]["fields"].extend(["content"])
 callspost_list_display = ["title", "user", "status", "admin_link"]
 if settings.CALLS_USE_FEATURED_IMAGE:
     callspost_fieldsets[0][1]["fields"].insert(-2, "featured_image")
