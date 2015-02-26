@@ -74,7 +74,7 @@ def commenta(request, template="generic/comments.html"):
     #TO FIX with real message
     #notifificationmessage = mail.EmailMessage(subject,text,'paola.sentinelli@fao.org', emailto_all, ['paola.sentinelli@fao.org'])
     notifificationmessage = mail.EmailMessage(subject,text,'ippc@fao.org', emailto_all, ['paola.sentinelli@fao.org'])
-    # notifificationmessage.content_subtype = "text"
+    notifificationmessage.content_subtype = "html"
     sent =notifificationmessage.send()
 
     
@@ -518,7 +518,7 @@ def send_notification_message(newitem,id,content_type,title,url):
         message = mail.EmailMessage(subject,textmessage,'ippc@fao.org',#from
             emailto_all, ['paola.sentinelli@fao.org'])#emailto_all for PROD, in TEST all to paola#
         print(textmessage)
-        # message.content_subtype = "text"
+        message.content_subtype = "html"
         sent =message.send()
    
  
@@ -3294,7 +3294,7 @@ def send_pollnotification_message(id):
     message = mail.EmailMessage(subject,textmessage,'ippc@fao.org',#from
         [emailto_all], ['paola.sentinelli@fao.org'])#emailto_all for PROD, in TEST all to paola#
     
-    # message.content_subtype = "text"
+    message.content_subtype = "html"
     sent =message.send()
         
         
@@ -3472,7 +3472,7 @@ def email_send(request):
             for f in fileset:
                 pf=MEDIA_ROOT+str(f.file)
                 message.attach_file(pf) 
-            # message.content_subtype = "text"
+            message.content_subtype = "html"
             
             sent =message.send()
             #update status mail message in db
