@@ -40,9 +40,7 @@
 				{% else %}
 					{% url "mezzanine_password_reset" as password_reset_url %}
 					{% url "profile_update" as profile_update_url %}
-					{% blocktrans %}
-						<p><a href="{{ password_reset_url }}?next={{ profile_update_url }}">Forgot your password</a>?</p>
-					{% endblocktrans %}
+						<p><a href="{{ password_reset_url }}?next={{ profile_update_url }}">{% trans "Forgot your password" %}</a>?</p>
 				{% endif %}
 		{% endif %}
 		
