@@ -22,12 +22,12 @@ div.container-fluid {max-width:1200px; text-align:left; margin:0 auto;}
 *:target {background:#F2FFEF;}
 
 a.brand {
-    font-size:1em !important; 
+    font-size:1.2em !important; 
     vertical-align:middle; 
     color:#000 !important; 
     background:url(/static/img/ippc-logo-glyph-web-80x42.png) no-repeat 0 7px; 
     margin:0 !important; 
-    padding:10px 0 12px 88px !important; 
+    padding:12px 0 12px 88px !important; 
     line-height:16px;
 }
 
