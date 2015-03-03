@@ -3254,7 +3254,7 @@ class PollListView(ListView):
     context_object_name = 'latest_poll_list'
     def get_queryset(self):
         """Return the last five published polls."""
-        return Poll.objects.all
+        return Poll.objects.order_by('-pub_date').all
 
 
 class PollDetailView(DetailView):
@@ -3295,7 +3295,7 @@ def send_pollnotification_message(id):
         [emailto_all], ['paola.sentinelli@fao.org'])#emailto_all for PROD, in TEST all to paola#
     
     message.content_subtype = "html"
-    sent =message.send()
+    # sent =message.send()
         
         
 
@@ -3316,9 +3316,9 @@ def poll_create(request):
            
             c_form.instance = new_poll
             c_form.save()
-            send_pollnotification_message(new_poll.id)
+            # send_pollnotification_message(new_poll.id)
             
-            info(request, _("Successfully created pest report."))
+            info(request, _("Successfully created Poll."))
             return redirect("detail", pk=new_poll.id)
          else:
              return render_to_response('polls/poll_create.html', {'form': form,'c_form': c_form,},
