@@ -184,11 +184,16 @@ Dev server exlqaippc2.ext.fao.org setup and configuration for IPPC 4.0 prototype
 
 8. Stop and restart [Gunicorn](http://gunicorn-docs.readthedocs.org/en/latest/run.html) application server:
 
-		# This command shows you the master PID of Gunicorn if it is running (http://stackoverflow.com/a/26926130):  
+	This command shows you the master PID of Gunicorn if it is running (http://stackoverflow.com/a/26926130):  
+
 		pstree -ap|grep gunicorn
-		# Restart Gunicorn gracefully with the following (replace <pid> with the process number, for example, kill -HUP 10745):  
+
+	Restart Gunicorn gracefully with the following (replace <pid> with the process number, for example, kill -HUP 10745):  
+
 		kill -HUP <pid>   
-		# If the above doesn't work and it is an emergency, just do the following (NOTE: THE SITE WILL GO DOWN):  
+
+	If the above doesn't work and it is an emergency, just do the following (NOTE: THE SITE WILL GO DOWN):  
+
 		pkill gunicorn  
 		gunicorn_django -b 0.0.0.0:8000 --daemon --log-file /var/log/nginx/gunicorn-beta-ippc-error.log  
 
