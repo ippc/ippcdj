@@ -8,13 +8,19 @@ from django.db import models
 class Migration(SchemaMigration):
 
     def forwards(self, orm):
-        # Adding model 'PreferredLanguages'
-        db.create_table(u'ippc_preferredlanguages', (
-            (u'id', self.gf('django.db.models.fields.AutoField')(primary_key=True)),
-            ('status', self.gf('django.db.models.fields.CharField')(max_length=500)),
+        # Adding model 'PublicationLibrary'
+       
+        # Adding M2M table for field groups on 'Publication'
+        m2m_table_name = db.shorten_name(u'ippc_publication_groups')
+        db.create_table(m2m_table_name, (
+            ('id', models.AutoField(verbose_name='ID', primary_key=True, auto_created=True)),
+            ('publication', models.ForeignKey(orm[u'ippc.publication'], null=False)),
+            ('group', models.ForeignKey(orm[u'auth.group'], null=False))
         ))
-        db.send_create_signal(u'ippc', ['PreferredLanguages'])
-    
+        db.create_unique(m2m_table_name, ['publication_id', 'group_id'])
+
+
+
     models = {
         u'auth.group': {
             'Meta': {'object_name': 'Group'},
@@ -276,7 +282,7 @@ class Migration(SchemaMigration):
             'Meta': {'object_name': 'EmailUtilityMessage'},
             'date': ('django.db.models.fields.DateTimeField', [], {}),
             'emailfrom': ('django.db.models.fields.CharField', [], {'default': "u'ippc@fao.org'", 'max_length': '200'}),
-            'emailto': ('django.db.models.fields.CharField', [], {'default': "u'ippc@fao.org'", 'max_length': '200'}),
+            'emailto': ('django.db.models.fields.TextField', [], {'default': "u'ippc@fao.org'"}),
             'groups': ('django.db.models.fields.related.ManyToManyField', [], {'blank': 'True', 'related_name': "'emailgroups'", 'null': 'True', 'symmetrical': 'False', 'to': u"orm['auth.Group']"}),
             u'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
             'messagebody': ('django.db.models.fields.TextField', [], {'max_length': '500', 'null': 'True', 'blank': 'True'}),
@@ -399,7 +405,7 @@ class Migration(SchemaMigration):
             'country': ('django.db.models.fields.related.ForeignKey', [], {'blank': 'True', 'related_name': "'user_country_page'", 'null': 'True', 'to': u"orm['ippc.CountryPage']"}),
             'date_account_created': ('django.db.models.fields.DateTimeField', [], {'default': 'datetime.datetime.now'}),
             'email_address_alt': ('django.db.models.fields.EmailField', [], {'default': "''", 'max_length': '75', 'null': 'True', 'blank': 'True'}),
-            'expertize': ('django.db.models.fields.TextField', [], {'default': "''", 'null': 'True', 'blank': 'True'}),
+            'expertise': ('django.db.models.fields.TextField', [], {'default': "''", 'null': 'True', 'blank': 'True'}),
             'fax': ('django.db.models.fields.CharField', [], {'max_length': '80', 'blank': 'True'}),
             'first_name': ('django.db.models.fields.CharField', [], {'max_length': '30'}),
             'gender': ('django.db.models.fields.PositiveSmallIntegerField', [], {'null': 'True', 'blank': 'True'}),
@@ -413,6 +419,7 @@ class Migration(SchemaMigration):
             'state': ('django.db.models.fields.CharField', [], {'max_length': '100', 'blank': 'True'}),
             'title': ('django.db.models.fields.CharField', [], {'max_length': '100', 'null': 'True', 'blank': 'True'}),
             'user': ('django.db.models.fields.related.OneToOneField', [], {'to': u"orm['auth.User']", 'unique': 'True'}),
+            'website': ('django.db.models.fields.URLField', [], {'max_length': '200', 'null': 'True', 'blank': 'True'}),
             'zipcode': ('django.db.models.fields.CharField', [], {'max_length': '20', 'blank': 'True'})
         },
         u'ippc.issuekeyword': {
@@ -670,7 +677,7 @@ class Migration(SchemaMigration):
         u'ippc.preferredlanguages': {
             'Meta': {'object_name': 'PreferredLanguages'},
             u'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
-            'status': ('django.db.models.fields.CharField', [], {'max_length': '500'})
+            'preferredlanguage': ('django.db.models.fields.CharField', [], {'max_length': '500'})
         },
         u'ippc.publication': {
             'Meta': {'ordering': "('_order',)", 'object_name': 'Publication'},
@@ -684,6 +691,7 @@ class Migration(SchemaMigration):
             'file_fr': ('django.db.models.fields.files.FileField', [], {'max_length': '204', 'null': 'True', 'blank': 'True'}),
             'file_ru': ('django.db.models.fields.files.FileField', [], {'max_length': '204', 'null': 'True', 'blank': 'True'}),
             'file_zh': ('django.db.models.fields.files.FileField', [], {'max_length': '204', 'null': 'True', 'blank': 'True'}),
+            'groups': ('django.db.models.fields.related.ManyToManyField', [], {'blank': 'True', 'related_name': "'publicationgroups'", 'null': 'True', 'symmetrical': 'False', 'to': u"orm['auth.Group']"}),
             u'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
             'library': ('django.db.models.fields.related.ForeignKey', [], {'related_name': "'publications'", 'to': u"orm['ippc.PublicationLibrary']"}),
             'modify_date': ('django.db.models.fields.DateTimeField', [], {'auto_now': 'True', 'null': 'True', 'blank': 'True'}),

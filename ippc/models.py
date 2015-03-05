@@ -277,7 +277,10 @@ class Publication(Orderable):
     contact_for_more_information = models.TextField(_("Contact for more information"), blank=True, null=True)    
     issuename=generic.GenericRelation(IssueKeywordsRelate)
     commname=generic.GenericRelation(CommodityKeywordsRelate)
-    old_id = models.CharField(max_length=50, blank=True, null=True)                              
+    old_id = models.CharField(max_length=50, blank=True, null=True)  
+    groups = models.ManyToManyField(Group, 
+        verbose_name=_("Groups this publication is NOT accessible to"), 
+        related_name='publicationgroups', blank=True, null=True)
     def __unicode__(self):
         return self.title
 

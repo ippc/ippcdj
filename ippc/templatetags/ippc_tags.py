@@ -62,3 +62,4 @@ def get_page(slug, attr):
 # def can_view(user, page):
 #     content_model = page.get_content_model()
 #     return user.has_perm('can_view', content_model)
+

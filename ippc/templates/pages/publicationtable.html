@@ -1,4 +1,6 @@
 {% load mezzanine_tags staticfiles i18n %}
+
+
 {%if page.publicationlibrary.id == 346 %}
 
 {%if page.publicationlibrary.publications.all%}
@@ -108,10 +110,16 @@
    </thead>
    <tbody>
 
+
 {% with page.publicationlibrary.publications.all as publications %}
+
+  
   {% for publication in publications %}
      {% if publication.status == 2 %}
-    <tr id="media-file-{{ publication.id }}">
+          {% if  publication.groups.all %}
+             
+          {% else %}
+       <tr id="media-file-{{ publication.id }}">
        {# =todo: if no publication or agenda numbers exist, don't show header or cells #}
       {# {% if publication.document_number %} #}
         <td>{{ publication.document_number }}</td>
@@ -174,9 +182,92 @@
       {% endif %}
       </td>  
       <td>{{ publication.publication_date|date:"d M Y"  }}</td>
-    </tr>        
-    {% endif %}
-  {% endfor %} {# publication in publications #}
+    </tr>     {% endif %}
+     {% endif %}
+  {% endfor %} 
+  
+  
+  {% for publication in publications %}
+     {% if publication.status == 2 %}
+          {% if  publication.groups.all %}
+            {% if publication.groups.all.0 in request.user.groups.all or publication.groups.all.1 in request.user.groups.all %}
+           
+   
+                             {%else%}
+       <tr id="media-file-{{ publication.id }}">
+       {# =todo: if no publication or agenda numbers exist, don't show header or cells #}
+      {# {% if publication.document_number %} #}
+        <td>{{ publication.document_number }}</td>
+      {# {% endif %} #}
+      {# {% if publication.agenda_number %} #}
+        <td>{{ publication.agenda_number }}</td>
+      {# {% endif %} #}
+      <td><a href="{% url 'publication-detail' publication.pk %}">{{ publication.title }}</a></td>
+
+      <td>
+        {% if publication.file_en %}
+        <a href="{{ MEDIA_URL }}{{ publication.file_en }}">
+            {# {% if file.file.filetype == 'Image' %} #}
+            {#     <img class="media-object" src="{{ MEDIA_URL }}{% thumbnail file.file 64 64 %}"> #}
+            {# {% else %} #}
+            {#     <img class="media-object" src="{{ STATIC_URL }}img/file_icon.png" /> #}
+            {# {% endif %} #}
+          En
+        </a>
+        {% endif %}
+
+        {% if publication.file_es %}
+        <a href="{{ MEDIA_URL }}{{ publication.file_es }}">
+          Es
+        </a>
+        {% endif %}
+
+        {% if publication.file_fr %}
+        <a href="{{ MEDIA_URL }}{{ publication.file_fr }}">
+          Fr
+        </a>
+        {% endif %}
+
+        {% if publication.file_ru %}
+        <a href="{{ MEDIA_URL }}{{ publication.file_ru }}">
+          Ru
+        </a>
+        {% endif %}
+
+        {% if publication.file_ar %}
+        <a href="{{ MEDIA_URL }}{{ publication.file_ar }}">
+          Ar
+        </a>
+        {% endif %}
+
+        {% if publication.file_zh %}
+        <a href="{{ MEDIA_URL }}{{ publication.file_zh }}">
+          Zh
+        </a>
+        {% endif %}
+        {% if publication.publicationfile_set.all %}
+            {% for f in publication.publicationfile_set.all %} 
+                <a href="{{MEDIA_URL}}{{f.file.name}}">{{ f.description }}</a>
+            {% endfor %}
+        {% endif %}
+      {% if publication.publicationurl_set.all %} 
+        {% for f in publication.publicationurl_set.all %} 
+            <a href="{{f.url_for_more_information}}">Link</a>
+        {% endfor %}
+      {% endif %}
+      </td>  
+      <td>{{ publication.publication_date|date:"d M Y"  }}</td>
+    </tr> 
+                         {% endif %}
+           
+          {% else %}
+         {% endif %}
+     {% endif %}
+  {% endfor %} 
+  
+  
+  
+  {# publication in publications #}
   </tbody>
 </table>
 
@@ -189,28 +280,7 @@
                   
 
 
-                    
-                    
-                    
-                    
-                    
-              
-  
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+       
 
 
       <p align='right'>

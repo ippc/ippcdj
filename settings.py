@@ -119,6 +119,9 @@ USE_I18N = True
 #   * See debug comments, when DEBUG is true
 #   * Receive x-headers
 INTERNAL_IPS = ("127.0.0.1",)
+ALLOWED_HOSTS  = [
+'127.0.0.1'
+]
 
 # List of callables that know how to import templates from various sources.
 TEMPLATE_LOADERS = (
@@ -487,7 +490,6 @@ DEBUG_TOOLBAR_CONFIG = {
 #     "DB_PASS": "", # Live database password
 #     "ADMIN_PASS": "", # Live admin user password
 # }
-
 
 ##################
 # LOCAL SETTINGS #
