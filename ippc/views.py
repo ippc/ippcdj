@@ -435,18 +435,39 @@ class PublicationFilesListView(ListView):
         langs.append(["zh",filenames_zh])
         
         for p in queryset:
-            filenames_all.append(p.file_en)
-            filenames_all.append(p.file_es)
-            filenames_all.append(p.file_fr)
-            filenames_all.append(p.file_ru)
-            filenames_all.append(p.file_zh)
-            filenames_all.append(p.file_ar)
-            filenames_en.append(p.file_en)
-            filenames_es.append(p.file_es)
-            filenames_fr.append(p.file_fr)
-            filenames_ar.append(p.file_ar)
-            filenames_ru.append(p.file_ru)
-            filenames_zh.append(p.file_zh)
+            user_g=self.request.user.groups
+            pub_g=p.groups
+            if pub_g.all():
+                for pg in pub_g.all():
+                    if pg in user_g.all():
+                        break;
+                    else:
+                        filenames_all.append(p.file_en)
+                        filenames_all.append(p.file_es)
+                        filenames_all.append(p.file_fr)
+                        filenames_all.append(p.file_ru)
+                        filenames_all.append(p.file_zh)
+                        filenames_all.append(p.file_ar)
+                        filenames_en.append(p.file_en)
+                        filenames_es.append(p.file_es)
+                        filenames_fr.append(p.file_fr)
+                        filenames_ar.append(p.file_ar)
+                        filenames_ru.append(p.file_ru)
+                        filenames_zh.append(p.file_zh)
+            else:
+                filenames_all.append(p.file_en)
+                filenames_all.append(p.file_es)
+                filenames_all.append(p.file_fr)
+                filenames_all.append(p.file_ru)
+                filenames_all.append(p.file_zh)
+                filenames_all.append(p.file_ar)
+                filenames_en.append(p.file_en)
+                filenames_es.append(p.file_es)
+                filenames_fr.append(p.file_fr)
+                filenames_ar.append(p.file_ar)
+                filenames_ru.append(p.file_ru)
+                filenames_zh.append(p.file_zh)             
+
             
         
         # The zip compressor
