@@ -3496,13 +3496,19 @@ def email_send(request):
             #message = mail.EmailMessage(request.POST['subject'],request.POST['messagebody'],request.POST['emailfrom'],
             #['paola.sentinelli@fao.org',], ['paola.sentinelli@fao.org'])#emailto_all for PROD, in TEST all to paola#
             emailto_all_split=[]
+            print('================================')
+            print(emailto_all)
+            print('================================')
             #if len(emailto_all) >30 :
-            emailto_all_split = split(emailto_all, 30)
+            emailto_all_split = split(emailto_all, 25)
             sent =0
             for emails_arr in emailto_all_split:
                 message = mail.EmailMessage(request.POST['subject'],request.POST['messagebody'],request.POST['emailfrom'],
                 emails_arr, ['paola.sentinelli@fao.org'])#emailto_all for PROD, in TEST all to paola#
                 # Attach a files to message
+                print('===*******SENDING**********===')
+                print (emails_arr)
+                print('====******************************===')
                 fileset= EmailUtilityMessageFile.objects.filter(emailmessage_id=new_emailmessage.id)
                 for f in fileset:
                     pf=MEDIA_ROOT+str(f.file)
