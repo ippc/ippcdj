@@ -3516,8 +3516,47 @@ def email_send(request):
                     message.attach_file(pf) 
                 message.content_subtype = "html"
                 #sent =message.send()
-                sent = send_messages(message) 
-                #sends a list of EmailMessage objects. If the connection is not open, this call will implicitly open the connection, and close the connection afterwards. If the connection is already open, it will be left open after mail has been sent.
+                connection = mail.get_connection()
+
+                # Manually open the connection
+                connection.open()
+
+                connection.send_messages(message)
+                connection.close()
+                                #sends a list of EmailMessage objects. If the connection is not open, this call will implicitly open the connection, and close the connection afterwards. If the connection is already open, it will be left open after mail has been sent.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
                 
             #update status mail message in db
