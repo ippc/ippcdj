@@ -3418,6 +3418,15 @@ class EmailUtilityMessageDetailView(DetailView):
     template_name = 'emailutility/emailutility_detail.html'
     queryset = EmailUtilityMessage.objects.filter()
 
+def split(arr, size):
+     arrs = []
+     while len(arr) > size:
+         pice = arr[:size]
+         arrs.append(pice)
+         arr   = arr[size:]
+     arrs.append(arr)
+     return arrs
+ 
 @login_required
 @permission_required('ippc.add_emailutilitymessage', login_url="/accounts/login/")
 def email_send(request):
@@ -3486,16 +3495,21 @@ def email_send(request):
             #send email message
             #message = mail.EmailMessage(request.POST['subject'],request.POST['messagebody'],request.POST['emailfrom'],
             #['paola.sentinelli@fao.org',], ['paola.sentinelli@fao.org'])#emailto_all for PROD, in TEST all to paola#
-            message = mail.EmailMessage(request.POST['subject'],request.POST['messagebody'],request.POST['emailfrom'],
-            emailto_all, ['paola.sentinelli@fao.org'])#emailto_all for PROD, in TEST all to paola#
-            # Attach a files to message
-            fileset= EmailUtilityMessageFile.objects.filter(emailmessage_id=new_emailmessage.id)
-            for f in fileset:
-                pf=MEDIA_ROOT+str(f.file)
-                message.attach_file(pf) 
-            message.content_subtype = "html"
-            
-            sent =message.send()
+            emailto_all_split=[]
+            #if len(emailto_all) >30 :
+            emailto_all_split = split(emailto_all, 30)
+            sent =0
+            for emails_arr in emailto_all_split:
+                message = mail.EmailMessage(request.POST['subject'],request.POST['messagebody'],request.POST['emailfrom'],
+                emails_arr, ['paola.sentinelli@fao.org'])#emailto_all for PROD, in TEST all to paola#
+                # Attach a files to message
+                fileset= EmailUtilityMessageFile.objects.filter(emailmessage_id=new_emailmessage.id)
+                for f in fileset:
+                    pf=MEDIA_ROOT+str(f.file)
+                    message.attach_file(pf) 
+                message.content_subtype = "html"
+                sent =message.send()
+                
             #update status mail message in db
             new_emailmessage.sent=sent
             form.save()
