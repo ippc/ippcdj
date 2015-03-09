@@ -3522,7 +3522,7 @@ def email_send(request):
                 connection = mail.get_connection()
                 # Manually open the connection
                 connection.open()
-                sent=connection.send_messages([messages])
+                sent=connection.send_messages(messages)
                 connection.close()
                 #sends a list of EmailMessage objects. If the connection is not open, this call will implicitly open the connection, and close the connection afterwards. If the connection is already open, it will be left open after mail has been sent.
 
