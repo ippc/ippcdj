@@ -3,13 +3,13 @@
 */
 
 body {
-    padding-top:10px;
+    padding-top:25px;
     padding-bottom:5em; 
     background:#fff;
     color:#000; 
     font-family:verdana, sans-serif;
     text-align:center;
-		background:url(/static/img/website-bar-3.0.gif) repeat-x 0 0;
+		background:url(/static/img/website-bar-4.0.gif) repeat-x 0 0;
 }
 
 /* typography tweaks ================= */
@@ -22,7 +22,7 @@ div.container-fluid {max-width:1200px; text-align:left; margin:0 auto;}
 *:target {background:#F2FFEF;}
 
 a.brand {
-    font-size:1.2em !important; 
+    font-size:1.4em !important; 
     vertical-align:middle; 
     color:#000 !important; 
     background:url(/static/img/ippc-logo-glyph-web-80x42.png) no-repeat 0 7px; 
