@@ -1183,7 +1183,7 @@ class DraftProtocolDetailView(DetailView):
         return context
 
 @login_required
-@permission_required('ippc.add_draftprotocol', login_url="/accounts/login/")
+@permission_required('ippc.add_publication', login_url="/accounts/login/")
 def draftprotocol_create(request):
     """ Create DraftProtocol """
     user = request.user
@@ -1221,7 +1221,7 @@ def draftprotocol_create(request):
         
 
 @login_required
-@permission_required('ippc.change_draftprotocol', login_url="/accounts/login/")
+@permission_required('ippc.add_publication', login_url="/accounts/login/")
 def draftprotocol_edit(request, id=None, template_name='dp/dp_edit.html'):
     """ DraftProtocol """
     user = request.user
@@ -3449,8 +3449,40 @@ def email_send(request):
            users_all.append(users_u)
         g_set.append(users_all)
     
-    cp_set=[]    
-    for h in range(1,5):
+    users_all=[]
+ 
+    cp_set0=[]
+    users_all=[]
+    cp=IppcUserProfile.objects.filter(contact_type=1)
+    cpname = get_object_or_404(ContactType,id=1)
+    for u in cp:
+           users_u=[]
+           user_obj=User.objects.get(id=u.user_id)
+           cn = get_object_or_404(CountryPage,id=u.country_id)
+           users_u.append(str(cn))
+           users_u.append(' ('+(unicode(u.first_name))+' '+(unicode(u.last_name))+') ')
+           users_u.append(str(user_obj.email))
+           users_all.append(users_u)
+           
+    users_all2= split(users_all,30)   
+    j=0
+    users_all_2=[]
+    for xx in users_all2:
+        users_all_2=[]
+       
+        k=j+1
+        users_all_2.append(str(cpname)+" - Group "+str(k))
+        users_all_2.append(str(j))
+        j=j+1
+        for x in xx:
+            users_all_2.append(x)
+    
+        cp_set0.append(users_all_2)
+        
+    
+   
+    cp_set=[]      
+    for h in range(2,5):
         users_all=[]
         cp=IppcUserProfile.objects.filter(contact_type=h)
         cpname = get_object_or_404(ContactType,id=h)
@@ -3465,9 +3497,10 @@ def email_send(request):
                users_u.append(' ('+(unicode(u.first_name))+' '+(unicode(u.last_name))+') ')
                users_u.append(str(user_obj.email))
                users_all.append(users_u)
+
         cp_set.append(users_all)
-    
-    
+
+
     if request.method == "POST":
         f_form =EmailUtilityMessageFileFormSet(request.POST, request.FILES)
         if form.is_valid() and f_form.is_valid():
@@ -3533,13 +3566,13 @@ def email_send(request):
             info(request, _("Email  sent."))
             return redirect("email-detail",new_emailmessage.id)
         else:
-             return render_to_response('emailutility/emailutility_send.html', {'form': form,'f_form': f_form,'emailgroups':g_set,'emailcp':cp_set,},
+             return render_to_response('emailutility/emailutility_send.html', {'form': form,'f_form': f_form,'emailgroups':g_set,'emailcp':cp_set,'emailcp2':cp_set0},
              context_instance=RequestContext(request))
     else:
         form = EmailUtilityMessageForm(instance=EmailUtilityMessage())
         f_form =EmailUtilityMessageFileFormSet()
       
-    return render_to_response('emailutility/emailutility_send.html', {'form': form  ,'f_form': f_form,'emailgroups':g_set,'emailcp':cp_set,},#'emailcpu':cpu_set,'emailcpi':cpi_set,'emailcpl':cpl_set
+    return render_to_response('emailutility/emailutility_send.html', {'form': form  ,'f_form': f_form,'emailgroups':g_set,'emailcp':cp_set,'emailcp2':cp_set0,},#'emailcpu':cpu_set,'emailcpi':cpi_set,'emailcpl':cpl_set
         context_instance=RequestContext(request))
 
    

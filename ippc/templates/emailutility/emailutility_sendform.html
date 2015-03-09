@@ -117,7 +117,27 @@ function  checkNotify(theform,group,field){
 </table><td>
         <td valign="top">
 <strong>Contact Points:</strong><br />
+<p class="alert alert-warning"> The Official Contact point group has been divided in smaller groups.</p>
+
 <table cellpadding=2>
+{% for g in emailcp2 %}
+        <tr>
+            <td width="5"><img title="Open Group" src="/static/leaflet/images/zoom-in.png" onclick="javascript:viewMemb('viewc1_{{g.1}}');"/></td>
+            <td>  {{g.0}}</td>
+            <td width="5" title="Check all"><input type="checkbox" onClick="javascript:checkmembers(this.form,'usercp1','cp1',{{g.1}},'viewc1_{{g.1}}');void(0);" name="groupcp1_{{g.1}}" value="viewc1_{{g.1}}"/></td>
+        </tr>
+        <tr><td/>
+        <td>
+        <div style="display:none" id="viewc1_{{g.1}}">
+        {% for  u in g|slice:"2:" %} 
+            <input onchange="javascript:checkNotify(this.form,'usercp1_','checkgroups');" type="checkbox" name="usercp1_{{g.1}}_0" value="{{u.2}}"/>{{u.0}} {{u.1}}<br/>
+        {% endfor %}
+        </div>
+        </td>
+     </tr>
+    {% endfor %}
+
+</table><br><br><table cellpadding=2>
     {% for g in emailcp %}
         <tr>
             <td width="5"><img title="Open Group" src="/static/leaflet/images/zoom-in.png" onclick="javascript:viewMemb('viewc_{{g.1}}');"/></td>

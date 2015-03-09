@@ -30,7 +30,10 @@
 </p>
 
 <h1><span class="normal">{% trans "Create New Email message" %}</span> </h1>
-<p class="alert alert-error">The email utility is having problems and we are working on fixing them as a priority. Please do not use it until we give the all-clear. We apologize for the inconvenience.</p>
+<p class="alert alert-warning"> The email utility has some problem sending emails to big groups of users such as NPPOs all at the same time. <br>
+    For smaller groups it is working fine.
+    If you need to send emails to more than 30 users at the same time it is better to send more than one email.<br>
+    The NPPOs group has been divided in smaller groups.</p>
 <p>Emails can be sent to any number of recipients, either selecting specific members, groups of members, or entering the email addresses of individuals that are not in the system.</p>
 <form class="customform" method="POST" action="" enctype="multipart/form-data">
     {% csrf_token %}

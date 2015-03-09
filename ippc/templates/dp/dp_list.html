@@ -3,7 +3,7 @@
 {% block main %}
 
 <p class="pull-right">
-  {% if perms.ippc.add_draftprotocol or   user.is_superuser %}  
+  {% if  perms.ippc.change_publication or   user.is_superuser %}  
   <br>
   <small><a class="btn btn-small btn-info" href="{% url 'draftprotocol-create' %}">+ {% trans "Add new Draft Protocol" %}</a></small>
   <br>

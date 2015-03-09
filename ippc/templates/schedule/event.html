@@ -44,7 +44,7 @@
     {% else %}    
     <p><a href="/year/calendar/">« {% trans "Back to " %}  {% trans "Calendar" %}</a></p>
      {% endif %}
-   {% if user.is_superuser %} 
+   {% if  is_secretariat or user.is_superuser %} 
     <a class="btn btn-small btn-info" href="/admin/schedule/event/{{ event.id }}"><i class="icon-edit icon-white"></i>Edit as Admin</a><br>
     {% endif %}
     
