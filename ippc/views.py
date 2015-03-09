@@ -3504,18 +3504,21 @@ def email_send(request):
             emailto_all_split = split(emailto_all, 25)
             sent =0
             for emails_arr in emailto_all_split:
-                message = mail.EmailMessage(request.POST['subject'],request.POST['messagebody'],request.POST['emailfrom'],
-                emails_arr, ['paola.sentinelli@fao.org'])#emailto_all for PROD, in TEST all to paola#
-                # Attach a files to message
-                print('===*******SENDING**********===')
-                print (emails_arr)
-                print('====******************************===')
-                fileset= EmailUtilityMessageFile.objects.filter(emailmessage_id=new_emailmessage.id)
-                for f in fileset:
-                    pf=MEDIA_ROOT+str(f.file)
-                    message.attach_file(pf) 
-                message.content_subtype = "html"
-                #sent =message.send()
+                messages=[]
+                for emails_a in emails_arr:
+                    message = mail.EmailMessage(request.POST['subject'],request.POST['messagebody'],request.POST['emailfrom'],
+                    emails_a, ['paola.sentinelli@fao.org'])#emailto_all for PROD, in TEST all to paola#
+                    # Attach a files to message
+                    print('===*******SENDING**********===')
+                    print (emails_arr)
+                    print('====******************************===')
+                    fileset= EmailUtilityMessageFile.objects.filter(emailmessage_id=new_emailmessage.id)
+                    for f in fileset:
+                        pf=MEDIA_ROOT+str(f.file)
+                        message.attach_file(pf) 
+                    message.content_subtype = "html"
+                    messages.append(message)
+                    #sent =message.send()
                 connection = mail.get_connection()
 
                 # Manually open the connection
