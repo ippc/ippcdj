@@ -31,6 +31,8 @@ a.brand {
     line-height:16px;
 }
 
+a.brand em.small {font-size:0.8em !important;}
+
 div.navbar, div.navbar-fixed-top {position:relative !important;}
 div.navbar-inner {border-radius:0; min-height:25px;}
 
