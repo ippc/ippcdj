@@ -3507,7 +3507,7 @@ def email_send(request):
                 messages=[]
                 for emails_a in emails_arr:
                     message = mail.EmailMessage(request.POST['subject'],request.POST['messagebody'],request.POST['emailfrom'],
-                    emails_a, ['paola.sentinelli@fao.org'])#emailto_all for PROD, in TEST all to paola#
+                    [emails_a], ['paola.sentinelli@fao.org'])#emailto_all for PROD, in TEST all to paola#
                     # Attach a files to message
                     print('===*******SENDING**********===')
                     print (emails_arr)
