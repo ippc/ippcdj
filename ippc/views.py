@@ -3506,26 +3506,27 @@ def email_send(request):
                 messages=[]
                 for emails_a in emails_arr:
                     message = mail.EmailMessage(request.POST['subject'],request.POST['messagebody'],request.POST['emailfrom'],
-                    [emails_a], ['paolas.sentinelli@fao.org'])#emailto_all for PROD, in TEST all to paola#
-                    # Attach a files to message
+                    [emails_a], ['paola.sentinelli@fao.org'])#emailto_all for PROD, in TEST all to paola#
                     #print('===*******SENDING**********===')
                     #print (emails_arr)
                     #print('====******************************===')
+                    # Attach a files to message
                     fileset= EmailUtilityMessageFile.objects.filter(emailmessage_id=new_emailmessage.id)
                     for f in fileset:
                         pf=MEDIA_ROOT+str(f.file)
                         message.attach_file(pf) 
                     message.content_subtype = "html"
                     messages.append(message)
+                    #timeout, so changed to send_messages
                     #sent =message.send()
-                connection = mail.get_connection()
                 # Manually open the connection
+                #sends a list of EmailMessage objects. If the connection is not open, this call will implicitly open the connection, and close the connection afterwards. If the connection is already open, it will be left open after mail has been sent.
+                connection = mail.get_connection()
                 connection.open()
                 sent=connection.send_messages(messages)
                 connection.close()
-                #sends a list of EmailMessage objects. If the connection is not open, this call will implicitly open the connection, and close the connection afterwards. If the connection is already open, it will be left open after mail has been sent.
-
-            #update status mail message in db
+               
+            #update status SENT/NOT SENT mail message in db
             new_emailmessage.sent=sent
             form.save()
            
