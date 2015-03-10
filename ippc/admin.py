@@ -78,6 +78,7 @@ class PublicationAdmin(admin.ModelAdmin):
     list_display = ('title',  'modify_date')
     list_filter = ('title',  'modify_date')
     prepopulated_fields = { 'slug': ['title']}
+    search_fields = ['title', 'short_description', 'slug', 'file_en', 'file_es', 'file_ar', 'file_ru', 'file_zh', 'file_fr']
 admin.site.register(Publication, PublicationAdmin)
 
 class PublicationInline(StackedDynamicInlineAdmin):
