@@ -47,7 +47,7 @@
           {% for group in request.user.groups.all %}
            {% if group in object.groups.all %}
     
-     {% if object.is_past_due %}
+     {% if object.is_past_due %}{%else%}
     <tr>
       <td><a href="{% url 'draftprotocol-detail' object.publish_date|date:'Y' object.publish_date|date:'m'  object.slug %}">{{ object.title }}</a></td>
       <td>OPEN</td>

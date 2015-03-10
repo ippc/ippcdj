@@ -594,7 +594,7 @@ class DraftProtocol(Displayable, models.Model):
     summary = models.TextField(_("Summary or Short Description"), blank=True, null=True)
     filetext = models.FileField(_("Attachment (comments on protocol text)"), upload_to="files/dp/%Y/%m/", blank=True)
     filefig = models.FileField(_("Attachment (comments on protocol figures)"), upload_to="files/dp/%Y/%m/", blank=True)
-    old_id = models.CharField(max_length=50)
+    old_id = models.CharField(max_length=50, blank=True, null=True)
   
     objects = SearchableManager()
     # attachments = AttachmentManager()
