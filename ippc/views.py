@@ -126,7 +126,7 @@ class PublicationLibraryView(ListView):
         context = super(PublicationLibraryView, self).get_context_data(**kwargs)
         queryset = DraftProtocol.objects.all()
         context['latest1']=queryset
-        
+       
         users_sec=[]
         users_sc=[] 
         users_bureau=[]
@@ -232,6 +232,7 @@ class PublicationLibraryView(ListView):
                    users_u.append((userippc.profile_photo))
                    users_u.append((userippc.title))
                    users_u.append((user_obj.username))
+                   #users_u.append((user_obj.contact_type))
                    users_tppt.append(users_u)
             
         

@@ -392,7 +392,9 @@ urlpatterns = patterns("",
 
     
     # DPs  detail
-    url(r'^expert-consultation-on-draft-diagnostic-protocols-ecdp/(?P<year>\d+)/(?P<month>\d{2})/(?P<slug>[\w-]+)/$',
+    #https://www.ippc.int/en/core-activities/expert-consultation-draft-diagnostic-protocols/
+    #   url(r'^expert-consultation-on-draft-diagnostic-protocols-ecdp/(?P<year>\d+)/(?P<month>\d{2})/(?P<slug>[\w-]+)/$',
+    url(r'^core-activities/expert-consultation-draft-diagnostic-protocols/(?P<year>\d+)/(?P<month>\d{2})/(?P<slug>[\w-]+)/$',
         view=DraftProtocolDetailView.as_view(),
         name="draftprotocol-detail"),
      #DPs create
@@ -400,12 +402,13 @@ urlpatterns = patterns("",
         view=draftprotocol_create,
         name='draftprotocol-create'),
      #   DPsedit
-     url(r'^draftprotocol/edit/(?P<id>\d+)/$',
+    url(r'^draftprotocol/edit/(?P<id>\d+)/$',
         view=draftprotocol_edit,
         name='draftprotocol-edit'),
 
     # individual country home
-    url(r'^expert-consultation-on-draft-diagnostic-protocols-ecdp/$',
+    #url(r'^expert-consultation-on-draft-diagnostic-protocols-ecdp/$',
+    url(r'^core-activities/expert-consultation-draft-diagnostic-protocols/$',
         view=PublicationLibraryView.as_view(),
         # view=country_view(),
         name='country'),
