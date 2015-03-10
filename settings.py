@@ -76,6 +76,9 @@ BLOG_USE_FEATURED_IMAGE = True
 CALLS_USE_FEATURED_IMAGE = True
 NEWS_USE_FEATURED_IMAGE = True
 
+NEWS_POST_PER_PAGE = "14"
+CALLS_POST_PER_PAGE = "14"
+
 # If True, the south application will be automatically added to the
 # INSTALLED_APPS setting.
 USE_SOUTH = True
