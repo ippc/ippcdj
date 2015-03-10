@@ -3517,6 +3517,9 @@ def email_send(request):
             for h in range(1,5):
                   for uemail in request.POST.getlist('usercp_'+str(h)+'_0'):
                      emailto_all.append(str(uemail))
+            for h in range(1,5):
+                  for uemail in request.POST.getlist('usercp1_'+str(h)+'_0'):
+                     emailto_all.append(str(uemail))                     
             
             new_emailmessage = form.save(commit=False)
             new_emailmessage.date=timezone.now()
