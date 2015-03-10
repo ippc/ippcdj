@@ -798,7 +798,7 @@ class CnPublication(Displayable, models.Model):
     search_fields = ("title", "short_description")
 
     class Meta:
-        verbose_name_plural = _("Publications")
+        verbose_name_plural = _("Publications from Countries")
         # abstract = True
 
     def __unicode__(self):
@@ -871,7 +871,7 @@ class PartnersPublication(Displayable, models.Model):
     search_fields = ("title", "short_description")
 
     class Meta:
-        verbose_name_plural = _("Publications")
+        verbose_name_plural = _("Publications from Partners")
         # abstract = True
 
     def __unicode__(self):
