@@ -3514,13 +3514,13 @@ def email_send(request):
                 for uemail in request.POST.getlist('user_'+str(g.id)+'_0'):
                     emailto_all.append(str(uemail))
                     
-            for h in range(1,5):
+            for h in range(2,5):
                   for uemail in request.POST.getlist('usercp_'+str(h)+'_0'):
                      emailto_all.append(str(uemail))
-            for h in range(1,5):
+            for h in range(0,6):
                   for uemail in request.POST.getlist('usercp1_'+str(h)+'_0'):
                      emailto_all.append(str(uemail))                     
-            
+            #print(emailto_all)
             new_emailmessage = form.save(commit=False)
             new_emailmessage.date=timezone.now()
             new_emailmessage.emailto=emailto_all
