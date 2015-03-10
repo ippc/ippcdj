@@ -1172,7 +1172,7 @@ class DraftProtocolDetailView(DetailView):
         see_all_comment= 0
         
         for obj in queryset:
-             if self.request.user == obj.author:
+           if self.request.user == obj.author:
                   add_comment=0
         if self.request.user.groups.filter(name='IPPC Secretariat') or self.request.user.groups.filter(name='TPDPc') :
             see_all_comment=1
@@ -1257,7 +1257,7 @@ def draftprotocol_edit(request, id=None, template_name='dp/dp_edit.html'):
 
 
 @login_required
-@permission_required('ippc.add_draftprotocolcomments', login_url="/accounts/login/")
+@permission_required('ippc.add_draftcomment', login_url="/accounts/login/")
 def draftprotocol_comment_create(request, id=None):
     """ Create  draftprotocol comment"""
     user = request.user
@@ -1290,7 +1290,7 @@ def draftprotocol_comment_create(request, id=None):
         
 
 @login_required
-@permission_required('ippc.change_draftprotocolcomments', login_url="/accounts/login/")
+@permission_required('ippc.add_draftcomment', login_url="/accounts/login/")
 def draftprotocol_comment_edit(request, id=None, dp_id=None, template_name='dp/dp_comment_edit.html'):
     """ DraftProtocol comment edit"""
     user = request.user
