@@ -64,13 +64,16 @@ class ForumPostAdmin(DisplayableAdmin,OwnableAdmin):
                    print(user_email)   
                    emailto_all.append(str(user_email))
             
-            category=get_object_or_404(ForumCategory, id=request.POST['categories']).title       
-            subject='IPPC FORUM: '+category+' - new discussion: '+request.POST['title']       
-            text='Dear IPPC user,\na new discussion has been posted in the '+category+' Forum.\nDiscussion:'+ request.POST['title']+'\nPost:'+request.POST['content']+'\nYou can view it at the following url: http://127.0.0.1:8100/forum/'+request.POST['slug']+'\n-- International Plant Protection Convention team  \n'
-            #TO FIX with real message
-            notifificationmessage = mail.EmailMessage(subject,text,'ippc@fao.org',  emailto_all, ['paola.sentinelli@fao.org'])
-            notifificationmessage.content_subtype = "html"  
-            sent =notifificationmessage.send()
+            category=get_object_or_404(ForumCategory, id=request.POST['categories']).title 
+            if(category == 'TPDP Forum'):
+                print('no notifification')
+            else:    
+                subject='IPPC FORUM: '+category+' - new discussion: '+request.POST['title']       
+                text='<p>Dear IPPC user,<br>a new discussion has been posted in the '+category+' Forum.<br><br>Discussion:'+ request.POST['title']+'<br><br>Post:<br>'+request.POST['content']+'<br><br>You can view it at the following url: https://www.ippc.int/forum/'+request.POST['slug']+'<br><br><br>-- International Plant Protection Convention team </p>'
+                
+                notifificationmessage = mail.EmailMessage(subject,text,'ippc@fao.org',  emailto_all, ['paola.sentinelli@fao.org'])
+                notifificationmessage.content_subtype = "html"  
+                sent =notifificationmessage.send()
         return DisplayableAdmin.save_form(self, request, form, change)
 
 
