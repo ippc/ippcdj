@@ -25,7 +25,7 @@ CountryNewsListView,CountryNewsDetailView,countrynews_create,countrynews_edit,\
 PartnersNewsDetailView,partners_news_create,partners_news_edit,\
 PollListView,PollResultsView,PollDetailView,vote_poll,poll_edit,poll_create,\
 email_send,EmailUtilityMessageDetailView,EmailUtilityMessageListView,\
-DraftProtocolDetailView,  draftprotocol_create, draftprotocol_edit,\
+DraftProtocolDetailView,  draftprotocol_create, draftprotocol_edit,draftprotocol_compilecomments,\
 draftprotocol_comment_create,draftprotocol_comment_edit,PublicationLibraryView,commenta,contactPointExtractor,\
 CountryRegionsPercentageListView,CountryStatsreportsListView,CountryStatsTotalreportsListView,CountryRegionsUsersListView,CountryTotalUsersListView
 from schedule.periods import Year, Month, Week, Day
@@ -405,7 +405,10 @@ urlpatterns = patterns("",
     url(r'^draftprotocol/edit/(?P<id>\d+)/$',
         view=draftprotocol_edit,
         name='draftprotocol-edit'),
-
+    url(r'^draftprotocol/compile/(?P<id>\d+)/$',
+        view=draftprotocol_compilecomments,
+        name='draftprotocol_compilecomments'),
+        
     # individual country home
     #url(r'^expert-consultation-on-draft-diagnostic-protocols-ecdp/$',
     url(r'^core-activities/expert-consultation-draft-diagnostic-protocols/$',

@@ -3783,5 +3783,33 @@ def contactPointExtractor(request):
 
     return response	
 
+def draftprotocol_compilecomments(request,id=None):
+    # Create the HttpResponse object with the appropriate CSV header.
+    draftprotocol = get_object_or_404(DraftProtocol,  pk=id)
+    queryset = DraftProtocolComments.objects.filter(draftprotocol_id=id)
+ 
+    response = HttpResponse(content_type='text/csv')
+    response['Content-Disposition'] = 'attachment; filename="somefilename.csv"'
+    writer = csv.writer(response)
+    writer.writerow(['Author','Expertise On This Pest','Institution','Comment','Attachments'])
+   
+    for obj in queryset:
+        author=''
+        expertise=''
+        intitution=''
+        comment=''
+        attch=''
+        attch2=''
+        lastdate=''
+        
+        author=obj.author
+        expertise=obj.expertise
+        intitution=obj.institution
+        comment=obj.comment
+        attch=obj.filetext
+        attch2=obj.filefig
+        writer.writerow([author,expertise.encode('utf-8'),intitution.encode('utf-8'), comment.encode('utf-8'), attch,attch2])
+
+    return response	
 
 	

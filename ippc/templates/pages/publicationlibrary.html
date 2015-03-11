@@ -33,6 +33,7 @@
 
 {% if page.publicationlibrary.login_required %}
       {% if user.is_superuser or perms.pages.change_richtextpage %}
+      
             {{ block.super }}
             {# {% editable page.publicationlibrary.content %} #}
 
@@ -48,8 +49,9 @@
             {# {% endeditable %} #}
               {% include "pages/publicationtable.html" %}
        {% else %}
-            {% for group in request.user.groups.all %}
-              {% if group in page.get_content_model.groups.all %}
+
+   
+              {% if request.user.groups.all.0 in page.get_content_model.groups.all or request.user.groups.all.1 in page.get_content_model.groups.all or request.user.groups.all.2 in page.get_content_model.groups.all or request.user.groups.all.4 in page.get_content_model.groups.all or request.user.groups.all.5 in page.get_content_model.groups.all %}
                 {{ block.super }}
                 {# {% editable page.publicationlibrary.content %} #}
 
@@ -68,7 +70,7 @@
                 {# {% endeditable %} #}
                   {% include "pages/publicationtable.html" %}
               {% endif %} {# group in request.user.groups.all #}
-            {% endfor %} {# group in page.get_content_model.groups.all #}
+            
         {% endif %} 
   {% else %}
   

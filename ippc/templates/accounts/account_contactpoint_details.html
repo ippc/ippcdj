@@ -127,6 +127,24 @@
    <div id="bio" style="display:none;">{{ page.get_content_model.contact_point.get_profile.bio }}</div></dd>
   {% endif %}
   
+  
+    {% if page.get_content_model.contact_point.get_profile.expertise %}
+    <script type="text/javascript">
+    function toggle_visibility(id) {
+       var e = document.getElementById(id);
+       if(e.style.display == 'block')
+          e.style.display = 'none';
+       else
+          e.style.display = 'block';
+    }
+    </script>
+
+  <dd>
+   <strong>{% trans "Description/expertise" %}</strong> <a href="#" onclick="javascript:toggle_visibility('exp');"><small>{% trans "Click to display" %}</small></a>
+   <div id="exp" style="display:none;">{{ page.get_content_model.contact_point.get_profile.expertise }}</div></dd>
+  {% endif %}
+  
+
 
   
   
