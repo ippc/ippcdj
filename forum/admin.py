@@ -14,6 +14,7 @@ from django.contrib.auth.models import User,Group
 from django.forms.models import inlineformset_factory
 from django.forms.formsets import formset_factory
 import markdown
+from django.template.defaultfilters import slugify
 
 forumpost_fieldsets = deepcopy(DisplayableAdmin.fieldsets)
 
@@ -65,20 +66,20 @@ class ForumPostAdmin(DisplayableAdmin,OwnableAdmin):
                    emailto_all.append(str(user_email))
             
             category=get_object_or_404(ForumCategory, id=request.POST['categories']).title 
-            if(category == 'TPDP Forum'):
-                print('no notifification')
-            else:    
-                subject='IPPC FORUM: '+category+' - new discussion: '+request.POST['title']       
-                #markdowner = Markdown()
-                
-                bodycontent = markdown.markdown(request.POST['content'])
+            #if(category == 'TPDP Forum'):
+                #print('no notifification')
+            #else:    
+            subject='IPPC FORUM: '+category+' - new discussion: '+request.POST['title']       
+            #markdowner = Markdown()
 
-                
-                text='<html><body><p>Dear IPPC user,</p><p>a new discussion has been posted in the '+category+' Forum.</p><p>Discussion:'+ request.POST['title']+'</p><p>Post:</p><p>'+bodycontent+'</p><p>You can view it at the following url: https://www.ippc.int/forum/'+request.POST['slug']+'</p><p>-- International Plant Protection Convention team </p></body></html>'
+            bodycontent = markdown.markdown(request.POST['content'])
+
+
+            text='<html><body><p>Dear IPPC user,</p><p>a new discussion has been posted in the '+category+' Forum.</p><p><b>Discussion:</b>'+ request.POST['title']+'</p><p><b>Post:</b></p><p>'+bodycontent+'</p><p>You can view it at the following url: https://www.ippc.int/forum/'+slugify(request.POST['title'])+'</p><p>-- International Plant Protection Convention team </p></body></html>'
             
-                notifificationmessage = mail.EmailMessage(subject,text,'ippc@fao.org',  emailto_all, ['paola.sentinelli@fao.org'])
-                notifificationmessage.content_subtype = "html"  
-                sent =notifificationmessage.send()
+            notifificationmessage = mail.EmailMessage(subject,text,'ippc@fao.org',  emailto_all, ['paola.sentinelli@fao.org'])
+            notifificationmessage.content_subtype = "html"  
+            sent =notifificationmessage.send()
         return DisplayableAdmin.save_form(self, request, form, change)
 
 
