@@ -1,5 +1,8 @@
 {% extends "base.html" %}
 {% load pages_tags mezzanine_tags i18n future staticfiles accounts_tags %}
+{% block extra_css %}
+  <link rel="stylesheet" href="{% static "css/DT_bootstrap.css" %}">
+{% endblock %}
 
 {% block meta_title %}
   {% trans "Pest Reports" %}: 
@@ -126,7 +129,10 @@
 {% endif %}
 
 {% endblock %}
-
+{% block extra_js %}
+  <script src="{% static "js/jquery.dataTables.js" %}"></script>
+  <script src="{% static "js/DT_bootstrap.js" %}"></script>
+{% endblock %}
 {# {% block extra_js %} #}
 {#   <script src="{% static "js/jquery.dataTables.js" %}"></script> #}
 {#   <script src="{% static "js/DT_bootstrap.js" %}"></script> #}
