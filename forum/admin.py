@@ -13,7 +13,7 @@ from django.core.mail import send_mail
 from django.contrib.auth.models import User,Group
 from django.forms.models import inlineformset_factory
 from django.forms.formsets import formset_factory
-
+import markdown
 
 forumpost_fieldsets = deepcopy(DisplayableAdmin.fieldsets)
 
@@ -69,9 +69,13 @@ class ForumPostAdmin(DisplayableAdmin,OwnableAdmin):
                 print('no notifification')
             else:    
                 subject='IPPC FORUM: '+category+' - new discussion: '+request.POST['title']       
-                text='<html><body><p>Dear IPPC user,</p><p>a new discussion has been posted in the '+category+' Forum.</p><p>Discussion:'+ request.POST['title']+'</p><p>Post:</p><p>'+request.POST['content']+'</p><p>You can view it at the following url: https://www.ippc.int/forum/'+request.POST['slug']+'</p><p>-- International Plant Protection Convention team </p></body></html>'
-             
+                #markdowner = Markdown()
                 
+                bodycontent = markdown.markdown(request.POST['content'])
+
+                
+                text='<html><body><p>Dear IPPC user,</p><p>a new discussion has been posted in the '+category+' Forum.</p><p>Discussion:'+ request.POST['title']+'</p><p>Post:</p><p>'+bodycontent+'</p><p>You can view it at the following url: https://www.ippc.int/forum/'+request.POST['slug']+'</p><p>-- International Plant Protection Convention team </p></body></html>'
+            
                 notifificationmessage = mail.EmailMessage(subject,text,'ippc@fao.org',  emailto_all, ['paola.sentinelli@fao.org'])
                 notifificationmessage.content_subtype = "html"  
                 sent =notifificationmessage.send()
