@@ -20,7 +20,7 @@ class SpanForm(forms.ModelForm):
 
     def clean(self):
         if 'end' in self.cleaned_data and 'start' in self.cleaned_data:
-            if self.cleaned_data['end'] <= self.cleaned_data['start']:
+            if self.cleaned_data['end'] < self.cleaned_data['start']:
                 raise forms.ValidationError(_(u"The end time must be later than start time."))
         return self.cleaned_data
 
