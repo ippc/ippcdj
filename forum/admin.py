@@ -69,7 +69,8 @@ class ForumPostAdmin(DisplayableAdmin,OwnableAdmin):
                 print('no notifification')
             else:    
                 subject='IPPC FORUM: '+category+' - new discussion: '+request.POST['title']       
-                text='<p>Dear IPPC user,<br>a new discussion has been posted in the '+category+' Forum.<br><br>Discussion:'+ request.POST['title']+'<br><br>Post:<br>'+request.POST['content']+'<br><br>You can view it at the following url: https://www.ippc.int/forum/'+request.POST['slug']+'<br><br><br>-- International Plant Protection Convention team </p>'
+                text='<html><body><p>Dear IPPC user,</p><p>a new discussion has been posted in the '+category+' Forum.</p><p>Discussion:'+ request.POST['title']+'</p><p>Post:</p><p>'+request.POST['content']+'</p><p>You can view it at the following url: https://www.ippc.int/forum/'+request.POST['slug']+'</p><p>-- International Plant Protection Convention team </p></body></html>'
+             
                 
                 notifificationmessage = mail.EmailMessage(subject,text,'ippc@fao.org',  emailto_all, ['paola.sentinelli@fao.org'])
                 notifificationmessage.content_subtype = "html"  
