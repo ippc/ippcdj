@@ -42,7 +42,7 @@
   </i></dd>
   {% endif %}
   
-  {% if page.get_content_model.contact_point.get_profile.address1 %}
+  {% if page.get_content_model.contact_point.get_profile.address1 or page.get_content_model.contact_point.get_profile.address2 %}
   <!--dt>{% trans "Address" %}</dt-->
   <dd>
     {% if user_get_profile.address1 %}{{ page.get_content_model.contact_point.get_profile.address1 }}<br>{% endif %}
