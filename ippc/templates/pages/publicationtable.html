@@ -26,12 +26,13 @@
 </script>
    <thead>
      <tr>
-       <th style="width:15%;">&#160;</th>
        {# {% if publication.document_number %} #}
          <th style="width:15%;">{% trans "Doc #" %}</th>
        {# {% endif %} #}
        <th>{% trans "Title" %}</th>
        <th>{% trans "Publication date" %}</th>
+       <th style="width:15%;">&#160;</th>
+     
      </tr>
    </thead>
    <tbody>
@@ -40,10 +41,9 @@
   {% for publication in publications %}
      {% if publication.status == 2 %}
     <tr id="media-file-{{ publication.id }}">
-        <td><a href="#{{ publication.id }}" onclick="javascript:toggle_visibility({{ publication.id }});">{% trans "show/hide Details" %}</td>
         <td>{{ publication.document_number }}</td>
         <td><a id="title_{{ publication.id }}" href="{% url 'publication-detail' publication.pk %}">{{ publication.title }}</a>
-           <div id="{{ publication.id }}" style="display:none;">
+           <div id="{{ publication.id }}" style="display:none;"><br><br><br>
                <a href="{% url 'publication-detail' publication.pk %}">{{ publication.title }}</a>
                     {% if publication.file_en %}
                     <a href="{{ MEDIA_URL }}{{ publication.file_en }}">En</a>
@@ -69,13 +69,14 @@
                       Zh
                     </a>
                     {% endif %}
-                  <br> {{ publication.short_description|richtext_filter|safe }}
+                  <br> <br>{{ publication.short_description|richtext_filter|safe }}
            </div>
        </td>
    
      
         <td>{{ publication.publication_date|date:"d M Y"  }}</td>
-
+ <td><a href="#{{ publication.id }}" onclick="javascript:toggle_visibility({{ publication.id }});">{% trans "show/hide Details" %}</td>
+       
     </tr> {% endif %}
   {% endfor %} {# publication in publications #}
   </tbody>
