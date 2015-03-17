@@ -97,13 +97,8 @@
   {# http://datatables.net/blog/Twitter_Bootstrap_2 #}
    <thead>
      <tr>
-       {# =todo: if no publication or agenda numbers exist, don't show header or cells #}
-       {# {% if publication.document_number %} #}
-         <th style="width:15%;">{% trans "Doc #" %}</th>
-       {# {% endif %} #}
-       {# {% if publication.agenda_number %} #}
-         <th style="width:15%;">{% trans "Agenda #" %}</th>
-       {# {% endif %} #}
+        <th style="width:15%;">{% trans "Doc #" %}</th>
+         <th style="width:15%;">{% trans "Agenda #" %}a</th>
        <th>{% trans "Title" %}</th>
        <th>{% trans "Files" %}</th>
        <th>{% trans "Publication date" %}</th>

@@ -102,6 +102,13 @@ admin.site.register(PublicationLibrary, PublicationLibraryAdmin)
 # http://mezzanine.jupo.org/docs/content-architecture.html#creating-custom-content-types
 countrypages_extra_fieldsets = ((None, {"fields": ("name", "country_slug", "iso", "iso3", "contact_point", "editors", "cp_ncp_t_type", "region", "cn_flag", )}),)
 
+def response_change(self, request, obj):
+    print('ccccccccccccccccccccccccc')
+    if not '_continue' in request.POST:
+        return HttpResponseRedirect("http://127.0.0.1:8000/en/core-activities/governance/")
+    else:
+        return super(PublicationLibraryPageAdmin, self).response_change(request, obj)
+    
 class CountryPageAdmin(PageAdmin):
     fieldsets = deepcopy(PageAdmin.fieldsets) + countrypages_extra_fieldsets
     prepopulated_fields = { 'country_slug': ['name'] }

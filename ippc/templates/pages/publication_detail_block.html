@@ -68,7 +68,7 @@
           {% if publication.short_description %}
         
           <dt>{% trans "Description" %}</dt>
-          <dd>{{ publication.short_description}}</dd>
+          <dd>{{ publication.short_description|richtext_filter|safe }}</dd>
           {% endif %}
           
           
