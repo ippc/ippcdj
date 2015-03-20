@@ -31,6 +31,13 @@
       <a class="btn btn-mini btn-info" href="/admin/ippc/partnerspage/{{ page.id }}">Edit page as Admin <small>(also contact point &amp; editors relation)</a><br>
   </div>
   {% endif %}
+  {% if perms.ippc.change_partnerspage and request.user.get_profile.partner.id == page.id %}
+  <div class="pull-right">
+      <a class="btn btn-mini btn-info" href="/admin/ippc/partnerspage/{{ page.id }}">Edit page</a><br>
+  </div>
+      {% endif %}
+  
+  
 
   <h1>
       {{ page.title }} </h1> 

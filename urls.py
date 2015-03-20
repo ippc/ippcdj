@@ -48,7 +48,6 @@ js_info_dict = {
 urlpatterns = patterns("",
     (r'^jsi18n/$', 'django.views.i18n.javascript_catalog', js_info_dict),
     
-    #url(r'^ocs/', include('ocs.urls', namespace="ocs")),
     url(r'^forum/', include('forum.urls')),
     url(r'^calls/', include('calls.urls')),
     url(r'^news/', include('news.urls')),
