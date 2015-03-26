@@ -340,7 +340,7 @@ class PartnersNewsForm(forms.ModelForm):
             'partners': forms.HiddenInput(),
             'publication_date': AdminDateWidget(),
            }
-           
+
 PublicationUrlFormSet  = inlineformset_factory(Publication,  PublicationUrl, extra=1)
 PublicationFileFormSet = inlineformset_factory(Publication,  PublicationFile,extra=1)
                  

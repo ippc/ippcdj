@@ -1,7 +1,23 @@
 from django.template import Library, Node
 from django.db.models import get_model
 from .translate_tags import get_object_translation
+from django.shortcuts import get_object_or_404
+from settings import MEDIA_URL
+import os.path
+from ippc.models import CommentFile
+
 register = Library()
+
+@register.simple_tag
+def get_comment_file(id):
+      print(id)
+      file = CommentFile.objects.filter(comment_id=id)
+      if file.count()>0:
+        for f in file:
+            return '<i class="icon-file">&#160;</i><a href="/static/media/'+f.file.name+'">'+os.path.basename(f.file.name)+'</a>'
+      else:
+        return   ''
+
 
 # http://www.b-list.org/weblog/2006/jun/07/django-tips-write-better-template-tags/     
 class LatestContentNode(Node):

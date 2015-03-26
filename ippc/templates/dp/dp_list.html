@@ -24,16 +24,17 @@
     </tr>
   </thead>
   <tbody>
-    {% for object in latest1 %}
-     {% if user.is_superuser or perms.ippc.add_publication  %} 
+ 
+     {% for object in latest1 %}
             <tr>
                 <td><a href="{% url 'draftprotocol-detail' object.publish_date|date:'Y' object.publish_date|date:'m'  object.slug %}">{{ object.title }}</a></td>
                 <td>{% if object.is_past_due %}
                   CLOSED
                     {% else %}
                    OPEN
-                   {% endif %}</td>
-                           <td><a href="{% url 'draftprotocol-detail' object.publish_date|date:'Y' object.publish_date|date:'m'  object.slug %}">{{ object.closing_date|date:"d M Y" }}</a>
+                   {% endif %}
+                </td>
+                <td><a href="{% url 'draftprotocol-detail' object.publish_date|date:'Y' object.publish_date|date:'m'  object.slug %}">{{ object.closing_date|date:"d M Y" }}</a>
                   {% if user.is_superuser %} 
                       <a class="small pull-right" href="/admin/ippc/draftprotocol/{{ object.id }}"><i class="icon-edit"></i> Edit as Admin</a><br>
                   {% endif %}
@@ -43,42 +44,15 @@
                   {% endif %}
                   </td>
               </tr>
-              
-           {% endif %}
-           {% for g in request.user.groups.all %}
-        
-          {% if g.name == 'TPDP'  %}
-             {% if object.is_past_due %}       
-             {% else %}
-             <tr>
-                <td><a href="{% url 'draftprotocol-detail' object.publish_date|date:'Y' object.publish_date|date:'m'  object.slug %}">{{ object.title }}</a></td>
-                <td>OPEN</td>
-                <td><a href="{% url 'draftprotocol-detail' object.publish_date|date:'Y' object.publish_date|date:'m'  object.slug %}">{{ object.closing_date|date:"d M Y" }}</a></td>
-              </tr>
-           {% endif %}
-          {% endif %} 
-          {% endfor %}
-          {% if request.user in object.users.all %}
-           {% if object.is_past_due %}       
-             {% else %}
-             <tr>
-                <td><a href="{% url 'draftprotocol-detail' object.publish_date|date:'Y' object.publish_date|date:'m'  object.slug %}">{{ object.title }}</a></td>
-                <td>OPEN</td>
-                <td><a href="{% url 'draftprotocol-detail' object.publish_date|date:'Y' object.publish_date|date:'m'  object.slug %}">{{ object.closing_date|date:"d M Y" }}</a></td>
-              </tr>
-           {% endif %}
-          {% endif %} 
 
   
-    
-
- 
- 
+  
+  
 
 
 
-
-{% endfor %}  </tbody>
+{% endfor %} 
+  </tbody>
 </table>
 
 {% else %}

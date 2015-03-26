@@ -1,8 +1,10 @@
 {% load i18n mezzanine_tags comment_tags rating_tags %}
+  {% load ippc_tags %}
 
 <ul class="unstyled">
+    
+  
     {% for comment in comments_for_thread %}
-
     <li id="comment-{{ comment.id }}"
         {% if comment.by_author %}class="comment-author"{% endif %}>
         {% editable comment.is_public comment.is_removed %}
@@ -21,7 +23,7 @@
         </strong>
         <span class="timespan">{% blocktrans with sometime=comment.submit_date|timesince %}{{ sometime }} ago{% endblocktrans %}</span>
         <p>{{ comment.comment|comment_filter }}</p>
-
+        <p>{% get_comment_file comment.id %}</i></p>
         <a href="{{ request.path }}#comment-{{ comment.id }}">{% trans "Link" %}</a>
         {% if  forum_post.allow_comments %}
            / <a href="#reply-{{ comment.id }}" class="reply">{% trans "Reply" %}</a>

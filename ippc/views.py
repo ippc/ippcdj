@@ -11,7 +11,7 @@ from django.conf import settings
 from django.contrib.auth.models import User,Group
 from .models import ContactType,PublicationLibrary,Publication,EppoCode,EmailUtilityMessage, EmailUtilityMessageFile, Poll_Choice, Poll,PollVotes, IppcUserProfile,\
 CountryPage,PartnersPage, PestStatus, PestReport, IS_PUBLIC, IS_HIDDEN, Publication,\
-DraftProtocol,DraftProtocolComments,NotificationMessageRelate,\
+DraftProtocol,DraftProtocolComments,NotificationMessageRelate,CommentFile,\
 ReportingObligation, BASIC_REP_TYPE_CHOICES, EventReporting, EVT_REP_TYPE_CHOICES,Website,CnPublication,PartnersPublication,PartnersNews, PartnersWebsite,CountryNews, \
 PestFreeArea,ImplementationISPM,REGIONS, IssueKeywordsRelate,CommodityKeywordsRelate,EventreportingFile,ReportingObligation_File
 from mezzanine.core.models import Displayable, CONTENT_STATUS_DRAFT, CONTENT_STATUS_PUBLISHED
@@ -45,6 +45,7 @@ from django.http import HttpResponse
 from datetime import datetime
 from django.contrib.contenttypes.models import ContentType
 from mezzanine.generic import views as myview
+from mezzanine.generic import models
 def get_profile():
     return IppcUserProfile.objects.all()
 
@@ -55,6 +56,7 @@ def commenta(request, template="generic/comments.html"):
     Handle a ``ThreadedCommentForm`` submission and redirect back to its
     related object.
     """
+  
     response = myview.initial_validation(request, "comment")
     if isinstance(response, HttpResponse):
         return response
@@ -64,8 +66,15 @@ def commenta(request, template="generic/comments.html"):
     #notification to Secretariat of comments
     for g in obj.groups.all():
        group=Group.objects.get(id=g.id)
-       emailto_all.append(str('paola.sentinelli@fao.org'))
-
+       users = group.user_set.all()
+       for u in users:
+            user_obj=User.objects.get(username=u)
+            user_email=user_obj.email
+            print(user_email)   
+            emailto_all.append(str(user_email))
+            print("-----------------------------")
+       #emailto_all.append(str('paola.sentinelli@fao.org'))
+    print(emailto_all)
     subject='IPPC new comment on: '+str(obj)  
     #print(request.POST['name'])
     text=request.POST['name']+' has commented on: '+str(obj) +'<br><hr><br>'+request.POST['comment']
@@ -75,8 +84,7 @@ def commenta(request, template="generic/comments.html"):
     #notifificationmessage = mail.EmailMessage(subject,text,'paola.sentinelli@fao.org', emailto_all, ['paola.sentinelli@fao.org'])
     notifificationmessage = mail.EmailMessage(subject,text,'ippc@fao.org', emailto_all, ['paola.sentinelli@fao.org'])
     notifificationmessage.content_subtype = "html"
-    sent =notifificationmessage.send()
-
+    
     
     form = myview.ThreadedCommentForm(request, obj, post_data)
     if form.is_valid():
@@ -84,6 +92,11 @@ def commenta(request, template="generic/comments.html"):
         if myview.is_spam(request, form, url):
             return redirect(url)
         comment = form.save(request)
+        
+        commentfile = CommentFile(comment=comment, file=request.FILES['id_commentfile'])
+        commentfile.save()
+        sent =notifificationmessage.send()
+        
         response = redirect(myview.add_cache_bypass(comment.get_absolute_url()))
         # Store commenter's details in a cookie for 90 days.
         for field in myview.ThreadedCommentForm.cookie_fields:
@@ -94,7 +107,7 @@ def commenta(request, template="generic/comments.html"):
     elif request.is_ajax() and form.errors:
         return HttpResponse(dumps({"errors": form.errors}))
     # Show errors with stand-alone comment form.
-    context = {"obj": obj, "posted_comment_form": form}
+    context = {"obj": obj, "posted_comment_form": form,}
     response = render(request, template, context)
     return response
 
@@ -121,10 +134,31 @@ class PublicationLibraryView(ListView):
 
     """
     template_name = 'pages/publicationlibrary.html'
-    queryset = DraftProtocol.objects.all()
+    #queryset = DraftProtocol.objects.all()
     def get_context_data(self, **kwargs): # http://stackoverflow.com/a/15515220
         context = super(PublicationLibraryView, self).get_context_data(**kwargs)
         queryset = DraftProtocol.objects.all()
+        user = self.request.user  
+        if user.groups.filter(name='IPPC Secretariat'):
+           queryset = DraftProtocol.objects.all()
+       
+        elif user.groups.filter(name='TPDP'):
+            dps=[]
+            for dp in queryset:
+                if (timezone.now() < dp.closing_date):
+                   dps.append(dp)
+            queryset= dps      
+                   
+        elif user.groups.filter(name='TPDPc'):
+           dps=[]
+           for dp in queryset:
+               print(dp.users.all())
+               if (timezone.now() < dp.closing_date) and user in dp.users.all():
+                   dps.append(dp)
+           queryset= dps     
+            
+    
+        
         context['latest1']=queryset
        
         users_sec=[]
@@ -247,7 +281,7 @@ class PublicationLibraryView(ListView):
         return context
     def get_queryset(self):
         queryset = DraftProtocol.objects.all()
-        return  DraftProtocol.objects.all()
+        return  queryset 
 
 
 class CountryRelatedView(TemplateView):
@@ -1272,10 +1306,18 @@ def draftprotocol_comment_create(request, id=None):
             new_draftprotocolComment.author_id = author.id
             new_draftprotocolComment.title = request.user
             new_draftprotocolComment.draftprotocol_id = id
-            
+          
             form.save()
-        
-           
+            
+            emailto_all=['adriana.moreira@fao.org','yosra.chabaane@fao.org','IPPC-DP@fao.org']
+            subject='IPPC new comment on ECDP: '+str(draftprotocol.title)
+            text=''
+            text=str(request.user)+' has commented on: '+str(draftprotocol.title)  +'<br><hr><br>'+str(new_draftprotocolComment.comment)
+            notifificationmessage = mail.EmailMessage(subject,text,'ippc@fao.org', emailto_all, ['paola.sentinelli@fao.org'])
+            notifificationmessage.content_subtype = "html"
+    
+            sent =notifificationmessage.send()
+            
             info(request, _("Successfully added Comment."))
             return redirect("draftprotocol-detail",  year=draftprotocol.publish_date.strftime("%Y"), month=draftprotocol.publish_date.strftime("%m"), slug=draftprotocol.slug)
         else:

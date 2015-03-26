@@ -66,6 +66,7 @@
     {% endif %}
      <tr>
        <th>{% trans "Title" %}</th>
+       <th>{% trans "Report files" %}</th>
        <th>{% trans "Publication Date" %}</th>
        <th>{% trans "Last Updated" %}</th>
      </tr>
@@ -76,8 +77,15 @@
     {% ifequal object.reporting_obligation_type key %}
  
     <tr>
-      <td><a href="{% url 'reporting-obligation-detail' object.country.country_slug object.publish_date|date:'Y' object.publish_date|date:'m'  object.slug %}">{{ object.title }}</a></td>
-      <td>{{ object.publish_date|date:"d M Y" }}</td>
+      <td><a href="{% url 'reporting-obligation-detail' object.country.country_slug object.publication_date|date:'Y' object.publication_date|date:'m'  object.slug %}">{{ object.title }}</a></td>
+      <td>
+         {% if object.reportingobligation_file_set.all %}
+            {% for f in object.reportingobligation_file_set.all %} 
+                <a href="{{MEDIA_URL}}{{f.file.name}}">{{ f.description }}</a><br>
+            {%  endfor %}
+        {% endif %}
+     </td>
+      <td>{{ object.publication_date|date:"d M Y" }}</td>
       <td>{{ object.modify_date|date:"d M Y" }}
 
         {% if user.is_superuser %} 

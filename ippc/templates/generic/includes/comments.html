@@ -17,12 +17,14 @@ $(function() {
 {% comment_thread object_for_comments %}
     {% if  forum_post.allow_comments %}
 <h3>{% trans "New Comment" %}</h3>
-<form method="post" id="comment" action="{{ comment_url }}#comment">
+<form method="post" id="comment" action="{{ comment_url }}#comment" enctype="multipart/form-data">
     {% if not request.POST.replied_to %}
     {% fields_for posted_comment_form %}
     {% else %}
     {% fields_for unposted_comment_form %}
     {% endif %}
+    <label for="id_commentfile">Upload a file</label>
+    <input id="id_commentfile" name="id_commentfile" type="file" />
     <div class="form-actions">
         <input class="btn btn-primary btn-large" type="submit" value="{% trans "Comment" %}">
     </div>

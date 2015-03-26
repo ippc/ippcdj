@@ -68,6 +68,7 @@
     {% endif %}
    <tr>
         <th>{% trans "Title" %}</th>
+        <th>{% trans "Report files" %}</th>
         <th>{% trans "Publication Date" %}</th>
         <th>{% trans "Last Updated" %}</th>
    </tr>
@@ -75,7 +76,14 @@
     {% if object.event_rep_type == key  %}
     <tr>
       <td><a href="{% url 'event-reporting-detail' object.country.country_slug object.publish_date|date:'Y' object.publish_date|date:'m'  object.slug %}">{{ object.title }}</a></td>
-      <td>{{ object.publish_date|date:"d M Y" }}</td>
+      <td>
+         {% if object.eventreportingfile_set.all %}
+            {% for f in object.eventreportingfile_set.all %} 
+                <a href="{{MEDIA_URL}}{{f.file.name}}">{{ f.description }}</a><br>
+            {%  endfor %}
+        {% endif %}
+     </td>
+     <td>{{ object.publish_date|date:"d M Y" }}</td>
       <td>{{ object.modify_date|date:"d M Y" }}
         {% if user.is_superuser %} 
             <a class="small pull-right" href="/admin/ippc/eventreporting/{{ object.id }}"><i class="icon-edit"></i> Edit as Admin</a><br>

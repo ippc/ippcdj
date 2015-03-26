@@ -5,7 +5,7 @@
 
 {% block breadcrumb_menu %}
 <li><a href="/">{% trans "Home" %}</a><span class="divider">/</span></li>
-<li><a href="/expert-consultation-on-draft-diagnostic-protocols-ecdp/">DPs</a><span class="divider">/</span></li>
+<li><a href="/core-activities/expert-consultation-draft-diagnostic-protocols/">DPs</a><span class="divider">/</span></li>
 <li class="active">{{ draftprotocol.title }}</li>
 {% endblock %}
 
@@ -40,7 +40,6 @@
 <div class="panel panel-info">
       <div class="alert alert-info">
           <p><img  src="{{ draftprotocol.author.get_profile.picture }}" /></p>
-          <strong>{% trans "Moderator" %}: </strong>{{ draftprotocol.author}}</a><br>
           <strong>{% trans "Posted"%}: </strong> {% blocktrans with sometime=draftprotocol.publish_date|date:"d-m-Y" %}{{ sometime }}{% endblocktrans %}</p>
       </div>
       <div class="panel-body">
@@ -95,7 +94,6 @@
 <div class="panel panel-info">
       <div class="alert alert-info">
           <p><img  src="{{ draftprotocol.author.get_profile.picture }}" /></p>
-          <strong>{% trans "Moderator" %}: </strong>{{ draftprotocol.author.get_profile.first_name }} {{ draftprotocol.author.get_profile.last_name }}</a><br>
           <strong>{% trans "Posted"%}: </strong> {% blocktrans with sometime=draftprotocol.publish_date|date:"d-m-Y" %}{{ sometime }}{% endblocktrans %}</p>
       </div>
       <div class="panel-body">

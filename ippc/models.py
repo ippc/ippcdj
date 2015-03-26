@@ -35,8 +35,8 @@ from django.db.models.signals import post_save
 from django.core.exceptions import ValidationError
 
 from mezzanine.utils.models import get_user_model_name
+from mezzanine.generic.models import ThreadedComment
 
-   
 def user_unicode_patch(self):
     return '%s %s' % (self.first_name, self.last_name)
 
@@ -1562,6 +1562,19 @@ class Poll(models.Model):
             return True
         else: 
             return False
+        
+class CommentFile(models.Model):
+    comment = models.ForeignKey(ThreadedComment)
+    file = models.FileField(max_length=255,blank=True, help_text='10 MB maximum file size.', verbose_name='Upload a file', upload_to='files/forum/%Y/%m/%d/', validators=[validate_file_extension])
+
+    def __unicode__(self):  
+        return self.file.name  
+    def name(self):
+        return self.file.name
+    def filename(self):
+        return os.path.basename(self.file.name) 
+    def fileextension(self):
+        return os.path.splitext(self.file.name)[1]
 
 
 class Poll_Choice(models.Model):
