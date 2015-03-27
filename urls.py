@@ -448,7 +448,11 @@ urlpatterns = patterns("",
         view=PublicationLibraryView.as_view(),
         # view=country_view(),
         name='country'),
-        
+    url(r'^work-area-pages/standards-committee/electronic-decisions-by-sc/$',
+        view=PublicationLibraryView.as_view(),
+        # view=country_view(),
+        name='country'),
+            
         
     
      

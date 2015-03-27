@@ -137,8 +137,13 @@ class PublicationLibraryView(ListView):
     #queryset = DraftProtocol.objects.all()
     def get_context_data(self, **kwargs): # http://stackoverflow.com/a/15515220
         context = super(PublicationLibraryView, self).get_context_data(**kwargs)
+       
+        context['polls']=Poll.objects.order_by('-pub_date').all
+        
+        
         queryset = DraftProtocol.objects.all()
         user = self.request.user  
+       
         if user.groups.filter(name='IPPC Secretariat'):
            queryset = DraftProtocol.objects.all()
        

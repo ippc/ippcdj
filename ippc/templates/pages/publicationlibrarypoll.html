@@ -1,0 +1,38 @@
+{% load mezzanine_tags staticfiles i18n %}
+
+
+{%if page.publicationlibrary.id == 581 %}
+<p>
+This page provides access to a forum and a tool for conducting polls to enable the SC to conduct discussions and make decisions by electronic means. For more information on the electronic decision making process, refer to the excerpt from the SC report (November 2010) click <a href="/work-area-pages/background-e-decisions/">here</a> to open.
+</p>
+<p><strong>POLLs</strong></p>
+{% if polls %}
+<table class="table table-condensed table-striped table-bordered" id="publications">
+    <thead>
+        <tr>
+            <th>{% trans "Poll" %}</th>
+            <th>{% trans "Open" %}</th>
+            <th>{% trans "Results" %}</th>
+        </tr>
+    </thead>
+    <tbody>
+    {% for poll in polls %}
+    <tr>
+        {% if 'admin' == poll.userspoll.all.0.username %}
+        {% else %}
+            {% if poll.is_past_due %}
+                <td >{{ poll.question }}</td>
+                <td>No</td>
+            {% else %} 
+                <td><a href="{% url 'detail' poll.id %}">{{ poll.question }}</a></td>
+                <td>Yes</td>
+            {% endif%}
+            <td><a href="{% url 'results' poll.id %}">Show results</a></td>
+        
+    {% endif%}
+    </tr>    
+{% endfor %}
+</tbody>
+</table>
+{%endif%}
+{%endif%}

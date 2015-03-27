@@ -35,8 +35,11 @@
       {% if user.is_superuser or perms.pages.change_richtextpage %}
       
             {{ block.super }}
-            {# {% editable page.publicationlibrary.content %} #}
-
+            
+            {% if  page.publicationlibrary.id == 581 %}
+                {% include "pages/publicationlibrarypoll.html" %}
+            {% endif %}    
+            
             {% with page.publicationlibrary|get_object_translation as translated_page %}
                 {{ translated_page.content|richtext_filter|safe }}
             {% endwith %}
@@ -55,7 +58,10 @@
                 {{ block.super }}
                 {# {% editable page.publicationlibrary.content %} #}
 
-
+                {% if  page.publicationlibrary.id == 581 %}
+                    {% include "pages/publicationlibrarypoll.html" %}
+                {% endif %}    
+            
 
 
                 {% with page.publicationlibrary|get_object_translation as translated_page %}
