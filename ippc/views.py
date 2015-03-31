@@ -318,7 +318,7 @@ class PestReportListView(ListView):
     model = PestReport
     date_field = 'publish_date'
     template_name = 'countries/pest_report_list.html'
-    queryset = PestReport.objects.all().order_by('-publish_date', 'title')
+    queryset = PestReport.objects.all().order_by('-modify_date', 'title')
     allow_future = False
     allow_empty = True
     paginate_by = 500
@@ -349,7 +349,7 @@ class PestReportHiddenListView(ListView):
     model = PestReport
     date_field = 'publish_date'
     template_name = 'countries/pest_report_hidden_list.html'
-    queryset = PestReport.objects.all().order_by('-publish_date', 'title')
+    queryset = PestReport.objects.all().order_by('-modify_date', 'title')
     allow_future = False
     allow_empty = True
     paginate_by = 500
@@ -760,7 +760,7 @@ class ReportingObligationListView(ListView):
     model = ReportingObligation
     date_field = 'publish_date'
     template_name = 'countries/reporting_obligation_list.html'
-    queryset = ReportingObligation.objects.all().order_by('-publish_date', 'title')
+    queryset = ReportingObligation.objects.all().order_by('-modify_date', 'title')
     
     allow_future = False
     allow_empty = True
@@ -1001,7 +1001,7 @@ class EventReportingListView(ListView):
     model = EventReporting
     date_field = 'publish_date'
     template_name = 'countries/event_reporting_list.html'
-    queryset = EventReporting.objects.all().order_by('-publish_date', 'title')
+    queryset = EventReporting.objects.all().order_by('-modify_date', 'title')
     
     allow_future = False
     allow_empty = True
@@ -1377,7 +1377,7 @@ class WebsiteListView(ListView):
     model = Website
     date_field = 'publish_date'
     template_name = 'countries/website_list.html'
-    queryset = Website.objects.all().order_by('-publish_date', 'title')
+    queryset = Website.objects.all().order_by('-modify_date', 'title')
     
     allow_future = False
     allow_empty = True
@@ -1682,7 +1682,7 @@ class CnPublicationListView(ListView):
     model = CnPublication
     date_field = 'publish_date'
     template_name = 'countries/cnpublication_list.html'
-    queryset = CnPublication.objects.all().order_by('-publish_date', 'title')
+    queryset = CnPublication.objects.all().order_by('-modify_date', 'title')
     
     allow_future = False
     allow_empty = True
@@ -2022,7 +2022,7 @@ class PestFreeAreaListView(ListView):
     model = PestFreeArea
     date_field = 'publish_date'
     template_name = 'countries/pfa_list.html'
-    queryset = PestFreeArea.objects.all().order_by('-publish_date', 'title')
+    queryset = PestFreeArea.objects.all().order_by('-modify_date', 'title')
     
     allow_future = False
     allow_empty = True
