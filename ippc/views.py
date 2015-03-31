@@ -321,7 +321,7 @@ class PestReportListView(ListView):
     queryset = PestReport.objects.all().order_by('-publish_date', 'title')
     allow_future = False
     allow_empty = True
-    paginate_by = 30
+    paginate_by = 500
 
     def get_queryset(self):
         """ only return pest reports from the specific country """
@@ -352,7 +352,7 @@ class PestReportHiddenListView(ListView):
     queryset = PestReport.objects.all().order_by('-publish_date', 'title')
     allow_future = False
     allow_empty = True
-    paginate_by = 30
+    paginate_by = 500
 
     def get_queryset(self):
         """ only return pest reports from the specific country """
@@ -396,7 +396,7 @@ class PublicationListView(ListView):
     queryset = Publication.objects.filter(status=IS_PUBLIC).order_by('-modify_date', 'title')
     allow_future = False
     allow_empty = True
-    paginate_by = 50
+    paginate_by = 500
 
 class PublicationDetailView(DetailView):
     """ Publication detail page """
@@ -450,7 +450,7 @@ class PublicationFilesListView(ListView):
     queryset = Publication.objects.filter(status=IS_PUBLIC).order_by('-modify_date', 'title')
     allow_future = False
     allow_empty = True
-    paginate_by = 30
+    paginate_by = 500
  
     def get_context_data(self, **kwargs):
         context = super(PublicationFilesListView, self).get_context_data(**kwargs)
@@ -764,7 +764,7 @@ class ReportingObligationListView(ListView):
     
     allow_future = False
     allow_empty = True
-    paginate_by = 30
+    paginate_by = 500
 
     def get_queryset(self):
         """ only return pest reports from the specific country """
@@ -1005,7 +1005,7 @@ class EventReportingListView(ListView):
     
     allow_future = False
     allow_empty = True
-    paginate_by = 30
+    paginate_by = 500
 
     def get_queryset(self):
         """ only return pest reports from the specific country """
@@ -1194,7 +1194,7 @@ class DraftProtocolListView(ListView):
     
     allow_future = False
     allow_empty = True
-    paginate_by = 30
+    paginate_by = 50
 
 class DraftProtocolDetailView(DetailView):
     """ DraftProtocol detail page """
@@ -1381,7 +1381,7 @@ class WebsiteListView(ListView):
     
     allow_future = False
     allow_empty = True
-    paginate_by = 30
+    paginate_by = 500
 
     def get_queryset(self):
         """ only return Website from the specific country """
@@ -1686,7 +1686,7 @@ class CnPublicationListView(ListView):
     
     allow_future = False
     allow_empty = True
-    paginate_by = 30
+    paginate_by = 500
 
     def get_queryset(self):
         """ only return pest reports from the specific country """
@@ -2026,7 +2026,7 @@ class PestFreeAreaListView(ListView):
     
     allow_future = False
     allow_empty = True
-    paginate_by = 30
+    paginate_by = 500
 
     def get_queryset(self):
         """ only return PestFreeArea from the specific country """
@@ -2214,7 +2214,7 @@ class ImplementationISPMListView(ListView):
     
     allow_future = False
     allow_empty = True
-    paginate_by = 30
+    paginate_by = 500
 
     def get_queryset(self):
         """ only return pest reports from the specific country """
@@ -2398,7 +2398,7 @@ class CountryNewsListView(ListView):
     
     allow_future = False
     allow_empty = True
-    paginate_by = 30
+    paginate_by = 500
 
     def get_queryset(self):
         """ only return CountryNews from the specific country """
