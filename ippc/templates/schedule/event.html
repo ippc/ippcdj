@@ -104,7 +104,15 @@
             <li>{{event.type_verbose}}</li>
         </ul>
     </dd> {% endif %}
-    {% if event.venuecity|length > 2%}
+      {% if event.location|length > 2%}
+   <dt>{% trans "Location" %}</dt>
+    <dd>
+        <ul class="unstyled nomargin">
+            <li>{{event.location}}</li>
+        </ul>
+    </dd>
+    {% endif %}
+   {% if event.venuecity|length > 2%}
    <dt>{% trans "Venue city" %}</dt>
     <dd>
         <ul class="unstyled nomargin">
