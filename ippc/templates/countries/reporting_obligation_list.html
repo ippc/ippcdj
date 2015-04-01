@@ -77,7 +77,7 @@
     {% ifequal object.reporting_obligation_type key %}
  
     <tr>
-      <td><a href="{% url 'reporting-obligation-detail' object.country.country_slug object.publication_date|date:'Y' object.publication_date|date:'m'  object.slug %}">{{ object.title }}</a></td>
+      <td><a href="{% url 'reporting-obligation-detail' object.country.country_slug object.publish_date|date:'Y' object.publish_date|date:'m'  object.slug %}">{{ object.title }}</a></td>
       <td>
          {% if object.reportingobligation_file_set.all %}
             {% for f in object.reportingobligation_file_set.all %} 
