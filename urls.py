@@ -30,6 +30,7 @@ draftprotocol_comment_create,draftprotocol_comment_edit,PublicationLibraryView,c
 CountryRegionsPercentageListView,CountryStatsreportsListView,CountryStatsTotalreportsListView,CountryRegionsUsersListView,CountryTotalUsersListView
 from schedule.periods import Year, Month, Week, Day
 from mezzanine.core.views import direct_to_template
+
 import mezzanine_pagedown.urls
 
 # http://django-envelope.readthedocs.org/en/latest/customization.html
@@ -51,6 +52,7 @@ urlpatterns = patterns("",
     url(r'^forum/', include('forum.urls')),
     url(r'^calls/', include('calls.urls')),
     url(r'^news/', include('news.urls')),
+ 
     
     url('^markdown/', include( 'django_markdown.urls')),
     # forum detail

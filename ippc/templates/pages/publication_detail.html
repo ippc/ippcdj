@@ -1,6 +1,6 @@
 {% extends "base.html" %}
 {% load pages_tags mezzanine_tags i18n future staticfiles accounts_tags %}
-
+  {% load ippc_tags %}
 {% block meta_title %}{{ publication.title }}{% endblock %}
 
 
@@ -32,11 +32,13 @@
         {% else %}
             {% if request.user.groups.all %}
                 {% for group in request.user.groups.all %}
+              
                     {% if group in groups.all %}
-                   {% include "pages/publication_detail_block.html" %}
+                     {% include "pages/publication_detail_block.html" %}
                     {% else %}   
                         <p>{% trans "The page is restricted to group members. Please Login  to view the page." %}</p>
                     {% endif %}
+                      {{ forloop|break }}
                 {% endfor %}
             {% else %}   
              <p>{% trans "The page is restricted to group members. Please Login  to view the page." %}</p>
