@@ -18,13 +18,37 @@ PartnersWebsite,PartnersWebsiteUrl,\
 PartnersPublication,PartnersPublicationFile,PartnersPublicationUrl,\
 PartnersNews,PartnersNewsFile,PartnersNewsUrl, \
 CountryNews,CountryNewsFile,CountryNewsUrl, EmailUtilityMessage, EmailUtilityMessageFile,\
-DraftProtocol,DraftProtocolFile,DraftProtocolComments,NotificationMessageRelate,Poll,  Poll_Choice
+DraftProtocol,DraftProtocolFile,DraftProtocolComments,NotificationMessageRelate,Poll,  Poll_Choice,\
+Question,Answer
+
+
+
 
 from django.contrib.auth.models import User,Group
 from django.forms.models import inlineformset_factory
 from django.forms.formsets import formset_factory
 from django.contrib.admin.widgets import AdminDateWidget 
 
+class QuestionForm(forms.ModelForm):
+    class Meta:
+        model =  Question
+        fields = [
+                'question_title',
+                'description',
+                'pub_date',
+              
+                       ]
+        widgets = {
+            'pub_date': AdminDateWidget(),
+        }  
+class AnswerForm(forms.ModelForm):
+    class Meta:
+        model =  Answer
+        fields = [
+                'answertext',
+                'bestanswer',
+                 ]
+                 
 class PestReportForm(forms.ModelForm):
 
     # country = forms.ChoiceField(widget=forms.Select(), initial='country')

@@ -1,0 +1,75 @@
+{% extends "irss/base1.html" %}
+{% load pages_tags mezzanine_tags i18n future staticfiles %}
+
+{% block meta_title %}{% trans "Q & A Forum" %}{% endblock %}
+
+{% block breadcrumb_menu %}
+{% endblock %}
+
+    {% block main %}
+    <script type="text/javascript">
+        function toggle_visibility(id, id1) {
+            var e = document.getElementById(id);
+            var e2 = document.getElementById(id1);
+            if (e.style.display == 'block') {
+                e.style.display = 'none';
+                e2.style.display = 'block';
+            }
+            else {
+                e2.style.display = 'none';
+                e.style.display = 'block';
+            }
+        }
+
+    </script>
+
+    <h2 class="block-title">Question and Answer Forum</h2>
+    <ul class="inline">
+        <li class="dropdown"><a onclick="javascript:toggle_visibility('questions', 'etiquette');">All Questions</a></li>
+        <li class="dropdown"><a onclick="javascript:toggle_visibility('etiquette', 'questions');">Forum Etiquette</a></li>
+    </ul>
+        <div id="etiquette" style="display:none;">
+            <p><strong>1. Quality of posts</strong></p>
+            <p>All questions and answers posted are moderated by the IPPC Secretariat Team. We intend to maintain strong relevance and a high quality of posts to ensure that the discussions are useful to you as a Contracting Party of the IPPC.</p>
+            <p>When asking for assistance on phytosanitary issues, please be sure to do your research and provide background details for your question. When responding to a question, please be sure to be as tactful and clear as possible.</p>
+            <p>In posting, try to choose clear informative topics. This is more likely to illicit responses from experienced forum users who have experience about that particular topic. It also makes the topic easy to reference and find in forum searches by future users with similar problems. Though at the moment, there are few questions, and therfore little need to create subject headings, in the future we expect more traffic and an organization of topics by subject.</p>
+            <p>You are free to edit your questions as you like, so if you do not recieve an answer, revisit your question and see if you can describe it in a better way. Also, not everyone is online at the same time, so it might take some time before you recieve an answer. We will try our best to encourage other forum users to respond.</p>
+            <p><strong>2. Languages</strong></p>
+            <p>We understand that with most of the languages of Contracting Parties, English is not the first language, but we encourage you to post in English to increase the chances of getting a response and of greater understanding by a greater number of Forum users. If this is not possible, we still welcome you to post the question or answer in your own language with a loose English translation.</p>
+            <p><strong>3. Help others if you can</strong></p>
+            <p>If you see posts from other users where you can help out, please do. This Question and Anwer forum only exists if Contracting Parties are helping each other, and even if you are relatively new to the forum and the IPP Community, there are already probably quite a few people newer than you that would benefit from what you have learned.</p>
+        </div>  
+        <div id="questions">
+            {% if questions %}
+            <table class="table table-condensed table-striped" id="QA">
+                <thead>
+                    <tr>
+                        <th>Question</th>
+                        <th>Post date</th>
+                        <th>Answers</th>
+                        <th>Resolved</th>
+                    </tr>  </thead>  <tbody>
+                    {% for question in questions %}
+
+
+                    <tr>
+                        <td><a href="/qa/{{question.0}}/answers">{{ question.1 }}</a></td>
+                        <td>{{question.4}} </td>
+                        <td>{{question.2}}  </td>
+                        <td>{{question.3}}</td>
+                    </tr> 
+
+                    {% endfor %}
+
+
+
+
+                </tbody>
+            </table>
+            {% else %}
+            <p>No questions are available.</p>
+            {% endif %}
+
+        </div>  
+
+        {% endblock %}

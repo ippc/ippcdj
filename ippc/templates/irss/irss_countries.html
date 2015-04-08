@@ -1,0 +1,271 @@
+{% extends "irss/base1.html" %}
+{% load pages_tags translate_tags mezzanine_tags i18n future staticfiles accounts_tags %}
+
+{% block meta_title %}
+  {% trans "Country Profiles" %}
+{% endblock %}
+ 
+
+{% block breadcrumb_menu %}
+
+{% endblock breadcrumb_menu %}
+
+{% block main %}
+<h1>Country Profiles</h1>
+<div class="pull-right" style="padding:0.5em 0 0.5em 2em; height:150px;">
+<img src="/static/media/uploads/political_world_map.png" alt="">
+</div>
+
+<p>
+Country Profiles provide economic, phytosanitary and trade-related data for each Contracting Party (CP) at a glance. Key statistics are sourced from a centralized Food and Agriculture Organization data repository. Additional phytosanitary and trade-related statistics are channeled from other recognized sources of data such as the World Bank Databank.
+</p>
+
+
+
+
+<form action="">
+<select data-placeholder="Go to Country..." tabindex="3" class="chosen-select" id="selectcountry">
+  <option value="">Go to Country</option>
+  <option value="/countries/-">-</option>
+<option value="/countries/afghanistan">Afghanistan</option>
+<option value="/countries/albania">Albania</option>
+<option value="/countries/algeria">Algeria</option>
+<option value="/countries/american-samoa">American Samoa</option>
+<option value="/countries/andorra">Andorra</option>
+<option value="/countries/angola">Angola</option>
+<option value="/countries/anguilla">Anguilla</option>
+<option value="/countries/antigua-and-barbuda">Antigua and Barbuda</option>
+<option value="/countries/argentina">Argentina</option>
+<option value="/countries/armenia">Armenia</option>
+<option value="/countries/aruba">Aruba</option>
+<option value="/countries/australia">Australia</option>
+<option value="/countries/austria">Austria</option>
+<option value="/countries/azerbaijan">Azerbaijan</option>
+<option value="/countries/bahamas">Bahamas</option>
+<option value="/countries/bahrain">Bahrain</option>
+<option value="/countries/bangladesh">Bangladesh</option>
+<option value="/countries/barbados">Barbados</option>
+<option value="/countries/belarus">Belarus</option>
+<option value="/countries/belgium">Belgium</option>
+<option value="/countries/belize">Belize</option>
+<option value="/countries/benin">Benin</option>
+<option value="/countries/bermuda">Bermuda</option>
+<option value="/countries/bhutan">Bhutan</option>
+<option value="/countries/bolivia">Bolivia</option>
+<option value="/countries/bosnia-and-herzegovina">Bosnia and Herzegovina</option>
+<option value="/countries/botswana">Botswana</option>
+<option value="/countries/brazil">Brazil</option>
+<option value="/countries/brunei-darussalam">Brunei Darussalam</option>
+<option value="/countries/bulgaria">Bulgaria</option>
+<option value="/countries/burkina-faso">Burkina Faso</option>
+<option value="/countries/burundi">Burundi</option>
+<option value="/countries/cambodia">Cambodia</option>
+<option value="/countries/cameroon">Cameroon</option>
+<option value="/countries/canada">Canada</option>
+<option value="/countries/cape-verde">Cape Verde</option>
+<option value="/countries/cayman-islands">Cayman Islands</option>
+<option value="/countries/central-african-republic">Central African Republic</option>
+<option value="/countries/chad">Chad</option>
+<option value="/countries/chile">Chile</option>
+<option value="/countries/china">China</option>
+<option value="/countries/colombia">Colombia</option>
+<option value="/countries/comoros">Comoros</option>
+<option value="/countries/congo">Congo</option>
+<option value="/countries/congo-the-democratic-republic-of-the">Congo, The Democratic Republic of the</option>
+<option value="/countries/cook-islands">Cook Islands</option>
+<option value="/countries/costa-rica">Costa Rica</option>
+<option value="/countries/c&ocirc;te-divoire">C&ocirc;te d'Ivoire</option>
+<option value="/countries/croatia">Croatia</option>
+<option value="/countries/cuba">Cuba</option>
+<option value="/countries/cyprus">Cyprus</option>
+<option value="/countries/czech-republic">Czech Republic</option>
+<option value="/countries/democratic-peoples-republic-of-korea">Democratic Peoples Republic of Korea</option>
+<option value="/countries/denmark">Denmark</option>
+<option value="/countries/djibouti">Djibouti</option>
+<option value="/countries/dominica">Dominica</option>
+<option value="/countries/dominican-republic">Dominican Republic</option>
+<option value="/countries/ecuador">Ecuador</option>
+<option value="/countries/egypt">Egypt</option>
+<option value="/countries/el-salvador">El Salvador</option>
+<option value="/countries/equatorial-guinea">Equatorial Guinea</option>
+<option value="/countries/eritrea">Eritrea</option>
+<option value="/countries/estonia">Estonia</option>
+<option value="/countries/ethiopia">Ethiopia</option>
+<option value="/countries/european-union">European Union</option>
+<option value="/countries/falkland-islands-malvinas">Falkland Islands (Malvinas)</option>
+<option value="/countries/faroe-islands">Faroe Islands</option>
+<option value="/countries/fiji">Fiji</option>
+<option value="/countries/finland">Finland</option>
+<option value="/countries/france">France</option>
+<option value="/countries/french-guiana">French Guiana</option>
+<option value="/countries/french-polynesia">French Polynesia</option>
+<option value="/countries/french-southern-territories">French Southern Territories</option>
+<option value="/countries/gabon">Gabon</option>
+<option value="/countries/gambia">Gambia</option>
+<option value="/countries/georgia">Georgia</option>
+<option value="/countries/germany">Germany</option>
+<option value="/countries/ghana">Ghana</option>
+<option value="/countries/gibraltar">Gibraltar</option>
+<option value="/countries/greece">Greece</option>
+<option value="/countries/greenland">Greenland</option>
+<option value="/countries/grenada">Grenada</option>
+<option value="/countries/guadeloupe">Guadeloupe</option>
+<option value="/countries/guam">Guam</option>
+<option value="/countries/guatemala">Guatemala</option>
+<option value="/countries/guernsey">Guernsey</option>
+<option value="/countries/guinea">Guinea</option>
+<option value="/countries/guinea-bissau">Guinea-Bissau</option>
+<option value="/countries/guyana">Guyana</option>
+<option value="/countries/haiti">Haiti</option>
+<option value="/countries/holy-see-(vatican-city-state)">Holy See (Vatican City State)</option>
+<option value="/countries/honduras">Honduras</option>
+<option value="/countries/hungary">Hungary</option>
+<option value="/countries/iceland">Iceland</option>
+<option value="/countries/india">India</option>
+<option value="/countries/indonesia">Indonesia</option>
+<option value="/countries/iran-islamic-republic-of">Iran</option>
+<option value="/countries/iraq">Iraq</option>
+<option value="/countries/ireland">Ireland</option>
+<option value="/countries/israel">Israel</option>
+<option value="/countries/italy">Italy</option>
+<option value="/countries/jamaica">Jamaica</option>
+<option value="/countries/japan">Japan</option>
+<option value="/countries/jersey">Jersey</option>
+<option value="/countries/jordan">Jordan</option>
+<option value="/countries/kazakhstan">Kazakhstan</option>
+<option value="/countries/kenya">Kenya</option>
+<option value="/countries/kiribati">Kiribati</option>
+<option value="/countries/kuwait">Kuwait</option>
+<option value="/countries/kyrgyzstan">Kyrgyzstan</option>
+<option value="/countries/lao-peoples-democratic-republic">Lao Peoples Democratic Republic</option>
+<option value="/countries/latvia">Latvia</option>
+<option value="/countries/lebanon">Lebanon</option>
+<option value="/countries/lesotho">Lesotho</option>
+<option value="/countries/liberia">Liberia</option>
+<option value="/countries/libya">Libya</option>
+<option value="/countries/liechtenstein">Liechtenstein</option>
+<option value="/countries/lithuania">Lithuania</option>
+<option value="/countries/luxembourg">Luxembourg</option>
+<option value="/countries/macedonia--the-former-yugoslav-republic-of">Macedonia- The Former Yugoslav Republic of</option>
+<option value="/countries/madagascar">Madagascar</option>
+<option value="/countries/malawi">Malawi</option>
+<option value="/countries/malaysia">Malaysia</option>
+<option value="/countries/maldives">Maldives</option>
+<option value="/countries/mali">Mali</option>
+<option value="/countries/malta">Malta</option>
+<option value="/countries/marshall-islands">Marshall Islands</option>
+<option value="/countries/martinique">Martinique</option>
+<option value="/countries/mauritania">Mauritania</option>
+<option value="/countries/mauritius">Mauritius</option>
+<option value="/countries/mexico">Mexico</option>
+<option value="/countries/micronesia--federated-states-of">Micronesia- Federated States of</option>
+<option value="/countries/moldova--republic-of">Moldova- Republic of</option>
+<option value="/countries/monaco">Monaco</option>
+<option value="/countries/mongolia">Mongolia</option>
+<option value="/countries/montenegro">Montenegro</option>
+<option value="/countries/montserrat">Montserrat</option>
+<option value="/countries/morocco">Morocco</option>
+<option value="/countries/mozambique">Mozambique</option>
+<option value="/countries/myanmar">Myanmar</option>
+<option value="/countries/namibia">Namibia</option>
+<option value="/countries/nauru">Nauru</option>
+<option value="/countries/nepal">Nepal</option>
+<option value="/countries/netherlands">Netherlands</option>
+<option value="/countries/netherlands-antilles">Netherlands Antilles</option>
+<option value="/countries/new-caledonia">New Caledonia</option>
+<option value="/countries/new-zealand">New Zealand</option>
+<option value="/countries/nicaragua">Nicaragua</option>
+<option value="/countries/niger">Niger</option>
+<option value="/countries/nigeria">Nigeria</option>
+<option value="/countries/niue">Niue</option>
+<option value="/countries/northern-mariana-islands">Northern Mariana Islands</option>
+<option value="/countries/norway">Norway</option>
+<option value="/countries/oman">Oman</option>
+<option value="/countries/pakistan">Pakistan</option>
+<option value="/countries/palau">Palau</option>
+<option value="/countries/panama">Panama</option>
+<option value="/countries/papua-new-guinea">Papua New Guinea</option>
+<option value="/countries/paraguay">Paraguay</option>
+<option value="/countries/peru">Peru</option>
+<option value="/countries/philippines">Philippines</option>
+<option value="/countries/poland">Poland</option>
+<option value="/countries/portugal">Portugal</option>
+<option value="/countries/puerto-rico">Puerto Rico</option>
+<option value="/countries/qatar">Qatar</option>
+<option value="/countries/republic-of-korea">Republic of Korea</option>
+<option value="/countries/r&eacute;union">R&eacute;union</option>
+<option value="/countries/romania">Romania</option>
+<option value="/countries/russian-federation">Russian Federation</option>
+<option value="/countries/rwanda">Rwanda</option>
+<option value="/countries/saint-helena">Saint Helena</option>
+<option value="/countries/saint-kitts-and-nevis">Saint Kitts and Nevis</option>
+<option value="/countries/saint-lucia">Saint Lucia</option>
+<option value="/countries/saint-pierre-and-miquelon">Saint Pierre and Miquelon</option>
+<option value="/countries/saint-vincent-and-the-grenadines">Saint Vincent and the Grenadines</option>
+<option value="/countries/samoa">Samoa</option>
+<option value="/countries/san-marino">San Marino</option>
+<option value="/countries/s&atilde;o-tom&eacute;-and-pr&iacute;ncipe">S&atilde;o Tom&eacute; and Pr&iacute;ncipe</option>
+<option value="/countries/saudi-arabia">Saudi Arabia</option>
+<option value="/countries/senegal">Senegal</option>
+<option value="/countries/serbia">Serbia</option>
+<option value="/countries/seychelles">Seychelles</option>
+<option value="/countries/sierra-leone">Sierra Leone</option>
+<option value="/countries/singapore">Singapore</option>
+<option value="/countries/slovakia">Slovakia</option>
+<option value="/countries/slovenia">Slovenia</option>
+<option value="/countries/solomon-islands">Solomon Islands</option>
+<option value="/countries/somalia">Somalia</option>
+<option value="/countries/south-africa">South Africa</option>
+<option value="/countries/south-sudan">South Sudan</option>
+<option value="/countries/spain">Spain</option>
+<option value="/countries/sri-lanka">Sri Lanka</option>
+<option value="/countries/sudan">Sudan</option>
+<option value="/countries/suriname">Suriname</option>
+<option value="/countries/swaziland">Swaziland</option>
+<option value="/countries/sweden">Sweden</option>
+<option value="/countries/switzerland">Switzerland</option>
+<option value="/countries/syrian-arab-republic">Syrian Arab Republic</option>
+<option value="/countries/tajikistan">Tajikistan</option>
+<option value="/countries/tanzania--united-republic-of">Tanzania- United Republic of</option>
+<option value="/countries/thailand">Thailand</option>
+<option value="/countries/timor-leste">Timor-Leste</option>
+<option value="/countries/togo">Togo</option>
+<option value="/countries/tokelau">Tokelau</option>
+<option value="/countries/tonga">Tonga</option>
+<option value="/countries/trinidad-and-tobago">Trinidad and Tobago</option>
+<option value="/countries/tunisia">Tunisia</option>
+<option value="/countries/turkey">Turkey</option>
+<option value="/countries/turkmenistan">Turkmenistan</option>
+<option value="/countries/turks-and-caicos-islands">Turks and Caicos Islands</option>
+<option value="/countries/tuvalu">Tuvalu</option>
+<option value="/countries/uganda">Uganda</option>
+<option value="/countries/ukraine">Ukraine</option>
+<option value="/countries/united-arab-emirates">United Arab Emirates</option>
+<option value="/countries/united-kingdom">United Kingdom</option>
+<option value="/countries/united-states-of-america">United States of America</option>
+<option value="/countries/uruguay">Uruguay</option>
+<option value="/countries/uzbekistan">Uzbekistan</option>
+<option value="/countries/vanuatu">Vanuatu</option>
+<option value="/countries/venezuela--bolivarian-republic-of">Venezuela- Bolivarian Republic of</option>
+<option value="/countries/viet-nam">Viet Nam</option>
+<option value="/countries/virgin-islands,-british">Virgin Islands, British</option>
+<option value="/countries/virgin-islands,-u.s.">Virgin Islands, U.S.</option>
+<option value="/countries/wallis-and-futuna-islands">Wallis and Futuna Islands</option>
+<option value="/countries/yemen">Yemen</option>
+<option value="/countries/zambia">Zambia</option>
+<option value="/countries/zimbabwe">Zimbabwe</option>    
+</select>
+</form>
+  
+
+<script type="text/javascript" charset="utf-8">
+$(function() {
+      $('#selectcountry').change(function() {
+            window.location.href ='https://www.ippc.int'+ $(this).val()+'/';
+      });
+});
+</script>
+
+
+
+{% endblock %}

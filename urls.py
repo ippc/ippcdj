@@ -27,7 +27,9 @@ PollListView,PollResultsView,PollDetailView,vote_poll,poll_edit,poll_create,\
 email_send,EmailUtilityMessageDetailView,EmailUtilityMessageListView,\
 DraftProtocolDetailView,  draftprotocol_create, draftprotocol_edit,draftprotocol_compilecomments,\
 draftprotocol_comment_create,draftprotocol_comment_edit,PublicationLibraryView,commenta,contactPointExtractor,\
-CountryRegionsPercentageListView,CountryStatsreportsListView,CountryStatsTotalreportsListView,CountryRegionsUsersListView,CountryTotalUsersListView
+CountryRegionsPercentageListView,CountryStatsreportsListView,CountryStatsTotalreportsListView,CountryRegionsUsersListView,CountryTotalUsersListView,\
+QuestionListView, QuestionDetailView, QuestionAnswersView,question_create,question_edit,\
+answer_create,answer_edit  ,vote_answer_up ,vote_answer_down
 from schedule.periods import Year, Month, Week, Day
 from mezzanine.core.views import direct_to_template
 
@@ -48,11 +50,44 @@ js_info_dict = {
 
 urlpatterns = patterns("",
     (r'^jsi18n/$', 'django.views.i18n.javascript_catalog', js_info_dict),
+	
+
+   #---------IRSS:--------------------------#    
+    #url("devirss.ippc.int/$', direct_to_template, {"template": "irss/index.html"}, name="irss"),
+    url(r'^irss-home/$', direct_to_template, {"template": "irss/index.html"}, name="irss"),
+    url(r'^irss-activities/$', direct_to_template, {"template": "irss/irss_activities.html"}, name="irss activities"),
+    url(r'^irss-about/$', direct_to_template, {"template": "irss/irss_about.html"}, name="irssabout"),
+    url(r'^irss-country-profiles/$', direct_to_template, {"template": "irss/irss_countries.html"}, name="irsscn"),
+    url(r'^irss-helpdesk/$', direct_to_template, {"template": "irss/irss_helpdeskhome.html"}, name="irsshd"),
+    url(r'^irss-helpdesk-1/$', direct_to_template, {"template": "irss/irss_helpdeskhome.html"}, name="irsshelpdesk"),
+    url(r'^irss-helpdesk-faq/$', direct_to_template, {"template": "irss/irss_helpdeskfaq.html"}, name="irssfaq"),
+	
+	#----------Q&A:------------------------------#    
+  
     
+
+    url(r'^qa/$',QuestionListView.as_view(), name='index'),
+    url(r'^qa/(?P<pk>\d+)/$', QuestionDetailView.as_view(), name='detail'),
+    url(r'^qa/create/$',view=question_create,name='question-create'),
+    url(r'^qa/edit/(?P<id>\d+)/$', view=question_edit, name='question-edit'),
+
+    url(r'^qa/(?P<pk>\d+)/answers/$', QuestionAnswersView.as_view(), name='answers'),
+    url(r'^qa/(?P<question_id>\d+)/answer/create/$', answer_create, name='answer-create'),
+    url(r'^qa/(?P<question_id>\d+)/answer/(?P<id>\d+)/edit/$', answer_edit, name='answer-edit'),
+    
+    url(r'^qa/(?P<question_id>\d+)/answer/(?P<id>\d+)/voteup/$', vote_answer_up, name='vote-up'),
+    url(r'^qa/(?P<question_id>\d+)/answer/(?P<id>\d+)/votedown/$', vote_answer_down, name='vote-down'),
+
+
+
+
     url(r'^forum/', include('forum.urls')),
     url(r'^calls/', include('calls.urls')),
     url(r'^news/', include('news.urls')),
- 
+
+
+
+
     
     url('^markdown/', include( 'django_markdown.urls')),
     # forum detail

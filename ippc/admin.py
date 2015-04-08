@@ -16,7 +16,7 @@ CountryNews,CountryNewsFile,CountryNewsUrl,CommodityKeyword,PreferredLanguages, 
 PartnersWebsite,PartnersWebsiteUrl,\
 PartnersNews,PartnersNewsFile,PartnersNewsUrl, \
 EppoCode,IssueKeyword, CommodityKeyword,IssueKeywordsRelate,CommodityKeywordsRelate, ContactType, \
-IppcUserProfile
+IppcUserProfile,Question,Answer
 from django.forms.models import inlineformset_factory
 from django.forms.formsets import formset_factory
 from django.contrib.auth.models import User
@@ -35,6 +35,27 @@ from django_markdown.widgets import MarkdownWidget
 class IppcUserProfileAdmin(admin.ModelAdmin):
     change_form_template = 'loginas/change_form.html'
     
+class MyQuestionAdminForm(forms.ModelForm):
+    class Meta:
+        model = Question
+#        widgets = {
+#          'polltext':MarkdownWidget() 
+#         # models.TextField: {'widget': },
+#        }
+class QuestionAdmin(admin.ModelAdmin):
+    form = MyQuestionAdminForm
+    fieldsets = [
+        (None,               {'fields': ['question_title']}),
+        (None,               {'fields': ['description'], 'classes': ['Textarea']}),
+        ('Date information', {'fields': ['pub_date'], 'classes': ['collapse']}),
+       
+    ]
+    
+    list_display = ('question_title', 'pub_date')
+    search_fields = ['question_title']
+    list_filter = ['pub_date','question_title']
+	
+admin.site.register(Question, QuestionAdmin)
 
 class MyIssueKeywordsRelateAdminForm(forms.ModelForm):
     class Meta:

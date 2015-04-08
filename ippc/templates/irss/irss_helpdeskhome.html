@@ -1,0 +1,44 @@
+{% extends "irss/base1.html" %}
+{% load pages_tags translate_tags mezzanine_tags i18n future staticfiles accounts_tags %}
+
+{% block meta_title %}
+  {% trans "Helpdesk" %}
+{% endblock %}
+ 
+
+{% block breadcrumb_menu %}
+
+{% endblock breadcrumb_menu %}
+{% block main %}
+<h1>Helpdesk</h1>
+<p><img alt="" class="pull-right" src="/static/media/uploads/banner-helpdesk.jpg" style="padding:0.5em 0 0.5em 2em;" /></p>
+   
+<p class="clearfix">The IRSS Helpdesk aims to provide support and assistance to those Contracting Parties seeking help in the implementation of ISPMs. General and specific help services are provided by way of a <a href="/qa">Question and Answer Forum</a>, a list of <a href="/irss-helpdesk-faq/">Frequently Asked Questions (FAQs)</a>, and links to the <a href="http://www.phytosanitary.info">Phytosanitary.Info</a> webpage for further resources on Technical Resources, Country Projects &amp; Activities and a Consultants Roster. 
+<br>
+        
+<a class="btn btn-primary btn-large btn-custom" href="/qa/create">Ask a Question</a></p>
+<div class="row">
+<div class="span4">
+<p><a href="/qa/"><img alt="" src="/static/media/uploads/qa.jpg" style="padding:0.5em 0 0;" /></a></p>
+<h2><a href="/qa/">Question &amp; Answer Forum</a></h2>
+<p>An interactive Question and Answer (Q&amp;A) forum providing support to Contracting Parties and serving to establish and strengthen networks of experts, institutions and international cooperation.</p>
+<p><a class="btn" href="/qa/">Go to Q&amp;A Forum >></a></p>
+   
+        </div>
+<div class="span4">
+   <p><a href="/irss-helpdesk-faq/"><img alt="" src="/static/media/uploads/faq.jpg" style="padding:0.5em 0 0;" /></a></p>
+<h2><a href="/irss-helpdesk-faq/">Frequently Asked Questions</a></h2>
+<p>This section includes specific help services compiled from historical archives of the IPPC and new questions stemming from the Q&amp;A Forum.</p>
+<p><a class="btn" href="/irss-helpdesk-faq">Go to FAQ >></a></p>
+   
+        </div>
+<div class="span4">
+   <p><a href="http://www.phytosanitary.info"><img alt="" src="/static/media/uploads/phytosanitary.jpg" style="padding:0.5em 0 0;" /></a></p>
+<h2><a href="http://www.phytosanitary.info">Phytosanitary Resources</a></h2>
+<ul><li><a href="http://projects.phytosanitary.info/">Projects</a> and <a href="http://activities.phytosanitary.info/">Activities</a> databases</li>
+<li><a href="http://consultants.phytosanitary.info/">Roster of Consultants</a></li>
+
+ </div>
+    
+  </div>
+{% endblock %}

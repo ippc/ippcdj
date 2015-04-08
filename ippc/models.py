@@ -1622,7 +1622,32 @@ class EmailUtilityMessageFile(models.Model):
     def fileextension(self):
         return os.path.splitext(self.file.name)[1]
              
-
+class Question(models.Model):
+    question_title = models.CharField(max_length=200)
+    description = models.TextField("OPTIONAL: Provide more background",blank=True, null=True)
+    pub_date = models.DateTimeField('date published')
+    user = models.ForeignKey(User)
+       
+    def __unicode__(self):  # Python 3: def __str__(self):
+        return self.question_title
+    def was_published_recently(self):
+        return self.pub_date >= timezone.now() - datetime.timedelta(days=1)
+    def is_past_due(self):
+        if timezone.now() > self.closing_date:
+            return True
+        else: 
+            return False
+        
+class Answer(models.Model):
+    user = models.ForeignKey(User)
+    question = models.ForeignKey(Question)
+    answertext= models.TextField("",blank=True, null=True)
+    bestanswer =  models.BooleanField( verbose_name=_("Best answer"),)
+    
+class AnswerVotes(models.Model):
+    user = models.ForeignKey(User)
+    answer = models.ForeignKey(Answer)
+    up= models.CharField(max_length=50)
      
 class Translatable(models.Model):
     """ Translations of user-generated content - https://gist.github.com/renyi/3596248"""

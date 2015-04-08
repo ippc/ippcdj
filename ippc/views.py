@@ -11,7 +11,7 @@ from django.conf import settings
 from django.contrib.auth.models import User,Group
 from .models import ContactType,PublicationLibrary,Publication,EppoCode,EmailUtilityMessage, EmailUtilityMessageFile, Poll_Choice, Poll,PollVotes, IppcUserProfile,\
 CountryPage,PartnersPage, PestStatus, PestReport, IS_PUBLIC, IS_HIDDEN, Publication,\
-DraftProtocol,DraftProtocolComments,NotificationMessageRelate,CommentFile,\
+DraftProtocol,DraftProtocolComments,NotificationMessageRelate,CommentFile,Question, Answer,AnswerVotes,\
 ReportingObligation, BASIC_REP_TYPE_CHOICES, EventReporting, EVT_REP_TYPE_CHOICES,Website,CnPublication,PartnersPublication,PartnersNews, PartnersWebsite,CountryNews, \
 PestFreeArea,ImplementationISPM,REGIONS, IssueKeywordsRelate,CommodityKeywordsRelate,EventreportingFile,ReportingObligation_File
 from mezzanine.core.models import Displayable, CONTENT_STATUS_DRAFT, CONTENT_STATUS_PUBLISHED
@@ -25,7 +25,8 @@ PollForm,Poll_ChoiceFormSet,\
 PartnersNewsUrlFormSet,PartnersNewsForm, PartnersNewsFileFormSet,PartnersWebsiteUrlFormSet,PartnersWebsiteForm,\
 EmailUtilityMessageForm,EmailUtilityMessageFileFormSet,\
 CountryNewsUrlFormSet,CountryNewsForm, CountryNewsFileFormSet,NotificationMessageRelateForm,\
-DraftProtocolForm,  DraftProtocolFileFormSet,DraftProtocolCommentsForm,IppcUserProfileForm# , UserForm
+DraftProtocolForm,  DraftProtocolFileFormSet,DraftProtocolCommentsForm,IppcUserProfileForm,QuestionForm, AnswerForm# , UserForm
+
 
 from django.views.generic import ListView, MonthArchiveView, YearArchiveView, DetailView, TemplateView, CreateView
 from django.core.urlresolvers import reverse
@@ -3859,4 +3860,242 @@ def draftprotocol_compilecomments(request,id=None):
 
        return response	
 
+class QuestionListView(ListView):
+    template_name = 'question/index.html'
+    context_object_name = 'latest_question_list'
+    def get_queryset(self):
+        """Return the last five published questions."""
+        return Question.objects.order_by('-pub_date').all
+
+    def get_context_data(self, **kwargs):
+        context = super(QuestionListView, self).get_context_data(**kwargs)
+        arrayquestions=[]
+        questions=Question.objects.all()
+        
+        for q in questions:
+            array_q=[]
+            answers=Answer.objects.filter(question_id=q.id).count()
+            answersbest=Answer.objects.filter(question_id=q.id,bestanswer='1').count()
+           
+            array_q.append(q.id)
+            array_q.append(q.question_title)
+            array_q.append(answers)
+            array_q.append(answersbest)
+            array_q.append(q.pub_date)
+            arrayquestions.append(array_q)
+       
+        context['questions']= arrayquestions
+        return context
+
+
+
+
+class QuestionDetailView(DetailView):
+    model = Question
+    template_name = 'question/detail.html'
+    def get_queryset(self):
+        """Return the last five published question."""
+        return Question.objects.filter(pub_date__lte=timezone.now())
+        
+
+class QuestionAnswersView(DetailView):
+    model = Question
+    template_name = 'question/answers.html'
+    
+    def get_context_data(self, **kwargs):
+        context = super(QuestionAnswersView, self).get_context_data(**kwargs)
+        q_id=self.kwargs['pk']
+        answers=Answer.objects.filter(question_id=q_id)
+        
+        arrayanswers=[]
+        for a in answers:
+            array_a=[]
+            answervote=AnswerVotes.objects.filter(answer=a).count()
+            answervoteup=AnswerVotes.objects.filter(answer=a,up='1').count()
+            answervotedown=AnswerVotes.objects.filter(answer=a,up='-1').count()
+            upval=0
+            downval=0
+            if answervoteup >0:
+                upval=answervoteup/answervote*100
+            if answervotedown >0:
+                downval=answervotedown/answervote*100
+            
+            array_a.append(a.answertext)
+            array_a.append(a.id)
+            array_a.append(upval)
+            array_a.append(downval)
+            arrayanswers.append(array_a)
+       
+        context['answers']= arrayanswers
+        return context
+
+
+@login_required
+@permission_required('ippc.add_question', login_url="/accounts/login/")
+def question_create(request):
+    """ Create question """
+    user = request.user
+    author = user
+
+    form = QuestionForm(request.POST)
+    if request.method == "POST":
+         if form.is_valid():
+            new_question = form.save(commit=False)
+            new_question.user = request.user
+            new_question.user_id = author.id
+            form.save()
+            info(request, _("Successfully created Question."))
+            return redirect("answers", pk=new_question.id)
+         else:
+             return render_to_response('question/question_create.html', {'form': form,},
+             context_instance=RequestContext(request))
+       
+    else:
+        form = QuestionForm( instance=Question())
+    
+    return render_to_response('question/question_create.html', {'form': form,},
+        context_instance=RequestContext(request))
+
+@login_required
+@permission_required('ippc.change_question', login_url="/accounts/login/")
+def question_edit(request, id=None, template_name='question/question_edit.html'):
+    """ Edit question """
+    if id:
+        question = get_object_or_404(Question,  pk=id)
+    else:
+        question = Question()
+      
+    if request.POST:
+
+        form =QuestionForm(request.POST, instance=question)
+        if form.is_valid():
+            form.save()
+          
+            return redirect("answers", pk=id)
+    else:
+        form = QuestionForm(instance=question)
+      
+        
+    return render_to_response(template_name, {
+        'form': form, "question": question
+    }, context_instance=RequestContext(request))
+    
+        
+@login_required
+@permission_required('ippc.add_answer', login_url="/accounts/login/")
+def answer_create(request, question_id):
+    """ Create answer """
+    q = get_object_or_404(Question, pk=question_id)
+    
+    user = request.user
+    author = user
+
+    form =AnswerForm(request.POST)
+    if request.method == "POST":
+         if form.is_valid():
+            new_answer = form.save(commit=False)
+            new_answer.user = request.user
+            new_answer.user_id = author.id
+            new_answer.question_id = q.id
+            form.save()
+            info(request, _("Successfully added Answer."))
+            return redirect("answers", pk=q.id)
+         else:
+            return render_to_response('question/answer_create.html', {'form': form,"question":q,},
+            context_instance=RequestContext(request))
+       
+    else:
+        form = AnswerForm( instance=Question())
+    
+    return render_to_response('question/answer_create.html', {'form': form,"question":q,},
+        context_instance=RequestContext(request))
+    
+@login_required
+@permission_required('ippc.change_answer', login_url="/accounts/login/")
+#def answer_edit(request, id=None , question_id ,template_name='question/answer_edit.html'):
+def answer_edit(request, question_id,id=None,template_name='question/answer_edit.html'):
+    """ edit answer """
+    print(question_id)
+    q = get_object_or_404(Question, pk=question_id)
+    """ Edit question """
+    if id:
+        answer = get_object_or_404(Answer,  pk=id)
+    else:
+        answer = Answer()
+      
+    if request.POST:
+        form =AnswerForm(request.POST, instance=answer)
+        if form.is_valid():
+            form.save()
+            return redirect("answers", pk=question_id)
+    else:
+        form = AnswerForm(instance=answer)
+      
+        
+    return render_to_response(template_name, {
+        'form': form, "answer": answer,"question":q,
+    }, context_instance=RequestContext(request))
+    
+        
+def vote_answer_up(request,question_id,id=None,):
+    answer = get_object_or_404(Answer, pk=id)
+    q = get_object_or_404(Question, pk=question_id)
+    answers=Answer.objects.filter(question_id=question_id)
+        
+    if AnswerVotes.objects.filter(answer_id=id, user_id=request.user.id).exists():
+        return render(request, 'question/answers.html', {
+        'question': q,
+        'answers':answers,
+        'error_message': "Sorry, but you have already voted."
+        })
+
+    try:
+        up = 1
+    except (KeyError):
+        # Redisplay the poll voting form.
+        return render(request, 'question/answers.html', {
+            'question': q,
+            'answers':answers,
+            'error_message': "You didn't select a rate.",
+        })
+    else:
+       # selected_choice.votes += 1
+        #selected_choice.save()
+        
+        v = AnswerVotes(user=request.user, answer=answer,up='1')
+        v.save()
+        return redirect("answers", pk=q.id)
+
+def vote_answer_down(request,question_id,id=None,):
+    answer = get_object_or_404(Answer, pk=id)
+    q = get_object_or_404(Question, pk=question_id)
+    answers=Answer.objects.filter(question_id=question_id)
+    if AnswerVotes.objects.filter(answer_id=id, user_id=request.user.id).exists():
+        return render(request, 'question/answers.html', {
+        'question': q,
+        'answers':answers,
+        'error_message': "Sorry, but you have already voted."
+        })
+    try:
+        down = -1
+    except (KeyError):
+        # Redisplay the poll voting form.
+        return render(request, 'question/answers.html', {
+            'question': q,
+            'answers':answers,
+            'error_message': "You didn't select a rate.",
+        })
+    else:
+       # selected_choice.votes += 1
+        #selected_choice.save()
+        
+        v = AnswerVotes(user=request.user, answer=answer,up='-1')
+        v.save()
+        return redirect("answers", pk=q.id)
+#    
+#        selected_choice.votes += 1
+#        selected_choice.save()
+#        v = PollVotes(user=request.user, poll=p,choice=selected_choice,comment=request.POST['comment'])
+#        v.save()
+#        return redirect("results", pk=p.id)
 	
