@@ -1,4 +1,4 @@
-{% extends "irss/base1.html" %}
+{% extends "base.html" %}
 {% load pages_tags translate_tags mezzanine_tags i18n future staticfiles accounts_tags %}
 
 {% block meta_title %}
@@ -10,10 +10,11 @@
 
 {% endblock breadcrumb_menu %}
 
+{% block mainspansize %}12{% endblock mainspansize %}
 {% block main %}
 <h1>Country Profiles</h1>
 <div class="pull-right" style="padding:0.5em 0 0.5em 2em; height:150px;">
-<img src="/static/media/uploads/political_world_map.png" alt="">
+<img src="/static/img/irss/political_world_map.png" alt="">
 </div>
 
 <p>

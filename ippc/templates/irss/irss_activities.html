@@ -1,4 +1,4 @@
-{% extends "irss/base1.html" %}
+{% extends "base.html" %}
 {% load pages_tags translate_tags mezzanine_tags i18n future staticfiles accounts_tags %}
 
 {% block meta_title %}
@@ -7,13 +7,28 @@
  
 
 {% block breadcrumb_menu %}
-
+<li>
+  <a href="/">{% trans "Home" %}</a>
+  <span class="divider">/</span>
+</li>
+<li>
+	<a href="/irss/">{% trans "IRSS" %}</a>
+	<span class="divider">/</span>
+</li>
+<li class="active">
+	{% trans "Activities" %}
+</li>
 {% endblock breadcrumb_menu %}
 
+{% block mainspansize %}12{% endblock mainspansize %}
+{% block sidebarspansize %}12{% endblock sidebarspansize %}
+
 {% block main %}
+
 <h1>Activities</h1>
-<p><img alt="" class="pull-right" src="/static/media/uploads/fruits.jpg" style="padding:0.5em 0 0.5em 2em;" /></p>
+<p><img alt="" class="pull-right" src="/static/img/irss/fruits.jpg" style="padding:0.5em 0 0.5em 2em;" /></p>
 <p class="clearfix">IRSS produces yearly reports and studies throughout its 3-year project cycle. These activities will feed into the Triennial Review response publication which will summarize the situation of the implementation of the IPPC and its standards by contracting parties. Below, You can find IRSS activity information, read regional workshop reports, ISPM review reports as well as publications related to plant protection. <br><small class="alert-info">To download PDFs you may need to right-click on the link and choose Save As</small></p>
+</div>
 
 <div class="row">
 <div class="span6">

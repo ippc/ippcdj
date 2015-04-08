@@ -1,11 +1,24 @@
-{% extends "irss/base1.html" %}
+{% extends "base.html" %}
 {% load pages_tags mezzanine_tags i18n future staticfiles %}
 
 {% block meta_title %}{% trans "Q & A Forum" %}{% endblock %}
 
 {% block breadcrumb_menu %}
-{% endblock %}
+	<li>
+	  <a href="/">{% trans "Home" %}</a>
+	  <span class="divider">/</span>
+	</li>
+	<li>
+		<a href="/irss/">{% trans "IRSS" %}</a>
+		<span class="divider">/</span>
+	</li>
+	</li>
+	<li class="active">
+		{% trans "QA Forum" %}
+	</li>
+{% endblock breadcrumb_menu %}
 
+		{% block mainspansize %}12{% endblock mainspansize %}
     {% block main %}
     <script type="text/javascript">
         function toggle_visibility(id, id1) {
@@ -24,9 +37,10 @@
     </script>
 
     <h2 class="block-title">Question and Answer Forum</h2>
-    <ul class="inline">
-        <li class="dropdown"><a onclick="javascript:toggle_visibility('questions', 'etiquette');">All Questions</a></li>
-        <li class="dropdown"><a onclick="javascript:toggle_visibility('etiquette', 'questions');">Forum Etiquette</a></li>
+		<p class="pull-right"><a class="btn btn-primary btn-large btn-custom" href="/qa/create">Ask a Question</a></p>
+    <ul class="nav nav-pills">
+        <li><a onclick="javascript:toggle_visibility('questions', 'etiquette');" style="cursor:pointer;">All Questions</a></li>
+        <li><a onclick="javascript:toggle_visibility('etiquette', 'questions');" style="cursor:pointer;">Forum Etiquette</a></li>
     </ul>
         <div id="etiquette" style="display:none;">
             <p><strong>1. Quality of posts</strong></p>

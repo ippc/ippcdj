@@ -1,4 +1,4 @@
-{% extends "irss/base1.html" %}
+{% extends "base.html" %}
 {% load pages_tags translate_tags mezzanine_tags i18n future staticfiles accounts_tags %}
 
 {% block meta_title %}
@@ -7,40 +7,48 @@
  
 
 {% block breadcrumb_menu %}
-
+<li>
+  <a href="/">{% trans "Home" %}</a>
+  <span class="divider">/</span>
+</li>
+<li class="active">
+	{% trans "IRSS" %}
+</li>
 {% endblock breadcrumb_menu %}
 
+{% block mainspansize %}12{% endblock mainspansize %}
 {% block main %}
-<a href="/irss-about/"><img alt="About" class="pull-right" src="/static/media/uploads/finger-plant.jpg" style="padding:0.5em 0 0.5em 2em;"></a>
+<a href="/irss/about/"><img alt="About" class="pull-right" src="/static/img/irss/finger-plant.jpg" style="padding:0.5em 0 0.5em 2em;"></a>
 
 <h1>
-        <a href="/irss-about/">Implementation Review &amp; Support System (IRSS)</a><br /></h1>
+        <a href="/irss/about/">Implementation Review &amp; Support System (IRSS)</a><br /></h1>
 <p>
        The Implementation Review and Support System (IRSS) is an evaluation tool which identifies your country's plant protection challenges and best practices. How does this help your country? By generating global and regional information, a broader reach of country feedback improves upon the development of IPPC standards, taking into account as many country implementation challenges as possible. Identifying challenging areas as well as best practices is also a vital input in the strategic development of resources and tools to assist your country and region. The Helpdesk feature below serves to support cooperation and assistance between contracting parties as well as the plant protection community.
     </p>
 <p>
-        <a class="btn btn-primary btn-large btn-custom" href="/irss-about/">Learn more >></a>
+        <a class="btn btn-primary btn-large btn-custom" href="/irss/about/">Learn more >></a>
     </p>
    
 
   </div>
 </div>
 
+
 <div class="row">
     <div class="span4">
-        <p><a href="/irss-activities/"><img alt="" src="/static/media/uploads/activities.jpg" style="padding:0.5em 0 0;" /></a></p>
-        <h2><a href="/irss-activities/">Activities</a><br /></h2>
+        <p><a href="/irss/activities/"><img alt="" src="/static/img/irss/activities.jpg" style="padding:0.5em 0 0;" /></a></p>
+        <h2><a href="/irss/activities/">Activities</a><br /></h2>
         <p>Surveys, workshops, detailed studies and other information-gathering efforts are critical to tracking progress towards strong implementation of <a href="http://www.ippc.int/standards">ISPMs</a>.    </p>
     </div>
 <div class="span4">
-    <p><a href="/irss-helpdesk/"><img alt="" src="/static/media/uploads/helpdesk.jpg" style="padding:0.5em 0 0;" /></a></p>
-    <h2><a href="/irss-helpdesk/">Helpdesk</a></h2>
-    <p>The helpdesk provides an interactive <a href="/qa/">Question and Answer (Q&amp;A) Forum</a>, a list of <a href="/irss-helpdesk-faq/">Frequently Asked Questions (FAQs)</a> and links to <a href="http://www.phytosanitary.info">Phytosanitary Resources</a>.</p>
+    <p><a href="/irss/helpdesk/"><img alt="" src="/static/img/irss/helpdesk.jpg" style="padding:0.5em 0 0;" /></a></p>
+    <h2><a href="/irss/helpdesk/">Helpdesk</a></h2>
+    <p>The helpdesk provides an interactive <a href="/qa/">Question and Answer (Q&amp;A) Forum</a>, a list of <a href="/irss/helpdesk-faq/">Frequently Asked Questions (FAQs)</a> and links to <a href="http://www.phytosanitary.info">Phytosanitary Resources</a>.</p>
 </div>
 <div class="span4">
-    <p><a href="/irss-country-profiles/"><img alt="" src="/static/media/uploads/country-profiles.jpg" style="padding:0.5em 0 0;" /></a></p>
+    <p><a href="/irss/country-profiles/"><img alt="" src="/static/img/irss/country-profiles.jpg" style="padding:0.5em 0 0;" /></a></p>
     <h2>
-        <a href="/irss-country-profiles/">Country Profiles</a><br /></h2>
+        <a href="/irss/country-profiles/">Country Profiles</a><br /></h2>
     <p>
         The information on each Country Profile page offers the latest economic, trade and phytosanitary data by country and, coming soon, by region.
     </p>

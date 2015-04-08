@@ -21,6 +21,8 @@ div.container-fluid {max-width:1200px; text-align:left; margin:0 auto;}
 
 *:target {background:#F2FFEF;}
 
+.hide {display:none;}
+
 a.brand {
     font-size:1.4em !important; 
     vertical-align:middle; 

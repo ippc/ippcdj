@@ -20,7 +20,7 @@
 <link rel="stylesheet" href="{% static "css/bootstrap.css" %}">
 <link rel="stylesheet" href="{% static "css/mezzanine.css" %}">
 <link rel="stylesheet" href="{% static "css/bootstrap-responsive.css" %}">
-<link rel="stylesheet" href="{% static "css/ippc20140309.css" %}">
+<link rel="stylesheet" href="{% static "css/ippc20150408.css" %}">
 <link rel="stylesheet" href="{% static "css/chosen.css" %}">
 {% if LANGUAGE_BIDI %}
 <link rel="stylesheet" href="{% static "css/rtl.css" %}">
@@ -191,11 +191,11 @@
 <div class="container-fluid">
 	
 <div class="row-fluid">
-	<div class="span8 middle">
+	<div class="span{% block mainspansize %}8{% endblock mainspansize %} middle">
 	    {% block main %}{% endblock %}
 	</div>
 
-	<div class="span4 right">
+	<div class="span{% block sidebarspansize %}4{% endblock sidebarspansize %} right">
 	    {% block local_nav %}
 				{% block trans %}
 				{% endblock trans %}

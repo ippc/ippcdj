@@ -54,13 +54,13 @@ urlpatterns = patterns("",
 
    #---------IRSS:--------------------------#    
     #url("devirss.ippc.int/$', direct_to_template, {"template": "irss/index.html"}, name="irss"),
-    url(r'^irss-home/$', direct_to_template, {"template": "irss/index.html"}, name="irss"),
-    url(r'^irss-activities/$', direct_to_template, {"template": "irss/irss_activities.html"}, name="irss activities"),
-    url(r'^irss-about/$', direct_to_template, {"template": "irss/irss_about.html"}, name="irssabout"),
-    url(r'^irss-country-profiles/$', direct_to_template, {"template": "irss/irss_countries.html"}, name="irsscn"),
-    url(r'^irss-helpdesk/$', direct_to_template, {"template": "irss/irss_helpdeskhome.html"}, name="irsshd"),
-    url(r'^irss-helpdesk-1/$', direct_to_template, {"template": "irss/irss_helpdeskhome.html"}, name="irsshelpdesk"),
-    url(r'^irss-helpdesk-faq/$', direct_to_template, {"template": "irss/irss_helpdeskfaq.html"}, name="irssfaq"),
+    url(r'^irss/$', direct_to_template, {"template": "irss/index.html"}, name="irss"),
+    url(r'^irss/activities/$', direct_to_template, {"template": "irss/irss_activities.html"}, name="irss activities"),
+    url(r'^irss/about/$', direct_to_template, {"template": "irss/irss_about.html"}, name="irssabout"),
+    url(r'^irss/country-profiles/$', direct_to_template, {"template": "irss/irss_countries.html"}, name="irsscn"),
+    url(r'^irss/helpdesk/$', direct_to_template, {"template": "irss/irss_helpdeskhome.html"}, name="irsshd"),
+    url(r'^irss/helpdesk-1/$', direct_to_template, {"template": "irss/irss_helpdeskhome.html"}, name="irsshelpdesk"),
+    url(r'^irss/helpdesk-faq/$', direct_to_template, {"template": "irss/irss_helpdeskfaq.html"}, name="irssfaq"),
 	
 	#----------Q&A:------------------------------#    
   
