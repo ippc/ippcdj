@@ -13,10 +13,12 @@
     }
 
 </script>
-<p><a href="#secretariat" onclick="javascript:toggle_visibility('secretariatdiv');">show/hide Full list of Contacts</a><p>
-<div id="secretariatdiv" style="display:none;">     
-<table class="table table-condensed table-striped table-bordered" id="secretariat">
-   <thead>
+<p><a href="#members" onclick="javascript:toggle_visibility('membersdiv');">show/hide Full list of Contacts</a><p>
+<div id="membersdiv" style="display:none;">     
+<table class="table table-condensed table-striped table-bordered" id="members">
+  
+{% if  page.id == 321 %} 
+ <thead>
      <tr>
        <th>{% trans "Last Name" %}</th>
        <th>{% trans "First Name" %}</th>
@@ -25,10 +27,9 @@
      </tr>
    </thead>
    <tbody>
-{% if  page.id == 321 %} 
- {% for user in secretariat %}
+  {% for user in secretariat %}
     <tr>
-        <td>{{user.0}}{{user.5}}</td>
+        <td>{{user.0}}</td>
         <td>{{user.1}}</td>
         <td>{% if user.2 %}
           <img class="profile-picture" style="margin:0 0 20px 10px;" src="{{ MEDIA_URL }}{% thumbnail user.2 30 30 %}">
@@ -41,10 +42,19 @@
   {% endfor %} 
   {% endif %}
   
-  {% if  page.id == 350 %} 
+ {% if  page.id == 350 %} 
+  <thead>
+     <tr>
+       <th>{% trans "Last Name" %}</th>
+       <th>{% trans "First Name" %}</th>
+       <th>{% trans "Picture" %}</th>
+       <th>{% trans "Title" %}</th>
+     </tr>
+   </thead>
+   <tbody>
  {% for user in users_sc %}
     <tr>
-        <td>{{user.0}}{{user.5}}</td>
+        <td>{{user.0}}</td>
         <td>{{user.1}}</td>
         <td>{% if user.2 %}
           <img class="profile-picture" style="margin:0 0 20px 10px;" src="{{ MEDIA_URL }}{% thumbnail user.2 30 30 %}">
@@ -58,9 +68,18 @@
   {% endif %}
   
   {% if  page.id == 339 %} 
+   <thead>
+     <tr>
+       <th>{% trans "Last Name" %}</th>
+       <th>{% trans "First Name" %}</th>
+       <th>{% trans "Picture" %}</th>
+       <th>{% trans "Title" %}</th>
+     </tr>
+   </thead>
+   <tbody>
  {% for user in users_bureau %}
     <tr>
-        <td>{{user.0}}{{user.5}}</td>
+        <td>{{user.0}}</td>
         <td>{{user.1}}</td>
         <td>{% if user.2 %}
           <img class="profile-picture" style="margin:0 0 20px 10px;" src="{{ MEDIA_URL }}{% thumbnail user.2 30 30 %}">
@@ -74,9 +93,18 @@
   {% endif %}
   
   {% if  page.id == 356 %} 
+   <thead>
+     <tr>
+       <th>{% trans "Last Name" %}</th>
+       <th>{% trans "First Name" %}</th>
+       <th>{% trans "Picture" %}</th>
+       <th>{% trans "Title" %}</th>
+     </tr>
+   </thead>
+   <tbody>
  {% for user in users_tpdp %}
     <tr>
-        <td>{{user.0}}{{user.5}}</td>
+        <td>{{user.0}}</td>
         <td>{{user.1}}</td>
         <td>{% if user.2 %}
           <img class="profile-picture" style="margin:0 0 20px 10px;" src="{{ MEDIA_URL }}{% thumbnail user.2 30 30 %}">
@@ -90,9 +118,19 @@
   {% endif %}
   
   {% if  page.id == 355 %} 
+   <thead>
+     <tr>
+       <th>{% trans "Last Name" %}</th>
+       <th>{% trans "First Name" %}</th>
+       <th>{% trans "Picture" %}</th>
+       <th>{% trans "Title" %}</th>
+     </tr>
+   </thead>
+   <tbody>
  {% for user in users_tpfq %}
+ 
     <tr>
-        <td>{{user.0}}{{user.5}}</td>
+        <td>{{user.0}}</td>
         <td>{{user.1}}</td>
         <td>{% if user.2 %}
           <img class="profile-picture" style="margin:0 0 20px 10px;" src="{{ MEDIA_URL }}{% thumbnail user.2 30 30 %}">
@@ -106,9 +144,19 @@
   {% endif %}
   
   {% if  page.id == 353 %} 
+   <thead>
+     <tr>
+       <th>{% trans "Last Name" %}</th>
+       <th>{% trans "First Name" %}</th>
+       <th>{% trans "Picture" %}</th>
+       <th>{% trans "Title" %}</th>
+     </tr>
+   </thead>
+   <tbody>
  {% for user in users_tpff %}
+ 
     <tr>
-        <td>{{user.0}}{{user.5}}</td>
+        <td>{{user.0}}</td>
         <td>{{user.1}}</td>
         <td>{% if user.2 %}
           <img class="profile-picture" style="margin:0 0 20px 10px;" src="{{ MEDIA_URL }}{% thumbnail user.2 30 30 %}">
@@ -122,9 +170,18 @@
   {% endif %}
   
   {% if  page.id == 354 %} 
+   <thead>
+     <tr>
+       <th>{% trans "Last Name" %}</th>
+       <th>{% trans "First Name" %}</th>
+       <th>{% trans "Picture" %}</th>
+       <th>{% trans "Title" %}</th>
+     </tr>
+   </thead>
+   <tbody>
  {% for user in users_tpg %}
     <tr>
-        <td>{{user.0}}{{user.5}}</td>
+        <td>{{user.0}}</td>
         <td>{{user.1}}</td>
         <td>{% if user.2 %}
           <img class="profile-picture" style="margin:0 0 20px 10px;" src="{{ MEDIA_URL }}{% thumbnail user.2 30 30 %}">
@@ -138,17 +195,19 @@
   {% endif %}
   
   {% if  page.id == 357 %} 
+   <thead>
+     <tr>
+       <th>{% trans "Last Name" %}</th>
+       <th>{% trans "First Name" %}</th>
+       <th>{% trans "Type of Contact" %}</th>
+     </tr>
+   </thead>
+   <tbody>
  {% for user in users_tppt %}
     <tr>
-        <td>{{user.0}}{{user.5}}</td>
+        <td>{{user.0}}</td>
         <td>{{user.1}}</td>
-        <td>{% if user.2 %}
-          <img class="profile-picture" style="margin:0 0 20px 10px;" src="{{ MEDIA_URL }}{% thumbnail user.2 30 30 %}">
-            {% else %}
-          <a class="profile-picture" style="height:30px; width:30px; background:#eee;"></a>
-            {% endif %}</a>
-        </td>
-        <td>{{user.3}}</td>
+        <td>{{user.5}}</td>
     </tr>
   {% endfor %} 
   {% endif %}

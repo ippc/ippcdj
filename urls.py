@@ -29,7 +29,7 @@ DraftProtocolDetailView,  draftprotocol_create, draftprotocol_edit,draftprotocol
 draftprotocol_comment_create,draftprotocol_comment_edit,PublicationLibraryView,commenta,contactPointExtractor,\
 CountryRegionsPercentageListView,CountryStatsreportsListView,CountryStatsTotalreportsListView,CountryRegionsUsersListView,CountryTotalUsersListView,\
 QuestionListView, QuestionDetailView, QuestionAnswersView,question_create,question_edit,\
-answer_create,answer_edit  ,vote_answer_up ,vote_answer_down,phytosanitarytraderel_edit,phytosanitarytraderel_create
+answer_create,answer_edit  ,vote_answer_up ,vote_answer_down
 from schedule.periods import Year, Month, Week, Day
 from mezzanine.core.views import direct_to_template
 

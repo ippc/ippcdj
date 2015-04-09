@@ -266,13 +266,18 @@ class PublicationLibraryView(ListView):
                 for u in users:
                    users_u=[]
                    user_obj=User.objects.get(username=u)
+                   #print(user_obj.groups)
+                   gg=''
+                   for h in user_obj.groups.all():
+                        gg=gg+str(h)+', '
+                   #print(gg)
                    userippc = get_object_or_404(IppcUserProfile, user_id=user_obj.id)
                    users_u.append((unicode(userippc.last_name)))
                    users_u.append((unicode(userippc.first_name)))
                    users_u.append((userippc.profile_photo))
                    users_u.append((userippc.title))
                    users_u.append((user_obj.username))
-                   #users_u.append((user_obj.contact_type))
+                   users_u.append((gg))
                    users_tppt.append(users_u)
             
         
