@@ -110,6 +110,7 @@ class CommodityKeywordsRelate(models.Model):
         
 
 
+
 CP_NCP_T_TYPE_0 = 'N/A'
 CP_NCP_T_TYPE_1 = 'CP'
 CP_NCP_T_TYPE_2 = 'NCP'
@@ -1648,7 +1649,8 @@ class AnswerVotes(models.Model):
     user = models.ForeignKey(User)
     answer = models.ForeignKey(Answer)
     up= models.CharField(max_length=50)
-     
+
+
 class Translatable(models.Model):
     """ Translations of user-generated content - https://gist.github.com/renyi/3596248"""
     lang = models.CharField(max_length=5, choices=settings.LANGUAGES)

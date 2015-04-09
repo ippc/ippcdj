@@ -8,6 +8,106 @@ from django.db import models
 class Migration(SchemaMigration):
 
     def forwards(self, orm):
+        # Adding model 'CropImportsRelate'
+        db.create_table(u'ippc_cropimportsrelate', (
+            (u'id', self.gf('django.db.models.fields.AutoField')(primary_key=True)),
+            ('content_type', self.gf('django.db.models.fields.related.ForeignKey')(to=orm['contenttypes.ContentType'])),
+            ('object_id', self.gf('django.db.models.fields.PositiveIntegerField')()),
+        ))
+        db.send_create_signal(u'ippc', ['CropImportsRelate'])
+
+        # Adding M2M table for field major_imports on 'CropImportsRelate'
+        m2m_table_name = db.shorten_name(u'ippc_cropimportsrelate_major_imports')
+        db.create_table(m2m_table_name, (
+            ('id', models.AutoField(verbose_name='ID', primary_key=True, auto_created=True)),
+            ('cropimportsrelate', models.ForeignKey(orm[u'ippc.cropimportsrelate'], null=False)),
+            ('crops', models.ForeignKey(orm[u'ippc.crops'], null=False))
+        ))
+        db.create_unique(m2m_table_name, ['cropimportsrelate_id', 'crops_id'])
+
+        # Adding model 'AnswerVotes'
+        db.create_table(u'ippc_answervotes', (
+            (u'id', self.gf('django.db.models.fields.AutoField')(primary_key=True)),
+            ('user', self.gf('django.db.models.fields.related.ForeignKey')(to=orm['auth.User'])),
+            ('answer', self.gf('django.db.models.fields.related.ForeignKey')(to=orm['ippc.Answer'])),
+            ('up', self.gf('django.db.models.fields.CharField')(max_length=50)),
+        ))
+        db.send_create_signal(u'ippc', ['AnswerVotes'])
+
+        # Adding model 'PhytosanitaryTradeRel'
+        db.create_table(u'ippc_phytosanitarytraderel', (
+            (u'id', self.gf('django.db.models.fields.AutoField')(primary_key=True)),
+            ('keywords_string', self.gf('django.db.models.fields.CharField')(max_length=500, blank=True)),
+            ('site', self.gf('django.db.models.fields.related.ForeignKey')(to=orm['sites.Site'])),
+            ('title', self.gf('django.db.models.fields.CharField')(max_length=500)),
+            ('slug', self.gf('django.db.models.fields.CharField')(max_length=2000, null=True, blank=True)),
+            ('_meta_title', self.gf('django.db.models.fields.CharField')(max_length=500, null=True, blank=True)),
+            ('description', self.gf('django.db.models.fields.TextField')(blank=True)),
+            ('gen_description', self.gf('django.db.models.fields.BooleanField')(default=True)),
+            ('status', self.gf('django.db.models.fields.IntegerField')(default=2)),
+            ('publish_date', self.gf('django.db.models.fields.DateTimeField')(null=True, blank=True)),
+            ('expiry_date', self.gf('django.db.models.fields.DateTimeField')(null=True, blank=True)),
+            ('short_url', self.gf('django.db.models.fields.URLField')(max_length=200, null=True, blank=True)),
+            ('in_sitemap', self.gf('django.db.models.fields.BooleanField')(default=True)),
+            ('country', self.gf('django.db.models.fields.related.ForeignKey')(related_name='phytosanitarytraderel_country_page', to=orm['ippc.CountryPage'])),
+            ('author', self.gf('django.db.models.fields.related.ForeignKey')(related_name='phytosanitarytraderel_author', to=orm['auth.User'])),
+            ('modify_date', self.gf('django.db.models.fields.DateTimeField')(null=True, blank=True)),
+            ('year', self.gf('django.db.models.fields.CharField')(max_length=100, null=True, blank=True)),
+            ('perccontribution_agr', self.gf('django.db.models.fields.CharField')(max_length=100, null=True, blank=True)),
+            ('agrilabor_force', self.gf('django.db.models.fields.CharField')(max_length=100, null=True, blank=True)),
+            ('_perc_agriforce', self.gf('django.db.models.fields.CharField')(max_length=100, null=True, blank=True)),
+            ('perc_plant', self.gf('django.db.models.fields.CharField')(max_length=100, null=True, blank=True)),
+            ('totalvalue_imports', self.gf('django.db.models.fields.TextField')(null=True, blank=True)),
+            ('totalvalue_exports', self.gf('django.db.models.fields.TextField')(null=True, blank=True)),
+            ('percentage_export', self.gf('django.db.models.fields.TextField')(null=True, blank=True)),
+            ('majortpartners_import', self.gf('django.db.models.fields.CharField')(max_length=250, null=True, blank=True)),
+            ('majortpartners_export', self.gf('django.db.models.fields.CharField')(max_length=250, null=True, blank=True)),
+            ('arrangements', self.gf('django.db.models.fields.TextField')(null=True, blank=True)),
+            ('negotiation', self.gf('django.db.models.fields.TextField')(null=True, blank=True)),
+            ('membership_in', self.gf('django.db.models.fields.TextField')(null=True, blank=True)),
+            ('regional_org', self.gf('django.db.models.fields.TextField')(null=True, blank=True)),
+            ('past_5_years', self.gf('django.db.models.fields.TextField')(null=True, blank=True)),
+            ('keywords', self.gf('mezzanine.generic.fields.KeywordsField')(object_id_field='object_pk', to=orm['generic.AssignedKeyword'], frozen_by_south=True)),
+        ))
+        db.send_create_signal(u'ippc', ['PhytosanitaryTradeRel'])
+
+        # Adding model 'Question'
+        db.create_table(u'ippc_question', (
+            (u'id', self.gf('django.db.models.fields.AutoField')(primary_key=True)),
+            ('question_title', self.gf('django.db.models.fields.CharField')(max_length=200)),
+            ('description', self.gf('django.db.models.fields.TextField')(null=True, blank=True)),
+            ('pub_date', self.gf('django.db.models.fields.DateTimeField')()),
+            ('user', self.gf('django.db.models.fields.related.ForeignKey')(to=orm['auth.User'])),
+        ))
+        db.send_create_signal(u'ippc', ['Question'])
+
+        # Adding model 'CropExportsRelate'
+        db.create_table(u'ippc_cropexportsrelate', (
+            (u'id', self.gf('django.db.models.fields.AutoField')(primary_key=True)),
+            ('content_type', self.gf('django.db.models.fields.related.ForeignKey')(to=orm['contenttypes.ContentType'])),
+            ('object_id', self.gf('django.db.models.fields.PositiveIntegerField')()),
+        ))
+        db.send_create_signal(u'ippc', ['CropExportsRelate'])
+
+        # Adding M2M table for field major_exports on 'CropExportsRelate'
+        m2m_table_name = db.shorten_name(u'ippc_cropexportsrelate_major_exports')
+        db.create_table(m2m_table_name, (
+            ('id', models.AutoField(verbose_name='ID', primary_key=True, auto_created=True)),
+            ('cropexportsrelate', models.ForeignKey(orm[u'ippc.cropexportsrelate'], null=False)),
+            ('crops', models.ForeignKey(orm[u'ippc.crops'], null=False))
+        ))
+        db.create_unique(m2m_table_name, ['cropexportsrelate_id', 'crops_id'])
+
+        # Adding model 'Answer'
+        db.create_table(u'ippc_answer', (
+            (u'id', self.gf('django.db.models.fields.AutoField')(primary_key=True)),
+            ('user', self.gf('django.db.models.fields.related.ForeignKey')(to=orm['auth.User'])),
+            ('question', self.gf('django.db.models.fields.related.ForeignKey')(to=orm['ippc.Question'])),
+            ('answertext', self.gf('django.db.models.fields.TextField')(null=True, blank=True)),
+            ('bestanswer', self.gf('django.db.models.fields.BooleanField')(default=False)),
+        ))
+        db.send_create_signal(u'ippc', ['Answer'])
+
         # Adding model 'CommentFile'
         db.create_table(u'ippc_commentfile', (
             (u'id', self.gf('django.db.models.fields.AutoField')(primary_key=True)),
@@ -16,17 +116,132 @@ class Migration(SchemaMigration):
         ))
         db.send_create_signal(u'ippc', ['CommentFile'])
 
+        # Adding model 'Crops'
+        db.create_table(u'ippc_crops', (
+            (u'id', self.gf('django.db.models.fields.AutoField')(primary_key=True)),
+            ('cropname', self.gf('django.db.models.fields.CharField')(max_length=250)),
+        ))
+        db.send_create_signal(u'ippc', ['Crops'])
+
+        # Adding model 'CropGrownRelate'
+        db.create_table(u'ippc_cropgrownrelate', (
+            (u'id', self.gf('django.db.models.fields.AutoField')(primary_key=True)),
+            ('content_type', self.gf('django.db.models.fields.related.ForeignKey')(to=orm['contenttypes.ContentType'])),
+            ('object_id', self.gf('django.db.models.fields.PositiveIntegerField')()),
+        ))
+        db.send_create_signal(u'ippc', ['CropGrownRelate'])
+
+        # Adding M2M table for field crops_grown on 'CropGrownRelate'
+        m2m_table_name = db.shorten_name(u'ippc_cropgrownrelate_crops_grown')
+        db.create_table(m2m_table_name, (
+            ('id', models.AutoField(verbose_name='ID', primary_key=True, auto_created=True)),
+            ('cropgrownrelate', models.ForeignKey(orm[u'ippc.cropgrownrelate'], null=False)),
+            ('crops', models.ForeignKey(orm[u'ippc.crops'], null=False))
+        ))
+        db.create_unique(m2m_table_name, ['cropgrownrelate_id', 'crops_id'])
+
 
         # Changing field 'DraftProtocol.old_id'
         db.alter_column(u'ippc_draftprotocol', 'old_id', self.gf('django.db.models.fields.CharField')(max_length=50, null=True))
+        # Deleting field 'IppcUserProfile.expertize'
+        db.delete_column(u'ippc_ippcuserprofile', 'expertize')
+
+        # Adding field 'IppcUserProfile.expertise'
+        db.add_column(u'ippc_ippcuserprofile', 'expertise',
+                      self.gf('django.db.models.fields.TextField')(default='', null=True, blank=True),
+                      keep_default=False)
+
+        # Adding field 'IppcUserProfile.website'
+        db.add_column(u'ippc_ippcuserprofile', 'website',
+                      self.gf('django.db.models.fields.URLField')(max_length=200, null=True, blank=True),
+                      keep_default=False)
+
+        # Deleting field 'PreferredLanguages.status'
+        db.delete_column(u'ippc_preferredlanguages', 'status')
+
+        # Adding field 'PreferredLanguages.preferredlanguage'
+        db.add_column(u'ippc_preferredlanguages', 'preferredlanguage',
+                      self.gf('django.db.models.fields.CharField')(default='', max_length=500),
+                      keep_default=False)
+
+        # Adding M2M table for field groups on 'Publication'
+        m2m_table_name = db.shorten_name(u'ippc_publication_groups')
+        db.create_table(m2m_table_name, (
+            ('id', models.AutoField(verbose_name='ID', primary_key=True, auto_created=True)),
+            ('publication', models.ForeignKey(orm[u'ippc.publication'], null=False)),
+            ('group', models.ForeignKey(orm[u'auth.group'], null=False))
+        ))
+        db.create_unique(m2m_table_name, ['publication_id', 'group_id'])
+
+
+        # Changing field 'EmailUtilityMessage.emailto'
+        db.alter_column(u'ippc_emailutilitymessage', 'emailto', self.gf('django.db.models.fields.TextField')())
 
     def backwards(self, orm):
+        # Deleting model 'CropImportsRelate'
+        db.delete_table(u'ippc_cropimportsrelate')
+
+        # Removing M2M table for field major_imports on 'CropImportsRelate'
+        db.delete_table(db.shorten_name(u'ippc_cropimportsrelate_major_imports'))
+
+        # Deleting model 'AnswerVotes'
+        db.delete_table(u'ippc_answervotes')
+
+        # Deleting model 'PhytosanitaryTradeRel'
+        db.delete_table(u'ippc_phytosanitarytraderel')
+
+        # Deleting model 'Question'
+        db.delete_table(u'ippc_question')
+
+        # Deleting model 'CropExportsRelate'
+        db.delete_table(u'ippc_cropexportsrelate')
+
+        # Removing M2M table for field major_exports on 'CropExportsRelate'
+        db.delete_table(db.shorten_name(u'ippc_cropexportsrelate_major_exports'))
+
+        # Deleting model 'Answer'
+        db.delete_table(u'ippc_answer')
+
         # Deleting model 'CommentFile'
         db.delete_table(u'ippc_commentfile')
+
+        # Deleting model 'Crops'
+        db.delete_table(u'ippc_crops')
+
+        # Deleting model 'CropGrownRelate'
+        db.delete_table(u'ippc_cropgrownrelate')
+
+        # Removing M2M table for field crops_grown on 'CropGrownRelate'
+        db.delete_table(db.shorten_name(u'ippc_cropgrownrelate_crops_grown'))
 
 
         # Changing field 'DraftProtocol.old_id'
         db.alter_column(u'ippc_draftprotocol', 'old_id', self.gf('django.db.models.fields.CharField')(default='', max_length=50))
+        # Adding field 'IppcUserProfile.expertize'
+        db.add_column(u'ippc_ippcuserprofile', 'expertize',
+                      self.gf('django.db.models.fields.TextField')(default='', null=True, blank=True),
+                      keep_default=False)
+
+        # Deleting field 'IppcUserProfile.expertise'
+        db.delete_column(u'ippc_ippcuserprofile', 'expertise')
+
+        # Deleting field 'IppcUserProfile.website'
+        db.delete_column(u'ippc_ippcuserprofile', 'website')
+
+        # Adding field 'PreferredLanguages.status'
+        db.add_column(u'ippc_preferredlanguages', 'status',
+                      self.gf('django.db.models.fields.CharField')(default='', max_length=500),
+                      keep_default=False)
+
+        # Deleting field 'PreferredLanguages.preferredlanguage'
+        db.delete_column(u'ippc_preferredlanguages', 'preferredlanguage')
+
+        # Removing M2M table for field groups on 'Publication'
+        db.delete_table(db.shorten_name(u'ippc_publication_groups'))
+
+
+        # Changing field 'EmailUtilityMessage.emailto'
+        db.alter_column(u'ippc_emailutilitymessage', 'emailto', self.gf('django.db.models.fields.CharField')(max_length=200))
 
     models = {
         u'auth.group': {
@@ -155,6 +370,21 @@ class Migration(SchemaMigration):
             'rating_sum': ('django.db.models.fields.IntegerField', [], {'default': '0'}),
             'replied_to': ('django.db.models.fields.related.ForeignKey', [], {'related_name': "'comments'", 'null': 'True', 'to': u"orm['generic.ThreadedComment']"})
         },
+        u'ippc.answer': {
+            'Meta': {'object_name': 'Answer'},
+            'answertext': ('django.db.models.fields.TextField', [], {'null': 'True', 'blank': 'True'}),
+            'bestanswer': ('django.db.models.fields.BooleanField', [], {'default': 'False'}),
+            u'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
+            'question': ('django.db.models.fields.related.ForeignKey', [], {'to': u"orm['ippc.Question']"}),
+            'user': ('django.db.models.fields.related.ForeignKey', [], {'to': u"orm['auth.User']"})
+        },
+        u'ippc.answervotes': {
+            'Meta': {'object_name': 'AnswerVotes'},
+            'answer': ('django.db.models.fields.related.ForeignKey', [], {'to': u"orm['ippc.Answer']"}),
+            u'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
+            'up': ('django.db.models.fields.CharField', [], {'max_length': '50'}),
+            'user': ('django.db.models.fields.related.ForeignKey', [], {'to': u"orm['auth.User']"})
+        },
         u'ippc.cnpublication': {
             'Meta': {'object_name': 'CnPublication'},
             '_meta_title': ('django.db.models.fields.CharField', [], {'max_length': '500', 'null': 'True', 'blank': 'True'}),
@@ -270,6 +500,32 @@ class Migration(SchemaMigration):
             'name': ('django.db.models.fields.CharField', [], {'max_length': '50', 'unique': 'True', 'null': 'True', 'blank': 'True'}),
             u'page_ptr': ('django.db.models.fields.related.OneToOneField', [], {'to': u"orm['pages.Page']", 'unique': 'True', 'primary_key': 'True'}),
             'region': ('django.db.models.fields.IntegerField', [], {'default': 'None'})
+        },
+        u'ippc.cropexportsrelate': {
+            'Meta': {'object_name': 'CropExportsRelate'},
+            'content_type': ('django.db.models.fields.related.ForeignKey', [], {'to': u"orm['contenttypes.ContentType']"}),
+            u'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
+            'major_exports': ('django.db.models.fields.related.ManyToManyField', [], {'symmetrical': 'False', 'to': u"orm['ippc.Crops']", 'null': 'True', 'blank': 'True'}),
+            'object_id': ('django.db.models.fields.PositiveIntegerField', [], {})
+        },
+        u'ippc.cropgrownrelate': {
+            'Meta': {'object_name': 'CropGrownRelate'},
+            'content_type': ('django.db.models.fields.related.ForeignKey', [], {'to': u"orm['contenttypes.ContentType']"}),
+            'crops_grown': ('django.db.models.fields.related.ManyToManyField', [], {'symmetrical': 'False', 'to': u"orm['ippc.Crops']", 'null': 'True', 'blank': 'True'}),
+            u'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
+            'object_id': ('django.db.models.fields.PositiveIntegerField', [], {})
+        },
+        u'ippc.cropimportsrelate': {
+            'Meta': {'object_name': 'CropImportsRelate'},
+            'content_type': ('django.db.models.fields.related.ForeignKey', [], {'to': u"orm['contenttypes.ContentType']"}),
+            u'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
+            'major_imports': ('django.db.models.fields.related.ManyToManyField', [], {'symmetrical': 'False', 'to': u"orm['ippc.Crops']", 'null': 'True', 'blank': 'True'}),
+            'object_id': ('django.db.models.fields.PositiveIntegerField', [], {})
+        },
+        u'ippc.crops': {
+            'Meta': {'object_name': 'Crops'},
+            'cropname': ('django.db.models.fields.CharField', [], {'max_length': '250'}),
+            u'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'})
         },
         u'ippc.draftprotocol': {
             'Meta': {'object_name': 'DraftProtocol'},
@@ -696,6 +952,41 @@ class Migration(SchemaMigration):
             u'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
             'status': ('django.db.models.fields.CharField', [], {'max_length': '500'})
         },
+        u'ippc.phytosanitarytraderel': {
+            'Meta': {'object_name': 'PhytosanitaryTradeRel'},
+            '_meta_title': ('django.db.models.fields.CharField', [], {'max_length': '500', 'null': 'True', 'blank': 'True'}),
+            '_perc_agriforce': ('django.db.models.fields.CharField', [], {'max_length': '100', 'null': 'True', 'blank': 'True'}),
+            'agrilabor_force': ('django.db.models.fields.CharField', [], {'max_length': '100', 'null': 'True', 'blank': 'True'}),
+            'arrangements': ('django.db.models.fields.TextField', [], {'null': 'True', 'blank': 'True'}),
+            'author': ('django.db.models.fields.related.ForeignKey', [], {'related_name': "'phytosanitarytraderel_author'", 'to': u"orm['auth.User']"}),
+            'country': ('django.db.models.fields.related.ForeignKey', [], {'related_name': "'phytosanitarytraderel_country_page'", 'to': u"orm['ippc.CountryPage']"}),
+            'description': ('django.db.models.fields.TextField', [], {'blank': 'True'}),
+            'expiry_date': ('django.db.models.fields.DateTimeField', [], {'null': 'True', 'blank': 'True'}),
+            'gen_description': ('django.db.models.fields.BooleanField', [], {'default': 'True'}),
+            u'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
+            'in_sitemap': ('django.db.models.fields.BooleanField', [], {'default': 'True'}),
+            'keywords': ('mezzanine.generic.fields.KeywordsField', [], {'object_id_field': "'object_pk'", 'to': u"orm['generic.AssignedKeyword']", 'frozen_by_south': 'True'}),
+            'keywords_string': ('django.db.models.fields.CharField', [], {'max_length': '500', 'blank': 'True'}),
+            'majortpartners_export': ('django.db.models.fields.CharField', [], {'max_length': '250', 'null': 'True', 'blank': 'True'}),
+            'majortpartners_import': ('django.db.models.fields.CharField', [], {'max_length': '250', 'null': 'True', 'blank': 'True'}),
+            'membership_in': ('django.db.models.fields.TextField', [], {'null': 'True', 'blank': 'True'}),
+            'modify_date': ('django.db.models.fields.DateTimeField', [], {'null': 'True', 'blank': 'True'}),
+            'negotiation': ('django.db.models.fields.TextField', [], {'null': 'True', 'blank': 'True'}),
+            'past_5_years': ('django.db.models.fields.TextField', [], {'null': 'True', 'blank': 'True'}),
+            'perc_plant': ('django.db.models.fields.CharField', [], {'max_length': '100', 'null': 'True', 'blank': 'True'}),
+            'perccontribution_agr': ('django.db.models.fields.CharField', [], {'max_length': '100', 'null': 'True', 'blank': 'True'}),
+            'percentage_export': ('django.db.models.fields.TextField', [], {'null': 'True', 'blank': 'True'}),
+            'publish_date': ('django.db.models.fields.DateTimeField', [], {'null': 'True', 'blank': 'True'}),
+            'regional_org': ('django.db.models.fields.TextField', [], {'null': 'True', 'blank': 'True'}),
+            'short_url': ('django.db.models.fields.URLField', [], {'max_length': '200', 'null': 'True', 'blank': 'True'}),
+            'site': ('django.db.models.fields.related.ForeignKey', [], {'to': u"orm['sites.Site']"}),
+            'slug': ('django.db.models.fields.CharField', [], {'max_length': '2000', 'null': 'True', 'blank': 'True'}),
+            'status': ('django.db.models.fields.IntegerField', [], {'default': '2'}),
+            'title': ('django.db.models.fields.CharField', [], {'max_length': '500'}),
+            'totalvalue_exports': ('django.db.models.fields.TextField', [], {'null': 'True', 'blank': 'True'}),
+            'totalvalue_imports': ('django.db.models.fields.TextField', [], {'null': 'True', 'blank': 'True'}),
+            'year': ('django.db.models.fields.CharField', [], {'max_length': '100', 'null': 'True', 'blank': 'True'})
+        },
         u'ippc.poll': {
             'Meta': {'object_name': 'Poll'},
             'closing_date': ('django.db.models.fields.DateTimeField', [], {'null': 'True', 'blank': 'True'}),
@@ -770,6 +1061,14 @@ class Migration(SchemaMigration):
             u'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
             'publication': ('django.db.models.fields.related.ForeignKey', [], {'to': u"orm['ippc.Publication']"}),
             'url_for_more_information': ('django.db.models.fields.URLField', [], {'max_length': '200', 'null': 'True', 'blank': 'True'})
+        },
+        u'ippc.question': {
+            'Meta': {'object_name': 'Question'},
+            'description': ('django.db.models.fields.TextField', [], {'null': 'True', 'blank': 'True'}),
+            u'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
+            'pub_date': ('django.db.models.fields.DateTimeField', [], {}),
+            'question_title': ('django.db.models.fields.CharField', [], {'max_length': '200'}),
+            'user': ('django.db.models.fields.related.ForeignKey', [], {'to': u"orm['auth.User']"})
         },
         u'ippc.reportingobligation': {
             'Meta': {'object_name': 'ReportingObligation'},

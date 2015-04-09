@@ -17,6 +17,7 @@ PartnersWebsite,PartnersWebsiteUrl,\
 PartnersNews,PartnersNewsFile,PartnersNewsUrl, \
 EppoCode,IssueKeyword, CommodityKeyword,IssueKeywordsRelate,CommodityKeywordsRelate, ContactType, \
 IppcUserProfile,Question,Answer
+
 from django.forms.models import inlineformset_factory
 from django.forms.formsets import formset_factory
 from django.contrib.auth.models import User
@@ -81,6 +82,9 @@ class CommodityKeywordsRelateAdmin(admin.ModelAdmin):
     form = MyCommodityKeywordsRelateAdminForm
     save_on_top = True
 admin.site.register(CommodityKeywordsRelate, CommodityKeywordsRelateAdmin)   
+
+
+
 
 class PublicationFileInline(admin.TabularInline):
     model = PublicationFile
@@ -278,6 +282,7 @@ class EppoCodeAdmin(admin.ModelAdmin):
     list_filter = ('codename','code')
     search_fields = ('codename', 'code')
 admin.site.register(EppoCode, EppoCodeAdmin)
+
 
 class IssueKeywordAdmin(admin.ModelAdmin):
     save_on_top = True

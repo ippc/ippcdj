@@ -9,16 +9,1330 @@ class Migration(SchemaMigration):
 
     def forwards(self, orm):
         # Adding model 'PublicationLibrary'
-       
-        # Adding M2M table for field groups on 'Publication'
-        m2m_table_name = db.shorten_name(u'ippc_publication_groups')
+        db.create_table(u'ippc_publicationlibrary', (
+            (u'page_ptr', self.gf('django.db.models.fields.related.OneToOneField')(to=orm['pages.Page'], unique=True, primary_key=True)),
+            ('content', self.gf('mezzanine.core.fields.RichTextField')()),
+            ('old_id', self.gf('django.db.models.fields.CharField')(max_length=50, null=True, blank=True)),
+        ))
+        db.send_create_signal(u'ippc', ['PublicationLibrary'])
+
+        # Adding M2M table for field users on 'PublicationLibrary'
+        m2m_table_name = db.shorten_name(u'ippc_publicationlibrary_users')
         db.create_table(m2m_table_name, (
             ('id', models.AutoField(verbose_name='ID', primary_key=True, auto_created=True)),
-            ('publication', models.ForeignKey(orm[u'ippc.publication'], null=False)),
+            ('publicationlibrary', models.ForeignKey(orm[u'ippc.publicationlibrary'], null=False)),
+            ('user', models.ForeignKey(orm[u'auth.user'], null=False))
+        ))
+        db.create_unique(m2m_table_name, ['publicationlibrary_id', 'user_id'])
+
+        # Adding M2M table for field groups on 'PublicationLibrary'
+        m2m_table_name = db.shorten_name(u'ippc_publicationlibrary_groups')
+        db.create_table(m2m_table_name, (
+            ('id', models.AutoField(verbose_name='ID', primary_key=True, auto_created=True)),
+            ('publicationlibrary', models.ForeignKey(orm[u'ippc.publicationlibrary'], null=False)),
             ('group', models.ForeignKey(orm[u'auth.group'], null=False))
         ))
-        db.create_unique(m2m_table_name, ['publication_id', 'group_id'])
+        db.create_unique(m2m_table_name, ['publicationlibrary_id', 'group_id'])
 
+        # Adding model 'IssueKeyword'
+        db.create_table(u'ippc_issuekeyword', (
+            (u'id', self.gf('django.db.models.fields.AutoField')(primary_key=True)),
+            ('name', self.gf('django.db.models.fields.CharField')(max_length=500)),
+        ))
+        db.send_create_signal(u'ippc', ['IssueKeyword'])
+
+        # Adding model 'CommodityKeyword'
+        db.create_table(u'ippc_commoditykeyword', (
+            (u'id', self.gf('django.db.models.fields.AutoField')(primary_key=True)),
+            ('name', self.gf('django.db.models.fields.CharField')(max_length=500)),
+        ))
+        db.send_create_signal(u'ippc', ['CommodityKeyword'])
+
+        # Adding model 'IssueKeywordsRelate'
+        db.create_table(u'ippc_issuekeywordsrelate', (
+            (u'id', self.gf('django.db.models.fields.AutoField')(primary_key=True)),
+            ('content_type', self.gf('django.db.models.fields.related.ForeignKey')(to=orm['contenttypes.ContentType'])),
+            ('object_id', self.gf('django.db.models.fields.PositiveIntegerField')()),
+        ))
+        db.send_create_signal(u'ippc', ['IssueKeywordsRelate'])
+
+        # Adding M2M table for field issuename on 'IssueKeywordsRelate'
+        m2m_table_name = db.shorten_name(u'ippc_issuekeywordsrelate_issuename')
+        db.create_table(m2m_table_name, (
+            ('id', models.AutoField(verbose_name='ID', primary_key=True, auto_created=True)),
+            ('issuekeywordsrelate', models.ForeignKey(orm[u'ippc.issuekeywordsrelate'], null=False)),
+            ('issuekeyword', models.ForeignKey(orm[u'ippc.issuekeyword'], null=False))
+        ))
+        db.create_unique(m2m_table_name, ['issuekeywordsrelate_id', 'issuekeyword_id'])
+
+        # Adding model 'CommodityKeywordsRelate'
+        db.create_table(u'ippc_commoditykeywordsrelate', (
+            (u'id', self.gf('django.db.models.fields.AutoField')(primary_key=True)),
+            ('content_type', self.gf('django.db.models.fields.related.ForeignKey')(to=orm['contenttypes.ContentType'])),
+            ('object_id', self.gf('django.db.models.fields.PositiveIntegerField')()),
+        ))
+        db.send_create_signal(u'ippc', ['CommodityKeywordsRelate'])
+
+        # Adding M2M table for field commname on 'CommodityKeywordsRelate'
+        m2m_table_name = db.shorten_name(u'ippc_commoditykeywordsrelate_commname')
+        db.create_table(m2m_table_name, (
+            ('id', models.AutoField(verbose_name='ID', primary_key=True, auto_created=True)),
+            ('commoditykeywordsrelate', models.ForeignKey(orm[u'ippc.commoditykeywordsrelate'], null=False)),
+            ('commoditykeyword', models.ForeignKey(orm[u'ippc.commoditykeyword'], null=False))
+        ))
+        db.create_unique(m2m_table_name, ['commoditykeywordsrelate_id', 'commoditykeyword_id'])
+
+        # Adding model 'CountryPage'
+        db.create_table(u'ippc_countrypage', (
+            (u'page_ptr', self.gf('django.db.models.fields.related.OneToOneField')(to=orm['pages.Page'], unique=True, primary_key=True)),
+            ('iso', self.gf('django.db.models.fields.CharField')(max_length=2, unique=True, null=True, blank=True)),
+            ('iso3', self.gf('django.db.models.fields.CharField')(max_length=3, unique=True, null=True, blank=True)),
+            ('name', self.gf('django.db.models.fields.CharField')(max_length=50, unique=True, null=True, blank=True)),
+            ('country_slug', self.gf('django.db.models.fields.CharField')(max_length=100, unique=True, null=True, blank=True)),
+            ('contact_point', self.gf('django.db.models.fields.related.OneToOneField')(to=orm['auth.User'], unique=True, null=True, blank=True)),
+            ('cp_ncp_t_type', self.gf('django.db.models.fields.CharField')(default='N/A', max_length=3)),
+            ('region', self.gf('django.db.models.fields.IntegerField')(default=None)),
+            ('cn_flag', self.gf('django.db.models.fields.files.ImageField')(max_length=100, blank=True)),
+            ('cn_lat', self.gf('django.db.models.fields.CharField')(max_length=100, unique=True, null=True, blank=True)),
+            ('cn_long', self.gf('django.db.models.fields.CharField')(max_length=100, unique=True, null=True, blank=True)),
+            ('cn_map', self.gf('django.db.models.fields.CharField')(max_length=550)),
+        ))
+        db.send_create_signal(u'ippc', ['CountryPage'])
+
+        # Adding M2M table for field editors on 'CountryPage'
+        m2m_table_name = db.shorten_name(u'ippc_countrypage_editors')
+        db.create_table(m2m_table_name, (
+            ('id', models.AutoField(verbose_name='ID', primary_key=True, auto_created=True)),
+            ('countrypage', models.ForeignKey(orm[u'ippc.countrypage'], null=False)),
+            ('user', models.ForeignKey(orm[u'auth.user'], null=False))
+        ))
+        db.create_unique(m2m_table_name, ['countrypage_id', 'user_id'])
+
+        # Adding model 'PartnersPage'
+        db.create_table(u'ippc_partnerspage', (
+            (u'page_ptr', self.gf('django.db.models.fields.related.OneToOneField')(to=orm['pages.Page'], unique=True, primary_key=True)),
+            ('content', self.gf('mezzanine.core.fields.RichTextField')()),
+            ('name', self.gf('django.db.models.fields.CharField')(max_length=50, unique=True, null=True, blank=True)),
+            ('short_description', self.gf('django.db.models.fields.CharField')(max_length=550)),
+            ('partner_slug', self.gf('django.db.models.fields.CharField')(max_length=100, unique=True, null=True, blank=True)),
+            ('contact_point', self.gf('django.db.models.fields.related.OneToOneField')(to=orm['auth.User'], unique=True, null=True, blank=True)),
+        ))
+        db.send_create_signal(u'ippc', ['PartnersPage'])
+
+        # Adding M2M table for field editors on 'PartnersPage'
+        m2m_table_name = db.shorten_name(u'ippc_partnerspage_editors')
+        db.create_table(m2m_table_name, (
+            ('id', models.AutoField(verbose_name='ID', primary_key=True, auto_created=True)),
+            ('partnerspage', models.ForeignKey(orm[u'ippc.partnerspage'], null=False)),
+            ('user', models.ForeignKey(orm[u'auth.user'], null=False))
+        ))
+        db.create_unique(m2m_table_name, ['partnerspage_id', 'user_id'])
+
+        # Adding model 'NotificationMessageRelate'
+        db.create_table(u'ippc_notificationmessagerelate', (
+            (u'id', self.gf('django.db.models.fields.AutoField')(primary_key=True)),
+            ('content_type', self.gf('django.db.models.fields.related.ForeignKey')(to=orm['contenttypes.ContentType'])),
+            ('object_id', self.gf('django.db.models.fields.PositiveIntegerField')()),
+            ('notifysecretariat', self.gf('django.db.models.fields.BooleanField')(default=False)),
+            ('notify', self.gf('django.db.models.fields.BooleanField')(default=False)),
+        ))
+        db.send_create_signal(u'ippc', ['NotificationMessageRelate'])
+
+        # Adding M2M table for field countries on 'NotificationMessageRelate'
+        m2m_table_name = db.shorten_name(u'ippc_notificationmessagerelate_countries')
+        db.create_table(m2m_table_name, (
+            ('id', models.AutoField(verbose_name='ID', primary_key=True, auto_created=True)),
+            ('notificationmessagerelate', models.ForeignKey(orm[u'ippc.notificationmessagerelate'], null=False)),
+            ('countrypage', models.ForeignKey(orm[u'ippc.countrypage'], null=False))
+        ))
+        db.create_unique(m2m_table_name, ['notificationmessagerelate_id', 'countrypage_id'])
+
+        # Adding M2M table for field partners on 'NotificationMessageRelate'
+        m2m_table_name = db.shorten_name(u'ippc_notificationmessagerelate_partners')
+        db.create_table(m2m_table_name, (
+            ('id', models.AutoField(verbose_name='ID', primary_key=True, auto_created=True)),
+            ('notificationmessagerelate', models.ForeignKey(orm[u'ippc.notificationmessagerelate'], null=False)),
+            ('partnerspage', models.ForeignKey(orm[u'ippc.partnerspage'], null=False))
+        ))
+        db.create_unique(m2m_table_name, ['notificationmessagerelate_id', 'partnerspage_id'])
+
+        # Adding model 'Publication'
+        db.create_table(u'ippc_publication', (
+            (u'id', self.gf('django.db.models.fields.AutoField')(primary_key=True)),
+            ('_order', self.gf('django.db.models.fields.IntegerField')(null=True)),
+            ('library', self.gf('django.db.models.fields.related.ForeignKey')(related_name='publications', to=orm['ippc.PublicationLibrary'])),
+            ('title', self.gf('django.db.models.fields.CharField')(max_length=250, null=True, blank=True)),
+            ('file_en', self.gf('django.db.models.fields.files.FileField')(max_length=204, null=True, blank=True)),
+            ('file_es', self.gf('django.db.models.fields.files.FileField')(max_length=204, null=True, blank=True)),
+            ('file_fr', self.gf('django.db.models.fields.files.FileField')(max_length=204, null=True, blank=True)),
+            ('file_ru', self.gf('django.db.models.fields.files.FileField')(max_length=204, null=True, blank=True)),
+            ('file_ar', self.gf('django.db.models.fields.files.FileField')(max_length=204, null=True, blank=True)),
+            ('file_zh', self.gf('django.db.models.fields.files.FileField')(max_length=204, null=True, blank=True)),
+            ('slug', self.gf('django.db.models.fields.SlugField')(max_length=200, null=True, blank=True)),
+            ('status', self.gf('django.db.models.fields.IntegerField')(default=2)),
+            ('modify_date', self.gf('django.db.models.fields.DateTimeField')(auto_now=True, null=True, blank=True)),
+            ('agenda_number', self.gf('django.db.models.fields.CharField')(max_length=100, blank=True)),
+            ('document_number', self.gf('django.db.models.fields.CharField')(max_length=100, blank=True)),
+            ('publication_date', self.gf('django.db.models.fields.DateTimeField')(null=True, blank=True)),
+            ('short_description', self.gf('django.db.models.fields.TextField')(null=True, blank=True)),
+            ('contact_for_more_information', self.gf('django.db.models.fields.TextField')(null=True, blank=True)),
+            ('old_id', self.gf('django.db.models.fields.CharField')(max_length=50, null=True, blank=True)),
+        ))
+        db.send_create_signal(u'ippc', ['Publication'])
+
+        # Adding model 'PublicationFile'
+        db.create_table(u'ippc_publicationfile', (
+            (u'id', self.gf('django.db.models.fields.AutoField')(primary_key=True)),
+            ('publication', self.gf('django.db.models.fields.related.ForeignKey')(to=orm['ippc.Publication'])),
+            ('description', self.gf('django.db.models.fields.CharField')(max_length=255)),
+            ('file', self.gf('django.db.models.fields.files.FileField')(max_length=255, blank=True)),
+        ))
+        db.send_create_signal(u'ippc', ['PublicationFile'])
+
+        # Adding model 'PublicationUrl'
+        db.create_table(u'ippc_publicationurl', (
+            (u'id', self.gf('django.db.models.fields.AutoField')(primary_key=True)),
+            ('publication', self.gf('django.db.models.fields.related.ForeignKey')(to=orm['ippc.Publication'])),
+            ('url_for_more_information', self.gf('django.db.models.fields.URLField')(max_length=200, null=True, blank=True)),
+        ))
+        db.send_create_signal(u'ippc', ['PublicationUrl'])
+
+        # Adding model 'WorkAreaPage'
+        db.create_table(u'ippc_workareapage', (
+            (u'page_ptr', self.gf('django.db.models.fields.related.OneToOneField')(to=orm['pages.Page'], unique=True, primary_key=True)),
+            ('content', self.gf('mezzanine.core.fields.RichTextField')()),
+        ))
+        db.send_create_signal(u'ippc', ['WorkAreaPage'])
+
+        # Adding M2M table for field users on 'WorkAreaPage'
+        m2m_table_name = db.shorten_name(u'ippc_workareapage_users')
+        db.create_table(m2m_table_name, (
+            ('id', models.AutoField(verbose_name='ID', primary_key=True, auto_created=True)),
+            ('workareapage', models.ForeignKey(orm[u'ippc.workareapage'], null=False)),
+            ('user', models.ForeignKey(orm[u'auth.user'], null=False))
+        ))
+        db.create_unique(m2m_table_name, ['workareapage_id', 'user_id'])
+
+        # Adding M2M table for field groups on 'WorkAreaPage'
+        m2m_table_name = db.shorten_name(u'ippc_workareapage_groups')
+        db.create_table(m2m_table_name, (
+            ('id', models.AutoField(verbose_name='ID', primary_key=True, auto_created=True)),
+            ('workareapage', models.ForeignKey(orm[u'ippc.workareapage'], null=False)),
+            ('group', models.ForeignKey(orm[u'auth.group'], null=False))
+        ))
+        db.create_unique(m2m_table_name, ['workareapage_id', 'group_id'])
+
+        # Adding model 'PestStatus'
+        db.create_table(u'ippc_peststatus', (
+            (u'id', self.gf('django.db.models.fields.AutoField')(primary_key=True)),
+            ('status', self.gf('django.db.models.fields.CharField')(max_length=500)),
+        ))
+        db.send_create_signal(u'ippc', ['PestStatus'])
+
+        # Adding model 'PreferredLanguages'
+        db.create_table(u'ippc_preferredlanguages', (
+            (u'id', self.gf('django.db.models.fields.AutoField')(primary_key=True)),
+            ('status', self.gf('django.db.models.fields.CharField')(max_length=500)),
+        ))
+        db.send_create_signal(u'ippc', ['PreferredLanguages'])
+
+        # Adding model 'EppoCode'
+        db.create_table(u'ippc_eppocode', (
+            (u'id', self.gf('django.db.models.fields.AutoField')(primary_key=True)),
+            ('codename', self.gf('django.db.models.fields.CharField')(max_length=250)),
+            ('codedescr', self.gf('django.db.models.fields.CharField')(max_length=250)),
+            ('code', self.gf('django.db.models.fields.CharField')(max_length=100)),
+            ('codeparent', self.gf('django.db.models.fields.CharField')(max_length=100)),
+            ('lang', self.gf('django.db.models.fields.CharField')(max_length=100)),
+            ('preferred', self.gf('django.db.models.fields.CharField')(max_length=100)),
+            ('authority', self.gf('django.db.models.fields.CharField')(max_length=250)),
+            ('creationdate', self.gf('django.db.models.fields.DateTimeField')(default=datetime.datetime.now)),
+        ))
+        db.send_create_signal(u'ippc', ['EppoCode'])
+
+        # Adding model 'ContactType'
+        db.create_table(u'ippc_contacttype', (
+            (u'id', self.gf('django.db.models.fields.AutoField')(primary_key=True)),
+            ('contacttype', self.gf('django.db.models.fields.CharField')(max_length=500)),
+        ))
+        db.send_create_signal(u'ippc', ['ContactType'])
+
+        # Adding model 'IppcUserProfile'
+        db.create_table(u'ippc_ippcuserprofile', (
+            (u'id', self.gf('django.db.models.fields.AutoField')(primary_key=True)),
+            ('user', self.gf('django.db.models.fields.related.OneToOneField')(to=orm['auth.User'], unique=True)),
+            ('title', self.gf('django.db.models.fields.CharField')(max_length=100, null=True, blank=True)),
+            ('first_name', self.gf('django.db.models.fields.CharField')(max_length=30)),
+            ('last_name', self.gf('django.db.models.fields.CharField')(max_length=30)),
+            ('email_address_alt', self.gf('django.db.models.fields.EmailField')(default='', max_length=75, null=True, blank=True)),
+            ('gender', self.gf('django.db.models.fields.PositiveSmallIntegerField')(null=True, blank=True)),
+            ('profile_photo', self.gf('django.db.models.fields.files.FileField')(max_length=100, blank=True)),
+            ('bio', self.gf('django.db.models.fields.TextField')(default='', null=True, blank=True)),
+            ('expertize', self.gf('django.db.models.fields.TextField')(default='', null=True, blank=True)),
+            ('address1', self.gf('django.db.models.fields.CharField')(max_length=250, blank=True)),
+            ('address2', self.gf('django.db.models.fields.TextField')(default='', null=True, blank=True)),
+            ('city', self.gf('django.db.models.fields.CharField')(max_length=100, blank=True)),
+            ('state', self.gf('django.db.models.fields.CharField')(max_length=100, blank=True)),
+            ('zipcode', self.gf('django.db.models.fields.CharField')(max_length=20, blank=True)),
+            ('address_country', self.gf('django_countries.fields.CountryField')(max_length=2, null=True, blank=True)),
+            ('country', self.gf('django.db.models.fields.related.ForeignKey')(blank=True, related_name='user_country_page', null=True, to=orm['ippc.CountryPage'])),
+            ('partner', self.gf('django.db.models.fields.related.ForeignKey')(blank=True, related_name='user_partner_page', null=True, to=orm['ippc.PartnersPage'])),
+            ('phone', self.gf('django.db.models.fields.CharField')(max_length=80, blank=True)),
+            ('fax', self.gf('django.db.models.fields.CharField')(max_length=80, blank=True)),
+            ('mobile', self.gf('django.db.models.fields.CharField')(max_length=80, blank=True)),
+            ('date_account_created', self.gf('django.db.models.fields.DateTimeField')(default=datetime.datetime.now)),
+        ))
+        db.send_create_signal(u'ippc', ['IppcUserProfile'])
+
+        # Adding M2M table for field contact_type on 'IppcUserProfile'
+        m2m_table_name = db.shorten_name(u'ippc_ippcuserprofile_contact_type')
+        db.create_table(m2m_table_name, (
+            ('id', models.AutoField(verbose_name='ID', primary_key=True, auto_created=True)),
+            ('ippcuserprofile', models.ForeignKey(orm[u'ippc.ippcuserprofile'], null=False)),
+            ('contacttype', models.ForeignKey(orm[u'ippc.contacttype'], null=False))
+        ))
+        db.create_unique(m2m_table_name, ['ippcuserprofile_id', 'contacttype_id'])
+
+        # Adding M2M table for field preferredlanguage on 'IppcUserProfile'
+        m2m_table_name = db.shorten_name(u'ippc_ippcuserprofile_preferredlanguage')
+        db.create_table(m2m_table_name, (
+            ('id', models.AutoField(verbose_name='ID', primary_key=True, auto_created=True)),
+            ('ippcuserprofile', models.ForeignKey(orm[u'ippc.ippcuserprofile'], null=False)),
+            ('preferredlanguages', models.ForeignKey(orm[u'ippc.preferredlanguages'], null=False))
+        ))
+        db.create_unique(m2m_table_name, ['ippcuserprofile_id', 'preferredlanguages_id'])
+
+        # Adding model 'PestReport'
+        db.create_table(u'ippc_pestreport', (
+            (u'id', self.gf('django.db.models.fields.AutoField')(primary_key=True)),
+            ('keywords_string', self.gf('django.db.models.fields.CharField')(max_length=500, blank=True)),
+            ('site', self.gf('django.db.models.fields.related.ForeignKey')(to=orm['sites.Site'])),
+            ('title', self.gf('django.db.models.fields.CharField')(max_length=500)),
+            ('slug', self.gf('django.db.models.fields.CharField')(max_length=2000, null=True, blank=True)),
+            ('_meta_title', self.gf('django.db.models.fields.CharField')(max_length=500, null=True, blank=True)),
+            ('description', self.gf('django.db.models.fields.TextField')(blank=True)),
+            ('gen_description', self.gf('django.db.models.fields.BooleanField')(default=True)),
+            ('status', self.gf('django.db.models.fields.IntegerField')(default=2)),
+            ('publish_date', self.gf('django.db.models.fields.DateTimeField')(null=True, blank=True)),
+            ('expiry_date', self.gf('django.db.models.fields.DateTimeField')(null=True, blank=True)),
+            ('short_url', self.gf('django.db.models.fields.URLField')(max_length=200, null=True, blank=True)),
+            ('in_sitemap', self.gf('django.db.models.fields.BooleanField')(default=True)),
+            ('country', self.gf('django.db.models.fields.related.ForeignKey')(related_name='pest_report_country_page', to=orm['ippc.CountryPage'])),
+            ('author', self.gf('django.db.models.fields.related.ForeignKey')(related_name='pest_report_author', to=orm['auth.User'])),
+            ('modify_date', self.gf('django.db.models.fields.DateTimeField')(null=True, blank=True)),
+            ('summary', self.gf('django.db.models.fields.TextField')(null=True, blank=True)),
+            ('report_status', self.gf('django.db.models.fields.IntegerField')(default=3)),
+            ('report_number', self.gf('django.db.models.fields.CharField')(max_length=100, null=True, blank=True)),
+            ('pest_identity', self.gf('django.db.models.fields.related.ForeignKey')(to=orm['ippc.EppoCode'], null=True, blank=True)),
+            ('hosts', self.gf('django.db.models.fields.TextField')(null=True, blank=True)),
+            ('geographical_distribution', self.gf('django.db.models.fields.TextField')(null=True, blank=True)),
+            ('nature_of_danger', self.gf('django.db.models.fields.TextField')(null=True, blank=True)),
+            ('contact_for_more_information', self.gf('django.db.models.fields.TextField')(null=True, blank=True)),
+            ('old_id', self.gf('django.db.models.fields.CharField')(max_length=50)),
+            ('keywords', self.gf('mezzanine.generic.fields.KeywordsField')(object_id_field='object_pk', to=orm['generic.AssignedKeyword'], frozen_by_south=True)),
+        ))
+        db.send_create_signal(u'ippc', ['PestReport'])
+
+        # Adding M2M table for field pest_status on 'PestReport'
+        m2m_table_name = db.shorten_name(u'ippc_pestreport_pest_status')
+        db.create_table(m2m_table_name, (
+            ('id', models.AutoField(verbose_name='ID', primary_key=True, auto_created=True)),
+            ('pestreport', models.ForeignKey(orm[u'ippc.pestreport'], null=False)),
+            ('peststatus', models.ForeignKey(orm[u'ippc.peststatus'], null=False))
+        ))
+        db.create_unique(m2m_table_name, ['pestreport_id', 'peststatus_id'])
+
+        # Adding model 'PestReportFile'
+        db.create_table(u'ippc_pestreportfile', (
+            (u'id', self.gf('django.db.models.fields.AutoField')(primary_key=True)),
+            ('pestreport', self.gf('django.db.models.fields.related.ForeignKey')(to=orm['ippc.PestReport'])),
+            ('description', self.gf('django.db.models.fields.CharField')(max_length=255)),
+            ('file', self.gf('django.db.models.fields.files.FileField')(max_length=255, blank=True)),
+        ))
+        db.send_create_signal(u'ippc', ['PestReportFile'])
+
+        # Adding model 'PestReportUrl'
+        db.create_table(u'ippc_pestreporturl', (
+            (u'id', self.gf('django.db.models.fields.AutoField')(primary_key=True)),
+            ('pestreport', self.gf('django.db.models.fields.related.ForeignKey')(to=orm['ippc.PestReport'])),
+            ('url_for_more_information', self.gf('django.db.models.fields.URLField')(max_length=200, null=True, blank=True)),
+        ))
+        db.send_create_signal(u'ippc', ['PestReportUrl'])
+
+        # Adding model 'DraftProtocol'
+        db.create_table(u'ippc_draftprotocol', (
+            (u'id', self.gf('django.db.models.fields.AutoField')(primary_key=True)),
+            ('keywords_string', self.gf('django.db.models.fields.CharField')(max_length=500, blank=True)),
+            ('site', self.gf('django.db.models.fields.related.ForeignKey')(to=orm['sites.Site'])),
+            ('title', self.gf('django.db.models.fields.CharField')(max_length=500)),
+            ('slug', self.gf('django.db.models.fields.CharField')(max_length=2000, null=True, blank=True)),
+            ('_meta_title', self.gf('django.db.models.fields.CharField')(max_length=500, null=True, blank=True)),
+            ('description', self.gf('django.db.models.fields.TextField')(blank=True)),
+            ('gen_description', self.gf('django.db.models.fields.BooleanField')(default=True)),
+            ('status', self.gf('django.db.models.fields.IntegerField')(default=2)),
+            ('publish_date', self.gf('django.db.models.fields.DateTimeField')(null=True, blank=True)),
+            ('expiry_date', self.gf('django.db.models.fields.DateTimeField')(null=True, blank=True)),
+            ('short_url', self.gf('django.db.models.fields.URLField')(max_length=200, null=True, blank=True)),
+            ('in_sitemap', self.gf('django.db.models.fields.BooleanField')(default=True)),
+            ('closing_date', self.gf('django.db.models.fields.DateTimeField')(null=True, blank=True)),
+            ('summary', self.gf('django.db.models.fields.TextField')(null=True, blank=True)),
+            ('filetext', self.gf('django.db.models.fields.files.FileField')(max_length=100, blank=True)),
+            ('filefig', self.gf('django.db.models.fields.files.FileField')(max_length=100, blank=True)),
+            ('old_id', self.gf('django.db.models.fields.CharField')(max_length=50)),
+            ('keywords', self.gf('mezzanine.generic.fields.KeywordsField')(object_id_field='object_pk', to=orm['generic.AssignedKeyword'], frozen_by_south=True)),
+        ))
+        db.send_create_signal(u'ippc', ['DraftProtocol'])
+
+        # Adding M2M table for field users on 'DraftProtocol'
+        m2m_table_name = db.shorten_name(u'ippc_draftprotocol_users')
+        db.create_table(m2m_table_name, (
+            ('id', models.AutoField(verbose_name='ID', primary_key=True, auto_created=True)),
+            ('draftprotocol', models.ForeignKey(orm[u'ippc.draftprotocol'], null=False)),
+            ('user', models.ForeignKey(orm[u'auth.user'], null=False))
+        ))
+        db.create_unique(m2m_table_name, ['draftprotocol_id', 'user_id'])
+
+        # Adding M2M table for field groups on 'DraftProtocol'
+        m2m_table_name = db.shorten_name(u'ippc_draftprotocol_groups')
+        db.create_table(m2m_table_name, (
+            ('id', models.AutoField(verbose_name='ID', primary_key=True, auto_created=True)),
+            ('draftprotocol', models.ForeignKey(orm[u'ippc.draftprotocol'], null=False)),
+            ('group', models.ForeignKey(orm[u'auth.group'], null=False))
+        ))
+        db.create_unique(m2m_table_name, ['draftprotocol_id', 'group_id'])
+
+        # Adding model 'DraftProtocolFile'
+        db.create_table(u'ippc_draftprotocolfile', (
+            (u'id', self.gf('django.db.models.fields.AutoField')(primary_key=True)),
+            ('draftprotocol', self.gf('django.db.models.fields.related.ForeignKey')(to=orm['ippc.DraftProtocol'])),
+            ('description', self.gf('django.db.models.fields.CharField')(max_length=255)),
+            ('file', self.gf('django.db.models.fields.files.FileField')(max_length=255, blank=True)),
+        ))
+        db.send_create_signal(u'ippc', ['DraftProtocolFile'])
+
+        # Adding model 'DraftProtocolComments'
+        db.create_table(u'ippc_draftprotocolcomments', (
+            (u'id', self.gf('django.db.models.fields.AutoField')(primary_key=True)),
+            ('keywords_string', self.gf('django.db.models.fields.CharField')(max_length=500, blank=True)),
+            ('site', self.gf('django.db.models.fields.related.ForeignKey')(to=orm['sites.Site'])),
+            ('title', self.gf('django.db.models.fields.CharField')(max_length=500)),
+            ('slug', self.gf('django.db.models.fields.CharField')(max_length=2000, null=True, blank=True)),
+            ('_meta_title', self.gf('django.db.models.fields.CharField')(max_length=500, null=True, blank=True)),
+            ('description', self.gf('django.db.models.fields.TextField')(blank=True)),
+            ('gen_description', self.gf('django.db.models.fields.BooleanField')(default=True)),
+            ('status', self.gf('django.db.models.fields.IntegerField')(default=2)),
+            ('publish_date', self.gf('django.db.models.fields.DateTimeField')(null=True, blank=True)),
+            ('expiry_date', self.gf('django.db.models.fields.DateTimeField')(null=True, blank=True)),
+            ('short_url', self.gf('django.db.models.fields.URLField')(max_length=200, null=True, blank=True)),
+            ('in_sitemap', self.gf('django.db.models.fields.BooleanField')(default=True)),
+            ('author', self.gf('django.db.models.fields.related.ForeignKey')(related_name='draftprotocolcomments_author', to=orm['auth.User'])),
+            ('draftprotocol', self.gf('django.db.models.fields.related.ForeignKey')(to=orm['ippc.DraftProtocol'])),
+            ('expertise', self.gf('django.db.models.fields.TextField')(null=True, blank=True)),
+            ('institution', self.gf('django.db.models.fields.TextField')(null=True, blank=True)),
+            ('comment', self.gf('django.db.models.fields.TextField')(null=True, blank=True)),
+            ('filetext', self.gf('django.db.models.fields.files.FileField')(max_length=100, blank=True)),
+            ('filefig', self.gf('django.db.models.fields.files.FileField')(max_length=100, blank=True)),
+            ('keywords', self.gf('mezzanine.generic.fields.KeywordsField')(object_id_field='object_pk', to=orm['generic.AssignedKeyword'], frozen_by_south=True)),
+        ))
+        db.send_create_signal(u'ippc', ['DraftProtocolComments'])
+
+        # Adding model 'ReportingObligation'
+        db.create_table(u'ippc_reportingobligation', (
+            (u'id', self.gf('django.db.models.fields.AutoField')(primary_key=True)),
+            ('keywords_string', self.gf('django.db.models.fields.CharField')(max_length=500, blank=True)),
+            ('site', self.gf('django.db.models.fields.related.ForeignKey')(to=orm['sites.Site'])),
+            ('title', self.gf('django.db.models.fields.CharField')(max_length=500)),
+            ('slug', self.gf('django.db.models.fields.CharField')(max_length=2000, null=True, blank=True)),
+            ('_meta_title', self.gf('django.db.models.fields.CharField')(max_length=500, null=True, blank=True)),
+            ('description', self.gf('django.db.models.fields.TextField')(blank=True)),
+            ('gen_description', self.gf('django.db.models.fields.BooleanField')(default=True)),
+            ('status', self.gf('django.db.models.fields.IntegerField')(default=2)),
+            ('publish_date', self.gf('django.db.models.fields.DateTimeField')(null=True, blank=True)),
+            ('expiry_date', self.gf('django.db.models.fields.DateTimeField')(null=True, blank=True)),
+            ('short_url', self.gf('django.db.models.fields.URLField')(max_length=200, null=True, blank=True)),
+            ('in_sitemap', self.gf('django.db.models.fields.BooleanField')(default=True)),
+            ('country', self.gf('django.db.models.fields.related.ForeignKey')(related_name='reporting_obligation_country_page', to=orm['ippc.CountryPage'])),
+            ('author', self.gf('django.db.models.fields.related.ForeignKey')(related_name='reporting_obligation_author', to=orm['auth.User'])),
+            ('reporting_obligation_type', self.gf('django.db.models.fields.IntegerField')(default=3)),
+            ('publication_date', self.gf('django.db.models.fields.DateTimeField')(null=True, blank=True)),
+            ('short_description', self.gf('django.db.models.fields.TextField')(null=True, blank=True)),
+            ('contact_for_more_information', self.gf('django.db.models.fields.TextField')(null=True, blank=True)),
+            ('modify_date', self.gf('django.db.models.fields.DateTimeField')(null=True, blank=True)),
+            ('old_id', self.gf('django.db.models.fields.CharField')(max_length=50)),
+            ('keywords', self.gf('mezzanine.generic.fields.KeywordsField')(object_id_field='object_pk', to=orm['generic.AssignedKeyword'], frozen_by_south=True)),
+        ))
+        db.send_create_signal(u'ippc', ['ReportingObligation'])
+
+        # Adding model 'ReportingObligation_File'
+        db.create_table(u'ippc_reportingobligation_file', (
+            (u'id', self.gf('django.db.models.fields.AutoField')(primary_key=True)),
+            ('reportingobligation', self.gf('django.db.models.fields.related.ForeignKey')(to=orm['ippc.ReportingObligation'])),
+            ('description', self.gf('django.db.models.fields.CharField')(max_length=255)),
+            ('file', self.gf('django.db.models.fields.files.FileField')(max_length=255, blank=True)),
+        ))
+        db.send_create_signal(u'ippc', ['ReportingObligation_File'])
+
+        # Adding model 'ReportingObligationUrl'
+        db.create_table(u'ippc_reportingobligationurl', (
+            (u'id', self.gf('django.db.models.fields.AutoField')(primary_key=True)),
+            ('reportingobligation', self.gf('django.db.models.fields.related.ForeignKey')(to=orm['ippc.ReportingObligation'])),
+            ('url_for_more_information', self.gf('django.db.models.fields.URLField')(max_length=500, null=True, blank=True)),
+        ))
+        db.send_create_signal(u'ippc', ['ReportingObligationUrl'])
+
+        # Adding model 'CnPublication'
+        db.create_table(u'ippc_cnpublication', (
+            (u'id', self.gf('django.db.models.fields.AutoField')(primary_key=True)),
+            ('keywords_string', self.gf('django.db.models.fields.CharField')(max_length=500, blank=True)),
+            ('site', self.gf('django.db.models.fields.related.ForeignKey')(to=orm['sites.Site'])),
+            ('title', self.gf('django.db.models.fields.CharField')(max_length=500)),
+            ('slug', self.gf('django.db.models.fields.CharField')(max_length=2000, null=True, blank=True)),
+            ('_meta_title', self.gf('django.db.models.fields.CharField')(max_length=500, null=True, blank=True)),
+            ('description', self.gf('django.db.models.fields.TextField')(blank=True)),
+            ('gen_description', self.gf('django.db.models.fields.BooleanField')(default=True)),
+            ('status', self.gf('django.db.models.fields.IntegerField')(default=2)),
+            ('publish_date', self.gf('django.db.models.fields.DateTimeField')(null=True, blank=True)),
+            ('expiry_date', self.gf('django.db.models.fields.DateTimeField')(null=True, blank=True)),
+            ('short_url', self.gf('django.db.models.fields.URLField')(max_length=200, null=True, blank=True)),
+            ('in_sitemap', self.gf('django.db.models.fields.BooleanField')(default=True)),
+            ('country', self.gf('django.db.models.fields.related.ForeignKey')(related_name='cnpublication_country_page', to=orm['ippc.CountryPage'])),
+            ('author', self.gf('django.db.models.fields.related.ForeignKey')(related_name='cnpublicatio_author', to=orm['auth.User'])),
+            ('publication_date', self.gf('django.db.models.fields.DateTimeField')(null=True, blank=True)),
+            ('agenda_number', self.gf('django.db.models.fields.CharField')(max_length=100, blank=True)),
+            ('document_number', self.gf('django.db.models.fields.CharField')(max_length=100, blank=True)),
+            ('short_description', self.gf('django.db.models.fields.TextField')(null=True, blank=True)),
+            ('contact_for_more_information', self.gf('django.db.models.fields.TextField')(null=True, blank=True)),
+            ('modify_date', self.gf('django.db.models.fields.DateTimeField')(null=True, blank=True)),
+            ('old_id', self.gf('django.db.models.fields.CharField')(max_length=50)),
+            ('keywords', self.gf('mezzanine.generic.fields.KeywordsField')(object_id_field='object_pk', to=orm['generic.AssignedKeyword'], frozen_by_south=True)),
+        ))
+        db.send_create_signal(u'ippc', ['CnPublication'])
+
+        # Adding model 'CnPublicationFile'
+        db.create_table(u'ippc_cnpublicationfile', (
+            (u'id', self.gf('django.db.models.fields.AutoField')(primary_key=True)),
+            ('cnpublication', self.gf('django.db.models.fields.related.ForeignKey')(to=orm['ippc.CnPublication'])),
+            ('description', self.gf('django.db.models.fields.CharField')(max_length=255)),
+            ('file', self.gf('django.db.models.fields.files.FileField')(max_length=255, blank=True)),
+        ))
+        db.send_create_signal(u'ippc', ['CnPublicationFile'])
+
+        # Adding model 'CnPublicationUrl'
+        db.create_table(u'ippc_cnpublicationurl', (
+            (u'id', self.gf('django.db.models.fields.AutoField')(primary_key=True)),
+            ('cnpublication', self.gf('django.db.models.fields.related.ForeignKey')(to=orm['ippc.CnPublication'])),
+            ('url_for_more_information', self.gf('django.db.models.fields.URLField')(max_length=500, null=True, blank=True)),
+        ))
+        db.send_create_signal(u'ippc', ['CnPublicationUrl'])
+
+        # Adding model 'PartnersPublication'
+        db.create_table(u'ippc_partnerspublication', (
+            (u'id', self.gf('django.db.models.fields.AutoField')(primary_key=True)),
+            ('keywords_string', self.gf('django.db.models.fields.CharField')(max_length=500, blank=True)),
+            ('site', self.gf('django.db.models.fields.related.ForeignKey')(to=orm['sites.Site'])),
+            ('title', self.gf('django.db.models.fields.CharField')(max_length=500)),
+            ('slug', self.gf('django.db.models.fields.CharField')(max_length=2000, null=True, blank=True)),
+            ('_meta_title', self.gf('django.db.models.fields.CharField')(max_length=500, null=True, blank=True)),
+            ('description', self.gf('django.db.models.fields.TextField')(blank=True)),
+            ('gen_description', self.gf('django.db.models.fields.BooleanField')(default=True)),
+            ('status', self.gf('django.db.models.fields.IntegerField')(default=2)),
+            ('publish_date', self.gf('django.db.models.fields.DateTimeField')(null=True, blank=True)),
+            ('expiry_date', self.gf('django.db.models.fields.DateTimeField')(null=True, blank=True)),
+            ('short_url', self.gf('django.db.models.fields.URLField')(max_length=200, null=True, blank=True)),
+            ('in_sitemap', self.gf('django.db.models.fields.BooleanField')(default=True)),
+            ('partners', self.gf('django.db.models.fields.related.ForeignKey')(related_name='partnerspublication_country_page', to=orm['ippc.PartnersPage'])),
+            ('author', self.gf('django.db.models.fields.related.ForeignKey')(related_name='partnerspublication_author', to=orm['auth.User'])),
+            ('publication_date', self.gf('django.db.models.fields.DateTimeField')(null=True, blank=True)),
+            ('agenda_number', self.gf('django.db.models.fields.CharField')(max_length=100, blank=True)),
+            ('document_number', self.gf('django.db.models.fields.CharField')(max_length=100, blank=True)),
+            ('short_description', self.gf('django.db.models.fields.TextField')(null=True, blank=True)),
+            ('contact_for_more_information', self.gf('django.db.models.fields.TextField')(null=True, blank=True)),
+            ('modify_date', self.gf('django.db.models.fields.DateTimeField')(null=True, blank=True)),
+            ('old_id', self.gf('django.db.models.fields.CharField')(max_length=50)),
+            ('keywords', self.gf('mezzanine.generic.fields.KeywordsField')(object_id_field='object_pk', to=orm['generic.AssignedKeyword'], frozen_by_south=True)),
+        ))
+        db.send_create_signal(u'ippc', ['PartnersPublication'])
+
+        # Adding model 'PartnersPublicationFile'
+        db.create_table(u'ippc_partnerspublicationfile', (
+            (u'id', self.gf('django.db.models.fields.AutoField')(primary_key=True)),
+            ('partnerspublication', self.gf('django.db.models.fields.related.ForeignKey')(to=orm['ippc.PartnersPublication'])),
+            ('description', self.gf('django.db.models.fields.CharField')(max_length=255)),
+            ('file', self.gf('django.db.models.fields.files.FileField')(max_length=255, blank=True)),
+        ))
+        db.send_create_signal(u'ippc', ['PartnersPublicationFile'])
+
+        # Adding model 'PartnersPublicationUrl'
+        db.create_table(u'ippc_partnerspublicationurl', (
+            (u'id', self.gf('django.db.models.fields.AutoField')(primary_key=True)),
+            ('partnerspublication', self.gf('django.db.models.fields.related.ForeignKey')(to=orm['ippc.PartnersPublication'])),
+            ('url_for_more_information', self.gf('django.db.models.fields.URLField')(max_length=500, null=True, blank=True)),
+        ))
+        db.send_create_signal(u'ippc', ['PartnersPublicationUrl'])
+
+        # Adding model 'EventReporting'
+        db.create_table(u'ippc_eventreporting', (
+            (u'id', self.gf('django.db.models.fields.AutoField')(primary_key=True)),
+            ('keywords_string', self.gf('django.db.models.fields.CharField')(max_length=500, blank=True)),
+            ('site', self.gf('django.db.models.fields.related.ForeignKey')(to=orm['sites.Site'])),
+            ('title', self.gf('django.db.models.fields.CharField')(max_length=500)),
+            ('slug', self.gf('django.db.models.fields.CharField')(max_length=2000, null=True, blank=True)),
+            ('_meta_title', self.gf('django.db.models.fields.CharField')(max_length=500, null=True, blank=True)),
+            ('description', self.gf('django.db.models.fields.TextField')(blank=True)),
+            ('gen_description', self.gf('django.db.models.fields.BooleanField')(default=True)),
+            ('status', self.gf('django.db.models.fields.IntegerField')(default=2)),
+            ('publish_date', self.gf('django.db.models.fields.DateTimeField')(null=True, blank=True)),
+            ('expiry_date', self.gf('django.db.models.fields.DateTimeField')(null=True, blank=True)),
+            ('short_url', self.gf('django.db.models.fields.URLField')(max_length=200, null=True, blank=True)),
+            ('in_sitemap', self.gf('django.db.models.fields.BooleanField')(default=True)),
+            ('country', self.gf('django.db.models.fields.related.ForeignKey')(related_name='event_reporting_country_page', to=orm['ippc.CountryPage'])),
+            ('author', self.gf('django.db.models.fields.related.ForeignKey')(related_name='event__reporting_author', to=orm['auth.User'])),
+            ('event_rep_type', self.gf('django.db.models.fields.IntegerField')(default=1)),
+            ('publication_date', self.gf('django.db.models.fields.DateTimeField')(null=True, blank=True)),
+            ('short_description', self.gf('django.db.models.fields.TextField')(null=True, blank=True)),
+            ('contact_for_more_information', self.gf('django.db.models.fields.TextField')(null=True, blank=True)),
+            ('modify_date', self.gf('django.db.models.fields.DateTimeField')(null=True, blank=True)),
+            ('old_id', self.gf('django.db.models.fields.CharField')(max_length=50)),
+            ('keywords', self.gf('mezzanine.generic.fields.KeywordsField')(object_id_field='object_pk', to=orm['generic.AssignedKeyword'], frozen_by_south=True)),
+        ))
+        db.send_create_signal(u'ippc', ['EventReporting'])
+
+        # Adding model 'EventreportingFile'
+        db.create_table(u'ippc_eventreportingfile', (
+            (u'id', self.gf('django.db.models.fields.AutoField')(primary_key=True)),
+            ('eventreporting', self.gf('django.db.models.fields.related.ForeignKey')(to=orm['ippc.EventReporting'])),
+            ('description', self.gf('django.db.models.fields.CharField')(max_length=255)),
+            ('file', self.gf('django.db.models.fields.files.FileField')(max_length=255, blank=True)),
+        ))
+        db.send_create_signal(u'ippc', ['EventreportingFile'])
+
+        # Adding model 'EventreportingUrl'
+        db.create_table(u'ippc_eventreportingurl', (
+            (u'id', self.gf('django.db.models.fields.AutoField')(primary_key=True)),
+            ('eventreporting', self.gf('django.db.models.fields.related.ForeignKey')(to=orm['ippc.EventReporting'])),
+            ('url_for_more_information', self.gf('django.db.models.fields.URLField')(max_length=500, null=True, blank=True)),
+        ))
+        db.send_create_signal(u'ippc', ['EventreportingUrl'])
+
+        # Adding model 'Website'
+        db.create_table(u'ippc_website', (
+            (u'id', self.gf('django.db.models.fields.AutoField')(primary_key=True)),
+            ('keywords_string', self.gf('django.db.models.fields.CharField')(max_length=500, blank=True)),
+            ('site', self.gf('django.db.models.fields.related.ForeignKey')(to=orm['sites.Site'])),
+            ('title', self.gf('django.db.models.fields.CharField')(max_length=500)),
+            ('slug', self.gf('django.db.models.fields.CharField')(max_length=2000, null=True, blank=True)),
+            ('_meta_title', self.gf('django.db.models.fields.CharField')(max_length=500, null=True, blank=True)),
+            ('description', self.gf('django.db.models.fields.TextField')(blank=True)),
+            ('gen_description', self.gf('django.db.models.fields.BooleanField')(default=True)),
+            ('status', self.gf('django.db.models.fields.IntegerField')(default=2)),
+            ('publish_date', self.gf('django.db.models.fields.DateTimeField')(null=True, blank=True)),
+            ('expiry_date', self.gf('django.db.models.fields.DateTimeField')(null=True, blank=True)),
+            ('short_url', self.gf('django.db.models.fields.URLField')(max_length=200, null=True, blank=True)),
+            ('in_sitemap', self.gf('django.db.models.fields.BooleanField')(default=True)),
+            ('country', self.gf('django.db.models.fields.related.ForeignKey')(related_name='website_country_page', to=orm['ippc.CountryPage'])),
+            ('author', self.gf('django.db.models.fields.related.ForeignKey')(related_name='website__reporting_author', to=orm['auth.User'])),
+            ('web_type', self.gf('django.db.models.fields.IntegerField')(default=None)),
+            ('short_description', self.gf('django.db.models.fields.TextField')(null=True, blank=True)),
+            ('contact_for_more_information', self.gf('django.db.models.fields.TextField')(null=True, blank=True)),
+            ('modify_date', self.gf('django.db.models.fields.DateTimeField')(null=True, blank=True)),
+            ('old_id', self.gf('django.db.models.fields.CharField')(max_length=50)),
+            ('keywords', self.gf('mezzanine.generic.fields.KeywordsField')(object_id_field='object_pk', to=orm['generic.AssignedKeyword'], frozen_by_south=True)),
+        ))
+        db.send_create_signal(u'ippc', ['Website'])
+
+        # Adding model 'WebsiteUrl'
+        db.create_table(u'ippc_websiteurl', (
+            (u'id', self.gf('django.db.models.fields.AutoField')(primary_key=True)),
+            ('website', self.gf('django.db.models.fields.related.ForeignKey')(to=orm['ippc.Website'])),
+            ('url_for_more_information', self.gf('django.db.models.fields.URLField')(max_length=500, null=True, blank=True)),
+        ))
+        db.send_create_signal(u'ippc', ['WebsiteUrl'])
+
+        # Adding model 'PartnersWebsite'
+        db.create_table(u'ippc_partnerswebsite', (
+            (u'id', self.gf('django.db.models.fields.AutoField')(primary_key=True)),
+            ('keywords_string', self.gf('django.db.models.fields.CharField')(max_length=500, blank=True)),
+            ('site', self.gf('django.db.models.fields.related.ForeignKey')(to=orm['sites.Site'])),
+            ('title', self.gf('django.db.models.fields.CharField')(max_length=500)),
+            ('slug', self.gf('django.db.models.fields.CharField')(max_length=2000, null=True, blank=True)),
+            ('_meta_title', self.gf('django.db.models.fields.CharField')(max_length=500, null=True, blank=True)),
+            ('description', self.gf('django.db.models.fields.TextField')(blank=True)),
+            ('gen_description', self.gf('django.db.models.fields.BooleanField')(default=True)),
+            ('status', self.gf('django.db.models.fields.IntegerField')(default=2)),
+            ('publish_date', self.gf('django.db.models.fields.DateTimeField')(null=True, blank=True)),
+            ('expiry_date', self.gf('django.db.models.fields.DateTimeField')(null=True, blank=True)),
+            ('short_url', self.gf('django.db.models.fields.URLField')(max_length=200, null=True, blank=True)),
+            ('in_sitemap', self.gf('django.db.models.fields.BooleanField')(default=True)),
+            ('partners', self.gf('django.db.models.fields.related.ForeignKey')(related_name='partnerswebsite_partner_page', to=orm['ippc.PartnersPage'])),
+            ('author', self.gf('django.db.models.fields.related.ForeignKey')(related_name='partnerswebsite__reporting_author', to=orm['auth.User'])),
+            ('web_type', self.gf('django.db.models.fields.IntegerField')(default=None)),
+            ('short_description', self.gf('django.db.models.fields.TextField')(null=True, blank=True)),
+            ('contact_for_more_information', self.gf('django.db.models.fields.TextField')(null=True, blank=True)),
+            ('modify_date', self.gf('django.db.models.fields.DateTimeField')(null=True, blank=True)),
+            ('old_id', self.gf('django.db.models.fields.CharField')(max_length=50)),
+            ('keywords', self.gf('mezzanine.generic.fields.KeywordsField')(object_id_field='object_pk', to=orm['generic.AssignedKeyword'], frozen_by_south=True)),
+        ))
+        db.send_create_signal(u'ippc', ['PartnersWebsite'])
+
+        # Adding model 'PartnersWebsiteUrl'
+        db.create_table(u'ippc_partnerswebsiteurl', (
+            (u'id', self.gf('django.db.models.fields.AutoField')(primary_key=True)),
+            ('partnerswebsite', self.gf('django.db.models.fields.related.ForeignKey')(to=orm['ippc.PartnersWebsite'])),
+            ('url_for_more_information', self.gf('django.db.models.fields.URLField')(max_length=500, null=True, blank=True)),
+        ))
+        db.send_create_signal(u'ippc', ['PartnersWebsiteUrl'])
+
+        # Adding model 'PestFreeArea'
+        db.create_table(u'ippc_pestfreearea', (
+            (u'id', self.gf('django.db.models.fields.AutoField')(primary_key=True)),
+            ('keywords_string', self.gf('django.db.models.fields.CharField')(max_length=500, blank=True)),
+            ('site', self.gf('django.db.models.fields.related.ForeignKey')(to=orm['sites.Site'])),
+            ('title', self.gf('django.db.models.fields.CharField')(max_length=500)),
+            ('slug', self.gf('django.db.models.fields.CharField')(max_length=2000, null=True, blank=True)),
+            ('_meta_title', self.gf('django.db.models.fields.CharField')(max_length=500, null=True, blank=True)),
+            ('description', self.gf('django.db.models.fields.TextField')(blank=True)),
+            ('gen_description', self.gf('django.db.models.fields.BooleanField')(default=True)),
+            ('status', self.gf('django.db.models.fields.IntegerField')(default=2)),
+            ('publish_date', self.gf('django.db.models.fields.DateTimeField')(null=True, blank=True)),
+            ('expiry_date', self.gf('django.db.models.fields.DateTimeField')(null=True, blank=True)),
+            ('short_url', self.gf('django.db.models.fields.URLField')(max_length=200, null=True, blank=True)),
+            ('in_sitemap', self.gf('django.db.models.fields.BooleanField')(default=True)),
+            ('country', self.gf('django.db.models.fields.related.ForeignKey')(related_name='pestfreearea_country_page', to=orm['ippc.CountryPage'])),
+            ('author', self.gf('django.db.models.fields.related.ForeignKey')(related_name='pestfreearea_author', to=orm['auth.User'])),
+            ('short_description', self.gf('django.db.models.fields.TextField')(null=True, blank=True)),
+            ('publication_date', self.gf('django.db.models.fields.DateTimeField')(null=True, blank=True)),
+            ('pest_under_consideration', self.gf('django.db.models.fields.TextField')(null=True, blank=True)),
+            ('pfa_type', self.gf('django.db.models.fields.IntegerField')(default=None)),
+            ('contact_for_more_information', self.gf('django.db.models.fields.TextField')(null=True, blank=True)),
+            ('modify_date', self.gf('django.db.models.fields.DateTimeField')(null=True, blank=True)),
+            ('old_id', self.gf('django.db.models.fields.CharField')(max_length=50)),
+            ('keywords', self.gf('mezzanine.generic.fields.KeywordsField')(object_id_field='object_pk', to=orm['generic.AssignedKeyword'], frozen_by_south=True)),
+        ))
+        db.send_create_signal(u'ippc', ['PestFreeArea'])
+
+        # Adding model 'PestFreeAreaFile'
+        db.create_table(u'ippc_pestfreeareafile', (
+            (u'id', self.gf('django.db.models.fields.AutoField')(primary_key=True)),
+            ('pfa', self.gf('django.db.models.fields.related.ForeignKey')(to=orm['ippc.PestFreeArea'])),
+            ('description', self.gf('django.db.models.fields.CharField')(max_length=255)),
+            ('file', self.gf('django.db.models.fields.files.FileField')(max_length=255, blank=True)),
+        ))
+        db.send_create_signal(u'ippc', ['PestFreeAreaFile'])
+
+        # Adding model 'PestFreeAreaUrl'
+        db.create_table(u'ippc_pestfreeareaurl', (
+            (u'id', self.gf('django.db.models.fields.AutoField')(primary_key=True)),
+            ('pfa', self.gf('django.db.models.fields.related.ForeignKey')(to=orm['ippc.PestFreeArea'])),
+            ('url_for_more_information', self.gf('django.db.models.fields.URLField')(max_length=500, null=True, blank=True)),
+        ))
+        db.send_create_signal(u'ippc', ['PestFreeAreaUrl'])
+
+        # Adding model 'ImplementationISPMVersion'
+        db.create_table(u'ippc_implementationispmversion', (
+            (u'id', self.gf('django.db.models.fields.AutoField')(primary_key=True)),
+            ('version', self.gf('django.db.models.fields.CharField')(max_length=4)),
+        ))
+        db.send_create_signal(u'ippc', ['ImplementationISPMVersion'])
+
+        # Adding model 'ImplementationISPM'
+        db.create_table(u'ippc_implementationispm', (
+            (u'id', self.gf('django.db.models.fields.AutoField')(primary_key=True)),
+            ('keywords_string', self.gf('django.db.models.fields.CharField')(max_length=500, blank=True)),
+            ('site', self.gf('django.db.models.fields.related.ForeignKey')(to=orm['sites.Site'])),
+            ('title', self.gf('django.db.models.fields.CharField')(max_length=500)),
+            ('slug', self.gf('django.db.models.fields.CharField')(max_length=2000, null=True, blank=True)),
+            ('_meta_title', self.gf('django.db.models.fields.CharField')(max_length=500, null=True, blank=True)),
+            ('description', self.gf('django.db.models.fields.TextField')(blank=True)),
+            ('gen_description', self.gf('django.db.models.fields.BooleanField')(default=True)),
+            ('status', self.gf('django.db.models.fields.IntegerField')(default=2)),
+            ('publish_date', self.gf('django.db.models.fields.DateTimeField')(null=True, blank=True)),
+            ('expiry_date', self.gf('django.db.models.fields.DateTimeField')(null=True, blank=True)),
+            ('short_url', self.gf('django.db.models.fields.URLField')(max_length=200, null=True, blank=True)),
+            ('in_sitemap', self.gf('django.db.models.fields.BooleanField')(default=True)),
+            ('country', self.gf('django.db.models.fields.related.ForeignKey')(related_name='implementationispm_country_page', to=orm['ippc.CountryPage'])),
+            ('author', self.gf('django.db.models.fields.related.ForeignKey')(related_name='implementationispm_author', to=orm['auth.User'])),
+            ('publication_date', self.gf('django.db.models.fields.DateTimeField')(null=True, blank=True)),
+            ('implementimport_type', self.gf('django.db.models.fields.IntegerField')(default=None)),
+            ('implementexport_type', self.gf('django.db.models.fields.IntegerField')(default=None)),
+            ('mark_registered_type', self.gf('django.db.models.fields.IntegerField')(default=None)),
+            ('image', self.gf('django.db.models.fields.files.ImageField')(max_length=100, blank=True)),
+            ('short_description', self.gf('django.db.models.fields.TextField')(null=True, blank=True)),
+            ('contact_for_more_information', self.gf('django.db.models.fields.TextField')(null=True, blank=True)),
+            ('modify_date', self.gf('django.db.models.fields.DateTimeField')(null=True, blank=True)),
+            ('old_id', self.gf('django.db.models.fields.CharField')(max_length=50)),
+            ('keywords', self.gf('mezzanine.generic.fields.KeywordsField')(object_id_field='object_pk', to=orm['generic.AssignedKeyword'], frozen_by_south=True)),
+        ))
+        db.send_create_signal(u'ippc', ['ImplementationISPM'])
+
+        # Adding M2M table for field implementimport_version on 'ImplementationISPM'
+        m2m_table_name = db.shorten_name(u'ippc_implementationispm_implementimport_version')
+        db.create_table(m2m_table_name, (
+            ('id', models.AutoField(verbose_name='ID', primary_key=True, auto_created=True)),
+            ('implementationispm', models.ForeignKey(orm[u'ippc.implementationispm'], null=False)),
+            ('implementationispmversion', models.ForeignKey(orm[u'ippc.implementationispmversion'], null=False))
+        ))
+        db.create_unique(m2m_table_name, ['implementationispm_id', 'implementationispmversion_id'])
+
+        # Adding M2M table for field implementexport_version on 'ImplementationISPM'
+        m2m_table_name = db.shorten_name(u'ippc_implementationispm_implementexport_version')
+        db.create_table(m2m_table_name, (
+            ('id', models.AutoField(verbose_name='ID', primary_key=True, auto_created=True)),
+            ('implementationispm', models.ForeignKey(orm[u'ippc.implementationispm'], null=False)),
+            ('implementationispmversion', models.ForeignKey(orm[u'ippc.implementationispmversion'], null=False))
+        ))
+        db.create_unique(m2m_table_name, ['implementationispm_id', 'implementationispmversion_id'])
+
+        # Adding model 'ImplementationISPMFile'
+        db.create_table(u'ippc_implementationispmfile', (
+            (u'id', self.gf('django.db.models.fields.AutoField')(primary_key=True)),
+            ('implementationispm', self.gf('django.db.models.fields.related.ForeignKey')(to=orm['ippc.ImplementationISPM'])),
+            ('description', self.gf('django.db.models.fields.CharField')(max_length=255)),
+            ('file', self.gf('django.db.models.fields.files.FileField')(max_length=255, blank=True)),
+        ))
+        db.send_create_signal(u'ippc', ['ImplementationISPMFile'])
+
+        # Adding model 'ImplementationISPMUrl'
+        db.create_table(u'ippc_implementationispmurl', (
+            (u'id', self.gf('django.db.models.fields.AutoField')(primary_key=True)),
+            ('implementationispm', self.gf('django.db.models.fields.related.ForeignKey')(to=orm['ippc.ImplementationISPM'])),
+            ('url_for_more_information', self.gf('django.db.models.fields.URLField')(max_length=500, null=True, blank=True)),
+        ))
+        db.send_create_signal(u'ippc', ['ImplementationISPMUrl'])
+
+        # Adding model 'CountryNews'
+        db.create_table(u'ippc_countrynews', (
+            (u'id', self.gf('django.db.models.fields.AutoField')(primary_key=True)),
+            ('keywords_string', self.gf('django.db.models.fields.CharField')(max_length=500, blank=True)),
+            ('site', self.gf('django.db.models.fields.related.ForeignKey')(to=orm['sites.Site'])),
+            ('title', self.gf('django.db.models.fields.CharField')(max_length=500)),
+            ('slug', self.gf('django.db.models.fields.CharField')(max_length=2000, null=True, blank=True)),
+            ('_meta_title', self.gf('django.db.models.fields.CharField')(max_length=500, null=True, blank=True)),
+            ('description', self.gf('django.db.models.fields.TextField')(blank=True)),
+            ('gen_description', self.gf('django.db.models.fields.BooleanField')(default=True)),
+            ('status', self.gf('django.db.models.fields.IntegerField')(default=2)),
+            ('publish_date', self.gf('django.db.models.fields.DateTimeField')(null=True, blank=True)),
+            ('expiry_date', self.gf('django.db.models.fields.DateTimeField')(null=True, blank=True)),
+            ('short_url', self.gf('django.db.models.fields.URLField')(max_length=200, null=True, blank=True)),
+            ('in_sitemap', self.gf('django.db.models.fields.BooleanField')(default=True)),
+            ('country', self.gf('django.db.models.fields.related.ForeignKey')(related_name='countrynews_country_page', to=orm['ippc.CountryPage'])),
+            ('author', self.gf('django.db.models.fields.related.ForeignKey')(related_name='countrynews_author', to=orm['auth.User'])),
+            ('short_description', self.gf('django.db.models.fields.TextField')(null=True, blank=True)),
+            ('publication_date', self.gf('django.db.models.fields.DateTimeField')(null=True, blank=True)),
+            ('image', self.gf('django.db.models.fields.files.ImageField')(max_length=100, blank=True)),
+            ('contact_for_more_information', self.gf('django.db.models.fields.TextField')(null=True, blank=True)),
+            ('modify_date', self.gf('django.db.models.fields.DateTimeField')(null=True, blank=True)),
+            ('old_id', self.gf('django.db.models.fields.CharField')(max_length=50)),
+            ('keywords', self.gf('mezzanine.generic.fields.KeywordsField')(object_id_field='object_pk', to=orm['generic.AssignedKeyword'], frozen_by_south=True)),
+        ))
+        db.send_create_signal(u'ippc', ['CountryNews'])
+
+        # Adding model 'CountryNewsFile'
+        db.create_table(u'ippc_countrynewsfile', (
+            (u'id', self.gf('django.db.models.fields.AutoField')(primary_key=True)),
+            ('countrynews', self.gf('django.db.models.fields.related.ForeignKey')(to=orm['ippc.CountryNews'])),
+            ('description', self.gf('django.db.models.fields.CharField')(max_length=255)),
+            ('file', self.gf('django.db.models.fields.files.FileField')(max_length=255, blank=True)),
+        ))
+        db.send_create_signal(u'ippc', ['CountryNewsFile'])
+
+        # Adding model 'CountryNewsUrl'
+        db.create_table(u'ippc_countrynewsurl', (
+            (u'id', self.gf('django.db.models.fields.AutoField')(primary_key=True)),
+            ('countrynews', self.gf('django.db.models.fields.related.ForeignKey')(to=orm['ippc.CountryNews'])),
+            ('url_for_more_information', self.gf('django.db.models.fields.URLField')(max_length=500, null=True, blank=True)),
+        ))
+        db.send_create_signal(u'ippc', ['CountryNewsUrl'])
+
+        # Adding model 'PartnersNews'
+        db.create_table(u'ippc_partnersnews', (
+            (u'id', self.gf('django.db.models.fields.AutoField')(primary_key=True)),
+            ('keywords_string', self.gf('django.db.models.fields.CharField')(max_length=500, blank=True)),
+            ('site', self.gf('django.db.models.fields.related.ForeignKey')(to=orm['sites.Site'])),
+            ('title', self.gf('django.db.models.fields.CharField')(max_length=500)),
+            ('slug', self.gf('django.db.models.fields.CharField')(max_length=2000, null=True, blank=True)),
+            ('_meta_title', self.gf('django.db.models.fields.CharField')(max_length=500, null=True, blank=True)),
+            ('description', self.gf('django.db.models.fields.TextField')(blank=True)),
+            ('gen_description', self.gf('django.db.models.fields.BooleanField')(default=True)),
+            ('status', self.gf('django.db.models.fields.IntegerField')(default=2)),
+            ('publish_date', self.gf('django.db.models.fields.DateTimeField')(null=True, blank=True)),
+            ('expiry_date', self.gf('django.db.models.fields.DateTimeField')(null=True, blank=True)),
+            ('short_url', self.gf('django.db.models.fields.URLField')(max_length=200, null=True, blank=True)),
+            ('in_sitemap', self.gf('django.db.models.fields.BooleanField')(default=True)),
+            ('partners', self.gf('django.db.models.fields.related.ForeignKey')(related_name='partnersnews_partner_page', to=orm['ippc.PartnersPage'])),
+            ('author', self.gf('django.db.models.fields.related.ForeignKey')(related_name='partnersnews_author', to=orm['auth.User'])),
+            ('short_description', self.gf('django.db.models.fields.TextField')(null=True, blank=True)),
+            ('publication_date', self.gf('django.db.models.fields.DateTimeField')(null=True, blank=True)),
+            ('image', self.gf('django.db.models.fields.files.ImageField')(max_length=100, blank=True)),
+            ('contact_for_more_information', self.gf('django.db.models.fields.TextField')(null=True, blank=True)),
+            ('modify_date', self.gf('django.db.models.fields.DateTimeField')(null=True, blank=True)),
+            ('old_id', self.gf('django.db.models.fields.CharField')(max_length=50)),
+            ('keywords', self.gf('mezzanine.generic.fields.KeywordsField')(object_id_field='object_pk', to=orm['generic.AssignedKeyword'], frozen_by_south=True)),
+        ))
+        db.send_create_signal(u'ippc', ['PartnersNews'])
+
+        # Adding model 'PartnersNewsFile'
+        db.create_table(u'ippc_partnersnewsfile', (
+            (u'id', self.gf('django.db.models.fields.AutoField')(primary_key=True)),
+            ('partnersnews', self.gf('django.db.models.fields.related.ForeignKey')(to=orm['ippc.PartnersNews'])),
+            ('description', self.gf('django.db.models.fields.CharField')(max_length=255)),
+            ('file', self.gf('django.db.models.fields.files.FileField')(max_length=255, blank=True)),
+        ))
+        db.send_create_signal(u'ippc', ['PartnersNewsFile'])
+
+        # Adding model 'PartnersNewsUrl'
+        db.create_table(u'ippc_partnersnewsurl', (
+            (u'id', self.gf('django.db.models.fields.AutoField')(primary_key=True)),
+            ('partnersnews', self.gf('django.db.models.fields.related.ForeignKey')(to=orm['ippc.PartnersNews'])),
+            ('url_for_more_information', self.gf('django.db.models.fields.URLField')(max_length=500, null=True, blank=True)),
+        ))
+        db.send_create_signal(u'ippc', ['PartnersNewsUrl'])
+
+        # Adding model 'Poll'
+        db.create_table(u'ippc_poll', (
+            (u'id', self.gf('django.db.models.fields.AutoField')(primary_key=True)),
+            ('question', self.gf('django.db.models.fields.CharField')(max_length=200)),
+            ('polltext', self.gf('django.db.models.fields.TextField')(null=True, blank=True)),
+            ('pub_date', self.gf('django.db.models.fields.DateTimeField')()),
+            ('closing_date', self.gf('django.db.models.fields.DateTimeField')(null=True, blank=True)),
+            ('login_required', self.gf('django.db.models.fields.BooleanField')(default=True)),
+        ))
+        db.send_create_signal(u'ippc', ['Poll'])
+
+        # Adding M2M table for field userspoll on 'Poll'
+        m2m_table_name = db.shorten_name(u'ippc_poll_userspoll')
+        db.create_table(m2m_table_name, (
+            ('id', models.AutoField(verbose_name='ID', primary_key=True, auto_created=True)),
+            ('poll', models.ForeignKey(orm[u'ippc.poll'], null=False)),
+            ('user', models.ForeignKey(orm[u'auth.user'], null=False))
+        ))
+        db.create_unique(m2m_table_name, ['poll_id', 'user_id'])
+
+        # Adding M2M table for field groupspoll on 'Poll'
+        m2m_table_name = db.shorten_name(u'ippc_poll_groupspoll')
+        db.create_table(m2m_table_name, (
+            ('id', models.AutoField(verbose_name='ID', primary_key=True, auto_created=True)),
+            ('poll', models.ForeignKey(orm[u'ippc.poll'], null=False)),
+            ('group', models.ForeignKey(orm[u'auth.group'], null=False))
+        ))
+        db.create_unique(m2m_table_name, ['poll_id', 'group_id'])
+
+        # Adding model 'Poll_Choice'
+        db.create_table(u'ippc_poll_choice', (
+            (u'id', self.gf('django.db.models.fields.AutoField')(primary_key=True)),
+            ('poll', self.gf('django.db.models.fields.related.ForeignKey')(to=orm['ippc.Poll'])),
+            ('choice_text', self.gf('django.db.models.fields.CharField')(max_length=200)),
+            ('votes', self.gf('django.db.models.fields.IntegerField')(default=0)),
+        ))
+        db.send_create_signal(u'ippc', ['Poll_Choice'])
+
+        # Adding model 'PollVotes'
+        db.create_table(u'ippc_pollvotes', (
+            (u'id', self.gf('django.db.models.fields.AutoField')(primary_key=True)),
+            ('user', self.gf('django.db.models.fields.related.ForeignKey')(to=orm['auth.User'])),
+            ('poll', self.gf('django.db.models.fields.related.ForeignKey')(to=orm['ippc.Poll'])),
+            ('choice', self.gf('django.db.models.fields.CharField')(max_length=50)),
+            ('comment', self.gf('django.db.models.fields.CharField')(max_length=200)),
+        ))
+        db.send_create_signal(u'ippc', ['PollVotes'])
+
+        # Adding model 'EmailUtilityMessage'
+        db.create_table(u'ippc_emailutilitymessage', (
+            (u'id', self.gf('django.db.models.fields.AutoField')(primary_key=True)),
+            ('emailfrom', self.gf('django.db.models.fields.CharField')(default=u'ippc@fao.org', max_length=200)),
+            ('emailto', self.gf('django.db.models.fields.CharField')(default=u'ippc@fao.org', max_length=200)),
+            ('subject', self.gf('django.db.models.fields.CharField')(max_length=200)),
+            ('messagebody', self.gf('django.db.models.fields.TextField')(max_length=500, null=True, blank=True)),
+            ('date', self.gf('django.db.models.fields.DateTimeField')()),
+            ('sent', self.gf('django.db.models.fields.BooleanField')(default=False)),
+        ))
+        db.send_create_signal(u'ippc', ['EmailUtilityMessage'])
+
+        # Adding M2M table for field users on 'EmailUtilityMessage'
+        m2m_table_name = db.shorten_name(u'ippc_emailutilitymessage_users')
+        db.create_table(m2m_table_name, (
+            ('id', models.AutoField(verbose_name='ID', primary_key=True, auto_created=True)),
+            ('emailutilitymessage', models.ForeignKey(orm[u'ippc.emailutilitymessage'], null=False)),
+            ('user', models.ForeignKey(orm[u'auth.user'], null=False))
+        ))
+        db.create_unique(m2m_table_name, ['emailutilitymessage_id', 'user_id'])
+
+        # Adding M2M table for field groups on 'EmailUtilityMessage'
+        m2m_table_name = db.shorten_name(u'ippc_emailutilitymessage_groups')
+        db.create_table(m2m_table_name, (
+            ('id', models.AutoField(verbose_name='ID', primary_key=True, auto_created=True)),
+            ('emailutilitymessage', models.ForeignKey(orm[u'ippc.emailutilitymessage'], null=False)),
+            ('group', models.ForeignKey(orm[u'auth.group'], null=False))
+        ))
+        db.create_unique(m2m_table_name, ['emailutilitymessage_id', 'group_id'])
+
+        # Adding model 'EmailUtilityMessageFile'
+        db.create_table(u'ippc_emailutilitymessagefile', (
+            (u'id', self.gf('django.db.models.fields.AutoField')(primary_key=True)),
+            ('emailmessage', self.gf('django.db.models.fields.related.ForeignKey')(to=orm['ippc.EmailUtilityMessage'])),
+            ('file', self.gf('django.db.models.fields.files.FileField')(max_length=255, blank=True)),
+        ))
+        db.send_create_signal(u'ippc', ['EmailUtilityMessageFile'])
+
+        # Adding model 'TransRichTextPage'
+        db.create_table(u'ippc_transrichtextpage', (
+            (u'id', self.gf('django.db.models.fields.AutoField')(primary_key=True)),
+            ('site', self.gf('django.db.models.fields.related.ForeignKey')(to=orm['sites.Site'])),
+            ('title', self.gf('django.db.models.fields.CharField')(max_length=500)),
+            ('slug', self.gf('django.db.models.fields.CharField')(max_length=2000, null=True, blank=True)),
+            ('content', self.gf('mezzanine.core.fields.RichTextField')()),
+            ('lang', self.gf('django.db.models.fields.CharField')(max_length=5)),
+            ('translation', self.gf('django.db.models.fields.related.ForeignKey')(related_name='translation', to=orm['pages.RichTextPage'])),
+        ))
+        db.send_create_signal(u'ippc', ['TransRichTextPage'])
+
+        # Adding unique constraint on 'TransRichTextPage', fields ['lang', 'translation']
+        db.create_unique(u'ippc_transrichtextpage', ['lang', 'translation_id'])
+
+        # Adding model 'TransLinkPage'
+        db.create_table(u'ippc_translinkpage', (
+            (u'id', self.gf('django.db.models.fields.AutoField')(primary_key=True)),
+            ('site', self.gf('django.db.models.fields.related.ForeignKey')(to=orm['sites.Site'])),
+            ('title', self.gf('django.db.models.fields.CharField')(max_length=500)),
+            ('slug', self.gf('django.db.models.fields.CharField')(max_length=2000, null=True, blank=True)),
+            ('lang', self.gf('django.db.models.fields.CharField')(max_length=5)),
+            ('translation', self.gf('django.db.models.fields.related.ForeignKey')(related_name='translation', to=orm['pages.Link'])),
+        ))
+        db.send_create_signal(u'ippc', ['TransLinkPage'])
+
+        # Adding unique constraint on 'TransLinkPage', fields ['lang', 'translation']
+        db.create_unique(u'ippc_translinkpage', ['lang', 'translation_id'])
+
+        # Adding model 'TransForm'
+        db.create_table(u'ippc_transform', (
+            (u'id', self.gf('django.db.models.fields.AutoField')(primary_key=True)),
+            ('site', self.gf('django.db.models.fields.related.ForeignKey')(to=orm['sites.Site'])),
+            ('title', self.gf('django.db.models.fields.CharField')(max_length=500)),
+            ('slug', self.gf('django.db.models.fields.CharField')(max_length=2000, null=True, blank=True)),
+            ('content', self.gf('mezzanine.core.fields.RichTextField')()),
+            ('lang', self.gf('django.db.models.fields.CharField')(max_length=5)),
+            ('translation', self.gf('django.db.models.fields.related.ForeignKey')(related_name='translation', to=orm['forms.Form'])),
+            ('button_text', self.gf('django.db.models.fields.CharField')(default=u'Submit', max_length=50)),
+            ('response', self.gf('mezzanine.core.fields.RichTextField')()),
+        ))
+        db.send_create_signal(u'ippc', ['TransForm'])
+
+        # Adding unique constraint on 'TransForm', fields ['lang', 'translation']
+        db.create_unique(u'ippc_transform', ['lang', 'translation_id'])
+
+        # Adding model 'TransField'
+        db.create_table(u'ippc_transfield', (
+            (u'id', self.gf('django.db.models.fields.AutoField')(primary_key=True)),
+            ('lang', self.gf('django.db.models.fields.CharField')(max_length=5)),
+            ('translation', self.gf('django.db.models.fields.related.ForeignKey')(related_name='translation', to=orm['forms.Field'])),
+            ('original', self.gf('django.db.models.fields.CharField')(max_length=200)),
+            ('label', self.gf('django.db.models.fields.CharField')(max_length=200)),
+            ('choices', self.gf('django.db.models.fields.CharField')(max_length=1000, blank=True)),
+            ('default', self.gf('django.db.models.fields.CharField')(max_length=2000, blank=True)),
+            ('help_text', self.gf('django.db.models.fields.CharField')(max_length=100, blank=True)),
+        ))
+        db.send_create_signal(u'ippc', ['TransField'])
+
+        # Adding model 'TransGallery'
+        db.create_table(u'ippc_transgallery', (
+            (u'id', self.gf('django.db.models.fields.AutoField')(primary_key=True)),
+            ('site', self.gf('django.db.models.fields.related.ForeignKey')(to=orm['sites.Site'])),
+            ('title', self.gf('django.db.models.fields.CharField')(max_length=500)),
+            ('slug', self.gf('django.db.models.fields.CharField')(max_length=2000, null=True, blank=True)),
+            ('content', self.gf('mezzanine.core.fields.RichTextField')()),
+            ('lang', self.gf('django.db.models.fields.CharField')(max_length=5)),
+            ('translation', self.gf('django.db.models.fields.related.ForeignKey')(related_name='translation', to=orm['galleries.Gallery'])),
+        ))
+        db.send_create_signal(u'ippc', ['TransGallery'])
+
+        # Adding model 'TransGalleryImage'
+        db.create_table(u'ippc_transgalleryimage', (
+            (u'id', self.gf('django.db.models.fields.AutoField')(primary_key=True)),
+            ('site', self.gf('django.db.models.fields.related.ForeignKey')(to=orm['sites.Site'])),
+            ('title', self.gf('django.db.models.fields.CharField')(max_length=500)),
+            ('slug', self.gf('django.db.models.fields.CharField')(max_length=2000, null=True, blank=True)),
+            ('lang', self.gf('django.db.models.fields.CharField')(max_length=5)),
+            ('translation', self.gf('django.db.models.fields.related.ForeignKey')(related_name='translation', to=orm['galleries.GalleryImage'])),
+            ('description', self.gf('django.db.models.fields.CharField')(max_length=1000, blank=True)),
+        ))
+        db.send_create_signal(u'ippc', ['TransGalleryImage'])
+
+        # Adding model 'TransPublicationLibraryPage'
+        db.create_table(u'ippc_transpublicationlibrarypage', (
+            (u'id', self.gf('django.db.models.fields.AutoField')(primary_key=True)),
+            ('site', self.gf('django.db.models.fields.related.ForeignKey')(to=orm['sites.Site'])),
+            ('title', self.gf('django.db.models.fields.CharField')(max_length=500)),
+            ('slug', self.gf('django.db.models.fields.CharField')(max_length=2000, null=True, blank=True)),
+            ('content', self.gf('mezzanine.core.fields.RichTextField')()),
+            ('lang', self.gf('django.db.models.fields.CharField')(max_length=5)),
+            ('translation', self.gf('django.db.models.fields.related.ForeignKey')(related_name='translation', to=orm['ippc.PublicationLibrary'])),
+        ))
+        db.send_create_signal(u'ippc', ['TransPublicationLibraryPage'])
+
+
+    def backwards(self, orm):
+        # Removing unique constraint on 'TransForm', fields ['lang', 'translation']
+        db.delete_unique(u'ippc_transform', ['lang', 'translation_id'])
+
+        # Removing unique constraint on 'TransLinkPage', fields ['lang', 'translation']
+        db.delete_unique(u'ippc_translinkpage', ['lang', 'translation_id'])
+
+        # Removing unique constraint on 'TransRichTextPage', fields ['lang', 'translation']
+        db.delete_unique(u'ippc_transrichtextpage', ['lang', 'translation_id'])
+
+        # Deleting model 'PublicationLibrary'
+        db.delete_table(u'ippc_publicationlibrary')
+
+        # Removing M2M table for field users on 'PublicationLibrary'
+        db.delete_table(db.shorten_name(u'ippc_publicationlibrary_users'))
+
+        # Removing M2M table for field groups on 'PublicationLibrary'
+        db.delete_table(db.shorten_name(u'ippc_publicationlibrary_groups'))
+
+        # Deleting model 'IssueKeyword'
+        db.delete_table(u'ippc_issuekeyword')
+
+        # Deleting model 'CommodityKeyword'
+        db.delete_table(u'ippc_commoditykeyword')
+
+        # Deleting model 'IssueKeywordsRelate'
+        db.delete_table(u'ippc_issuekeywordsrelate')
+
+        # Removing M2M table for field issuename on 'IssueKeywordsRelate'
+        db.delete_table(db.shorten_name(u'ippc_issuekeywordsrelate_issuename'))
+
+        # Deleting model 'CommodityKeywordsRelate'
+        db.delete_table(u'ippc_commoditykeywordsrelate')
+
+        # Removing M2M table for field commname on 'CommodityKeywordsRelate'
+        db.delete_table(db.shorten_name(u'ippc_commoditykeywordsrelate_commname'))
+
+        # Deleting model 'CountryPage'
+        db.delete_table(u'ippc_countrypage')
+
+        # Removing M2M table for field editors on 'CountryPage'
+        db.delete_table(db.shorten_name(u'ippc_countrypage_editors'))
+
+        # Deleting model 'PartnersPage'
+        db.delete_table(u'ippc_partnerspage')
+
+        # Removing M2M table for field editors on 'PartnersPage'
+        db.delete_table(db.shorten_name(u'ippc_partnerspage_editors'))
+
+        # Deleting model 'NotificationMessageRelate'
+        db.delete_table(u'ippc_notificationmessagerelate')
+
+        # Removing M2M table for field countries on 'NotificationMessageRelate'
+        db.delete_table(db.shorten_name(u'ippc_notificationmessagerelate_countries'))
+
+        # Removing M2M table for field partners on 'NotificationMessageRelate'
+        db.delete_table(db.shorten_name(u'ippc_notificationmessagerelate_partners'))
+
+        # Deleting model 'Publication'
+        db.delete_table(u'ippc_publication')
+
+        # Deleting model 'PublicationFile'
+        db.delete_table(u'ippc_publicationfile')
+
+        # Deleting model 'PublicationUrl'
+        db.delete_table(u'ippc_publicationurl')
+
+        # Deleting model 'WorkAreaPage'
+        db.delete_table(u'ippc_workareapage')
+
+        # Removing M2M table for field users on 'WorkAreaPage'
+        db.delete_table(db.shorten_name(u'ippc_workareapage_users'))
+
+        # Removing M2M table for field groups on 'WorkAreaPage'
+        db.delete_table(db.shorten_name(u'ippc_workareapage_groups'))
+
+        # Deleting model 'PestStatus'
+        db.delete_table(u'ippc_peststatus')
+
+        # Deleting model 'PreferredLanguages'
+        db.delete_table(u'ippc_preferredlanguages')
+
+        # Deleting model 'EppoCode'
+        db.delete_table(u'ippc_eppocode')
+
+        # Deleting model 'ContactType'
+        db.delete_table(u'ippc_contacttype')
+
+        # Deleting model 'IppcUserProfile'
+        db.delete_table(u'ippc_ippcuserprofile')
+
+        # Removing M2M table for field contact_type on 'IppcUserProfile'
+        db.delete_table(db.shorten_name(u'ippc_ippcuserprofile_contact_type'))
+
+        # Removing M2M table for field preferredlanguage on 'IppcUserProfile'
+        db.delete_table(db.shorten_name(u'ippc_ippcuserprofile_preferredlanguage'))
+
+        # Deleting model 'PestReport'
+        db.delete_table(u'ippc_pestreport')
+
+        # Removing M2M table for field pest_status on 'PestReport'
+        db.delete_table(db.shorten_name(u'ippc_pestreport_pest_status'))
+
+        # Deleting model 'PestReportFile'
+        db.delete_table(u'ippc_pestreportfile')
+
+        # Deleting model 'PestReportUrl'
+        db.delete_table(u'ippc_pestreporturl')
+
+        # Deleting model 'DraftProtocol'
+        db.delete_table(u'ippc_draftprotocol')
+
+        # Removing M2M table for field users on 'DraftProtocol'
+        db.delete_table(db.shorten_name(u'ippc_draftprotocol_users'))
+
+        # Removing M2M table for field groups on 'DraftProtocol'
+        db.delete_table(db.shorten_name(u'ippc_draftprotocol_groups'))
+
+        # Deleting model 'DraftProtocolFile'
+        db.delete_table(u'ippc_draftprotocolfile')
+
+        # Deleting model 'DraftProtocolComments'
+        db.delete_table(u'ippc_draftprotocolcomments')
+
+        # Deleting model 'ReportingObligation'
+        db.delete_table(u'ippc_reportingobligation')
+
+        # Deleting model 'ReportingObligation_File'
+        db.delete_table(u'ippc_reportingobligation_file')
+
+        # Deleting model 'ReportingObligationUrl'
+        db.delete_table(u'ippc_reportingobligationurl')
+
+        # Deleting model 'CnPublication'
+        db.delete_table(u'ippc_cnpublication')
+
+        # Deleting model 'CnPublicationFile'
+        db.delete_table(u'ippc_cnpublicationfile')
+
+        # Deleting model 'CnPublicationUrl'
+        db.delete_table(u'ippc_cnpublicationurl')
+
+        # Deleting model 'PartnersPublication'
+        db.delete_table(u'ippc_partnerspublication')
+
+        # Deleting model 'PartnersPublicationFile'
+        db.delete_table(u'ippc_partnerspublicationfile')
+
+        # Deleting model 'PartnersPublicationUrl'
+        db.delete_table(u'ippc_partnerspublicationurl')
+
+        # Deleting model 'EventReporting'
+        db.delete_table(u'ippc_eventreporting')
+
+        # Deleting model 'EventreportingFile'
+        db.delete_table(u'ippc_eventreportingfile')
+
+        # Deleting model 'EventreportingUrl'
+        db.delete_table(u'ippc_eventreportingurl')
+
+        # Deleting model 'Website'
+        db.delete_table(u'ippc_website')
+
+        # Deleting model 'WebsiteUrl'
+        db.delete_table(u'ippc_websiteurl')
+
+        # Deleting model 'PartnersWebsite'
+        db.delete_table(u'ippc_partnerswebsite')
+
+        # Deleting model 'PartnersWebsiteUrl'
+        db.delete_table(u'ippc_partnerswebsiteurl')
+
+        # Deleting model 'PestFreeArea'
+        db.delete_table(u'ippc_pestfreearea')
+
+        # Deleting model 'PestFreeAreaFile'
+        db.delete_table(u'ippc_pestfreeareafile')
+
+        # Deleting model 'PestFreeAreaUrl'
+        db.delete_table(u'ippc_pestfreeareaurl')
+
+        # Deleting model 'ImplementationISPMVersion'
+        db.delete_table(u'ippc_implementationispmversion')
+
+        # Deleting model 'ImplementationISPM'
+        db.delete_table(u'ippc_implementationispm')
+
+        # Removing M2M table for field implementimport_version on 'ImplementationISPM'
+        db.delete_table(db.shorten_name(u'ippc_implementationispm_implementimport_version'))
+
+        # Removing M2M table for field implementexport_version on 'ImplementationISPM'
+        db.delete_table(db.shorten_name(u'ippc_implementationispm_implementexport_version'))
+
+        # Deleting model 'ImplementationISPMFile'
+        db.delete_table(u'ippc_implementationispmfile')
+
+        # Deleting model 'ImplementationISPMUrl'
+        db.delete_table(u'ippc_implementationispmurl')
+
+        # Deleting model 'CountryNews'
+        db.delete_table(u'ippc_countrynews')
+
+        # Deleting model 'CountryNewsFile'
+        db.delete_table(u'ippc_countrynewsfile')
+
+        # Deleting model 'CountryNewsUrl'
+        db.delete_table(u'ippc_countrynewsurl')
+
+        # Deleting model 'PartnersNews'
+        db.delete_table(u'ippc_partnersnews')
+
+        # Deleting model 'PartnersNewsFile'
+        db.delete_table(u'ippc_partnersnewsfile')
+
+        # Deleting model 'PartnersNewsUrl'
+        db.delete_table(u'ippc_partnersnewsurl')
+
+        # Deleting model 'Poll'
+        db.delete_table(u'ippc_poll')
+
+        # Removing M2M table for field userspoll on 'Poll'
+        db.delete_table(db.shorten_name(u'ippc_poll_userspoll'))
+
+        # Removing M2M table for field groupspoll on 'Poll'
+        db.delete_table(db.shorten_name(u'ippc_poll_groupspoll'))
+
+        # Deleting model 'Poll_Choice'
+        db.delete_table(u'ippc_poll_choice')
+
+        # Deleting model 'PollVotes'
+        db.delete_table(u'ippc_pollvotes')
+
+        # Deleting model 'EmailUtilityMessage'
+        db.delete_table(u'ippc_emailutilitymessage')
+
+        # Removing M2M table for field users on 'EmailUtilityMessage'
+        db.delete_table(db.shorten_name(u'ippc_emailutilitymessage_users'))
+
+        # Removing M2M table for field groups on 'EmailUtilityMessage'
+        db.delete_table(db.shorten_name(u'ippc_emailutilitymessage_groups'))
+
+        # Deleting model 'EmailUtilityMessageFile'
+        db.delete_table(u'ippc_emailutilitymessagefile')
+
+        # Deleting model 'TransRichTextPage'
+        db.delete_table(u'ippc_transrichtextpage')
+
+        # Deleting model 'TransLinkPage'
+        db.delete_table(u'ippc_translinkpage')
+
+        # Deleting model 'TransForm'
+        db.delete_table(u'ippc_transform')
+
+        # Deleting model 'TransField'
+        db.delete_table(u'ippc_transfield')
+
+        # Deleting model 'TransGallery'
+        db.delete_table(u'ippc_transgallery')
+
+        # Deleting model 'TransGalleryImage'
+        db.delete_table(u'ippc_transgalleryimage')
+
+        # Deleting model 'TransPublicationLibraryPage'
+        db.delete_table(u'ippc_transpublicationlibrarypage')
 
 
     models = {
@@ -282,7 +1596,7 @@ class Migration(SchemaMigration):
             'Meta': {'object_name': 'EmailUtilityMessage'},
             'date': ('django.db.models.fields.DateTimeField', [], {}),
             'emailfrom': ('django.db.models.fields.CharField', [], {'default': "u'ippc@fao.org'", 'max_length': '200'}),
-            'emailto': ('django.db.models.fields.TextField', [], {'default': "u'ippc@fao.org'"}),
+            'emailto': ('django.db.models.fields.CharField', [], {'default': "u'ippc@fao.org'", 'max_length': '200'}),
             'groups': ('django.db.models.fields.related.ManyToManyField', [], {'blank': 'True', 'related_name': "'emailgroups'", 'null': 'True', 'symmetrical': 'False', 'to': u"orm['auth.Group']"}),
             u'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
             'messagebody': ('django.db.models.fields.TextField', [], {'max_length': '500', 'null': 'True', 'blank': 'True'}),
@@ -405,7 +1719,7 @@ class Migration(SchemaMigration):
             'country': ('django.db.models.fields.related.ForeignKey', [], {'blank': 'True', 'related_name': "'user_country_page'", 'null': 'True', 'to': u"orm['ippc.CountryPage']"}),
             'date_account_created': ('django.db.models.fields.DateTimeField', [], {'default': 'datetime.datetime.now'}),
             'email_address_alt': ('django.db.models.fields.EmailField', [], {'default': "''", 'max_length': '75', 'null': 'True', 'blank': 'True'}),
-            'expertise': ('django.db.models.fields.TextField', [], {'default': "''", 'null': 'True', 'blank': 'True'}),
+            'expertize': ('django.db.models.fields.TextField', [], {'default': "''", 'null': 'True', 'blank': 'True'}),
             'fax': ('django.db.models.fields.CharField', [], {'max_length': '80', 'blank': 'True'}),
             'first_name': ('django.db.models.fields.CharField', [], {'max_length': '30'}),
             'gender': ('django.db.models.fields.PositiveSmallIntegerField', [], {'null': 'True', 'blank': 'True'}),
@@ -419,7 +1733,6 @@ class Migration(SchemaMigration):
             'state': ('django.db.models.fields.CharField', [], {'max_length': '100', 'blank': 'True'}),
             'title': ('django.db.models.fields.CharField', [], {'max_length': '100', 'null': 'True', 'blank': 'True'}),
             'user': ('django.db.models.fields.related.OneToOneField', [], {'to': u"orm['auth.User']", 'unique': 'True'}),
-            'website': ('django.db.models.fields.URLField', [], {'max_length': '200', 'null': 'True', 'blank': 'True'}),
             'zipcode': ('django.db.models.fields.CharField', [], {'max_length': '20', 'blank': 'True'})
         },
         u'ippc.issuekeyword': {
@@ -677,7 +1990,7 @@ class Migration(SchemaMigration):
         u'ippc.preferredlanguages': {
             'Meta': {'object_name': 'PreferredLanguages'},
             u'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
-            'preferredlanguage': ('django.db.models.fields.CharField', [], {'max_length': '500'})
+            'status': ('django.db.models.fields.CharField', [], {'max_length': '500'})
         },
         u'ippc.publication': {
             'Meta': {'ordering': "('_order',)", 'object_name': 'Publication'},
@@ -691,7 +2004,6 @@ class Migration(SchemaMigration):
             'file_fr': ('django.db.models.fields.files.FileField', [], {'max_length': '204', 'null': 'True', 'blank': 'True'}),
             'file_ru': ('django.db.models.fields.files.FileField', [], {'max_length': '204', 'null': 'True', 'blank': 'True'}),
             'file_zh': ('django.db.models.fields.files.FileField', [], {'max_length': '204', 'null': 'True', 'blank': 'True'}),
-            'groups': ('django.db.models.fields.related.ManyToManyField', [], {'blank': 'True', 'related_name': "'publicationgroups'", 'null': 'True', 'symmetrical': 'False', 'to': u"orm['auth.Group']"}),
             u'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
             'library': ('django.db.models.fields.related.ForeignKey', [], {'related_name': "'publications'", 'to': u"orm['ippc.PublicationLibrary']"}),
             'modify_date': ('django.db.models.fields.DateTimeField', [], {'auto_now': 'True', 'null': 'True', 'blank': 'True'}),

@@ -79,6 +79,7 @@ class PestReportForm(forms.ModelForm):
             'pest_identity': autocomplete_light.ChoiceWidget('EppoCodeAutocomplete'),
         }
         
+        
 class IppcUserProfileForm(forms.ModelForm):
     class Meta:
         model = IppcUserProfile
@@ -125,17 +126,6 @@ class CommodityKeywordsRelateForm(forms.ModelForm):
         widgets = {
          'commname': autocomplete_light.MultipleChoiceWidget ('CommodityKeywordAutocomplete'),   
          }   
-
-
-class IssueKeywordsRelateForm(forms.ModelForm):
-    class Meta:
-        model =  IssueKeywordsRelate
-        fields = [
-            'issuename',]
-        widgets = {
-         'issuename': autocomplete_light.MultipleChoiceWidget ('IssueKeywordAutocomplete'),   
-         }
-
 
 class ReportingObligationForm(forms.ModelForm):
 
