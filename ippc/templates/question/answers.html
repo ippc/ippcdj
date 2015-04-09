@@ -1,11 +1,27 @@
-{% extends "irss/base1.html" %}
+{% extends "base.html" %}
 {% load pages_tags mezzanine_tags i18n future staticfiles %}
 
 {% block meta_title %}{% trans "Question" %}{% endblock %}
 
 {% block breadcrumb_menu %}
+	<li>
+	  <a href="/">{% trans "Home" %}</a>
+	  <span class="divider">/</span>
+	</li>
+	<li>
+		<a href="/irss/">{% trans "IRSS" %}</a>
+		<span class="divider">/</span>
+	</li>
+	<li>
+		<a href="/qa/">{% trans "QA Forum" %}</a>
+		<span class="divider">/</span>
+	</li>
+	</li>
+	<li class="active">
+		{% trans "Answers" %}
+	</li>
 {% endblock %}
-
+{% block mainspansize %}12{% endblock mainspansize %}
 {% block main %}
 
 <div class="container-fluid">
@@ -13,26 +29,26 @@
 
         <div class="span8">
 
-            <h2>{{ question.question_title }}</h2>
+            <p><b>{{ question.question_title }}</b></p>
 
             {% if error_message %}<div class="alert alert-error"><p><strong>{{ error_message }}</strong></p></div>{% endif %}
-            {% trans "Publication date" %}: {{ question.pub_date|date:"d M Y" }}<br><br>
+            <i>{% trans "Publication date" %}: <b>{{ question.pub_date|date:"d M Y" }}</b></i><br><br>
             {% if question.description %}
             <strong>{% trans "BACKGROUND INFORMATION" %}</strong><br>
             {{ question.description |richtext_filter|safe }}<br><br>
             {% endif %}
-
-            <h3><strong><a>Answers</a></strong></h3>
+						<hr>
+            <h2>Answers:</h2>
             {% if answers %} 
             {% for answer in  answers%}
-            <p>{{answer.0 |richtext_filter|safe }}
+            {{answer.0 |richtext_filter|safe }}
                 {% if user.is_superuser or perms.irss.change_answer %}
                 <a class="small pull-right" href="/qa/{{question.id}}/answer/{{answer.1}}/edit/"><i class="icon-edit"></i> Edit</a>
                 {% endif %}
                 <br> 
               {{answer.2}} %  <a href="/qa/{{question.id}}/answer/{{answer.1}}/voteup"><i class="icon-large icon-thumbs-up">&#160;&#160;</i></a>&#160;&#160;
                 <a href="/qa/{{question.id}}/answer/{{answer.1}}/votedown" ><i class="large icon-thumbs-down">&#160;&#160;</i></a>  {{answer.3}} %
-             </p><hr/>
+            <hr/>
             {% endfor %}
             {% else %}
             <p>{% trans "No answers yet."%}</p>

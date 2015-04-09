@@ -1,17 +1,27 @@
-{% extends "irss/base1.html" %}
+{% extends "base.html" %}
 {% load pages_tags translate_tags mezzanine_tags i18n future staticfiles accounts_tags %}
 
 {% block meta_title %}{% trans "New Answer" %} {% endblock %}
 
 {% block body_class %}wide{% endblock %}
 
-{% block breadcrumb_menu %}<ul class="inline">
-<li>
-  <a>{% trans "Answer" %}</a>
-  <span class="divider">/</span>
-</li>
-<li class="active">{% trans "Create New" %}</li>
-</ul>
+{% block breadcrumb_menu %}
+	<li>
+	  <a href="/">{% trans "Home" %}</a>
+	  <span class="divider">/</span>
+	</li>
+	<li>
+		<a href="/irss/">{% trans "IRSS" %}</a>
+		<span class="divider">/</span>
+	</li>
+	<li>
+		<a href="/qa/">{% trans "QA Forum" %}</a>
+		<span class="divider">/</span>
+	</li>
+	</li>
+	<li class="active">
+		<b>{% trans "Answer to" %}:</b> {{ question.question_title }}
+	</li>
 {% endblock %}
 
 {% block local_nav %}
@@ -20,12 +30,13 @@
 {% block pageinfo %}
 {% endblock pageinfo %}
 
+{% block mainspansize %}12{% endblock mainspansize %}
 {% block main %}
 
 <p class="pull-right">
   <a href="javascript:history.go(-1)">{% trans "« Cancel and go back" %}</a>
 </p>
-<h1><span class="normal">{% trans "Answer to Question" %}</span>: {{question.question_title}} </h1>
+<p><span class="normal">{% trans "Answer to Question" %}</span>: <b>{{question.question_title}}</b> </p>
 
 <form class="customform" method="POST" action="" enctype="multipart/form-data">
     {% csrf_token %}

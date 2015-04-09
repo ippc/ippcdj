@@ -1,18 +1,28 @@
-{% extends "irss/base1.html" %}
+{% extends "base.html" %}
 {% load pages_tags translate_tags mezzanine_tags i18n future staticfiles accounts_tags %}
 
 {% block meta_title %}{% trans "New Question" %} {% endblock %}
 
 {% block body_class %}wide{% endblock %}
 
-{% block breadcrumb_menu %}<ul class="inline">
-<li>
-  <a href="/qa/">{% trans "Questions" %}</a>
-  <span class="divider">/</span>
-</li>
-<li class="active">{% trans "Create New" %}</li>
-</ul>
-{% endblock %}
+{% block breadcrumb_menu %}
+	<li>
+	  <a href="/">{% trans "Home" %}</a>
+	  <span class="divider">/</span>
+	</li>
+	<li>
+		<a href="/irss/">{% trans "IRSS" %}</a>
+		<span class="divider">/</span>
+	</li>
+	<li>
+		<a href="/qa/">{% trans "QA Forum" %}</a>
+		<span class="divider">/</span>
+	</li>
+	</li>
+	<li class="active">
+		{% trans "Create New" %}
+	</li>
+{% endblock breadcrumb_menu %}
 
 {% block local_nav %}
 {% endblock local_nav %}
@@ -20,6 +30,7 @@
 {% block pageinfo %}
 {% endblock pageinfo %}
 
+{% block mainspansize %}12{% endblock mainspansize %}
 {% block main %}
 
 <p class="pull-right">

@@ -1,32 +1,44 @@
-{% extends "irss/base1.html" %}
+{% extends "base.html" %}
 {% load pages_tags translate_tags mezzanine_tags i18n future staticfiles accounts_tags %}
 
 {% block meta_title %}
   {% trans "About" %}
 {% endblock %}
  
-
 {% block breadcrumb_menu %}
-
+<li>
+  <a href="/">{% trans "Home" %}</a>
+  <span class="divider">/</span>
+</li>
+<li>
+	<a href="/irss/">{% trans "IRSS" %}</a>
+	<span class="divider">/</span>
+</li>
+<li class="active">
+	{% trans "About" %}
+</li>
 {% endblock breadcrumb_menu %}
 
+{% block mainspansize %}12{% endblock mainspansize %}
 {% block main %}
 <h1>Implementation Review and Support System Background</h1>
 <div class="well pull-right">
 <h3>IRSS Factsheet Download</h3>
 <ul>
-<li><a class="icn-pdf" href="http://www.ippc.int/sites/default/files/mediakit/IPPC-IRSS-2013-07-09-ar.pdf">Arabic</a></li>
-<li><a class="icn-pdf" href="http://www.ippc.int/sites/default/files/mediakit/IPPC-IRSS-2013-07-09-en.pdf">English</a></li>
-<li><a class="icn-pdf" href="http://www.ippc.int/sites/default/files/mediakit/IPPC-IRSS-2013-07-09-es.pdf">EspaÃ±ol</a></li>
-<li><a class="icn-pdf" href="http://www.ippc.int/sites/default/files/mediakit/IPPC-IRSS-2013-07-09-fr.pdf">FranÃ§ais</a></li>
-<li><a class="icn-pdf" href="http://www.ippc.int/sites/default/files/mediakit/IPPC-IRSS-2013-07-09-ru.pdf">Arabic</a></lo>
+<li><a class="icn-pdf" href="/static/media/files/mediakit/IPPC-IRSS-2013-07-09-ar.pdf">العربية</a></li>
+<li><a class="icn-pdf" href="/static/media/files/mediakit/IPPC-IRSS-2013-07-09-en.pdf">English</a></li>
+<li><a class="icn-pdf" href="/static/media/files/mediakit/IPPC-IRSS-2013-07-09-es.pdf">Español</a></li>
+<li><a class="icn-pdf" href="/static/media/files/mediakit/IPPC-IRSS-2013-07-09-fr.pdf">Français</a></li>
+<li><a class="icn-pdf" href="/static/media/files/mediakit/IPPC-IRSS-2013-07-09-ru.pdf">Русский</li>
 </ul>
 
 <h3>Explore IRSS</h3>
-<p><a href="/irss-activities">Activities &amp; Surveys</a></p>
-<p><a href="/qa">Q &amp; A Forum</a></p>
-<p><a href="/irss-helpdesk-faq">FAQ</a></p>
-<p><a href="/irss-country-profiles">Country Profiles</a></p>
+<ul>
+<li><a href="/irss/activities">Activities &amp; Surveys</a></li>
+<li><a href="/qa">Q &amp; A Forum</a></li>
+<li><a href="/irss/helpdesk-faq">FAQ</a></li>
+<li><a href="/irss/country-profiles">Country Profiles</a></li>
+</ul>
 </div>
 
 <p>The "IPPC Implementation Review and Support System" (IRSS) concept emanated from a IPPC Commission on Phytosanitary Measures (CPM) proposal to the Subsidiary Body on Dispute Settlement (SBDS) for the establishment of a possible IPPC Compliance Mechanism, in 2007. This concept was rejected because a compliance (enforcement) process was believed that a compliance mechanism was not specified in the IPPC and contrary to the general philosophy of the CPM and FAO. However, the concept was redefined by the SBDS and a modified program for the development of an IRSS that was adopted by CPM in 2008, while noting the importance of this programme in the implementation of both the IPPC and the implementation of International Standards for Phytosanitary Measures (ISPMs).</p>
@@ -39,6 +51,6 @@
 <li>it would also address establishing baseline information and annually updated data that could be used for the review of the state of plant protection in the world.</li>
 </ul>
 
-<p>The "IPPC Implementation Review and Support System" will have two major components: the <a href="/irss-activities">Implementation review system (IRS)</a> and the <a href="/irss-helpdesk">Implementation support system (ISS)</a>, to be used along with other information collected by the IPPC and other relevant organizations. The expected product of the IRSS is the Implementation review response (IRR) which will summarize the situation of the implementation of the IPPC and its standards by contracting parties every three years. This will serve to generate pragmatic action plans for the IPPC that would guide development of the work programme. The IRR will have a strategic value and will be used by the subsidiary bodies of the IPPC, in particular those concerned with approving the IPPC strategic plan and capacity building strategy.</p>
+<p>The "IPPC Implementation Review and Support System" will have two major components: the <a href="/irss/activities">Implementation review system (IRS)</a> and the <a href="/irss/helpdesk">Implementation support system (ISS)</a>, to be used along with other information collected by the IPPC and other relevant organizations. The expected product of the IRSS is the Implementation review response (IRR) which will summarize the situation of the implementation of the IPPC and its standards by contracting parties every three years. This will serve to generate pragmatic action plans for the IPPC that would guide development of the work programme. The IRR will have a strategic value and will be used by the subsidiary bodies of the IPPC, in particular those concerned with approving the IPPC strategic plan and capacity building strategy.</p>
 </div></div></div>
 {% endblock %}

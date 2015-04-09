@@ -365,12 +365,12 @@ LANGUAGE_CODE == 'en'
 from django.utils.translation import ugettext_lazy as _
 
 LANGUAGES = (
-    ('en', _('English')),
-    ('fr', _('French')),
-    ('es', _('Spanish')),
-    ('ru', _('Russian')),
-    ('ar', _('Arabic')),
-    ('zh', _('Chinese')),
+    ('en', 'English'),
+    ('fr', 'Français'),
+    ('es', 'Español'),
+    ('ru', 'Русский'),
+    ('ar', 'العربية'),
+    ('zh', '简体中文'),
 
 )
 
