@@ -604,7 +604,7 @@ def pest_report_create(request, country):
     notifyrelateform =NotificationMessageRelateForm(request.POST)
         
     countryo = get_object_or_404(CountryPage, name=country)
-    numberR=PestReport.objects.filter(country__country_slug=country).count()
+    numberR=PestReport.objects.filter(country_id=country.id).count()
     numberR=numberR+1
     pestnumber=str(numberR)
     if numberR<10 :
