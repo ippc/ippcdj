@@ -246,10 +246,16 @@ urlpatterns = patterns("",
     url(r'^publications/(?P<pk>\d+)/$',
         view=PublicationDetailView.as_view(),
         name='publication-detail'),
+    url(r'^work-area-publications/(?P<pk>\d+)/$',
+        view=PublicationDetailView.as_view(),
+        name='publication-detail'),    
     # publication detail
     url(r'^publications/(?P<slug>[\w-]+)/$',
         view=PublicationDetail2View.as_view(),
-        name='publication-detail'),    
+        name='publication-detail'),   
+     url(r'^work-area-publications/(?P<slug>[\w-]+)/$',
+        view=PublicationDetail2View.as_view(),
+        name='publication-detail'),     
     #-------------------------------------------#
   # publication list files
     url(r'^publications/(?P<id>\d+)/files/$',
@@ -491,8 +497,7 @@ urlpatterns = patterns("",
         name='country'),
             
         
-    
-     
+ 
     #-------------DPs Comments---------------------------
 
     

@@ -45,7 +45,7 @@
   {% if page.get_content_model.contact_point.get_profile.address1 or page.get_content_model.contact_point.get_profile.address2 %}
   <!--dt>{% trans "Address" %}</dt-->
   <dd>
-    {% if user_get_profile.address1 %}{{ page.get_content_model.contact_point.get_profile.address1 }}<br>{% endif %}
+    {% if page.get_content_model.contact_point.get_profile.address1 %}{{ page.get_content_model.contact_point.get_profile.address1 }}<br>{% endif %}
     {% if page.get_content_model.contact_point.get_profile.address2 %}{{ page.get_content_model.contact_point.get_profile.address2 }}<br>{% endif %}
     {% if page.get_content_model.contact_point.get_profile.city %}{{ page.get_content_model.contact_point.get_profile.city }}<br>{% endif %}
     {% if page.get_content_model.contact_point.get_profile.city %}{{ page.get_content_model.contact_point.get_profile.city }}<br>{% endif %}
