@@ -56,6 +56,7 @@ class PublicationLibrary(Page, RichText):
         verbose_name=_("Groups this library is accessible to"), 
         related_name='publicationlibrarygroups', blank=True, null=True)
     old_id = models.CharField(max_length=50, blank=True, null=True)
+    show_agenda_doc_colums =  models.BooleanField( verbose_name=_("Show columns for 'Agenda number' and 'Document number'."),default=True)
     class Meta:
         verbose_name = _("Publication Library")
         verbose_name_plural = _("Publication Libraries")
