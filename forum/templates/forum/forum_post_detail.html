@@ -45,7 +45,7 @@
       {{ block.super }}
 
 <p>
-{% if user.is_superuser or perms.forum.add_forumpost and request.user.get_profile.user_id  == forum_post.user_id %} 
+{% if user.is_superuser or perms.forum.add_forumpost  %} {#and request.user.get_profile.user_id  == forum_post.user_id#}
     <a class="btn btn-small btn-info" href="/admin/forum/forumpost/{{ forum_post.id }}"><i class="icon-edit"></i> Edit as Admin</a><br>
 {% endif %}
 </p>

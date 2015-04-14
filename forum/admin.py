@@ -37,7 +37,8 @@ class ForumPostFileInline(admin.TabularInline):
     formset = inlineformset_factory(ForumPost, ForumPost_Files,extra=1)
     
 
-class ForumPostAdmin(DisplayableAdmin,OwnableAdmin):
+#class ForumPostAdmin(DisplayableAdmin,OwnableAdmin):
+class ForumPostAdmin(DisplayableAdmin):
     """
     Admin class for forum posts.
     """
@@ -52,7 +53,16 @@ class ForumPostAdmin(DisplayableAdmin,OwnableAdmin):
         """
         Super class ordering is important here - user must get saved first.
         """
-        OwnableAdmin.save_form(self, request, form, change)
+        #OwnableAdmin.save_form(self, request, form, change)
+        #changed to made all secretariat editor of forum posts
+        if change==False:
+            obj = form.save(commit=False)
+            if obj.user_id is None:
+                obj.user = request.user 
+            DisplayableAdmin.save_form(self, request, form, change)
+        else: 
+            DisplayableAdmin.save_form(self, request, form, change)
+      
         #new forum post send notifications
         if change==False:
             emailto_all = []

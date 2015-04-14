@@ -39,7 +39,7 @@ class ForumPost(Displayable, Ownable, RichText, AdminThumbMixin):
                                         blank=True, related_name="forumposts")
     
     
-    allow_comments = models.BooleanField(verbose_name=_("Allow comments"),
+    allow_comments = models.BooleanField(verbose_name=_("Forum discussion OPEN for comments (to CLOSE the discussion un-check this)."),
                                          default=True)
     comments = CommentsField(verbose_name=_("Comments"))
     rating = RatingField(verbose_name=_("Rating"))

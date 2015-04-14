@@ -22,7 +22,7 @@ callspost_fieldsets.insert(1, (_("Other posts"), {
     "fields": ("related_posts",)}))
 callspost_list_filter = deepcopy(DisplayableAdmin.list_filter) + ("categories",)
 
-
+#class CallsPostAdmin(DisplayableAdmin):
 class CallsPostAdmin(DisplayableAdmin, OwnableAdmin):
     """
     Admin class for calls posts.
@@ -38,7 +38,18 @@ class CallsPostAdmin(DisplayableAdmin, OwnableAdmin):
         Super class ordering is important here - user must get saved first.
         """
         OwnableAdmin.save_form(self, request, form, change)
+        #if change==False:
+        #    obj = form.save(commit=False)
+        #    if obj.user_id is None:
+        #        obj.user = request.user 
+        #    DisplayableAdmin.save_form(self, request, form, change)
+        #else: 
+        #    DisplayableAdmin.save_form(self, request, form, change)
+
         return DisplayableAdmin.save_form(self, request, form, change)
+
+
+  
 
 
 class CallsCategoryAdmin(admin.ModelAdmin):

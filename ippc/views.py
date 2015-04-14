@@ -93,9 +93,9 @@ def commenta(request, template="generic/comments.html"):
         if myview.is_spam(request, form, url):
             return redirect(url)
         comment = form.save(request)
-        
-        commentfile = CommentFile(comment=comment, file=request.FILES['id_commentfile'])
-        commentfile.save()
+        if request.FILES:
+            commentfile = CommentFile(comment=comment, file=request.FILES['id_commentfile'])
+            commentfile.save()
         sent =notifificationmessage.send()
         
         response = redirect(myview.add_cache_bypass(comment.get_absolute_url()))

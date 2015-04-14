@@ -26,7 +26,7 @@
 {# =note: the sidebar is in the filter_panel.html include #}
 
 {% block main %}
-{% if user.is_superuser or perms.news.add_newspost and request.user.get_profile.user_id  == news_post.user_id %} 
+{% if user.is_superuser or perms.news.add_newspost and request.user.get_profile.user_id  == news_post.user_id %}
     <div class="pull-right">
         <a class="btn btn-info btn-small" href="/admin/news/newspost/{{ news_post.id }}">Edit as Admin</a><br>
     </div>
