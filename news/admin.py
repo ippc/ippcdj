@@ -23,8 +23,8 @@ newspost_fieldsets.insert(1, (_("Other posts"), {
 newspost_list_filter = deepcopy(DisplayableAdmin.list_filter) + ("categories",)
 
 
-#class NewsPostAdmin(DisplayableAdmin):
-class NewsPostAdmin(DisplayableAdmin, OwnableAdmin):
+#class NewsPostAdmin(DisplayableAdmin, OwnableAdmin):
+class NewsPostAdmin(DisplayableAdmin):
     """
     Admin class for news posts.
     """
@@ -38,14 +38,14 @@ class NewsPostAdmin(DisplayableAdmin, OwnableAdmin):
         """
         Super class ordering is important here - user must get saved first.
         """
-        OwnableAdmin.save_form(self, request, form, change)
-        #if change==False:
-        #    obj = form.save(commit=False)
-        #    if obj.user_id is None:
-        #        obj.user = request.user 
-        #    DisplayableAdmin.save_form(self, request, form, change)
-        #else: 
-        #    DisplayableAdmin.save_form(self, request, form, change)
+        #OwnableAdmin.save_form(self, request, form, change)
+        if change==False:
+            obj = form.save(commit=False)
+            if obj.user_id is None:
+                obj.user = request.user 
+            DisplayableAdmin.save_form(self, request, form, change)
+        else: 
+            DisplayableAdmin.save_form(self, request, form, change)
 
         return DisplayableAdmin.save_form(self, request, form, change)
 
