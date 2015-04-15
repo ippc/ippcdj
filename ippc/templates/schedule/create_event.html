@@ -12,7 +12,7 @@
 
 {% block breadcrumb_menu %}
 <li>
-    <a href="/">{% trans "Home" %}</a>
+    <a href="/{{ LANGUAGE_CODE }}/">{% trans "Home" %}</a>
     <span class="divider">/</span>
 </li>
 {% if is_secretariat or user.is_superuser%}

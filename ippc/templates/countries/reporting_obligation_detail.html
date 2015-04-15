@@ -4,7 +4,7 @@
 {% block meta_title %}{% trans "Latest Reporting Obligation" %}{% endblock %}
 
 {% block breadcrumb_menu %}
-<li><a href="/">{% trans "Home" %}</a><span class="divider">/</span></li>
+<li><a href="/{{ LANGUAGE_CODE }}/">{% trans "Home" %}</a><span class="divider">/</span></li>
 <li><a href="/countries/">Countries</a><span class="divider">/</span></li>
 <li><a href="/countries/{{reportingobligation.country.name|slugify}}/">{{reportingobligation.country.name}}</a><span class="divider">/</span></li>
 <li><a href="/countries/{{reportingobligation.country.name|slugify}}/reportingobligation/{{reportingobligation.reporting_obligation_type}}">{{reportingobligation.get_reporting_obligation_type_display}}</a><span class="divider">/</span></li> 

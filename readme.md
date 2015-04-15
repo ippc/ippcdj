@@ -182,6 +182,8 @@ Dev server exlqaippc2.ext.fao.org setup and configuration for IPPC 4.0 prototype
 		python manage.py makemessages --all  
 		python manage.py compilemessages
 
+	If some translations, especially ones in `blocktrans` don't show up, check <http://stackoverflow.com/questions/1377372/django-fuzzy-string-translation-not-showing-up>
+
 8. Stop and restart [Gunicorn](http://gunicorn-docs.readthedocs.org/en/latest/run.html) application server:
 
 	This command shows you the master PID of Gunicorn if it is running (http://stackoverflow.com/a/26926130):  
