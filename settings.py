@@ -352,28 +352,28 @@ LANGUAGE_CODE == 'en'
 # http://pythonhosted.org/django-localeurl/usage.html
 
 # ugettext = lambda s: s
-# LANGUAGES = (
-#    ('en', ugettext('English')),
-#    ('fr', ugettext('French')),
-#    ('es', ugettext('Spanish')),
-#    ('ru', ugettext('Russian')),
-#    ('ar', ugettext('Arabic')),
-#    ('zh', ugettext('Chinese')),
-# )
+
 
 # https://docs.djangoproject.com/en/1.5/ref/settings/#std:setting-LANGUAGES
 from django.utils.translation import ugettext_lazy as _
 
+#LANGUAGES = (
+#    ('en', 'English'),
+#    ('fr', 'Français'),
+#    ('es', 'Español'),
+#    ('ru', 'Ру�?�?кий'),
+#    ('ar', 'العربية'),
+#    ('zh', '简体中文'),
+
+#)
 LANGUAGES = (
-    ('en', 'English'),
-    ('fr', 'Français'),
-    ('es', 'Español'),
-    ('ru', 'Ру�?�?кий'),
-    ('ar', 'العربية'),
-    ('zh', '简体中文'),
-
+    ('en', ugettext('English')),
+    ('fr', ugettext('French')),
+    ('es', ugettext('Spanish')),
+    ('ru', ugettext('Russian')),
+    ('ar', ugettext('Arabic')),
+    ('zh', ugettext('Chinese')),
 )
-
 # https://docs.djangoproject.com/en/dev/ref/settings/#locale-paths
 LOCALE_PATHS = (os.path.join(PROJECT_ROOT, "conf/locale"),)
 
