@@ -46,7 +46,7 @@ register_setting(
 
 register_setting(
     name="NEWS_POST_PER_PAGE",
-    label=_("Bews posts per page"),
+    label=_("News posts per page"),
     description=_("Number of news posts shown on a news listing page."),
     editable=True,
     default=5,
@@ -54,7 +54,7 @@ register_setting(
 
 register_setting(
     name="NEWS_RSS_LIMIT",
-    label=_("Bews posts RSS limit"),
+    label=_("News posts RSS limit"),
     description=_("Number of most recent news posts shown in the RSS feed. "
         "Set to ``None`` to display all news posts in the RSS feed."),
     editable=False,

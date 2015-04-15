@@ -19,27 +19,27 @@ msgstr ""
 
 #: settings.py:362
 msgid "English"
-msgstr ""
+msgstr "Inglés"
 
 #: settings.py:363
 msgid "French"
-msgstr ""
+msgstr "Francés"
 
 #: settings.py:364
 msgid "Spanish"
-msgstr ""
+msgstr "Español"
 
 #: settings.py:365
 msgid "Russian"
-msgstr ""
+msgstr "Ruso"
 
 #: settings.py:366
 msgid "Arabic"
-msgstr ""
+msgstr "Árabe"
 
 #: settings.py:367
 msgid "Chinese"
-msgstr ""
+msgstr "Chino"
 
 #: settings.py:383 ippc/templates/base.html:11 ippc/templates/base.html.py:147
 msgid "International Plant Protection Convention"
@@ -51,23 +51,23 @@ msgstr "Protégér de las plagas los recursos vegetales del mundo"
 
 #: settings.py:430
 msgid "Secretariat"
-msgstr ""
+msgstr "Secretaría"
 
 #: settings.py:431
 msgid "Website feedback"
-msgstr ""
+msgstr "Comentarios sobre el sitio Web"
 
 #: calls/admin.py:20 forum/admin.py:29 news/admin.py:20
 msgid "Other posts"
-msgstr ""
+msgstr "Otras noticias"
 
 #: calls/defaults.py:21
 msgid "Enable featured images in calls posts"
-msgstr ""
+msgstr "Mostrar las imágenes de las convocatorias"
 
 #: calls/defaults.py:36
 msgid "Calls post URL date format"
-msgstr ""
+msgstr "Formato de fecha de la url de las convocatorias"
 
 #: calls/defaults.py:37
 msgid ""
@@ -81,36 +81,36 @@ msgstr ""
 
 #: calls/defaults.py:49
 msgid "Calls posts per page"
-msgstr ""
+msgstr "Publicación de convocatorias por página"
 
 #: calls/defaults.py:50
 msgid "Number of calls posts shown on a calls listing page."
-msgstr ""
+msgstr "Número de convocatorias que aparecen en la página de convocatorias."
 
 #: calls/defaults.py:57
 msgid "Calls posts RSS limit"
-msgstr ""
+msgstr "Límite de convocatorias en el RSS"
 
 #: calls/defaults.py:58
 msgid ""
 "Number of most recent calls posts shown in the RSS feed. Set to ``None`` to "
 "display all calls posts in the RSS feed."
-msgstr ""
+msgstr "Número de convocatorias más recientes que aparecen en el canal RSS. Poner en 'Ninguno' para mostrar todas las convocatorias en el canal RSS."
 
 #: calls/defaults.py:66
 msgid "Slug of the page object for the calls."
-msgstr ""
+msgstr "Slug del objeto de la página de las convocatorias."
 
 #: calls/models.py:17 calls/templates/calls/includes/filter_panel.html:44
 #: forum/models.py:38 forum/templates/forum/includes/filter_panel.html:34
 #: ippc/templates/blog/includes/filter_panel.html:44 news/models.py:17
 #: news/templates/news/includes/filter_panel.html:44
 msgid "Categories"
-msgstr ""
+msgstr "Categorías"
 
 #: calls/models.py:19 forum/models.py:42 news/models.py:19
 msgid "Allow comments"
-msgstr ""
+msgstr "Permitir observaciones"
 
 #: calls/models.py:21 forum/models.py:44
 #: forum/templates/forum/forum_home.html:94
@@ -121,49 +121,49 @@ msgstr ""
 #: ippc/templates/dp/dp_detail.html:65 ippc/templates/dp/dp_detail.html:120
 #: ippc/templates/generic/includes/comments.html:3 news/models.py:21
 msgid "Comments"
-msgstr ""
+msgstr "Observaciones"
 
 #: calls/models.py:22 forum/models.py:45 news/models.py:22
 msgid "Rating"
-msgstr ""
+msgstr "Calificación"
 
 #: calls/models.py:23 forum/models.py:46 news/models.py:23
 msgid "Featured Image"
-msgstr ""
+msgstr "Imagen"
 
 #: calls/models.py:27 calls/templates/calls/calls_post_detail.html:124
 #: forum/models.py:50 forum/templates/forum/forum_post_detail.html:124
 #: ippc/templates/blog/blog_post_detail.html:120 news/models.py:27
 #: news/templates/news/news_post_detail.html:123
 msgid "Related posts"
-msgstr ""
+msgstr "Publicaciones relacionadas"
 
 #: calls/models.py:32
 msgid "Call"
-msgstr ""
+msgstr "Convocatoria"
 
 #: calls/models.py:33 calls/templates/calls/calls_post_list.html:4
 #: calls/templates/calls/calls_post_list.html:23
 msgid "Calls"
-msgstr ""
+msgstr "Convocatorias"
 
 #: calls/models.py:93
 msgid "Calls Category"
-msgstr ""
+msgstr "Categoría de convocatorias"
 
 #: calls/models.py:94
 msgid "Calls Categories"
-msgstr ""
+msgstr "Categorías de convocatorias"
 
 #: calls/templates/admin/includes/quick_calls.html:18
 msgid "Quick Calls"
-msgstr ""
+msgstr "Convocatorias rápidas"
 
 #: calls/templates/admin/includes/quick_calls.html:27
 #: forum/templates/admin/includes/quick_forum.html:27
 #: news/templates/admin/includes/quick_news.html:27
 msgid "Save Draft"
-msgstr ""
+msgstr "Guardar borrador"
 
 #: calls/templates/calls/calls_post_detail.html:39
 #: calls/templates/calls/calls_post_list.html:84
@@ -171,7 +171,7 @@ msgstr ""
 #: news/templates/news/news_post_detail.html:38
 #: news/templates/news/news_post_list.html:84
 msgid "Posted "
-msgstr ""
+msgstr "Publicado"
 
 #: calls/templates/calls/calls_post_detail.html:44
 #: ippc/templates/blog/blog_post_detail.html:40
@@ -193,71 +193,71 @@ msgstr ""
 #: news/templates/news/news_post_list.html:115
 #: news/templates/news/includes/filter_panel.html:59
 msgid "Tags"
-msgstr ""
+msgstr "Etiquetas"
 
 #: calls/templates/calls/calls_post_detail.html:98
 #: ippc/templates/blog/blog_post_detail.html:94
 #: news/templates/news/news_post_detail.html:97
 msgid "Share on Twitter"
-msgstr ""
+msgstr "Compartir en Twitter"
 
 #: calls/templates/calls/calls_post_detail.html:99
 #: ippc/templates/blog/blog_post_detail.html:95
 #: news/templates/news/news_post_detail.html:98
 msgid "Share on Facebook"
-msgstr ""
+msgstr "Compartir en Facebook"
 
 #: calls/templates/calls/calls_post_list.html:32
 #: forum/templates/forum/forum_post_list.html:32
 #: ippc/templates/blog/blog_post_list.html:32
 #: news/templates/news/news_post_list.html:32
 msgid "Tag:"
-msgstr ""
+msgstr "Etiqueta:"
 
 #: calls/templates/calls/calls_post_list.html:34
 #: ippc/templates/blog/blog_post_list.html:34
 #: news/templates/news/news_post_list.html:34
 msgid "Category:"
-msgstr ""
+msgstr "Categoría:"
 
 #: calls/templates/calls/calls_post_list.html:38
 #: forum/templates/forum/forum_post_list.html:38
 #: ippc/templates/blog/blog_post_list.html:38
 #: news/templates/news/news_post_list.html:38
 msgid "Author:"
-msgstr ""
+msgstr "Autor:"
 
 #: calls/templates/calls/calls_post_list.html:51
 #: ippc/templates/blog/blog_post_list.html:51
 #: news/templates/news/news_post_list.html:51
 msgid "Viewing tagged as: "
-msgstr ""
+msgstr "Vista etiquetada como:"
 
 #: calls/templates/calls/calls_post_list.html:53
 #: ippc/templates/blog/blog_post_list.html:53
 #: news/templates/news/news_post_list.html:53
 msgid "Viewing posts for the category"
-msgstr ""
+msgstr "Vista de publicaciones de la categoría"
 
 #: calls/templates/calls/calls_post_list.html:55
 #: ippc/templates/blog/blog_post_list.html:55
 #: news/templates/news/news_post_list.html:55
 msgid "Viewing items from"
-msgstr ""
+msgstr "Vista de elementos de"
 
 #: calls/templates/calls/calls_post_list.html:58
 #: forum/templates/forum/forum_post_list.html:58
 #: ippc/templates/blog/blog_post_list.html:58
 #: news/templates/news/news_post_list.html:58
 msgid "Viewing posts by"
-msgstr ""
+msgstr "Vista de publicaciones de"
 
 #: calls/templates/calls/calls_post_list.html:87
 #: forum/templates/forum/forum_home.html:54
 #: ippc/templates/blog/blog_post_list.html:87
 #: news/templates/news/news_post_list.html:87
 msgid "in"
-msgstr ""
+msgstr "en"
 
 #: calls/templates/calls/calls_post_list.html:93
 #: forum/templates/forum/forum_home.html:60
@@ -276,24 +276,24 @@ msgstr ""
 #: calls/templates/calls/calls_post_list.html:123 ippc/templates/index.html:37
 #: news/templates/news/news_post_list.html:123
 msgid "Continue reading…"
-msgstr ""
+msgstr "Continuar leyendo"
 
 #: calls/templates/calls/includes/filter_panel.html:4
 msgid "Add new call"
-msgstr ""
+msgstr "Agregar nueva convocatoria"
 
 #: calls/templates/calls/includes/filter_panel.html:11
 #: ippc/templates/blog/includes/filter_panel.html:11
 #: news/templates/news/includes/filter_panel.html:11
 msgid "Latest"
-msgstr ""
+msgstr "Última"
 
 #: calls/templates/calls/includes/filter_panel.html:26
 #: forum/templates/forum/includes/filter_panel.html:18
 #: ippc/templates/blog/includes/filter_panel.html:26
 #: news/templates/news/includes/filter_panel.html:26
 msgid "Archive"
-msgstr ""
+msgstr "Archive"
 
 #: calls/templates/calls/includes/filter_panel.html:89
 #: forum/templates/forum/includes/filter_panel.html:75
@@ -302,7 +302,7 @@ msgstr ""
 #: ippc/templates/blog/includes/filter_panel.html:89
 #: news/templates/news/includes/filter_panel.html:89
 msgid "Feeds"
-msgstr ""
+msgstr "Noticias"
 
 #: calls/templates/calls/includes/filter_panel.html:91
 #: calls/templates/calls/includes/filter_panel.html:95
@@ -321,7 +321,7 @@ msgstr ""
 #: news/templates/news/includes/filter_panel.html:99
 #: news/templates/news/includes/filter_panel.html:103
 msgid "RSS"
-msgstr ""
+msgstr "RSS"
 
 #: calls/templates/calls/includes/filter_panel.html:92
 #: calls/templates/calls/includes/filter_panel.html:96
@@ -340,15 +340,15 @@ msgstr ""
 #: news/templates/news/includes/filter_panel.html:100
 #: news/templates/news/includes/filter_panel.html:104
 msgid "Atom"
-msgstr ""
+msgstr "Atom"
 
 #: forum/defaults.py:21
 msgid "Enable featured images in forum posts"
-msgstr ""
+msgstr "Mostrar las imágenes de los foros"
 
 #: forum/defaults.py:36
 msgid "Forum post URL date format"
-msgstr ""
+msgstr "Formato de fecha de la url de los foros"
 
 #: forum/defaults.py:37
 msgid ""
@@ -362,57 +362,57 @@ msgstr ""
 
 #: forum/defaults.py:49
 msgid "Forum posts per page"
-msgstr ""
+msgstr "Publicaciones de los foros por página"
 
 #: forum/defaults.py:50
 msgid "Number of forum posts shown on a forum listing page."
-msgstr ""
+msgstr "Número de publicaciones de los foros en una página de listas de los foros."
 
 #: forum/defaults.py:57
 msgid "Forum posts RSS limit"
-msgstr ""
+msgstr "Límite de noticias de foros en el RSS"
 
 #: forum/defaults.py:58
 msgid ""
 "Number of most recent forum posts shown in the RSS feed. Set to ``None`` to "
 "display all forum posts in the RSS feed."
-msgstr ""
+msgstr "Número de noticias más recientes sobre foros que aparecen en el canal RSS. Poner en 'Ninguno' para mostrar todas las noticias de convocatorias en el canal RSS."
 
 #: forum/defaults.py:66
 msgid "Slug of the page object for the forum."
-msgstr ""
+msgstr "Slug del objeto de la página del foro."
 
 #: forum/models.py:24
 msgid "Forum Category"
-msgstr ""
+msgstr "Categoría del foro"
 
 #: forum/models.py:25 forum/templates/forum/forum_post_list.html:162
 msgid "Forum Categories"
-msgstr ""
+msgstr "Categorías de foros"
 
 #: forum/models.py:55 ippc/models.py:1545
 msgid "Users this forum post is accessible to"
-msgstr ""
+msgstr "Usuarios que tienen acceso a esta noticia del foro"
 
 #: forum/models.py:58 ippc/models.py:1548
 msgid "Groups this forum post is accessible to"
-msgstr ""
+msgstr "Grupos que tienen acceso a esta noticia del foro"
 
 #: forum/models.py:60 ippc/models.py:1550
 msgid "Login required"
-msgstr ""
+msgstr "Es necesario iniciar sesión"
 
 #: forum/models.py:65
 msgid "Forum post"
-msgstr ""
+msgstr "Publicación del foro"
 
 #: forum/models.py:66
 msgid "Forum posts"
-msgstr ""
+msgstr "Publicaciones de los foros"
 
 #: forum/templates/admin/includes/quick_forum.html:18
 msgid "Quick Forum"
-msgstr ""
+msgstr "Foro rápido"
 
 #: forum/templates/forum/forum_home.html:4
 #: forum/templates/forum/forum_home.html:22
@@ -420,13 +420,13 @@ msgstr ""
 #: forum/templates/forum/forum_post_list.html:21
 #: forum/templates/forum/forum_post_list.html:23
 msgid "Forum"
-msgstr ""
+msgstr "Foro"
 
 #: forum/templates/forum/forum_home.html:89
 #: ippc/templates/search_results.html:35
 #: ippc/templates/blog/blog_post_list.html:123
 msgid "read more"
-msgstr ""
+msgstr "Leer más"
 
 #: forum/templates/forum/forum_home.html:98
 #: forum/templates/forum/forum_post_detail.html:73
@@ -443,7 +443,7 @@ msgstr[1] ""
 #: forum/templates/forum/forum_post_list.html:89
 #: ippc/templates/blog/blog_post_detail.html:35
 msgid "Posted by"
-msgstr ""
+msgstr "Publicado por"
 
 #: forum/templates/forum/forum_post_detail.html:89
 #: ippc/templates/countries/cnpublication_detail.html:93
@@ -451,195 +451,195 @@ msgstr ""
 #: ippc/templates/pages/publicationtable.html:105
 #: ippc/templates/partners/p_publication_detail.html:92
 msgid "Files"
-msgstr ""
+msgstr "Archivos"
 
 #: forum/templates/forum/forum_post_list.html:51
 msgid "Posts tagged"
-msgstr ""
+msgstr "Mensajes etiquetados"
 
 #: forum/templates/forum/forum_post_list.html:53
 msgid "Posts in the"
-msgstr ""
+msgstr "Mensajes en la"
 
 #: forum/templates/forum/forum_post_list.html:53
 msgid "category"
-msgstr ""
+msgstr "categoría"
 
 #: forum/templates/forum/forum_post_list.html:55
 msgid "Viewing posts from"
-msgstr ""
+msgstr "Vista de publicaciones de"
 
 #: forum/templates/forum/forum_post_list.html:79
 msgid "Add new discussion"
-msgstr ""
+msgstr "Agregar nuevo debate"
 
 #: forum/templates/forum/forum_post_list.html:87
 msgid "Topic"
-msgstr ""
+msgstr "Tema"
 
 #: forum/templates/forum/forum_post_list.html:88
 #: ippc/templates/envelope/email_body.txt:6
 #: ippc/templates/schedule/event.html:94 schedule/models/events.py:116
 msgid "Category"
-msgstr ""
+msgstr "Categoría"
 
 #: forum/templates/forum/forum_post_list.html:90
 msgid "Date"
-msgstr ""
+msgstr "Fecha"
 
 #: forum/templates/forum/includes/filter_panel.html:6
 msgid "Recent Posts"
-msgstr ""
+msgstr "Publicaciones recientes"
 
 #: forum/templates/forum/includes/filter_panel.html:63
 msgid "Authors"
-msgstr ""
+msgstr "Autores"
 
 #: ippc/models.py:53
 msgid "Users this library is accessible to"
-msgstr ""
+msgstr "Usuarios que tienen acceso a esta biblioteca"
 
 #: ippc/models.py:56
 msgid "Groups this library is accessible to"
-msgstr ""
+msgstr "Grupos que tienen acceso a esta biblioteca"
 
 #: ippc/models.py:60
 msgid "Publication Library"
-msgstr ""
+msgstr "Biblioteca de publicaciones"
 
 #: ippc/models.py:61
 msgid "Publication Libraries"
-msgstr ""
+msgstr "Bibliotecas de publicaciones"
 
 #: ippc/models.py:76
 msgid "Issue Keyword"
-msgstr ""
+msgstr "Contraseña del tema"
 
 #: ippc/models.py:81
 msgid "Commodity Keyword"
-msgstr ""
+msgstr "Contraseña del producto"
 
 #: ippc/models.py:93
 msgid "Issue Keywords"
-msgstr ""
+msgstr "Contraseñas del tema"
 
 #: ippc/models.py:95 ippc/models.py:106
 msgid ""
 "Type at least two letters, then select and         press enter to input "
 "existing keywords, or write new ones         separated by a comma."
-msgstr ""
+msgstr "Escriba al menos dos letras, a continuación, seleccione y pulse intro para introducir las contraseñas"
 
 #: ippc/models.py:104
 msgid "Commodity Keywords"
-msgstr ""
+msgstr "Contraseñas del producto"
 
 #: ippc/models.py:118
 msgid "Contracting party"
-msgstr ""
+msgstr "Partes contratantes"
 
 #: ippc/models.py:119
 msgid "Non-Contracting party"
-msgstr ""
+msgstr "Partes no contratantes"
 
 #: ippc/models.py:120
 msgid "Territory"
-msgstr ""
+msgstr "Territorio"
 
 #: ippc/models.py:130 ippc/templates/pages/menus/tree_key_cn.html:15
 msgid "Africa"
-msgstr ""
+msgstr "África"
 
 #: ippc/models.py:131 ippc/templates/pages/menus/tree_key_cn.html:16
 msgid "Asia"
-msgstr ""
+msgstr "Asia"
 
 #: ippc/models.py:132 ippc/templates/pages/menus/tree_key_cn.html:17
 msgid "Europe"
-msgstr ""
+msgstr "Europa"
 
 #: ippc/models.py:133
 msgid "Latin America and Caribbean"
-msgstr ""
+msgstr "América Latina y el Caribe"
 
 #: ippc/models.py:134 ippc/templates/pages/menus/tree_key_cn.html:19
 msgid "Near East"
-msgstr ""
+msgstr "Próximo Oriente"
 
 #: ippc/models.py:135 ippc/templates/pages/menus/tree_key_cn.html:20
 msgid "North America"
-msgstr ""
+msgstr "norteamérica"
 
 #: ippc/models.py:136 ippc/templates/pages/menus/tree_key_cn.html:21
 msgid "South West Pacific"
-msgstr ""
+msgstr "Pacífico Sudoccidental"
 
 #: ippc/models.py:144
 msgid "Country Page"
-msgstr ""
+msgstr "Página de su país"
 
 #: ippc/models.py:145
 msgid "Country Pages"
-msgstr ""
+msgstr "Páginas de su país"
 
 #: ippc/models.py:151
 msgid "Country URL Slug"
-msgstr ""
+msgstr "URL de su país"
 
 #: ippc/models.py:153 ippc/models.py:185
 msgid "Leave blank to have the URL auto-generated from the title."
-msgstr ""
+msgstr "Dejar en blanco para tener la URL auto-generada a partir del título"
 
 #: ippc/models.py:156
 msgid "Country Chief Contact Point"
-msgstr ""
+msgstr "Punto de contacto principal del país"
 
 #: ippc/models.py:157
 msgid "Country Editors"
-msgstr ""
+msgstr "Editores del país"
 
 #: ippc/models.py:159
 msgid "Contracting or Non-Contracting party"
-msgstr ""
+msgstr "Partes contratantes y no contratantes"
 
 #: ippc/models.py:160
 msgid "Region"
-msgstr ""
+msgstr "Région"
 
 #: ippc/models.py:161
 msgid "Country flag"
-msgstr ""
+msgstr "Bandera de país"
 
 #: ippc/models.py:162
 msgid "Country latitude"
-msgstr ""
+msgstr "Latitud del país"
 
 #: ippc/models.py:163
 msgid "Country longitute"
-msgstr ""
+msgstr "Longitud del país"
 
 #: ippc/models.py:164
 msgid "Country Map"
-msgstr ""
+msgstr "Mapa del país"
 
 #: ippc/models.py:177
 msgid "Partners Page"
-msgstr ""
+msgstr "Página de Asociados"
 
 #: ippc/models.py:178
 msgid "Partners Pages"
-msgstr ""
+msgstr "Páginas de Asociados"
 
 #: ippc/models.py:182 ippc/models.py:1399 ippc/models.py:1473
 msgid "Text"
-msgstr ""
+msgstr "Texto"
 
 #: ippc/models.py:183
 msgid "URL Slug"
-msgstr ""
+msgstr "Slug del URL"
 
 #: ippc/models.py:188
 msgid "RPPO Chief Contact Point"
-msgstr ""
+msgstr "RPPO Punto de contacto principal"
 
 #: ippc/models.py:189
 msgid "RPPO Editors"
@@ -1272,104 +1272,105 @@ msgid "Has your country implemented ISPM 15 for imports?"
 msgstr ""
 
 #: ippc/models.py:1301 ippc/models.py:1305
-msgid "If yes, which version (click all that apply): "
-msgstr ""
+msgid "If yes, which version (click all that apply):"
+msgstr "qué versión (haga clic en todas los que correspondan):"
 
 #: ippc/models.py:1303
-msgid "  Has your country implemented ISPM 15 for exports?"
-msgstr ""
+msgid "Has your country implemented ISPM 15 for exports?"
+msgstr "¿Su país aplica la NIMF 15 en las exportaciones?"
 
 #: ippc/models.py:1308
-msgid " Is the ISPM No.15 mark registered as a trade mark in your country??"
-msgstr ""
+msgid "Is the ISPM No.15 mark registered as a trade mark in your country??"
+msgstr "¿La marca registrada de la NIMF 15 está registrada como marca en su país?"
 
 #: ippc/models.py:1309
 msgid "Image of mark"
-msgstr ""
+msgstr "Imagen de la marca"
 
 #: ippc/models.py:1312
 msgid "Enter a description of mark"
-msgstr ""
+msgstr "Introduzca una descripción de la marca"
 
 #: ippc/models.py:1330
 msgid "Implementationof ISPMs"
-msgstr ""
+msgstr "Aplicación de las NIMF"
 
 #: ippc/models.py:1401 ippc/models.py:1475
 #: ippc/templates/countries/countrynews_detail.html:48
 #: ippc/templates/countries/implementationispm_detail.html:99
 #: ippc/templates/partners/partnersnews_detail.html:48
 msgid "Image"
-msgstr ""
+msgstr "Imagen"
 
 #: ippc/models.py:1410 ippc/models.py:1485
 msgid "Country News"
-msgstr ""
+msgstr "Noticias del país "
 
 #: ippc/models.py:1579
 msgid "From: "
-msgstr ""
+msgstr "De: "
 
 #: ippc/models.py:1579 ippc/models.py:1580
 msgid "ippc@fao.org"
-msgstr ""
+msgstr "ippc@fao.org"
 
 #: ippc/models.py:1579
 msgid ""
 "The email will be sent from ippc@fao.org, if you want you can specify an "
 "other sender email address."
-msgstr ""
+msgstr "El mensaje se enviará desde ippc@fao.org Si lo desea puede especificar otra dirección de correo electrónico del remitente."
 
 #: ippc/models.py:1580
 msgid "Send to users that are not registered in IPPC: "
-msgstr ""
+msgstr "Enviar a los usuarios que no están registrados en la CIPF:"
 
 #: ippc/models.py:1580
 msgid ""
 "Please leave ippc@fao.org for the form to work, and enter email addresses of "
 "addition recipients, separated by comma. Example: ippc@fao.org, "
 "someone@somewhere.tld, etc@etc.tld"
-msgstr ""
+msgstr "deje ippc@fao.org para que funcione el formulario e introduzca las direcciones de correo electrónico de los destinatarios adicionales separadas por comas. Ejemplo: ippc@fao.org.etc@etc.tld 
+"
 
 #: ippc/models.py:1581
 msgid "Subject: "
-msgstr ""
+msgstr "Asunto: "
 
 #: ippc/models.py:1582
 msgid "Message: "
-msgstr ""
+msgstr "Mensaje: "
 
 #: ippc/models.py:1587
 msgid "Send to single users:"
-msgstr ""
+msgstr "Enviar individualmente a los usuarios:"
 
 #: ippc/models.py:1587 ippc/models.py:1590
 msgid "CTRL/Command+mouseclick for more than 1 selection"
-msgstr ""
+msgstr "CTRL/Comando+clic para seleccionar más de 1"
 
 #: ippc/models.py:1590
 msgid "Send to groups:"
-msgstr ""
+msgstr "Enviar a grupos:"
 
 #: ippc/models.py:1626
 msgid "Translated Page"
-msgstr ""
+msgstr "Página traducida"
 
 #: ippc/models.py:1627
 msgid "Translated Pages"
-msgstr ""
+msgstr "Páginas traducidas"
 
 #: ippc/models.py:1635
 msgid "Translated Link"
-msgstr ""
+msgstr "Enlace traducido"
 
 #: ippc/models.py:1636
 msgid "Translated Links"
-msgstr ""
+msgstr "Enlaces traducidos"
 
 #: ippc/models.py:1648
 msgid "Button text"
-msgstr ""
+msgstr "Texto de la tecla"
 
 #: ippc/models.py:1648 ippc/templates/countries/cnpublication_create.html:45
 #: ippc/templates/countries/countrynews_create.html:45
@@ -1386,85 +1387,85 @@ msgstr ""
 #: ippc/templates/partners/website_create.html:37
 #: ippc/templates/polls/poll_create.html:35
 msgid "Submit"
-msgstr ""
+msgstr "Enviar"
 
 #: ippc/models.py:1649
 msgid "Response"
-msgstr ""
+msgstr "Respuesta"
 
 #: ippc/models.py:1652
 msgid "Translated Form"
-msgstr ""
+msgstr "Formulario traducido"
 
 #: ippc/models.py:1653
 msgid "Translated Forms"
-msgstr ""
+msgstr "Formularios traducidos"
 
 #: ippc/models.py:1659
 msgid "Label (Original)"
-msgstr ""
+msgstr "Etiqueta (Original)"
 
 #: ippc/models.py:1660
 msgid "Label"
-msgstr ""
+msgstr "Etiqueta"
 
 #: ippc/models.py:1662
 msgid "Choices"
-msgstr ""
+msgstr "Opciones"
 
 #: ippc/models.py:1663
 msgid ""
 "Comma separated options where applicable. If an option itself contains "
 "commas, surround the option with `backticks`."
-msgstr ""
+msgstr "Opciones separadas por comas donde corresponda. Si una opción contiene comas rodee esa opción con `comillas inversas`."
 
 #: ippc/models.py:1665
 msgid "Default value"
-msgstr ""
+msgstr "Valor predeterminado"
 
 #: ippc/models.py:1667
 msgid "Help text"
-msgstr ""
+msgstr "Texto de ayuda"
 
 #: ippc/models.py:1670
 msgid "Translated Field"
-msgstr ""
+msgstr "Campo traducido"
 
 #: ippc/models.py:1671
 msgid "Translated Fields"
-msgstr ""
+msgstr "Campos traducidos"
 
 #: ippc/models.py:1681
 msgid "Translated Gallery"
-msgstr ""
+msgstr "Galería traducida"
 
 #: ippc/models.py:1682
 msgid "Translated Galleries"
-msgstr ""
+msgstr "Galerías traducidas"
 
 #: ippc/models.py:1690
 msgid "Translated Image"
-msgstr ""
+msgstr "Imagen traducida"
 
 #: ippc/models.py:1691
 msgid "Translated Images"
-msgstr ""
+msgstr "Imágenes traducidas"
 
 #: ippc/models.py:1699
 msgid "Translated Publication Library"
-msgstr ""
+msgstr "Biblioteca de publicaciones traducida"
 
 #: ippc/models.py:1700
 msgid "Translated Publication Libraries"
-msgstr ""
+msgstr "Bibliotecas traducidas de publicaciones "
 
 #: ippc/views.py:581
 msgid "Successfully created pest report."
-msgstr ""
+msgstr "Informe sobre plagas elaborado correctamente."
 
 #: ippc/views.py:748
 msgid "Profile updated"
-msgstr ""
+msgstr "Perfil actualizado"
 
 #: ippc/views.py:753
 #: ippc/templates/accounts/account_contactpoint_details.html:10
@@ -1476,125 +1477,125 @@ msgstr ""
 #: ippc/templates/accounts/account_profile_details.html:6
 #: ippc/templates/accounts/account_user_details.html:7
 msgid "Update Profile"
-msgstr ""
+msgstr "Actualizar el perfil"
 
 #: ippc/views.py:837
 msgid "Successfully created Reporting obligation."
-msgstr ""
+msgstr "Obligación de presentación de informes correcta."
 
 #: ippc/views.py:914
 msgid "Successfully updated Reporting obligation."
-msgstr ""
+msgstr "Obligación de presentación de informes correctamente actualizada."
 
 #: ippc/views.py:1021
 msgid "Successfully added Event reporting."
-msgstr ""
+msgstr "Informe de acontecimiento correctamente añadido."
 
 #: ippc/views.py:1101
 msgid "Successfully updated Event reporting."
-msgstr ""
+msgstr "Informe de acontecimiento correctamente actualizado."
 
 #: ippc/views.py:1185
 msgid "Successfully added Draft Protocol."
-msgstr ""
+msgstr "Proyecto de protocolo correctamente añadido."
 
 #: ippc/views.py:1222 ippc/views.py:1290
 msgid "Successfully updated DraftProtocol."
-msgstr ""
+msgstr "Proyecto de protocolo actualizado correctamente."
 
 #: ippc/views.py:1257
 msgid "Successfully added Comment."
-msgstr ""
+msgstr "Observación correctamente añadida."
 
 #: ippc/views.py:1375 ippc/views.py:1517
 msgid "Successfully added Website."
-msgstr ""
+msgstr "Sitio web correctamente añadido."
 
 #: ippc/views.py:1438 ippc/views.py:1580
 msgid "Successfully updated Website."
-msgstr ""
+msgstr "Sitio web correctamente actualizado."
 
 #: ippc/views.py:1682 ippc/views.py:1861
 msgid "Successfully added publication."
-msgstr ""
+msgstr "Publicación correctamente añadida."
 
 #: ippc/views.py:1748 ippc/views.py:1926 ippc/views.py:2681
 msgid "Successfully updated publication."
-msgstr ""
+msgstr "Publicación actualizada."
 
 #: ippc/views.py:2033
 msgid "Successfully created PestFreeArea."
-msgstr ""
+msgstr "Área libre de plagas correctamente elaborada."
 
 #: ippc/views.py:2218
 msgid "Successfully created implementationispm."
-msgstr ""
+msgstr "Aplicación de NIMF correctamente elaborada."
 
 #: ippc/views.py:2395 ippc/views.py:2545
 msgid "Successfully created news."
-msgstr ""
+msgstr "Noticia correctamente elaborada."
 
 #: ippc/views.py:3321
 msgid "Successfully created Poll."
-msgstr ""
+msgstr "Encuesta correctamente elaborada."
 
 #: ippc/views.py:3482
 msgid "Email  sent."
-msgstr ""
+msgstr "Correo electrónico enviado."
 
 #: ippc/templates/base.html:282
 msgid "IPPC on Social Media:"
-msgstr ""
+msgstr "La CIPF en las redes sociales:"
 
 #: ippc/templates/base.html:287 ippc/templates/ocs/base_ocs.html:179
 msgid "The IPPC Secretariat is hosted &amp; provided by"
-msgstr ""
+msgstr "La Secretaría de la CIPF tiene sede en y está patrocinada por la"
 
 #: ippc/templates/base.html:288 ippc/templates/ocs/base_ocs.html:179
 msgid "Food and Agriculture Organization Logo"
-msgstr ""
+msgstr "Organización de las Naciones Unidas para la Agricultura y la Alimentación logotipo"
 
 #: ippc/templates/base.html:290
 msgid "Copyright & Disclaimer"
-msgstr ""
+msgstr "Derechos de autor y cláusula de exención de responsabilidades"
 
 #: ippc/templates/colophon.html:4 ippc/templates/colophon.html.py:7
 #: ippc/templates/colophon.html:11
 msgid "Colophon"
-msgstr ""
+msgstr "Colofón"
 
 #: ippc/templates/contact.html:4 ippc/templates/contact.html.py:8
 #: ippc/templates/thankyou.html:4 ippc/templates/includes/user_panel.html:4
 msgid "Contact"
-msgstr ""
+msgstr "Contacto"
 
 #: ippc/templates/contact.html:12
 msgid "Contact IPPC"
-msgstr ""
+msgstr "Comuníquese con la CIPF"
 
 #: ippc/templates/index.html:4
 msgid "IPPC"
-msgstr ""
+msgstr "CIPF"
 
 #: ippc/templates/index.html:8
 msgid "Home: Plant Protection News"
-msgstr ""
+msgstr "Inicio: Noticias sobre protección vegetal"
 
 #: ippc/templates/index.html:35
 msgid "ago"
-msgstr ""
+msgstr "hace"
 
 #: ippc/templates/index.html:51
 msgid "See All News"
-msgstr ""
+msgstr "Ver todas las noticias"
 
 #: ippc/templates/index.html:59
 msgid "Information For…"
-msgstr ""
+msgstr "Información para"
 
 #: ippc/templates/index.html:76
 msgid "About"
-msgstr ""
+msgstr "Acerca de"
 
 #: ippc/templates/index.html:77
 msgid ""
@@ -1607,13 +1608,16 @@ msgid ""
 "secretariat\">Secretariat</a> of the IPPC is provided by the <a href="
 "\"http://fao.org\">Food and Agriculture Organization of the United Nations</"
 "a>. See our <a href=\"/media-kit\">Media Kit</a>."
+""
 msgstr ""
+"La Convención Internacional de Protección Fitosanitaria (CIPF) es <a href='/es/core-activities/governance/convention-text/'>un acuerdo internacional</a> sobre salud de las plantas que actualmente cuenta con <a href='http://www.fao.org/fileadmin/user_upload/legal/docs/4_004s-e.pdf\'>181 signatarios</a>. Su objetivo es proteger las plantas cultivadas y silvestres previniendo la introducción y propagación de plagas.  La Organización de las Naciones Unidas para la Alimentación y la Agricultura proporciona la <a href='/about/secretariat'>Secretaría</a> de la CIPF. Consulte nuestro <a href='media-kit'>Kit de medios</a>."
+""
 
 #: ippc/templates/index.html:80
 msgid ""
 "<a href=\"http://us10.campaign-archive1.com/home/?"
 "u=fc3d4d92d71f2fa693910c666&id=bf810c0be2\" title=\"See prior editions."
-"\">Newsletter"
+"\">Boletín"
 msgstr ""
 
 #: ippc/templates/index.html:81
@@ -1627,55 +1631,59 @@ msgid ""
 "u=fc3d4d92d71f2fa693910c666&id=bf810c0be2\">see prior editions</a> and <a "
 "href=\"mailto:jeremy.cherfas@fao.org\" title=\"Open your email client."
 "\">send content suggestions</a>."
-msgstr ""
+msgstr "La Secretaría de la CIPF tiene interés en mantener a las personas informadas y en permitir a los lectores presentar temas de interés. Cada mes se distribuye un boletín además de otras ediciones especiales en algunas ocasiones. <a class=\"btn btn-small btn-success\" "
+"href=\"http://ippc.us10.list-manage.com/subscribe?"
+"u=fc3d4d92d71f2fa693910c666&id=bf810c0be2\">Suscríbase</a>, ver <a href=\"http://us10.campaign-archive1.com/home/?"
+"u=fc3d4d92d71f2fa693910c666&id=bf810c0be2\">las ediciones anteriores</a> del boletín y <a "
+"href=\"mailto:jeremy.cherfas@fao.org\">envíe recomendaciones sobre el contenido</a>"
 
 #: ippc/templates/index.html:85
 msgid "Core Activities"
-msgstr ""
+msgstr "Actividades básicas"
 
 #: ippc/templates/index.html:88 schedule/models/events.py:37
 msgid "Governance"
-msgstr ""
+msgstr "Gobernanza"
 
 #: ippc/templates/index.html:89
 msgid "Commission (CPM)"
-msgstr ""
+msgstr "Comisión (CMF)"
 
 #: ippc/templates/index.html:90
 msgid "Standard setting"
-msgstr ""
+msgstr "Normatividad"
 
 #: ippc/templates/index.html:91
 msgid "Member consultation on draft ISPMs"
-msgstr ""
+msgstr "Consulta de miembros sobre los proyectos de NIMF"
 
 #: ippc/templates/index.html:92
 msgid "Substantial Concerns Commenting Period (SCCP) on draft ISPMs"
-msgstr ""
+msgstr "Período para presentar observaciones sustanciales sobre los proyectos de NIMF"
 
 #: ippc/templates/index.html:93
 msgid "Member consultation on draft DPs"
-msgstr ""
+msgstr "Consulta de miembros sobre los proyectos de PD"
 
 #: ippc/templates/index.html:94
 msgid "Adopted Standards"
-msgstr ""
+msgstr "Normas aprobadas"
 
 #: ippc/templates/index.html:95 ippc/templates/countries/country_page.html:78
 msgid "National Reporting Obligations"
-msgstr ""
+msgstr "Obligaciones nacionales de presentación de información"
 
 #: ippc/templates/index.html:96
 msgid "Capacity development"
-msgstr ""
+msgstr "Creación de capacidad"
 
 #: ippc/templates/index.html:97
 msgid "Dispute settlement"
-msgstr ""
+msgstr "Solución de diferencias: "
 
 #: ippc/templates/index.html:98
 msgid "ePhyto"
-msgstr ""
+msgstr "ePhyto"
 
 #: ippc/templates/index.html:104
 #: ippc/templates/countries/cnpublication_create.html:10
@@ -1700,41 +1708,41 @@ msgstr ""
 #: ippc/templates/schedule/create_event.html:26
 #: ippc/templates/schedule/event.html:15
 msgid "Countries"
-msgstr ""
+msgstr "Países"
 
 #: ippc/templates/index.html:107
 msgid "<a href=\"/countries/all/list-countries/\">Complete List of Countries"
-msgstr ""
+msgstr "<a href=\"/countries/all/list-countries/\">Lista completa de los países"
 
 #: ippc/templates/index.html:108
 msgid "<a href=\"/countries/all/contactpoints\">List of Contact Points"
-msgstr ""
+msgstr "<a href=\"/countries/all/contactpoints\">Lista de puntos de contacto"
 
 #: ippc/templates/index.html:109
 msgid " <a href=\"/countries/all/pestreport\">Pest Reports"
-msgstr ""
+msgstr " <a href=\"/countries/all/pestreport\">Informes de plagas"
 
 #: ippc/templates/index.html:110
-msgid "<a href=\"/countries/all/legislation\">Legislation "
-msgstr ""
+msgid "<a href=\"/countries/all/legislation\">Legislation"
+msgstr "<a href=\"/countries/all/legislation\">Legislación"
 
 #: ippc/templates/index.html:111
 msgid "<a href=\"/countries/all/regulatedpests\">List of regulated pests "
-msgstr ""
+msgstr "Lista de plagas reglamentadas"
 
 #: ippc/templates/index.html:116
 msgid "IRSS Helpdesk"
-msgstr ""
+msgstr "Ayuda para el IRSS"
 
 #: ippc/templates/legal.html:4 ippc/templates/legal.html.py:8
 #: ippc/templates/legal.html:12
 msgid "Legal"
-msgstr ""
+msgstr "Jurídico"
 
 #: ippc/templates/search_results.html:5 ippc/templates/search_results.html:6
 #: ippc/templates/search_results.html:13
 msgid "Search Results"
-msgstr ""
+msgstr "Resultados de la búsqueda"
 
 #: ippc/templates/search_results.html:10
 #: ippc/templates/countries/cnpublication_detail.html:7
@@ -1790,14 +1798,14 @@ msgstr ""
 #: ippc/templates/schedule/create_event.html:15
 #: ippc/templates/schedule/event.html:9
 msgid "Home"
-msgstr ""
+msgstr "Inicio"
 
 #: ippc/templates/search_results.html:20
 #, python-format
 msgid ""
 "\n"
 "No results were found in %(search_type)s matching your query: %(query)s\n"
-msgstr ""
+msgstr "No se encontraron resultados coincidentes con %(search_type)s su búsqueda: %(query)s\n"
 
 #: ippc/templates/search_results.html:24
 #, python-format
@@ -1805,7 +1813,7 @@ msgid ""
 "\n"
 "Showing %(start)s to %(end)s of %(total)s results in %(search_type)s "
 "matching your query: %(query)s\n"
-msgstr ""
+msgstr "De %(start)s a %(end)s del %(total)s de resultados coincidentes con su búsqueda:"
 
 #: ippc/templates/sitemap.html:4 ippc/templates/sitemap.html.py:8
 #: ippc/templates/includes/user_panel.html:4
@@ -1814,21 +1822,21 @@ msgstr "Mapa del Sitio"
 
 #: ippc/templates/sitemap.html:16
 msgid "IPPC Sitemap"
-msgstr "Mapa del Sitio"
+msgstr "Mapa del sitio de la CIPF "
 
 #: ippc/templates/thankyou.html:8
 msgid "Contact: Message Sent"
-msgstr ""
+msgstr "Contacto: Mensaje enviado"
 
 #: ippc/templates/thankyou.html:12
 msgid "Your message has been sent"
-msgstr ""
+msgstr "Su mensaje ha sido enviado"
 
 #: ippc/templates/thankyou.html:13
 msgid ""
 "Thank you for contacting the IPPC Secretariat. We will get back to you as "
 "soon as we can."
-msgstr ""
+msgstr "Muchas gracias por comunicarse con la Secretaría de la CIPF. Nos pondremos en contacto con usted tan pronto como nos sea posible."
 
 #: ippc/templates/accounts/account_contactpoint_details.html:23
 #: ippc/templates/accounts/account_editor_details.html:37
@@ -1836,7 +1844,7 @@ msgstr ""
 #: ippc/templates/accounts/account_profile_details.html:17
 #: ippc/templates/accounts/account_user_details.html:22
 msgid "Username"
-msgstr ""
+msgstr "Usuario"
 
 #: ippc/templates/accounts/account_contactpoint_details.html:29
 #: ippc/templates/accounts/account_editor_details.html:51
@@ -1847,7 +1855,7 @@ msgstr ""
 #: ippc/templates/email/account_approve.txt:5
 #: ippc/templates/partners/partners_page.html:60
 msgid "Name"
-msgstr ""
+msgstr "Nombre"
 
 #: ippc/templates/accounts/account_contactpoint_details.html:77
 #: ippc/templates/accounts/account_editor_details.html:41
@@ -1859,12 +1867,12 @@ msgstr ""
 #: ippc/templates/email/account_approve.txt:6
 #: ippc/templates/emailutility/emailutility_detail.html:4
 msgid "Email"
-msgstr ""
+msgstr "Correo electrónico"
 
 #: ippc/templates/accounts/account_contactpoint_details.html:87
 #: ippc/templates/accounts/account_user_details.html:122
 msgid "Preferred languages"
-msgstr ""
+msgstr "Idiomas preferidos"
 
 #: ippc/templates/accounts/account_contactpoint_details.html:105
 #: ippc/templates/accounts/account_editor_details.html:61
@@ -1889,83 +1897,83 @@ msgstr ""
 
 #: ippc/templates/accounts/account_contactpoint_details.html:126
 msgid "Click to display"
-msgstr ""
+msgstr "Haga clic para mostrar"
 
 #: ippc/templates/accounts/account_contactpoint_details.html:134
 #: ippc/templates/accounts/account_editor_details.html:93
 #: ippc/templates/accounts/account_profile_details.html:76
 msgid "IPPC Country"
-msgstr ""
+msgstr "País de la CIPF"
 
 #: ippc/templates/accounts/account_form.html:43
 msgid "Forgot your password"
-msgstr ""
+msgstr "¿Olvidó su contraseña?"
 
 #: ippc/templates/accounts/account_login.html:7
 msgid ""
 "You are already logged in, but do not have permission to do anything in this "
 "page."
-msgstr ""
+msgstr "Usted ya inició sesión pero no tiene autorización para intervenir en esta página."
 
 #: ippc/templates/accounts/account_password_reset.html:10
 msgid ""
 "Enter your username or email address and you'll receive an email with a link "
 "you need to click in order to log in and change your password."
-msgstr ""
+msgstr "Introduzca su nombre de usuario o dirección de correo electrónico y recibirá un mensaje de correo electrónico con un enlace en el que tienen que hacer clic para iniciar sesión y cambiar su contraseña."
 
 #: ippc/templates/accounts/account_signup.html:18
 msgid ""
 "After creating a user they'll receive an email with a link to click in order "
 "to activate their account."
-msgstr ""
+msgstr "Después de crear un usuario recibirán un correo electrónico con un enlace para activar su cuenta."
 
 #: ippc/templates/accounts/account_user_details.html:5
 msgid "Update Profile and add a picture."
-msgstr ""
+msgstr "Actualice el perfil y añada una fotografía."
 
 #: ippc/templates/accounts/account_user_details.html:37
 msgid "Contact type"
-msgstr ""
+msgstr "Tipo de contacto"
 
 #: ippc/templates/accounts/account_user_details.html:146
 msgid "Expertise"
-msgstr ""
+msgstr "Experiencia"
 
 #: ippc/templates/accounts/includes/user_panel.html:9
 msgid "Go to your country page to upload or update information."
-msgstr ""
+msgstr "Vaya a la página de su país para cargar o actualizar la información."
 
 #: ippc/templates/accounts/includes/user_panel.html:16
 msgid "See your IPPC user profile, including contact information."
-msgstr ""
+msgstr "Vea su perfil de usuario de la CIPF con la información de contacto."
 
 #: ippc/templates/accounts/includes/user_panel.html:25
 #: ippc/templates/admin/includes_grappelli/header.html:34
 #: ippc/templates/includes/editable_toolbar.html:11
 msgid "Log out"
-msgstr ""
+msgstr "Cerrar la sesión"
 
 #: ippc/templates/accounts/includes/user_panel.html:28
 msgid "Log in"
-msgstr ""
+msgstr "Iniciar sesión en"
 
 #: ippc/templates/admin/includes_grappelli/header.html:17
 msgid "Documentation"
-msgstr ""
+msgstr "Documentación"
 
 #: ippc/templates/admin/includes_grappelli/header.html:26
 msgid "Change password"
-msgstr ""
+msgstr "Cambiar la contraseña"
 
 #: ippc/templates/blog/blog_post_list.html:4
 #: ippc/templates/blog/blog_post_list.html:23
 msgid "Blog"
-msgstr ""
+msgstr "Blog"
 
 #: ippc/templates/countries/cnpublication_create.html:4
 #: ippc/templates/partners/p_publication_create.html:4
 msgid "New Publication"
-msgstr ""
+msgstr "Nueva publicación"
 
 #: ippc/templates/countries/cnpublication_create.html:23
 #: ippc/templates/countries/countrynews_create.html:23
@@ -1981,7 +1989,7 @@ msgstr ""
 #: ippc/templates/partners/website_create.html:14
 #: ippc/templates/polls/poll_create.html:13
 msgid "Create New"
-msgstr ""
+msgstr "Crear nuevo"
 
 #: ippc/templates/countries/cnpublication_create.html:35
 #: ippc/templates/countries/cnpublication_edit.html:39
@@ -2011,12 +2019,12 @@ msgstr ""
 #: ippc/templates/polls/poll_create.html:25
 #: ippc/templates/polls/poll_edit.html:26
 msgid "« Cancel and go back"
-msgstr ""
+msgstr "Cancelar y volver"
 
 #: ippc/templates/countries/cnpublication_create.html:38
 #: ippc/templates/partners/p_publication_create.html:32
 msgid "Create New Publication for"
-msgstr ""
+msgstr "Crear nueva publicación para"
 
 #: ippc/templates/countries/cnpublication_create.html:45
 #: ippc/templates/countries/cnpublication_edit.html:50
@@ -2055,12 +2063,12 @@ msgstr ""
 #: schedule/templates/schedule/edit_occurrence.html:14
 #: schedule/templates/schedule/occurrence.html:18
 msgid "Cancel"
-msgstr ""
+msgstr "Cancelar"
 
 #: ippc/templates/countries/cnpublication_detail.html:4
 #: ippc/templates/partners/p_publication_detail.html:4
 msgid "Latest Publications"
-msgstr ""
+msgstr "Últimas publicaciones"
 
 #: ippc/templates/countries/cnpublication_detail.html:16
 #: ippc/templates/countries/countrynews_detail.html:16
@@ -2071,17 +2079,17 @@ msgstr ""
 #: ippc/templates/emailutility/emailutility_detail.html:15
 #: ippc/templates/schedule/event.html:43
 msgid "Back to"
-msgstr ""
+msgstr "Volver a"
 
 #: ippc/templates/countries/cnpublication_detail.html:43
 #: ippc/templates/partners/p_publication_detail.html:42
 msgid "Agenda number"
-msgstr ""
+msgstr "Número del programa"
 
 #: ippc/templates/countries/cnpublication_detail.html:47
 #: ippc/templates/partners/p_publication_detail.html:46
 msgid "Document number"
-msgstr ""
+msgstr "Número de documento"
 
 #: ippc/templates/countries/cnpublication_detail.html:66
 #: ippc/templates/countries/countrynews_detail.html:72
@@ -2096,7 +2104,7 @@ msgstr ""
 #: ippc/templates/partners/website_detail.html:64
 #: ippc/templates/schedule/event.html:138
 msgid "Issue keywords"
-msgstr ""
+msgstr "Palabras claves del tema"
 
 #: ippc/templates/countries/cnpublication_detail.html:79
 #: ippc/templates/countries/countrynews_detail.html:85
@@ -2109,13 +2117,13 @@ msgstr ""
 #: ippc/templates/partners/partnersnews_detail.html:85
 #: ippc/templates/partners/website_detail.html:77
 msgid "Commodity keywords"
-msgstr ""
+msgstr "Palabras clave del producto"
 
 #: ippc/templates/countries/cnpublication_edit.html:4
 #: ippc/templates/pages/publication_edit.html:4
 #: ippc/templates/partners/p_publication_edit.html:4
 msgid "Edit Publication"
-msgstr ""
+msgstr "Editar publicación"
 
 #: ippc/templates/countries/cnpublication_edit.html:27
 #: ippc/templates/countries/cnpublication_edit.html:43
@@ -2145,7 +2153,7 @@ msgstr ""
 #: ippc/templates/polls/poll_edit.html:13
 #: ippc/templates/polls/poll_edit.html:29
 msgid "Editing"
-msgstr ""
+msgstr "Edición"
 
 #: ippc/templates/countries/cnpublication_edit.html:43
 #: ippc/templates/countries/countrynews_edit.html:40
@@ -2162,13 +2170,13 @@ msgstr ""
 #: ippc/templates/partners/website_edit.html:32
 #: ippc/templates/polls/poll_edit.html:29
 msgid "Last updated on"
-msgstr ""
+msgstr "Última actualización el"
 
 #: ippc/templates/countries/cnpublication_edit.html:50
 #: ippc/templates/pages/publication_edit.html:44
 #: ippc/templates/partners/p_publication_edit.html:44
 msgid "Update Publication"
-msgstr ""
+msgstr "Actualizar publicación "
 
 #: ippc/templates/countries/cnpublication_edit.html:50
 #: ippc/templates/countries/countrynews_edit.html:47
@@ -2185,7 +2193,7 @@ msgstr ""
 #: ippc/templates/partners/website_edit.html:39
 #: ippc/templates/polls/poll_edit.html:35
 msgid "or"
-msgstr ""
+msgstr "o"
 
 #: ippc/templates/countries/cnpublication_form.html:5
 #: ippc/templates/countries/countrynews_form.html:5
@@ -2203,7 +2211,7 @@ msgstr ""
 #: ippc/templates/partners/website_form.html:5
 #: ippc/templates/polls/poll_form.html:8
 msgid "Please correct the errors below."
-msgstr ""
+msgstr "Sírvase corregir los siguientes errores."
 
 #: ippc/templates/countries/cnpublication_list.html:41
 #: ippc/templates/countries/contactpointextractor.html:33
@@ -2229,22 +2237,22 @@ msgstr ""
 #: ippc/templates/pages/publication_list.html:32
 #: ippc/templates/schedule/calendar_cn.html:37
 msgid "« Go back"
-msgstr ""
+msgstr "Volver"
 
 #: ippc/templates/countries/cnpublication_list.html:44
 #: ippc/templates/partners/partners_page.html:75
 msgid "Add new publication"
-msgstr ""
+msgstr "Agregar nueva publicación"
 
 #: ippc/templates/countries/cnpublication_list.html:46
 #: ippc/templates/countries/pest_report_list.html:46
 #: ippc/templates/countries/website_list.html:46
 msgid "See hidden pest reports"
-msgstr ""
+msgstr "Ver informes ocultos sobre plagas "
 
 #: ippc/templates/countries/cnpublication_list.html:52
 msgid "Publications from"
-msgstr ""
+msgstr "Publicaciones de"
 
 #: ippc/templates/countries/cnpublication_list.html:66
 #: ippc/templates/countries/contactpointextractor.html:237
@@ -2255,7 +2263,7 @@ msgstr ""
 #: ippc/templates/countries/pfa_list.html:66
 #: ippc/templates/countries/website_list.html:66
 msgid "Last updated"
-msgstr ""
+msgstr "Última actualización "
 
 #: ippc/templates/countries/cnpublication_list.html:97
 #: ippc/templates/countries/countrynews_list.html:90
@@ -2269,7 +2277,7 @@ msgstr ""
 #: ippc/templates/includes/pagination.html:8
 #: ippc/templates/pages/publication_list.html:72
 msgid "Page"
-msgstr ""
+msgstr "Página"
 
 #: ippc/templates/countries/cnpublication_list.html:97
 #: ippc/templates/countries/countrynews_list.html:90
@@ -2283,22 +2291,22 @@ msgstr ""
 #: ippc/templates/includes/pagination.html:8
 #: ippc/templates/pages/publication_list.html:72
 msgid "of"
-msgstr ""
+msgstr "de"
 
 #: ippc/templates/countries/contactpointextractor.html:8
 #: ippc/templates/countries/countries_advsearchresults.html:8
 msgid "Search results for: "
-msgstr ""
+msgstr "Resultados de la búsqueda de:"
 
 #: ippc/templates/countries/contactpointextractor.html:21
 #: ippc/templates/countries/countries_advsearchresults.html:21
 msgid "list"
-msgstr ""
+msgstr "lista"
 
 #: ippc/templates/countries/contactpointextractor.html:37
 #: ippc/templates/countries/countries_advsearchresults.html:37
 msgid "Results for: "
-msgstr ""
+msgstr "Resultados de: "
 
 #: ippc/templates/countries/contactpointextractor.html:235
 #: ippc/templates/countries/contactpointextractor.html:270
@@ -2308,54 +2316,54 @@ msgstr ""
 #: ippc/templates/countries/countries_advsearchresults.html:323
 #: ippc/templates/countries/pest_report_detail.html:71
 msgid "Country"
-msgstr ""
+msgstr "País"
 
 #: ippc/templates/countries/contactpointextractor.html:236
 #: ippc/templates/countries/countries_advsearchresults.html:236
 msgid "Report number"
-msgstr ""
+msgstr "Número de informe"
 
 #: ippc/templates/countries/contactpointextractor.html:238
 #: ippc/templates/countries/countries_advsearchresults.html:238
 #: ippc/templates/countries/pest_report_list.html:66
 msgid "Identity of Pest"
-msgstr ""
+msgstr "Plaga identificada"
 
 #: ippc/templates/countries/contactpointextractor.html:239
 #: ippc/templates/countries/countries_advsearchresults.html:239
 msgid "Host(s) or Article(s)"
-msgstr ""
+msgstr "Huésped(es) o artículo(s)"
 
 #: ippc/templates/countries/contactpointextractor.html:240
 #: ippc/templates/countries/countries_advsearchresults.html:240
 msgid "Status of pest (under ISPM No.8)"
-msgstr ""
+msgstr "Estado de la plaga (de acuerdo a la NIMF 8)"
 
 #: ippc/templates/countries/contactpointextractor.html:271
 #: ippc/templates/countries/countries_advsearchresults.html:275
 msgid "Type of contact"
-msgstr ""
+msgstr "Tipo de contacto"
 
 #: ippc/templates/countries/contactpointextractor.html:276
 #: ippc/templates/countries/countries_advsearchresults.html:280
 msgid "Alternate E-mail"
-msgstr ""
+msgstr "Otra dirección de correo electrónico"
 
 #: ippc/templates/countries/contactpointextractor.html:321
 #: ippc/templates/countries/countries_advsearchresults.html:325
 #: ippc/templates/countries/countrynews_list.html:59
 #: ippc/templates/partners/partners_page.html:95
 msgid "Date Published"
-msgstr ""
+msgstr "Fecha de publicación"
 
 #: ippc/templates/countries/countries_list.html:5
 #: ippc/templates/countries/countries_list.html:26
 msgid "Countries List"
-msgstr ""
+msgstr "Lista de países"
 
 #: ippc/templates/countries/countries_list.html:39
 msgid "List of Countries"
-msgstr ""
+msgstr "Lista de países"
 
 #: ippc/templates/countries/countries_regionspercentage.html:5
 #: ippc/templates/countries/countries_regionspercentage.html:18
@@ -2365,19 +2373,19 @@ msgstr ""
 #: ippc/templates/countries/countries_statstotalreports.html:5
 #: ippc/templates/countries/countries_totalusers.html:5
 msgid "Countries Stats"
-msgstr ""
+msgstr "Estadísticas de los países"
 
 #: ippc/templates/countries/countries_regionspercentage.html:34
 msgid "The percentage of countries per region with reporting information"
-msgstr ""
+msgstr "El porcentaje de países por región con información"
 
 #: ippc/templates/countries/countries_regionsusers.html:22
 msgid "Countries Statistics: users per region"
-msgstr ""
+msgstr "Estadísticas de los países: usuarios por región"
 
 #: ippc/templates/countries/countries_regionsusers.html:193
 msgid "The percentage of users per region"
-msgstr ""
+msgstr "El porcentaje de usuarios por región"
 
 #: ippc/templates/countries/countries_regionsusers.html:200
 msgid "Contracting parties"
@@ -2393,23 +2401,23 @@ msgstr ""
 
 #: ippc/templates/countries/countries_statsreports.html:34
 msgid "Number of IPP pages per country for each reporting category"
-msgstr ""
+msgstr "Número de páginas del PFI por país para cada categoría de informes"
 
 #: ippc/templates/countries/countries_statstotalreports.html:22
 msgid "Countries Statistics: total reports"
-msgstr ""
+msgstr "Estadísticas de los países: total de informes"
 
 #: ippc/templates/countries/countries_statstotalreports.html:130
 msgid "Total number of IPP pages for each reporting category"
-msgstr ""
+msgstr "Número de páginas del PFI por país para cada categoría de informes"
 
 #: ippc/templates/countries/countries_totalusers.html:22
 msgid "Countries Statistics: Contact points "
-msgstr ""
+msgstr "Estadísticas de los países: Puntos de contacto"
 
 #: ippc/templates/countries/countries_totalusers.html:75
 msgid "Status of IPPC Contact Points"
-msgstr ""
+msgstr "Estado de los puntos de contactos de la CIPF"
 
 #: ippc/templates/countries/country_page.html:86
 #: ippc/templates/countries/country_page.html:93
@@ -2424,15 +2432,15 @@ msgstr ""
 #: ippc/templates/countries/implementationispm_list.html:44
 #: ippc/templates/countries/reporting_obligation_list.html:61
 msgid "Add new"
-msgstr ""
+msgstr "Agregar nuevo"
 
 #: ippc/templates/countries/country_page.html:135
-msgid " Related Official Information"
-msgstr ""
+msgid "Related Official Information"
+msgstr "Información oficial relacionada"
 
 #: ippc/templates/countries/country_page.html:151
 msgid "News Item"
-msgstr ""
+msgstr "Noticia"
 
 #: ippc/templates/countries/country_page.html:159
 #: ippc/templates/schedule/calendar_cn.html:7
@@ -2440,24 +2448,24 @@ msgstr ""
 #: ippc/templates/schedule/create_event.html:36
 #: ippc/templates/schedule/event.html:25
 msgid "Events"
-msgstr ""
+msgstr "Acontecimientos"
 
 #: ippc/templates/countries/country_page.html:196
 msgid "FAO Country Profile Data"
-msgstr ""
+msgstr "Datos de la FAO sobre el perfil del país"
 
 #: ippc/templates/countries/country_related_info.html:23
 msgid "Related informations"
-msgstr ""
+msgstr "Información relacionada"
 
 #: ippc/templates/countries/country_selector.html:5
 msgid "Go to Country"
-msgstr ""
+msgstr "Ir al País"
 
 #: ippc/templates/countries/countrynews_create.html:4
 #: ippc/templates/partners/partnersnews_create.html:4
 msgid "New news"
-msgstr ""
+msgstr "Nuevas noticias"
 
 #: ippc/templates/countries/countrynews_create.html:20
 #: ippc/templates/countries/countrynews_detail.html:16
@@ -2468,23 +2476,23 @@ msgstr ""
 #: news/models.py:33 news/templates/news/news_post_list.html:4
 #: news/templates/news/news_post_list.html:23
 msgid "News"
-msgstr ""
+msgstr "Noticias"
 
 #: ippc/templates/countries/countrynews_create.html:38
 #: ippc/templates/partners/partnersnews_create.html:31
 msgid "Create New News for"
-msgstr ""
+msgstr "Crear nueva noticia para"
 
 #: ippc/templates/countries/countrynews_detail.html:4
 #: ippc/templates/partners/partnersnews_detail.html:4
 msgid "Latest News"
-msgstr ""
+msgstr "Últimas noticias"
 
 #: ippc/templates/countries/countrynews_detail.html:53
 #: ippc/templates/countries/implementationispm_detail.html:104
 #: ippc/templates/partners/partnersnews_detail.html:53
 msgid "Description of the mark"
-msgstr ""
+msgstr "Descripción de la marca"
 
 #: ippc/templates/countries/countrynews_detail.html:65
 #: ippc/templates/countries/eventreporting_detail.html:75
@@ -2493,7 +2501,7 @@ msgstr ""
 #: ippc/templates/countries/pfa_detail.html:64
 #: ippc/templates/partners/partnersnews_detail.html:65
 msgid "Author"
-msgstr ""
+msgstr "Autor"
 
 #: ippc/templates/countries/countrynews_detail.html:95
 #: ippc/templates/countries/eventreporting_detail.html:109
@@ -2503,43 +2511,43 @@ msgstr ""
 #: ippc/templates/countries/reporting_obligation_detail.html:109
 #: ippc/templates/partners/partnersnews_detail.html:95
 msgid "Report files"
-msgstr ""
+msgstr "Archivos de informes"
 
 #: ippc/templates/countries/countrynews_edit.html:4
 msgid "Edit News"
-msgstr ""
+msgstr "Editar noticias"
 
 #: ippc/templates/countries/countrynews_edit.html:47
 #: ippc/templates/partners/partnersnews_edit.html:45
 msgid "Update News"
-msgstr ""
+msgstr "Actualizar noticias"
 
 #: ippc/templates/countries/countrynews_list.html:5
 #: ippc/templates/countries/countrynews_list.html:27
 msgid "news"
-msgstr ""
+msgstr "noticias"
 
 #: ippc/templates/countries/countrynews_list.html:42
 #: ippc/templates/partners/partners_page.html:78
 #: news/templates/news/includes/filter_panel.html:4
 msgid "Add new news"
-msgstr ""
+msgstr "Agregar nueva noticia"
 
 #: ippc/templates/countries/countrynews_list.html:50
 msgid "News from"
-msgstr ""
+msgstr "Noticias de"
 
 #: ippc/templates/countries/event_reporting_create.html:4
 msgid "New Event Reporting"
-msgstr ""
+msgstr "Información sobre nuevos acontecimientos"
 
 #: ippc/templates/countries/event_reporting_create.html:38
 msgid "Create New Event Reporting for"
-msgstr ""
+msgstr "Crear nuevo informe de acontecimientos para"
 
 #: ippc/templates/countries/event_reporting_edit.html:4
 msgid "Edit Event Reporting"
-msgstr ""
+msgstr "Editar información de acontecimientos"
 
 #: ippc/templates/countries/event_reporting_edit.html:49
 #: ippc/templates/countries/implementationispm_edit.html:49
@@ -2547,16 +2555,16 @@ msgstr ""
 #: ippc/templates/countries/pfa_edit.html:49
 #: ippc/templates/countries/reporting_obligation_edit.html:49
 msgid "Update Report"
-msgstr ""
+msgstr "Actualizar informe"
 
 #: ippc/templates/countries/event_reporting_list.html:5
 msgid "Event Reports"
-msgstr ""
+msgstr "Informes de acontecimientos"
 
 #: ippc/templates/countries/event_reporting_list.html:49
 #: ippc/templates/countries/reporting_obligation_list.html:50
-msgid "  from"
-msgstr ""
+msgid "from"
+msgstr "de"
 
 #: ippc/templates/countries/event_reporting_list.html:71
 #: ippc/templates/countries/eventreporting_detail.html:54
@@ -2565,7 +2573,7 @@ msgstr ""
 #: ippc/templates/countries/reporting_obligation_detail.html:51
 #: ippc/templates/countries/reporting_obligation_list.html:69
 msgid "Publication Date"
-msgstr ""
+msgstr "Fecha de publicación"
 
 #: ippc/templates/countries/event_reporting_list.html:72
 #: ippc/templates/countries/eventreporting_detail.html:59
@@ -2574,329 +2582,329 @@ msgstr ""
 #: ippc/templates/countries/reporting_obligation_detail.html:56
 #: ippc/templates/countries/reporting_obligation_list.html:70
 msgid "Last Updated"
-msgstr ""
+msgstr "Última actualización"
 
 #: ippc/templates/countries/eventreporting_detail.html:4
 msgid "Latest Event Reportings"
-msgstr ""
+msgstr "Acontecimientos más recientes "
 
 #: ippc/templates/countries/eventreporting_detail.html:19
 #: ippc/templates/countries/reporting_obligation_detail.html:18
 msgid "Go Back"
-msgstr ""
+msgstr "Volver"
 
 #: ippc/templates/countries/implementationispm_create.html:4
 msgid "New implementation ispm"
-msgstr ""
+msgstr "Nueva NIMF de aplicación"
 
 #: ippc/templates/countries/implementationispm_create.html:20
 msgid "Implementation for ISPM 15"
-msgstr ""
+msgstr "Aplicación de la NIMF 15"
 
 #: ippc/templates/countries/implementationispm_create.html:38
 msgid "Create New Implementation for ISPM 15"
-msgstr ""
+msgstr "Crear una nueva aplicación de la NIMF 15"
 
 #: ippc/templates/countries/implementationispm_detail.html:4
 msgid "Latest Implementation of ISPM 15"
-msgstr ""
+msgstr "Última aplicación de la NIMF 15"
 
 #: ippc/templates/countries/implementationispm_detail.html:16
 #: ippc/templates/countries/implementationispm_list.html:29
 #: ippc/templates/countries/implementationispm_list.html:52
 msgid "Implementation of ISPM 15"
-msgstr ""
+msgstr "Aplicación de la NIMF 15"
 
 #: ippc/templates/countries/implementationispm_detail.html:45
 msgid "Country implemented ISPM 15 for imports"
-msgstr ""
+msgstr "El país aplicó la NIMF 15 para las importaciones"
 
 #: ippc/templates/countries/implementationispm_detail.html:55
 #: ippc/templates/countries/implementationispm_detail.html:79
 msgid "Implementation version"
-msgstr ""
+msgstr "Versión de la aplicación"
 
 #: ippc/templates/countries/implementationispm_detail.html:69
 msgid "Country implemented ISPM 15 for exports"
-msgstr ""
+msgstr "El país aplicó la NIMF 15 para las exportaciones"
 
 #: ippc/templates/countries/implementationispm_detail.html:93
 msgid "The ISPM No.15 mark is registered as a trade mark"
-msgstr ""
+msgstr "La marca de la NIMF 15 es una marca registrada"
 
 #: ippc/templates/countries/implementationispm_detail.html:108
 msgid "Report file"
-msgstr ""
+msgstr "Archivo de informes"
 
 #: ippc/templates/countries/implementationispm_edit.html:4
 msgid "Edit Implementation of ISPM 15"
-msgstr ""
+msgstr "Editar la aplicación de la NIMF 15"
 
 #: ippc/templates/countries/implementationispm_edit.html:24
 msgid "Implementation of ISPM 15pm"
-msgstr ""
+msgstr "Aplicación de la NIMF 15"
 
 #: ippc/templates/countries/implementationispm_list.html:5
 msgid "implementation ispms"
-msgstr ""
+msgstr "aplicación de la NIMF 15"
 
 #: ippc/templates/countries/pest_report_create.html:4
 msgid "New Pest Report"
-msgstr ""
+msgstr "Nuevo informe sobre plagas"
 
 #: ippc/templates/countries/pest_report_create.html:45
 msgid "Create New Pest Report for"
-msgstr ""
+msgstr "Crear nuevo informe sobre plagas para"
 
 #: ippc/templates/countries/pest_report_detail.html:4
 msgid "Latest Pest Reports"
-msgstr ""
+msgstr "Informes más recientes sobre plagas"
 
 #: ippc/templates/countries/pest_report_detail.html:76
 msgid "Pest Id"
-msgstr ""
+msgstr "Plaga identificada"
 
 #: ippc/templates/countries/pest_report_detail.html:84
 msgid "Hosts"
-msgstr ""
+msgstr "Hospederos"
 
 #: ippc/templates/countries/pest_report_detail.html:107
 msgid "Summary"
-msgstr ""
+msgstr "Resumen"
 
 #: ippc/templates/countries/pest_report_detail.html:113
 msgid "Danger"
-msgstr ""
+msgstr "Peligro"
 
 #: ippc/templates/countries/pest_report_detail.html:118
 msgid "Contact for info"
-msgstr ""
+msgstr "Contacto para obtener más información"
 
 #: ippc/templates/countries/pest_report_edit.html:4
 msgid "Edit Pest Report"
-msgstr ""
+msgstr "Editar informe sobre plagas"
 
 #: ippc/templates/countries/pest_report_hidden_list.html:32
 msgid "Hidden Pest Reports"
-msgstr ""
+msgstr "Informes ocultos sobre plagas"
 
 #: ippc/templates/countries/pest_report_hidden_list.html:47
 #: ippc/templates/countries/pest_report_list.html:44
 msgid "Add new pest report"
-msgstr ""
+msgstr "Añadir nuevo informe sobre plagas"
 
 #: ippc/templates/countries/pest_report_hidden_list.html:57
 msgid "Hidden Pest Reports from"
-msgstr ""
+msgstr "Informes ocultos sobre plagas de"
 
 #: ippc/templates/countries/pest_report_hidden_list.html:58
 msgid ""
 "To publish a report click on its title, change Visibility field to Public "
 "and click Update Report."
-msgstr ""
+msgstr "Para publicar un informe haga clic en su título para cambiar la visibilidad al público y haga clic en Actualizar informe."
 
 #: ippc/templates/countries/pest_report_hidden_list.html:63
 #: ippc/templates/pages/publication_list.html:44
 msgid "Date Modified"
-msgstr ""
+msgstr "Fecha de modificación"
 
 #: ippc/templates/countries/pest_report_hidden_list.html:70
 msgid "Click to edit"
-msgstr ""
+msgstr "Haga clic en editar"
 
 #: ippc/templates/countries/pest_report_list.html:52
 msgid "Pest Reports from"
-msgstr ""
+msgstr "Informes sobre plagas de"
 
 #: ippc/templates/countries/pfa_create.html:4
 msgid "New Pest Free Area"
-msgstr ""
+msgstr "Nueva área libre de plagas"
 
 #: ippc/templates/countries/pfa_create.html:20
 #: ippc/templates/countries/pfa_edit.html:24
 msgid "Pest Free Area"
-msgstr ""
+msgstr "Área libre de plagas"
 
 #: ippc/templates/countries/pfa_create.html:38
 msgid "Create New Pest Free Area for"
-msgstr ""
+msgstr "Crear nueva área libre de plagas de"
 
 #: ippc/templates/countries/pfa_detail.html:4
 msgid "Latest Pest Free Areas"
-msgstr ""
+msgstr "Áreas más recientes libres de plagas"
 
 #: ippc/templates/countries/pfa_edit.html:4
 msgid "Edit Pest Free Area"
-msgstr ""
+msgstr "Editar área libre de plagas"
 
 #: ippc/templates/countries/pfa_list.html:44
 msgid "Add new pest free area"
-msgstr ""
+msgstr "Añadir nueva área libre de plagas"
 
 #: ippc/templates/countries/pfa_list.html:52
 msgid "Pest Free Areas from"
-msgstr ""
+msgstr "Áreas libres de plagas de"
 
 #: ippc/templates/countries/reporting_obligation_create.html:4
 msgid "New Reporting Obligations"
-msgstr ""
+msgstr "Nuevas obligaciones de presentación de información"
 
 #: ippc/templates/countries/reporting_obligation_create.html:36
 #: ippc/templates/countries/reporting_obligation_edit.html:39
 #: ippc/templates/schedule/create_event.html:57
-msgid " Cancel and go back"
-msgstr ""
+msgid "Cancel and go back"
+msgstr "Cancelar y volver"
 
 #: ippc/templates/countries/reporting_obligation_create.html:39
 msgid "Create New Reporting Obligations for"
-msgstr ""
+msgstr "Crear nuevas obligaciones de presentación de informes para"
 
 #: ippc/templates/countries/reporting_obligation_detail.html:4
 msgid "Latest Reporting Obligation"
-msgstr ""
+msgstr "Obligación más reciente de presentación de información"
 
 #: ippc/templates/countries/reporting_obligation_detail.html:81
 msgid "Keywords"
-msgstr ""
+msgstr "Palabras clave"
 
 #: ippc/templates/countries/reporting_obligation_edit.html:4
 msgid "Edit Reporting Obligations"
-msgstr ""
+msgstr "Editar obligaciones de presentación de información"
 
 #: ippc/templates/countries/website_create.html:4
 msgid "New Website"
-msgstr ""
+msgstr "Nuevo sitio web"
 
 #: ippc/templates/countries/website_create.html:38
 #: ippc/templates/partners/website_create.html:30
 msgid "Create New website for"
-msgstr ""
+msgstr "Crear nuevo sitio web para"
 
 #: ippc/templates/countries/website_detail.html:4
 #: ippc/templates/partners/website_detail.html:4
 msgid "Latest Websites"
-msgstr ""
+msgstr "Sitios web más recientes"
 
 #: ippc/templates/countries/website_edit.html:4
 msgid "Edit Website"
-msgstr ""
+msgstr "Editar sitio web"
 
 #: ippc/templates/countries/website_edit.html:49
 #: ippc/templates/partners/website_edit.html:39
 msgid "Update website"
-msgstr ""
+msgstr "Actualizar sitio web"
 
 #: ippc/templates/countries/website_list.html:44
 #: ippc/templates/partners/partners_page.html:83
 msgid "Add new website"
-msgstr ""
+msgstr "Agregar sitio web"
 
 #: ippc/templates/countries/website_list.html:52
 msgid "Websites from"
-msgstr ""
+msgstr "Sitios web de"
 
 #: ippc/templates/dp/dp_comment_create.html:4
 msgid "New Draft Protocol Comment"
-msgstr ""
+msgstr "Nueva observación sobre proyecto de protocolo"
 
 #: ippc/templates/dp/dp_comment_create.html:14
 #: ippc/templates/dp/dp_comment_create.html:29
 msgid "Add comment"
-msgstr ""
+msgstr "Agregar observación"
 
 #: ippc/templates/dp/dp_comment_edit.html:4
 msgid "Edit Comment Protocol"
-msgstr ""
+msgstr "Editar protocolo para las observaciones"
 
 #: ippc/templates/dp/dp_comment_edit.html:14
 msgid "Edit comment"
-msgstr ""
+msgstr "Editar observación "
 
 #: ippc/templates/dp/dp_comment_edit.html:27
 msgid "Editing Comment"
-msgstr ""
+msgstr "Editando observación"
 
 #: ippc/templates/dp/dp_comment_edit.html:34
 msgid "Update Comment"
-msgstr ""
+msgstr "Actualizar observación "
 
 #: ippc/templates/dp/dp_create.html:4
 msgid "New Draft Protocol"
-msgstr ""
+msgstr "Nueva proyecto de protocolo"
 
 #: ippc/templates/dp/dp_create.html:28
 msgid "Create New Draft Protocols"
-msgstr ""
+msgstr "Crear nuevos proyectos de protocolo"
 
 #: ippc/templates/dp/dp_detail.html:4
 msgid "Draft protocol"
-msgstr ""
+msgstr "Proyecto de protocolo"
 
 #: ippc/templates/dp/dp_detail.html:14
 msgid "Go Back "
-msgstr ""
+msgstr "Volver"
 
 #: ippc/templates/dp/dp_detail.html:40 ippc/templates/dp/dp_detail.html:95
 msgid "Moderator"
-msgstr ""
+msgstr "Moderador"
 
 #: ippc/templates/dp/dp_detail.html:41 ippc/templates/dp/dp_detail.html:96
 msgid "Posted"
-msgstr ""
+msgstr "Publicado"
 
 #: ippc/templates/dp/dp_detail.html:45 ippc/templates/dp/dp_detail.html:100
 msgid "Deadline for comments, closing date"
-msgstr ""
+msgstr "Fecha límite para la presentación de observaciones, fecha de cierre"
 
 #: ippc/templates/dp/dp_detail.html:51 ippc/templates/dp/dp_detail.html:106
 msgid "Additional background documents"
-msgstr ""
+msgstr "Documentos adicionales de antecedentes "
 
 #: ippc/templates/dp/dp_edit.html:4
 msgid "Edit Draft Protocols"
-msgstr ""
+msgstr "Editar proyectos de protocolo"
 
 #: ippc/templates/dp/dp_edit.html:39
 msgid "Update Draft Protocol"
-msgstr ""
+msgstr "Actualizar proyecto de protocolo"
 
 #: ippc/templates/dp/dp_list.html:8
 msgid "Add new Draft Protocol"
-msgstr ""
+msgstr "Añadir nuevo proyecto de protocolo"
 
 #: ippc/templates/dp/dp_list.html:23
 msgid "Closing Date"
-msgstr ""
+msgstr "Fecha de cierre"
 
 #: ippc/templates/email/account_approve.html:3
 #: ippc/templates/email/account_approve.txt:3
 msgid "Hey there, a new account has been created and requires activation."
-msgstr ""
+msgstr "¡Hola! Se creó una nueva cuenta y hay que activarla."
 
 #: ippc/templates/email/account_approve.html:11
 #: ippc/templates/email/account_approve.txt:9
 msgid "Please use the link below to activate it."
-msgstr ""
+msgstr "Por favor utilice el siguiente enlace para activarla."
 
 #: ippc/templates/email/account_approve_subject.txt:2
 msgid "An account requires activation"
-msgstr ""
+msgstr "Una cuenta requiere activación"
 
 #: ippc/templates/email/account_approved.html:3
 msgid "Hey there, your account has been activated."
-msgstr ""
+msgstr "¡Hola! Su cuenta ha sido activada."
 
 #: ippc/templates/email/account_approved.html:4
 #: ippc/templates/email/account_approved.txt:4
 msgid "Please use the link below to log in."
-msgstr ""
+msgstr "Por favor utilice el siguiente enlace para iniciar sesión."
 
 #: ippc/templates/email/account_approved.html:6
 #: ippc/templates/email/account_approved.txt:6
 #: ippc/templates/email/signup_verify.html:9
 #: ippc/templates/email/signup_verify.txt:9
 msgid "Information Exchange (IPPC) team"
-msgstr ""
+msgstr "Grupo de intercambio de información (CIPF) "
 
 #: ippc/templates/email/account_approved.html:7
 #: ippc/templates/email/account_approved.txt:8
@@ -2911,19 +2919,19 @@ msgid ""
 "national reporting and exchange of more general information among the "
 "phytosanitary community. The IPPC Secretariat coordinates the activities of "
 "the Convention and is hosted by FAO."
-msgstr ""
+msgstr "La CIPF es un tratado internacional que tiene como objetivo garantizar la acción para prevenir la propagación e introducción de plagas de las plantas y productos vegetales y promover las medidas adecuadas para combatirlas. Se rige por la Comisión de Medidas Fitosanitarias (CMF) que adopta las Normas Internacionales para Medidas Fitosanitarias (NIMF). La CMF estableció el PFI como foro para la presentación de información nacional y el intercambio de información más general en la comunidad fitosanitaria. La Secretaría de la CIPF coordina las actividades de la Convención y está en la FAO."
 
 #: ippc/templates/email/account_approved.txt:3
 msgid "Your account has been activated."
-msgstr ""
+msgstr "Su cuenta ha sido activada."
 
 #: ippc/templates/email/account_approved_subject.txt:2
 msgid "Your account has been activated"
-msgstr ""
+msgstr "Su cuenta ha sido activada."
 
 #: ippc/templates/email/comment_notification.html:6
 msgid "A new comment has been posted on"
-msgstr ""
+msgstr "Se ha publicado una nueva observación sobre"
 
 #: ippc/templates/email/comment_notification.html:10
 #, python-format
@@ -2943,283 +2951,283 @@ msgstr ""
 #: ippc/templates/email/password_reset_verify.html:3
 #: ippc/templates/email/password_reset_verify.txt:3
 msgid "Hello, the password reset form was used for your IPPC account."
-msgstr ""
+msgstr "Hola, se utilizó el formulario para restablecer la contraseña para su cuenta de la CIPF."
 
 #: ippc/templates/email/password_reset_verify.html:4
 #: ippc/templates/email/password_reset_verify.txt:4
 msgid "Please use the link below to log in and update your IPPC password."
-msgstr ""
+msgstr "Por favor utilice el siguiente enlace para iniciar sesión y actualizar su contraseña de la CIPF."
 
 #: ippc/templates/email/password_reset_verify.html:6
 #: ippc/templates/email/password_reset_verify.txt:6
 msgid ""
 "If you didn't request for your password to be reset, please ignore this "
 "email."
-msgstr ""
+msgstr "Si no ha pedido el restablecimiento de su contraseña, por favor no tenga en cuenta este mensaje de correo electrónico."
 
 #: ippc/templates/email/password_reset_verify_subject.txt:2
 msgid "Reset your password"
-msgstr ""
+msgstr "Restablecer la contraseña"
 
 #: ippc/templates/email/signup_verify.html:3
 #: ippc/templates/email/signup_verify.txt:3
 msgid "An IPPC account has been created for you."
-msgstr ""
+msgstr "Se creó una cuenta de la CIPF para usted."
 
 #: ippc/templates/email/signup_verify.html:4
 #: ippc/templates/email/signup_verify.txt:4
 msgid ""
 "Please use the link below to activate it, then set your password in your "
 "profile page."
-msgstr ""
+msgstr "Sírvase utilizar el vínculo que aparece a continuación para activarla y establezca su contraseña en la página de su perfil."
 
 #: ippc/templates/email/signup_verify.html:6
 msgid "After setting your password, you will be able to log in at "
-msgstr ""
+msgstr "Después de establecer su contraseña puede iniciar sesión en "
 
 #: ippc/templates/email/signup_verify.txt:7
 msgid ""
 "After setting your password, you will be able to log in at https://www.ippc."
 "int."
-msgstr ""
+msgstr "Después de establecer su contraseña puede iniciar sesión en https://www.ippc.int."
 
 #: ippc/templates/email/signup_verify_subject.txt:2
 msgid "Activate your account created for you at https://www.ippc.int"
-msgstr ""
+msgstr "Active la cuenta creada para usted en https://www.ippc.int"
 
 #: ippc/templates/emailutility/emailutility_detail.html:15
 #: ippc/templates/emailutility/emailutility_list.html:37
 msgid "Email list"
-msgstr ""
+msgstr "Lista de correo electrónico"
 
 #: ippc/templates/emailutility/emailutility_detail.html:31
 #: ippc/templates/emailutility/emailutility_list.html:45
 msgid "Sent date"
-msgstr ""
+msgstr "Fecha de envío"
 
 #: ippc/templates/emailutility/emailutility_detail.html:34
 msgid "Sent satus"
-msgstr ""
+msgstr "Estado de envío"
 
 #: ippc/templates/emailutility/emailutility_detail.html:43
 msgid "From"
-msgstr ""
+msgstr "De"
 
 #: ippc/templates/emailutility/emailutility_detail.html:46
 msgid "To"
-msgstr ""
+msgstr "Para"
 
 #: ippc/templates/emailutility/emailutility_detail.html:59
 #: ippc/templates/emailutility/emailutility_list.html:44
 msgid "Subject"
-msgstr ""
+msgstr "Asunto"
 
 #: ippc/templates/emailutility/emailutility_detail.html:62
 msgid "Message"
-msgstr ""
+msgstr "Mensaje"
 
 #: ippc/templates/emailutility/emailutility_detail.html:66
 msgid "Attachments"
-msgstr ""
+msgstr "Archivos adjuntos"
 
 #: ippc/templates/emailutility/emailutility_list.html:5
 msgid "Email sent list"
-msgstr ""
+msgstr "Lista de correo electrónico enviada"
 
 #: ippc/templates/emailutility/emailutility_list.html:17
 msgid "Emails"
-msgstr ""
+msgstr "Correos electrónicos"
 
 #: ippc/templates/emailutility/emailutility_list.html:46
 msgid "Sent"
-msgstr ""
+msgstr "Enviado"
 
 #: ippc/templates/emailutility/emailutility_send.html:4
 #: ippc/templates/envelope/contact.html:7
 msgid "New email utility message"
-msgstr ""
+msgstr "Nuevo mensaje de servicio de correo electrónico "
 
 #: ippc/templates/emailutility/emailutility_send.html:16
 msgid "Create New Email Message"
-msgstr ""
+msgstr "Crear un nuevo mensaje de correo electrónico"
 
 #: ippc/templates/emailutility/emailutility_send.html:32
 msgid "Create New Email message"
-msgstr ""
+msgstr "Crear un nuevo mensaje de correo electrónico"
 
 #: ippc/templates/emailutility/emailutility_send.html:40
 msgid "Send"
-msgstr ""
+msgstr "Enviar"
 
 #: ippc/templates/envelope/contact.html:16
 msgid "Contact us"
-msgstr ""
+msgstr "Póngase en contacto con nosotros "
 
 #: ippc/templates/envelope/contact_form.html:16
 msgid "Send email"
-msgstr ""
+msgstr "Enviar un mensaje de correo electrónico"
 
 #: ippc/templates/envelope/email_body.txt:2
 msgid "Message from the contact us form"
-msgstr ""
+msgstr "Mensaje del formulario de contacto"
 
 #: ippc/templates/envelope/email_body.txt:4
 msgid "Sender"
-msgstr ""
+msgstr "Remitente"
 
 #: ippc/templates/envelope/email_body.txt:8
 msgid "The message follows."
-msgstr ""
+msgstr "El mensaje siguiente."
 
 #: ippc/templates/errors/404.html:6 ippc/templates/errors/404.html.py:10
 msgid "Page not found"
-msgstr ""
+msgstr "No se ha encontrado la página"
 
 #: ippc/templates/errors/404.html:14
 msgid ""
 "The page you requested could not be found. Please try the search bar above."
-msgstr ""
+msgstr "No se encontró la página solicitada. Sírvase consultar la barra de búsqueda de arriba."
 
 #: ippc/templates/errors/500.html:6 ippc/templates/errors/500.html.py:10
 msgid "Error"
-msgstr ""
+msgstr "Error"
 
 #: ippc/templates/errors/500.html:14
 msgid ""
 "An error has occurred. The site administrators have been automatically "
 "notified and will work on fixing it as soon as possible. We apologize for "
 "the inconvenience."
-msgstr ""
+msgstr "Ocurrió un error. Se notificó automáticamente a los administradores del sitio y lo resolverán lo antes posible. Le pedimos disculpas por las molestias."
 
 #: ippc/templates/generic/includes/comment.html:25
 msgid "Link"
-msgstr ""
+msgstr "Enlace"
 
 #: ippc/templates/generic/includes/comment.html:27
 #: ippc/templates/generic/includes/comment.html:38
 msgid "Reply"
-msgstr ""
+msgstr "Respuesta"
 
 #: ippc/templates/generic/includes/comment.html:61
 msgid "Comment deleted"
-msgstr ""
+msgstr "Observación eliminada"
 
 #: ippc/templates/generic/includes/comment.html:63
 msgid "Comment awaiting approval"
-msgstr ""
+msgstr "Observación pendiente de aprobación"
 
 #: ippc/templates/generic/includes/comment.html:77
 msgid "There are currently no comments"
-msgstr ""
+msgstr "En la actualidad no hay observaciones"
 
 #: ippc/templates/generic/includes/comments.html:19
 msgid "New Comment"
-msgstr ""
+msgstr "Nueva observación"
 
 #: ippc/templates/generic/includes/comments.html:27
 msgid "Comment"
-msgstr ""
+msgstr "Observación"
 
 #: ippc/templates/generic/includes/rating.html:7
 msgid "Current rating"
-msgstr ""
+msgstr "Puntuación actual"
 
 #: ippc/templates/generic/includes/rating.html:9
 msgid "Currently unrated"
-msgstr ""
+msgstr "Actualmente sin calificar"
 
 #: ippc/templates/generic/includes/rating.html:19
 msgid "Rate"
-msgstr ""
+msgstr "Calificación"
 
 #: ippc/templates/includes/editable_form.html:16
 #: ippc/templates/schedule/create_event.html:128
 #: schedule/templates/schedule/create_event.html:13
 #: schedule/templates/schedule/edit_occurrence.html:13
 msgid "Save"
-msgstr ""
+msgstr "Guardar"
 
 #: ippc/templates/includes/editable_form.html:25
 msgid "Edit"
-msgstr ""
+msgstr "Editar"
 
 #: ippc/templates/includes/editable_toolbar.html:7
 #: ippc/templates/includes/editable_toolbar.html:9
 msgid "Admin"
-msgstr ""
+msgstr "Admin"
 
 #: ippc/templates/includes/ocs_user_panel.html:4
 msgid "Frequently Asked Questions"
-msgstr ""
+msgstr "Preguntas frecuentes"
 
 #: ippc/templates/includes/search_form.html:4
 msgid "Search"
-msgstr ""
+msgstr "Buscar"
 
 #: ippc/templates/includes/search_form.html:11
 msgid "Everything"
-msgstr ""
+msgstr "Todo"
 
 #: ippc/templates/includes/search_form.html:22
 msgid "Go"
-msgstr ""
+msgstr "Ir"
 
 #: ippc/templates/includes/user_panel.html:4
 msgid "FAQ"
-msgstr ""
+msgstr "Preguntas frecuentes"
 
 #: ippc/templates/ocs/base_ocs.html:11 ippc/templates/ocs/base_ocs.html:94
 msgid "Online Comments System (OCS)"
-msgstr ""
+msgstr "Sistema de comentarios en línea (SCL)"
 
 #: ippc/templates/ocs/detail.html:5
 msgid "Test Document"
-msgstr ""
+msgstr "Documento de prueba"
 
 #: ippc/templates/ocs/home.html:33
 msgid "Doc Number"
-msgstr ""
+msgstr "Número de Doc."
 
 #: ippc/templates/ocs/home.html:34
 msgid "Agenda Number"
-msgstr ""
+msgstr "Número del programa"
 
 #: ippc/templates/ocs/home.html:35
 msgid "Open Date"
-msgstr ""
+msgstr "Fecha de apertura"
 
 #: ippc/templates/ocs/home.html:36
 msgid "Close Date"
-msgstr ""
+msgstr "Fecha de cierre"
 
 #: ippc/templates/ocs/upload.html:5
 msgid "Upload Document"
-msgstr ""
+msgstr "Cargar documento"
 
 #: ippc/templates/pages/memberstable.html:23
 msgid "Picture"
-msgstr ""
+msgstr "Imagen"
 
 #: ippc/templates/pages/publication_detail.html:38
 #: ippc/templates/pages/publication_detail.html:42
 msgid ""
 "The page is restricted to group members. Please Login  to view the page."
-msgstr ""
+msgstr "La página está restringida a los miembros del grupo. Inicie sesión para ver la página."
 
 #: ippc/templates/pages/publication_detail_block.html:4
 msgid "Published"
-msgstr ""
+msgstr "Publicado"
 
 #: ippc/templates/pages/publication_detail_block.html:8
 #: ippc/templates/pages/publicationtable.html:29
 #: ippc/templates/pages/publicationtable.html:99
 msgid "Doc #"
-msgstr ""
+msgstr "Doc"
 
 #: ippc/templates/pages/publication_detail_block.html:13
 #: ippc/templates/pages/publicationtable.html:102
 msgid "Agenda #"
-msgstr ""
+msgstr "Programa"
 
 #: ippc/templates/pages/publication_detail_block.html:70
 #: ippc/templates/schedule/_detail.html:28
@@ -3228,50 +3236,50 @@ msgstr ""
 #: schedule/templates/schedule/event.html:51
 #: schedule/templates/schedule/occurrence.html:37
 msgid "Description"
-msgstr ""
+msgstr "Descripción"
 
 #: ippc/templates/pages/publication_detail_block.html:84
 msgid "Additional files"
-msgstr ""
+msgstr "Archivos adicionales"
 
 #: ippc/templates/pages/publication_detail_block.html:91
 msgid "Links"
-msgstr ""
+msgstr "Enlaces"
 
 #: ippc/templates/pages/publicationfilestable.html:63
 msgid "Archive name"
-msgstr ""
+msgstr "Nombre del archivo"
 
 #: ippc/templates/pages/publicationfilestable.html:64
 msgid "Download"
-msgstr ""
+msgstr "Descargar"
 
 #: ippc/templates/pages/publicationtable.html:41
 msgid "show/hide Details"
-msgstr ""
+msgstr "Mostrar/ocultar detalles"
 
 #: ippc/templates/pages/menus/admin.html:31
 msgid "Add"
-msgstr ""
+msgstr "Agregar"
 
 #: ippc/templates/pages/menus/tree_key_cn.html:11
 msgid ""
 "<a href=\"/countries/all/list-countries/\"><i class=\"icon-list\"></i> All "
 "Countries"
-msgstr ""
+msgstr "<a href='/es/countries/all/list-countries/'><i class='icon-list'></i> Todos los países"
 
 #: ippc/templates/pages/menus/tree_key_cn.html:13
 msgid "Countries by Region"
-msgstr ""
+msgstr "Países por región"
 
 #: ippc/templates/pages/menus/tree_key_cn.html:18
 msgid "Latin America &amp; Caribbean"
-msgstr ""
+msgstr "América Latina y el Caribe"
 
 #: ippc/templates/pages/menus/tree_key_cn.html:24
 #: ippc/templates/pages/menus/tree_key_core.html:4
 msgid "Key Links &amp; Documents"
-msgstr ""
+msgstr "Key Links &amp; Documents"
 
 #: ippc/templates/partners/p_publication_create.html:10
 #: ippc/templates/partners/partnersnews_create.html:10
@@ -3279,75 +3287,75 @@ msgstr ""
 #: ippc/templates/partners/website_create.html:10
 #: ippc/templates/partners/website_edit.html:10
 msgid "partners"
-msgstr ""
+msgstr "asociados"
 
 #: ippc/templates/partners/p_publication_detail.html:16
 #: ippc/templates/partners/partnersnews_detail.html:16
 #: ippc/templates/partners/website_detail.html:16
 #: ippc/templates/schedule/event.html:45
 msgid "Back to "
-msgstr ""
+msgstr "Volver a "
 
 #: ippc/templates/partners/p_publication_edit.html:14
 #: ippc/templates/partners/partners_page.html:14
 msgid "Partners"
-msgstr ""
+msgstr "Asociados"
 
 #: ippc/templates/partners/partners_page.html:41
 msgid "Contact Point: "
-msgstr ""
+msgstr "Punto de contacto: "
 
 #: ippc/templates/partners/partners_page.html:94
 msgid "Files/URLs"
-msgstr ""
+msgstr "Archivos/URL"
 
 #: ippc/templates/partners/partners_page.html:96
 #: ippc/templates/schedule/event.html:101 schedule/models/events.py:117
 msgid "Type"
-msgstr ""
+msgstr "Tipo"
 
 #: ippc/templates/partners/partnersnews_edit.html:4
 msgid "Edit news"
-msgstr ""
+msgstr "Editar noticias"
 
 #: ippc/templates/partners/website_create.html:4
 msgid "New website"
-msgstr ""
+msgstr "Nuevo sitio web"
 
 #: ippc/templates/partners/website_edit.html:4
 msgid "Edit website"
-msgstr ""
+msgstr "Editar sitio web"
 
 #: ippc/templates/polls/detail.html:4 ippc/templates/polls/detail.html.py:7
 #: ippc/templates/polls/index.html:4 ippc/templates/polls/index.html.py:7
 #: ippc/templates/polls/poll_create.html:10
 #: ippc/templates/polls/poll_edit.html:10 ippc/templates/polls/results.html:4
 msgid "Polls"
-msgstr ""
+msgstr "Encuestas"
 
 #: ippc/templates/polls/poll_create.html:4
 #: ippc/templates/polls/poll_edit.html:4
 msgid "New Poll"
-msgstr ""
+msgstr "Nueva encuesta"
 
 #: ippc/templates/polls/poll_create.html:28
 msgid "Create New Poll"
-msgstr ""
+msgstr "Crear nueva encuesta"
 
 #: ippc/templates/polls/poll_edit.html:35
 msgid "Update Poll"
-msgstr ""
+msgstr "Actualizar encuesta "
 
 #: ippc/templates/polls/results.html:7
 msgid "Poll results"
-msgstr ""
+msgstr "Resultados de la encuesta"
 
 #: ippc/templates/schedule/_create_event_options.html:2
 #: ippc/templates/schedule/calendar_month.html:25
 #: ippc/templates/schedule/calendar_year.html:22
 #: schedule/templates/schedule/_create_event_options.html:2
 msgid "Add Event"
-msgstr ""
+msgstr "Añadir acontecimiento"
 
 #: ippc/templates/schedule/_detail.html:6
 #: ippc/templates/schedule/event.html:71
@@ -3355,7 +3363,7 @@ msgstr ""
 #: schedule/templates/schedule/event.html:35
 #: schedule/templates/schedule/occurrence.html:23
 msgid "Starts"
-msgstr ""
+msgstr "Inicia"
 
 #: ippc/templates/schedule/_detail.html:7
 #: ippc/templates/schedule/_detail.html:11
@@ -3371,7 +3379,7 @@ msgstr ""
 #: schedule/templates/schedule/occurrence.html:24
 #: schedule/templates/schedule/occurrence.html:28
 msgid "DATETIME_FORMAT"
-msgstr ""
+msgstr "FORMATO_FECHA"
 
 #: ippc/templates/schedule/_detail.html:7
 #: ippc/templates/schedule/calendar_cn.html:65
@@ -3390,7 +3398,7 @@ msgstr ""
 #: schedule/templates/schedule/event.html:39
 #: schedule/templates/schedule/occurrence.html:27
 msgid "Ends"
-msgstr ""
+msgstr "Termina"
 
 #: ippc/templates/schedule/_detail.html:11
 #: ippc/templates/schedule/_detail.html:21
@@ -3410,50 +3418,50 @@ msgstr ""
 #: schedule/templates/schedule/event.html:43
 #: schedule/templates/schedule/occurrence.html:32
 msgid "Reoccurs"
-msgstr ""
+msgstr "Vuelve a aparecer"
 
 #: ippc/templates/schedule/_detail.html:20
 #: schedule/templates/schedule/_detail.html:20
 msgid "Until"
-msgstr ""
+msgstr "Hasta"
 
 #: ippc/templates/schedule/_dialogs.html:6
 #: ippc/templates/schedule/_dialogs.html:14
 #: schedule/templates/schedule/_dialogs.html:6
 #: schedule/templates/schedule/_dialogs.html:14
 msgid "This"
-msgstr ""
+msgstr "Este"
 
 #: ippc/templates/schedule/_dialogs.html:6
 #: ippc/templates/schedule/_dialogs.html:14
 #: schedule/templates/schedule/_dialogs.html:6
 #: schedule/templates/schedule/_dialogs.html:14
 msgid "All"
-msgstr ""
+msgstr "Todos"
 
 #: ippc/templates/schedule/_dialogs.html:6
 #: ippc/templates/schedule/_dialogs.html:14
 #: schedule/templates/schedule/_dialogs.html:6
 #: schedule/templates/schedule/_dialogs.html:14
 msgid "Do nothing"
-msgstr ""
+msgstr "No hacer nada"
 
 #: ippc/templates/schedule/_dialogs.html:21
 #: schedule/templates/schedule/_dialogs.html:21
 msgid "Close"
-msgstr ""
+msgstr "Cerrar"
 
 #: ippc/templates/schedule/_dialogs.html:36
 #: schedule/templates/schedule/_dialogs.html:36
 msgid ""
 "Do you want to cancel this occurrence or delete all occurrences of this "
 "event?"
-msgstr ""
+msgstr "¿Desea cancelar esta visualización o eliminar todas las visualizaciones de este acontecimiento?"
 
 #: ippc/templates/schedule/_dialogs.html:40
 #: schedule/templates/schedule/_dialogs.html:40
 msgid "Do you want to edit this occurrence or all occurrences?"
-msgstr ""
+msgstr "¿Desea cancelar esta visualización o eliminar todas las visualizaciones?"
 
 #: ippc/templates/schedule/_event_options.html:9
 #: ippc/templates/schedule/_event_options.html:13
@@ -3464,7 +3472,7 @@ msgstr ""
 #: schedule/templates/schedule/_event_options.html:13
 #: schedule/templates/schedule/_event_options.html:18
 msgid "Edit Event"
-msgstr ""
+msgstr "Editar acontecimiento"
 
 #: ippc/templates/schedule/_event_options.html:28
 #: ippc/templates/schedule/_event_options.html:32
@@ -3473,77 +3481,77 @@ msgstr ""
 #: schedule/templates/schedule/_event_options.html:32
 #: schedule/templates/schedule/_event_options.html:37
 msgid "Delete Event"
-msgstr ""
+msgstr "Eliminar acontecimiento"
 
 #: ippc/templates/schedule/base.html:16
 #: schedule/templates/schedule/base.html:16
 msgid "Create a Calendar"
-msgstr ""
+msgstr "Crear un calendario"
 
 #: ippc/templates/schedule/base.html:17
 #: schedule/templates/schedule/base.html:17
 msgid "Your Calendars"
-msgstr ""
+msgstr "Sus calendarios"
 
 #: ippc/templates/schedule/base.html:20
 #: schedule/templates/schedule/base.html:20
 msgid "All Calendars"
-msgstr ""
+msgstr "Todos los calendarios"
 
 #: ippc/templates/schedule/calendar.html:17
 #: schedule/templates/schedule/calendar.html:17
 #: schedule/templates/schedule/calendar_list.html:9
 msgid "Small Month"
-msgstr ""
+msgstr "Mes pequeño"
 
 #: ippc/templates/schedule/calendar.html:18
 #: schedule/templates/schedule/calendar.html:18
 #: schedule/templates/schedule/calendar_list.html:10
 msgid "1 Month"
-msgstr ""
+msgstr "1 mes"
 
 #: ippc/templates/schedule/calendar.html:19
 #: schedule/templates/schedule/calendar.html:19
 #: schedule/templates/schedule/calendar_list.html:11
 msgid "3 Months"
-msgstr ""
+msgstr "3 meses"
 
 #: ippc/templates/schedule/calendar.html:20
 #: schedule/templates/schedule/calendar.html:20
 #: schedule/templates/schedule/calendar_list.html:12
 msgid "This Year"
-msgstr ""
+msgstr "Este año"
 
 #: ippc/templates/schedule/calendar.html:21 schedule/models/rules.py:8
 #: schedule/templates/schedule/calendar.html:21
 #: schedule/templates/schedule/calendar_list.html:13
 msgid "Weekly"
-msgstr ""
+msgstr "Semanalmente"
 
 #: ippc/templates/schedule/calendar.html:22 schedule/models/rules.py:9
 #: schedule/templates/schedule/calendar.html:22
 #: schedule/templates/schedule/calendar_list.html:14
 msgid "Daily"
-msgstr ""
+msgstr "Diario"
 
 #: ippc/templates/schedule/calendar.html:23
 #: schedule/templates/schedule/calendar.html:23
 #: schedule/templates/schedule/calendar_list.html:15
 msgid "Feed"
-msgstr ""
+msgstr "Noticias"
 
 #: ippc/templates/schedule/calendar.html:27
 #: schedule/templates/schedule/calendar.html:27
 msgid "Now see docstring for schedule.views.calendar"
-msgstr ""
+msgstr "Ver serie de schedule.views.calendar"
 
 #: ippc/templates/schedule/calendar_cn.html:40
 msgid "Add new event"
-msgstr ""
+msgstr "Agregar nuevo acontecimiento"
 
 #: ippc/templates/schedule/calendar_cn.html:47
 msgid "Events from"
-msgstr ""
+msgstr "Acontecimientos de"
 
 #: ippc/templates/schedule/calendar_month.html:6
 #: ippc/templates/schedule/calendar_month.html:14
@@ -3551,7 +3559,7 @@ msgstr ""
 #: ippc/templates/schedule/create_event.html:20
 #: ippc/templates/schedule/event.html:30 ippc/templates/schedule/event.html:45
 msgid "Calendar"
-msgstr ""
+msgstr "Calendario"
 
 #: ippc/templates/schedule/calendar_month.html:17
 #: schedule/templates/schedule/calendar_day.html:12
@@ -3559,92 +3567,92 @@ msgstr ""
 #: schedule/templates/schedule/event.html:10
 #: schedule/templates/schedule/occurrence.html:10
 msgid "Month"
-msgstr ""
+msgstr "Mes"
 
 #: ippc/templates/schedule/calendar_month.html:31
 msgid "See Full Year Calendar"
-msgstr ""
+msgstr "Ver calendario de todo el año"
 
 #: ippc/templates/schedule/calendar_month.html:50
 #: schedule/templates/schedule/calendar_month.html:11
 #: schedule/templates/schedule/calendar_tri_month.html:9
 msgid "This month"
-msgstr ""
+msgstr "Este mes"
 
 #: ippc/templates/schedule/calendar_year.html:15
 #: schedule/templates/schedule/calendar_day.html:15
 #: schedule/templates/schedule/calendar_week.html:13
 #: schedule/templates/schedule/event.html:13
 msgid "Year"
-msgstr ""
+msgstr "Año"
 
 #: ippc/templates/schedule/calendar_year.html:27
 msgid "See Month Calendar"
-msgstr ""
+msgstr "Ver calendario del año"
 
 #: ippc/templates/schedule/calendar_year.html:36
 msgid "Calendar of Events<"
-msgstr ""
+msgstr "Calendario de acontecimientos"
 
 #: ippc/templates/schedule/calendar_year.html:113
 #: schedule/templates/schedule/calendar_year.html:33
 msgid "Current Month Calendar"
-msgstr ""
+msgstr "Ver calendario del mes en curso"
 
 #: ippc/templates/schedule/calendar_year.html:116
 #: schedule/templates/schedule/calendar_year.html:36
 msgid "Current Year Calendar"
-msgstr ""
+msgstr "Ver calendario del año en curso"
 
 #: ippc/templates/schedule/create_event.html:5
 #: ippc/templates/schedule/event.html:5
 msgid "Event"
-msgstr ""
+msgstr "Acontecimiento"
 
 #: ippc/templates/schedule/create_event.html:43
 #: ippc/templates/schedule/create_event.html:63
 msgid "Create New Event"
-msgstr ""
+msgstr "Crear nuevo acontecimiento"
 
 #: ippc/templates/schedule/event.html:108
 msgid "Venue city"
-msgstr ""
+msgstr "Ciudad del acontecimiento"
 
 #: ippc/templates/schedule/event.html:116
 msgid "Venue country"
-msgstr ""
+msgstr "País del acontecimiento"
 
 #: ippc/templates/schedule/event.html:125 schedule/models/events.py:132
 msgid "Organizer"
-msgstr ""
+msgstr "Organizador"
 
 #: ippc/templates/schedule/event.html:132
 msgid "Created on"
-msgstr ""
+msgstr "Creado en"
 
 #: ippc/templates/schedule/event.html:134
 msgid "Updated on"
-msgstr ""
+msgstr "Actualizado en"
 
 #: ippc/templates/schedule/event.html:151
 msgid "Event files"
-msgstr ""
+msgstr " Archivos del acontecimiento"
 
 #: ippc/templates/schedule/event.html:159
 msgid "Event websites/urls"
-msgstr ""
+msgstr "Sitios web/url de los acontecimientos"
 
 #: ippc/templates/twitter/tweets.html:7
 msgid "Recent Tweets"
-msgstr ""
+msgstr "Tweets recientes"
 
 #: news/defaults.py:21
 msgid "Enable featured images in news posts"
-msgstr ""
+msgstr "Mostrar las imágenes de los nuevos elementos pubicados"
 
 #: news/defaults.py:36
 msgid "News post URL date format"
-msgstr ""
+msgstr "Formato de fecha de la url de las noticias"
 
 #: news/defaults.py:37
 msgid ""
@@ -3657,42 +3665,42 @@ msgid ""
 msgstr ""
 
 #: news/defaults.py:49
-msgid "Bews posts per page"
-msgstr ""
+msgid "News posts per page"
+msgstr "Mensajes Noticias por página"
 
 #: news/defaults.py:50
 msgid "Number of news posts shown on a news listing page."
-msgstr ""
+msgstr "Número de noticias que se muestran en una página de listas."
 
 #: news/defaults.py:57
-msgid "Bews posts RSS limit"
-msgstr ""
+msgid "News posts RSS limit"
+msgstr "Mensajes Noticias límite RSS"
 
 #: news/defaults.py:58
 msgid ""
 "Number of most recent news posts shown in the RSS feed. Set to ``None`` to "
 "display all news posts in the RSS feed."
-msgstr ""
+msgstr "Número de noticias más recientes que aparecen en el canal RSS. Poner en 'Ninguno' para ver todas las noticias del canal RSS."
 
 #: news/defaults.py:66
 msgid "Slug of the page object for the news."
-msgstr ""
+msgstr "Slug del objeto de la página objeto de las noticias."
 
 #: news/models.py:93
 msgid "News Category"
-msgstr ""
+msgstr "Categoría de noticias"
 
 #: news/models.py:94
 msgid "News Categories"
-msgstr ""
+msgstr "Categorías de noticias"
 
 #: news/templates/admin/includes/quick_news.html:18
 msgid "Quick news"
-msgstr ""
+msgstr "Noticias breves"
 
 #: schedule/forms.py:24
 msgid "The end time must be later than start time."
-msgstr ""
+msgstr "La hora de finalización debe ser posterior a la de inicio."
 
 #: schedule/periods.py:338 schedule/periods.py:373
 #: schedule/models/events.py:143
@@ -3702,12 +3710,12 @@ msgstr ""
 #: schedule/periods.py:339
 #, python-format
 msgid "Week: %(start)s-%(end)s"
-msgstr ""
+msgstr "Semana: %(start)s-%(end)s"
 
 #: schedule/periods.py:374
 #, python-format
 msgid "Day: %(start)s-%(end)s"
-msgstr ""
+msgstr "Día: %(start)s-%(end)s"
 
 #: schedule/conf/settings.py:8
 msgid "FIRST_DAY_OF_WEEK"
@@ -3715,226 +3723,226 @@ msgstr ""
 
 #: schedule/models/calendars.py:137 schedule/models/rules.py:44
 msgid "name"
-msgstr ""
+msgstr "nombre"
 
 #: schedule/models/calendars.py:138
 msgid "slug"
-msgstr ""
+msgstr "slug"
 
 #: schedule/models/calendars.py:142 schedule/models/calendars.py:143
 #: schedule/models/calendars.py:227 schedule/models/events.py:128
 msgid "calendar"
-msgstr ""
+msgstr "calendario"
 
 #: schedule/models/calendars.py:231 schedule/models/events.py:451
 msgid "distinction"
-msgstr ""
+msgstr "distinción"
 
 #: schedule/models/calendars.py:232
 msgid "inheritable"
-msgstr ""
+msgstr "heredable"
 
 #: schedule/models/calendars.py:237
 msgid "calendar relation"
-msgstr ""
+msgstr "relación del calendario "
 
 #: schedule/models/calendars.py:238
 msgid "calendar relations"
-msgstr ""
+msgstr "relaciones del calendario"
 
 #: schedule/models/events.py:34 schedule/models/events.py:75
-msgid " "
+msgid ""
 msgstr ""
 
 #: schedule/models/events.py:35
 msgid "Standards"
-msgstr ""
+msgstr "Normas"
 
 #: schedule/models/events.py:36
 msgid "Dispute Settlement"
-msgstr ""
+msgstr "Solución de diferencias"
 
 #: schedule/models/events.py:38
 msgid "Information Exchange"
-msgstr ""
+msgstr "Intercambio de información"
 
 #: schedule/models/events.py:40
 msgid "Capacity building"
-msgstr ""
+msgstr "Creación de capacidad"
 
 #: schedule/models/events.py:76
 msgid "Bilateral assistance"
-msgstr ""
+msgstr "Asistencia bilateral"
 
 #: schedule/models/events.py:77
 msgid "Bureau"
-msgstr ""
+msgstr "Mesa"
 
 #: schedule/models/events.py:78
 msgid "CBD"
-msgstr ""
+msgstr "CDB"
 
 #: schedule/models/events.py:79
 msgid "CDC + Expert Working Group on Capacity Building"
-msgstr ""
+msgstr "CDC + Grupo de trabajo de expertos sobre creación de capacidad"
 
 #: schedule/models/events.py:80
 msgid "Conference"
-msgstr ""
+msgstr "Conferencia"
 
 #: schedule/models/events.py:81
 msgid "CPM"
-msgstr ""
+msgstr "CMF"
 
 #: schedule/models/events.py:82
 msgid "Expert Consultation"
-msgstr ""
+msgstr "Consulta de expertos"
 
 #: schedule/models/events.py:83
 msgid "Expert Working Group"
-msgstr ""
+msgstr "Grupos de trabajo de expertos"
 
 #: schedule/models/events.py:84
 msgid "Finance Committee"
-msgstr ""
+msgstr "Comité de Finanzas"
 
 #: schedule/models/events.py:85
 msgid "Focus Group"
-msgstr ""
+msgstr "Grupo de enfoque"
 
 #: schedule/models/events.py:86
 msgid "IRSS"
-msgstr ""
+msgstr "IRSS"
 
 #: schedule/models/events.py:87
 msgid "Member Consultation"
-msgstr ""
+msgstr "Consulta de miembros"
 
 #: schedule/models/events.py:88
 msgid "Mentoring / Assistance"
-msgstr ""
+msgstr "Asesoramiento/asistencia"
 
 #: schedule/models/events.py:89
 msgid "NRO"
-msgstr ""
+msgstr "ONPI"
 
 #: schedule/models/events.py:90
 msgid "NRO Advidory Group"
-msgstr ""
+msgstr "Grupo de asesoramiento sobre las ONPI"
 
 #: schedule/models/events.py:92
 msgid "Other Working Group"
-msgstr ""
+msgstr "Otros grupos de trabajo "
 
 #: schedule/models/events.py:93
 msgid "Regional Workshops on Draft ISPMs"
-msgstr ""
+msgstr "Talleres regionales sobre los proyectos de NIMF"
 
 #: schedule/models/events.py:94
 msgid "SBDS"
-msgstr ""
+msgstr "OASD"
 
 #: schedule/models/events.py:95
 msgid "Seminar"
-msgstr ""
+msgstr "Seminario"
 
 #: schedule/models/events.py:96
 msgid "SPG + SPTA"
-msgstr ""
+msgstr "GPE + PEAT"
 
 #: schedule/models/events.py:97
 msgid "Standards Committee"
-msgstr ""
+msgstr "Comité de Normas"
 
 #: schedule/models/events.py:98
 msgid "Symposium"
-msgstr ""
+msgstr "Simposio"
 
 #: schedule/models/events.py:99
 msgid "Technical Consultation of RPPOs"
-msgstr ""
+msgstr "Consulta técnica de las ORPF"
 
 #: schedule/models/events.py:100
 msgid "Technical Panel"
-msgstr ""
+msgstr "Grupo técnico"
 
 #: schedule/models/events.py:101
 msgid "Training"
-msgstr ""
+msgstr "Capacitación"
 
 #: schedule/models/events.py:102
 msgid "Workshop"
-msgstr ""
+msgstr "Taller"
 
 #: schedule/models/events.py:103
 msgid "Workshop / Seminars"
-msgstr ""
+msgstr "Taller / Seminarios"
 
 #: schedule/models/events.py:104
 msgid "WTO Meetings"
-msgstr ""
+msgstr "Reuniones de la OMC"
 
 #: schedule/models/events.py:113 schedule/templates/profiles/schedule.html:12
 msgid "Start"
-msgstr ""
+msgstr "Inicio"
 
 #: schedule/models/events.py:114 schedule/templates/profiles/schedule.html:13
 msgid "End"
-msgstr ""
+msgstr "Fin"
 
 #: schedule/models/events.py:114
 msgid "The end time must be later than the start time."
-msgstr ""
+msgstr "El final debe ser posterior al inicio."
 
 #: schedule/models/events.py:120
 msgid "creator"
-msgstr ""
+msgstr "autor"
 
 #: schedule/models/events.py:122 schedule/models/events.py:473
 msgid "created on"
-msgstr ""
+msgstr "creado en"
 
 #: schedule/models/events.py:123 schedule/models/events.py:474
 msgid "updated on"
-msgstr ""
+msgstr "actualizado en"
 
 #: schedule/models/events.py:124 schedule/models/rules.py:50
 msgid "rule"
-msgstr ""
+msgstr "regla"
 
 #: schedule/models/events.py:125
 msgid "Select '----' for a one time only event."
-msgstr ""
+msgstr "Seleccione ' ----' para acontecimientos únicos."
 
 #: schedule/models/events.py:126
 msgid "end recurring period"
-msgstr ""
+msgstr "fin del período recurrente"
 
 #: schedule/models/events.py:127
 msgid "This date is ignored for one time only events."
-msgstr ""
+msgstr "Esta fecha no se tiene en cuenta para acontecimientos únicos."
 
 #: schedule/models/events.py:129
 msgid "Location"
-msgstr ""
+msgstr "Ubicación"
 
 #: schedule/models/events.py:130
 msgid "Venue City"
-msgstr ""
+msgstr "Ciudad del acontecimiento"
 
 #: schedule/models/events.py:131
 msgid "Venue Country"
-msgstr ""
+msgstr "País del acontecimiento"
 
 #: schedule/models/events.py:138 schedule/models/events.py:279
 #: schedule/models/events.py:296 schedule/models/events.py:447
 #: schedule/models/events.py:465
 msgid "event"
-msgstr ""
+msgstr "acontecimiento"
 
 #: schedule/models/events.py:139
 msgid "events"
-msgstr ""
+msgstr "acontecimientos"
 
 #: schedule/models/events.py:144
 #, python-format
@@ -3943,59 +3951,59 @@ msgstr ""
 
 #: schedule/models/events.py:292
 msgid "event file"
-msgstr ""
+msgstr "archivo del acontecimiento"
 
 #: schedule/models/events.py:293
 msgid "event files"
-msgstr ""
+msgstr "archivos de los acontecimientos"
 
 #: schedule/models/events.py:305
 msgid "event url"
-msgstr ""
+msgstr "url del acontecimiento"
 
 #: schedule/models/events.py:306
 msgid "event urls"
-msgstr ""
+msgstr "url de los acontecimientos"
 
 #: schedule/models/events.py:456
 msgid "event relation"
-msgstr ""
+msgstr "relación del acontecimiento"
 
 #: schedule/models/events.py:457
 msgid "event relations"
-msgstr ""
+msgstr "relaciones de los acontecimientos"
 
 #: schedule/models/events.py:466
 msgid "title"
-msgstr ""
+msgstr "título"
 
 #: schedule/models/events.py:468
 msgid "start"
-msgstr ""
+msgstr "inicio"
 
 #: schedule/models/events.py:469
 msgid "end"
-msgstr ""
+msgstr "fin"
 
 #: schedule/models/events.py:470
 msgid "cancelled"
-msgstr ""
+msgstr "cancelado"
 
 #: schedule/models/events.py:471
 msgid "original start"
-msgstr ""
+msgstr "inicio original"
 
 #: schedule/models/events.py:472
 msgid "original end"
-msgstr ""
+msgstr "final original"
 
 #: schedule/models/events.py:477
 msgid "occurrence"
-msgstr ""
+msgstr "presencia"
 
 #: schedule/models/events.py:478
 msgid "occurrences"
-msgstr ""
+msgstr "presencias"
 
 #: schedule/models/events.py:549
 #, python-format
@@ -4004,93 +4012,93 @@ msgstr ""
 
 #: schedule/models/rules.py:6
 msgid "Yearly"
-msgstr ""
+msgstr "Anual"
 
 #: schedule/models/rules.py:7
 msgid "Monthly"
-msgstr ""
+msgstr "Mensual"
 
 #: schedule/models/rules.py:10
 msgid "Hourly"
-msgstr ""
+msgstr "Cada hora"
 
 #: schedule/models/rules.py:11
 msgid "Minutely"
-msgstr ""
+msgstr "Cada minuto"
 
 #: schedule/models/rules.py:12
 msgid "Secondly"
-msgstr ""
+msgstr "En segundo lugar"
 
 #: schedule/models/rules.py:46
 msgid "frequency"
-msgstr ""
+msgstr "frecuencia"
 
 #: schedule/models/rules.py:47
 msgid "params"
-msgstr ""
+msgstr "params"
 
 #: schedule/models/rules.py:51
 msgid "rules"
-msgstr ""
+msgstr "reglas"
 
 #: schedule/templates/site_base.html:31
 msgid "clear"
-msgstr ""
+msgstr "claro"
 
 #: schedule/templates/profiles/schedule.html:4
 msgid "Schedule"
-msgstr ""
+msgstr "calendario"
 
 #: schedule/templates/profiles/schedule.html:26
 #: schedule/templates/profiles/schedule.html:27
 msgid "Event details"
-msgstr ""
+msgstr "Detalles del acontecimiento"
 
 #: schedule/templates/profiles/schedule.html:30
 #: schedule/templates/profiles/schedule.html:31
 msgid "Edit event"
-msgstr ""
+msgstr "Editar acontecimiento"
 
 #: schedule/templates/profiles/schedule.html:33
 #: schedule/templates/profiles/schedule.html:34
 msgid "Delete event"
-msgstr ""
+msgstr "Eliminar acontecimiento"
 
 #: schedule/templates/profiles/schedule.html:45
 #, python-format
 msgid "You haven't added any <a href=\"%(add_event_url)s\">event</a> yet."
-msgstr ""
+msgstr "No se ha añadido un <a href=\"%(add_event_url)s\">acontecimiento</a> todavía."
 
 #: schedule/templates/profiles/schedule.html:49
 msgid "Add event"
-msgstr ""
+msgstr "Añadir acontecimiento"
 
 #: schedule/templates/schedule/calendar_day.html:9
 msgid "Week"
-msgstr ""
+msgstr "Semana"
 
 #: schedule/templates/schedule/calendar_day.html:23
 msgid "Today"
-msgstr ""
+msgstr "Hoy"
 
 #: schedule/templates/schedule/calendar_list.html:3
 #: schedule/templates/schedule/calendar_list.html:5
 msgid "Available Calendars"
-msgstr ""
+msgstr "Calendarios disponibles"
 
 #: schedule/templates/schedule/calendar_month.html:18
 #: schedule/templates/schedule/calendar_tri_month.html:27
 msgid "Full Year Calendar"
-msgstr ""
+msgstr "Calendario de todo el año"
 
 #: schedule/templates/schedule/calendar_tri_month.html:24
 msgid "Monthly Calendar"
-msgstr ""
+msgstr "Calendario mensual"
 
 #: schedule/templates/schedule/calendar_week.html:22
 msgid "This week"
-msgstr ""
+msgstr "Esta semana"
 
 #: schedule/templates/schedule/cancel_occurrence.html:5
 #: schedule/templates/schedule/cancel_occurrence.html:13
@@ -4098,42 +4106,42 @@ msgstr ""
 #: schedule/templates/schedule/delete_event.html:11
 #: schedule/templates/schedule/event.html:29
 msgid "Delete"
-msgstr ""
+msgstr "Eliminar"
 
 #: schedule/templates/schedule/cancel_occurrence.html:6
 msgid "Are you sure that you really want to cancel this occurrence?"
-msgstr ""
+msgstr "¿Está seguro de que desea cancelar este elemento?"
 
 #: schedule/templates/schedule/create_event.html:5
 msgid "Create or change event. All fields are required."
-msgstr ""
+msgstr "Crear o cambiar un acontecimiento Todos los campos son obligatorios."
 
 #: schedule/templates/schedule/delete_event.html:6
 msgid "Are you sure that you really want to delete it?"
-msgstr ""
+msgstr "¿Está seguro de que desea eliminarlo?"
 
 #: schedule/templates/schedule/edit_occurrence.html:5
 msgid "Create or change occurrence. All fields are required."
-msgstr ""
+msgstr "Crear o modificar un elemento. Todos los campos son obligatorios."
 
 #: schedule/templates/schedule/event.html:7
 #: schedule/templates/schedule/occurrence.html:7
 msgid "Day"
-msgstr ""
+msgstr "Día"
 
 #: schedule/templates/schedule/event.html:20
 #: schedule/templates/schedule/occurrence.html:15
 msgid "Back"
-msgstr ""
+msgstr "Volver"
 
 #: schedule/templates/schedule/event.html:25
 #: schedule/templates/schedule/occurrence.html:17
 msgid "Change"
-msgstr ""
+msgstr "Cambiar"
 
 #: schedule/templates/schedule/event.html:45
 msgid "until"
-msgstr ""
+msgstr "hasta"
 
 #: schedule/templates/schedule/event.html:45
 #, python-format
@@ -4142,4 +4150,4 @@ msgstr ""
 
 #: schedule/templates/schedule/event.html:47
 msgid "Never. This is a 'one time only' event."
-msgstr ""
+msgstr "Nunca. Este es un acontecimiento 'único'."
