@@ -1,4 +1,6 @@
 {% load mezzanine_tags staticfiles i18n %}
+
+{%if page.publicationlibrary.publications.all%}
 {% if user.is_superuser or perms.ippc.change_publication  %}
 <div class="alert alert-success"><h5>All the publications of this page are visible to:</h5>
 {% for g in page.get_content_model.groups.all %}
@@ -7,8 +9,6 @@
 </div>
 
 {% endif %}
-{%if page.publicationlibrary.publications.all%}
-
 
 <table class="table table-condensed table-striped table-bordered" id="publications">
     {# http://datatables.net/blog/Twitter_Bootstrap_2 #}
