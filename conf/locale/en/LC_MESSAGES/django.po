@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2015-04-15 18:58-0400\n"
+"POT-Creation-Date: 2015-04-15 19:09-0400\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -2978,18 +2978,9 @@ msgid "A new comment has been posted on"
 msgstr ""
 
 #: ippc/templates/email/comment_notification.html:10
-#, python-format
-msgid ""
-"\n"
-"    At %(submit_date)s %(user_name)s wrote:\n"
-"    "
-msgstr ""
-
 #: ippc/templates/email/comment_notification.txt:7
 #, python-format
-msgid ""
-"\n"
-"At %(submit_date)s %(user_name)s wrote:\n"
+msgid "At %(submit_date)s %(user_name)s wrote:"
 msgstr ""
 
 #: ippc/templates/email/password_reset_verify.html:3
