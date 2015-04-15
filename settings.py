@@ -366,13 +366,20 @@ from django.utils.translation import ugettext_lazy as _
 
 LANGUAGES = (
     ('en', 'English'),
-    ('fr', 'Français'),
-    ('es', 'Español'),
-    ('ru', 'Русский'),
-    ('ar', 'العربية'),
-    ('zh', '简体中文'),
-
+    ('fr', 'French'),
+    ('es', 'Spanish'),
+    ('ru', 'Russian'),
+    ('ar', 'Arabic'),
+    ('zh', 'Chinese'),
 )
+#LANGUAGES = (
+#    ('en', 'English'),
+ #   ('fr', 'Français'),
+#    ('es', 'Español'),
+#    ('ru', 'Ру�?�?кий'),
+#    ('ar', 'العربية'),
+#    ('zh', '简体中文'),
+#)
 
 # https://docs.djangoproject.com/en/dev/ref/settings/#locale-paths
 LOCALE_PATHS = (os.path.join(PROJECT_ROOT, "conf/locale"),)
