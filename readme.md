@@ -2,6 +2,7 @@
 
 ## Things to do
 
+- Install and use <https://github.com/mbi/django-rosetta> for sane translation management
 - Setup [auto-restart](https://github.com/hypertexthero/itwishlist/blob/master/docs/documentation.md#commands-to-restart-itippcint-and-related-software-upon-hardware-restart----hardwarerestart) of Nginx and Gunicorn in case server goes down
 - Setup daily auto backup of MySQL. Look at moving DB to dedicated DB servers.
 - Tag 4.0.0 release

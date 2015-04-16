@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2015-04-15 19:27-0400\n"
+"POT-Creation-Date: 2015-04-15 19:58-0400\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -1660,7 +1660,6 @@ msgid "About"
 msgstr "Acerca de"
 
 #: ippc/templates/index.html:78
-#, fuzzy, python-format
 msgid ""
 "The International Plant Protection Convention (IPPC) is an <a title='See the "
 "convention text' href='/%(LANGUAGE_CODE)s/core-activities/governance/"
@@ -4433,6 +4432,24 @@ msgstr ""
 #: schedule/templates/schedule/event.html:47
 msgid "Never. This is a 'one time only' event."
 msgstr "Nunca. Este es un acontecimiento 'único'."
+
+#, fuzzy
+#~ msgid "The International Plant Protection Convention (IPPC) is an"
+#~ msgstr "Convención Internacional de Protección Fitosanitaria"
+
+#, fuzzy
+#~ msgid "international agreement"
+#~ msgstr "Convención Internacional de Protección Fitosanitaria"
+
+#, fuzzy
+#~ msgid "contracting parties"
+#~ msgstr "Partes contratantes"
+
+#, fuzzy
+#~ msgid "Food and Agriculture Organization of the United Nations"
+#~ msgstr ""
+#~ "Organización de las Naciones Unidas para la Agricultura y la Alimentación "
+#~ "logotipo"
 
 #~ msgid "English"
 #~ msgstr "Inglés"
