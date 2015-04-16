@@ -4,9 +4,6 @@
 # This file is distributed under the same license as the PACKAGE package.
 # FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
 #
-#, fuzzy
-msgid ""
-msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2015-04-15 19:58-0400\n"
@@ -794,7 +791,6 @@ msgid "Contact for more information"
 msgstr ""
 
 #: ippc/models.py:284
-#, fuzzy
 msgid "Groups this publication is NOT accessible to"
 msgstr "Grupos que tienen acceso a esta biblioteca"
 
@@ -1161,12 +1157,10 @@ msgid "Reporting Obligations"
 msgstr ""
 
 #: ippc/models.py:803
-#, fuzzy
 msgid "Publications from Countries"
 msgstr "Publicaciones de"
 
 #: ippc/models.py:876
-#, fuzzy
 msgid "Publications from Partners"
 msgstr "Publicaciones de"
 
@@ -1219,9 +1213,8 @@ msgid "RPPO"
 msgstr ""
 
 #: ippc/models.py:1032
-#, fuzzy
 msgid "International Organization"
-msgstr "Convención Internacional de Protección Fitosanitaria"
+msgstr "Organización Internacional"
 
 #: ippc/models.py:1033
 msgid "Research Institute"
@@ -1305,20 +1298,16 @@ msgid "Has your country implemented ISPM 15 for imports?"
 msgstr ""
 
 #: ippc/models.py:1306 ippc/models.py:1310
-#, fuzzy
 msgid "If yes, which version (click all that apply): "
-msgstr "qué versión (haga clic en todas los que correspondan):"
+msgstr "Qué versión (haga clic en todas los que correspondan):"
 
 #: ippc/models.py:1308
-#, fuzzy
 msgid "  Has your country implemented ISPM 15 for exports?"
 msgstr "¿Su país aplica la NIMF 15 en las exportaciones?"
 
 #: ippc/models.py:1313
-#, fuzzy
 msgid " Is the ISPM No.15 mark registered as a trade mark in your country??"
-msgstr ""
-"¿La marca registrada de la NIMF 15 está registrada como marca en su país?"
+msgstr "¿La marca registrada de la NIMF 15 está registrada como marca en su país?"
 
 #: ippc/models.py:1314
 msgid "Image of mark"
@@ -1593,14 +1582,12 @@ msgid "Email  sent."
 msgstr "Correo electrónico enviado."
 
 #: ippc/views.py:3952
-#, fuzzy
 msgid "Successfully created Question."
-msgstr "Noticia correctamente elaborada."
+msgstr "Pregunta correctamente elaborada."
 
 #: ippc/views.py:4006
-#, fuzzy
 msgid "Successfully added Answer."
-msgstr "Sitio web correctamente añadido."
+msgstr "Interpreta correctamente añadido."
 
 #: ippc/templates/base.html:282
 msgid "IPPC on Social Media:"
@@ -1796,7 +1783,6 @@ msgid " <a href=\"/countries/all/pestreport\">Pest Reports"
 msgstr " <a href=\"/countries/all/pestreport\">Informes de plagas"
 
 #: ippc/templates/index.html:111
-#, fuzzy
 msgid "<a href=\"/countries/all/legislation\">Legislation "
 msgstr "<a href=\"/countries/all/legislation\">Legislación"
 
@@ -1884,23 +1870,13 @@ msgid "Home"
 msgstr "Inicio"
 
 #: ippc/templates/search_results.html:20
-#, fuzzy, python-format
-msgid ""
-"\n"
-"No results were found in %(search_type)s matching your query: %(query)s\n"
-msgstr ""
-"No se encontraron resultados coincidentes con %(search_type)s su búsqueda: "
-"%(query)s\n"
+msgid "No results were found in %(search_type)s matching your query: %(query)s\n"
+msgstr "No se encontraron resultados coincidentes con %(search_type)s su búsqueda:%(query)s\n"
 
 #: ippc/templates/search_results.html:24
-#, fuzzy, python-format
-msgid ""
-"\n"
-"Showing %(start)s to %(end)s of %(total)s results in %(search_type)s "
-"matching your query: %(query)s\n"
-msgstr ""
-"De %(start)s a %(end)s del %(total)s de resultados coincidentes con su "
-"búsqueda:"
+
+msgid "Showing %(start)s to %(end)s of %(total)s results in %(search_type)s matching your query: %(query)s\n"
+msgstr "De %(start)s a %(end)s del %(total)s de resultados coincidentes con su búsqueda:"
 
 #: ippc/templates/sitemap.html:4 ippc/templates/sitemap.html.py:8
 #: ippc/templates/includes/user_panel.html:4
@@ -2547,7 +2523,6 @@ msgid "Add new"
 msgstr "Agregar nuevo"
 
 #: ippc/templates/countries/country_page.html:135
-#, fuzzy
 msgid " Related Official Information"
 msgstr "Información oficial relacionada"
 
@@ -2678,8 +2653,7 @@ msgstr "Informes de acontecimientos"
 
 #: ippc/templates/countries/event_reporting_list.html:49
 #: ippc/templates/countries/reporting_obligation_list.html:50
-#, fuzzy
-msgid "  from"
+msgid "from"
 msgstr "de"
 
 #: ippc/templates/countries/event_reporting_list.html:72
@@ -2867,8 +2841,7 @@ msgstr "Nuevas obligaciones de presentación de información"
 #: ippc/templates/countries/reporting_obligation_create.html:36
 #: ippc/templates/countries/reporting_obligation_edit.html:39
 #: ippc/templates/schedule/create_event.html:57
-#, fuzzy
-msgid " Cancel and go back"
+msgid "Cancel and go back"
 msgstr "Cancelar y volver"
 
 #: ippc/templates/countries/reporting_obligation_create.html:39
@@ -3315,28 +3288,23 @@ msgid "IRSS"
 msgstr "IRSS"
 
 #: ippc/templates/irss/irss_activities.html:5
-#, fuzzy
 msgid "IRSS Activities"
-msgstr "Actividades básicas"
+msgstr "Actividades IRSS"
 
 #: ippc/templates/irss/irss_activities.html:19
-#, fuzzy
 msgid "Activities"
-msgstr "Actividades básicas"
+msgstr "Actividades"
 
 #: ippc/templates/irss/irss_countries.html:5
-#, fuzzy
 msgid "Country Profiles"
-msgstr "Páginas de su país"
+msgstr "Páginas de país"
 
 #: ippc/templates/irss/irss_helpdeskfaq.html:5
-#, fuzzy
 msgid "Helpdesk FAQs"
 msgstr "Ayuda para el IRSS"
 
 #: ippc/templates/irss/irss_helpdeskhome.html:5
 #: ippc/templates/irss/irss_helpdeskhome.html:19
-#, fuzzy
 msgid "Helpdesk"
 msgstr "Ayuda para el IRSS"
 
@@ -3379,7 +3347,6 @@ msgid "Picture"
 msgstr "Imagen"
 
 #: ippc/templates/pages/memberstable.html:202
-#, fuzzy
 msgid "Type of Contact"
 msgstr "Tipo de contacto"
 
@@ -3434,28 +3401,24 @@ msgid "Download"
 msgstr "Descargar"
 
 #: ippc/templates/pages/publicationlibrarypoll.html:13
-#, fuzzy
 msgid "Poll"
 msgstr "Encuestas"
 
 #: ippc/templates/pages/publicationlibrarypoll.html:14
-#, fuzzy
 msgid "Open"
-msgstr "Fecha de apertura"
+msgstr "Abre"
 
 #: ippc/templates/pages/publicationlibrarypoll.html:15
-#, fuzzy
 msgid "Results"
-msgstr "Resultados de: "
+msgstr "Resultados"
 
 #: ippc/templates/pages/publicationtable.html:77
 msgid "show/hide Details"
 msgstr "Mostrar/ocultar detalles"
 
 #: ippc/templates/pages/publicationtablerestricted.html:25
-#, fuzzy
 msgid "Access granted to"
-msgstr "Encuesta correctamente elaborada."
+msgstr "Acceso concedido a"
 
 #: ippc/templates/pages/menus/admin.html:31
 msgid "Add"
@@ -3552,9 +3515,8 @@ msgid "Poll results"
 msgstr "Resultados de la encuesta"
 
 #: ippc/templates/question/answer_create.html:4
-#, fuzzy
 msgid "New Answer"
-msgstr "Nuevas noticias"
+msgstr "Nuevas respuesta"
 
 #: ippc/templates/question/answer_create.html:18
 #: ippc/templates/question/answer_edit.html:18
@@ -3562,9 +3524,8 @@ msgstr "Nuevas noticias"
 #: ippc/templates/question/index.html:17
 #: ippc/templates/question/question_create.html:18
 #: ippc/templates/question/question_edit.html:18
-#, fuzzy
 msgid "QA Forum"
-msgstr "Foro"
+msgstr "Foro QA"
 
 #: ippc/templates/question/answer_create.html:23
 msgid "Answer to"
@@ -3575,26 +3536,22 @@ msgid "Answer to Question"
 msgstr ""
 
 #: ippc/templates/question/answer_edit.html:4
-#, fuzzy
 msgid "Edit Answer"
-msgstr "Editar noticias"
+msgstr "Editar respuesta"
 
 #: ippc/templates/question/answer_edit.html:23
-#, fuzzy
 msgid "Editing answer to"
-msgstr "Editando observación"
+msgstr "Editando respuesta a"
 
 #: ippc/templates/question/answer_edit.html:40
 #: ippc/templates/question/answers.html:4
 #: ippc/templates/question/question_edit.html:4
-#, fuzzy
 msgid "Question"
-msgstr "Descripción"
+msgstr "Pregunta"
 
 #: ippc/templates/question/answer_edit.html:47
-#, fuzzy
 msgid "Update Answer"
-msgstr "Actualizado en"
+msgstr "Actualiza respuesta"
 
 #: ippc/templates/question/answers.html:21
 msgid "Answers"
@@ -3609,29 +3566,24 @@ msgid "No answers yet."
 msgstr ""
 
 #: ippc/templates/question/answers.html:65
-#, fuzzy
 msgid "Answer Count:"
-msgstr "País del acontecimiento"
+msgstr "Conde respuesta"
 
 #: ippc/templates/question/index.html:4
-#, fuzzy
 msgid "Q & A Forum"
 msgstr "Foro rápido"
 
 #: ippc/templates/question/question_create.html:4
-#, fuzzy
 msgid "New Question"
-msgstr "Nueva publicación"
+msgstr "Nueva pregunta"
 
 #: ippc/templates/question/question_create.html:40
-#, fuzzy
 msgid "Create New Question"
-msgstr "Crear nuevo acontecimiento"
+msgstr "Crear nueva pregunta"
 
 #: ippc/templates/question/question_edit.html:47
-#, fuzzy
 msgid "Update Question"
-msgstr "Actualizar publicación "
+msgstr "Actualizar pregunta"
 
 #: ippc/templates/schedule/_create_event_options.html:2
 #: ippc/templates/schedule/calendar_month.html:25
@@ -4432,45 +4384,3 @@ msgstr ""
 #: schedule/templates/schedule/event.html:47
 msgid "Never. This is a 'one time only' event."
 msgstr "Nunca. Este es un acontecimiento 'único'."
-
-#, fuzzy
-#~ msgid "The International Plant Protection Convention (IPPC) is an"
-#~ msgstr "Convención Internacional de Protección Fitosanitaria"
-
-#, fuzzy
-#~ msgid "international agreement"
-#~ msgstr "Convención Internacional de Protección Fitosanitaria"
-
-#, fuzzy
-#~ msgid "contracting parties"
-#~ msgstr "Partes contratantes"
-
-#, fuzzy
-#~ msgid "Food and Agriculture Organization of the United Nations"
-#~ msgstr ""
-#~ "Organización de las Naciones Unidas para la Agricultura y la Alimentación "
-#~ "logotipo"
-
-#~ msgid "English"
-#~ msgstr "Inglés"
-
-#~ msgid "French"
-#~ msgstr "Francés"
-
-#~ msgid "Spanish"
-#~ msgstr "Español"
-
-#~ msgid "Russian"
-#~ msgstr "Ruso"
-
-#~ msgid "Arabic"
-#~ msgstr "Árabe"
-
-#~ msgid "Chinese"
-#~ msgstr "Chino"
-
-#~ msgid "Implementation of ISPM 15pm"
-#~ msgstr "Aplicación de la NIMF 15"
-
-#~ msgid "Moderator"
-#~ msgstr "Moderador"
