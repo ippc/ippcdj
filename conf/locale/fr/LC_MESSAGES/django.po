@@ -1078,6 +1078,7 @@ msgstr ""
 #: ippc/templates/countries/pest_report_list.html:8
 #: ippc/templates/countries/pest_report_list.html:32
 #: ippc/templates/countries/website_list.html:5
+#: ippc/templates/index.html:110
 msgid "Pest Reports"
 msgstr ""
 
@@ -1634,21 +1635,8 @@ msgstr "À propos de"
 
 #: ippc/templates/index.html:78
 #, python-format
-msgid ""
-"The International Plant Protection Convention (IPPC) is an <a title='See the "
-"convention text' href='/%(LANGUAGE_CODE)s/core-activities/governance/"
-"convention-text/'>international agreement</a> on plant health to which <a "
-"href='http://www.fao.org/fileadmin/user_upload/legal/docs/4_004s-e.pdf'>181 "
-"contracting parties</a> currently adhere.  It aims to protect cultivated and "
-"wild plants by preventing the introduction and spread of pests.  The <a "
-"href='/%(LANGUAGE_CODE)s/about/secretariat'>Secretariat</a> of the IPPC is "
-"provided by the <a href='http://fao.org'>Food and Agriculture Organization "
-"of the United Nations</a>. See our <a href='/%(LANGUAGE_CODE)s/media-"
-"kit'>Media Kit</a>."
-msgstr "
-La Convention internationale pour la protection des végétaux (CIPV) est un <a
-href='/%(LANGUAGE_CODE)s/core-activities/governance/convention-text/'>accord international</a> sur la santé des végétaux qui compte actuellement <a 
-href='http://www.fao.org/fileadmin/user_upload/legal/docs/4_004s-e.pdf'>181 signataires</a>.  Elle vise à protéger les plantes cultivées et sauvages en prévenant l'introduction et la dissémination des organismes nuisibles. Le <a href='/%(LANGUAGE_CODE)s/about/secretariat'>Secrétariat</a> de la CIPV est assuré par <a href='http://fao.org'>l’Organisation des Nations Unies pour l'alimentation et l'agriculture</a>. Voir notre dossier d’information."
+msgid """The International Plant Protection Convention (IPPC) is an <a title='See the convention text' href='/%(LANGUAGE_CODE)s/core-activities/governance/convention-text/'>international agreement</a> on plant health to which <a href='http://www.fao.org/fileadmin/user_upload/legal/docs/4_004s-e.pdf'>181 contracting parties</a> currently adhere.  It aims to protect cultivated and wild plants by preventing the introduction and spread of pests.  The <a href='/%(LANGUAGE_CODE)s/about/secretariat'>Secretariat</a> of the IPPC is provided by the <a href='http://fao.org'>Food and Agriculture Organization of the United Nations</a>. See our <a href='/%(LANGUAGE_CODE)s/media-kit'>Media Kit</a>."""
+msgstr """La Convention internationale pour la protection des végétaux (CIPV) est un <a href='/%(LANGUAGE_CODE)s/core-activities/governance/convention-text/'>accord international</a> sur la santé des végétaux qui compte actuellement <a href='http://www.fao.org/fileadmin/user_upload/legal/docs/4_004s-e.pdf'>181 signataires</a>.  Elle vise à protéger les plantes cultivées et sauvages en prévenant l'introduction et la dissémination des organismes nuisibles. Le <a href='/%(LANGUAGE_CODE)s/about/secretariat'>Secrétariat</a> de la CIPV est assuré par <a href='http://fao.org'>l’Organisation des Nations Unies pour l'alimentation et l'agriculture</a>. Voir notre dossier d’information."""
 
 #: ippc/templates/index.html:81
 msgid "Newsletter"
@@ -1665,9 +1653,7 @@ msgid ""
 "u=fc3d4d92d71f2fa693910c666&id=bf810c0be2\">see prior editions</a> and <a "
 "href=\"mailto:jeremy.cherfas@fao.org\" title=\"Open your email client."
 "\">send content suggestions</a>."
-msgstr "
-Le Secrétariat de la CIPV s'emploie à communiquer sur ses activités et à permettre aux lecteurs de partager des informations pertinentes. Un bulletin d'information est publié une fois par mois, parfois accompagné  d'éditions spéciales. <a class='btn btn-small btn-success' href='http://ippc.us10.list-manage.com/subscribe?u=fc3d4d92d71f2fa693910c666&id=bf810c0be2'>S'abonner</a> au bulletin d'information, consulter les <a href='http://us10.campaign-archive1.com/home/?u=fc3d4d92d71f2fa693910c666&id=bf810c0be2'>éditions précédentes</a> et envoyer des <a href='mailto:jeremy.cherfas@fao.org'>suggestions de publications</a>
-"
+msgstr "Le Secrétariat de la CIPV s'emploie à communiquer sur ses activités et à permettre aux lecteurs de partager des informations pertinentes. Un bulletin d'information est publié une fois par mois, parfois accompagné  d'éditions spéciales. <a class='btn btn-small btn-success' href='http://ippc.us10.list-manage.com/subscribe?u=fc3d4d92d71f2fa693910c666&id=bf810c0be2'>S'abonner</a> au bulletin d'information, consulter les <a href='http://us10.campaign-archive1.com/home/?u=fc3d4d92d71f2fa693910c666&id=bf810c0be2'>éditions précédentes</a> et envoyer des <a href='mailto:jeremy.cherfas@fao.org'>suggestions de publications</a>"
 
 #: ippc/templates/index.html:86
 msgid "Core Activities"
@@ -1749,10 +1735,6 @@ msgstr "Liste complète des pays"
 #: ippc/templates/index.html:109
 msgid "List of Contact Points"
 msgstr "Liste des points de contact"
-
-#: ippc/templates/index.html:110
-msgid "Pest Reports"
-msgstr "Signalements d’organismes nuisibles"
 
 #: ippc/templates/index.html:111
 msgid "Legislation "
@@ -1844,12 +1826,12 @@ msgstr "Page d'accueil"
 #: ippc/templates/search_results.html:20
 #, python-format
 msgid "No results were found in %(search_type)s matching your query: %(query)s"
-msgstr "Aucun résultat ne correspond à votre recherche:"
+msgstr "Aucun résultat ne correspond %(search_type)s à votre recherche: %(query)s"
 
 #: ippc/templates/search_results.html:24
 #, python-format
-msgid "Showing %(start)s to %(end)s of %(total)s results in %(search_type)s matching your query: %(query)s\n"
-msgstr "x à y résultats correspondent à votre recherche:"
+msgid "Showing %(start)s to %(end)s of %(total)s results in %(search_type)s matching your query: %(query)s"
+msgstr "%(start)s à %(end)s résultats %(total)s correspondent à %(search_type)s votre recherche: %(query)s"
 
 #: ippc/templates/sitemap.html:4 ippc/templates/sitemap.html.py:8
 #: ippc/templates/includes/user_panel.html:4

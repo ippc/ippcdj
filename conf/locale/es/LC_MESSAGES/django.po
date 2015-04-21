@@ -3,7 +3,9 @@
 # Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
 # This file is distributed under the same license as the PACKAGE package.
 # FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
-#
+#, fuzzy
+msgid ""
+msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2015-04-15 19:58-0400\n"
@@ -1875,7 +1877,7 @@ msgstr "No se encontraron resultados coincidentes con %(search_type)s su búsque
 
 #: ippc/templates/search_results.html:24
 
-msgid "Showing %(start)s to %(end)s of %(total)s results in %(search_type)s matching your query: %(query)s\n"
+msgid "Showing %(start)s to %(end)s of %(total)s results in %(search_type)s matching your query: %(query)s"
 msgstr "De %(start)s a %(end)s del %(total)s de resultados coincidentes con su búsqueda:"
 
 #: ippc/templates/sitemap.html:4 ippc/templates/sitemap.html.py:8
