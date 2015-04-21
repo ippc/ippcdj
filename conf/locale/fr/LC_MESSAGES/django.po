@@ -3523,7 +3523,7 @@ msgstr ""
 #: ippc/templates/schedule/calendar_year.html:22
 #: schedule/templates/schedule/_create_event_options.html:2
 msgid "Add Event"
-msgstr ""
+msgstr "Ajouter une manifestation"
 
 #: ippc/templates/schedule/_detail.html:6
 #: ippc/templates/schedule/event.html:71
@@ -3531,7 +3531,7 @@ msgstr ""
 #: schedule/templates/schedule/event.html:35
 #: schedule/templates/schedule/occurrence.html:23
 msgid "Starts"
-msgstr ""
+msgstr "Début"
 
 #: ippc/templates/schedule/_detail.html:7
 #: ippc/templates/schedule/_detail.html:11
@@ -3566,7 +3566,7 @@ msgstr ""
 #: schedule/templates/schedule/event.html:39
 #: schedule/templates/schedule/occurrence.html:27
 msgid "Ends"
-msgstr ""
+msgstr "Fin"
 
 #: ippc/templates/schedule/_detail.html:11
 #: ippc/templates/schedule/_detail.html:21
@@ -3586,50 +3586,50 @@ msgstr ""
 #: schedule/templates/schedule/event.html:43
 #: schedule/templates/schedule/occurrence.html:32
 msgid "Reoccurs"
-msgstr ""
+msgstr "Renouvelé"
 
 #: ippc/templates/schedule/_detail.html:20
 #: schedule/templates/schedule/_detail.html:20
 msgid "Until"
-msgstr ""
+msgstr "Jusqu'à"
 
 #: ippc/templates/schedule/_dialogs.html:6
 #: ippc/templates/schedule/_dialogs.html:14
 #: schedule/templates/schedule/_dialogs.html:6
 #: schedule/templates/schedule/_dialogs.html:14
 msgid "This"
-msgstr ""
+msgstr "Ce"
 
 #: ippc/templates/schedule/_dialogs.html:6
 #: ippc/templates/schedule/_dialogs.html:14
 #: schedule/templates/schedule/_dialogs.html:6
 #: schedule/templates/schedule/_dialogs.html:14
 msgid "All"
-msgstr ""
+msgstr "Tout"
 
 #: ippc/templates/schedule/_dialogs.html:6
 #: ippc/templates/schedule/_dialogs.html:14
 #: schedule/templates/schedule/_dialogs.html:6
 #: schedule/templates/schedule/_dialogs.html:14
 msgid "Do nothing"
-msgstr ""
+msgstr "Ne rien faire"
 
 #: ippc/templates/schedule/_dialogs.html:21
 #: schedule/templates/schedule/_dialogs.html:21
 msgid "Close"
-msgstr ""
+msgstr "Fermer"
 
 #: ippc/templates/schedule/_dialogs.html:36
 #: schedule/templates/schedule/_dialogs.html:36
 msgid ""
 "Do you want to cancel this occurrence or delete all occurrences of this "
 "event?"
-msgstr ""
+msgstr "Voulez-vous annuler cet événement ou supprimer tous les événements de cette manifestation ?"
 
 #: ippc/templates/schedule/_dialogs.html:40
 #: schedule/templates/schedule/_dialogs.html:40
 msgid "Do you want to edit this occurrence or all occurrences?"
-msgstr ""
+msgstr "Voulez-vous modifier cet événement ou tous les événements ?"
 
 #: ippc/templates/schedule/_event_options.html:9
 #: ippc/templates/schedule/_event_options.html:13
@@ -3640,7 +3640,7 @@ msgstr ""
 #: schedule/templates/schedule/_event_options.html:13
 #: schedule/templates/schedule/_event_options.html:18
 msgid "Edit Event"
-msgstr ""
+msgstr "Modifier la manifestation"
 
 #: ippc/templates/schedule/_event_options.html:28
 #: ippc/templates/schedule/_event_options.html:32
@@ -3649,77 +3649,77 @@ msgstr ""
 #: schedule/templates/schedule/_event_options.html:32
 #: schedule/templates/schedule/_event_options.html:37
 msgid "Delete Event"
-msgstr ""
+msgstr "Supprimer la manifestation"
 
 #: ippc/templates/schedule/base.html:16
 #: schedule/templates/schedule/base.html:16
 msgid "Create a Calendar"
-msgstr ""
+msgstr "Créer un calendrier"
 
 #: ippc/templates/schedule/base.html:17
 #: schedule/templates/schedule/base.html:17
 msgid "Your Calendars"
-msgstr ""
+msgstr "Vos calendriers"
 
 #: ippc/templates/schedule/base.html:20
 #: schedule/templates/schedule/base.html:20
 msgid "All Calendars"
-msgstr ""
+msgstr "Tous les calendriers"
 
 #: ippc/templates/schedule/calendar.html:17
 #: schedule/templates/schedule/calendar.html:17
 #: schedule/templates/schedule/calendar_list.html:9
 msgid "Small Month"
-msgstr ""
+msgstr "Aperçu sur un mois"
 
 #: ippc/templates/schedule/calendar.html:18
 #: schedule/templates/schedule/calendar.html:18
 #: schedule/templates/schedule/calendar_list.html:10
 msgid "1 Month"
-msgstr ""
+msgstr "1 mois"
 
 #: ippc/templates/schedule/calendar.html:19
 #: schedule/templates/schedule/calendar.html:19
 #: schedule/templates/schedule/calendar_list.html:11
 msgid "3 Months"
-msgstr ""
+msgstr "3 mois"
 
 #: ippc/templates/schedule/calendar.html:20
 #: schedule/templates/schedule/calendar.html:20
 #: schedule/templates/schedule/calendar_list.html:12
 msgid "This Year"
-msgstr ""
+msgstr "Cette année"
 
 #: ippc/templates/schedule/calendar.html:21 schedule/models/rules.py:8
 #: schedule/templates/schedule/calendar.html:21
 #: schedule/templates/schedule/calendar_list.html:13
 msgid "Weekly"
-msgstr ""
+msgstr "Hebdomadaire"
 
 #: ippc/templates/schedule/calendar.html:22 schedule/models/rules.py:9
 #: schedule/templates/schedule/calendar.html:22
 #: schedule/templates/schedule/calendar_list.html:14
 msgid "Daily"
-msgstr ""
+msgstr "Quotidien"
 
 #: ippc/templates/schedule/calendar.html:23
 #: schedule/templates/schedule/calendar.html:23
 #: schedule/templates/schedule/calendar_list.html:15
 msgid "Feed"
-msgstr ""
+msgstr "Fil"
 
 #: ippc/templates/schedule/calendar.html:27
 #: schedule/templates/schedule/calendar.html:27
 msgid "Now see docstring for schedule.views.calendar"
-msgstr ""
+msgstr "Voir maintenant le docstring pour la programmation.vues.calendrier"
 
 #: ippc/templates/schedule/calendar_cn.html:40
 msgid "Add new event"
-msgstr ""
+msgstr "Ajouter une nouvelle manifestation"
 
 #: ippc/templates/schedule/calendar_cn.html:47
 msgid "Events from"
-msgstr ""
+msgstr "Manifestations à partir de"
 
 #: ippc/templates/schedule/calendar_month.html:6
 #: ippc/templates/schedule/calendar_month.html:14
@@ -3727,7 +3727,7 @@ msgstr ""
 #: ippc/templates/schedule/create_event.html:20
 #: ippc/templates/schedule/event.html:30 ippc/templates/schedule/event.html:45
 msgid "Calendar"
-msgstr ""
+msgstr "Calendrier"
 
 #: ippc/templates/schedule/calendar_month.html:17
 #: schedule/templates/schedule/calendar_day.html:12
@@ -3735,96 +3735,96 @@ msgstr ""
 #: schedule/templates/schedule/event.html:10
 #: schedule/templates/schedule/occurrence.html:10
 msgid "Month"
-msgstr ""
+msgstr "Mois"
 
 #: ippc/templates/schedule/calendar_month.html:31
 msgid "See Full Year Calendar"
-msgstr ""
+msgstr "Voir le calendrier complet de l'année"
 
 #: ippc/templates/schedule/calendar_month.html:50
 #: schedule/templates/schedule/calendar_month.html:11
 #: schedule/templates/schedule/calendar_tri_month.html:9
 msgid "This month"
-msgstr ""
+msgstr "Mois en cours"
 
 #: ippc/templates/schedule/calendar_year.html:15
 #: schedule/templates/schedule/calendar_day.html:15
 #: schedule/templates/schedule/calendar_week.html:13
 #: schedule/templates/schedule/event.html:13
 msgid "Year"
-msgstr ""
+msgstr "Année"
 
 #: ippc/templates/schedule/calendar_year.html:27
 msgid "See Month Calendar"
-msgstr ""
+msgstr "Voir le calendrier du mois"
 
 #: ippc/templates/schedule/calendar_year.html:36
 msgid "Calendar of Events<"
-msgstr ""
+msgstr "Calendrier des manifestations"
 
 #: ippc/templates/schedule/calendar_year.html:113
 #: schedule/templates/schedule/calendar_year.html:33
 msgid "Current Month Calendar"
-msgstr ""
+msgstr "Calendrier du mois en cours"
 
 #: ippc/templates/schedule/calendar_year.html:116
 #: schedule/templates/schedule/calendar_year.html:36
 msgid "Current Year Calendar"
-msgstr ""
+msgstr "Calendrier de l'année en cours"
 
 #: ippc/templates/schedule/create_event.html:5
 #: ippc/templates/schedule/event.html:5
 msgid "Event"
-msgstr ""
+msgstr "Manifestation"
 
 #: ippc/templates/schedule/create_event.html:43
 #: ippc/templates/schedule/create_event.html:63
 msgid "Create New Event"
-msgstr ""
+msgstr "Créer une nouvelle manifestation"
 
 #: ippc/templates/schedule/event.html:108 schedule/models/events.py:129
 msgid "Location"
-msgstr ""
+msgstr "Emplacement"
 
 #: ippc/templates/schedule/event.html:116
 msgid "Venue city"
-msgstr ""
+msgstr "Ville"
 
 #: ippc/templates/schedule/event.html:124
 msgid "Venue country"
-msgstr ""
+msgstr "Pays"
 
 #: ippc/templates/schedule/event.html:133 schedule/models/events.py:132
 msgid "Organizer"
-msgstr ""
+msgstr "Organisateur"
 
 #: ippc/templates/schedule/event.html:140
 msgid "Created on"
-msgstr ""
+msgstr "Créé le"
 
 #: ippc/templates/schedule/event.html:142
 msgid "Updated on"
-msgstr ""
+msgstr "Mis à jour le"
 
 #: ippc/templates/schedule/event.html:159
 msgid "Event files"
-msgstr ""
+msgstr "Fichiers sur la manifestation"
 
 #: ippc/templates/schedule/event.html:167
 msgid "Event websites/urls"
-msgstr ""
+msgstr "Sites web/URL sur la manifestation"
 
 #: ippc/templates/twitter/tweets.html:7
 msgid "Recent Tweets"
-msgstr ""
+msgstr "Tweets récents"
 
 #: news/defaults.py:21
 msgid "Enable featured images in news posts"
-msgstr ""
+msgstr "Autoriser les images dans les nouveaux messages"
 
 #: news/defaults.py:36
 msgid "News post URL date format"
-msgstr ""
+msgstr "Format de la date de l'URL des messages d’actualité"
 
 #: news/defaults.py:37
 msgid ""
@@ -3838,41 +3838,41 @@ msgstr ""
 
 #: news/defaults.py:49
 msgid "News posts per page"
-msgstr ""
+msgstr "Messages par page"
 
 #: news/defaults.py:50
 msgid "Number of news posts shown on a news listing page."
-msgstr ""
+msgstr "Nombre de messages d’actualité affichés sur une page."
 
 #: news/defaults.py:57
 msgid "News posts RSS limit"
-msgstr ""
+msgstr "Nombre maximal de messages par fil RSS"
 
 #: news/defaults.py:58
 msgid ""
 "Number of most recent news posts shown in the RSS feed. Set to ``None`` to "
 "display all news posts in the RSS feed."
-msgstr ""
+msgstr "Nombre de nouvelles récentes pour le fil RSS. Choisir « Aucun » pour afficher toutes les nouvelles dans le fil RSS."
 
 #: news/defaults.py:66
 msgid "Slug of the page object for the news."
-msgstr ""
+msgstr "Titre de rappel de l'objet de la page pour la nouvelle."
 
 #: news/models.py:93
 msgid "News Category"
-msgstr ""
+msgstr "Catégorie de nouvelle"
 
 #: news/models.py:94
 msgid "News Categories"
-msgstr ""
+msgstr "Catégories de nouvelles"
 
 #: news/templates/admin/includes/quick_news.html:18
 msgid "Quick news"
-msgstr ""
+msgstr "Nouvelles rapides"
 
 #: schedule/forms.py:24
 msgid "The end time must be later than start time."
-msgstr ""
+msgstr "La date de fin doit être ultérieure à la date de début."
 
 #: schedule/periods.py:338 schedule/periods.py:373
 #: schedule/models/events.py:143
@@ -3882,12 +3882,12 @@ msgstr ""
 #: schedule/periods.py:339
 #, python-format
 msgid "Week: %(start)s-%(end)s"
-msgstr ""
+msgstr "Semaine: %(start)s-%(end)s"
 
 #: schedule/periods.py:374
 #, python-format
 msgid "Day: %(start)s-%(end)s"
-msgstr ""
+msgstr "Jour: %(start)s-%(end)s"
 
 #: schedule/conf/settings.py:8
 msgid "FIRST_DAY_OF_WEEK"
@@ -3895,7 +3895,7 @@ msgstr ""
 
 #: schedule/models/calendars.py:137 schedule/models/rules.py:44
 msgid "name"
-msgstr ""
+msgstr "nom"
 
 #: schedule/models/calendars.py:138
 msgid "slug"
@@ -3904,11 +3904,11 @@ msgstr ""
 #: schedule/models/calendars.py:142 schedule/models/calendars.py:143
 #: schedule/models/calendars.py:227 schedule/models/events.py:128
 msgid "calendar"
-msgstr ""
+msgstr "calendrier"
 
 #: schedule/models/calendars.py:231 schedule/models/events.py:451
 msgid "distinction"
-msgstr ""
+msgstr "titre"
 
 #: schedule/models/calendars.py:232
 msgid "inheritable"
@@ -3924,185 +3924,185 @@ msgstr ""
 
 #: schedule/models/events.py:35
 msgid "Standards"
-msgstr ""
+msgstr "Normes"
 
 #: schedule/models/events.py:36
 msgid "Dispute Settlement"
-msgstr ""
+msgstr "Règlement des différends"
 
 #: schedule/models/events.py:38
 msgid "Information Exchange"
-msgstr ""
+msgstr "Échange d'informations"
 
 #: schedule/models/events.py:40
 msgid "Capacity building"
-msgstr ""
+msgstr "Renforcement des capacités"
 
 #: schedule/models/events.py:76
 msgid "Bilateral assistance"
-msgstr ""
+msgstr "Assistance bilatérale"
 
 #: schedule/models/events.py:77
 msgid "Bureau"
-msgstr ""
+msgstr "Bureau"
 
 #: schedule/models/events.py:78
 msgid "CBD"
-msgstr ""
+msgstr "CDB"
 
 #: schedule/models/events.py:79
 msgid "CDC + Expert Working Group on Capacity Building"
-msgstr ""
+msgstr "Comité de règlement des différends + Groupe de travail d’experts sur le renforcement des capacités"
 
 #: schedule/models/events.py:80
 msgid "Conference"
-msgstr ""
+msgstr "Conférence"
 
 #: schedule/models/events.py:81
 msgid "CPM"
-msgstr ""
+msgstr "CMP"
 
 #: schedule/models/events.py:82
 msgid "Expert Consultation"
-msgstr ""
+msgstr "Consultation d’experts "
 
 #: schedule/models/events.py:83
 msgid "Expert Working Group"
-msgstr ""
+msgstr "Groupe de travail d’experts"
 
 #: schedule/models/events.py:84
 msgid "Finance Committee"
-msgstr ""
+msgstr "Comité financier"
 
 #: schedule/models/events.py:85
 msgid "Focus Group"
-msgstr ""
+msgstr "Groupe de réflexion"
 
 #: schedule/models/events.py:87
 msgid "Member Consultation"
-msgstr ""
+msgstr "Consultation des membres"
 
 #: schedule/models/events.py:88
 msgid "Mentoring / Assistance"
-msgstr ""
+msgstr "Mentorat / Assistance"
 
 #: schedule/models/events.py:89
 msgid "NRO"
-msgstr ""
+msgstr "Obligation nationale en matière d’établissement de rapports"
 
 #: schedule/models/events.py:90
 msgid "NRO Advidory Group"
-msgstr ""
+msgstr "Groupe consultatif sur les obligations nationales en matière d’établissement de rapports"
 
 #: schedule/models/events.py:92
 msgid "Other Working Group"
-msgstr ""
+msgstr "Autre groupe de travail"
 
 #: schedule/models/events.py:93
 msgid "Regional Workshops on Draft ISPMs"
-msgstr ""
+msgstr "Ateliers régionaux sur les projets de NIMP"
 
 #: schedule/models/events.py:94
 msgid "SBDS"
-msgstr ""
+msgstr "OSRD"
 
 #: schedule/models/events.py:95
 msgid "Seminar"
-msgstr ""
+msgstr "Séminaire"
 
 #: schedule/models/events.py:96
 msgid "SPG + SPTA"
-msgstr ""
+msgstr "SPG + PSAT "
 
 #: schedule/models/events.py:97
 msgid "Standards Committee"
-msgstr ""
+msgstr "Comité des normes "
 
 #: schedule/models/events.py:98
 msgid "Symposium"
-msgstr ""
+msgstr "Symposium"
 
 #: schedule/models/events.py:99
 msgid "Technical Consultation of RPPOs"
-msgstr ""
+msgstr "Consultation technique des ORPV"
 
 #: schedule/models/events.py:100
 msgid "Technical Panel"
-msgstr ""
+msgstr "Groupe technique"
 
 #: schedule/models/events.py:101
 msgid "Training"
-msgstr ""
+msgstr "Formation"
 
 #: schedule/models/events.py:102
 msgid "Workshop"
-msgstr ""
+msgstr "Atelier"
 
 #: schedule/models/events.py:103
 msgid "Workshop / Seminars"
-msgstr ""
+msgstr "Atelier / Séminaires"
 
 #: schedule/models/events.py:104
 msgid "WTO Meetings"
-msgstr ""
+msgstr "Réunions de l'OMC"
 
 #: schedule/models/events.py:113 schedule/templates/profiles/schedule.html:12
 msgid "Start"
-msgstr ""
+msgstr "Début"
 
 #: schedule/models/events.py:114 schedule/templates/profiles/schedule.html:13
 msgid "End"
-msgstr ""
+msgstr "Fin"
 
 #: schedule/models/events.py:114
 msgid "The end time must be later than the start time."
-msgstr ""
+msgstr "La date de fin doit être ultérieure à la date de début."
 
 #: schedule/models/events.py:120
 msgid "creator"
-msgstr ""
+msgstr "auteur"
 
 #: schedule/models/events.py:122 schedule/models/events.py:473
 msgid "created on"
-msgstr ""
+msgstr "créé le"
 
 #: schedule/models/events.py:123 schedule/models/events.py:474
 msgid "updated on"
-msgstr ""
+msgstr "mis à jour le"
 
 #: schedule/models/events.py:124 schedule/models/rules.py:50
 msgid "rule"
-msgstr ""
+msgstr "règle"
 
 #: schedule/models/events.py:125
 msgid "Select '----' for a one time only event."
-msgstr ""
+msgstr "Sélectionnez '----' s'il s'agit d'une manifestation qui n'a lieu qu'une seule fois."
 
 #: schedule/models/events.py:126
 msgid "end recurring period"
-msgstr ""
+msgstr "Fin de la période de récurrence"
 
 #: schedule/models/events.py:127
 msgid "This date is ignored for one time only events."
-msgstr ""
+msgstr "Cette date n'est pas prise en compte pour les manifestations qui n'ont lieu qu'une seule fois."
 
 #: schedule/models/events.py:130
 msgid "Venue City"
-msgstr ""
+msgstr "Ville"
 
 #: schedule/models/events.py:131
 msgid "Venue Country"
-msgstr ""
+msgstr "Pays"
 
 #: schedule/models/events.py:138 schedule/models/events.py:279
 #: schedule/models/events.py:296 schedule/models/events.py:447
 #: schedule/models/events.py:465
 msgid "event"
-msgstr ""
+msgstr "manifestation"
 
 #: schedule/models/events.py:139
 msgid "events"
-msgstr ""
+msgstr "manifestations"
 
 #: schedule/models/events.py:144
 #, python-format
@@ -4111,19 +4111,19 @@ msgstr ""
 
 #: schedule/models/events.py:292
 msgid "event file"
-msgstr ""
+msgstr "fichier sur la manifestation"
 
 #: schedule/models/events.py:293
 msgid "event files"
-msgstr ""
+msgstr "fichiers sur la manifestation"
 
 #: schedule/models/events.py:305
 msgid "event url"
-msgstr ""
+msgstr "url de la manifestation"
 
 #: schedule/models/events.py:306
 msgid "event urls"
-msgstr ""
+msgstr "urls de la manifestation"
 
 #: schedule/models/events.py:456
 msgid "event relation"
@@ -4135,35 +4135,35 @@ msgstr ""
 
 #: schedule/models/events.py:466
 msgid "title"
-msgstr ""
+msgstr "titre"
 
 #: schedule/models/events.py:468
 msgid "start"
-msgstr ""
+msgstr "début"
 
 #: schedule/models/events.py:469
 msgid "end"
-msgstr ""
+msgstr "fin"
 
 #: schedule/models/events.py:470
 msgid "cancelled"
-msgstr ""
+msgstr "annulé"
 
 #: schedule/models/events.py:471
 msgid "original start"
-msgstr ""
+msgstr "date de début originelle"
 
 #: schedule/models/events.py:472
 msgid "original end"
-msgstr ""
+msgstr "date de fin originelle"
 
 #: schedule/models/events.py:477
 msgid "occurrence"
-msgstr ""
+msgstr "occurrence"
 
 #: schedule/models/events.py:478
 msgid "occurrences"
-msgstr ""
+msgstr "occurrences"
 
 #: schedule/models/events.py:549
 #, python-format
@@ -4172,93 +4172,93 @@ msgstr ""
 
 #: schedule/models/rules.py:6
 msgid "Yearly"
-msgstr ""
+msgstr "Chaque année"
 
 #: schedule/models/rules.py:7
 msgid "Monthly"
-msgstr ""
+msgstr "Chaque mois"
 
 #: schedule/models/rules.py:10
 msgid "Hourly"
-msgstr ""
+msgstr "Chaque heure"
 
 #: schedule/models/rules.py:11
 msgid "Minutely"
-msgstr ""
+msgstr "Chaque minute"
 
 #: schedule/models/rules.py:12
 msgid "Secondly"
-msgstr ""
+msgstr "Chaque seconde"
 
 #: schedule/models/rules.py:46
 msgid "frequency"
-msgstr ""
+msgstr "fréquence"
 
 #: schedule/models/rules.py:47
 msgid "params"
-msgstr ""
+msgstr "paramètres"
 
 #: schedule/models/rules.py:51
 msgid "rules"
-msgstr ""
+msgstr "règles"
 
 #: schedule/templates/site_base.html:31
 msgid "clear"
-msgstr ""
+msgstr "supprimer"
 
 #: schedule/templates/profiles/schedule.html:4
 msgid "Schedule"
-msgstr ""
+msgstr "Programme"
 
 #: schedule/templates/profiles/schedule.html:26
 #: schedule/templates/profiles/schedule.html:27
 msgid "Event details"
-msgstr ""
+msgstr "Détails de la manifestation"
 
 #: schedule/templates/profiles/schedule.html:30
 #: schedule/templates/profiles/schedule.html:31
 msgid "Edit event"
-msgstr ""
+msgstr "Modifier la manifestation"
 
 #: schedule/templates/profiles/schedule.html:33
 #: schedule/templates/profiles/schedule.html:34
 msgid "Delete event"
-msgstr ""
+msgstr "Supprimer la manifestation"
 
 #: schedule/templates/profiles/schedule.html:45
 #, python-format
 msgid "You haven't added any <a href=\"%(add_event_url)s\">event</a> yet."
-msgstr ""
+msgstr "Vous n'avez ajouté aucune <a href=\"%(add_event_url)s\">manifestation</a> pour le moment"
 
 #: schedule/templates/profiles/schedule.html:49
 msgid "Add event"
-msgstr ""
+msgstr "Ajouté manifestation"
 
 #: schedule/templates/schedule/calendar_day.html:9
 msgid "Week"
-msgstr ""
+msgstr "Semaine"
 
 #: schedule/templates/schedule/calendar_day.html:23
 msgid "Today"
-msgstr ""
+msgstr "Aujourd'hui"
 
 #: schedule/templates/schedule/calendar_list.html:3
 #: schedule/templates/schedule/calendar_list.html:5
 msgid "Available Calendars"
-msgstr ""
+msgstr "Calendriers disponibles"
 
 #: schedule/templates/schedule/calendar_month.html:18
 #: schedule/templates/schedule/calendar_tri_month.html:27
 msgid "Full Year Calendar"
-msgstr ""
+msgstr "Année civile complète"
 
 #: schedule/templates/schedule/calendar_tri_month.html:24
 msgid "Monthly Calendar"
-msgstr ""
+msgstr "Calendrier mensuel"
 
 #: schedule/templates/schedule/calendar_week.html:22
 msgid "This week"
-msgstr ""
+msgstr "Cette semaine"
 
 #: schedule/templates/schedule/cancel_occurrence.html:5
 #: schedule/templates/schedule/cancel_occurrence.html:13
@@ -4266,42 +4266,42 @@ msgstr ""
 #: schedule/templates/schedule/delete_event.html:11
 #: schedule/templates/schedule/event.html:29
 msgid "Delete"
-msgstr ""
+msgstr "Supprimer"
 
 #: schedule/templates/schedule/cancel_occurrence.html:6
 msgid "Are you sure that you really want to cancel this occurrence?"
-msgstr ""
+msgstr "Êtes-vous vraiment sûr de vouloir annuler cet événement ?"
 
 #: schedule/templates/schedule/create_event.html:5
 msgid "Create or change event. All fields are required."
-msgstr ""
+msgstr "Créer ou modifier une manifestation. Tous les champs sont obligatoires."
 
 #: schedule/templates/schedule/delete_event.html:6
 msgid "Are you sure that you really want to delete it?"
-msgstr ""
+msgstr "Êtes-vous vraiment sûr de vouloir l'annuler ?"
 
 #: schedule/templates/schedule/edit_occurrence.html:5
 msgid "Create or change occurrence. All fields are required."
-msgstr ""
+msgstr "Créer ou modifier un événement. Tous les champs sont obligatoires."
 
 #: schedule/templates/schedule/event.html:7
 #: schedule/templates/schedule/occurrence.html:7
 msgid "Day"
-msgstr ""
+msgstr "Jour"
 
 #: schedule/templates/schedule/event.html:20
 #: schedule/templates/schedule/occurrence.html:15
 msgid "Back"
-msgstr ""
+msgstr "Retour"
 
 #: schedule/templates/schedule/event.html:25
 #: schedule/templates/schedule/occurrence.html:17
 msgid "Change"
-msgstr ""
+msgstr "Modifier"
 
 #: schedule/templates/schedule/event.html:45
 msgid "until"
-msgstr ""
+msgstr "jusqu'à"
 
 #: schedule/templates/schedule/event.html:45
 #, python-format
@@ -4310,7 +4310,7 @@ msgstr ""
 
 #: schedule/templates/schedule/event.html:47
 msgid "Never. This is a 'one time only' event."
-msgstr ""
+msgstr "Jamais. Il s'agit d'une manifestation qui n'a lieu qu'une seule fois."
 
 #, fuzzy
 #~ msgid "The International Plant Protection Convention (IPPC) is an"
