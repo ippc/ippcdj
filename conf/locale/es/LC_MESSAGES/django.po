@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2015-04-15 19:58-0400\n"
+"POT-Creation-Date: 2015-04-21 14:23-0400\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -410,7 +410,7 @@ msgid "Forum"
 msgstr "Foro"
 
 #: forum/templates/forum/forum_home.html:89
-#: ippc/templates/search_results.html:35
+#: ippc/templates/search_results.html:31
 #: ippc/templates/blog/blog_post_list.html:123
 msgid "read more"
 msgstr "Leer más"
@@ -1078,7 +1078,8 @@ msgstr ""
 msgid "Nature of Immediate or potential danger"
 msgstr ""
 
-#: ippc/models.py:524 ippc/templates/countries/pest_report_create.html:27
+#: ippc/models.py:524 ippc/templates/index.html:110
+#: ippc/templates/countries/pest_report_create.html:27
 #: ippc/templates/countries/pest_report_detail.html:16
 #: ippc/templates/countries/pest_report_edit.html:27
 #: ippc/templates/countries/pest_report_hidden_list.html:5
@@ -1309,7 +1310,8 @@ msgstr "¿Su país aplica la NIMF 15 en las exportaciones?"
 
 #: ippc/models.py:1313
 msgid " Is the ISPM No.15 mark registered as a trade mark in your country??"
-msgstr "¿La marca registrada de la NIMF 15 está registrada como marca en su país?"
+msgstr ""
+"¿La marca registrada de la NIMF 15 está registrada como marca en su país?"
 
 #: ippc/models.py:1314
 msgid "Image of mark"
@@ -1649,6 +1651,7 @@ msgid "About"
 msgstr "Acerca de"
 
 #: ippc/templates/index.html:78
+#, fuzzy, python-format
 msgid ""
 "The International Plant Protection Convention (IPPC) is an <a title='See the "
 "convention text' href='/%(LANGUAGE_CODE)s/core-activities/governance/"
@@ -1676,16 +1679,17 @@ msgid "Newsletter"
 msgstr "Boletín"
 
 #: ippc/templates/index.html:82
+#, fuzzy
 msgid ""
 "The IPPC Secretariat is keen both to keep people informed and to enable "
 "readers to share items of interest. A newsletter is sent out once a month, "
-"with occasional special editions. <a class=\"btn btn-small btn-success\" "
-"href=\"http://ippc.us10.list-manage.com/subscribe?"
-"u=fc3d4d92d71f2fa693910c666&id=bf810c0be2\">Subscribe to the newsletter</a>, "
-"<a href=\"http://us10.campaign-archive1.com/home/?"
-"u=fc3d4d92d71f2fa693910c666&id=bf810c0be2\">see prior editions</a> and <a "
-"href=\"mailto:jeremy.cherfas@fao.org\" title=\"Open your email client."
-"\">send content suggestions</a>."
+"with occasional special editions. <a class='btn btn-small btn-success' "
+"href='http://ippc.us10.list-manage.com/subscribe?"
+"u=fc3d4d92d71f2fa693910c666&id=bf810c0be2'>Subscribe to the newsletter</a>, "
+"<a href='http://us10.campaign-archive1.com/home/?"
+"u=fc3d4d92d71f2fa693910c666&id=bf810c0be2'>see prior editions</a> and <a "
+"href='mailto:jeremy.cherfas@fao.org' title='Open your email client.'>send "
+"content suggestions</a>."
 msgstr ""
 "La Secretaría de la CIPF tiene interés en mantener a las personas informadas "
 "y en permitir a los lectores presentar temas de interés. Cada mes se "
@@ -1772,25 +1776,23 @@ msgid "Countries"
 msgstr "Países"
 
 #: ippc/templates/index.html:108
-msgid "<a href=\"/countries/all/list-countries/\">Complete List of Countries"
-msgstr ""
-"<a href=\"/countries/all/list-countries/\">Lista completa de los países"
+#, fuzzy
+msgid "Complete List of Countries"
+msgstr "Lista de países"
 
 #: ippc/templates/index.html:109
-msgid "<a href=\"/countries/all/contactpoints\">List of Contact Points"
-msgstr "<a href=\"/countries/all/contactpoints\">Lista de puntos de contacto"
-
-#: ippc/templates/index.html:110
-msgid " <a href=\"/countries/all/pestreport\">Pest Reports"
-msgstr " <a href=\"/countries/all/pestreport\">Informes de plagas"
+#, fuzzy
+msgid "List of Contact Points"
+msgstr "Estado de los puntos de contactos de la CIPF"
 
 #: ippc/templates/index.html:111
-msgid "<a href=\"/countries/all/legislation\">Legislation "
-msgstr "<a href=\"/countries/all/legislation\">Legislación"
+#, fuzzy
+msgid "Legislation "
+msgstr "Ubicación"
 
 #: ippc/templates/index.html:112
-msgid "<a href=\"/countries/all/regulatedpests\">List of regulated pests "
-msgstr "Lista de plagas reglamentadas"
+msgid "List of regulated pests "
+msgstr ""
 
 #: ippc/templates/index.html:117
 msgid "IRSS Helpdesk"
@@ -1872,13 +1874,20 @@ msgid "Home"
 msgstr "Inicio"
 
 #: ippc/templates/search_results.html:20
-msgid "No results were found in %(search_type)s matching your query: %(query)s\n"
-msgstr "No se encontraron resultados coincidentes con %(search_type)s su búsqueda:%(query)s\n"
+#, fuzzy, python-format
+msgid "No results were found in %(search_type)s matching your query: %(query)s"
+msgstr ""
+"No se encontraron resultados coincidentes con %(search_type)s su búsqueda:"
+"%(query)s\n"
 
-#: ippc/templates/search_results.html:24
-
-msgid "Showing %(start)s to %(end)s of %(total)s results in %(search_type)s matching your query: %(query)s"
-msgstr "De %(start)s a %(end)s del %(total)s de resultados coincidentes con su búsqueda:"
+#: ippc/templates/search_results.html:22
+#, fuzzy, python-format
+msgid ""
+"Showing %(start)s to %(end)s of %(total)s results in %(search_type)s "
+"matching your query: %(query)s"
+msgstr ""
+"De %(start)s a %(end)s del %(total)s de resultados coincidentes con su "
+"búsqueda:"
 
 #: ippc/templates/sitemap.html:4 ippc/templates/sitemap.html.py:8
 #: ippc/templates/includes/user_panel.html:4
@@ -2655,7 +2664,8 @@ msgstr "Informes de acontecimientos"
 
 #: ippc/templates/countries/event_reporting_list.html:49
 #: ippc/templates/countries/reporting_obligation_list.html:50
-msgid "from"
+#, fuzzy
+msgid "  from"
 msgstr "de"
 
 #: ippc/templates/countries/event_reporting_list.html:72
@@ -2843,7 +2853,8 @@ msgstr "Nuevas obligaciones de presentación de información"
 #: ippc/templates/countries/reporting_obligation_create.html:36
 #: ippc/templates/countries/reporting_obligation_edit.html:39
 #: ippc/templates/schedule/create_event.html:57
-msgid "Cancel and go back"
+#, fuzzy
+msgid " Cancel and go back"
 msgstr "Cancelar y volver"
 
 #: ippc/templates/countries/reporting_obligation_create.html:39
@@ -3427,12 +3438,9 @@ msgid "Add"
 msgstr "Agregar"
 
 #: ippc/templates/pages/menus/tree_key_cn.html:11
-msgid ""
-"<a href=\"/countries/all/list-countries/\"><i class=\"icon-list\"></i> All "
-"Countries"
-msgstr ""
-"<a href='/es/countries/all/list-countries/'><i class='icon-list'></i> Todos "
-"los países"
+#, fuzzy
+msgid "All Countries"
+msgstr "Países"
 
 #: ippc/templates/pages/menus/tree_key_cn.html:13
 msgid "Countries by Region"
@@ -4386,3 +4394,28 @@ msgstr ""
 #: schedule/templates/schedule/event.html:47
 msgid "Never. This is a 'one time only' event."
 msgstr "Nunca. Este es un acontecimiento 'único'."
+
+#~ msgid ""
+#~ "<a href=\"/countries/all/list-countries/\">Complete List of Countries"
+#~ msgstr ""
+#~ "<a href=\"/countries/all/list-countries/\">Lista completa de los países"
+
+#~ msgid "<a href=\"/countries/all/contactpoints\">List of Contact Points"
+#~ msgstr ""
+#~ "<a href=\"/countries/all/contactpoints\">Lista de puntos de contacto"
+
+#~ msgid " <a href=\"/countries/all/pestreport\">Pest Reports"
+#~ msgstr " <a href=\"/countries/all/pestreport\">Informes de plagas"
+
+#~ msgid "<a href=\"/countries/all/legislation\">Legislation "
+#~ msgstr "<a href=\"/countries/all/legislation\">Legislación"
+
+#~ msgid "<a href=\"/countries/all/regulatedpests\">List of regulated pests "
+#~ msgstr "Lista de plagas reglamentadas"
+
+#~ msgid ""
+#~ "<a href=\"/countries/all/list-countries/\"><i class=\"icon-list\"></i> "
+#~ "All Countries"
+#~ msgstr ""
+#~ "<a href='/es/countries/all/list-countries/'><i class='icon-list'></i> "
+#~ "Todos los países"

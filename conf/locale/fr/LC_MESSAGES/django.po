@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2015-04-15 19:58-0400\n"
+"POT-Creation-Date: 2015-04-21 14:23-0400\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -71,7 +71,9 @@ msgstr ""
 msgid ""
 "Number of most recent calls posts shown in the RSS feed. Set to ``None`` to "
 "display all calls posts in the RSS feed."
-msgstr "Nombre d'appels récents pour le fil RSS. Choisir « Aucun » pour afficher tous les appels dans le fil RSS"
+msgstr ""
+"Nombre d'appels récents pour le fil RSS. Choisir « Aucun » pour afficher "
+"tous les appels dans le fil RSS"
 
 #: calls/defaults.py:66
 msgid "Slug of the page object for the calls."
@@ -352,7 +354,9 @@ msgstr ""
 msgid ""
 "Number of most recent forum posts shown in the RSS feed. Set to ``None`` to "
 "display all forum posts in the RSS feed."
-msgstr "Nombre de messages de forum récents pour le fil RSS. Choisir « Aucun » pour afficher tous les messages de forum dans le fil RSS."
+msgstr ""
+"Nombre de messages de forum récents pour le fil RSS. Choisir « Aucun » pour "
+"afficher tous les messages de forum dans le fil RSS."
 
 #: forum/defaults.py:66
 msgid "Slug of the page object for the forum."
@@ -404,7 +408,7 @@ msgid "Forum"
 msgstr "Forum"
 
 #: forum/templates/forum/forum_home.html:89
-#: ippc/templates/search_results.html:35
+#: ippc/templates/search_results.html:31
 #: ippc/templates/blog/blog_post_list.html:123
 msgid "read more"
 msgstr "Lire la suite"
@@ -510,10 +514,14 @@ msgid "Issue Keywords"
 msgstr "Mots-clés associés aux thèmes"
 
 #: ippc/models.py:96 ippc/models.py:107
+#, fuzzy
 msgid ""
-"Type at least two letters, then select and press enter to input "
-"existing keywords, or write new ones separated by a comma."
-msgstr "Veuillez saisir au moins deux lettres pour effectuer votre choix, puis  appuyer sur « Entrée » pour saisir les mots de passe existants quelle version (plusieurs choix possibles):"
+"Type at least two letters, then select and         press enter to input "
+"existing keywords, or write new ones         separated by a comma."
+msgstr ""
+"Veuillez saisir au moins deux lettres pour effectuer votre choix, puis  "
+"appuyer sur « Entrée » pour saisir les mots de passe existants quelle "
+"version (plusieurs choix possibles):"
 
 #: ippc/models.py:105
 msgid "Commodity Keywords"
@@ -1070,7 +1078,8 @@ msgstr ""
 msgid "Nature of Immediate or potential danger"
 msgstr ""
 
-#: ippc/models.py:524 ippc/templates/countries/pest_report_create.html:27
+#: ippc/models.py:524 ippc/templates/index.html:110
+#: ippc/templates/countries/pest_report_create.html:27
 #: ippc/templates/countries/pest_report_detail.html:16
 #: ippc/templates/countries/pest_report_edit.html:27
 #: ippc/templates/countries/pest_report_hidden_list.html:5
@@ -1078,7 +1087,6 @@ msgstr ""
 #: ippc/templates/countries/pest_report_list.html:8
 #: ippc/templates/countries/pest_report_list.html:32
 #: ippc/templates/countries/website_list.html:5
-#: ippc/templates/index.html:110
 msgid "Pest Reports"
 msgstr ""
 
@@ -1298,12 +1306,16 @@ msgid "If yes, which version (click all that apply): "
 msgstr ""
 
 #: ippc/models.py:1308
-msgid "Has your country implemented ISPM 15 for exports?"
+#, fuzzy
+msgid "  Has your country implemented ISPM 15 for exports?"
 msgstr "Votre pays a-t-il mis en œuvre la NIMP n° 15 pour les exportations?"
 
 #: ippc/models.py:1313
-msgid "Is the ISPM No.15 mark registered as a trade mark in your country??"
-msgstr "La marque NIMP n° 15 est-elle enregistrée comme une marque déposée dans votre pays?"
+#, fuzzy
+msgid " Is the ISPM No.15 mark registered as a trade mark in your country??"
+msgstr ""
+"La marque NIMP n° 15 est-elle enregistrée comme une marque déposée dans "
+"votre pays?"
 
 #: ippc/models.py:1314
 msgid "Image of mark"
@@ -1340,7 +1352,9 @@ msgstr "ippc@fao.org"
 msgid ""
 "The email will be sent from ippc@fao.org, if you want you can specify an "
 "other sender email address."
-msgstr "Le courriel sera envoyé depuis l'adresse ippc@fao.org. Vous pouvez indiquer une autre adresse email d'expéditeur."
+msgstr ""
+"Le courriel sera envoyé depuis l'adresse ippc@fao.org. Vous pouvez indiquer "
+"une autre adresse email d'expéditeur."
 
 #: ippc/models.py:1598
 msgid "Send to users that are not registered in IPPC: "
@@ -1351,14 +1365,19 @@ msgid ""
 "Please leave ippc@fao.org for the form to work, and enter email addresses of "
 "addition recipients, separated by comma. Example: ippc@fao.org, "
 "someone@somewhere.tld, etc@etc.tld"
-msgstr "Laissez ippc@fao.org et ajoutez des destinataires supplémentaires en saisissant leurs adresses de courriel séparés par une virgule. Exemple : ippc@fao.org. etc@etc.tld"
+msgstr ""
+"Laissez ippc@fao.org et ajoutez des destinataires supplémentaires en "
+"saisissant leurs adresses de courriel séparés par une virgule. Exemple : "
+"ippc@fao.org. etc@etc.tld"
 
 #: ippc/models.py:1599
-msgid "Subject:"
+#, fuzzy
+msgid "Subject: "
 msgstr "Objet:"
 
 #: ippc/models.py:1600
-msgid "Message:"
+#, fuzzy
+msgid "Message: "
 msgstr "Message:"
 
 #: ippc/models.py:1605
@@ -1444,7 +1463,9 @@ msgstr "Choix"
 msgid ""
 "Comma separated options where applicable. If an option itself contains "
 "commas, surround the option with `backticks`."
-msgstr "Options séparées par des virgules, le cas échéant. Si une option contient des virgules, placez l'option entre apostrophes"
+msgstr ""
+"Options séparées par des virgules, le cas échéant. Si une option contient "
+"des virgules, placez l'option entre apostrophes"
 
 #: ippc/models.py:1709
 msgid "Default value"
@@ -1588,7 +1609,8 @@ msgstr "Le Secrétariat de la CIPV est hébergé et assuré par"
 
 #: ippc/templates/base.html:288 ippc/templates/ocs/base_ocs.html:179
 msgid "Food and Agriculture Organization Logo"
-msgstr "Logo de l'Organisation des Nations Unies pour l'alimentation et l'agriculture"
+msgstr ""
+"Logo de l'Organisation des Nations Unies pour l'alimentation et l'agriculture"
 
 #: ippc/templates/base.html:290
 msgid "Copyright & Disclaimer"
@@ -1635,25 +1657,55 @@ msgstr "À propos de"
 
 #: ippc/templates/index.html:78
 #, python-format
-msgid """The International Plant Protection Convention (IPPC) is an <a title='See the convention text' href='/%(LANGUAGE_CODE)s/core-activities/governance/convention-text/'>international agreement</a> on plant health to which <a href='http://www.fao.org/fileadmin/user_upload/legal/docs/4_004s-e.pdf'>181 contracting parties</a> currently adhere.  It aims to protect cultivated and wild plants by preventing the introduction and spread of pests.  The <a href='/%(LANGUAGE_CODE)s/about/secretariat'>Secretariat</a> of the IPPC is provided by the <a href='http://fao.org'>Food and Agriculture Organization of the United Nations</a>. See our <a href='/%(LANGUAGE_CODE)s/media-kit'>Media Kit</a>."""
-msgstr """La Convention internationale pour la protection des végétaux (CIPV) est un <a href='/%(LANGUAGE_CODE)s/core-activities/governance/convention-text/'>accord international</a> sur la santé des végétaux qui compte actuellement <a href='http://www.fao.org/fileadmin/user_upload/legal/docs/4_004s-e.pdf'>181 signataires</a>.  Elle vise à protéger les plantes cultivées et sauvages en prévenant l'introduction et la dissémination des organismes nuisibles. Le <a href='/%(LANGUAGE_CODE)s/about/secretariat'>Secrétariat</a> de la CIPV est assuré par <a href='http://fao.org'>l’Organisation des Nations Unies pour l'alimentation et l'agriculture</a>. Voir notre dossier d’information."""
+msgid ""
+"The International Plant Protection Convention (IPPC) is an <a title='See the "
+"convention text' href='/%(LANGUAGE_CODE)s/core-activities/governance/"
+"convention-text/'>international agreement</a> on plant health to which <a "
+"href='http://www.fao.org/fileadmin/user_upload/legal/docs/4_004s-e.pdf'>181 "
+"contracting parties</a> currently adhere.  It aims to protect cultivated and "
+"wild plants by preventing the introduction and spread of pests.  The <a "
+"href='/%(LANGUAGE_CODE)s/about/secretariat'>Secretariat</a> of the IPPC is "
+"provided by the <a href='http://fao.org'>Food and Agriculture Organization "
+"of the United Nations</a>. See our <a href='/%(LANGUAGE_CODE)s/media-"
+"kit'>Media Kit</a>."
+msgstr ""
+"La Convention internationale pour la protection des végétaux (CIPV) est un "
+"<a href='/%(LANGUAGE_CODE)s/core-activities/governance/convention-"
+"text/'>accord international</a> sur la santé des végétaux qui compte "
+"actuellement <a href='http://www.fao.org/fileadmin/user_upload/legal/"
+"docs/4_004s-e.pdf'>181 signataires</a>.  Elle vise à protéger les plantes "
+"cultivées et sauvages en prévenant l'introduction et la dissémination des "
+"organismes nuisibles. Le <a href='/%(LANGUAGE_CODE)s/about/"
+"secretariat'>Secrétariat</a> de la CIPV est assuré par <a href='http://fao."
+"org'>l’Organisation des Nations Unies pour l'alimentation et l'agriculture</"
+"a>. Voir notre dossier d’information."
 
 #: ippc/templates/index.html:81
 msgid "Newsletter"
 msgstr "Bulletin d'information"
 
 #: ippc/templates/index.html:82
+#, fuzzy
 msgid ""
 "The IPPC Secretariat is keen both to keep people informed and to enable "
 "readers to share items of interest. A newsletter is sent out once a month, "
-"with occasional special editions. <a class=\"btn btn-small btn-success\" "
-"href=\"http://ippc.us10.list-manage.com/subscribe?"
-"u=fc3d4d92d71f2fa693910c666&id=bf810c0be2\">Subscribe to the newsletter</a>, "
-"<a href=\"http://us10.campaign-archive1.com/home/?"
-"u=fc3d4d92d71f2fa693910c666&id=bf810c0be2\">see prior editions</a> and <a "
-"href=\"mailto:jeremy.cherfas@fao.org\" title=\"Open your email client."
-"\">send content suggestions</a>."
-msgstr "Le Secrétariat de la CIPV s'emploie à communiquer sur ses activités et à permettre aux lecteurs de partager des informations pertinentes. Un bulletin d'information est publié une fois par mois, parfois accompagné  d'éditions spéciales. <a class='btn btn-small btn-success' href='http://ippc.us10.list-manage.com/subscribe?u=fc3d4d92d71f2fa693910c666&id=bf810c0be2'>S'abonner</a> au bulletin d'information, consulter les <a href='http://us10.campaign-archive1.com/home/?u=fc3d4d92d71f2fa693910c666&id=bf810c0be2'>éditions précédentes</a> et envoyer des <a href='mailto:jeremy.cherfas@fao.org'>suggestions de publications</a>"
+"with occasional special editions. <a class='btn btn-small btn-success' "
+"href='http://ippc.us10.list-manage.com/subscribe?"
+"u=fc3d4d92d71f2fa693910c666&id=bf810c0be2'>Subscribe to the newsletter</a>, "
+"<a href='http://us10.campaign-archive1.com/home/?"
+"u=fc3d4d92d71f2fa693910c666&id=bf810c0be2'>see prior editions</a> and <a "
+"href='mailto:jeremy.cherfas@fao.org' title='Open your email client.'>send "
+"content suggestions</a>."
+msgstr ""
+"Le Secrétariat de la CIPV s'emploie à communiquer sur ses activités et à "
+"permettre aux lecteurs de partager des informations pertinentes. Un bulletin "
+"d'information est publié une fois par mois, parfois accompagné  d'éditions "
+"spéciales. <a class='btn btn-small btn-success' href='http://ippc.us10.list-"
+"manage.com/subscribe?u=fc3d4d92d71f2fa693910c666&id=bf810c0be2'>S'abonner</"
+"a> au bulletin d'information, consulter les <a href='http://us10.campaign-"
+"archive1.com/home/?u=fc3d4d92d71f2fa693910c666&id=bf810c0be2'>éditions "
+"précédentes</a> et envoyer des <a href='mailto:jeremy.cherfas@fao."
+"org'>suggestions de publications</a>"
 
 #: ippc/templates/index.html:86
 msgid "Core Activities"
@@ -1677,11 +1729,14 @@ msgstr "Consultation des membres sur les projets de NIMP"
 
 #: ippc/templates/index.html:93
 msgid "Substantial Concerns Commenting Period (SCCP) on draft ISPMs"
-msgstr "Période de soumission des observations sur les questions de fond relatives aux projets de NIMP"
+msgstr ""
+"Période de soumission des observations sur les questions de fond relatives "
+"aux projets de NIMP"
 
 #: ippc/templates/index.html:94
 msgid "Member consultation on draft DPs"
-msgstr "Consultation des membres sur les avant-projets de protocoles de diagnostic"
+msgstr ""
+"Consultation des membres sur les avant-projets de protocoles de diagnostic"
 
 #: ippc/templates/index.html:95
 msgid "Adopted Standards"
@@ -1826,12 +1881,17 @@ msgstr "Page d'accueil"
 #: ippc/templates/search_results.html:20
 #, python-format
 msgid "No results were found in %(search_type)s matching your query: %(query)s"
-msgstr "Aucun résultat ne correspond %(search_type)s à votre recherche: %(query)s"
+msgstr ""
+"Aucun résultat ne correspond %(search_type)s à votre recherche: %(query)s"
 
-#: ippc/templates/search_results.html:24
+#: ippc/templates/search_results.html:22
 #, python-format
-msgid "Showing %(start)s to %(end)s of %(total)s results in %(search_type)s matching your query: %(query)s"
-msgstr "%(start)s à %(end)s résultats %(total)s correspondent à %(search_type)s votre recherche: %(query)s"
+msgid ""
+"Showing %(start)s to %(end)s of %(total)s results in %(search_type)s "
+"matching your query: %(query)s"
+msgstr ""
+"%(start)s à %(end)s résultats %(total)s correspondent à %(search_type)s "
+"votre recherche: %(query)s"
 
 #: ippc/templates/sitemap.html:4 ippc/templates/sitemap.html.py:8
 #: ippc/templates/includes/user_panel.html:4
@@ -1854,7 +1914,9 @@ msgstr "Votre message a été envoyé"
 msgid ""
 "Thank you for contacting the IPPC Secretariat. We will get back to you as "
 "soon as we can."
-msgstr "Merci d'avoir contacté le Secrétariat de la CIPV. Nous vous répondrons dans les meilleurs délais."
+msgstr ""
+"Merci d'avoir contacté le Secrétariat de la CIPV. Nous vous répondrons dans "
+"les meilleurs délais."
 
 #: ippc/templates/accounts/account_contactpoint_details.html:23
 #: ippc/templates/accounts/account_editor_details.html:37
@@ -1932,19 +1994,26 @@ msgstr "Vous oublié votre mot de passe ?"
 msgid ""
 "You are already logged in, but do not have permission to do anything in this "
 "page."
-msgstr "Vous êtes déjà connecté mais n'êtes autorisé à effectuer aucune action sur cette page."
+msgstr ""
+"Vous êtes déjà connecté mais n'êtes autorisé à effectuer aucune action sur "
+"cette page."
 
 #: ippc/templates/accounts/account_password_reset.html:10
 msgid ""
 "Enter your username or email address and you'll receive an email with a link "
 "you need to click in order to log in and change your password."
-msgstr "Veuillez saisir votre nom d'utilisateur ou votre adresse de courriel. Vous recevrez ensuite un courriel comportant un lien sur lequel vous devrez cliquer pour vous connecter et modifier votre mot de passe."
+msgstr ""
+"Veuillez saisir votre nom d'utilisateur ou votre adresse de courriel. Vous "
+"recevrez ensuite un courriel comportant un lien sur lequel vous devrez "
+"cliquer pour vous connecter et modifier votre mot de passe."
 
 #: ippc/templates/accounts/account_signup.html:18
 msgid ""
 "After creating a user they'll receive an email with a link to click in order "
 "to activate their account."
-msgstr "Lorsqu'un utilisateur se voit attribuer un compte, il reçoit un courriel comportant un lien qui lui permet d'activer son compte."
+msgstr ""
+"Lorsqu'un utilisateur se voit attribuer un compte, il reçoit un courriel "
+"comportant un lien qui lui permet d'activer son compte."
 
 #: ippc/templates/accounts/account_user_details.html:5
 msgid "Update Profile and add a picture."
@@ -1960,11 +2029,15 @@ msgstr "Spécialité"
 
 #: ippc/templates/accounts/includes/user_panel.html:9
 msgid "Go to your country page to upload or update information."
-msgstr "Rendez-vous à la page de votre pays pour mettre en ligne ou actualiser des informations."
+msgstr ""
+"Rendez-vous à la page de votre pays pour mettre en ligne ou actualiser des "
+"informations."
 
 #: ippc/templates/accounts/includes/user_panel.html:16
 msgid "See your IPPC user profile, including contact information."
-msgstr "Voir votre profil d'utilisateur sur le site de la CIPV, y compris vos coordonnées."
+msgstr ""
+"Voir votre profil d'utilisateur sur le site de la CIPV, y compris vos "
+"coordonnées."
 
 #: ippc/templates/accounts/includes/user_panel.html:25
 #: ippc/templates/admin/includes_grappelli/header.html:34
@@ -2339,7 +2412,8 @@ msgstr "liste"
 
 #: ippc/templates/countries/contactpointextractor.html:37
 #: ippc/templates/countries/countries_advsearchresults.html:37
-msgid "Results for:"
+#, fuzzy
+msgid "Results for: "
 msgstr "Résultats pour:"
 
 #: ippc/templates/countries/contactpointextractor.html:235
@@ -2446,7 +2520,8 @@ msgid "Total number of IPP pages for each reporting category"
 msgstr "Nombre total de pages du PPI pour chaque catégorie de signalement"
 
 #: ippc/templates/countries/countries_totalusers.html:22
-msgid "Countries Statistics: Contact points"
+#, fuzzy
+msgid "Countries Statistics: Contact points "
 msgstr "Statistiques sur les pays : Points de contact"
 
 #: ippc/templates/countries/countries_totalusers.html:75
@@ -2599,7 +2674,8 @@ msgstr "Signalements d'événements"
 
 #: ippc/templates/countries/event_reporting_list.html:49
 #: ippc/templates/countries/reporting_obligation_list.html:50
-msgid "from"
+#, fuzzy
+msgid "  from"
 msgstr "expéditeur"
 
 #: ippc/templates/countries/event_reporting_list.html:72
@@ -2734,7 +2810,9 @@ msgstr "Signalements d’organismes nuisibles cachés effectués par"
 msgid ""
 "To publish a report click on its title, change Visibility field to Public "
 "and click Update Report."
-msgstr "Pour publier un signalement, cliquez sur son titre, sélectionnez l'option « visibilité publique » et cliquez sur Mettre à jour le signalement."
+msgstr ""
+"Pour publier un signalement, cliquez sur son titre, sélectionnez l'option « "
+"visibilité publique » et cliquez sur Mettre à jour le signalement."
 
 #: ippc/templates/countries/pest_report_hidden_list.html:63
 #: ippc/templates/pages/publication_list.html:44
@@ -2785,12 +2863,14 @@ msgstr "Nouvelles obligations en matière d’établissement de rapports"
 #: ippc/templates/countries/reporting_obligation_create.html:36
 #: ippc/templates/countries/reporting_obligation_edit.html:39
 #: ippc/templates/schedule/create_event.html:57
-msgid "Cancel and go back"
+#, fuzzy
+msgid " Cancel and go back"
 msgstr "Annuler et revenir à l'étape précédente"
 
 #: ippc/templates/countries/reporting_obligation_create.html:39
 msgid "Create New Reporting Obligations for"
-msgstr "Créer de nouvelles obligations en matière d’établissement de rapports pour"
+msgstr ""
+"Créer de nouvelles obligations en matière d’établissement de rapports pour"
 
 #: ippc/templates/countries/reporting_obligation_detail.html:4
 msgid "Latest Reporting Obligation"
@@ -2948,7 +3028,16 @@ msgid ""
 "national reporting and exchange of more general information among the "
 "phytosanitary community. The IPPC Secretariat coordinates the activities of "
 "the Convention and is hosted by FAO."
-msgstr "La CIPV est un traité international qui vise à prévenir l’introduction et la dissémination des organismes nuisibles aux végétaux et produits végétaux et à promouvoir l'adoption de mesures appropriées pour lutter contre ces organismes. Elle est administrée par la Commission des mesures phytosanitaires (CMP), laquelle adopte les normes internationales pour les mesures phytosanitaires (NIMP). La CMP a créé le PPI pour permettre aux pays d'effectuer leurs signalements et partager des informations plus générales au sein de la communauté phytosanitaire. Le Secrétariat de la CIPV coordonne les activités de la Convention et est hébergé par la FAO."
+msgstr ""
+"La CIPV est un traité international qui vise à prévenir l’introduction et la "
+"dissémination des organismes nuisibles aux végétaux et produits végétaux et "
+"à promouvoir l'adoption de mesures appropriées pour lutter contre ces "
+"organismes. Elle est administrée par la Commission des mesures "
+"phytosanitaires (CMP), laquelle adopte les normes internationales pour les "
+"mesures phytosanitaires (NIMP). La CMP a créé le PPI pour permettre aux pays "
+"d'effectuer leurs signalements et partager des informations plus générales "
+"au sein de la communauté phytosanitaire. Le Secrétariat de la CIPV coordonne "
+"les activités de la Convention et est hébergé par la FAO."
 
 #: ippc/templates/email/account_approved.txt:3
 msgid "Your account has been activated."
@@ -2971,19 +3060,25 @@ msgstr "Au %(submit_date)s %(user_name)s a écrit:"
 #: ippc/templates/email/password_reset_verify.html:3
 #: ippc/templates/email/password_reset_verify.txt:3
 msgid "Hello, the password reset form was used for your IPPC account."
-msgstr "Bonjour, le formulaire de réinitialisation du mot de passe a été utilisé pour votre compte CIPV."
+msgstr ""
+"Bonjour, le formulaire de réinitialisation du mot de passe a été utilisé "
+"pour votre compte CIPV."
 
 #: ippc/templates/email/password_reset_verify.html:4
 #: ippc/templates/email/password_reset_verify.txt:4
 msgid "Please use the link below to log in and update your IPPC password."
-msgstr "Veuillez utiliser le lien ci-dessous pour vous connecter et mettre à jour votre mot de passe CIPV."
+msgstr ""
+"Veuillez utiliser le lien ci-dessous pour vous connecter et mettre à jour "
+"votre mot de passe CIPV."
 
 #: ippc/templates/email/password_reset_verify.html:6
 #: ippc/templates/email/password_reset_verify.txt:6
 msgid ""
 "If you didn't request for your password to be reset, please ignore this "
 "email."
-msgstr "Dans le cas où vous n'auriez pas demandé la réinitialisation de votre mot de passe, veuillez ignorer ce message."
+msgstr ""
+"Dans le cas où vous n'auriez pas demandé la réinitialisation de votre mot de "
+"passe, veuillez ignorer ce message."
 
 #: ippc/templates/email/password_reset_verify_subject.txt:2
 msgid "Reset your password"
@@ -2999,17 +3094,22 @@ msgstr "Vous disposez désormais d'un compte CIPV."
 msgid ""
 "Please use the link below to activate it, then set your password in your "
 "profile page."
-msgstr "Veuillez utiliser le lien ci-dessous pour l'activer, avant de définir votre mot de passe sur la page de votre profil."
+msgstr ""
+"Veuillez utiliser le lien ci-dessous pour l'activer, avant de définir votre "
+"mot de passe sur la page de votre profil."
 
 #: ippc/templates/email/signup_verify.html:6
 msgid "After setting your password, you will be able to log in at "
-msgstr "Une fois votre mot de passe défini, vous pourrez vous connecter à l'adresse "
+msgstr ""
+"Une fois votre mot de passe défini, vous pourrez vous connecter à l'adresse "
 
 #: ippc/templates/email/signup_verify.txt:7
 msgid ""
 "After setting your password, you will be able to log in at https://www.ippc."
 "int."
-msgstr "Une fois votre mot de passe défini, vous pourrez vous connecter à l'adresse https://www.ippc/fr.int/fr."
+msgstr ""
+"Une fois votre mot de passe défini, vous pourrez vous connecter à l'adresse "
+"https://www.ippc/fr.int/fr."
 
 #: ippc/templates/email/signup_verify_subject.txt:2
 msgid "Activate your account created for you at https://www.ippc.int"
@@ -3106,7 +3206,9 @@ msgstr "Page introuvable"
 #: ippc/templates/errors/404.html:14
 msgid ""
 "The page you requested could not be found. Please try the search bar above."
-msgstr "La page que vous avez demandée est introuvable. Veuillez utiliser la barre de recherche ci-dessus."
+msgstr ""
+"La page que vous avez demandée est introuvable. Veuillez utiliser la barre "
+"de recherche ci-dessus."
 
 #: ippc/templates/errors/500.html:6 ippc/templates/errors/500.html.py:10
 msgid "Error"
@@ -3117,7 +3219,10 @@ msgid ""
 "An error has occurred. The site administrators have been automatically "
 "notified and will work on fixing it as soon as possible. We apologize for "
 "the inconvenience."
-msgstr "Une erreur s'est produite. Les administrateurs du site en ont été informés par message automatique et essaieront de régler le problème dans les meilleurs délais. Veuillez nous excuser pour le désagrément."
+msgstr ""
+"Une erreur s'est produite. Les administrateurs du site en ont été informés "
+"par message automatique et essaieront de régler le problème dans les "
+"meilleurs délais. Veuillez nous excuser pour le désagrément."
 
 #: ippc/templates/generic/includes/comment.html:27
 msgid "Link"
@@ -3275,7 +3380,9 @@ msgstr "Type de contact"
 #: ippc/templates/pages/publication_detail.html:44
 msgid ""
 "The page is restricted to group members. Please Login  to view the page."
-msgstr "La page est réservée aux membres du groupe. Veuillez vous connecter pour accéder à la page."
+msgstr ""
+"La page est réservée aux membres du groupe. Veuillez vous connecter pour "
+"accéder à la page."
 
 #: ippc/templates/pages/publication_detail_block.html:4
 msgid "Published"
@@ -3606,7 +3713,9 @@ msgstr "Fermer"
 msgid ""
 "Do you want to cancel this occurrence or delete all occurrences of this "
 "event?"
-msgstr "Voulez-vous annuler cet événement ou supprimer tous les événements de cette manifestation ?"
+msgstr ""
+"Voulez-vous annuler cet événement ou supprimer tous les événements de cette "
+"manifestation ?"
 
 #: ippc/templates/schedule/_dialogs.html:40
 #: schedule/templates/schedule/_dialogs.html:40
@@ -3834,7 +3943,9 @@ msgstr "Nombre maximal de messages par fil RSS"
 msgid ""
 "Number of most recent news posts shown in the RSS feed. Set to ``None`` to "
 "display all news posts in the RSS feed."
-msgstr "Nombre de nouvelles récentes pour le fil RSS. Choisir « Aucun » pour afficher toutes les nouvelles dans le fil RSS."
+msgstr ""
+"Nombre de nouvelles récentes pour le fil RSS. Choisir « Aucun » pour "
+"afficher toutes les nouvelles dans le fil RSS."
 
 #: news/defaults.py:66
 msgid "Slug of the page object for the news."
@@ -3934,7 +4045,9 @@ msgstr "CDB"
 
 #: schedule/models/events.py:79
 msgid "CDC + Expert Working Group on Capacity Building"
-msgstr "Comité de règlement des différends + Groupe de travail d’experts sur le renforcement des capacités"
+msgstr ""
+"Comité de règlement des différends + Groupe de travail d’experts sur le "
+"renforcement des capacités"
 
 #: schedule/models/events.py:80
 msgid "Conference"
@@ -3974,7 +4087,9 @@ msgstr "Obligation nationale en matière d’établissement de rapports"
 
 #: schedule/models/events.py:90
 msgid "NRO Advidory Group"
-msgstr "Groupe consultatif sur les obligations nationales en matière d’établissement de rapports"
+msgstr ""
+"Groupe consultatif sur les obligations nationales en matière d’établissement "
+"de rapports"
 
 #: schedule/models/events.py:92
 msgid "Other Working Group"
@@ -4058,7 +4173,9 @@ msgstr "règle"
 
 #: schedule/models/events.py:125
 msgid "Select '----' for a one time only event."
-msgstr "Sélectionnez '----' s'il s'agit d'une manifestation qui n'a lieu qu'une seule fois."
+msgstr ""
+"Sélectionnez '----' s'il s'agit d'une manifestation qui n'a lieu qu'une "
+"seule fois."
 
 #: schedule/models/events.py:126
 msgid "end recurring period"
@@ -4066,7 +4183,9 @@ msgstr "Fin de la période de récurrence"
 
 #: schedule/models/events.py:127
 msgid "This date is ignored for one time only events."
-msgstr "Cette date n'est pas prise en compte pour les manifestations qui n'ont lieu qu'une seule fois."
+msgstr ""
+"Cette date n'est pas prise en compte pour les manifestations qui n'ont lieu "
+"qu'une seule fois."
 
 #: schedule/models/events.py:130
 msgid "Venue City"
@@ -4210,7 +4329,9 @@ msgstr "Supprimer la manifestation"
 #: schedule/templates/profiles/schedule.html:45
 #, python-format
 msgid "You haven't added any <a href=\"%(add_event_url)s\">event</a> yet."
-msgstr "Vous n'avez ajouté aucune <a href=\"%(add_event_url)s\">manifestation</a> pour le moment"
+msgstr ""
+"Vous n'avez ajouté aucune <a href=\"%(add_event_url)s\">manifestation</a> "
+"pour le moment"
 
 #: schedule/templates/profiles/schedule.html:49
 msgid "Add event"
@@ -4256,7 +4377,8 @@ msgstr "Êtes-vous vraiment sûr de vouloir annuler cet événement ?"
 
 #: schedule/templates/schedule/create_event.html:5
 msgid "Create or change event. All fields are required."
-msgstr "Créer ou modifier une manifestation. Tous les champs sont obligatoires."
+msgstr ""
+"Créer ou modifier une manifestation. Tous les champs sont obligatoires."
 
 #: schedule/templates/schedule/delete_event.html:6
 msgid "Are you sure that you really want to delete it?"

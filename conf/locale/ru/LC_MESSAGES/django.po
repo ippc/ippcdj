@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2015-04-15 19:58-0400\n"
+"POT-Creation-Date: 2015-04-21 14:23-0400\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -404,7 +404,7 @@ msgid "Forum"
 msgstr ""
 
 #: forum/templates/forum/forum_home.html:89
-#: ippc/templates/search_results.html:35
+#: ippc/templates/search_results.html:31
 #: ippc/templates/blog/blog_post_list.html:123
 msgid "read more"
 msgstr ""
@@ -1070,7 +1070,8 @@ msgstr ""
 msgid "Nature of Immediate or potential danger"
 msgstr ""
 
-#: ippc/models.py:524 ippc/templates/countries/pest_report_create.html:27
+#: ippc/models.py:524 ippc/templates/index.html:110
+#: ippc/templates/countries/pest_report_create.html:27
 #: ippc/templates/countries/pest_report_detail.html:16
 #: ippc/templates/countries/pest_report_edit.html:27
 #: ippc/templates/countries/pest_report_hidden_list.html:5
@@ -1655,13 +1656,13 @@ msgstr ""
 msgid ""
 "The IPPC Secretariat is keen both to keep people informed and to enable "
 "readers to share items of interest. A newsletter is sent out once a month, "
-"with occasional special editions. <a class=\"btn btn-small btn-success\" "
-"href=\"http://ippc.us10.list-manage.com/subscribe?"
-"u=fc3d4d92d71f2fa693910c666&id=bf810c0be2\">Subscribe to the newsletter</a>, "
-"<a href=\"http://us10.campaign-archive1.com/home/?"
-"u=fc3d4d92d71f2fa693910c666&id=bf810c0be2\">see prior editions</a> and <a "
-"href=\"mailto:jeremy.cherfas@fao.org\" title=\"Open your email client."
-"\">send content suggestions</a>."
+"with occasional special editions. <a class='btn btn-small btn-success' "
+"href='http://ippc.us10.list-manage.com/subscribe?"
+"u=fc3d4d92d71f2fa693910c666&id=bf810c0be2'>Subscribe to the newsletter</a>, "
+"<a href='http://us10.campaign-archive1.com/home/?"
+"u=fc3d4d92d71f2fa693910c666&id=bf810c0be2'>see prior editions</a> and <a "
+"href='mailto:jeremy.cherfas@fao.org' title='Open your email client.'>send "
+"content suggestions</a>."
 msgstr ""
 
 #: ippc/templates/index.html:86
@@ -1738,23 +1739,19 @@ msgid "Countries"
 msgstr ""
 
 #: ippc/templates/index.html:108
-msgid "<a href=\"/countries/all/list-countries/\">Complete List of Countries"
+msgid "Complete List of Countries"
 msgstr ""
 
 #: ippc/templates/index.html:109
-msgid "<a href=\"/countries/all/contactpoints\">List of Contact Points"
-msgstr ""
-
-#: ippc/templates/index.html:110
-msgid " <a href=\"/countries/all/pestreport\">Pest Reports"
+msgid "List of Contact Points"
 msgstr ""
 
 #: ippc/templates/index.html:111
-msgid "<a href=\"/countries/all/legislation\">Legislation "
+msgid "Legislation "
 msgstr ""
 
 #: ippc/templates/index.html:112
-msgid "<a href=\"/countries/all/regulatedpests\">List of regulated pests "
+msgid "List of regulated pests "
 msgstr ""
 
 #: ippc/templates/index.html:117
@@ -1838,17 +1835,14 @@ msgstr ""
 
 #: ippc/templates/search_results.html:20
 #, python-format
-msgid ""
-"\n"
-"No results were found in %(search_type)s matching your query: %(query)s\n"
+msgid "No results were found in %(search_type)s matching your query: %(query)s"
 msgstr ""
 
-#: ippc/templates/search_results.html:24
+#: ippc/templates/search_results.html:22
 #, python-format
 msgid ""
-"\n"
 "Showing %(start)s to %(end)s of %(total)s results in %(search_type)s "
-"matching your query: %(query)s\n"
+"matching your query: %(query)s"
 msgstr ""
 
 #: ippc/templates/sitemap.html:4 ippc/templates/sitemap.html.py:8
@@ -3362,9 +3356,7 @@ msgid "Add"
 msgstr ""
 
 #: ippc/templates/pages/menus/tree_key_cn.html:11
-msgid ""
-"<a href=\"/countries/all/list-countries/\"><i class=\"icon-list\"></i> All "
-"Countries"
+msgid "All Countries"
 msgstr ""
 
 #: ippc/templates/pages/menus/tree_key_cn.html:13
