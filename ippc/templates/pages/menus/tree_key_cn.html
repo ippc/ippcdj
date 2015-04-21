@@ -8,7 +8,7 @@
 
 		{% include "countries/country_selector.html" %}
 
-		<p>{% blocktrans %}<a href="/countries/all/list-countries/"><i class="icon-list"></i> All Countries{% endblocktrans %}</a></p>
+		<p><a href="/{{ LANGUAGE_CODE }}/countries/all/list-countries/"><i class="icon-list"></i>{% trans "All Countries" %}</a></p>
 
 		<h4>{% trans "Countries by Region" %}</h4>
 		<ul id="regionsmap"> 
