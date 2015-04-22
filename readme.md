@@ -2,6 +2,7 @@
 
 ## Things to do
 
+- Install and use <https://github.com/mbi/django-rosetta> for sane translation management
 - Setup [auto-restart](https://github.com/hypertexthero/itwishlist/blob/master/docs/documentation.md#commands-to-restart-itippcint-and-related-software-upon-hardware-restart----hardwarerestart) of Nginx and Gunicorn in case server goes down
 - Setup daily auto backup of MySQL. Look at moving DB to dedicated DB servers.
 - Tag 4.0.0 release
@@ -181,6 +182,8 @@ Dev server exlqaippc2.ext.fao.org setup and configuration for IPPC 4.0 prototype
 
 		python manage.py makemessages --all  
 		python manage.py compilemessages
+
+	If some translations, especially ones in `blocktrans` don't show up, check <http://stackoverflow.com/questions/1377372/django-fuzzy-string-translation-not-showing-up>
 
 8. Stop and restart [Gunicorn](http://gunicorn-docs.readthedocs.org/en/latest/run.html) application server:
 

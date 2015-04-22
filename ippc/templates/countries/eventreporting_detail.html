@@ -4,7 +4,7 @@
 {% block meta_title %}{% trans "Latest Event Reportings" %}{% endblock %}
 
 {% block breadcrumb_menu %}
-<li><a href="/">{% trans "Home" %}</a><span class="divider">/</span></li>
+<li><a href="/{{ LANGUAGE_CODE }}/">{% trans "Home" %}</a><span class="divider">/</span></li>
 <li><a href="/countries/">Countries</a><span class="divider">/</span></li>
 <li><a href="/countries/{{eventreporting.country.name|slugify}}/">{{eventreporting.country.name}}</a><span class="divider">/</span></li>
 <li><a href="/countries/{{eventreporting.country.name|slugify}}/eventreporting/{{eventreporting.event_rep_type}}">{{eventreporting.get_event_rep_type_display}}</a><span class="divider">/</span></li>

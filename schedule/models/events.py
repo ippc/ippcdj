@@ -31,7 +31,7 @@ EVENT_CAT_5 = 5
 EVENT_CAT_6 = 6
 EVENT_CAT_7 = 7
 CATEGORIES = (
-    (EVENT_CAT_1, _(" ")),
+    (EVENT_CAT_1, (" ")),
     (EVENT_CAT_2, _("Standards")),
     (EVENT_CAT_3, _("Dispute Settlement")),
     (EVENT_CAT_4, _("Governance")),
@@ -72,7 +72,7 @@ EVENT_TYPE_29 = 29
 EVENT_TYPE_30 = 30
 
 TYPES = (
-    (EVENT_TYPE_1, _(" ")),
+    (EVENT_TYPE_1, (" ")),
     (EVENT_TYPE_2, _("Bilateral assistance")),
     (EVENT_TYPE_3, _("Bureau")),
     (EVENT_TYPE_4, _("CBD")),

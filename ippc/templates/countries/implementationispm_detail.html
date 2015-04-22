@@ -4,7 +4,7 @@
 {% block meta_title %}{% trans "Latest Implementation of ISPM 15" %}{% endblock %}
 
 {% block breadcrumb_menu %}
-<li><a href="/">{% trans "Home" %}</a><span class="divider">/</span></li>
+<li><a href="/{{ LANGUAGE_CODE }}/">{% trans "Home" %}</a><span class="divider">/</span></li>
 <li><a href="/countries/">Countries</a><span class="divider">/</span></li>
 <li><a href="/countries/{{implementationispm.country.name|slugify}}/">{{implementationispm.country.name}}</a><span class="divider">/</span></li>
 <li><a href="/countries/{{implementationispm.country.name|slugify}}/implementationispm/">Implementation of ISPM 15</a><span class="divider">/</span></li>

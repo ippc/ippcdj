@@ -4,7 +4,7 @@
 {% block meta_title %}{% trans "Latest Pest Free Areas" %}{% endblock %}
 
 {% block breadcrumb_menu %}
-<li><a href="/">{% trans "Home" %}</a><span class="divider">/</span></li>
+<li><a href="/{{ LANGUAGE_CODE }}/">{% trans "Home" %}</a><span class="divider">/</span></li>
 <li><a href="/countries/">Countries</a><span class="divider">/</span></li>
 <li><a href="/countries/{{pfa.country.name|slugify}}/">{{pfa.country.name}}</a><span class="divider">/</span></li>
 <li><a href="/countries/{{pfa.country.name|slugify}}/pestfreeareas/">Pest Free Areas</a><span class="divider">/</span></li>
