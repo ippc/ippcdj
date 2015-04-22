@@ -77,18 +77,13 @@ urlpatterns = patterns("",
     
     url(r'^qa/(?P<question_id>\d+)/answer/(?P<id>\d+)/voteup/$', vote_answer_up, name='vote-up'),
     url(r'^qa/(?P<question_id>\d+)/answer/(?P<id>\d+)/votedown/$', vote_answer_down, name='vote-down'),
-
-
-
-
+   
     url(r'^forum/', include('forum.urls')),
     url(r'^calls/', include('calls.urls')),
     url(r'^news/', include('news.urls')),
 
 
 
-
-    
     url('^markdown/', include( 'django_markdown.urls')),
     # forum detail
     # url(r'^forum/(?P<slug>[\w-]+)/$',

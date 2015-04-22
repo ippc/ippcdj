@@ -8,59 +8,24 @@ from django.db import models
 class Migration(SchemaMigration):
 
     def forwards(self, orm):
-        
-
-        # Adding field 'PublicationLibrary.show_agenda_doc_colums'
-        db.add_column(u'ippc_publicationlibrary', 'show_agenda_doc_colums',
-                      self.gf('django.db.models.fields.BooleanField')(default=False),
+        # Adding field 'PestReport.owner'
+        db.add_column(u'ippc_pestreport', 'owner',
+                      self.gf('django.db.models.fields.related.ForeignKey')(default='', related_name='pest_report', to=orm['auth.User']),
                       keep_default=False)
 
-        
-        
+        # Adding field 'PestReport.highlighted'
+        db.add_column(u'ippc_pestreport', 'highlighted',
+                      self.gf('django.db.models.fields.TextField')(default=''),
+                      keep_default=False)
+
+
     def backwards(self, orm):
-        # Deleting model 'AnswerVotes'
-        db.delete_table(u'ippc_answervotes')
+        # Deleting field 'PestReport.owner'
+        db.delete_column(u'ippc_pestreport', 'owner_id')
 
-        # Deleting model 'Question'
-        db.delete_table(u'ippc_question')
+        # Deleting field 'PestReport.highlighted'
+        db.delete_column(u'ippc_pestreport', 'highlighted')
 
-        # Deleting model 'Answer'
-        db.delete_table(u'ippc_answer')
-
-        # Deleting model 'CommentFile'
-        db.delete_table(u'ippc_commentfile')
-
-
-        # Changing field 'DraftProtocol.old_id'
-        db.alter_column(u'ippc_draftprotocol', 'old_id', self.gf('django.db.models.fields.CharField')(default='', max_length=50))
-        # Adding field 'IppcUserProfile.expertize'
-        db.add_column(u'ippc_ippcuserprofile', 'expertize',
-                      self.gf('django.db.models.fields.TextField')(default='', null=True, blank=True),
-                      keep_default=False)
-
-        # Deleting field 'IppcUserProfile.expertise'
-        db.delete_column(u'ippc_ippcuserprofile', 'expertise')
-
-        # Deleting field 'IppcUserProfile.website'
-        db.delete_column(u'ippc_ippcuserprofile', 'website')
-
-        # Adding field 'PreferredLanguages.status'
-        db.add_column(u'ippc_preferredlanguages', 'status',
-                      self.gf('django.db.models.fields.CharField')(default='', max_length=500),
-                      keep_default=False)
-
-        # Deleting field 'PreferredLanguages.preferredlanguage'
-        db.delete_column(u'ippc_preferredlanguages', 'preferredlanguage')
-
-        # Deleting field 'PublicationLibrary.show_agenda_doc_colums'
-        db.delete_column(u'ippc_publicationlibrary', 'show_agenda_doc_colums')
-
-        # Removing M2M table for field groups on 'Publication'
-        db.delete_table(db.shorten_name(u'ippc_publication_groups'))
-
-
-        # Changing field 'EmailUtilityMessage.emailto'
-        db.alter_column(u'ippc_emailutilitymessage', 'emailto', self.gf('django.db.models.fields.CharField')(max_length=200))
 
     models = {
         u'auth.group': {
@@ -707,6 +672,7 @@ class Migration(SchemaMigration):
             'expiry_date': ('django.db.models.fields.DateTimeField', [], {'null': 'True', 'blank': 'True'}),
             'gen_description': ('django.db.models.fields.BooleanField', [], {'default': 'True'}),
             'geographical_distribution': ('django.db.models.fields.TextField', [], {'null': 'True', 'blank': 'True'}),
+            'highlighted': ('django.db.models.fields.TextField', [], {}),
             'hosts': ('django.db.models.fields.TextField', [], {'null': 'True', 'blank': 'True'}),
             u'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
             'in_sitemap': ('django.db.models.fields.BooleanField', [], {'default': 'True'}),
@@ -715,6 +681,7 @@ class Migration(SchemaMigration):
             'modify_date': ('django.db.models.fields.DateTimeField', [], {'null': 'True', 'blank': 'True'}),
             'nature_of_danger': ('django.db.models.fields.TextField', [], {'null': 'True', 'blank': 'True'}),
             'old_id': ('django.db.models.fields.CharField', [], {'max_length': '50'}),
+            'owner': ('django.db.models.fields.related.ForeignKey', [], {'related_name': "'pest_report'", 'to': u"orm['auth.User']"}),
             'pest_identity': ('django.db.models.fields.related.ForeignKey', [], {'to': u"orm['ippc.EppoCode']", 'null': 'True', 'blank': 'True'}),
             'pest_status': ('django.db.models.fields.related.ManyToManyField', [], {'blank': 'True', 'related_name': "'pest_status+'", 'null': 'True', 'symmetrical': 'False', 'to': u"orm['ippc.PestStatus']"}),
             'publish_date': ('django.db.models.fields.DateTimeField', [], {'null': 'True', 'blank': 'True'}),
@@ -812,7 +779,7 @@ class Migration(SchemaMigration):
             'groups': ('django.db.models.fields.related.ManyToManyField', [], {'blank': 'True', 'related_name': "'publicationlibrarygroups'", 'null': 'True', 'symmetrical': 'False', 'to': u"orm['auth.Group']"}),
             'old_id': ('django.db.models.fields.CharField', [], {'max_length': '50', 'null': 'True', 'blank': 'True'}),
             u'page_ptr': ('django.db.models.fields.related.OneToOneField', [], {'to': u"orm['pages.Page']", 'unique': 'True', 'primary_key': 'True'}),
-            'show_agenda_doc_colums': ('django.db.models.fields.BooleanField', [], {'default': 'False'}),
+            'show_agenda_doc_colums': ('django.db.models.fields.BooleanField', [], {'default': 'True'}),
             'users': ('django.db.models.fields.related.ManyToManyField', [], {'blank': 'True', 'related_name': "'publicationlibraryusers'", 'null': 'True', 'symmetrical': 'False', 'to': u"orm['auth.User']"})
         },
         u'ippc.publicationurl': {

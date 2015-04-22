@@ -47,9 +47,9 @@ from datetime import datetime
 from django.contrib.contenttypes.models import ContentType
 from mezzanine.generic import views as myview
 from mezzanine.generic import models
+
 def get_profile():
     return IppcUserProfile.objects.all()
-
 # def pest_report_country():
 #     return PestReport.objects.all()
 def commenta(request, template="generic/comments.html"):
@@ -620,6 +620,7 @@ def pest_report_create(request, country):
             new_pest_report.author = request.user
             new_pest_report.report_number=report_number_val
             new_pest_report.author_id = author.id
+            
             form.save()
            
             issue_instance = issueform.save(commit=False)
@@ -3558,7 +3559,9 @@ def email_send(request):
     if request.method == "POST":
         f_form =EmailUtilityMessageFileFormSet(request.POST, request.FILES)
         if form.is_valid() and f_form.is_valid():
-            emailto_all = [str(request.POST['emailto'])]
+            emailto_all1 = str(request.POST['emailto'])
+            emailto_all2=emailto_all1[3:-4]
+            emailto_all=[emailto_all2]
             for u in request.POST.getlist('users'):
                 user_obj=User.objects.get(id=u)
                 user_email=user_obj.email
@@ -3613,7 +3616,7 @@ def email_send(request):
                 #sends a list of EmailMessage objects. If the connection is not open, this call will implicitly open the connection, and close the connection afterwards. If the connection is already open, it will be left open after mail has been sent.
                 connection = mail.get_connection()
                 connection.open()
-                sent=connection.send_messages(messages)
+                #sent=connection.send_messages(messages)
                 connection.close()
                
             #update status SENT/NOT SENT mail message in db
@@ -4104,4 +4107,4 @@ def vote_answer_down(request,question_id,id=None,):
 #        v.save()
 #        return redirect("results", pk=p.id)
 	
-    
+   

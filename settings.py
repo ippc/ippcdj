@@ -294,7 +294,6 @@ INSTALLED_APPS = (
     "django_markdown",
     "envelope",
     "loginas",
-
 )
 
 # NEWSLETTER_CONFIRM_EMAIL = False

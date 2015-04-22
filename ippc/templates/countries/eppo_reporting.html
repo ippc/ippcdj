@@ -1,0 +1,15 @@
+{% extends "base.html" %}
+{% load pages_tags mezzanine_tags i18n future staticfiles %}
+
+{% block meta_title %}{% trans "Automatic PEST Reporting trough EPPO " %}{% endblock %}
+
+
+{% block breadcrumb_menu %}
+<li class="active">{% trans "Automatic PEST Reporting trough EPPO" %}</li>
+{% endblock %}
+
+{% block main %}
+	<h2>{% trans "Automatic PEST Reporting trough EPPO" %}</h2>
+        <p>.....{{mail}}</p>
+	
+{% endblock %}

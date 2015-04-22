@@ -332,7 +332,7 @@ google.maps.event.addDomListener(window, 'load', initialize);
       <td><a href="{% url 'country' object.country.country_slug%}">{{ object.country }}</a></td>
       <td>
           <a href="{% url link_to_item object.country.country_slug object.publish_date|date:'Y' object.publish_date|date:'m'  object.slug %}">             {{ object.title }}</a></td>
-      <td>{{ object.publish_date|date:"d M Y" }}</td>
+      <td>{{ object.publication_date|date:"d M Y" }}</td>
       <td>{{ object.modify_date|date:"d M Y" }} </td>
     </tr>
     {% endfor %}
