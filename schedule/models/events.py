@@ -102,6 +102,8 @@ TYPES = (
     (EVENT_TYPE_28, _("Workshop")),
     (EVENT_TYPE_29, _("Workshop / Seminars")),
     (EVENT_TYPE_30, _("WTO Meetings")),
+    (EVENT_TYPE_31, _("SPG")),
+  
 )
 
 class Event(models.Model):
