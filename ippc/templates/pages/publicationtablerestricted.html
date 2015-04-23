@@ -41,7 +41,7 @@
             <td>{{ publication.document_number }}</td>
             <td>{{ publication.agenda_number }}</td>
             {% endif %} 
-            <td><a href="{% url 'publication-detail' publication.pk %}">{{ publication.title }}</a></td>
+            <td><a href="{% url 'publication-r-detail' publication.pk %}">{{ publication.title }}</a></td>
 
             <td>
                 {% if publication.file_en %}
@@ -121,7 +121,7 @@
             <td>{{ publication.document_number }}</td>
             <td>{{ publication.agenda_number }}</td>
             {% endif %} 
-            <td><a href="{% url 'publication-detail' publication.pk %}">{{ publication.title }}</a></td>
+            <td><a href="{% url 'publication-r-detail' publication.pk %}">{{ publication.title }}</a></td>
 
             <td>
                 {% if publication.file_en %}
