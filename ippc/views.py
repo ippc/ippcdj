@@ -685,8 +685,10 @@ def pest_report_edit(request, country, id=None, template_name='countries/pest_re
         pest_report = get_object_or_404(PestReport, country=country, pk=id)
        
         content_type = ContentType.objects.get_for_model(pest_report)
-        notifications = get_object_or_404(NotificationMessageRelate, object_id=id,content_type__pk=content_type.id)
-        
+        try:
+           notifications = get_object_or_404(NotificationMessageRelate, object_id=id,content_type__pk=content_type.id)
+        except:
+            notifications = None
         rep_num=pest_report.report_number
         indexof=rep_num.rfind('/')
         numberRep_part=rep_num[:indexof+1]
