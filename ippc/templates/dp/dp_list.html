@@ -35,11 +35,9 @@
                    {% endif %}
                 </td>
                 <td><a href="{% url 'draftprotocol-detail' object.publish_date|date:'Y' object.publish_date|date:'m'  object.slug %}">{{ object.closing_date|date:"d M Y" }}</a>
-                  {% if user.is_superuser %} 
-                      <a class="small pull-right" href="/admin/ippc/draftprotocol/{{ object.id }}"><i class="icon-edit"></i> Edit as Admin</a><br>
-                  {% endif %}
                   {% if user.is_superuser or perms.ippc.add_publication  %}
                       <a class="small pull-right" href="{% url 'draftprotocol-edit' object.id %}"><i class="icon-edit"></i> Edit</a>
+                      <a class="small pull-right" href="/admin/ippc/draftprotocol/{{ object.id }}"><i class="icon-edit"></i> Edit as Admin</a><br>
                   {% else %}
                   {% endif %}
                   </td>
