@@ -3578,7 +3578,7 @@ def email_send(request):
             for h in range(0,6):
                   for uemail in request.POST.getlist('usercp1_'+str(h)+'_0'):
                      emailto_all.append(str(uemail))                     
-            #print(emailto_all)
+            print(emailto_all)
             new_emailmessage = form.save(commit=False)
             new_emailmessage.date=timezone.now()
             new_emailmessage.emailto=emailto_all
@@ -3618,7 +3618,7 @@ def email_send(request):
                 #sends a list of EmailMessage objects. If the connection is not open, this call will implicitly open the connection, and close the connection afterwards. If the connection is already open, it will be left open after mail has been sent.
                 connection = mail.get_connection()
                 connection.open()
-                #sent=connection.send_messages(messages)
+                sent=connection.send_messages(messages)
                 connection.close()
                
             #update status SENT/NOT SENT mail message in db
