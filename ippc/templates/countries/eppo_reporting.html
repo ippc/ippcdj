@@ -10,6 +10,36 @@
 
 {% block main %}
 	<h2>{% trans "Automatic PEST Reporting trough EPPO" %}</h2>
-        <p>.....{{mail}}</p>
-	
+        <p></p>
+        
+        {% if pest_reports %}
+<table class="table table-condensed table-striped" id="publications">
+  <thead>
+    <tr>
+      <th>{% trans "Report Number" %}</th>
+      <th>{% trans "Identity of Pest" %}</th>
+      <th>{% trans "Title" %}</th>
+      <th>{% trans "Publication Date" %}</th>
+      <th>{% trans "Last Updated" %}</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for object in pest_reports %}
+    <tr>
+      <td>{{ object.report_number }}</td>
+      <td>{{ object.pest_identity }}</td>
+      <td><a href="{% url 'pest-report-detail' object.country.country_slug object.publish_date|date:'Y' object.publish_date|date:'m'  object.slug %}">{{ object.title }}</a></td>
+      <td>{{ object.publish_date|date:"d M Y" }}</td>
+      <td>{{ object.modify_date|date:"d M Y" }}
+  
+        </td>
+    </tr>
+
+    {% endfor %}
+  </tbody>
+</table>
+        
+        
+        
+{% endif %}	
 {% endblock %}
