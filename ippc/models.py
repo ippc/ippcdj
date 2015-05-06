@@ -745,6 +745,7 @@ class ReportingObligation(Displayable, models.Model):
         ''' On save, update timestamps '''
         if not self.id:
             self.publish_date = datetime.today()
+            #self.publish_date = datetime.today()
             # Newly created object, so set slug
             self.slug = slugify(self.title)
         self.modify_date = datetime.now()
