@@ -417,6 +417,7 @@ ACCOUNTS_PROFILE_FORM_EXCLUDE_FIELDS = (
     "country",
     "partner",
     "date_account_created",
+    "date_contact_registration",
     "preferredlanguage",
 )
 

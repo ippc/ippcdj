@@ -87,7 +87,6 @@ class IppcUserProfileForm(forms.ModelForm):
             'gender',
             'address1',
             'address2',
-            'address_country',
             'bio', 
             'expertise',
             'phone',

@@ -435,10 +435,10 @@ class IppcUserProfile(models.Model):
     
     address1 = models.CharField(_("Organization"), blank=True, max_length=250)
     address2 = models.TextField(_("Address"), default="", blank=True, null=True)
-    city = models.CharField(_("City"), blank=True, max_length=100)
-    state = models.CharField(_("State"), blank=True, max_length=100, help_text="or Province")
-    zipcode = models.CharField(_("Zip Code"), blank=True, max_length=20)
-    address_country = CountryField(_("Address Country"), blank=True, null=True)
+    #city = models.CharField(_("City"), blank=True, max_length=100)
+    #state = models.CharField(_("State"), blank=True, max_length=100, help_text="or Province")
+    #zipcode = models.CharField(_("Zip Code"), blank=True, max_length=20)
+    #address_country = CountryField(_("Address Country"), blank=True, null=True)
     # country is the 'tag' marking permissions for Contact Point and Editors
     country = models.ForeignKey(CountryPage, related_name="user_country_page", blank=True, null=True)
     partner = models.ForeignKey(PartnersPage, related_name="user_partner_page", blank=True, null=True)
@@ -453,6 +453,7 @@ class IppcUserProfile(models.Model):
         )
     website = models.URLField(_("Website"),blank=True, null=True)
     date_account_created = models.DateTimeField(_("Member Since"), default=datetime.now, editable=False)
+    date_contact_registration = models.DateTimeField(_("Date contact registration"), default=datetime.now, editable=True)
 
 
 # this is in mezzanine.core.models.displayable
