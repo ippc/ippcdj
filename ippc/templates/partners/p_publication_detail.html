@@ -15,7 +15,7 @@
 <div class="well localnav">
   <p><a href="/{{ pageslug}}/">« {% trans "Back to " %}{{pagetitle}}</a></p>
     {% if user.is_superuser %} 
-        <a class="btn btn-small btn-info" href="/admin/ippc/partnerspublications/{{ partnerspublication.id }}">Edit as Admin</a><br>
+        <a class="btn btn-small btn-info" href="/admin/ippc/partnerspublication/{{ partnerspublication.id }}">Edit as Admin</a><br>
     {% endif %}
         
     {% if perms.ippc.change_partnerspublication and request.user.get_profile.partner.name == partnerspublication.partners.name %}
