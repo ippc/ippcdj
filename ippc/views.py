@@ -1747,8 +1747,8 @@ def partner_websites_create(request, partner):
     """ Create website """
     user = request.user
     author = user
-    partner=user.get_profile().partner
-    user_partner_slug = lower(slugify(partner))
+    partners=user.get_profile().partner
+    user_partner_slug = lower(slugify(partners))
 
     form = PartnersWebsiteForm(request.POST or None, request.FILES)
     issueform =IssueKeywordsRelateForm(request.POST)
@@ -1801,11 +1801,11 @@ def partner_websites_edit(request, partner, id=None, template_name='partners/web
     """ Edit  website """
     user = request.user
     author = user
-    partner = user.get_profile().partner
+    partners = user.get_profile().partner
     # country_id = PestReport.objects.filter(country__country_id=country.id)
-    user_partner_slug = lower(slugify(partner))
+    user_partner_slug = lower(slugify(partners))
     if id:
-        website = get_object_or_404(PartnersWebsite, partners=partner, pk=id)
+        website = get_object_or_404(PartnersWebsite, partners=partners, pk=id)
     else:
         website = PartnersWebsite(author=request.user)
       
@@ -2089,8 +2089,8 @@ def partner_publication_create(request, partner):
     """ Create  partner Publication """
     user = request.user
     author = user
-    partner=user.get_profile().partner
-    user_partner_slug = lower(slugify(partner))
+    partners=user.get_profile().partner
+    user_partner_slug = lower(slugify(partners))
 
     form = PartnersPublicationForm(request.POST or None, request.FILES)
     issueform =IssueKeywordsRelateForm(request.POST)
@@ -2129,7 +2129,7 @@ def partner_publication_create(request, partner):
           
         
     else:
-        form = PartnersPublicationForm(initial={'partner': partner}, instance=PartnersPublication())
+        form = PartnersPublicationForm(initial={'partners': partners}, instance=PartnersPublication())
         issueform =IssueKeywordsRelateForm(request.POST)
         commodityform =CommodityKeywordsRelateForm(request.POST)
         f_form = PartnersPublicationFileFormSet()
@@ -2146,11 +2146,11 @@ def partner_publication_edit(request, partner, id=None, template_name='partners/
     """ Edit   partners Publication """
     user = request.user
     author = user
-    partner = user.get_profile().partner
+    partners = user.get_profile().partner
     # country_id = PestReport.objects.filter(country__country_id=country.id)
-    user_partner_slug = lower(slugify(partner))
+    user_partner_slug = lower(slugify(partners))
     if id:
-        partnerspublication = get_object_or_404(PartnersPublication, partners=partner, pk=id)
+        partnerspublication = get_object_or_404(PartnersPublication, partners=partners, pk=id)
     else:
         partnerspublication = PartnersPublication(author=request.user)
       
@@ -2696,7 +2696,7 @@ def countrynews_edit(request, country, id=None, template_name='countries/country
             issueform =IssueKeywordsRelateForm(request.POST,instance=issues)
         else:
             issueform =IssueKeywordsRelateForm(request.POST)
-        if cnpublication.commname.count()>0:
+        if countrynews.commname.count()>0:
             commodities = get_object_or_404(CommodityKeywordsRelate, pk=countrynews.commname.all()[0].id)
             commodityform =CommodityKeywordsRelateForm(request.POST,instance=commodities)
         else:
@@ -2730,7 +2730,7 @@ def countrynews_edit(request, country, id=None, template_name='countries/country
             issueform =IssueKeywordsRelateForm(instance=issues)
         else:
             issueform =IssueKeywordsRelateForm( )
-        if cnpublication.commname.count()>0:
+        if countrynews.commname.count()>0:
             commodities = get_object_or_404(CommodityKeywordsRelate, pk=countrynews.commname.all()[0].id)
             commodityform =CommodityKeywordsRelateForm( instance=commodities)
         else:
@@ -2772,8 +2772,8 @@ def partners_news_create(request, partner):
     """ Create partnersnews """
     user = request.user
     author = user
-    partner=user.get_profile().partner
-    user_partner_slug = lower(slugify(partner))
+    partners=user.get_profile().partner
+    user_partner_slug = lower(slugify(partners))
 
 
     form = PartnersNewsForm(request.POST)
@@ -2829,11 +2829,11 @@ def partners_news_edit(request, partner, id=None, template_name='partners/partne
     """ Edit partner news """
     user = request.user
     author = user
-    partner = user.get_profile().partner
+    partners = user.get_profile().partner
     # country_id = PestReport.objects.filter(country__country_id=country.id)
-    user_partner_slug = lower(slugify(partner))
+    user_partner_slug = lower(slugify(partners))
     if id:
-        partnernews = get_object_or_404( PartnersNews,  partners= partner, pk=id)
+        partnernews = get_object_or_404( PartnersNews,  partners= partners, pk=id)
     else:
         partnernews =  PartnersNews(author=request.user)
       
