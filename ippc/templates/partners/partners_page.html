@@ -79,15 +79,15 @@
  {# LINKs to add #}
  
   {% if perms.ippc.add_partnerspublication and request.user.get_profile.partner.name == page.get_content_model.name or user.is_superuser %}
-  <small><a class="btn btn-small btn-info" href="{% url 'partner-publication-create' page.title|slugify %}">+ {% trans "Add new publication" %}</a></small>
+ <small><a class="btn btn-small btn-info" href="{% url 'partner-publication-create' page.get_content_model.partner_slug %}">+ {% trans "Add new publication" %}</a></small>
 {% endif %}
  {% if perms.ippc.add_partnersnews and request.user.get_profile.partner.name == page.get_content_model.name or user.is_superuser %}
-   <small>  <a class="btn btn-small btn-info" href="{% url 'partner-news-create' page.title|slugify %}">+ {% trans "Add new news" %}</a>
+   <small>  <a class="btn btn-small btn-info" href="{% url 'partner-news-create' page.get_content_model.partner_slug %}">+ {% trans "Add new news" %}</a>
    </small>
  {% endif %}
 
  {% if perms.ippc.add_partnerswebsite and request.user.get_profile.partner.name == page.get_content_model.name or user.is_superuser %}
-   <small><a class="btn btn-small btn-info" href="{% url 'partner-websites-create' page.title|slugify %}">+ {% trans "Add new website" %}</a></small>
+   <small><a class="btn btn-small btn-info" href="{% url 'partner-websites-create' page.get_content_model.partner_slug %}">+ {% trans "Add new website" %}</a></small>
  {% endif %}
 
       
