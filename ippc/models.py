@@ -1499,7 +1499,7 @@ class PartnersNews(Displayable, models.Model):
     def get_absolute_url(self): # "view on site" link will be visible in admin interface
         """Construct the absolute URL """
         return ('partnersnews-detail', (), {
-                            'partner': self.partner.name, # =todo: get self.country.name working
+                            'partners': self.partners.name, # =todo: get self.country.name working
                             'year': self.publish_date.strftime("%Y"),
                             'month': self.publish_date.strftime("%m"),
                             # 'day': self.pub_date.strftime("%d"),
