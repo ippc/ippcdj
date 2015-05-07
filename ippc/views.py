@@ -1743,12 +1743,17 @@ class PartnersWebsiteDetailView(DetailView):
 
 @login_required
 @permission_required('ippc.add_partnerswebsite', login_url="/accounts/login/")
-def partner_websites_create(request, partner):
+def partner_websites_create(request, partners):
     """ Create website """
     user = request.user
     author = user
-    partners=user.get_profile().partner
+    if user.get_profile().partner:
+        partners=user.get_profile().partner
+         
     user_partner_slug = lower(slugify(partners))
+    #partners=user.get_profile().partner
+    page = get_object_or_404(PartnersPage, name=user_partner_slug)
+    partners=page.id 
 
     form = PartnersWebsiteForm(request.POST or None, request.FILES)
     issueform =IssueKeywordsRelateForm(request.POST)
@@ -1785,7 +1790,7 @@ def partner_websites_create(request, partner):
           
         
     else:
-        form = PartnersWebsiteForm(initial={'partners': partner}, instance=PartnersWebsite())
+        form = PartnersWebsiteForm(initial={'partners': partners}, instance=PartnersWebsite())
         issueform =IssueKeywordsRelateForm(request.POST)
         commodityform =CommodityKeywordsRelateForm(request.POST)
         u_form = PartnersWebsiteUrlFormSet()
@@ -1797,13 +1802,17 @@ def partner_websites_create(request, partner):
 
 @login_required
 @permission_required('ippc.change_partnerswebsite', login_url="/accounts/login/")
-def partner_websites_edit(request, partner, id=None, template_name='partners/website_edit.html'):
+def partner_websites_edit(request, partners, id=None, template_name='partners/website_edit.html'):
     """ Edit  website """
     user = request.user
     author = user
-    partners = user.get_profile().partner
-    # country_id = PestReport.objects.filter(country__country_id=country.id)
+    if user.get_profile().partner:
+        partners=user.get_profile().partner
+         
     user_partner_slug = lower(slugify(partners))
+    #partners=user.get_profile().partner
+    page = get_object_or_404(PartnersPage, name=user_partner_slug)
+    partners=page.id 
     if id:
         website = get_object_or_404(PartnersWebsite, partners=partners, pk=id)
     else:
@@ -2085,13 +2094,20 @@ class PartnersPublicationDetailView(DetailView):
             
 @login_required
 @permission_required('ippc.add_partnerspublication', login_url="/accounts/login/")
-def partner_publication_create(request, partner):
+def partner_publication_create(request, partners):
     """ Create  partner Publication """
     user = request.user
     author = user
-    partners=user.get_profile().partner
+    if user.get_profile().partner:
+        partners=user.get_profile().partner
+         
     user_partner_slug = lower(slugify(partners))
-
+    #partners=user.get_profile().partner
+    page = get_object_or_404(PartnersPage, name=user_partner_slug)
+    partners=page.id  
+    print("-----------------------------------------")
+    print(user_partner_slug)
+    print("-----------------------------------------")
     form = PartnersPublicationForm(request.POST or None, request.FILES)
     issueform =IssueKeywordsRelateForm(request.POST)
     commodityform =CommodityKeywordsRelateForm(request.POST)
@@ -2142,13 +2158,17 @@ def partner_publication_create(request, partner):
 
 @login_required
 @permission_required('ippc.change_partnerspublication', login_url="/accounts/login/")
-def partner_publication_edit(request, partner, id=None, template_name='partners/p_publication_edit.html'):
+def partner_publication_edit(request, partners, id=None, template_name='partners/p_publication_edit.html'):
     """ Edit   partners Publication """
     user = request.user
     author = user
-    partners = user.get_profile().partner
-    # country_id = PestReport.objects.filter(country__country_id=country.id)
+    if user.get_profile().partner:
+        partners=user.get_profile().partner
+         
     user_partner_slug = lower(slugify(partners))
+    #partners=user.get_profile().partner
+    page = get_object_or_404(PartnersPage, name=user_partner_slug)
+    partners=page.id  
     if id:
         partnerspublication = get_object_or_404(PartnersPublication, partners=partners, pk=id)
     else:
@@ -2768,14 +2788,22 @@ class PartnersNewsDetailView(DetailView):
 
 @login_required
 @permission_required('ippc.add_partnersnews', login_url="/accounts/login/")
-def partners_news_create(request, partner):
+def partners_news_create(request, partners):
     """ Create partnersnews """
     user = request.user
     author = user
-    partners=user.get_profile().partner
+    if user.get_profile().partner:
+        partners=user.get_profile().partner
+         
     user_partner_slug = lower(slugify(partners))
-
-
+    #partners=user.get_profile().partner
+    print("--------------------------------")
+    print(user_partner_slug)
+    page = get_object_or_404(PartnersPage, name=user_partner_slug)
+    partners=page.id  
+    print(partners)
+    print("--------------------------------")
+    
     form = PartnersNewsForm(request.POST)
     issueform =IssueKeywordsRelateForm(request.POST)
     commodityform =CommodityKeywordsRelateForm(request.POST)
@@ -2811,7 +2839,7 @@ def partners_news_create(request, partner):
              return render_to_response('partners/partnersnews_create.html', {'form': form,'f_form': f_form,'u_form': u_form,'issueform':issueform, 'commodityform':commodityform},
              context_instance=RequestContext(request))
     else:
-        form = PartnersNewsForm(initial={'partners': partner}, instance=PartnersNews())
+        form = PartnersNewsForm(initial={'partners': partners}, instance=PartnersNews())
         issueform =IssueKeywordsRelateForm(request.POST)
         commodityform =CommodityKeywordsRelateForm(request.POST)
         f_form = PartnersNewsFileFormSet()
@@ -2825,13 +2853,17 @@ def partners_news_create(request, partner):
 # http://stackoverflow.com/a/1854453/412329
 @login_required
 @permission_required('ippc.change_partnersnews', login_url="/accounts/login/")
-def partners_news_edit(request, partner, id=None, template_name='partners/partnersnews_edit.html'):
+def partners_news_edit(request, partners, id=None, template_name='partners/partnersnews_edit.html'):
     """ Edit partner news """
     user = request.user
     author = user
-    partners = user.get_profile().partner
-    # country_id = PestReport.objects.filter(country__country_id=country.id)
+    if user.get_profile().partner:
+        partners=user.get_profile().partner
+         
     user_partner_slug = lower(slugify(partners))
+    #partners=user.get_profile().partner
+    page = get_object_or_404(PartnersPage, name=user_partner_slug)
+    partners=page.id 
     if id:
         partnernews = get_object_or_404( PartnersNews,  partners= partners, pk=id)
     else:
