@@ -394,11 +394,11 @@ urlpatterns = patterns("",
         view=PartnersPublicationDetailView.as_view(),
         name="partner-publication-detail"),
      #partners publications create
-    url(r'^partners/(?P<partner>[\w-]+)/publications/create/$',
+    url(r'^partners/(?P<partners>[\w-]+)/publications/create/$',
         view=partner_publication_create,
         name='partner-publication-create'),
     # partners publications edit
-    url(r'^partners/(?P<partner>[\w-]+)/publications/edit/(?P<id>\d+)/$',
+    url(r'^partners/(?P<partners>[\w-]+)/publications/edit/(?P<id>\d+)/$',
         view=partner_publication_edit,
         name='partner-publication-edit'),
     
@@ -407,11 +407,11 @@ urlpatterns = patterns("",
         view=PartnersWebsiteDetailView.as_view(),
         name="partner-websites-detail"),
      #partners websites create
-    url(r'^partners/(?P<partner>[\w-]+)/websites/create/$',
+    url(r'^partners/(?P<partners>[\w-]+)/websites/create/$',
         view=partner_websites_create,
         name='partner-websites-create'),
     # partners websites edit
-    url(r'^partners/(?P<partner>[\w-]+)/websites/edit/(?P<id>\d+)/$',
+    url(r'^partners/(?P<partners>[\w-]+)/websites/edit/(?P<id>\d+)/$',
         view=partner_websites_edit,
         name='partner-websites-edit'),
         
@@ -420,11 +420,11 @@ urlpatterns = patterns("",
         view=PartnersNewsDetailView.as_view(),
         name="partner-news-detail"),
      #partners news create
-    url(r'^partners/(?P<partner>[\w-]+)/news/create/$',
+    url(r'^partners/(?P<partners>[\w-]+)/news/create/$',
         view=partners_news_create,
         name='partner-news-create'),
     # partners news edit
-    url(r'^partners/(?P<partner>[\w-]+)/news/edit/(?P<id>\d+)/$',
+    url(r'^partners/(?P<partners>[\w-]+)/news/edit/(?P<id>\d+)/$',
         view=partners_news_edit,
         name='partner-news-edit'),
              
