@@ -38,12 +38,20 @@
     <span class="caps">{{ profile_user.get_profile.last_name }}</span>
   </dd>
   
-	{% if user.get_profile.date_account_created %}  
+	{% if user.is_superuser and  user.get_profile.date_account_created %}  
   <dt>{% trans "Member Since" %}</dt>
   <dd>
         {% blocktrans with sometime=profile_user.get_profile.date_account_created|date:"d M Y" %}{{ sometime }}{% endblocktrans %}
   </dd>
 	{% endif %}
+        
+        	{% if  user.get_profile.date_contact_registration %}  
+  <dt>{% trans "Date contact registration" %}</dt>
+  <dd>
+        {% blocktrans with sometime=profile_user.get_profile.date_contact_registration|date:"d M Y" %}{{ sometime }}{% endblocktrans %}
+  </dd>
+	{% endif %}
+  
   
   {% if profile_user.get_profile.email_address_alt %}
   <dt>{% trans "Alternate Email" %}</dt>
@@ -59,18 +67,12 @@
   </dd>
   {% endif %}
   
-  {% if profile_user.get_profile.address_country.name %}
+
   <dt>{% trans "Address" %}</dt>
   <dd>
     {% if user_get_profile.address1 %}{{ profile_user.get_profile.address1 }}<br>{% endif %}
     {% if profile_user.get_profile.address2 %}{{ profile_user.get_profile.address2 }}<br>{% endif %}
-    {% if profile_user.get_profile.city %}{{ profile_user.get_profile.city }}<br>{% endif %}
-    {% if profile_user.get_profile.city %}{{ profile_user.get_profile.city }}<br>{% endif %}
-    {% if profile_user.get_profile.state %}{{ profile_user.get_profile.state }}<br>{% endif %}
-    {% if profile_user.get_profile.zipcode %}{{ profile_user.get_profile.zipcode }}<br>{% endif %}
-    {{ profile_user.get_profile.address_country.name }}
   </dd>
-  {% endif %}
   
   {% if profile_user.get_profile.country %}
   <dt>{% trans "IPPC Country" %}</dt>

@@ -63,7 +63,7 @@
   {{ user.get_profile.address1 }}
   </dd>  {% endif %}
   
-  {% if user.get_profile.address1 or user.get_profile.address %}  
+  {% if user.get_profile.address1 or user.get_profile.address2 %}  
   <dt>{% trans "Address" %}</dt>
   <dd>
    
@@ -71,11 +71,7 @@
     </dd>
   {% endif %}
   
-    {#{% if user.get_profile.city %}{{ user.get_profile.city }}<br>{% endif %} #}
-    {#{% if user.get_profile.city %}{{ user.get_profile.city }}<br>{% endif %} #}
-    {#{% if user.get_profile.state %}{{ user.get_profile.state }}<br>{% endif %} #}
-    {#{% if user.get_profile.zipcode %}{{ user.get_profile.zipcode }}<br>{% endif %} #}
-    {#{% if user.get_profile.address_country.name %}{{ user.get_profile.address_country.name }}{% endif %} #}
+  
  
   {# {% if user.get_profile.country %} #}
   {# <dt>{% trans "IPPC Country" %}</dt> #}
@@ -150,13 +146,18 @@
   {% endif %}
   
   
-	{% if user.get_profile.date_account_created %}  
+	{% if user.is_superuser and  user.get_profile.date_account_created %}  
 	  <dt>{% trans "Member Since" %}</dt>
 	  <dd>
 	    {% blocktrans with sometime=user.get_profile.date_account_created|date:"d M Y" %}{{ sometime }}{% endblocktrans %}
 	  </dd>
 	{% endif %}
-	
+	{% if user.get_profile.date_contact_registration %}  
+	  <dt>{% trans "Date contact registration" %}</dt>
+	  <dd>
+	    {% blocktrans with sometime=user.get_profile.date_contact_registration|date:"d M Y" %}{{ sometime }}{% endblocktrans %}
+	  </dd>
+	{% endif %}
 	
 	{#   {% if user.is_authenticated and user.username == request.user.username %}  #}
 	{#   <div> #}

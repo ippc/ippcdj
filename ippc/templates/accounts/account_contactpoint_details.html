@@ -47,11 +47,6 @@
   <dd>
     {% if page.get_content_model.contact_point.get_profile.address1 %}{{ page.get_content_model.contact_point.get_profile.address1 }}<br>{% endif %}
     {% if page.get_content_model.contact_point.get_profile.address2 %}{{ page.get_content_model.contact_point.get_profile.address2 }}<br>{% endif %}
-    {% if page.get_content_model.contact_point.get_profile.city %}{{ page.get_content_model.contact_point.get_profile.city }}<br>{% endif %}
-    {% if page.get_content_model.contact_point.get_profile.city %}{{ page.get_content_model.contact_point.get_profile.city }}<br>{% endif %}
-    {% if page.get_content_model.contact_point.get_profile.state %}{{ page.get_content_model.contact_point.get_profile.state }}<br>{% endif %}
-    {% if page.get_content_model.contact_point.get_profile.zipcode %}{{ page.get_content_model.contact_point.get_profile.zipcode }}<br>{% endif %}
-    {{ page.get_content_model.contact_point.get_profile.address_country.name }}
   </dd>
   {% endif %}
   {% if page.get_content_model.contact_point.get_profile.phone %}
@@ -100,9 +95,15 @@
     
     </dd>
   {% endif %}
-  {% if page.get_content_model.contact_point.get_profile.date_account_created %}
+  {% if user.is_superuser and page.get_content_model.contact_point.get_profile.date_account_created %}
   <dd><strong>{% trans "Member Since" %}:</strong>
         {% blocktrans with sometime=page.get_content_model.contact_point.get_profile.date_account_created|date:"d M Y" %}{{ sometime }}{% endblocktrans %}
+  </dd>
+	
+  {% endif %}
+  {% if  page.get_content_model.contact_point.get_profile.date_contact_registration %}
+  <dd><strong>{% trans "Date contact registration" %}:</strong>
+        {% blocktrans with sometime=page.get_content_model.contact_point.get_profile.date_contact_registration|date:"d M Y" %}{{ sometime }}{% endblocktrans %}
   </dd>
 	
   {% endif %}

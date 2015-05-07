@@ -55,11 +55,20 @@
     {{ editor.get_profile.first_name }} 
     <span class="caps">{{ editor.get_profile.last_name }}</span>
   </dd>
-  
+   {% if user.is_superuser and  page.get_content_model.contact_point.get_profile.date_account_created %}
   <dt>{% trans "Member Since" %}</dt>
   <dd>
         {% blocktrans with sometime=editor.get_profile.date_account_created|date:"d M Y" %}{{ sometime }}{% endblocktrans %}
   </dd>
+   {% endif %}
+    {% if  page.get_content_model.contact_point.get_profile.date_contact_registration %}
+  <dd><strong>{% trans "Date contact registration" %}:</strong>
+        {% blocktrans with sometime=page.get_content_model.contact_point.get_profile.date_contact_registration|date:"d M Y" %}{{ sometime }}{% endblocktrans %}
+  </dd>
+	
+  {% endif %}
+  
+  
   
   {% if editor.get_profile.email_address_alt %}
   <dt>{% trans "Alternate Email" %}</dt>
@@ -81,11 +90,7 @@
   <dd>
     {% if user_get_profile.address1 %}{{ editor.get_profile.address1 }}<br>{% endif %}
     {% if editor.get_profile.address2 %}{{ editor.get_profile.address2 }}<br>{% endif %}
-    {% if editor.get_profile.city %}{{ editor.get_profile.city }}<br>{% endif %}
-    {% if editor.get_profile.city %}{{ editor.get_profile.city }}<br>{% endif %}
-    {% if editor.get_profile.state %}{{ editor.get_profile.state }}<br>{% endif %}
-    {% if editor.get_profile.zipcode %}{{ editor.get_profile.zipcode }}<br>{% endif %}
-    {{ editor.get_profile.address_country.name }}
+    
   </dd>
   {% endif %}
   
