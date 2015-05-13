@@ -13,32 +13,43 @@
 
 {% block local_nav %}
 <div class="well localnav">
-  <p><a href="/countries/{{ report.country.name|slugify }}/pestreports/">« {% trans "Back to" %} {% trans "Pest Reports" %}</a></p>
-    {% if user.is_superuser %} 
-        <a class="btn btn-small btn-info" href="/admin/ippc/pestreport/{{ report.id }}">Edit as Admin</a><br>
+    <script type="text/javascript">
+    function toggle_visibility_rev(id) {
+       var e = document.getElementById(id);
+       if(e.style.display == 'block')
+          e.style.display = 'none';
+       else
+          e.style.display = 'block';
+    }
+    </script>
+  <p>
+       {% if report.is_version %}
+        <a href="javascript:history.go(-1)">{% trans "« Go back" %}</a>
+     {% else %}
+        <a href="/countries/{{ report.country.name|slugify }}/pestreports/">« {% trans "Back to" %} {% trans "Pest Reports" %}</a></p>
+        {% if user.is_superuser %} 
+           <a class="btn btn-small btn-info" href="/admin/ippc/pestreport/{{ report.id }}">Edit as Admin</a><br>
+        {% endif %}
+        {% if perms.ippc.change_pestreport and request.user.get_profile.country.name == page.title %}
+           <a class="btn btn-small btn-info" href="{% url 'pest-report-edit' report.country.name|slugify report.id %}"><i class="icon-edit icon-white"></i> Edit</a>
+           {% endif %}
+        {% if versions %}
+            <br><br>
+            <strong><a href="#" onclick="toggle_visibility_rev('rev');">{% trans "Revisions" %}</a></strong>  <br>
+            <div id="rev" style="display:none;">
+                {% for object in versions %}
+                <small><a href="{% url 'pest-report-detail' object.country.country_slug object.publish_date|date:'Y' object.publish_date|date:'m'  object.slug %}"> {% blocktrans with sometime=object.modify_date|date:"d-m-Y H:i" %}{{ sometime }}{% endblocktrans %}</a></small><br>
+            {% endfor %}
+            </div>
+        {% endif %}
     {% endif %}
-        
-    {% if perms.ippc.change_pestreport and request.user.get_profile.country.name == page.title %}
-        <a class="btn btn-small btn-info" href="{% url 'pest-report-edit' report.country.name|slugify report.id %}"><i class="icon-edit icon-white"></i> Edit</a>
-        {# <a class="btn" href="{% url 'pest-report-edit' report.id %}"><i class="icon-edit"></i> Edit</a> #}
-    {% else %}
-    {% endif %}
+    
+    </p>
     
     
     
-    {# =todo: only country editors, including chief editor/nppo, of course, can edit: #}
- 
-    {# https://docs.djangoproject.com/en/dev/topics/auth/default/#permissions #}
-    {# https://www.djangopackages.com/grids/g/perms/ #}
-
-    {# {% if perms.ippc %} #}
-    {#     <p>You have permission to do something in the IPPC app.</p> #}
-    {#     {% if perms.ippc.pest_report_can_edit %} #}
-    {#         <a class="btn" href="{% url pest_report_edit report.id %}"><i class="icon-edit"></i> Edit</a> #}
-    {#     {% endif %} #}
-    {# {% else %} #}
-    {#     <p>You don't have permission to do anything in the IPPC app.</p> #}
-    {# {% endif %} #}
+    
+    
 </div>
 {% endblock local_nav %}
 
@@ -57,8 +68,14 @@
 {#   </p> #}
 {# {% else %} #}
 {# {% endif %} #}
+{% if report.is_version %}
+<dl class="dl-horizontal" style="border: 3px double red;    padding: 0.5em;">
+ <dt>&#160;</dt>
+  <dd style="color:red;">{% trans "old revision" %}</dd>
 
+ {% else %}    
 <dl class="dl-horizontal">
+{% endif %}    
   <dt>{% trans "Publication Date" %}</dt>
   <dd>{% blocktrans with sometime=report.publish_date|date:"D, d M Y, H:i" %}{{ sometime }}{% endblocktrans %}</dd>
   

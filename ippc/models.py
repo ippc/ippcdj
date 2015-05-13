@@ -283,6 +283,9 @@ class Publication(Orderable):
     groups = models.ManyToManyField(Group, 
         verbose_name=_("Groups this publication is NOT accessible to"), 
         related_name='publicationgroups', blank=True, null=True)
+    is_version = models.BooleanField(verbose_name=_("oldversion"),
+                                         default=False)
+    parent_id = models.CharField(max_length=50,blank=True, null=True,)    
     def __unicode__(self):
         return self.title
 
@@ -452,7 +455,7 @@ class IppcUserProfile(models.Model):
         related_name='preferredlanguages+', blank=True, null=True,
         )
     website = models.URLField(_("Website"),blank=True, null=True)
-    date_account_created = models.DateTimeField(_("Member Since"), default=datetime.now, editable=False)
+    date_account_created = models.DateTimeField(_("IPP Member Since"), default=datetime.now, editable=False)
     date_contact_registration = models.DateTimeField(_("Date contact registration"), default=datetime.now, editable=True)
 
 
@@ -512,6 +515,10 @@ class PestReport(Displayable, models.Model):
     issuename=generic.GenericRelation(IssueKeywordsRelate)
     notification=generic.GenericRelation(NotificationMessageRelate)
     old_id = models.CharField(max_length=50)
+    is_version = models.BooleanField(verbose_name=_("oldversion"),
+                                         default=False)
+    parent_id = models.CharField(max_length=50,blank=True, null=True,)
+    
     # =todo:
     # commodity_groups = 
     # keywords / tags = 
@@ -720,6 +727,9 @@ class ReportingObligation(Displayable, models.Model):
   
     
     old_id = models.CharField(max_length=50)
+    is_version = models.BooleanField(verbose_name=_("oldversion"),
+                                         default=False)
+    parent_id = models.CharField(max_length=50,blank=True, null=True,)
     # objects = models.Manager()
     objects = SearchableManager()
     search_fields = ("title", "short_description")
@@ -960,6 +970,9 @@ class EventReporting(Displayable, models.Model):
     commname=generic.GenericRelation(CommodityKeywordsRelate)
     notification=generic.GenericRelation(NotificationMessageRelate)
     old_id = models.CharField(max_length=50)
+    is_version = models.BooleanField(verbose_name=_("oldversion"),
+                                         default=False)
+    parent_id = models.CharField(max_length=50,blank=True, null=True,)
     objects = SearchableManager()
     
     search_fields = ("title", "short_description")
@@ -1201,6 +1214,9 @@ class PestFreeArea(Displayable, models.Model):
     commname=generic.GenericRelation(CommodityKeywordsRelate)
     notification=generic.GenericRelation(NotificationMessageRelate)
     old_id = models.CharField(max_length=50)
+    is_version = models.BooleanField(verbose_name=_("oldversion"),
+                                         default=False)
+    parent_id = models.CharField(max_length=50,blank=True, null=True,)
     # =todo:
     # commodity_groups = 
     # keywords / tags = 
@@ -1326,6 +1342,9 @@ class ImplementationISPM(Displayable, models.Model):
     commname=generic.GenericRelation(CommodityKeywordsRelate)
     notification=generic.GenericRelation(NotificationMessageRelate)
     old_id = models.CharField(max_length=50)
+    is_version = models.BooleanField(verbose_name=_("oldversion"),
+                                         default=False)
+    parent_id = models.CharField(max_length=50,blank=True, null=True,)
     # =todo:
     # commodity_groups = 
     # keywords / tags = 

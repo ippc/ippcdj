@@ -13,16 +13,44 @@
 
 {% block local_nav %}
 <div class="well localnav">
-  <p><a href="/countries/{{ implementationispm.country.name|slugify }}/implementationispm/">« {% trans "Back to" %} {% trans "Implementation of ISPM 15" %}</a></p>
+     <script type="text/javascript">
+    function toggle_visibility_rev(id) {
+       var e = document.getElementById(id);
+       if(e.style.display == 'block')
+          e.style.display = 'none';
+       else
+          e.style.display = 'block';
+    }
+    </script>
+    <p>
+       {% if implementationispm.is_version %}
+        <a href="javascript:history.go(-1)">{% trans "« Go back" %}</a>
+     {% else %}
+       <a href="/countries/{{ implementationispm.country.name|slugify }}/implementationispm/">« {% trans "Back to" %} {% trans "Implementation of ISPM 15" %}</a>
     {% if user.is_superuser %} 
         <a class="btn btn-small btn-info" href="/admin/ippc/implementationispm/{{ implementationispm.id }}">Edit as Admin</a><br>
     {% endif %}
         
     {% if perms.ippc.change_implementationispm and request.user.get_profile.country.name == page.title %}
         <a class="btn btn-small btn-info" href="{% url 'implementationispm-edit' implementationispm.country.name|slugify implementationispm.id %}"><i class="icon-edit icon-white"></i> Edit</a>
-        {# <a class="btn" href="{% url 'implementationispm-edit' implementationispm.id %}"><i class="icon-edit"></i> Edit</a> #}
-    {% else %}
+       
     {% endif %}
+        {% if versions %}
+            <br><br>
+            <strong><a href="#" onclick="toggle_visibility_rev('rev');">{% trans "Revisions" %}</a></strong>  <br>
+            <div id="rev" style="display:none;">
+             {% for object in versions %}
+                <small><a href="{% url 'implementationispm-detail' object.country.country_slug object.publish_date|date:'Y' object.publish_date|date:'m'  object.slug %}">{% blocktrans with sometime=object.modify_date|date:"d-m-Y H:i" %}{{ sometime }}{% endblocktrans %}</a></small><br>
+            {% endfor %}
+             </div>
+        {% endif %}
+    {% endif %}
+    
+    </p>
+    
+    
+    
+  
     
     
     
@@ -36,11 +64,19 @@
 
 {% block main %}
 <h1>{{ implementationispm.title }}</h1> 
+{% if implementationispm.is_version %}
+<dl class="dl-horizontal" style="border: 3px double red;    padding: 0.5em;">
+ <dt>&#160;</dt>
+  <dd style="color:red;">{% trans "old revision" %}</dd>
+
+ {% else %}    
+<dl class="dl-horizontal">
+{% endif %} 
 
 <dt>{% trans "Publication date" %}</dt>
 <dd>{% blocktrans with sometime=implementationispm.publication_date|date:"d-m-Y" %}{{ sometime }}{% endblocktrans %}</dd>
   
-<dl class="dl-horizontal">
+
   {% if implementationispm.implementimport_type %}
   <dt>{% trans "Country implemented ISPM 15 for imports" %}</dt>
   <dd>
@@ -49,7 +85,6 @@
     </ul>
   </dd>
   {% endif %}
-  </dl>
   
   {% if implementationispm.implementimport_version.all %}
   <dt>{% trans "Implementation version" %}</dt>
@@ -64,7 +99,6 @@
  {% endif %}
 
  
- <dl class="dl-horizontal">
   {% if implementationispm.implementexport_type %}
   <dt>{% trans "Country implemented ISPM 15 for exports" %}</dt>
   <dd>
@@ -73,7 +107,6 @@
     </ul>
   </dd>
   {% endif %}
-  </dl>
   
   {% if implementationispm.implementexport_version.all %}
   <dt>{% trans "Implementation version" %}</dt>

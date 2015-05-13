@@ -10,7 +10,8 @@ from django.conf import settings
 
 from django.contrib.auth.models import User,Group
 from .models import ContactType,PublicationLibrary,Publication,EppoCode,EmailUtilityMessage, EmailUtilityMessageFile, Poll_Choice, Poll,PollVotes, IppcUserProfile,\
-CountryPage,PartnersPage, PestStatus, PestReport, IS_PUBLIC, IS_HIDDEN, Publication,\
+CountryPage,PartnersPage, PestStatus, PestReport, IS_PUBLIC, IS_HIDDEN, Publication,PestReportFile,PestReportUrl,\
+PublicationFile,PublicationUrl,ReportingObligation_File,ReportingObligationUrl, EventreportingFile,EventreportingUrl,    ImplementationISPMFile,ImplementationISPMUrl, PestFreeAreaFile,PestFreeAreaUrl,\
 DraftProtocol,DraftProtocolComments,NotificationMessageRelate,CommentFile,Question, Answer,AnswerVotes,\
 ReportingObligation, BASIC_REP_TYPE_CHOICES, EventReporting, EVT_REP_TYPE_CHOICES,Website,CnPublication,PartnersPublication,PartnersNews, PartnersWebsite,CountryNews, \
 PestFreeArea,ImplementationISPM,REGIONS, IssueKeywordsRelate,CommodityKeywordsRelate,EventreportingFile,ReportingObligation_File
@@ -518,7 +519,7 @@ class PestReportListView(ListView):
         # self.country = get_object_or_404(CountryPage, country=self.kwargs['country'])
         self.country = self.kwargs['country']
         # CountryPage country_slug == country URL parameter keyword argument
-        return PestReport.objects.filter(country__country_slug=self.country, status=CONTENT_STATUS_PUBLISHED)
+        return PestReport.objects.filter(country__country_slug=self.country, status=CONTENT_STATUS_PUBLISHED, is_version=False)
     
     def get_context_data(self, **kwargs): # http://stackoverflow.com/a/15515220
         context = super(PestReportListView, self).get_context_data(**kwargs)
@@ -549,7 +550,8 @@ class PestReportHiddenListView(ListView):
         # self.country = get_object_or_404(CountryPage, country=self.kwargs['country'])
         self.country = self.kwargs['country']
         # CountryPage country_slug == country URL parameter keyword argument
-        return PestReport.objects.filter(country__country_slug=self.country, status=CONTENT_STATUS_DRAFT)
+        print('aaaaaaaaaaaaaaaaaaaaaaaaa')
+        return PestReport.objects.filter(country__country_slug=self.country, status=CONTENT_STATUS_DRAFT, is_version=False)
     
     def get_context_data(self, **kwargs): # http://stackoverflow.com/a/15515220
         context = super(PestReportHiddenListView, self).get_context_data(**kwargs)
@@ -574,7 +576,16 @@ class PestReportDetailView(DetailView):
     context_object_name = 'report'
     template_name = 'countries/pest_report_detail.html'
     queryset = PestReport.objects.filter(status=CONTENT_STATUS_PUBLISHED)
-
+    
+    def get_context_data(self, **kwargs): # http://stackoverflow.com/a/15515220
+        context = super(PestReportDetailView, self).get_context_data(**kwargs)
+      
+        p = get_object_or_404(PestReport, slug=self.kwargs['slug'])
+        
+        versions= PestReport.objects.filter(country__country_slug=self.kwargs['country'], status=CONTENT_STATUS_PUBLISHED, is_version=True, parent_id=p.id).order_by('-modify_date')
+        context['versions'] = versions
+        return context
+    
 class PublicationListView(ListView):
     """
     Publications List
@@ -583,7 +594,7 @@ class PublicationListView(ListView):
     model = Publication
     date_field = 'modify_date'
     template_name = 'pages/publication_list.html'
-    queryset = Publication.objects.filter(status=IS_PUBLIC).order_by('-modify_date', 'title')
+    queryset = Publication.objects.filter(status=IS_PUBLIC,is_version=False).order_by('-modify_date', 'title')
     allow_future = False
     allow_empty = True
     paginate_by = 500
@@ -603,7 +614,15 @@ class PublicationDetailView(DetailView):
         context['users'] =publicationlibrary.users
         context['groups'] = publicationlibrary.groups
         context['login_required'] = publicationlibrary.login_required
+        
+        
+        
+        versions= Publication.objects.filter( is_version=True, parent_id=publication.id).order_by('-modify_date')
+        context['versions'] = versions
+      
+        
         return context
+    
 class PublicationDetail2View(DetailView):
     """ Publication detail page """
     model = Publication
@@ -619,6 +638,9 @@ class PublicationDetail2View(DetailView):
         context['users'] =publicationlibrary.users
         context['groups'] = publicationlibrary.groups
         context['login_required'] = publicationlibrary.login_required
+        
+        versions= Publication.objects.filter( is_version=True, parent_id=publication.id).order_by('-modify_date')
+        context['versions'] = versions
         return context
     
 import os
@@ -626,7 +648,7 @@ import shutil
 
 import zipfile
 import StringIO
-from settings import PROJECT_ROOT, MEDIA_ROOT
+from settings import PROJECT_ROOT, MEDIA_ROOT,DATABASES
 from django.core.files.storage import default_storage
 
 class PublicationFilesListView(ListView):
@@ -637,14 +659,14 @@ class PublicationFilesListView(ListView):
     model = Publication
     date_field = 'modify_date'
     template_name = 'pages/publicationfilestable.html'
-    queryset = Publication.objects.filter(status=IS_PUBLIC).order_by('-modify_date', 'title')
+    queryset = Publication.objects.filter(status=IS_PUBLIC,is_version=False).order_by('-modify_date', 'title')
     allow_future = False
     allow_empty = True
     paginate_by = 500
  
     def get_context_data(self, **kwargs):
         context = super(PublicationFilesListView, self).get_context_data(**kwargs)
-        queryset = Publication.objects.filter(status=IS_PUBLIC,library_id=self.kwargs['id']).order_by('-modify_date', 'title')
+        queryset = Publication.objects.filter(status=IS_PUBLIC,library_id=self.kwargs['id'],is_version=False).order_by('-modify_date', 'title')
         queryset2 = PublicationLibrary.objects.filter(id=self.kwargs['id'])
         for p in queryset2:
             context['titlepage']=p.title
@@ -788,7 +810,7 @@ def pest_report_create(request, country):
     notifyrelateform =NotificationMessageRelateForm(request.POST)
         
     countryo = get_object_or_404(CountryPage, name=country)
-    numberR=PestReport.objects.filter(country_id=country.id).count()
+    numberR=PestReport.objects.filter(country_id=country.id,is_version=False).count()
     numberR=numberR+1
     pestnumber=str(numberR)
     if numberR<10 :
@@ -851,7 +873,7 @@ def pest_report_create(request, country):
     return render_to_response('countries/pest_report_create.html', {'form': form,'f_form': f_form,'u_form':u_form,'issueform':issueform, 'commodityform':commodityform,'notifyrelateform':notifyrelateform},
         context_instance=RequestContext(request))
 
-
+import MySQLdb
 # http://stackoverflow.com/a/1854453/412329
 @login_required
 @permission_required('ippc.change_pestreport', login_url="/accounts/login/")
@@ -867,12 +889,14 @@ def pest_report_edit(request, country, id=None, template_name='countries/pest_re
     
     if id:
         pest_report = get_object_or_404(PestReport, country=country, pk=id)
-       
+        old_pest_report=get_object_or_404(PestReport, country=country, pk=id)
+        
         content_type = ContentType.objects.get_for_model(pest_report)
         try: 
             notifications = get_object_or_404(NotificationMessageRelate, object_id=id,content_type__pk=content_type.id)
         except:
             notifications = None
+        
         rep_num=pest_report.report_number
         indexof=rep_num.rfind('/')
         numberRep_part=rep_num[:indexof+1]
@@ -882,7 +906,24 @@ def pest_report_edit(request, country, id=None, template_name='countries/pest_re
         #     return HttpResponseForbidden()
     else:
         pest_report = PestReport(author=request.user)
+        
 
+    
+    old_issue=[]
+    if pest_report.issuename.count()>0:
+        for e in pest_report.issuename.all():
+                obj_i=e.content_object.issuename
+                for o in obj_i.all():
+                    for iss in o.issuename.all():
+                        old_issue.append(iss.id)
+    old_comm=[]
+    if pest_report.commname.count()>0:
+        for e in pest_report.commname.all():
+                obj_c=e.content_object.commname
+                for o in obj_c.all():
+                    for com in o.commname.all():
+                        old_comm.append(com.id)                    
+  
     if request.POST:
         form = PestReportForm(request.POST,  request.FILES, instance=pest_report)
         if pest_report.issuename.count()>0:
@@ -890,6 +931,7 @@ def pest_report_edit(request, country, id=None, template_name='countries/pest_re
             issueform =IssueKeywordsRelateForm(request.POST,instance=issues)
         else:
             issueform =IssueKeywordsRelateForm(request.POST)
+             
         if pest_report.commname.count()>0:
             commodities = get_object_or_404(CommodityKeywordsRelate, pk=pest_report.commname.all()[0].id)
             commodityform =CommodityKeywordsRelateForm(request.POST,instance=commodities)
@@ -898,8 +940,72 @@ def pest_report_edit(request, country, id=None, template_name='countries/pest_re
         notifyrelateform =NotificationMessageRelateForm(request.POST,instance=notifications)
         f_form = PestReportFileFormSet(request.POST,  request.FILES,instance=pest_report)
         u_form =PestReportUrlFormSet(request.POST,  instance=pest_report)
+         
+      
         if form.is_valid() and f_form.is_valid() and u_form.is_valid():
+            """old pestreport save"""
+            
+            old_pest_report.pk = None
+            old_pest_report.is_version = True
+            old_pest_report.parent_id= id
+            old_pest_report.save()
+            for e in pest_report.pest_status.all():
+                ps=PestStatus.objects.get(status=e)
+                old_pest_report.pest_status.add(ps)
+           
+            issueformold =IssueKeywordsRelateForm()
+            issue_instanceold=issueformold.save(commit=False)
+            issue_instanceold.content_object = old_pest_report
+            issue_instanceold.save()
+            
+            commformold =CommodityKeywordsRelateForm()
+            comm_instanceold=commformold.save(commit=False)
+            comm_instanceold.content_object = old_pest_report
+            comm_instanceold.save()
+
+            db = MySQLdb.connect(DATABASES["default"]["HOST"],DATABASES["default"]["USER"],DATABASES["default"]["PASSWORD"],DATABASES["default"]["NAME"])
+            cursor = db.cursor()
+            
+            files=PestReportFile.objects.filter(pestreport_id=pest_report.id)
+            urls=PestReportUrl.objects.filter(pestreport_id=pest_report.id)
+            for f in files:
+                sql = "INSERT INTO ippc_pestreportfile(pestreport_id,description,file) VALUES ("+str(old_pest_report.id)+", '"+str(f.description)+"', '"+str(f)+"')"
+                print(sql)
+                try:
+                    cursor.execute(sql)
+                    db.commit()
+                except:
+                    db.rollback()
+            for u in urls:
+                sql = "INSERT INTO ippc_pestreporturl(pestreport_id,url_for_more_information) VALUES ("+str(old_pest_report.id)+", '"+str(u)+"')"
+                print(sql)
+                try:
+                    cursor.execute(sql)
+                    db.commit()
+                except:
+                    db.rollback()   
+            for iss in old_issue:
+                sql = """INSERT INTO ippc_issuekeywordsrelate_issuename(issuekeywordsrelate_id,issuekeyword_id) VALUES ("""+str(issue_instanceold.id)+""", """+str(iss)+""")"""
+                try:
+                    cursor.execute(sql)
+                    db.commit()
+                except:
+                    db.rollback()
+            for com in old_comm:
+                sql = """INSERT INTO ippc_commoditykeywordsrelate_commname(commoditykeywordsrelate_id,commoditykeyword_id) VALUES ("""+str(comm_instanceold.id)+""", """+str(com)+""")"""
+                print(sql)
+                try:
+                    cursor.execute(sql)
+                    db.commit()
+                except:
+                    print("###################error ")
+                    db.rollback()        
+            db.close()
+        
+          
+            
             form.save()
+          
             issue_instance = issueform.save(commit=False)
             issue_instance.content_object = pest_report
             issue_instance.save()
@@ -965,7 +1071,7 @@ class ReportingObligationListView(ListView):
         self.country = self.kwargs['country']
         self.type = self.kwargs['type']
         # CountryPage country_slug == country URL parameter keyword argument
-        return ReportingObligation.objects.filter(country__country_slug=self.country,reporting_obligation_type=self.kwargs['type'])
+        return ReportingObligation.objects.filter(country__country_slug=self.country,reporting_obligation_type=self.kwargs['type'],is_version=False)
     
     def get_context_data(self, **kwargs): # http://stackoverflow.com/a/15515220
         context = super(ReportingObligationListView, self).get_context_data(**kwargs)
@@ -1038,7 +1144,15 @@ class ReportingObligationDetailView(DetailView):
     context_object_name = 'reportingobligation'
     template_name = 'countries/reporting_obligation_detail.html'
     queryset = ReportingObligation.objects.filter()
-
+   
+    def get_context_data(self, **kwargs): # http://stackoverflow.com/a/15515220
+        context = super(ReportingObligationDetailView, self).get_context_data(**kwargs)
+        p = get_object_or_404(ReportingObligation, slug=self.kwargs['slug'])
+        
+        versions= ReportingObligation.objects.filter(country__country_slug=self.kwargs['country'], is_version=True, parent_id=p.id).order_by('-modify_date')
+        context['versions'] = versions
+      
+        return context
 
 @login_required
 @permission_required('ippc.add_reportingobligation', login_url="/accounts/login/")
@@ -1118,6 +1232,8 @@ def reporting_obligation_edit(request, country, id=None, template_name='countrie
     user_country_slug = lower(slugify(country))
     if id:
         reporting_obligation = get_object_or_404(ReportingObligation, country=country, pk=id)
+        old_reporting_obligation=get_object_or_404(ReportingObligation, country=country, pk=id)
+       
         content_type = ContentType.objects.get_for_model(reporting_obligation)
         try:
             notifications = get_object_or_404(NotificationMessageRelate, object_id=id,content_type__pk=content_type.id)
@@ -1142,6 +1258,60 @@ def reporting_obligation_edit(request, country, id=None, template_name='countrie
         f_form = ReportingoblicationFileFormSet(request.POST,  request.FILES,instance=reporting_obligation)
         u_form =ReportingObligationUrlFormSet(request.POST,instance=reporting_obligation)
         if form.is_valid() and f_form.is_valid() and u_form.is_valid():
+            old_reporting_obligation.pk = None
+            old_reporting_obligation.is_version = True
+            old_reporting_obligation.parent_id= id
+            old_reporting_obligation.save()
+            
+            issueformold =IssueKeywordsRelateForm()
+            issue_instanceold=issueformold.save(commit=False)
+            issue_instanceold.content_object = old_reporting_obligation
+            issue_instanceold.save()
+            
+            commformold =CommodityKeywordsRelateForm()
+            comm_instanceold=commformold.save(commit=False)
+            comm_instanceold.content_object = old_reporting_obligation
+            comm_instanceold.save()
+
+            db = MySQLdb.connect(DATABASES["default"]["HOST"],DATABASES["default"]["USER"],DATABASES["default"]["PASSWORD"],DATABASES["default"]["NAME"])
+            cursor = db.cursor()
+            
+            files=ReportingObligation_File.objects.filter(reportingobligation_id=reporting_obligation.id)
+            urls=ReportingObligationUrl.objects.filter(reportingobligation_id=reporting_obligation.id)
+            for f in files:
+                sql = "INSERT INTO ippc_reportingobligation_file(reportingobligation_id,description,file) VALUES ("+str(old_pest_report.id)+", '"+str(f.description)+"', '"+str(f)+"')"
+                print(sql)
+                try:
+                    cursor.execute(sql)
+                    db.commit()
+                except:
+                    db.rollback()
+            for u in urls:
+                sql = "INSERT INTO ippc_reportingobligationurl(reportingobligation_id,url_for_more_information) VALUES ("+str(old_pest_report.id)+", '"+str(u)+"')"
+                print(sql)
+                try:
+                    cursor.execute(sql)
+                    db.commit()
+                except:
+                    db.rollback()   
+            for iss in old_issue:
+                sql = """INSERT INTO ippc_issuekeywordsrelate_issuename(issuekeywordsrelate_id,issuekeyword_id) VALUES ("""+str(issue_instanceold.id)+""", """+str(iss)+""")"""
+                try:
+                    cursor.execute(sql)
+                    db.commit()
+                except:
+                    db.rollback()
+            for com in old_comm:
+                sql = """INSERT INTO ippc_commoditykeywordsrelate_commname(commoditykeywordsrelate_id,commoditykeyword_id) VALUES ("""+str(comm_instanceold.id)+""", """+str(com)+""")"""
+                print(sql)
+                try:
+                    cursor.execute(sql)
+                    db.commit()
+                except:
+                    print("###################error ")
+                    db.rollback()        
+            db.close()
+            
             form.save()
             issue_instance = issueform.save(commit=False)
             issue_instance.content_object = reporting_obligation
@@ -1206,7 +1376,7 @@ class EventReportingListView(ListView):
         self.country = self.kwargs['country']
         self.type = self.kwargs['type']
         # CountryPage country_slug == country URL parameter keyword argument
-        return EventReporting.objects.filter(country__country_slug=self.country,event_rep_type=self.kwargs['type'])
+        return EventReporting.objects.filter(country__country_slug=self.country,event_rep_type=self.kwargs['type'],is_version=False)
     
     def get_context_data(self, **kwargs): # http://stackoverflow.com/a/15515220
         context = super(EventReportingListView, self).get_context_data(**kwargs)
@@ -1223,8 +1393,16 @@ class EventReportingDetailView(DetailView):
     context_object_name = 'eventreporting'
     template_name = 'countries/eventreporting_detail.html'
     queryset = EventReporting.objects.filter()
-
-
+    
+    def get_context_data(self, **kwargs): # http://stackoverflow.com/a/15515220
+        context = super(EventReportingDetailView, self).get_context_data(**kwargs)
+        p = get_object_or_404(EventReporting, slug=self.kwargs['slug'])
+        
+        versions= EventReporting.objects.filter(country__country_slug=self.kwargs['country'], is_version=True, parent_id=p.id).order_by('-modify_date')
+        context['versions'] = versions
+      
+        return context
+      
 
 @login_required
 @permission_required('ippc.add_eventreporting', login_url="/accounts/login/")
@@ -1304,6 +1482,9 @@ def event_reporting_edit(request, country, id=None, template_name='countries/eve
     user_country_slug = lower(slugify(country))
     if id:
         event_reporting = get_object_or_404(EventReporting, country=country, pk=id)
+        old_event_reporting=get_object_or_404(EventReporting, country=country, pk=id)
+        
+
         content_type = ContentType.objects.get_for_model(event_reporting)
         try:
             notifications = get_object_or_404(NotificationMessageRelate, object_id=id,content_type__pk=content_type.id)
@@ -1330,6 +1511,76 @@ def event_reporting_edit(request, country, id=None, template_name='countries/eve
         u_form = EventreportingUrlFormSet(request.POST,  instance=event_reporting)
       
         if form.is_valid() and f_form.is_valid() and u_form.is_valid():
+            old_event_reporting.pk = None
+            old_event_reporting.is_version = True
+            old_event_reporting.parent_id= id
+            old_event_reporting.save()
+            
+            issueformold =IssueKeywordsRelateForm()
+            issue_instanceold=issueformold.save(commit=False)
+            issue_instanceold.content_object = old_event_reporting
+            issue_instanceold.save()
+            
+            commformold =CommodityKeywordsRelateForm()
+            comm_instanceold=commformold.save(commit=False)
+            comm_instanceold.content_object = old_event_reporting
+            comm_instanceold.save()
+
+            db = MySQLdb.connect(DATABASES["default"]["HOST"],DATABASES["default"]["USER"],DATABASES["default"]["PASSWORD"],DATABASES["default"]["NAME"])
+            cursor = db.cursor()
+            
+            files=EventreportingFile.objects.filter(eventreporting_id=event_reporting.id)
+            urls=EventreportingUrl.objects.filter(eventreporting_id=event_reporting.id)
+            for f in files:
+                sql = "INSERT INTO ippc_eventreportingfile(eventreporting_id,description,file) VALUES ("+str(old_pest_report.id)+", '"+str(f.description)+"', '"+str(f)+"')"
+                print(sql)
+                try:
+                    cursor.execute(sql)
+                    db.commit()
+                except:
+                    db.rollback()
+            for u in urls:
+                sql = "INSERT INTO ippc_eventreportingurl(eventreporting_id,url_for_more_information) VALUES ("+str(old_pest_report.id)+", '"+str(u)+"')"
+                print(sql)
+                try:
+                    cursor.execute(sql)
+                    db.commit()
+                except:
+                    db.rollback()   
+            for iss in old_issue:
+                sql = """INSERT INTO ippc_issuekeywordsrelate_issuename(issuekeywordsrelate_id,issuekeyword_id) VALUES ("""+str(issue_instanceold.id)+""", """+str(iss)+""")"""
+                try:
+                    cursor.execute(sql)
+                    db.commit()
+                except:
+                    db.rollback()
+            for com in old_comm:
+                sql = """INSERT INTO ippc_commoditykeywordsrelate_commname(commoditykeywordsrelate_id,commoditykeyword_id) VALUES ("""+str(comm_instanceold.id)+""", """+str(com)+""")"""
+                print(sql)
+                try:
+                    cursor.execute(sql)
+                    db.commit()
+                except:
+                    print("###################error ")
+                    db.rollback()        
+            db.close()
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
             form.save()
             issue_instance = issueform.save(commit=False)
             issue_instance.content_object = event_reporting
@@ -2246,7 +2497,7 @@ class PestFreeAreaListView(ListView):
         # self.country = get_object_or_404(CountryPage, country=self.kwargs['country'])
         self.country = self.kwargs['country']
         # CountryPage country_slug == country URL parameter keyword argument
-        return PestFreeArea.objects.filter(country__country_slug=self.country)
+        return PestFreeArea.objects.filter(country__country_slug=self.country,is_version=False)
     
     def get_context_data(self, **kwargs): # http://stackoverflow.com/a/15515220
         context = super(PestFreeAreaListView, self).get_context_data(**kwargs)
@@ -2262,7 +2513,14 @@ class PestFreeAreaDetailView(DetailView):
     template_name = 'countries/pfa_detail.html'
     queryset = PestFreeArea.objects.filter()
 
-
+    def get_context_data(self, **kwargs): # http://stackoverflow.com/a/15515220
+        context = super(PestFreeAreaDetailView, self).get_context_data(**kwargs)
+        p = get_object_or_404(PestFreeArea, slug=self.kwargs['slug'])
+        
+        versions= PestFreeArea.objects.filter(country__country_slug=self.kwargs['country'], is_version=True, parent_id=p.id).order_by('-modify_date')
+        context['versions'] = versions
+      
+        return context
 
 @login_required
 @permission_required('ippc.add_pestfreearea', login_url="/accounts/login/")
@@ -2343,6 +2601,9 @@ def pfa_edit(request, country, id=None, template_name='countries/pfa_edit.html')
     user_country_slug = lower(slugify(country))
     if id:
         pfa = get_object_or_404(PestFreeArea, country=country, pk=id)
+        old_pfa=get_object_or_404(PestFreeArea, country=country, pk=id)
+       
+
         content_type = ContentType.objects.get_for_model(pfa)
         try:
             notifications = get_object_or_404(NotificationMessageRelate, object_id=id,content_type__pk=content_type.id)
@@ -2370,6 +2631,63 @@ def pfa_edit(request, country, id=None, template_name='countries/pfa_edit.html')
         f_form = PestFreeAreaFileFormSet(request.POST,  request.FILES,instance=pfa)
         u_form = PestFreeAreaUrlFormSet(request.POST,  instance=pfa)
         if form.is_valid() and f_form.is_valid() and u_form.is_valid():
+            old_pfa.pk = None
+            old_pfa.is_version = True
+            old_pfa.parent_id= id
+            old_pfa.save()
+
+            
+            issueformold =IssueKeywordsRelateForm()
+            issue_instanceold=issueformold.save(commit=False)
+            issue_instanceold.content_object = old_pfa
+            issue_instanceold.save()
+            
+            commformold =CommodityKeywordsRelateForm()
+            comm_instanceold=commformold.save(commit=False)
+            comm_instanceold.content_object = old_pfa
+            comm_instanceold.save()
+
+            db = MySQLdb.connect(DATABASES["default"]["HOST"],DATABASES["default"]["USER"],DATABASES["default"]["PASSWORD"],DATABASES["default"]["NAME"])
+            cursor = db.cursor()
+            
+            files=PestFreeAreaFile.objects.filter(pfa_id=pfa.id)
+            urls=PestFreeAreaUrl.objects.filter(pfa_id=pfa.id)
+            for f in files:
+                sql = "INSERT INTO ippc_pestfreeareafile(pfa_id,description,file) VALUES ("+str(old_pfa.id)+", '"+str(f.description)+"', '"+str(f)+"')"
+                print(sql)
+                try:
+                    cursor.execute(sql)
+                    db.commit()
+                except:
+                    db.rollback()
+            for u in urls:
+                sql = "INSERT INTO ippc_pestfreeareaurl(pfa_id,url_for_more_information) VALUES ("+str(old_pfa.id)+", '"+str(u)+"')"
+                print(sql)
+                try:
+                    cursor.execute(sql)
+                    db.commit()
+                except:
+                    db.rollback()   
+            for iss in old_issue:
+                sql = """INSERT INTO ippc_issuekeywordsrelate_issuename(issuekeywordsrelate_id,issuekeyword_id) VALUES ("""+str(issue_instanceold.id)+""", """+str(iss)+""")"""
+                try:
+                    cursor.execute(sql)
+                    db.commit()
+                except:
+                    db.rollback()
+            for com in old_comm:
+                sql = """INSERT INTO ippc_commoditykeywordsrelate_commname(commoditykeywordsrelate_id,commoditykeyword_id) VALUES ("""+str(comm_instanceold.id)+""", """+str(com)+""")"""
+                print(sql)
+                try:
+                    cursor.execute(sql)
+                    db.commit()
+                except:
+                    print("###################error ")
+                    db.rollback()        
+            db.close()
+            
+            
+            
             form.save()
             issue_instance = issueform.save(commit=False)
             issue_instance.content_object = pfa
@@ -2434,7 +2752,7 @@ class ImplementationISPMListView(ListView):
         # self.country = get_object_or_404(CountryPage, country=self.kwargs['country'])
         self.country = self.kwargs['country']
         # CountryPage country_slug == country URL parameter keyword argument
-        return ImplementationISPM.objects.filter(country__country_slug=self.country)
+        return ImplementationISPM.objects.filter(country__country_slug=self.country,is_version=False)
     
     def get_context_data(self, **kwargs): # http://stackoverflow.com/a/15515220
         context = super(ImplementationISPMListView, self).get_context_data(**kwargs)
@@ -2450,7 +2768,14 @@ class ImplementationISPMDetailView(DetailView):
     template_name = 'countries/implementationispm_detail.html'
     queryset = ImplementationISPM.objects.filter()
 
-
+    def get_context_data(self, **kwargs): # http://stackoverflow.com/a/15515220
+        context = super(ImplementationISPMDetailView, self).get_context_data(**kwargs)
+        p = get_object_or_404(ImplementationISPM, slug=self.kwargs['slug'])
+        
+        versions= ImplementationISPM.objects.filter(country__country_slug=self.kwargs['country'], is_version=True, parent_id=p.id).order_by('-modify_date')
+        context['versions'] = versions
+      
+        return context
 
 @login_required
 @permission_required('ippc.add_implementationispm', login_url="/accounts/login/")
@@ -2528,6 +2853,9 @@ def implementationispm_edit(request, country, id=None, template_name='countries/
     user_country_slug = lower(slugify(country))
     if id:
         implementationispm = get_object_or_404(ImplementationISPM, country=country, pk=id)
+        old_implementationispm=get_object_or_404(ImplementationISPM, country=country, pk=id)
+       
+
         content_type = ContentType.objects.get_for_model(implementationispm)
         try:
             notifications = get_object_or_404(NotificationMessageRelate, object_id=id,content_type__pk=content_type.id)
@@ -2555,6 +2883,64 @@ def implementationispm_edit(request, country, id=None, template_name='countries/
         f_form = ImplementationISPMFileFormSet(request.POST,  request.FILES,instance=implementationispm)
         u_form = ImplementationISPMUrlFormSet(request.POST,  instance=implementationispm)
         if form.is_valid() and f_form.is_valid() and u_form.is_valid():
+            old_implementationispm.pk = None
+            old_implementationispm.is_version = True
+            old_implementationispm.parent_id= id
+            old_implementationispm.save()
+
+            
+            issueformold =IssueKeywordsRelateForm()
+            issue_instanceold=issueformold.save(commit=False)
+            issue_instanceold.content_object = old_implementationispm
+            issue_instanceold.save()
+            
+            commformold =CommodityKeywordsRelateForm()
+            comm_instanceold=commformold.save(commit=False)
+            comm_instanceold.content_object = old_implementationispm
+            comm_instanceold.save()
+
+            db = MySQLdb.connect(DATABASES["default"]["HOST"],DATABASES["default"]["USER"],DATABASES["default"]["PASSWORD"],DATABASES["default"]["NAME"])
+            cursor = db.cursor()
+            
+            files=ImplementationISPMFile.objects.filter(pfa_id=implementationispm.id)
+            urls=ImplementationISPMUrl.objects.filter(pfa_id=implementationispm.id)
+            for f in files:
+                sql = "INSERT INTO ippc_pestfreeareafile(pfa_id,description,file) VALUES ("+str(old_implementationispm.id)+", '"+str(f.description)+"', '"+str(f)+"')"
+                print(sql)
+                try:
+                    cursor.execute(sql)
+                    db.commit()
+                except:
+                    db.rollback()
+            for u in urls:
+                sql = "INSERT INTO ippc_pestfreeareaurl(pfa_id,url_for_more_information) VALUES ("+str(old_implementationispm.id)+", '"+str(u)+"')"
+                print(sql)
+                try:
+                    cursor.execute(sql)
+                    db.commit()
+                except:
+                    db.rollback()   
+            for iss in old_issue:
+                sql = """INSERT INTO ippc_issuekeywordsrelate_issuename(issuekeywordsrelate_id,issuekeyword_id) VALUES ("""+str(issue_instanceold.id)+""", """+str(iss)+""")"""
+                try:
+                    cursor.execute(sql)
+                    db.commit()
+                except:
+                    db.rollback()
+            for com in old_comm:
+                sql = """INSERT INTO ippc_commoditykeywordsrelate_commname(commoditykeywordsrelate_id,commoditykeyword_id) VALUES ("""+str(comm_instanceold.id)+""", """+str(com)+""")"""
+                print(sql)
+                try:
+                    cursor.execute(sql)
+                    db.commit()
+                except:
+                    print("###################error ")
+                    db.rollback()        
+            db.close()
+            
+            
+            
+            
             form.save()
             issue_instance = issueform.save(commit=False)
             issue_instance.content_object = implementationispm
@@ -2933,7 +3319,8 @@ def publication_edit(request, id=None, template_name='pages/publication_edit.htm
     author = user
     if id:
         publication = get_object_or_404(Publication, pk=id)
-        
+        old_publication=get_object_or_404(Publication, pk=id)
+     
     #    if publication.issuename:
     #        print(publication.issuename.all[0])
     #    issues = get_object_or_404(IssueKeywordsRelate, pk=publication.issuename.all()[0].id)
@@ -2957,6 +3344,63 @@ def publication_edit(request, id=None, template_name='pages/publication_edit.htm
         u_form = PublicationUrlFormSet(request.POST,  instance=publication)
       
         if form.is_valid() and f_form.is_valid() and u_form.is_valid():
+            old_publication.pk = None
+            old_publication.is_version = True
+            old_publication.parent_id= id
+            old_publication.save()
+
+            
+            issueformold =IssueKeywordsRelateForm()
+            issue_instanceold=issueformold.save(commit=False)
+            issue_instanceold.content_object = old_publication
+            issue_instanceold.save()
+            
+            commformold =CommodityKeywordsRelateForm()
+            comm_instanceold=commformold.save(commit=False)
+            comm_instanceold.content_object = old_publication
+            comm_instanceold.save()
+
+            db = MySQLdb.connect(DATABASES["default"]["HOST"],DATABASES["default"]["USER"],DATABASES["default"]["PASSWORD"],DATABASES["default"]["NAME"])
+            cursor = db.cursor()
+            
+            files=PublicationFile.objects.filter(publication_id=publication.id)
+            urls=PublicationUrl.objects.filter(publication_id=publication.id)
+            for f in files:
+                sql = "INSERT INTO ippc_pestfreeareafile(pfa_id,description,file) VALUES ("+str(old_publication.id)+", '"+str(f.description)+"', '"+str(f)+"')"
+                print(sql)
+                try:
+                    cursor.execute(sql)
+                    db.commit()
+                except:
+                    db.rollback()
+            for u in urls:
+                sql = "INSERT INTO ippc_pestfreeareaurl(pfa_id,url_for_more_information) VALUES ("+str(old_publication.id)+", '"+str(u)+"')"
+                print(sql)
+                try:
+                    cursor.execute(sql)
+                    db.commit()
+                except:
+                    db.rollback()   
+            for iss in old_issue:
+                sql = """INSERT INTO ippc_issuekeywordsrelate_issuename(issuekeywordsrelate_id,issuekeyword_id) VALUES ("""+str(issue_instanceold.id)+""", """+str(iss)+""")"""
+                try:
+                    cursor.execute(sql)
+                    db.commit()
+                except:
+                    db.rollback()
+            for com in old_comm:
+                sql = """INSERT INTO ippc_commoditykeywordsrelate_commname(commoditykeywordsrelate_id,commoditykeyword_id) VALUES ("""+str(comm_instanceold.id)+""", """+str(com)+""")"""
+                print(sql)
+                try:
+                    cursor.execute(sql)
+                    db.commit()
+                except:
+                    print("###################error ")
+                    db.rollback()        
+            db.close()
+            
+            
+            
             form.save()
             issue_instance = issueform.save(commit=False)
             issue_instance.content_object = publication
@@ -3038,13 +3482,13 @@ class CountryStatsTotalreportsListView(ListView):
         tot_ev_count2=0
         results_list = []
         tot = []
-        p_count=PestReport.objects.filter().count()
+        p_count=PestReport.objects.filter(is_version=False).count()
         tot.append(p_count)
         tot_ev_count1+=p_count
         for i in range(1,6):
-           rep_count=ReportingObligation.objects.filter(reporting_obligation_type=i).count()
+           rep_count=ReportingObligation.objects.filter(reporting_obligation_type=i,is_version=False).count()
            tot_rep_count+=rep_count
-           ev_count=EventReporting.objects.filter(event_rep_type=i).count()
+           ev_count=EventReporting.objects.filter(event_rep_type=i,is_version=False).count()
            if i<=2:
                tot_ev_count1+=ev_count
            else:    
@@ -3091,11 +3535,11 @@ class CountryStatsreportsListView(ListView):
         for c in countriesList:
              totcn = []
              totcn.append(c)    
-             p_count=PestReport.objects.filter(country_id=c.id).count()
+             p_count=PestReport.objects.filter(country_id=c.id,is_version=False).count()
              totcn.append(p_count)
              for i in range(1,6):
-                rep_count=ReportingObligation.objects.filter(country_id=c.id,reporting_obligation_type=i).count()
-                ev_count=EventReporting.objects.filter(country_id=c.id,event_rep_type=i).count()
+                rep_count=ReportingObligation.objects.filter(country_id=c.id,reporting_obligation_type=i,is_version=False).count()
+                ev_count=EventReporting.objects.filter(country_id=c.id,event_rep_type=i,is_version=False).count()
                 totcn.append(rep_count)
                 totcn.append(ev_count)
              totcn.append((slugify(c)))
@@ -3177,7 +3621,7 @@ class CountryRegionsPercentageListView(ListView):
                 pests = []
                 p_count=0
                 for c in countriesperregion:
-                    p=PestReport.objects.filter(country_id=c.id)
+                    p=PestReport.objects.filter(country_id=c.id,is_version=False)
                     p_count+=p.count()
                 pestC=(int)((p_count * 100)/numb_countriesperregion)
                 pests.append(pestC)
@@ -3190,9 +3634,9 @@ class CountryRegionsPercentageListView(ListView):
                     reporting_array = []
                     evreporting_array=[]
                     for c in countriesperregion:
-                        r=ReportingObligation.objects.filter(country_id=c.id,reporting_obligation_type=i)
+                        r=ReportingObligation.objects.filter(country_id=c.id,reporting_obligation_type=i,is_version=False)
                         rep_count+=r.count()
-                        r1=EventReporting.objects.filter(country_id=c.id,event_rep_type=i)
+                        r1=EventReporting.objects.filter(country_id=c.id,event_rep_type=i,is_version=False)
                         ev_count+=r1.count()
                     repC=(int)((rep_count * 100)/numb_countriesperregion)
                     reporting_array.append(repC)
@@ -3225,7 +3669,7 @@ class CountryRegionsPercentageListView(ListView):
                 pests = []
                 p_count=0
                 for c in countriesperregioncp:
-                    p=PestReport.objects.filter(country_id=c.id)
+                    p=PestReport.objects.filter(country_id=c.id,is_version=False)
                     p_count+=p.count()
                 pestC=(int)((p_count * 100)/numb_countriesperregioncp)
                 pests.append(pestC)
@@ -3238,9 +3682,9 @@ class CountryRegionsPercentageListView(ListView):
                     reporting_array = []
                     evreporting_array=[]
                     for c in countriesperregioncp:
-                        r=ReportingObligation.objects.filter(country_id=c.id,reporting_obligation_type=i)
+                        r=ReportingObligation.objects.filter(country_id=c.id,reporting_obligation_type=i,is_version=False)
                         rep_count+=r.count()
-                        r1=EventReporting.objects.filter(country_id=c.id,event_rep_type=i)
+                        r1=EventReporting.objects.filter(country_id=c.id,event_rep_type=i,is_version=False)
                         ev_count+=r1.count()
                     repC=(int)((rep_count * 100)/numb_countriesperregioncp)
                     reporting_array.append(repC)
@@ -3273,7 +3717,7 @@ class CountryRegionsPercentageListView(ListView):
                 pests = []
                 p_count=0
                 for c in countriesperregionncp:
-                    p=PestReport.objects.filter(country_id=c.id)
+                    p=PestReport.objects.filter(country_id=c.id,is_version=False)
                     p_count+=p.count()
                 pestC=0
                 if numb_countriesperregionncp>0:
@@ -3288,9 +3732,9 @@ class CountryRegionsPercentageListView(ListView):
                     reporting_array = []
                     evreporting_array=[]
                     for c in countriesperregionncp:
-                        r=ReportingObligation.objects.filter(country_id=c.id,reporting_obligation_type=i)
+                        r=ReportingObligation.objects.filter(country_id=c.id,reporting_obligation_type=i,is_version=False)
                         rep_count+=r.count()
-                        r1=EventReporting.objects.filter(country_id=c.id,event_rep_type=i)
+                        r1=EventReporting.objects.filter(country_id=c.id,event_rep_type=i,is_version=False)
                         ev_count+=r1.count()
                     repC=0
                     repE=0
@@ -3486,21 +3930,21 @@ class CountryTotalUsersListView(ListView):
         context['u_percentage']=u_percentage
         
         new_content1=0#modify_date
-        new_content1+=EventReporting.objects.filter(publish_date__lte=date1).count()
-        new_content1+=ReportingObligation.objects.filter(publish_date__lte=date1).count()
-        new_content1+=PestReport.objects.filter(publish_date__lte=date1).count()
-        new_content1+=ImplementationISPM.objects.filter(publish_date__lte=date1).count()
-        new_content1+=PestFreeArea.objects.filter(publish_date__lte=date1).count()
+        new_content1+=EventReporting.objects.filter(publish_date__lte=date1,is_version=False).count()
+        new_content1+=ReportingObligation.objects.filter(publish_date__lte=date1,is_version=False).count()
+        new_content1+=PestReport.objects.filter(publish_date__lte=date1,is_version=False).count()
+        new_content1+=ImplementationISPM.objects.filter(publish_date__lte=date1,is_version=False).count()
+        new_content1+=PestFreeArea.objects.filter(publish_date__lte=date1,is_version=False).count()
         new_content1+=Website.objects.filter(publish_date__lte=date1).count()
         new_content1+=CnPublication.objects.filter(publish_date__lte=date1).count()
         new_content1+=CountryNews.objects.filter(publish_date__lte=date1).count()
       
         new_content2=0#modify_date
-        new_content2+=EventReporting.objects.filter(publish_date__lte=date2,publish_date__gte=date1).count()
-        new_content2+=ReportingObligation.objects.filter(publish_date__lte=date2,publish_date__gte=date1).count()
-        new_content2+=PestReport.objects.filter(publish_date__lte=date2,publish_date__gte=date1).count()
-        new_content2+=ImplementationISPM.objects.filter(publish_date__lte=date2,publish_date__gte=date1).count()
-        new_content2+=PestFreeArea.objects.filter(publish_date__lte=date2,publish_date__gte=date1).count()
+        new_content2+=EventReporting.objects.filter(publish_date__lte=date2,publish_date__gte=date1,is_version=False).count()
+        new_content2+=ReportingObligation.objects.filter(publish_date__lte=date2,publish_date__gte=date1,is_version=False).count()
+        new_content2+=PestReport.objects.filter(publish_date__lte=date2,publish_date__gte=date1,is_version=False).count()
+        new_content2+=ImplementationISPM.objects.filter(publish_date__lte=date2,publish_date__gte=date1,is_version=False).count()
+        new_content2+=PestFreeArea.objects.filter(publish_date__lte=date2,publish_date__gte=date1,is_version=False).count()
         new_content2+=Website.objects.filter(publish_date__lte=date2,publish_date__gte=date1).count()
         new_content2+=CnPublication.objects.filter(publish_date__lte=date2,publish_date__gte=date1).count()
         new_content2+=CountryNews.objects.filter(publish_date__lte=date2,publish_date__gte=date1).count()
@@ -3513,21 +3957,21 @@ class CountryTotalUsersListView(ListView):
         context['new_content_percentage']=new_content_percentage
         
         up_content1=0#modify_date
-        up_content1+=EventReporting.objects.filter(modify_date__lte=date1).count()
-        up_content1+=ReportingObligation.objects.filter(modify_date__lte=date1).count()
-        up_content1+=PestReport.objects.filter(modify_date__lte=date1).count()
-        up_content1+=ImplementationISPM.objects.filter(modify_date__lte=date1).count()
-        up_content1+=PestFreeArea.objects.filter(modify_date__lte=date1).count()
+        up_content1+=EventReporting.objects.filter(modify_date__lte=date1,is_version=False).count()
+        up_content1+=ReportingObligation.objects.filter(modify_date__lte=date1,is_version=False).count()
+        up_content1+=PestReport.objects.filter(modify_date__lte=date1,is_version=False).count()
+        up_content1+=ImplementationISPM.objects.filter(modify_date__lte=date1,is_version=False).count()
+        up_content1+=PestFreeArea.objects.filter(modify_date__lte=date1,is_version=False).count()
         up_content1+=Website.objects.filter(modify_date__lte=date1).count()
         up_content1+=CnPublication.objects.filter(modify_date__lte=date1).count()
         up_content1+=CountryNews.objects.filter(modify_date__lte=date1).count()
       
         up_content2=0#modify_date
-        up_content2+=EventReporting.objects.filter(modify_date__lte=date2,modify_date__gte=date1).count()
-        up_content2+=ReportingObligation.objects.filter(modify_date__lte=date2,modify_date__gte=date1).count()
-        up_content2+=PestReport.objects.filter(modify_date__lte=date2,modify_date__gte=date1).count()
-        up_content2+=ImplementationISPM.objects.filter(modify_date__lte=date2,modify_date__gte=date1).count()
-        up_content2+=PestFreeArea.objects.filter(modify_date__lte=date2,modify_date__gte=date1).count()
+        up_content2+=EventReporting.objects.filter(modify_date__lte=date2,modify_date__gte=date1,is_version=False).count()
+        up_content2+=ReportingObligation.objects.filter(modify_date__lte=date2,modify_date__gte=date1,is_version=False).count()
+        up_content2+=PestReport.objects.filter(modify_date__lte=date2,modify_date__gte=date1,is_version=False).count()
+        up_content2+=ImplementationISPM.objects.filter(modify_date__lte=date2,modify_date__gte=date1,is_version=False).count()
+        up_content2+=PestFreeArea.objects.filter(modify_date__lte=date2,modify_date__gte=date1,is_version=False).count()
         up_content2+=Website.objects.filter(modify_date__lte=date2,modify_date__gte=date1).count()
         up_content2+=CnPublication.objects.filter(modify_date__lte=date2,modify_date__gte=date1).count()
         up_content2+=CountryNews.objects.filter(modify_date__lte=date2,modify_date__gte=date1).count()
@@ -3875,7 +4319,7 @@ class AdvancesSearchCNListView(ListView):
             maparray1=""
             tot_p=0
             for cn in cns:
-              pests=PestReport.objects.filter(country_id=cn.id)
+              pests=PestReport.objects.filter(country_id=cn.id,is_version=False)
               p=pests.count()
               tot_p+=p
               if p>0:
@@ -3902,7 +4346,7 @@ class AdvancesSearchCNListView(ListView):
           
             tot_p=0
             for cn in cns:
-              pests=PestReport.objects.filter(country_id=cn.id)
+              pests=PestReport.objects.filter(country_id=cn.id,is_version=False)
               p=pests.count()
               tot_p+=p
               for pp in pests:
@@ -3950,37 +4394,37 @@ class AdvancesSearchCNListView(ListView):
         elif self.kwargs['type'] == 'nppo':
             context['type_label'] = dict(BASIC_REP_TYPE_CHOICES)[1]
             context['link_to_item'] = 'reporting-obligation-detail'
-            context['items']= ReportingObligation.objects.filter(reporting_obligation_type=1)
+            context['items']= ReportingObligation.objects.filter(reporting_obligation_type=1,is_version=False)
             context['counttotal'] =context['items'].count() 
         elif self.kwargs['type'] == 'entrypoints':
             context['type_label'] = dict(BASIC_REP_TYPE_CHOICES)[2]
             context['link_to_item'] = 'reporting-obligation-detail'
-            context['items']= ReportingObligation.objects.filter(reporting_obligation_type=2)
+            context['items']= ReportingObligation.objects.filter(reporting_obligation_type=2,is_version=False)
             context['counttotal'] =context['items'].count() 
         elif self.kwargs['type'] == 'regulatedpests':
             context['type_label'] = dict(BASIC_REP_TYPE_CHOICES)[3]
             context['link_to_item'] = 'reporting-obligation-detail'
-            context['items']= ReportingObligation.objects.filter(reporting_obligation_type=3)
+            context['items']= ReportingObligation.objects.filter(reporting_obligation_type=3,is_version=False)
             context['counttotal'] =context['items'].count() 
         elif self.kwargs['type'] == 'legislation':
             context['type_label'] = dict(BASIC_REP_TYPE_CHOICES)[4]
             context['link_to_item'] = 'reporting-obligation-detail'
-            context['items']= ReportingObligation.objects.filter(reporting_obligation_type=4)
+            context['items']= ReportingObligation.objects.filter(reporting_obligation_type=4,is_version=False)
             context['counttotal'] =context['items'].count() 
         elif self.kwargs['type'] == 'emergencyactions':
             context['type_label'] = dict(EVT_REP_TYPE_CHOICES)[1]
             context['link_to_item'] = 'event-reporting-detail'
-            context['items']= EventReporting.objects.filter(event_rep_type=1)
+            context['items']= EventReporting.objects.filter(event_rep_type=1,is_version=False)
             context['counttotal'] =context['items'].count() 
         elif self.kwargs['type'] == 'noncompliance':
             context['type_label'] = dict(EVT_REP_TYPE_CHOICES)[2]
             context['link_to_item'] = 'event-reporting-detail'
-            context['items']= EventReporting.objects.filter(event_rep_type=2)
+            context['items']= EventReporting.objects.filter(event_rep_type=2,is_version=False)
             context['counttotal'] =context['items'].count() 
         elif self.kwargs['type'] == 'plantprotection':
             context['type_label'] = dict(EVT_REP_TYPE_CHOICES)[3]
             context['link_to_item'] = 'event-reporting-detail'
-            context['items']= EventReporting.objects.filter(event_rep_type=3)
+            context['items']= EventReporting.objects.filter(event_rep_type=3,is_version=False)
             context['counttotal'] =context['items'].count() 
         elif self.kwargs['type'] == 'peststatus':
             context['type_label'] = dict(EVT_REP_TYPE_CHOICES)[4]
@@ -3990,17 +4434,17 @@ class AdvancesSearchCNListView(ListView):
         elif self.kwargs['type'] == 'phytosanitaryrequirements':
             context['type_label'] = dict(EVT_REP_TYPE_CHOICES)[5]
             context['link_to_item'] = 'event-reporting-detail'
-            context['items']= EventReporting.objects.filter(event_rep_type=5)
+            context['items']= EventReporting.objects.filter(event_rep_type=5,is_version=False)
             context['counttotal'] =context['items'].count() 
         elif self.kwargs['type'] == 'pfa':
             context['type_label'] = 'Pest free areas'
             context['link_to_item'] = 'pfa-detail'
-            context['items']= PestFreeArea.objects.all()
+            context['items']= PestFreeArea.objects.filter(is_version=False)
             context['counttotal'] =context['items'].count() 
         elif self.kwargs['type'] == 'ispm15':
             context['type_label'] = 'Implementation of ISPM 15'
             context['link_to_item'] = 'implementationispm-detail'
-            context['items']= ImplementationISPM.objects.all()
+            context['items']= ImplementationISPM.objects.filter(is_version=False)
             context['counttotal'] =context['items'].count() 
         elif self.kwargs['type'] == 'countrynews':
             context['type_label'] = 'Country news'

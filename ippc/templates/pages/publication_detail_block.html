@@ -1,6 +1,16 @@
 {% load mezzanine_tags staticfiles i18n %}
 <h1>{{ publication.title }}</h1> 
-        <dl class="dl-horizontal">
+{% if publication.is_version %}
+<dl class="dl-horizontal" style="border: 3px double red;    padding: 0.5em;">
+    
+    
+ <dt>&#160;</dt>
+  <dd style="color:red;">old revision</dd>
+
+ {% else %}    
+<dl class="dl-horizontal">
+  
+     {% endif %}
            <dt>{% trans "Published" %}</dt> 
            <dd>{% blocktrans with sometime=publication.modify_date|date:"D, d M Y, H:i" %}{{ sometime }}{% endblocktrans %}</dd> 
 

@@ -13,16 +13,41 @@
 
 {% block local_nav %}
 <div class="well localnav">
-  <p><a href="/countries/{{ pfa.country.name|slugify }}/pestfreeareas/">« {% trans "Back to" %} {% trans "Pest Free Areas" %}</a></p>
+        <script type="text/javascript">
+    function toggle_visibility_rev(id) {
+       var e = document.getElementById(id);
+       if(e.style.display == 'block')
+          e.style.display = 'none';
+       else
+          e.style.display = 'block';
+    }
+    </script>
+    <p>
+       {% if pfa.is_version %}
+        <a href="javascript:history.go(-1)">{% trans "« Go back" %}</a>
+     {% else %}
+          <p><a href="/countries/{{ pfa.country.name|slugify }}/pestfreeareas/">« {% trans "Back to" %} {% trans "Pest Free Areas" %}</a></p>
     {% if user.is_superuser %} 
         <a class="btn btn-small btn-info" href="/admin/ippc/pestfreearea/{{ pfa.id }}">Edit as Admin</a><br>
     {% endif %}
         
     {% if perms.ippc.change_pestfreearea and request.user.get_profile.country.name == page.title %}
         <a class="btn btn-small btn-info" href="{% url 'pfa-edit' pfa.country.name|slugify pfa.id %}"><i class="icon-edit icon-white"></i> Edit</a>
-        {# <a class="btn" href="{% url 'pfa-edit' pfa.id %}"><i class="icon-edit"></i> Edit</a> #}
-    {% else %}
+        
     {% endif %}
+        {% if versions %}
+            <br><br>
+            <strong><a href="#" onclick="toggle_visibility_rev('rev');">{% trans "Revisions" %}</a></strong>  <br>
+            <div id="rev" style="display:none;">
+             {% for object in versions %}
+                <small><a href="{% url 'pfa-detail' object.country.country_slug object.publish_date|date:'Y' object.publish_date|date:'m'  object.slug %}"> {% blocktrans with sometime=object.modify_date|date:"d-m-Y H:i" %}{{ sometime }}{% endblocktrans %}</a></small><br>
+            {% endfor %}
+             </div>
+        {% endif %}
+    {% endif %}
+    
+    </p>
+
     
     
     
@@ -36,8 +61,14 @@
 
 {% block main %}
 <h1>{{ pfa.title }}</h1> 
+{% if pfa.is_version %}
+<dl class="dl-horizontal" style="border: 3px double red;    padding: 0.5em;">
+ <dt>&#160;</dt>
+  <dd style="color:red;">{% trans "old revision" %}</dd>
 
+ {% else %}    
 <dl class="dl-horizontal">
+{% endif %}  
   {% if pfa.pfa_type %}
   <dt>{% trans "Type of recognition" %}</dt>
   <dd>
