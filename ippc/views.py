@@ -1241,7 +1241,20 @@ def reporting_obligation_edit(request, country, id=None, template_name='countrie
             notifications = None
     else:
         reporting_obligation = ReportingObligation(author=request.user)
-      
+    old_issue=[]
+    if reporting_obligation.issuename.count()>0:
+        for e in reporting_obligation.issuename.all():
+                obj_i=e.content_object.issuename
+                for o in obj_i.all():
+                    for iss in o.issuename.all():
+                        old_issue.append(iss.id)
+    old_comm=[]
+    if reporting_obligation.commname.count()>0:
+        for e in reporting_obligation.commname.all():
+                obj_c=e.content_object.commname
+                for o in obj_c.all():
+                    for com in o.commname.all():
+                        old_comm.append(com.id)    
     if request.POST:
         form = ReportingObligationForm(request.POST, request.FILES, instance=reporting_obligation)
         if reporting_obligation.issuename.count()>0:
@@ -1492,7 +1505,21 @@ def event_reporting_edit(request, country, id=None, template_name='countries/eve
             notifications = None
     else:
         event_reporting = EventReporting(author=request.user)
-      
+    old_issue=[]
+    if event_reporting.issuename.count()>0:
+        for e in event_reporting.issuename.all():
+                obj_i=e.content_object.issuename
+                for o in obj_i.all():
+                    for iss in o.issuename.all():
+                        old_issue.append(iss.id)
+    old_comm=[]
+    if event_reporting.commname.count()>0:
+        for e in event_reporting.commname.all():
+                obj_c=e.content_object.commname
+                for o in obj_c.all():
+                    for com in o.commname.all():
+                        old_comm.append(com.id)    
+                        
     if request.POST:
         form = EventReportingForm(request.POST,  request.FILES, instance=event_reporting)
         if event_reporting.issuename.count()>0:
@@ -2613,7 +2640,21 @@ def pfa_edit(request, country, id=None, template_name='countries/pfa_edit.html')
         #     return HttpResponseForbidden()
     else:
         pfa = PestFreeArea(author=request.user)
-      
+    old_issue=[]
+    if pfa.issuename.count()>0:
+        for e in pfa.issuename.all():
+                obj_i=e.content_object.issuename
+                for o in obj_i.all():
+                    for iss in o.issuename.all():
+                        old_issue.append(iss.id)
+    old_comm=[]
+    if pfa.commname.count()>0:
+        for e in pfa.commname.all():
+                obj_c=e.content_object.commname
+                for o in obj_c.all():
+                    for com in o.commname.all():
+                        old_comm.append(com.id)    
+                              
     if request.POST:
 
         form = PestFreeAreaForm(request.POST,  request.FILES, instance=pfa)
@@ -2865,7 +2906,20 @@ def implementationispm_edit(request, country, id=None, template_name='countries/
         #     return HttpResponseForbidden()
     else:
         implementationispm = ImplementationISPM(author=request.user)
-      
+    old_issue=[]
+    if implementationispm.issuename.count()>0:
+        for e in implementationispm.issuename.all():
+                obj_i=e.content_object.issuename
+                for o in obj_i.all():
+                    for iss in o.issuename.all():
+                        old_issue.append(iss.id)
+    old_comm=[]
+    if implementationispm.commname.count()>0:
+        for e in implementationispm.commname.all():
+                obj_c=e.content_object.commname
+                for o in obj_c.all():
+                    for com in o.commname.all():
+                        old_comm.append(com.id)     
     if request.POST:
         form = ImplementationISPMForm(request.POST,  request.FILES, instance=implementationispm)
         if implementationispm.issuename.count()>0:
@@ -3327,7 +3381,20 @@ def publication_edit(request, id=None, template_name='pages/publication_edit.htm
     #    commodities = get_object_or_404(CommodityKeywordsRelate, pk=publication.commname.all()[0].id)
     else:
         publication = Publication(author=request.user)
-      
+    old_issue=[]
+    if publication.issuename.count()>0:
+        for e in publication.issuename.all():
+                obj_i=e.content_object.issuename
+                for o in obj_i.all():
+                    for iss in o.issuename.all():
+                        old_issue.append(iss.id)
+    old_comm=[]
+    if publication.commname.count()>0:
+        for e in publication.commname.all():
+                obj_c=e.content_object.commname
+                for o in obj_c.all():
+                    for com in o.commname.all():
+                        old_comm.append(com.id)     
     if request.POST:
         form = PublicationForm(request.POST,  request.FILES, instance=publication)
         if publication.issuename.count()>0:
