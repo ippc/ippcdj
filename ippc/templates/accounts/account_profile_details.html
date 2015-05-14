@@ -39,7 +39,7 @@
   </dd>
   
 	{% if user.is_superuser and  user.get_profile.date_account_created %}  
-  <dt>{% trans "Member Since" %}</dt>
+  <dt>{% trans "IPP Member Since" %}</dt>
   <dd>
         {% blocktrans with sometime=profile_user.get_profile.date_account_created|date:"d M Y" %}{{ sometime }}{% endblocktrans %}
   </dd>

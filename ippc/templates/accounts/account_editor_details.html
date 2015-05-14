@@ -56,7 +56,7 @@
     <span class="caps">{{ editor.get_profile.last_name }}</span>
   </dd>
    {% if user.is_superuser and  page.get_content_model.contact_point.get_profile.date_account_created %}
-  <dt>{% trans "Member Since" %}</dt>
+  <dt>{% trans "IPP Member Since" %}</dt>
   <dd>
         {% blocktrans with sometime=editor.get_profile.date_account_created|date:"d M Y" %}{{ sometime }}{% endblocktrans %}
   </dd>

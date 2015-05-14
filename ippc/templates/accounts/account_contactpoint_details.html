@@ -96,7 +96,7 @@
     </dd>
   {% endif %}
   {% if user.is_superuser and page.get_content_model.contact_point.get_profile.date_account_created %}
-  <dd><strong>{% trans "Member Since" %}:</strong>
+  <dd><strong>{% trans "IPP Member Since" %}:</strong>
         {% blocktrans with sometime=page.get_content_model.contact_point.get_profile.date_account_created|date:"d M Y" %}{{ sometime }}{% endblocktrans %}
   </dd>
 	
