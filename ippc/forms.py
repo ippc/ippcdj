@@ -74,7 +74,7 @@ class PestReportForm(forms.ModelForm):
             
             
             ]
-        exclude = ('author', 'slug', 'publish_date', 'modify_date' ,'parent_id','is_version')
+        exclude = ('author', 'slug', 'publish_date', 'modify_date' ,'parent_id','is_version','verified_date')
         widgets = {
             'country': forms.HiddenInput(),
             'report_number': forms.HiddenInput(),
@@ -141,12 +141,12 @@ class ReportingObligationForm(forms.ModelForm):
 
            'reporting_obligation_type',
            'title', 
-           'publication_date', 
+          
            'short_description',
            'contact_for_more_information',
            'country',
            ]
-        exclude = ('author', 'slug', 'publish_date',  'modify_date' ,'parent_id','is_version')
+        exclude = ('author', 'slug', 'publish_date',  'modify_date' ,'parent_id','is_version','publication_date', 'verified_date')
         widgets = {
             'country': forms.HiddenInput(),   
             'reporting_obligation_type': forms.RadioSelect(attrs={'readonly':'True'}),
@@ -162,12 +162,11 @@ class EventReportingForm(forms.ModelForm):
         fields = [
            'event_rep_type',
            'title', 
-           'publication_date', 
            'short_description',
            'contact_for_more_information',
            'country',
             ]
-        exclude = ('author', 'slug', 'publish_date',  'modify_date',  'old_id' ,'parent_id','is_version')
+        exclude = ('author', 'slug', 'publish_date','publication_date',   'modify_date',  'old_id' ,'parent_id','is_version',"verified_date")
         widgets = {
             'country': forms.HiddenInput(),   
             'event_rep_type': forms.RadioSelect(attrs={'readonly':'True'}),
@@ -188,7 +187,7 @@ class PestFreeAreaForm(forms.ModelForm):
            'contact_for_more_information',
            'country',
            ]
-        exclude = ('author', 'slug', 'publish_date',  'modify_date' ,'parent_id','is_version')
+        exclude = ('author', 'slug', 'publish_date',  'modify_date' ,'parent_id','is_version','verified_date')
         widgets = {
             'country': forms.HiddenInput(),
              'publication_date': AdminDateWidget(),
@@ -212,7 +211,7 @@ class ImplementationISPMForm(forms.ModelForm):
            'contact_for_more_information',
            'country',
            ]
-        exclude = ('author', 'slug', 'publish_date',  'modify_date' ,'parent_id','is_version')
+        exclude = ('author', 'slug', 'publish_date',  'modify_date' ,'parent_id','is_version','verified_date')
         widgets = {
             'country': forms.HiddenInput(),
             'implementimport_type':forms.RadioSelect(),

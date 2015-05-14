@@ -7,7 +7,7 @@ from mezzanine.conf import settings
 from mezzanine.core.admin import TabularDynamicInlineAdmin, StackedDynamicInlineAdmin,DisplayableAdmin, OwnableAdmin
 
 
-from .models import DraftProtocol, PestStatus, PestReport, CountryPage, PartnersPage, WorkAreaPage, PublicationLibrary, \
+from .models import DraftProtocol,PartnersEditorHistory, PartnersContactPointHistory, OCPHistory,CnEditorsHistory,PestStatus, PestReport, CountryPage, PartnersPage, WorkAreaPage, PublicationLibrary, \
 Publication,PublicationFile,PublicationUrl, ReportingObligation,EventReporting,PestFreeArea,ImplementationISPM, Poll_Choice, Poll,\
 ImplementationISPMVersion, TransPublicationLibraryPage,Website,EventreportingFile,EventreportingUrl,\
 ReportingObligation_File, ReportingObligationUrl,ImplementationISPMUrl,ImplementationISPMFile,\
@@ -125,7 +125,7 @@ admin.site.register(PublicationLibrary, PublicationLibraryAdmin)
 
 # Country Pages ----------------- 
 # http://mezzanine.jupo.org/docs/content-architecture.html#creating-custom-content-types
-countrypages_extra_fieldsets = ((None, {"fields": ("name", "country_slug", "iso", "iso3", "contact_point", "editors", "cp_ncp_t_type", "region", "cn_flag", )}),)
+countrypages_extra_fieldsets = ((None, {"fields": ("name", "country_slug", "iso", "iso3", "contact_point", "editors", "cp_ncp_t_type", "region", "cn_flag", "accepted_epporeport", "accepted_epporeport_date", )}),)
 
 def response_change(self, request, obj):
     print('ccccccccccccccccccccccccc')
@@ -133,9 +133,17 @@ def response_change(self, request, obj):
         return HttpResponseRedirect("http://127.0.0.1:8000/en/core-activities/governance/")
     else:
         return super(PublicationLibraryPageAdmin, self).response_change(request, obj)
-    
+
+class OCPHistoryInline(admin.TabularInline):
+    model = OCPHistory
+    formset = inlineformset_factory(CountryPage,  OCPHistory,extra=1)
+class CnEditorsHistoryInLine(admin.TabularInline):
+    model = CnEditorsHistory
+    formset = inlineformset_factory(CountryPage,  CnEditorsHistory,extra=1)
+       
 class CountryPageAdmin(PageAdmin):
     fieldsets = deepcopy(PageAdmin.fieldsets) + countrypages_extra_fieldsets
+    inlines = (OCPHistoryInline,CnEditorsHistoryInLine)
     prepopulated_fields = { 'country_slug': ['name'] }
     # list_display = ('continent','name','iso','iso3', 'languages', 'currency_name')
     # list_display_links = ('name',)
@@ -144,8 +152,18 @@ admin.site.register(CountryPage, CountryPageAdmin)
 
 partnerspages_extra_fieldsets = ((None, {"fields": ("name","content", "short_description", "partner_slug",  "contact_point", "editors", )}),)
 
+ 
+class PartnersContactPointHistoryInline(admin.TabularInline):
+    model = PartnersContactPointHistory
+    formset = inlineformset_factory(PartnersPage,  PartnersContactPointHistory,extra=1)
+    
+class PartnersEditorHistoryInLine(admin.TabularInline):
+    model = PartnersEditorHistory
+    formset = inlineformset_factory(PartnersPage,  PartnersEditorHistory,extra=1)
+  
 class PartnersPageAdmin(PageAdmin):
     fieldsets = deepcopy(PageAdmin.fieldsets) + partnerspages_extra_fieldsets
+    inlines = (PartnersContactPointHistoryInline,PartnersEditorHistoryInLine)
     prepopulated_fields = { 'partner_slug': ['name'] }
     # list_display = ('continent','name','iso','iso3', 'languages', 'currency_name')
     # list_display_links = ('name',)

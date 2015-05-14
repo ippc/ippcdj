@@ -164,7 +164,11 @@ class CountryPage(Page):
     cn_lat = models.CharField(_("Country latitude"), max_length=100, unique=True, blank=True, null=True)
     cn_long = models.CharField(_("Country longitute"),max_length=100, unique=True, blank=True, null=True)
     cn_map = models.CharField(_("Country Map"), max_length=550)
-   
+    cn_map = models.CharField(_("Country Map"), max_length=550)
+    accepted_epporeport = models.BooleanField(verbose_name=_("Report through EPPO"),
+                                         default=False)
+    accepted_epporeport_date = models.DateTimeField(_("Report through EPPO accepted date "), blank=True, null=True, editable=True)
+                                         
         # =todo: 
     # contracting_party = boolean
     # territory_of = foreignkey to other country
@@ -172,6 +176,24 @@ class CountryPage(Page):
 
     def __unicode__(self):
         return u'%s' % (self.name,)
+    
+class OCPHistory(models.Model):
+    countrypage = models.ForeignKey(CountryPage)
+    contact_point = models.OneToOneField("auth.User", 
+            verbose_name=_("Country Chief Contact Point"), blank=True, null=True)
+    start_date = models.DateTimeField(_("Nomination start date"), blank=True, null=True, editable=True)
+    end_date = models.DateTimeField(_("Nomination end date"), blank=True, null=True, editable=True)
+    
+class CnEditorsHistory(models.Model):
+    countrypage = models.ForeignKey(CountryPage)
+    editor = models.OneToOneField("auth.User", 
+            verbose_name=_("Country Editor"), blank=True, null=True)
+    start_date = models.DateTimeField(_("Nomination start date"), blank=True, null=True, editable=True)
+    end_date = models.DateTimeField(_("Nomination end date"), blank=True, null=True, editable=True)
+    
+        
+    
+    
     
 class PartnersPage(Page, RichText):
     """ PartnersPage with definable names, slugs, editors and rppo contact point"""
@@ -195,7 +217,20 @@ class PartnersPage(Page, RichText):
         return u'%s' % (self.name,)
     
     
-       
+class PartnersContactPointHistory(models.Model):
+    partnerspage = models.ForeignKey(PartnersPage)
+    contact_point = models.OneToOneField("auth.User", 
+            verbose_name=_("RPPO/Organization Contact Point"), blank=True, null=True)
+    start_date = models.DateTimeField(_("Nomination start date"), blank=True, null=True, editable=True)
+    end_date = models.DateTimeField(_("Nomination end date"), blank=True, null=True, editable=True)
+    
+class PartnersEditorHistory(models.Model):
+    partnerspage = models.ForeignKey(PartnersPage)
+    editor = models.OneToOneField("auth.User", 
+            verbose_name=_("Country Editor"), blank=True, null=True)
+    start_date = models.DateTimeField(_("Nomination start date"), blank=True, null=True, editable=True)
+    end_date = models.DateTimeField(_("Nomination end date"), blank=True, null=True, editable=True)
+          
         
 class NotificationMessageRelate(models.Model):
     content_type = models.ForeignKey(ContentType)
@@ -456,7 +491,7 @@ class IppcUserProfile(models.Model):
         )
     website = models.URLField(_("Website"),blank=True, null=True)
     date_account_created = models.DateTimeField(_("IPP Member Since"), default=datetime.now, editable=False)
-    date_contact_registration = models.DateTimeField(_("Date contact registration"), default=datetime.now, editable=True)
+    date_contact_registration = models.DateTimeField(_("Date contact registration"), blank=True, null=True, default=datetime.now, editable=True)
 
 
 # this is in mezzanine.core.models.displayable
@@ -518,7 +553,8 @@ class PestReport(Displayable, models.Model):
     is_version = models.BooleanField(verbose_name=_("oldversion"),
                                          default=False)
     parent_id = models.CharField(max_length=50,blank=True, null=True,)
-    
+    verified_date = models.DateTimeField(_("Verified date"),
+        blank=True, null=True, editable=False)
     # =todo:
     # commodity_groups = 
     # keywords / tags = 
@@ -730,6 +766,8 @@ class ReportingObligation(Displayable, models.Model):
     is_version = models.BooleanField(verbose_name=_("oldversion"),
                                          default=False)
     parent_id = models.CharField(max_length=50,blank=True, null=True,)
+    verified_date = models.DateTimeField(_("Verified date"),
+        blank=True, null=True, editable=False)
     # objects = models.Manager()
     objects = SearchableManager()
     search_fields = ("title", "short_description")
@@ -756,6 +794,7 @@ class ReportingObligation(Displayable, models.Model):
         ''' On save, update timestamps '''
         if not self.id:
             self.publish_date = datetime.today()
+            self.publication_date = datetime.today()
             #self.publish_date = datetime.today()
             # Newly created object, so set slug
             self.slug = slugify(self.title)
@@ -973,6 +1012,8 @@ class EventReporting(Displayable, models.Model):
     is_version = models.BooleanField(verbose_name=_("oldversion"),
                                          default=False)
     parent_id = models.CharField(max_length=50,blank=True, null=True,)
+    verified_date = models.DateTimeField(_("Verified date"),
+        blank=True, null=True, editable=False)
     objects = SearchableManager()
     
     search_fields = ("title", "short_description")
@@ -999,6 +1040,8 @@ class EventReporting(Displayable, models.Model):
         ''' On save, update timestamps '''
         if not self.id:
             self.publish_date = datetime.today()
+            self.publication_date = datetime.today()
+           
             # Newly created object, so set slug
             self.slug = slugify(self.title)
         self.modify_date = datetime.now()
@@ -1217,6 +1260,9 @@ class PestFreeArea(Displayable, models.Model):
     is_version = models.BooleanField(verbose_name=_("oldversion"),
                                          default=False)
     parent_id = models.CharField(max_length=50,blank=True, null=True,)
+    verified_date = models.DateTimeField(_("Verified date"),
+        blank=True, null=True, editable=False)
+    
     # =todo:
     # commodity_groups = 
     # keywords / tags = 
@@ -1345,6 +1391,9 @@ class ImplementationISPM(Displayable, models.Model):
     is_version = models.BooleanField(verbose_name=_("oldversion"),
                                          default=False)
     parent_id = models.CharField(max_length=50,blank=True, null=True,)
+    verified_date = models.DateTimeField(_("Verified date"),
+        blank=True, null=True, editable=False)
+    
     # =todo:
     # commodity_groups = 
     # keywords / tags = 
