@@ -38,7 +38,7 @@
 
         {% with page.publicationlibrary.publications.all as publications %}
         {% for publication in publications %}
-        {% if publication.status == 2 %}
+        {% if publication.status == 2 and publication.is_version == 0 %}
         <tr id="media-file-{{ publication.id }}">
             <td>{{ publication.document_number }}</td>
             <td><a id="title_{{ publication.id }}" href="{% url 'publication-detail' publication.pk %}">{{ publication.title }}</a>
@@ -109,7 +109,7 @@
    {% with page.publicationlibrary.publications.all as publications %}
    {# publications not restricted to groups #}
    {% for publication in publications %}
-        {% if publication.status == 2 %}
+        {% if publication.status == 2 and publication.is_version == 0 %}
 
         <tr id="media-file-{{ publication.id }}">
     {%if  page.publicationlibrary.show_agenda_doc_colums %}

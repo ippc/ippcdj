@@ -31,7 +31,7 @@
         {% with page.publicationlibrary.publications.all as publications %}
         {# publications not restricted to groups #}
         {% for publication in publications %}
-        {% if publication.status == 2 %}
+        {% if publication.status == 2 and publication.is_version == 0%}
 
         {% if  publication.groups.all %}
         {% for g in request.user.groups.all %}
