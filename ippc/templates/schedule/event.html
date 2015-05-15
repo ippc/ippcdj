@@ -144,10 +144,11 @@
 
     {% if event.issuename.all %}
     <dt>{% trans "Issue keywords" %}</dt>
-    <dd>
+    <dd>&#160;
         {% for entry in event.issuename.all %}
+    
         {% for e in entry.issuename.all %}
-						<i class="icon-tag"></i> {{e.name}}
+	<i class="icon-tag"></i> {{e.name}}
         {% endfor %} 
         {% endfor %}
     </dd>
