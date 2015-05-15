@@ -968,6 +968,12 @@ def pest_report_edit(request, country, id=None, template_name='countries/pest_re
             old_pest_report.pk = None
             old_pest_report.is_version = True
             old_pest_report.parent_id= id
+            versions= PestReport.objects.filter( is_version=True, parent_id=id).count()
+            slug1 = versions+1
+      
+            old_pest_report.slug= pest_report.slug+'-'+str(slug1)
+        
+
             old_pest_report.save()
             for e in pest_report.pest_status.all():
                 ps=PestStatus.objects.get(status=e)
@@ -1295,6 +1301,10 @@ def reporting_obligation_edit(request, country, id=None, template_name='countrie
             old_reporting_obligation.pk = None
             old_reporting_obligation.is_version = True
             old_reporting_obligation.parent_id= id
+            versions= ReportingObligation.objects.filter( is_version=True, parent_id=id).count()
+            slug1 = versions+1
+      
+            old_reporting_obligation.slug= reporting_obligation.slug+'-'+str(slug1)
             old_reporting_obligation.save()
             
             issueformold =IssueKeywordsRelateForm()
@@ -1562,6 +1572,11 @@ def event_reporting_edit(request, country, id=None, template_name='countries/eve
             old_event_reporting.pk = None
             old_event_reporting.is_version = True
             old_event_reporting.parent_id= id
+            versions= EventReporting.objects.filter( is_version=True, parent_id=id).count()
+            slug1 = versions+1
+      
+            old_event_reporting.slug= event_reporting.slug+'-'+str(slug1)
+            
             old_event_reporting.save()
             
             issueformold =IssueKeywordsRelateForm()
@@ -2696,6 +2711,10 @@ def pfa_edit(request, country, id=None, template_name='countries/pfa_edit.html')
             old_pfa.pk = None
             old_pfa.is_version = True
             old_pfa.parent_id= id
+            versions= PestFreeArea.objects.filter( is_version=True, parent_id=id).count()
+            slug1 = versions+1
+      
+            old_pfa.slug= pfa.slug+'-'+str(slug1)
             old_pfa.save()
 
             
@@ -2961,6 +2980,10 @@ def implementationispm_edit(request, country, id=None, template_name='countries/
             old_implementationispm.pk = None
             old_implementationispm.is_version = True
             old_implementationispm.parent_id= id
+            versions= ImplementationISPM.objects.filter( is_version=True, parent_id=id).count()
+            slug1 = versions+1
+      
+            old_implementationispm.slug=implementationispm.slug+'-'+str(slug1)
             old_implementationispm.save()
 
             
@@ -3435,6 +3458,10 @@ def publication_edit(request, id=None, template_name='pages/publication_edit.htm
             old_publication.pk = None
             old_publication.is_version = True
             old_publication.parent_id= id
+            versions= Publication.objects.filter( is_version=True, parent_id=id).count()
+            slug1 = versions+1
+      
+            old_publication.slug= publication.slug+'-'+str(slug1)
             old_publication.save()
 
             
