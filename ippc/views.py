@@ -794,6 +794,26 @@ def send_notification_message(newitem,id,content_type,title,url):
         message.content_subtype = "html"
         sent =message.send()
    
+def send_pest_notification_message(newitem,id,content_type,title,url):
+    """ send_notification_message """
+    #print("send!!!")
+    #emailto_all = ['dave.nowell@fao.org','roy@eppo.int']
+    emailto_all = ['paola.sentinelli@gmail.com',]
+    subject=''
+    if newitem==1:
+        subject='ADDED new Pest report: ' +title
+    else:    
+        subject='UPDATED Pest report: ' +title
+    itemllink="https://www.ippc.int/countries/"+url
+    textmessage ='<table bgcolor="#FFFFFF" cellspacing="2" cellpadding="2" valign="top" width="100%" style="border-bottom: 1px solid #10501F;border-top: 1px solid #10501F;border-left: 1px solid #10501F;border-right: 1px solid #10501F"> <tr><td width="100%" bgcolor="#FFFFFF">Please be informed that the following information has been added/updated on the <b>International Phytosanitary Portal:</b><br>'+title+' ('+itemllink+')</td></tr><tr bgcolor="#FFFFFF"><td bgcolor="#FFFFFF"></td></tr></table>'
+
+    message = mail.EmailMessage(subject,textmessage,'ippc@fao.org',#from
+        emailto_all, ['paola.sentinelli@fao.org'])#emailto_all for PROD, in TEST all to paola#
+    print(textmessage)
+    message.content_subtype = "html"
+    sent =message.send()
+        
+
  
 @login_required
 @permission_required('ippc.add_pestreport', login_url="/accounts/login/")
@@ -851,7 +871,7 @@ def pest_report_create(request, country):
             content_type = ContentType.objects.get_for_model(new_pest_report)
        
             send_notification_message(1,new_pest_report.id,content_type,new_pest_report.title,user_country_slug+'/pestreports/'+str(new_pest_report.publish_date.strftime("%Y"))+'/'+str(new_pest_report.publish_date.strftime("%m"))+'/'+new_pest_report.slug+'/')
-            
+            send_pest_notification_message(1,new_pest_report.id,content_type,new_pest_report.title,user_country_slug+'/pestreports/'+str(new_pest_report.publish_date.strftime("%Y"))+'/'+str(new_pest_report.publish_date.strftime("%m"))+'/'+new_pest_report.slug+'/')
             info(request, _("Successfully created pest report."))
             
             if new_pest_report.status == CONTENT_STATUS_DRAFT:
@@ -1026,6 +1046,7 @@ def pest_report_edit(request, country, id=None, template_name='countries/pest_re
             u_form.instance = pest_report
             u_form.save()
             send_notification_message(0,id,content_type,pest_report.title,user_country_slug+'/pestreports/'+str(pest_report.publish_date.strftime("%Y"))+'/'+str(pest_report.publish_date.strftime("%m"))+'/'+pest_report.slug+'/')
+            send_pest_notification_message(0,id,content_type,pest_report.title,user_country_slug+'/pestreports/'+str(pest_report.publish_date.strftime("%Y"))+'/'+str(pest_report.publish_date.strftime("%m"))+'/'+pest_report.slug+'/')
             
             # If the save was successful, success message and redirect to another page
             # info(request, _("Successfully updated pest report."))
