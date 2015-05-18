@@ -1323,7 +1323,7 @@ def reporting_obligation_edit(request, country, id=None, template_name='countrie
             files=ReportingObligation_File.objects.filter(reportingobligation_id=reporting_obligation.id)
             urls=ReportingObligationUrl.objects.filter(reportingobligation_id=reporting_obligation.id)
             for f in files:
-                sql = "INSERT INTO ippc_reportingobligation_file(reportingobligation_id,description,file) VALUES ("+str(old_pest_report.id)+", '"+str(f.description)+"', '"+str(f)+"')"
+                sql = "INSERT INTO ippc_reportingobligation_file(reportingobligation_id,description,file) VALUES ("+str(old_reporting_obligation.id)+", '"+str(f.description)+"', '"+str(f)+"')"
                 print(sql)
                 try:
                     cursor.execute(sql)
@@ -1331,7 +1331,7 @@ def reporting_obligation_edit(request, country, id=None, template_name='countrie
                 except:
                     db.rollback()
             for u in urls:
-                sql = "INSERT INTO ippc_reportingobligationurl(reportingobligation_id,url_for_more_information) VALUES ("+str(old_pest_report.id)+", '"+str(u)+"')"
+                sql = "INSERT INTO ippc_reportingobligationurl(reportingobligation_id,url_for_more_information) VALUES ("+str(old_reporting_obligation.id)+", '"+str(u)+"')"
                 print(sql)
                 try:
                     cursor.execute(sql)
@@ -1595,7 +1595,7 @@ def event_reporting_edit(request, country, id=None, template_name='countries/eve
             files=EventreportingFile.objects.filter(eventreporting_id=event_reporting.id)
             urls=EventreportingUrl.objects.filter(eventreporting_id=event_reporting.id)
             for f in files:
-                sql = "INSERT INTO ippc_eventreportingfile(eventreporting_id,description,file) VALUES ("+str(old_pest_report.id)+", '"+str(f.description)+"', '"+str(f)+"')"
+                sql = "INSERT INTO ippc_eventreportingfile(eventreporting_id,description,file) VALUES ("+str(old_event_reporting.id)+", '"+str(f.description)+"', '"+str(f)+"')"
                 print(sql)
                 try:
                     cursor.execute(sql)
@@ -1603,7 +1603,7 @@ def event_reporting_edit(request, country, id=None, template_name='countries/eve
                 except:
                     db.rollback()
             for u in urls:
-                sql = "INSERT INTO ippc_eventreportingurl(eventreporting_id,url_for_more_information) VALUES ("+str(old_pest_report.id)+", '"+str(u)+"')"
+                sql = "INSERT INTO ippc_eventreportingurl(eventreporting_id,url_for_more_information) VALUES ("+str(old_event_reporting.id)+", '"+str(u)+"')"
                 print(sql)
                 try:
                     cursor.execute(sql)
@@ -3003,7 +3003,7 @@ def implementationispm_edit(request, country, id=None, template_name='countries/
             files=ImplementationISPMFile.objects.filter(pfa_id=implementationispm.id)
             urls=ImplementationISPMUrl.objects.filter(pfa_id=implementationispm.id)
             for f in files:
-                sql = "INSERT INTO ippc_pestfreeareafile(pfa_id,description,file) VALUES ("+str(old_implementationispm.id)+", '"+str(f.description)+"', '"+str(f)+"')"
+                sql = "INSERT INTO ippc_implementationispmfile(implementationispm_id,description,file) VALUES ("+str(old_implementationispm.id)+", '"+str(f.description)+"', '"+str(f)+"')"
                 print(sql)
                 try:
                     cursor.execute(sql)
@@ -3011,7 +3011,7 @@ def implementationispm_edit(request, country, id=None, template_name='countries/
                 except:
                     db.rollback()
             for u in urls:
-                sql = "INSERT INTO ippc_pestfreeareaurl(pfa_id,url_for_more_information) VALUES ("+str(old_implementationispm.id)+", '"+str(u)+"')"
+                sql = "INSERT INTO ippc_implementationispmurl(implementationispm_id,url_for_more_information) VALUES ("+str(old_implementationispm.id)+", '"+str(u)+"')"
                 print(sql)
                 try:
                     cursor.execute(sql)
@@ -3481,7 +3481,7 @@ def publication_edit(request, id=None, template_name='pages/publication_edit.htm
             files=PublicationFile.objects.filter(publication_id=publication.id)
             urls=PublicationUrl.objects.filter(publication_id=publication.id)
             for f in files:
-                sql = "INSERT INTO ippc_pestfreeareafile(pfa_id,description,file) VALUES ("+str(old_publication.id)+", '"+str(f.description)+"', '"+str(f)+"')"
+                sql = "INSERT INTO ippc_publicationfile(publication_id,description,file) VALUES ("+str(old_publication.id)+", '"+str(f.description)+"', '"+str(f)+"')"
                 print(sql)
                 try:
                     cursor.execute(sql)
@@ -3489,7 +3489,7 @@ def publication_edit(request, id=None, template_name='pages/publication_edit.htm
                 except:
                     db.rollback()
             for u in urls:
-                sql = "INSERT INTO ippc_pestfreeareaurl(pfa_id,url_for_more_information) VALUES ("+str(old_publication.id)+", '"+str(u)+"')"
+                sql = "INSERT INTO ippc_ippc_publicationurl(publication_id,url_for_more_information) VALUES ("+str(old_publication.id)+", '"+str(u)+"')"
                 print(sql)
                 try:
                     cursor.execute(sql)
