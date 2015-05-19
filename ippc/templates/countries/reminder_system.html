@@ -1,0 +1,35 @@
+{% extends "base.html" %}
+{% load pages_tags mezzanine_tags i18n future staticfiles %}
+
+{% block meta_title %}{% trans "Automatic Reminder system for Countries " %}{% endblock %}
+
+
+{% block breadcrumb_menu %}
+<li class="active">{% trans "Automatic Reminder system for Countries" %}</li>
+{% endblock %}
+
+{% block main %}
+	<h2>{% trans "Automatic Reminder system for Countries" %}</h2>
+        <p></p>
+        
+
+<table class="table table-condensed table-striped" id="publications">
+  <thead>
+    <tr>
+      <th>{% trans "aa" %}</th>
+     </tr>
+  </thead>
+  <tbody>
+    {% for object in textmessages %}
+    <tr>
+      <td>{{ object }}</td>
+    </tr>
+
+    {% endfor %}
+  </tbody>
+</table>
+        
+        
+        
+	
+{% endblock %}
