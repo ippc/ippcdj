@@ -158,9 +158,9 @@ def reporting_trough_eppo(request):
 #            if reportIdentity.hasAttribute("DateValidation"):
 #                eppovalidationdate=reportIdentity.getAttribute("DateValidation")
 #       
-#            eppoCP = reportIdentity.getElementsByTagName("ContactPoint")[0]
-#            eppoCPname = eppoCP.getElementsByTagName("fullname")[0].childNodes[0].data  
-#            eppoCPemail = eppoCP.getElementsByTagName("email")[0].childNodes[0].data  
+#            eppoPublisher = reportIdentity.getElementsByTagName("Publisher")[0]
+#            eppoPublishername = eppoPublisher.getElementsByTagName("fullname")[0].childNodes[0].data  
+#            eppoPublisheremail = eppoPublisher.getElementsByTagName("email")[0].childNodes[0].data  
 #        
 #            countryelement= reportIdentity.getElementsByTagName("CountryIdentity")[0]
 #            countryname=''
@@ -215,20 +215,19 @@ def reporting_trough_eppo(request):
 #            log_report.write("["+ timezone.now().strftime('%Y%m%d%H%M%S')+"] "+countryname+" ["+report_number+"] '"+title+" "+pest_url+"\n\n")
 # 
 #            msgtpeppo="Dear EPPO,<br><br>the Pest report<br><strong>UID</strong>: "+str(eppouid) +" <br><strong>numreport:</strong> "+str(epponumreport)+" <br><strong>validation date:</strong>"+str(eppovalidationdate)+"<br>has been successefully uploed in the IPPC website<br><Strong>URL</strong>:"+pest_url+""
-#            msgtoCP="Dear "+str(eppoCPname)+",<br><hr><br>the Pest report validated in EPPO with:<br><strong>UID</strong>: "+str(eppouid) +" <br><strong>numreport:</strong> "+str(epponumreport)+" <br><strong>validation date:</strong>"+str(eppovalidationdate)+"<br>has been successefully uploed in the IPPC website<br><Strong>URL</strong>:"+pest_url+""
+#            msgtoCP="Dear "+str(eppoPublishername)+",<br><hr><br>the Pest report validated in EPPO with:<br><strong>UID</strong>: "+str(eppouid) +" <br><strong>numreport:</strong> "+str(epponumreport)+" <br><strong>validation date:</strong>"+str(eppovalidationdate)+"<br>has been successefully uploed in the IPPC website<br><Strong>URL</strong>:"+pest_url+""
 #          
 #            subject='Pest Report successefully uploaded in IPPC'  
-#            #eppo@email
+#            #roy@eppo.int
 #            notifificationmessageeppo = mail.EmailMessage(subject,msgtpeppo,'ippc@fao.org', ['paola.sentinelli@fao.org'], ['paola.sentinelli@fao.org'])
 #            notifificationmessageeppo.content_subtype = "html"
 #            #sent =notifificationmessageeppo.send()
-#            #to put eppoCPemail
-#            if eppoCPemail:
+#            #to put eppoPublisheremail
+#            if eppoPublisheremail:
 #                notifificationmessageCp = mail.EmailMessage(subject,msgtoCP,'ippc@fao.org', ['paola.sentinelli@fao.org'], ['paola.sentinelli@fao.org'])
 #                notifificationmessageCp.content_subtype = "html"
 #                #sent =notifificationmessageCp.send()
 #            #TO DO:        
-#            #ADD field in Pest Report to mark as uploed troug eppo
 #            #ADD eppo coutries
 #            #ADD in Country page 'allow eppo to report automatically'
 #            
@@ -264,23 +263,68 @@ def reminder_to_cn(request):
 #                user_obj=User.objects.get(id=e.id)
 #                e_email=user_obj.email
 #                emails.append(e_email)
-#                
+#            user_country_slug = lower(slugify(cn))    
 #            pests_to_notify=''
 #            pestreports = PestReport.objects.filter(country_id=cn.id,status=CONTENT_STATUS_PUBLISHED, is_version=False)
+#            countpest=0
 #            for p in pestreports:
 #                 if timezone.now()- p.modify_date < dt.timedelta(days=93) :
-#                   
-#                    user_country_slug = lower(slugify(cn))
+#                    countpest=countpest +1
 #                    itemllink="https://www.ippc.int/countries/"+user_country_slug+'/pestreports/'+str(p.publish_date.strftime("%Y"))+'/'+str(p.publish_date.strftime("%m"))+'/'+p.slug+'/'
 #                    pests_to_notify=pests_to_notify+'<tr><td><a href="'+itemllink+'">'+p.title+'</a></td><td>'+str(p.modify_date)+'</td></tr>'
-#                    
-#            if pests_to_notify!='':
-#                pests_to_notify='<tr><td>Pest reports<td><td></td><tr><tr><td>Title<td><td>Last modified date</td><tr>'+pests_to_notify
-#                textmessage ='<table bgcolor="#FFFFFF" cellspacing="2" cellpadding="2" valign="top" width="100%" style="border-bottom: 1px solid #10501F;><tr><td width="100%" bgcolor="#FFFFFF" colspan=2>Please be informed that the following information need revisions because has not been updated for the last 3 months on the <b>International Phytosanitary Portal:</b></td></tr>'+pests_to_notify+'</table>'
-#                print('vvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvv')         
-#                print(textmessage)         
-#                print('^^^^^^^^^^^^^^^^^^^^^^^^')         
-#                textmessages.append(textmessage)
+#            if countpest > 0:     
+#                pests_to_notify='<tr><td colspan=2><strong>Pest reports</strong></td></tr><tr><td>Title</td><td>Last modified date</td></tr>'+pests_to_notify
+#            reportingobligation1_to_notify=''
+#            reportingobligation2_to_notify=''
+#            reportingobligation3_to_notify=''
+#            reportingobligation4_to_notify=''
+#    
+#            
+#            rocount=[]
+#            romessage=[]
+#            for i in range(1,5):
+#                ro_to_notify=''
+#                ro=0
+#                reportingobligations = ReportingObligation.objects.filter(country_id=cn.id,reporting_obligation_type=i, is_version=False)
+#                for r in reportingobligations:
+#                  if timezone.now()- r.modify_date < dt.timedelta(days=93) :
+#                    ro = ro +1
+#                    itemllink="https://www.ippc.int/countries/"+user_country_slug+'/pestreports/'+str(r.publish_date.strftime("%Y"))+'/'+str(r.publish_date.strftime("%m"))+'/'+r.slug+'/'
+#                    ro_to_notify=ro_to_notify+'<tr><td><a href="'+itemllink+'">'+r.title+'</a></td><td>'+str(r.modify_date)+'</td></tr>'
+#                if ro > 0:     
+#                    reportingobligation_to_notify='<tr><td colspan=2><strong>'+dict(BASIC_REP_TYPE_CHOICES)[i]+'</strong></td></tr><tr><td>Title</td><td>Last modified date</td></tr>'+ro_to_notify
+#                rocount.append(ro)
+#                romessage.append(ro_to_notify)
+#            
+#            evrcount=[]
+#            evrmessage=[]
+#            for i in range(1,6):
+#                evr_to_notify=''
+#                evr=0
+#                reportingobligations = EventReporting.objects.filter(country_id=cn.id,reporting_obligation_type=i, is_version=False)
+#                for r in reportingobligations:
+#                  if timezone.now()- r.modify_date < dt.timedelta(days=93) :
+#                    evr = evr +1
+#                    itemllink="https://www.ippc.int/countries/"+user_country_slug+'/pestreports/'+str(r.publish_date.strftime("%Y"))+'/'+str(r.publish_date.strftime("%m"))+'/'+r.slug+'/'
+#                    evr_to_notify=evr_to_notify+'<tr><td><a href="'+itemllink+'">'+r.title+'</a></td><td>'+str(r.modify_date)+'</td></tr>'
+#                if evr > 0:     
+#                    reportingobligation_to_notify='<tr><td colspan=2><strong>'+dict(BASIC_REP_TYPE_CHOICES)[i]+'</strong></td></tr><tr><td>Title</td><td>Last modified date</td></tr>'+evr_to_notify
+#                evrcount.append(evr)
+#                evrmessage.append(evr_to_notify)
+#            
+#            
+#            
+#            
+#            
+#            
+#            
+#              
+#            
+#            textmessage ='<table bgcolor="#FFFFFF" cellspacing="2" cellpadding="2" valign="top" width="100%" style="border-bottom: 1px solid #10501F;><tr><td width="100%" bgcolor="#FFFFFF" colspan=2>Please be informed that the following information need revisions because has not been updated for the last 3 months on the <b>International Phytosanitary Portal:</b></td></tr>'+pests_to_notify+'</table>'
+#            print('vvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvv')         
+#            print(textmessage)         
+#            print('^^^^^^^^^^^^^^^^^^^^^^^^')         
+#            textmessages.append(textmessage)
     context = {}
     
     
@@ -4323,11 +4367,12 @@ def email_send(request):
         for u in users:
            users_u=[]
            user_obj=User.objects.get(username=u)
-           userippc = get_object_or_404(IppcUserProfile, user_id=user_obj.id)
-           users_u.append((unicode(userippc.first_name)))
-           users_u.append((unicode(userippc.last_name)))
-           users_u.append((user_obj.email))
-           users_all.append(users_u)
+           if user_obj.is_active:
+            userippc = get_object_or_404(IppcUserProfile, user_id=user_obj.id)
+            users_u.append((unicode(userippc.first_name)))
+            users_u.append((unicode(userippc.last_name)))
+            users_u.append((user_obj.email))
+            users_all.append(users_u)
         g_set.append(users_all)
     
     users_all=[]
