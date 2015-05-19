@@ -29,7 +29,7 @@ DraftProtocolDetailView,  draftprotocol_create, draftprotocol_edit,draftprotocol
 draftprotocol_comment_create,draftprotocol_comment_edit,PublicationLibraryView,commenta,contactPointExtractor,\
 CountryRegionsPercentageListView,CountryStatsreportsListView,CountryStatsTotalreportsListView,CountryRegionsUsersListView,CountryTotalUsersListView,\
 QuestionListView, QuestionDetailView, QuestionAnswersView,question_create,question_edit,\
-answer_create,answer_edit  ,vote_answer_up ,vote_answer_down,reporting_trough_eppo
+answer_create,answer_edit  ,vote_answer_up ,vote_answer_down,reporting_trough_eppo,reminder_to_cn
 from schedule.periods import Year, Month, Week, Day
 from mezzanine.core.views import direct_to_template
 
@@ -79,6 +79,10 @@ urlpatterns = patterns("",
     url(r'^qa/(?P<question_id>\d+)/answer/(?P<id>\d+)/votedown/$', vote_answer_down, name='vote-down'),
    #---------EPPO REPORTING------------------------------------
     url(r'^epporeporting/', reporting_trough_eppo, name='reporting_trough_eppo'),
+
+   #----------------------------------
+   #--------- Reminder system ------------------------------------
+    url(r'^reminder/', reminder_to_cn, name='reminder_to_cn'),
 
    #----------------------------------
     url(r'^forum/', include('forum.urls')),
