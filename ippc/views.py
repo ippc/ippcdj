@@ -200,6 +200,7 @@ def reporting_trough_eppo(request):
 #            #new_pest_report.summary=str(summary.encode('utf-8'))#problme with encoded summary
 #            new_pest_report.author_id=1
 #            new_pest_report.hosts=hosts
+#            new_pest_report.importedfromeppo = True
 #            new_pest_report.save()
 #            new_pest_report.pest_status.add(ps)
 #            pest_reports.append(new_pest_report)
@@ -234,9 +235,57 @@ def reporting_trough_eppo(request):
 #            
 #    log_report.close()        
 #    context = {"pest_reports":pest_reports,}
-#    response = render(request, "countries/eppo_reporting.html", context)
+    context = {}
+    response = render(request, "countries/eppo_reporting.html", context)
     return response
 
+	
+
+
+import datetime as dt
+def reminder_to_cn(request):
+
+#    textmessages=[]
+#    countriesList=CountryPage.objects.filter().exclude(id='-1')
+#    for cn in countriesList:
+#        
+#        if cn.send_reminder:
+#            countryo = get_object_or_404(CountryPage, page_ptr_id=cn.id)
+#            cp = countryo.contact_point_id
+#            editors = countryo.editors
+#            emails=[]
+#            cp_email=''
+#            e_email=''
+#            if cp != None:
+#                user_obj=User.objects.get(id=cp)
+#                cp_email=user_obj.email
+#                emails.append(cp_email)
+#            for e in editors.all():
+#                user_obj=User.objects.get(id=e.id)
+#                e_email=user_obj.email
+#                emails.append(e_email)
+#                
+#            pests_to_notify=''
+#            pestreports = PestReport.objects.filter(country_id=cn.id,status=CONTENT_STATUS_PUBLISHED, is_version=False)
+#            for p in pestreports:
+#                 if timezone.now()- p.modify_date < dt.timedelta(days=93) :
+#                   
+#                    user_country_slug = lower(slugify(cn))
+#                    itemllink="https://www.ippc.int/countries/"+user_country_slug+'/pestreports/'+str(p.publish_date.strftime("%Y"))+'/'+str(p.publish_date.strftime("%m"))+'/'+p.slug+'/'
+#                    pests_to_notify=pests_to_notify+'<tr><td><a href="'+itemllink+'">'+p.title+'</a></td><td>'+str(p.modify_date)+'</td></tr>'
+#                    
+#            if pests_to_notify!='':
+#                pests_to_notify='<tr><td>Pest reports<td><td></td><tr><tr><td>Title<td><td>Last modified date</td><tr>'+pests_to_notify
+#                textmessage ='<table bgcolor="#FFFFFF" cellspacing="2" cellpadding="2" valign="top" width="100%" style="border-bottom: 1px solid #10501F;><tr><td width="100%" bgcolor="#FFFFFF" colspan=2>Please be informed that the following information need revisions because has not been updated for the last 3 months on the <b>International Phytosanitary Portal:</b></td></tr>'+pests_to_notify+'</table>'
+#                print('vvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvv')         
+#                print(textmessage)         
+#                print('^^^^^^^^^^^^^^^^^^^^^^^^')         
+#                textmessages.append(textmessage)
+    context = {}
+    
+    
+    response = render(request, "countries/reminder_system.html", context)
+    return response
 def commenta(request, template="generic/comments.html"):
     """
     Handle a ``ThreadedCommentForm`` submission and redirect back to its
@@ -797,19 +846,19 @@ def send_notification_message(newitem,id,content_type,title,url):
 def send_pest_notification_message(newitem,id,content_type,title,url):
     """ send_notification_message """
     #print("send!!!")
-    #emailto_all = ['dave.nowell@fao.org','roy@eppo.int']
-    emailto_all = ['paola.sentinelli@gmail.com',]
+    emailto_all = ['dave.nowell@fao.org','roy@eppo.int',]
+    
     subject=''
     if newitem==1:
-        subject='ADDED new Pest report: ' +title
+        subject='ADDED new Pest report on IPPC: ' +title
     else:    
-        subject='UPDATED Pest report: ' +title
+        subject='UPDATED Pest report on IPPC: ' +title
     itemllink="https://www.ippc.int/countries/"+url
     textmessage ='<table bgcolor="#FFFFFF" cellspacing="2" cellpadding="2" valign="top" width="100%" style="border-bottom: 1px solid #10501F;border-top: 1px solid #10501F;border-left: 1px solid #10501F;border-right: 1px solid #10501F"> <tr><td width="100%" bgcolor="#FFFFFF">Please be informed that the following information has been added/updated on the <b>International Phytosanitary Portal:</b><br>'+title+' ('+itemllink+')</td></tr><tr bgcolor="#FFFFFF"><td bgcolor="#FFFFFF"></td></tr></table>'
 
     message = mail.EmailMessage(subject,textmessage,'ippc@fao.org',#from
         emailto_all, ['paola.sentinelli@fao.org'])#emailto_all for PROD, in TEST all to paola#
-    print(textmessage)
+    #print(textmessage)
     message.content_subtype = "html"
     sent =message.send()
         
