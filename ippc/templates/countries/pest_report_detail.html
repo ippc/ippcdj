@@ -76,6 +76,12 @@
  {% else %}    
 <dl class="dl-horizontal">
 {% endif %}    
+ {% if report.importedfromeppo %} 
+ <dt>&#160;</dt>
+  <dd style="color:red;">{% trans "Imported from EPPO" %}</dd>
+ {% endif %} 
+
+
   <dt>{% trans "Publication Date" %}</dt>
   <dd>{% blocktrans with sometime=report.publish_date|date:"D, d M Y, H:i" %}{{ sometime }}{% endblocktrans %}</dd>
   
