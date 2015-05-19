@@ -74,7 +74,7 @@ class PestReportForm(forms.ModelForm):
             
             
             ]
-        exclude = ('author', 'slug', 'publish_date', 'modify_date' ,'parent_id','is_version','verified_date')
+        exclude = ('author', 'slug', 'publish_date', 'modify_date' ,'parent_id','is_version','verified_date','importedfromeppo')
         widgets = {
             'country': forms.HiddenInput(),
             'report_number': forms.HiddenInput(),
