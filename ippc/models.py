@@ -168,6 +168,8 @@ class CountryPage(Page):
     accepted_epporeport = models.BooleanField(verbose_name=_("Report through EPPO"),
                                          default=False)
     accepted_epporeport_date = models.DateTimeField(_("Report through EPPO accepted date "), blank=True, null=True, editable=True)
+    send_reminder = models.BooleanField(verbose_name=_("Send reminder"),
+                                         default=True)
                                          
         # =todo: 
     # contracting_party = boolean
@@ -551,6 +553,8 @@ class PestReport(Displayable, models.Model):
     notification=generic.GenericRelation(NotificationMessageRelate)
     old_id = models.CharField(max_length=50)
     is_version = models.BooleanField(verbose_name=_("oldversion"),
+                                         default=False)
+    importedfromeppo = models.BooleanField(verbose_name=_("Imported from Eppo"),
                                          default=False)
     parent_id = models.CharField(max_length=50,blank=True, null=True,)
     verified_date = models.DateTimeField(_("Verified date"),
