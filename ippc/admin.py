@@ -97,13 +97,17 @@ class PublicationUrlInline(admin.TabularInline):
 
    
 class PublicationAdmin(admin.ModelAdmin):
-    #form = MyCommodityKeywordsRelateAdminForm
     inlines = [PublicationFileInline,PublicationUrlInline, ]
     save_on_top = True
     list_display = ('title',  'modify_date')
     list_filter = ('title',  'modify_date')
     prepopulated_fields = { 'slug': ['title']}
     search_fields = ['title', 'short_description', 'slug', 'file_en', 'file_es', 'file_ar', 'file_ru', 'file_zh', 'file_fr']
+
+    def queryset(self, request):
+        qs = super(PublicationAdmin, self).queryset(request)
+        return qs.filter(is_version=False)
+    
 admin.site.register(Publication, PublicationAdmin)
 
 class PublicationInline(StackedDynamicInlineAdmin):
@@ -120,7 +124,6 @@ from django.http import HttpResponseRedirect
 
 class PublicationLibraryAdmin(PageAdmin):
     inlines = (PublicationInline, TransPublicationLibraryPageAdmin,)
-
 admin.site.register(PublicationLibrary, PublicationLibraryAdmin)
 
 # Country Pages ----------------- 
