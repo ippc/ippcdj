@@ -267,7 +267,7 @@ INSTALLED_APPS = (
     "forum",
     "calls",
     "news",
-
+    "t_eppo",
     # or, even better, attachments that can be related to any model type
     
     # https://github.com/bartTC/django-attachments

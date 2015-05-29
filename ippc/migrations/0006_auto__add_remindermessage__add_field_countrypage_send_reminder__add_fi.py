@@ -8,62 +8,28 @@ from django.db import models
 class Migration(SchemaMigration):
 
     def forwards(self, orm):
-        # Deleting model 'PartnersEditorsHistory'
-
-        # Adding model 'PartnersEditorHistory'
-        db.create_table(u'ippc_partnerseditorhistory', (
+        # Adding model 'ReminderMessage'
+        db.create_table(u'ippc_remindermessage', (
             (u'id', self.gf('django.db.models.fields.AutoField')(primary_key=True)),
-            ('partnerspage', self.gf('django.db.models.fields.related.ForeignKey')(to=orm['ippc.PartnersPage'])),
-            ('editor', self.gf('django.db.models.fields.related.OneToOneField')(to=orm['auth.User'], unique=True, null=True, blank=True)),
-            ('start_date', self.gf('django.db.models.fields.DateTimeField')(null=True, blank=True)),
-            ('end_date', self.gf('django.db.models.fields.DateTimeField')(null=True, blank=True)),
+            ('emailfrom', self.gf('django.db.models.fields.CharField')(default=u'ippc@fao.org', max_length=200)),
+            ('emailto', self.gf('django.db.models.fields.TextField')(default=u'ippc@fao.org')),
+            ('subject', self.gf('django.db.models.fields.CharField')(max_length=200)),
+            ('messagebody', self.gf('django.db.models.fields.TextField')(max_length=500, null=True, blank=True)),
+            ('date', self.gf('django.db.models.fields.DateTimeField')()),
+            ('sent', self.gf('django.db.models.fields.BooleanField')(default=False)),
         ))
-        db.send_create_signal(u'ippc', ['PartnersEditorHistory'])
+        db.send_create_signal(u'ippc', ['ReminderMessage'])
 
-        # Adding model 'PartnersContactPointHistory'
-        db.create_table(u'ippc_partnerscontactpointhistory', (
-            (u'id', self.gf('django.db.models.fields.AutoField')(primary_key=True)),
-            ('partnerspage', self.gf('django.db.models.fields.related.ForeignKey')(to=orm['ippc.PartnersPage'])),
-            ('contact_point', self.gf('django.db.models.fields.related.OneToOneField')(to=orm['auth.User'], unique=True, null=True, blank=True)),
-            ('start_date', self.gf('django.db.models.fields.DateTimeField')(null=True, blank=True)),
-            ('end_date', self.gf('django.db.models.fields.DateTimeField')(null=True, blank=True)),
-        ))
-        db.send_create_signal(u'ippc', ['PartnersContactPointHistory'])
-
-     
 
     def backwards(self, orm):
-        # Adding model 'PartnersEditorsHistory'
-        db.create_table(u'ippc_partnerseditorshistory', (
-            ('end_date', self.gf('django.db.models.fields.DateTimeField')(null=True, blank=True)),
-            (u'id', self.gf('django.db.models.fields.AutoField')(primary_key=True)),
-            ('countrypage', self.gf('django.db.models.fields.related.ForeignKey')(to=orm['ippc.CountryPage'])),
-            ('editor', self.gf('django.db.models.fields.related.OneToOneField')(to=orm['auth.User'], unique=True, null=True, blank=True)),
-            ('start_date', self.gf('django.db.models.fields.DateTimeField')(null=True, blank=True)),
-        ))
-        db.send_create_signal(u'ippc', ['PartnersEditorsHistory'])
+        # Deleting model 'ReminderMessage'
+        db.delete_table(u'ippc_remindermessage')
 
-        # Adding model 'PartnersCPHistory'
-        db.create_table(u'ippc_partnerscphistory', (
-            ('end_date', self.gf('django.db.models.fields.DateTimeField')(null=True, blank=True)),
-            ('start_date', self.gf('django.db.models.fields.DateTimeField')(null=True, blank=True)),
-            ('countrypage', self.gf('django.db.models.fields.related.ForeignKey')(to=orm['ippc.PartnersPage'])),
-            ('contact_point', self.gf('django.db.models.fields.related.OneToOneField')(to=orm['auth.User'], unique=True, null=True, blank=True)),
-            (u'id', self.gf('django.db.models.fields.AutoField')(primary_key=True)),
-        ))
-        db.send_create_signal(u'ippc', ['PartnersCPHistory'])
+        # Deleting field 'CountryPage.send_reminder'
+        db.delete_column(u'ippc_countrypage', 'send_reminder')
 
-        # Deleting model 'PartnersEditorHistory'
-        db.delete_table(u'ippc_partnerseditorhistory')
-
-        # Deleting model 'PartnersContactPointHistory'
-        db.delete_table(u'ippc_partnerscontactpointhistory')
-
-        # Deleting field 'PestFreeArea.verified_date'
-        db.delete_column(u'ippc_pestfreearea', 'verified_date')
-
-        # Deleting field 'ImplementationISPM.verified_date'
-        db.delete_column(u'ippc_implementationispm', 'verified_date')
+        # Deleting field 'PestReport.importedfromeppo'
+        db.delete_column(u'ippc_pestreport', 'importedfromeppo')
 
 
     models = {
@@ -332,7 +298,8 @@ class Migration(SchemaMigration):
             'iso3': ('django.db.models.fields.CharField', [], {'max_length': '3', 'unique': 'True', 'null': 'True', 'blank': 'True'}),
             'name': ('django.db.models.fields.CharField', [], {'max_length': '50', 'unique': 'True', 'null': 'True', 'blank': 'True'}),
             u'page_ptr': ('django.db.models.fields.related.OneToOneField', [], {'to': u"orm['pages.Page']", 'unique': 'True', 'primary_key': 'True'}),
-            'region': ('django.db.models.fields.IntegerField', [], {'default': 'None'})
+            'region': ('django.db.models.fields.IntegerField', [], {'default': 'None'}),
+            'send_reminder': ('django.db.models.fields.BooleanField', [], {'default': 'True'})
         },
         u'ippc.draftprotocol': {
             'Meta': {'object_name': 'DraftProtocol'},
@@ -753,6 +720,7 @@ class Migration(SchemaMigration):
             'geographical_distribution': ('django.db.models.fields.TextField', [], {'null': 'True', 'blank': 'True'}),
             'hosts': ('django.db.models.fields.TextField', [], {'null': 'True', 'blank': 'True'}),
             u'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
+            'importedfromeppo': ('django.db.models.fields.BooleanField', [], {'default': 'False'}),
             'in_sitemap': ('django.db.models.fields.BooleanField', [], {'default': 'True'}),
             'is_version': ('django.db.models.fields.BooleanField', [], {'default': 'False'}),
             'keywords': ('mezzanine.generic.fields.KeywordsField', [], {'object_id_field': "'object_pk'", 'to': u"orm['generic.AssignedKeyword']", 'frozen_by_south': 'True'}),
@@ -877,6 +845,16 @@ class Migration(SchemaMigration):
             'pub_date': ('django.db.models.fields.DateTimeField', [], {}),
             'question_title': ('django.db.models.fields.CharField', [], {'max_length': '200'}),
             'user': ('django.db.models.fields.related.ForeignKey', [], {'to': u"orm['auth.User']"})
+        },
+        u'ippc.remindermessage': {
+            'Meta': {'object_name': 'ReminderMessage'},
+            'date': ('django.db.models.fields.DateTimeField', [], {}),
+            'emailfrom': ('django.db.models.fields.CharField', [], {'default': "u'ippc@fao.org'", 'max_length': '200'}),
+            'emailto': ('django.db.models.fields.TextField', [], {'default': "u'ippc@fao.org'"}),
+            u'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
+            'messagebody': ('django.db.models.fields.TextField', [], {'max_length': '500', 'null': 'True', 'blank': 'True'}),
+            'sent': ('django.db.models.fields.BooleanField', [], {'default': 'False'}),
+            'subject': ('django.db.models.fields.CharField', [], {'max_length': '200'})
         },
         u'ippc.reportingobligation': {
             'Meta': {'object_name': 'ReportingObligation'},

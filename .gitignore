@@ -7,3 +7,4 @@ local_settings.py
 /static/media/
 /eppo_done/
 /eppo_tmp/
+/t_eppo/migrations/

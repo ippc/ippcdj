@@ -24,7 +24,7 @@ CountryNewsListView,CountryNewsDetailView,countrynews_create,countrynews_edit,\
 CountryNewsListView,CountryNewsDetailView,countrynews_create,countrynews_edit,\
 PartnersNewsDetailView,partners_news_create,partners_news_edit,\
 PollListView,PollResultsView,PollDetailView,vote_poll,poll_edit,poll_create,\
-email_send,EmailUtilityMessageDetailView,EmailUtilityMessageListView,\
+email_send,EmailUtilityMessageDetailView,EmailUtilityMessageListView,ReminderMessageDetailView,ReminderMessageListView,\
 DraftProtocolDetailView,  draftprotocol_create, draftprotocol_edit,draftprotocol_compilecomments,\
 draftprotocol_comment_create,draftprotocol_comment_edit,PublicationLibraryView,commenta,contactPointExtractor,\
 CountryRegionsPercentageListView,CountryStatsreportsListView,CountryStatsTotalreportsListView,CountryRegionsUsersListView,CountryTotalUsersListView,\
@@ -83,7 +83,8 @@ urlpatterns = patterns("",
    #----------------------------------
    #--------- Reminder system ------------------------------------
     url(r'^reminder/', reminder_to_cn, name='reminder_to_cn'),
-
+    url(r'^remindermessages/all/$',view=ReminderMessageListView.as_view(), name='remindermessages-list'),
+    url(r'^remindermessages/(?P<pk>\d+)/$',ReminderMessageDetailView.as_view(), name='remindermessages-detail'),
    #----------------------------------
     url(r'^forum/', include('forum.urls')),
     url(r'^calls/', include('calls.urls')),

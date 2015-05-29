@@ -10,7 +10,8 @@
 
 {% block main %}
 	<h2>{% trans "Automatic Reminder system for Countries" %}</h2>
-        <p></p>
+  {% if user.is_superuser %} 
+  <p></p>
         
 
 <table class="table table-condensed table-striped" id="publications">
@@ -22,14 +23,15 @@
   <tbody>
     {% for object in textmessages %}
     <tr>
-      <td>{{ object }}</td>
+      <td>{{object|richtext_filter|safe }}</td>
     </tr>
 
     {% endfor %}
   </tbody>
 </table>
         
-        
-        
+        {%else%}
+        <p>No permissions to see this page.</p>
+      {% endif %}    
 	
 {% endblock %}

@@ -36,6 +36,9 @@ from django.core.exceptions import ValidationError
 
 from mezzanine.utils.models import get_user_model_name
 from mezzanine.generic.models import ThreadedComment
+from t_eppo.models import Names
+
+
 
 def user_unicode_patch(self):
     return '%s %s' % (self.first_name, self.last_name)
@@ -429,6 +432,8 @@ class EppoCode(models.Model):
         
 
 
+
+
 class ContactType(models.Model):
     """ Contact Types """
     contacttype = models.CharField(_("Contact Type"), max_length=500)
@@ -536,6 +541,7 @@ class PestReport(Displayable, models.Model):
         verbose_name=_("Pest Status"),
         related_name='pest_status+', blank=True, null=True,
         help_text=_("Under ISPM 8 -"))
+    #pest_identity = models.ForeignKey(Names, null=True, blank=True)
     pest_identity = models.ForeignKey(EppoCode, null=True, blank=True)
     #pest_identity = models.TextField(_("Identity of Pest"),    blank=True, null=True)
     hosts = models.TextField(_("Hosts or Articles concerned"),
@@ -1725,7 +1731,17 @@ class AnswerVotes(models.Model):
     answer = models.ForeignKey(Answer)
     up= models.CharField(max_length=50)
 
-
+class ReminderMessage(models.Model):
+    emailfrom = models.CharField(_("From: "),max_length=200,default=_("ippc@fao.org"),help_text=_("The email will be sent from ippc@fao.org, if you want you can specify an other sender email address."))
+    emailto = models.TextField(_("Send to:"),default=_("ippc@fao.org"),help_text=_("Please leave ippc@fao.org for the form to work, and enter email addresses of addition recipients, separated by comma. Example: ippc@fao.org, someone@somewhere.tld, etc@etc.tld"))
+    subject = models.CharField(_("Subject: "),max_length=200)
+    messagebody = models.TextField(_("Message: "),max_length=500,blank=True, null=True)
+    date = models.DateTimeField('date')
+    sent =  models.BooleanField()
+    
+    def __unicode__(self):  
+         return self.subject 
+     
 class Translatable(models.Model):
     """ Translations of user-generated content - https://gist.github.com/renyi/3596248"""
     lang = models.CharField(max_length=5, choices=settings.LANGUAGES)

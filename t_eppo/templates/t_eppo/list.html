@@ -1,0 +1,151 @@
+{% extends "base.html" %}
+{% load i18n future mezzanine_tags calls_tags keyword_tags disqus_tags %}
+
+{% block meta_title %}{% if page %}{{ page.richtextpage.meta_title }}{% else %}{% trans "Calls" %}{% endif %}{% endblock %}
+
+{% block meta_keywords %}{% metablock %}
+{% keywords_for page as keywords %}
+{% for keyword in keywords %}
+    {% if not forloop.first %}, {% endif %}
+    {{ keyword }}
+{% endfor %}
+{% endmetablock %}{% endblock %}
+
+{% block meta_description %}{% metablock %}
+{{ page.description }}
+{% endmetablock %}{% endblock %}
+
+{% block title %}
+{% if page %}
+{# {% editable page.title %}{{ page.title }}{% endeditable %} #}
+{{ page.title }}
+{% else %}
+{% trans "Calls" %}
+{% endif %}
+{% endblock %}
+
+{% block breadcrumb_menu %}
+{{ block.super }}
+{% if tag or category or year or month or author %}
+<li>{% spaceless %}
+{% if tag %}
+    {% trans "Tag:" %} {{ tag }}
+{% else %}{% if category %}
+    <!--{% trans "Category:" %} {{ category }}-->
+{% else %}{% if year or month %}
+    {% if month %}{{ month }}, {% endif %}{{ year }}
+{% else %}{% if author %}
+    {% trans "Author:" %} {{ author.get_full_name|default:author.username }}
+{% endif %}{% endif %}{% endif %}{% endif %}
+{% endspaceless %}
+</li>
+{% endif %}
+{% endblock %}
+
+{% block main %}
+
+{% if tag or category or year or month or author %}
+    {% block calls_post_list_filterinfo %}
+    <p>
+    {% if tag %}
+        {% trans "Viewing tagged as: " %} <strong>{{ tag }}</strong>
+    {% else %}{% if category %}
+       <!-- {% trans "Viewing posts for the category" %} <strong>{{ category }}</strong>-->
+    {% else %}{% if year or month %}
+        {% trans "Viewing items from" %} <strong>{% if month %}{{ month }}, {% endif %}
+        {{ year }}</strong>
+    {% else %}{% if author %}
+        {% trans "Viewing posts by" %}
+        {{ author.get_full_name|default:author.username }}
+    {% endif %}{% endif %}{% endif %}{% endif %}
+    {% endblock %}
+    </p>
+{% else %}
+    {% if page %}
+    {% block calls_post_list_pagecontent %}
+    {# {% editable page.richtextpage.content %} #}
+    {{ page.richtextpage.content|richtext_filter|safe }}
+    {# {% endeditable %} #}
+    {% endblock %}
+    {% endif %}
+{% endif %}
+
+{% for calls_post in calls_posts.object_list %}
+{% block calls_post_list_post_title %}
+{# {% editable calls_post.title %} #}
+<h4>
+    <a href="{{ calls_post.get_absolute_url }}">{{ calls_post.title }}</a>
+</h4>
+{# {% endeditable %} #}
+{% endblock %}
+{% block calls_post_list_post_metainfo %}
+{# {% editable calls_post.publish_date %} #}
+<h6>
+    {% trans "Posted " %}
+    {% with calls_post.category.all as categories %}
+    {% if categories %}
+    {% trans "in" %}
+    {% for category in categories %}
+    <a href="{% url "calls_post_list_category" category.slug %}">{{ category }}</a>
+    {% endfor %}
+    {% endif %}
+    {% endwith %}
+    {% blocktrans with sometime=calls_post.publish_date|timesince %}{{ sometime }} ago{% endblocktrans %}
+    {# {% blocktrans with thetime=calls_post.publish_date|date:"D, d M Y, H:i" %} <span class="normal">on</span> {{ thetime }}{% endblocktrans %} #}
+</h6>
+{# {% endeditable %} #}
+{% endblock %}
+
+{% if calls_post.featured_image %}{#and settings.CALLS_USE_FEATURED_IMAGE and #}
+{% block calls_post_list_post_featured_image %}
+<img class="featured-thumb" src="{{ MEDIA_URL }}{% thumbnail calls_post.featured_image 90 90 %}">
+{% endblock %}
+{% endif %}
+
+{% block calls_post_list_post_content %}
+{# {% editable calls_post.content %} #}
+{{ calls_post.description_from_content|safe }}
+{# {% endeditable %} #}
+{% endblock %}
+
+{% block calls_post_list_post_links %}
+<p class="calls-list-detail">
+    {% keywords_for calls_post as tags %}
+    {% if tags %}
+    {% trans "Tags" %}:
+    {% spaceless %}
+    {% for tag in tags %}
+    <a href="{% url "calls_post_list_tag" tag.slug %}" class="tag">{{ tag }}</a>
+    {% endfor %}
+    {% endspaceless %}
+    <br>
+    {% endif %}
+    <a href="{{ calls_post.get_absolute_url }}">{% trans "Continue reading…" %}</a>
+    {# / #}
+    {# {% if settings.COMMENTS_DISQUS_SHORTNAME %} #}
+    {# <a href="{{ calls_post.get_absolute_url }}#disqus_thread" #}
+    {#     data-disqus-identifier="{% disqus_id_for calls_post %}"> #}
+    {#     {% trans "Comments" %} #}
+    {# </a> #}
+    {# {% else %} #}
+    {# <a href="{{ calls_post.get_absolute_url }}#comments"> #}
+    {#     {% blocktrans count comments_count=calls_post.comments_count %}{{ comments_count }} comment{% plural %}{{ comments_count }} comments{% endblocktrans %} #}
+    {# </a> #}
+    {# {% endif %} #}
+</p>
+{% endblock %}
+{% endfor %}
+
+{% pagination_for calls_posts %}
+
+{# {% if settings.COMMENTS_DISQUS_SHORTNAME %} #}
+{# {% include "generic/includes/disqus_counts.html" %} #}
+{# {% endif %} #}
+
+{% endblock %}
+
+{% block local_nav %}
+{% include "calls/includes/filter_panel.html" %}
+{% endblock %}
+
+{% block pageinfo %}{% endblock pageinfo %}
