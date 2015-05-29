@@ -541,8 +541,8 @@ class PestReport(Displayable, models.Model):
         verbose_name=_("Pest Status"),
         related_name='pest_status+', blank=True, null=True,
         help_text=_("Under ISPM 8 -"))
-    #pest_identity = models.ForeignKey(Names, null=True, blank=True)
-    pest_identity = models.ForeignKey(EppoCode, null=True, blank=True)
+    pest_identity = models.ForeignKey(Names, null=True, blank=True)
+    #pest_identity = models.ForeignKey(EppoCode, null=True, blank=True)
     #pest_identity = models.TextField(_("Identity of Pest"),    blank=True, null=True)
     hosts = models.TextField(_("Hosts or Articles concerned"),
         blank=True, null=True)

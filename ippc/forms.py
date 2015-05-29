@@ -78,8 +78,8 @@ class PestReportForm(forms.ModelForm):
         widgets = {
             'country': forms.HiddenInput(),
             'report_number': forms.HiddenInput(),
-            'pest_identity': autocomplete_light.ChoiceWidget('EppoCodeAutocomplete'),
-            #'pest_identity': autocomplete_light.ChoiceWidget('NamesAutocomplete'),
+            #'pest_identity': autocomplete_light.ChoiceWidget('EppoCodeAutocomplete'),
+            'pest_identity': autocomplete_light.ChoiceWidget('NamesAutocomplete'),
             
         }
         
