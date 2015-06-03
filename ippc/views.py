@@ -48,6 +48,18 @@ from datetime import datetime
 from django.contrib.contenttypes.models import ContentType
 from mezzanine.generic import views as myview
 from mezzanine.generic import models
+from t_eppo.models import Names
+
+import os
+import shutil
+
+import zipfile
+import StringIO
+from settings import PROJECT_ROOT, MEDIA_ROOT,DATABASES
+from django.core.files.storage import default_storage
+
+import getpass, imaplib, email
+from xml.dom import minidom
 
 def get_profile():
     return IppcUserProfile.objects.all()
@@ -55,191 +67,16 @@ def get_profile():
 #     return PestReport.objects.all()
 
 
-import getpass, imaplib, email
-from xml.dom import minidom
+
 
 def reporting_trough_eppo(request):
-
-#    eppo_tmp_dir = 'eppo_tmp'
-#    eppo_done_dir = 'eppo_done'
-#    
-#    user_obj_reportEmail=User.objects.get(username='ippctest@gmail.com')
-#    password=   user_obj_reportEmail.password
-#    imap_server = imaplib.IMAP4_SSL("imap.gmail.com",993)
-#    imap_server.login("ippctest@gmail.com",password)
-#      
-#    imap_server.select("[Gmail]/All Mail") # here you a can choose a mail box like INBOX instead
-#    resp, items = imap_server.search(None, '(UNSEEN)') # you could filter using the IMAP rules here (check http://www.example-code.com/csharp/imap-search-critera.asp)
-#    items = items[0].split() # getting the mails id
-# 
-#    for emailid in items:
-#        resp, data = imap_server.fetch(emailid, "(RFC822)") # fetching the mail, "`(RFC822)`" means "get the whole stuff", but you can ask for headers only, etc
-#        email_body = data[0][1] # getting the mail content
-#        mailmsg = email.message_from_string(email_body) # parsing the mail content to get a mail object
-#
-#        #Check if any attachments at all
-#        if mailmsg.get_content_maintype() != 'multipart':
-#            continue
-#
-#        print "["+mail["From"]+"] :" + mail["Subject"]
-#        # we use walk to create a generator so we can iterate on the parts and forget about the recursive headach
-#        for part in mailmsg.walk():
-#            # multipart are just containers, so we skip them
-#            if part.get_content_maintype() == 'multipart':
-#                continue
-#
-#            # is this part an attachment ?
-#            if part.get('Content-Disposition') is None:
-#                continue
-#
-#            filename = part.get_filename()
-#            counter = 1
-#
-#            # if there is no filename, we create one with a counter to avoid duplicates
-#            if not filename:
-#                filename = 'part-%03d%s' % (counter, 'bin')
-#                counter += 1
-#
-#            att_path = os.path.join(eppo_tmp_dir, filename)
-#
-#            #Check if its already there
-#            if not os.path.isfile(att_path) :
-#                # finally write the stuff
-#                fp = open(att_path, 'wb')
-#                fp.write(part.get_payload(decode=True))
-#                fp.close()
-#          
-#  
-#    xml_files = os.listdir(eppo_tmp_dir)
-#    pest_reports=[]
-#    
-#    #create lof file with report of data uploaded
-#    log_report =  open(os.path.join(eppo_done_dir, "eppo_reporting_"+timezone.now().strftime('%Y%m%d%H%M%S')+".log"), 'wb')
-#    log_report.write("List of uploaded pest report from Eppo:\n\n")
-#            
-#    for file_name in xml_files:
-#        if file_name.endswith('.xml'):
-#            title =''
-#            slug=''
-#            status =2
-#            author =1
-#            publish_date=''
-#            modify_date=''
-#            country = ''
-#            report_status = ''
-#            report_number = ''
-#            pest_status = ''
-#            pest_identity =''
-#            summary = ''
-#            hosts = ''
-#            geographical_distribution = ''
-#            nature_of_danger = ''
-#            contact_for_more_information = ''
-#           
-#            xml_file = open(os.path.join(eppo_tmp_dir, file_name),'r')
-#            xmldoc = minidom.parse(xml_file)
-#            xml_file.close()
-#           
-#            doc_element = xmldoc.documentElement
-#            reportIdentity  = doc_element.getElementsByTagName("ReportIdentity")[0]
-#            reportdata  = doc_element.getElementsByTagName("ReportData")[0]
-#         
-#            title= reportIdentity.getElementsByTagName("Title")[0].childNodes[0].data  
-#            slug = lower(slugify(title))
-#            
-#            report_status=0
-#            if reportIdentity.hasAttribute("DateCreate"):
-#                publish_date=reportIdentity.getAttribute("DateCreate")
-#                modify_date=reportIdentity.getAttribute("DateCreate")
-#            if reportIdentity.hasAttribute("UID"):
-#                eppouid=reportIdentity.getAttribute("UID")
-#            if reportIdentity.hasAttribute("numReport"):
-#                epponumreport=reportIdentity.getAttribute("numReport")
-#            if reportIdentity.hasAttribute("DateValidation"):
-#                eppovalidationdate=reportIdentity.getAttribute("DateValidation")
-#       
-#            eppoPublisher = reportIdentity.getElementsByTagName("Publisher")[0]
-#            eppoPublishername = eppoPublisher.getElementsByTagName("fullname")[0].childNodes[0].data  
-#            eppoPublisheremail = eppoPublisher.getElementsByTagName("email")[0].childNodes[0].data  
-#        
-#            countryelement= reportIdentity.getElementsByTagName("CountryIdentity")[0]
-#            countryname=''
-#            countryslug=''
-#            if countryelement.hasAttribute("ISO3"):
-#                countryo= CountryPage.objects.filter(iso3=countryelement.getAttribute("ISO3"))
-#                country =countryo[0].id 
-#                countryname=countryo[0].name
-#                countryslug=countryo[0].slug
-#                numberR=PestReport.objects.filter(country_id=country).count()
-#                numberR=numberR+1
-#                pestnumber=str(numberR)
-#                if numberR<10 :
-#                    pestnumber='0'+pestnumber
-#                report_number=countryelement.getAttribute("ISO3")+'-'+pestnumber+'/1'
-#            pest_identity= reportIdentity.getElementsByTagName("EppoCode")[0].childNodes[0].data  
-#            if reportdata.getElementsByTagName("GeogDistrib")[0].childNodes:
-#                geographical_distribution= reportdata.getElementsByTagName("GeogDistrib")[0].childNodes[0].data  
-#            if reportdata.getElementsByTagName("Context")[0].childNodes:
-#                summary= reportdata.getElementsByTagName("Context")[0].childNodes[0].data  
-#            
-#            hosts= reportdata.getElementsByTagName("HostName")[0].childNodes[0].data  
-#            peststatuselement = reportdata.getElementsByTagName("PestStatus")[0]
-#            pest_status_label = peststatuselement.getElementsByTagName("libelle")[0].childNodes[0].data  
-#            ps=PestStatus.objects.get(status=pest_status_label)
-#            pest_status=ps.id
-#            
-#           
-#            new_pest_report = PestReport()
-#            new_pest_report.country_id=country
-#            new_pest_report.title=title
-#            new_pest_report.publish_date=  publish_date
-#            new_pest_report.country_id=country
-#            new_pest_report.report_number=report_number
-#            new_pest_report.pest_identity_id=6951#pest_identity#get id from eppocode
-#            new_pest_report.geographical_distribution=geographical_distribution
-#            #new_pest_report.summary=str(summary.encode('utf-8'))#problme with encoded summary
-#            new_pest_report.author_id=1
-#            new_pest_report.hosts=hosts
-#            new_pest_report.importedfromeppo = True
-#            new_pest_report.save()
-#            new_pest_report.pest_status.add(ps)
-#            pest_reports.append(new_pest_report)
-#         
-#            #move xml processed in 'eppo_done' dir
-#            os.rename(os.path.join(eppo_tmp_dir, file_name),os.path.join(eppo_done_dir, file_name))
-#            #create log and email messages notifications
-#            year=new_pest_report.publish_date.strftime("%Y")
-#            month=new_pest_report.publish_date.strftime("%m")
-#            pest_url="https://www.ippc.int/en/"+countryslug+"/pestreports/"+year+"/"+month+"/"+slug
-#
-#            log_report.write("["+ timezone.now().strftime('%Y%m%d%H%M%S')+"] "+countryname+" ["+report_number+"] '"+title+" "+pest_url+"\n\n")
-# 
-#            msgtpeppo="Dear EPPO,<br><br>the Pest report<br><strong>UID</strong>: "+str(eppouid) +" <br><strong>numreport:</strong> "+str(epponumreport)+" <br><strong>validation date:</strong>"+str(eppovalidationdate)+"<br>has been successefully uploed in the IPPC website<br><Strong>URL</strong>:"+pest_url+""
-#            msgtoCP="Dear "+str(eppoPublishername)+",<br><hr><br>the Pest report validated in EPPO with:<br><strong>UID</strong>: "+str(eppouid) +" <br><strong>numreport:</strong> "+str(epponumreport)+" <br><strong>validation date:</strong>"+str(eppovalidationdate)+"<br>has been successefully uploed in the IPPC website<br><Strong>URL</strong>:"+pest_url+""
-#          
-#            subject='Pest Report successefully uploaded in IPPC'  
-#            #roy@eppo.int
-#            notifificationmessageeppo = mail.EmailMessage(subject,msgtpeppo,'ippc@fao.org', ['paola.sentinelli@fao.org'], ['paola.sentinelli@fao.org'])
-#            notifificationmessageeppo.content_subtype = "html"
-#            #sent =notifificationmessageeppo.send()
-#            #to put eppoPublisheremail
-#            if eppoPublisheremail:
-#                notifificationmessageCp = mail.EmailMessage(subject,msgtoCP,'ippc@fao.org', ['paola.sentinelli@fao.org'], ['paola.sentinelli@fao.org'])
-#                notifificationmessageCp.content_subtype = "html"
-#                #sent =notifificationmessageCp.send()
-#            #TO DO:        
-#            #ADD eppo coutries
-#            #ADD in Country page 'allow eppo to report automatically'
-#            
-#            
-#    log_report.close()        
-#    context = {"pest_reports":pest_reports,}
+#   pest
     context = {}
+    #TO DO:        
+    #SET CANADA in Country page 'allow eppo to report automatically'
+    #SET proper email ROY and Publisher, send real emails'
     response = render(request, "countries/eppo_reporting.html", context)
     return response
-
-	
-
 
 
 import datetime as dt
@@ -779,13 +616,7 @@ class PublicationDetail2View(DetailView):
         context['versions'] = versions
         return context
     
-import os
-import shutil
 
-import zipfile
-import StringIO
-from settings import PROJECT_ROOT, MEDIA_ROOT,DATABASES
-from django.core.files.storage import default_storage
 
 class PublicationFilesListView(ListView):
     """
@@ -905,9 +736,11 @@ def send_notification_message(newitem,id,content_type,title,url):
         for cn in notify_instance.countries.all():
             countryo = get_object_or_404(CountryPage, page_ptr_id=cn.id)
             user_obj=User.objects.get(id=countryo.contact_point_id)
+            print(countryo)
             emailto_all.append(str(user_obj.email))
         for partner in notify_instance.partners.all():
             countryo = get_object_or_404(PartnersPage, page_ptr_id=partner.id)
+            print(countryo)
             user_obj=User.objects.get(id=countryo.contact_point_id)
             emailto_all.append(str(user_obj.email))
         if notify_instance.notifysecretariat :
