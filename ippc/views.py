@@ -906,12 +906,14 @@ def send_notification_message(newitem,id,content_type,title,url):
         for cn in notify_instance.countries.all():
             countryo = get_object_or_404(CountryPage, page_ptr_id=cn.id)
             print(countryo)
-            user_obj=User.objects.get(id=countryo.contact_point_id)
-            emailto_all.append(str(user_obj.email))
+            if countryo.contact_point_id:
+                user_obj=User.objects.get(id=countryo.contact_point_id)
+                emailto_all.append(str(user_obj.email))
         for partner in notify_instance.partners.all():
             countryo = get_object_or_404(PartnersPage, page_ptr_id=partner.id)
-            user_obj=User.objects.get(id=countryo.contact_point_id)
-            emailto_all.append(str(user_obj.email))
+            if countryo.contact_point_id:
+                user_obj=User.objects.get(id=countryo.contact_point_id)
+                emailto_all.append(str(user_obj.email))
         if notify_instance.notifysecretariat :
             print(countryo)
             #print("sec!!!")
