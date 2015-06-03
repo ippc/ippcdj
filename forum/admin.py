@@ -22,6 +22,7 @@ forumpost_fieldsets[0][1]["fields"].insert(1, "categories")
 forumpost_fieldsets[0][1]["fields"].extend(["content", "allow_comments", "login_required"])
 forumpost_fieldsets[0][1]["fields"].insert(5, "groups")
 forumpost_fieldsets[0][1]["fields"].insert(6, "users")
+forumpost_fieldsets[0][1]["fields"].insert(7, "notification_groups")
 forumpost_list_display = ["title", "user", "status", "admin_link"]
 if settings.FORUM_USE_FEATURED_IMAGE:
     forumpost_fieldsets[0][1]["fields"].insert(-2, "featured_image")
@@ -66,7 +67,7 @@ class ForumPostAdmin(DisplayableAdmin):
         #new forum post send notifications
         if change==False:
             emailto_all = []
-            for g in request.POST.getlist('groups'):
+            for g in request.POST.getlist('notification_groups'):
                 group=Group.objects.get(id=g)
                 users = group.user_set.all()
                 for u in users:

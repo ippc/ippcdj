@@ -57,6 +57,9 @@ class ForumPost(Displayable, Ownable, RichText, AdminThumbMixin):
     groups = models.ManyToManyField(Group,
         verbose_name=_("Groups this forum post is accessible to"),
         related_name='forumgroups', blank=True, null=True)
+    notification_groups = models.ManyToManyField(Group,
+        verbose_name=_("Groups you want automatically notify of new POST and Comments"),
+        related_name='forumnotificationgroups', blank=True, null=True)    
     login_required = models.BooleanField(verbose_name=_("Login required"),
                                          default=True)
     
