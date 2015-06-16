@@ -111,7 +111,6 @@ def reporting_trough_eppo(request):
 #                fp = open(att_path, 'wb')
 #                fp.write(part.get_payload(decode=True))
 #                fp.close()
-#    print(eppo_tmp_dir)
 #    xml_files = os.listdir(eppo_tmp_dir)
 #    pest_reports=[]
 #    #create lof file with report of data uploaded
@@ -150,95 +149,106 @@ def reporting_trough_eppo(request):
 #            countryslug=''
 #            if countryelement.hasAttribute("ISO3"):
 #                countryo= CountryPage.objects.filter(iso3=countryelement.getAttribute("ISO3"))
-#                if countryo[0].accepted_epporeport :
-#                    country =countryo[0].id 
-#                    countryname=countryo[0].name
-#                    countryslug=countryo[0].slug
-#                    
-#                    title= reportIdentity.getElementsByTagName("Title")[0].childNodes[0].data  
-#                    report_status=0
-#                    slug = lower(slugify(title))
-#                    
-#                    numberR=PestReport.objects.filter(country_id=country).count()
-#                    numberR=numberR+1
-#                    pestnumber=str(numberR)
-#                    if numberR<10 :
-#                        pestnumber='0'+pestnumber
-#                    report_number=countryelement.getAttribute("ISO3")+'-'+pestnumber+'/1'
-#                    
-#                    if reportIdentity.hasAttribute("DateCreate"):
-#                        publish_date=reportIdentity.getAttribute("DateCreate")
-#                        modify_date=reportIdentity.getAttribute("DateCreate")
-#                    if reportIdentity.hasAttribute("UID"):
-#                        eppouid=reportIdentity.getAttribute("UID")
-#                    if reportIdentity.hasAttribute("numReport"):
-#                        epponumreport=reportIdentity.getAttribute("numReport")
-#                    if reportIdentity.hasAttribute("DateValidation"):
-#                        eppovalidationdate=reportIdentity.getAttribute("DateValidation")
-#                    
-#                    eppoPublisher = reportIdentity.getElementsByTagName("Publisher")[0]
-#                    eppoPublishername = eppoPublisher.getElementsByTagName("fullname")[0].childNodes[0].data  
-#                    eppoPublisheremail = ''
-#                    if eppoPublisher.getElementsByTagName("email"):
-#                        eppoPublisheremail = eppoPublisher.getElementsByTagName("email")[0].childNodes[0].data  
-#                    
-#                    pest_identity = reportIdentity.getElementsByTagName("EppoCode")[0].childNodes[0].data  
-#                    pestidentityFinal=Names.objects.get(eppocode=pest_identity, preferred=1)
+#                if countryo:
+#                    if countryo[0].accepted_epporeport :
+#                        country =countryo[0].id 
+#                        countryname=countryo[0].name
+#                        countryslug=countryo[0].slug
 #
-#                    if reportdata.getElementsByTagName("GeogDistrib")[0].childNodes:
-#                        geographical_distribution= reportdata.getElementsByTagName("GeogDistrib")[0].childNodes[0].data  
-#                    if reportdata.getElementsByTagName("Context")[0].childNodes:
-#                        summary= reportdata.getElementsByTagName("Context")[0].childNodes[0].data  
+#                        title= reportIdentity.getElementsByTagName("Title")[0].childNodes[0].data  
+#                        report_status=0
+#                        slug = lower(slugify(title))
 #
-#                    hosts= reportdata.getElementsByTagName("HostName")[0].childNodes[0].data  
-#                    peststatuselement = reportdata.getElementsByTagName("PestStatus")[0]
-#                    pest_status_label = peststatuselement.getElementsByTagName("libelle")[0].childNodes[0].data  
-#                    ps=PestStatus.objects.get(status=pest_status_label)
-#                    pest_status=ps.id
+#                        numberR=PestReport.objects.filter(country_id=country).count()
+#                        numberR=numberR+1
+#                        pestnumber=str(numberR)
+#                        if numberR<10 :
+#                            pestnumber='0'+pestnumber
+#                        report_number=countryelement.getAttribute("ISO3")+'-'+pestnumber+'/1'
 #
+#                        if reportIdentity.hasAttribute("DateCreate"):
+#                            publish_date=reportIdentity.getAttribute("DateCreate")
+#                            modify_date=reportIdentity.getAttribute("DateCreate")
+#                        if reportIdentity.hasAttribute("UID"):
+#                            eppouid=reportIdentity.getAttribute("UID")
+#                        if reportIdentity.hasAttribute("numReport"):
+#                            epponumreport=reportIdentity.getAttribute("numReport")
+#                        if reportIdentity.hasAttribute("DateValidation"):
+#                            eppovalidationdate=reportIdentity.getAttribute("DateValidation")
 #
-#                    new_pest_report = PestReport()
-#                    new_pest_report.country_id=country
-#                    new_pest_report.title=title
-#                    new_pest_report.publish_date=  publish_date
-#                    new_pest_report.country_id=country
-#                    new_pest_report.report_number=report_number
-#                    new_pest_report.pest_identity_id=pestidentityFinal.id
-#                    new_pest_report.geographical_distribution=geographical_distribution
-#                    new_pest_report.summary=str(summary.encode('utf-8'))#TO DO: #problme with encoded summary
-#                    new_pest_report.author_id=1
-#                    new_pest_report.hosts=hosts
-#                    new_pest_report.importedfromeppo = True
-#                    new_pest_report.save()
-#                    new_pest_report.pest_status.add(ps)
-#                    pest_reports.append(new_pest_report)
+#                        eppoPublisher = reportIdentity.getElementsByTagName("Publisher")[0]
+#                        eppoPublishername = eppoPublisher.getElementsByTagName("fullname")[0].childNodes[0].data  
+#                        eppoPublisheremail = ''
+#                        if eppoPublisher.getElementsByTagName("email"):
+#                            eppoPublisheremail = eppoPublisher.getElementsByTagName("email")[0].childNodes[0].data  
+#                        if eppoPublisher.getElementsByTagName("date"):
+#                            eppoPublisherdate = eppoPublisher.getElementsByTagName("date")[0].childNodes[0].data  
 #
-#                    #move xml processed in 'eppo_done' dir
-#                    os.rename(os.path.join(eppo_tmp_dir, file_name),os.path.join(eppo_done_dir, timezone.now().strftime('%Y%m%d%H%M%S')+'_'+file_name))
-#                    #create log and email messages notifications
-#                    year=new_pest_report.publish_date.strftime("%Y")
-#                    month=new_pest_report.publish_date.strftime("%m")
-#                    pest_url="https://www.ippc.int/en/"+countryslug+"/pestreports/"+year+"/"+month+"/"+slug
+#                        pest_identity = reportIdentity.getElementsByTagName("EppoCode")[0].childNodes[0].data  
+#                        pestidentityFinal=Names.objects.get(eppocode=pest_identity, preferred=1)
 #
-#                    log_report.write("["+ timezone.now().strftime('%Y%m%d%H%M%S')+"] "+countryname+" ["+report_number+"] '"+title+" "+pest_url+"\n\n")
+#                        if reportdata.getElementsByTagName("GeogDistrib")[0].childNodes:
+#                            geographical_distribution= reportdata.getElementsByTagName("GeogDistrib")[0].childNodes[0].data  
+#                        if reportdata.getElementsByTagName("Context")[0].childNodes:
+#                            summary= reportdata.getElementsByTagName("Context")[0].childNodes[0].data  
 #
-#                    msgtpeppo="Dear EPPO,<br><br>the Pest report<br><strong>UID</strong>: "+str(eppouid) +" <br><strong>numreport:</strong> "+str(epponumreport)+" <br><strong>validation date:</strong>"+str(eppovalidationdate)+"<br>has been successefully uploed in the IPPC website<br><Strong>URL</strong>:"+pest_url+""
-#                    msgtoCP="Dear "+str(eppoPublishername)+",<br><hr><br>the Pest report validated in EPPO with:<br><strong>UID</strong>: "+str(eppouid) +" <br><strong>numreport:</strong> "+str(epponumreport)+" <br><strong>validation date:</strong>"+str(eppovalidationdate)+"<br>has been successefully uploed in the IPPC website<br><Strong>URL</strong>:"+pest_url+""
+#                        hosts= reportdata.getElementsByTagName("HostName")[0].childNodes[0].data  
+#                        peststatuselement = reportdata.getElementsByTagName("PestStatus")[0]
+#                        pest_status_label=''
+#                        if peststatuselement.getElementsByTagName("libelle")[0].childNodes:
+#                            pest_status_label = peststatuselement.getElementsByTagName("libelle")[0].childNodes[0].data  
+#                        if pest_status_label!='':
+#                            ps=PestStatus.objects.get(status=pest_status_label)
+#                            pest_status=ps.id
+#                        else:    
+#                            ps=PestStatus.objects.get(status='Other')
+#                            pest_status=ps.id#Other
 #
-#                    subject='EPPO Pest Report successefully uploaded in IPPC'  
-#                    #TO DO: #SEND TO roy@eppo.int
-#                    notifificationmessageeppo = mail.EmailMessage(subject,msgtpeppo,'ippc@fao.org', ['paola.sentinelli@fao.org'], ['paola.sentinelli@fao.org'])
-#                    notifificationmessageeppo.content_subtype = "html"
-#                    #sent =notifificationmessageeppo.send()
-#                    if eppoPublisheremail:
-#                        notifificationmessageCp = mail.EmailMessage(subject,msgtoCP,'ippc@fao.org', ['paola.sentinelli@fao.org'], ['paola.sentinelli@fao.org'])
-#                        notifificationmessageCp.content_subtype = "html"
-#                        #sent =notifificationmessageCp.send()
-#                else:
-#                    #move xml processed in 'eppo_done' dir & create LOG
-#                    os.rename(os.path.join(eppo_tmp_dir, file_name),os.path.join(eppo_done_dir, timezone.now().strftime('%Y%m%d%H%M%S')+'_'+file_name))
-#                    log_report.write("["+ timezone.now().strftime('%Y%m%d%H%M%S')+"] "+file_name+" [NOT IMPORTED, NOT ACCETTED TO REPORT TROUH EPPO]\n\n")
-#            
+#                        new_pest_report = PestReport()
+#                        new_pest_report.country_id=country
+#                        new_pest_report.title=title
+#                        new_pest_report.publish_date=  publish_date
+#                        new_pest_report.country_id=country
+#                        new_pest_report.report_number=report_number
+#                        new_pest_report.pest_identity_id=pestidentityFinal.id
+#                        new_pest_report.geographical_distribution=geographical_distribution
+#                        
+#                        safe_str = summary.encode('ascii', 'ignore')
+#                        new_pest_report.summary=str(safe_str.encode('utf-8'))#TO DO: #problme with encoded summary
+#                        new_pest_report.author_id=1
+#                        new_pest_report.hosts=hosts
+#                        new_pest_report.importedfromeppo = True
+#                        new_pest_report.save()
+#                        
+#                        new_pest_report.pest_status.add(ps)
+#                        pest_reports.append(new_pest_report)
+#
+#                        #move xml processed in 'eppo_done' dir
+#                        os.rename(os.path.join(eppo_tmp_dir, file_name),os.path.join(eppo_done_dir, timezone.now().strftime('%Y%m%d%H%M%S')+'_'+file_name))
+#                        #create log and email messages notifications
+#                        year=new_pest_report.publish_date.strftime("%Y")
+#                        month=new_pest_report.publish_date.strftime("%m")
+#                        pest_url="https://www.ippc.int/en/"+countryslug+"/pestreports/"+year+"/"+month+"/"+slug
+#
+#                        log_report.write("["+ timezone.now().strftime('%Y%m%d%H%M%S')+"] "+countryname+" ["+report_number+"] '"+title+" "+pest_url+"\n\n")
+#
+#                        msgtpeppo="Dear EPPO,<br><br>the Pest report<br><br><strong>UID</strong>: "+str(eppouid) +" <br><strong>Numreport:</strong> "+str(epponumreport)+" <br><strong>Publish date:</strong>"+str(eppoPublisherdate)+"<br><br>has been successefully uploaded in the IPPC website<br><br><Strong>URL</strong>: "+pest_url+""
+#                        msgtoCP="Dear "+str(eppoPublishername)+",<br><hr><br>the Pest report published in EPPO with:<br><br><strong>UID</strong>: "+str(eppouid) +" <br><strong>Numreport:</strong> "+str(epponumreport)+" <br><strong>Publish date:</strong>"+str(eppoPublisherdate)+"<br><br>has been successefully uploaded in the IPPC website<br><br><Strong>URL</strong>: "+pest_url+""
+#
+#                        subject='EPPO Pest Report successefully uploaded in IPPC'  
+#                        #TO DO: #SEND TO roy@eppo.int
+#                        notifificationmessageeppo = mail.EmailMessage(subject,msgtpeppo,'ippc@fao.org', ['paola.sentinelli@fao.org'], ['paola.sentinelli@fao.org'])
+#                        notifificationmessageeppo.content_subtype = "html"
+#                        sent =notifificationmessageeppo.send()
+#                        if eppoPublisheremail:
+#                            notifificationmessageCp = mail.EmailMessage(subject,msgtoCP,'ippc@fao.org', ['paola.sentinelli@fao.org'], ['paola.sentinelli@fao.org'])
+#                            notifificationmessageCp.content_subtype = "html"
+#                            sent =notifificationmessageCp.send()
+#                    else:
+#                        #move xml processed in 'eppo_done' dir & create LOG
+#                        os.rename(os.path.join(eppo_tmp_dir, file_name),os.path.join(eppo_done_dir, timezone.now().strftime('%Y%m%d%H%M%S')+'_'+file_name))
+#                        log_report.write("["+ timezone.now().strftime('%Y%m%d%H%M%S')+"] "+file_name+" [NOT IMPORTED, NOT ACCETTED TO REPORT TROUH EPPO]\n\n")
+#
 #    log_report.close()        
 #    context = {"pest_reports":pest_reports,}
     context = {}
