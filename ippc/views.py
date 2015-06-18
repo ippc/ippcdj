@@ -253,7 +253,7 @@ def reporting_trough_eppo(request):
 #    context = {"pest_reports":pest_reports,}
     context = {}
     #TO DO:        
-    #SET CANADA in Country page 'allow eppo to report automatically'
+    #SET COUNTIES in Country page 'allow eppo to report automatically'
     #SET proper email ROY and Publisher, send real emails'
     response = render(request, "countries/eppo_reporting.html", context)
     return response
