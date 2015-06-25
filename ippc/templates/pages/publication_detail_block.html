@@ -12,7 +12,7 @@
   
      {% endif %}
            <dt>{% trans "Published" %}</dt> 
-           <dd>{% blocktrans with sometime=publication.modify_date|date:"D, d M Y, H:i" %}{{ sometime }}{% endblocktrans %}</dd> 
+           <dd>{% blocktrans with sometime=publication.publication_date|date:"D, d M Y, H:i" %}{{ sometime }}{% endblocktrans %}</dd> 
 
           {% if publication.document_number %}
           <dt>{% trans "Doc #" %}</dt>
