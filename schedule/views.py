@@ -49,10 +49,11 @@ def calendar_by_year(request, calendar_slug, year=None, template_name="schedule/
         date = coerce_date_dict(request.GET)
     except ValueError:
         raise Http404
-
+    print(date)
     if date:
         try:
             date = datetime.datetime(**date)
+            print(date)
         except ValueError:
             raise Http404
     else:
@@ -70,14 +71,14 @@ def calendar_by_year(request, calendar_slug, year=None, template_name="schedule/
     for m in range(1,13):
         months_list.append((m, datetime.date(2014, m, 1).strftime('%B')))
         monthevents=[]
+     
         for e in event_list:
-            print('month')
-            print(e.start.month )  
+            
             if e.start.month == m:
                 monthevents.append(e)
+                 
         event_list2.append((m,monthevents))
         
-    print(event_list2)
     period_objects = dict([(period.__name__.lower(), period(event_list, date)) for period in year])
     return render_to_response(template_name, {
         'periods': period_objects,
@@ -413,6 +414,8 @@ def create_or_edit_event(request, country, calendar_slug, event_id=None, next=No
        
     if form.is_valid() and f_form.is_valid() and u_form.is_valid():
         event = form.save(commit=False)
+        event.start=event.start + datetime.timedelta(hours=12)
+       
         if user.groups.filter(name='Country editor'):
             event.country=user.get_profile().country
         event.creator = request.user
