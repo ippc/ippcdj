@@ -277,9 +277,9 @@ def reminder_to_cn(request):
 #        (4, ("Pest status")),
 #        (5, ("Rationale for Phytosanitary Requirements")),
 #    )
-#    pestreport_range=dt.timedelta(days=93)
-#    ro_range=dt.timedelta(days=93)
-#    ev_range=dt.timedelta(days=93)
+#    pestreport_range=dt.timedelta(days=193)
+#    ro_range=dt.timedelta(days=193)
+#    ev_range=dt.timedelta(days=193)
 #          
 #    textmessages=[]
 #    countriesList=CountryPage.objects.filter().exclude(id='-1')
@@ -300,7 +300,7 @@ def reminder_to_cn(request):
 #                user_obj=User.objects.get(id=e.id)
 #                e_email=user_obj.email
 #                emails.append(e_email)
-#
+##
 #            #check PEST REPORTS: 
 #            countpest=0
 #            pests_to_notify=''
@@ -344,7 +344,7 @@ def reminder_to_cn(request):
 #                   textmessage =textmessage +reportingobligation_to_notify
 #                if evr >0:
 #                   textmessage =textmessage +eventreporting_to_notify
-#
+##
 #                textmessage =textmessage +'</table>'
 #                textmessages.append(textmessage)
 #                
@@ -361,15 +361,15 @@ def reminder_to_cn(request):
 #                emails, ['paola.sentinelli@fao.org'])
 #                message.content_subtype = "html"
 #                messages.append(message)
-#                connection = mail.get_connection()
-#                connection.open()
+#                #connection = mail.get_connection()
+#                #connection.open()
 #                #sent=connection.send_messages(messages)
-#                connection.close()
+#                #connection.close()
 #                
 #                remider_message.sent = True
 #                remider_message.save()
 #    context = {'textmessages':textmessages}
-    
+#    
     context = {}
     response = render(request, "countries/reminder_system.html", context)
     return response
@@ -915,7 +915,7 @@ def send_notification_message(newitem,id,content_type,title,url):
         emailto_all = ['']
         for cn in notify_instance.countries.all():
             countryo = get_object_or_404(CountryPage, page_ptr_id=cn.id)
-            print(countryo)
+            #print(countryo)
             if countryo.contact_point_id:
                 user_obj=User.objects.get(id=countryo.contact_point_id)
                 emailto_all.append(str(user_obj.email))
@@ -925,10 +925,10 @@ def send_notification_message(newitem,id,content_type,title,url):
                 user_obj=User.objects.get(id=countryo.contact_point_id)
                 emailto_all.append(str(user_obj.email))
         if notify_instance.notifysecretariat :
-            print(countryo)
+            #print(countryo)
             #print("sec!!!")
             emailto_all.append(str('ippc@fao.org'))
-        print(emailto_all)
+        #print(emailto_all)
         subject=''
         if newitem==1:
             subject='ADDED new content: ' +title
@@ -4578,7 +4578,7 @@ class AdvancesSearchCNListView(ListView):
         if self.kwargs['type'] == 'pestreport':
             context['type_label'] = 'Official pest report (Art. VIII.1a)'
             context['link_to_item'] = 'pest-report-detail'
-            context['items']= PestReport.objects.all()
+            context['items']= PestReport.objects.filter(is_version=False)#PestReport.objects.all()
             context['counttotal'] =context['items'].count() 
            
             cns= CountryPage.objects.all()
