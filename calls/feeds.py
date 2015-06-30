@@ -68,7 +68,7 @@ class PostsRSS(Feed):
         if self.username:
             author = get_object_or_404(User, username=self.username)
             calls_posts = calls_posts.filter(user=author)
-        limit = settings.CALLS_RSS_LIMIT
+        limit = None#settings.CALLS_RSS_LIMIT
         if limit is not None:
             calls_posts = calls_posts[:settings.CALLS_RSS_LIMIT]
         return calls_posts
@@ -86,7 +86,7 @@ class PostsRSS(Feed):
 
     def item_author_link(self, item):
         username = item.user.username
-        return reverse("calls_posts_list_author", kwargs={"username": username})
+        return None#reverse("calls_posts_list_author", kwargs={"username": username})
 
     def item_pubdate(self, item):
         return item.publish_date
@@ -106,4 +106,4 @@ class PostsAtom(PostsRSS):
         return self.description()
 
     def link(self):
-        return reverse("calls_posts_feed", kwargs={"format": "atom"})
+        return reverse("calls_post_feed", kwargs={"format": "atom"})
