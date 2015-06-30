@@ -4,7 +4,7 @@ from django.http import Http404
 from django.shortcuts import get_object_or_404
 
 from news.models import NewsPost, NewsCategory
-from mezzanine.blog.feeds import PostsRSS, PostsAtom
+from news.feeds import PostsRSS, PostsAtom
 from mezzanine.conf import settings
 from mezzanine.generic.models import Keyword
 from mezzanine.utils.views import render, paginate

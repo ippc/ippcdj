@@ -68,9 +68,9 @@ class PostsRSS(Feed):
         if self.username:
             author = get_object_or_404(User, username=self.username)
             news_posts = news_posts.filter(user=author)
-        limit = settings.NEWS_RSS_LIMIT
+        limit = None# settings.NEWS_RSS_LIMIT
         if limit is not None:
-            news_posts = news_posts[:settings.news_RSS_LIMIT]
+            news_posts = news_posts[:30]
         return news_posts
 
     def item_description(self, item):
@@ -86,8 +86,9 @@ class PostsRSS(Feed):
 
     def item_author_link(self, item):
         username = item.user.username
-        return reverse("news_post_list_author", kwargs={"username": username})
-
+        #return reverse("news_post_list_author", kwargs={"username": username})
+        return None#reverse("news_post_list_author", kwargs={"username": username})
+    
     def item_pubdate(self, item):
         return item.publish_date
 
