@@ -184,6 +184,7 @@ class PestFreeAreaForm(forms.ModelForm):
         fields = [
            'title', 
            'short_description',
+           'pest_under_consideration',
            'publication_date', 
            'pfa_type',
            'contact_for_more_information',
