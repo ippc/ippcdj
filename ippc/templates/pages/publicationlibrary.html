@@ -21,12 +21,21 @@
 {% endblock %}
 
 {% block main %}
-{% if user.is_superuser or perms.pages.change_richtextpage %}
     <div class="pull-right">
-        <a class="btn btn-info btn-small" href="/admin/ippc/publicationlibrary/{{ page.id }}"><i class="icon-edit icon-white"></i> Edit as Admin</a><br>
+    {% if user.is_superuser  or perms.pages.change_richtextpage %}
+          <a class="btn btn-info btn-small" href="/admin/ippc/publicationlibrary/{{ page.id }}"><i class="icon-edit icon-white"></i> Edit as Admin</a><br>
+    {% endif %}
+    {% if page.publicationlibrary.id == 777 or page.publicationlibrary.parent_id == 777 %}
+        {% for group in request.user.groups.all %}
+            {% if group.name == 'IFQRG admin' and  perms.ippc.change_publicationlibrary %}
+                <a class="btn btn-info btn-small" href="/admin/ippc/publicationlibrary/{{ page.id }}"><i class="icon-edit icon-white"></i> Edit as Admin</a><br>
+            {% endif %}
+        {% endfor %}
+    {% endif %}
+    {% if user.is_superuser or perms.pages.change_richtextpage %}
         <a class="btn btn-info btn-small" href="/admin/ippc/publicationlibrary/add/?parent={{ page.id }}"><i class="icon-plus icon-white"></i> Add new sub page</a><br>
+    {% endif %}
     </div>
-{% endif %}
     
 {# publication libaries may appear in restricted work area or public pages, #}
 {# so text if login is required before doing permissions tests #}
