@@ -49,8 +49,8 @@
       
       {% load translate_tags %}
       
-      {% if page.login_required %} 
-        {% if user.is_superuser or perms.ippc.change_publication  %}
+      {% if page.login_required %}
+        {% if user.is_superuser or perms.ippc.change_news  %}
             <a href="{{ page.get_absolute_url }}">
                 {% if page.has_children_in_menu %}<i class="icon-plus"> </i> {% endif %}
                 {% with page.richtextpage|get_object_translation as translated_page %}
