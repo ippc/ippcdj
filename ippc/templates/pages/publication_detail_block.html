@@ -1,4 +1,5 @@
 {% load mezzanine_tags staticfiles i18n %}
+    {% load translate_tags %}
 <h1>{{ publication.title }}</h1> 
 {% if publication.is_version %}
 <dl class="dl-horizontal" style="border: 3px double red;    padding: 0.5em;">
@@ -131,12 +132,23 @@
   </dd>
   {% endif %}
           
+     <dt>&#160;</dt>
+  <dd>  &#160;     </dd>   
+  <dt>{% trans "Parent page" %}</dt>
+  <dd>
+   <a href="{{ publication.library.get_absolute_url }}">   {% with  publication.library.richtextpage|get_object_translation as translated_page %}
+                {% if translated_page.title %}
+                    {{ translated_page.title|safe }}
+                    {% else %}
+                    {{ publication.library.title }}
+                {% endif %}  {% endwith %} </a>
+  </dd>       
           
           
           
-          
-          
-          
+     
+                  
+                     
           
           
           
