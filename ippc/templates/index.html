@@ -16,6 +16,7 @@
 <!--div class="row-fluid" style="margin:0; font-weight:bold; padding:3px 5px; background:#FCC; color:#000; width:99% !important; display:block; text-align:left;">IMPORTANTE NOTICE: due to FAO systems maintenance, the website will be unavailable on Saturday 16 May between 8:30 and 12:30 (Rome time). </div-->
 {% load ippc_tags %}
 {% get_latest news.NewsPost 10 as latest_news %}
+
    
  <!-- or NEWS in BLOCKS ================== -->
   
@@ -78,12 +79,52 @@
 {% block local_nav %}
 <div class="panel">
   <h4><a href="{% url 'page' 'who-we-are' %}">{% trans "About" %}</a></h4>
-  <p>{% blocktrans %}The International Plant Protection Convention (IPPC) is an <a title='See the convention text' href='/{{ LANGUAGE_CODE }}/core-activities/governance/convention-text/'>international agreement</a> on plant health to which <a href='http://www.fao.org/fileadmin/user_upload/legal/docs/5_004s-e.pdf'>182 contracting parties</a> currently adhere.  It aims to protect cultivated and wild plants by preventing the introduction and spread of pests.  The <a href='/{{ LANGUAGE_CODE }}/about/secretariat'>Secretariat</a> of the IPPC is provided by the <a href='http://fao.org'>Food and Agriculture Organization of the United Nations</a>. See our <a href='/{{ LANGUAGE_CODE }}/media-kit'>Media Kit</a>.{% endblocktrans %}</p>
+  <p>{% blocktrans %}The International Plant Protection Convention (IPPC) is an <a title='See the convention text' href='/{{ LANGUAGE_CODE }}/core-activities/governance/convention-text/'>international agreement</a> on plant health to which <a href='http://www.fao.org/fileadmin/user_upload/legal/docs/004s-e.pdf'>182 contracting parties</a> currently adhere.  It aims to protect cultivated and wild plants by preventing the introduction and spread of pests.  The <a href='/{{ LANGUAGE_CODE }}/about/secretariat'>Secretariat</a> of the IPPC is provided by the <a href='http://fao.org'>Food and Agriculture Organization of the United Nations</a>. See our <a href='/{{ LANGUAGE_CODE }}/media-kit'>Media Kit</a>.{% endblocktrans %}</p>
 </div>
+  <!-- BEGIN =NOTIFICATIONS SLIDESHOW ================== --> 
+<!--div class="panel">
+  <h4><a href="{% url 'page' 'who-we-are' %}">{% trans "Notifications" %}</a></h4>
+
+    <script type="text/javascript">//<![CDATA[ 
+    $(window).load(function(){
+        $('.carousel').carousel({
+            interval: 2500
+        })
+     });//]]>  
+    </script>
+    <p>  
+        <div id="myCarousel" class="carousel slide vertical">
+    
+           <div class="carousel-inner">{% get_latest calls.CallsPost 10 as latest_calls %}
+                {% for entry1 in latest_calls|slice:":8" %}
+                {% if forloop.first %}
+                <div class="item active">
+                {% else %}
+                <div class="item">
+                {% endif %}
+                    
+                    <h5>
+                      <a class="dark" href="{{ entry1.get_absolute_url }}">{{ entry1.title }}</a><br>
+                      <small>{{ entry1.publish_date|timesince }} {% trans "ago" %}.</small>
+                    </h5>
+                    {{ entry1.content|richtext_filter|safe|truncatewords_html:30 }} 
+                    <p><small><a href="{{ entry1.get_absolute_url }}">{% trans "Continue reading…" %}</a></small></p>
+                </div>                    
+                {% endfor %}                    
+            </div>
+        </div>
+    </p>
+</div-->
+<!--div class="panel">
+	<h4><a href='/iyph' title=''>{% blocktrans %}Support IYPH{% endblocktrans %}</a></h4>
+	<p>{% blocktrans %}This is the BOX with some text.....{% endblocktrans %}</p>
+</div-->
+
 <div class="panel">
 	<h4><a href='http://us10.campaign-archive1.com/home/?u=fc3d4d92d71f2fa693910c666&id=bf810c0be2' title='See prior editions.'>{% blocktrans %}Newsletter{% endblocktrans %}</a></h4>
 	<p>{% blocktrans %}The IPPC Secretariat is keen both to keep people informed and to enable readers to share items of interest. A newsletter is sent out once a month, with occasional special editions. <a class='btn btn-small btn-success' href='http://ippc.us10.list-manage.com/subscribe?u=fc3d4d92d71f2fa693910c666&id=bf810c0be2'>Subscribe to the newsletter</a>, <a href='http://us10.campaign-archive1.com/home/?u=fc3d4d92d71f2fa693910c666&id=bf810c0be2'>see prior editions</a> and <a href='mailto:jeremy.cherfas@fao.org' title='Open your email client.'>send content suggestions</a>.{% endblocktrans %}</p>
 </div>
+
 
 <div class="panel">
   <h4><a href="{% url 'page' 'core-activities' %}">{% trans "Core Activities" %}</a></h4>
