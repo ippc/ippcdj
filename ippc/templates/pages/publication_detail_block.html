@@ -109,6 +109,8 @@
   
   
    {% if publication.issuename.all %}
+   {% for entry in publication.issuename.all %}
+		{% for e in entry.issuename.all|slice:":1"  %}
   <dt>{% trans "Issue keywords" %}</dt>
   <dd>
   {% for entry in publication.issuename.all %}
@@ -116,12 +118,16 @@
 			<i class="icon-tag"></i> {{e.name}}
 		{% endfor %} 
 	{% endfor %}&#160;
-  </dd>
+  </dd> {% endfor %}
+  {% endfor %}
   {% endif %}
  
   
   
   {% if publication.commname.all %}
+  {% for entry in publication.commname.all %}
+	{% for e in entry.commname.all|slice:":1" %}
+
   <dt>{% trans "Commodity keywords" %}</dt>
   <dd>
   {% for entry in publication.commname.all %}
@@ -130,6 +136,8 @@
 		{% endfor %} 
 	{% endfor %}&#160;
   </dd>
+  {% endfor %}
+  {% endfor %}
   {% endif %}
           
      <dt>&#160;</dt>
