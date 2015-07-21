@@ -565,6 +565,8 @@ class PestReport(Displayable, models.Model):
     parent_id = models.CharField(max_length=50,blank=True, null=True,)
     verified_date = models.DateTimeField(_("Verified date"),
         blank=True, null=True, editable=False)
+    to_verify = models.BooleanField(verbose_name=_("to verify"),
+                                         default=False)    
     # =todo:
     # commodity_groups = 
     # keywords / tags = 
@@ -778,6 +780,8 @@ class ReportingObligation(Displayable, models.Model):
     parent_id = models.CharField(max_length=50,blank=True, null=True,)
     verified_date = models.DateTimeField(_("Verified date"),
         blank=True, null=True, editable=False)
+    to_verify = models.BooleanField(verbose_name=_("to verify"),
+                                         default=False) 
     # objects = models.Manager()
     objects = SearchableManager()
     search_fields = ("title", "short_description")
@@ -1024,6 +1028,8 @@ class EventReporting(Displayable, models.Model):
     parent_id = models.CharField(max_length=50,blank=True, null=True,)
     verified_date = models.DateTimeField(_("Verified date"),
         blank=True, null=True, editable=False)
+    to_verify = models.BooleanField(verbose_name=_("to verify"),
+                                         default=False)
     objects = SearchableManager()
     
     search_fields = ("title", "short_description")
