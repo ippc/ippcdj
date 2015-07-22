@@ -1,0 +1,158 @@
+{% extends "baseiyph.html" %}
+{% load i18n future mezzanine_tags iyph_tags keyword_tags disqus_tags %}
+
+{% block meta_title %}{% if page %}{{ page.richtextpage.meta_title }}{% else %}{% trans "Iyph" %}{% endif %}{% endblock %}
+
+{% block meta_keywords %}{% metablock %}
+{% keywords_for page as keywords %}
+{% for keyword in keywords %}
+    {% if not forloop.first %}, {% endif %}
+    {{ keyword }}
+{% endfor %}
+{% endmetablock %}{% endblock %}
+
+{% block meta_description %}{% metablock %}
+{{ page.description }}
+{% endmetablock %}{% endblock %}
+
+{% block title %}
+{% if page %}
+{# {% editable page.title %}{{ page.title }}{% endeditable %} #}
+{{ page.title }}
+{% else %}
+{% trans " " %}
+{% endif %}
+{% endblock %}
+
+{% block breadcrumb_menu %}
+
+{% if tag or category or year or month or author %}
+<li>{% spaceless %}
+{% if tag %}
+    {% trans "Tag:" %} {{ tag }}
+{% else %}{% if category %}
+    <!--{% trans "Category:" %} {{ category }}-->
+{% else %}{% if year or month %}
+    {% if month %}{{ month }}, {% endif %}{{ year }}
+{% else %}{% if author %}
+    {% trans "Author:" %} {{ author.get_full_name|default:author.username }}
+{% endif %}{% endif %}{% endif %}{% endif %}
+{% endspaceless %}
+</li>
+{% endif %}
+{% endblock %}
+
+{% block main %}
+
+{% if tag or category or year or month or author %}
+    {% block iyph_post_list_filterinfo %}
+    <p>
+    {% if tag %}
+        {% trans "Viewing tagged as: " %} <strong>{{ tag }}</strong>
+    {% else %}{% if category %}
+       <!-- {% trans "Viewing posts for the category" %} <strong>{{ category }}</strong>-->
+    {% else %}{% if year or month %}
+        {% trans "Viewing items from" %} <strong>{% if month %}{{ month }}, {% endif %}
+        {{ year }}</strong>
+    {% else %}{% if author %}
+        {% trans "Viewing posts by" %}
+        {{ author.get_full_name|default:author.username }}
+    {% endif %}{% endif %}{% endif %}{% endif %}
+    {% endblock %}
+    </p>
+{% else %}
+    {% if page %}
+    {% block iyph_post_list_pagecontent %}
+    {# {% editable page.richtextpage.content %} #}
+    {{ page.richtextpage.content|richtext_filter|safe }}
+    {# {% endeditable %} #}
+    {% endblock %}
+    {% endif %}
+{% endif %}
+
+{% for iyph_post in iyph_posts.object_list %}
+{% block iyph_post_list_post_title %}
+{# {% editable iyph_post.title %} #}
+<h4>
+    <a href="{{ iyph_post.get_absolute_url }}">     
+        {% with iyph_post|get_object_translation as translated_page %}
+            {{ translated_page.title|safe }}
+    {% endwith %}</a>
+</h4>
+{# {% endeditable %} #}
+{% endblock %}
+{% block iyph_post_list_post_metainfo %}
+{# {% editable iyph_post.publish_date %} #}
+<h6>
+    {% trans "Posted " %}
+    {% with iyph_post.category.all as categories %}
+    {% if categories %}
+    {% trans "in" %}
+    {% for category in categories %}
+    <a href="{% url "iyph_post_list_category" category.slug %}">{{ category }}</a>
+    {% endfor %}
+    {% endif %}
+    {% endwith %}
+    {% blocktrans with sometime=iyph_post.publish_date|timesince %}{{ sometime }} ago{% endblocktrans %}
+    {# {% blocktrans with thetime=iyph_post.publish_date|date:"D, d M Y, H:i" %} <span class="normal">on</span> {{ thetime }}{% endblocktrans %} #}
+</h6>
+{# {% endeditable %} #}
+{% endblock %}
+
+{% if iyph_post.featured_image %}{#and settings.IYPH_USE_FEATURED_IMAGE and #}
+{% block iyph_post_list_post_featured_image %}
+<img class="featured-thumb" src="{{ MEDIA_URL }}{% thumbnail iyph_post.featured_image 90 90 %}">
+{% endblock %}
+{% endif %}
+
+{% block iyph_post_list_post_content %}
+{# {% editable iyph_post.content %} #}
+
+ {% with iyph_post|get_object_translation as translated_page %}
+             {{ translated_page.content|richtext_filter|safe |truncatewords_html:100 }}
+      
+    {% endwith %}
+{# {% endeditable %} #}
+{% endblock %}
+
+{% block iyph_post_list_post_links %}
+<p class="iyph-list-detail">
+    {% keywords_for iyph_post as tags %}
+    {% if tags %}
+    {% trans "Tags" %}:
+    {% spaceless %}
+    {% for tag in tags %}
+    <a href="{% url "iyph_post_list_tag" tag.slug %}" class="tag">{{ tag }}</a>
+    {% endfor %}
+    {% endspaceless %}
+    <br>
+    {% endif %}
+    <a href="{{ iyph_post.get_absolute_url }}">{% trans "Continue reading…" %}</a>
+    {# / #}
+    {# {% if settings.COMMENTS_DISQUS_SHORTNAME %} #}
+    {# <a href="{{ iyph_post.get_absolute_url }}#disqus_thread" #}
+    {#     data-disqus-identifier="{% disqus_id_for iyph_post %}"> #}
+    {#     {% trans "Comments" %} #}
+    {# </a> #}
+    {# {% else %} #}
+    {# <a href="{{ iyph_post.get_absolute_url }}#comments"> #}
+    {#     {% blocktrans count comments_count=iyph_post.comments_count %}{{ comments_count }} comment{% plural %}{{ comments_count }} comments{% endblocktrans %} #}
+    {# </a> #}
+    {# {% endif %} #}
+</p>
+{% endblock %}
+{% endfor %}
+
+{% pagination_for iyph_posts %}
+
+{# {% if settings.COMMENTS_DISQUS_SHORTNAME %} #}
+{# {% include "generic/includes/disqus_counts.html" %} #}
+{# {% endif %} #}
+
+{% endblock %}
+
+{% block local_nav %}
+{% include "iyph/includes/filter_panel.html" %}
+{% endblock %}
+
+{% block pageinfo %}{% endblock pageinfo %}
