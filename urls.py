@@ -11,7 +11,7 @@ admin.autodiscover()
 from .ippc.views import IppcUserProfileDetailView,profile_update, PestReportListView, PestReportHiddenListView,\
 PestReportDetailView, CountryView,PartnersView, pest_report_create, pest_report_edit, PublicationDetailView,PublicationDetail2View,\
 PublicationListView,ReportingObligationListView, ReportingObligationDetailView,reporting_obligation_create, reporting_obligation_edit, \
-EventReportingListView, EventReportingDetailView,event_reporting_create, event_reporting_edit, \
+EventReportingListView, EventReportingDetailView,event_reporting_create, event_reporting_edit,\
 PestFreeAreaListView, PestFreeAreaDetailView,pfa_create, pfa_edit,\
 WebsiteListView, WebsiteDetailView ,website_create, website_edit, \
 ImplementationISPMListView, ImplementationISPMDetailView,implementationispm_create, implementationispm_edit,\
@@ -29,7 +29,8 @@ DraftProtocolDetailView,  draftprotocol_create, draftprotocol_edit,draftprotocol
 draftprotocol_comment_create,draftprotocol_comment_edit,PublicationLibraryView,commenta,contactPointExtractor,\
 CountryRegionsPercentageListView,CountryStatsreportsListView,CountryStatsTotalreportsListView,CountryRegionsUsersListView,CountryTotalUsersListView,\
 QuestionListView, QuestionDetailView, QuestionAnswersView,question_create,question_edit,\
-answer_create,answer_edit  ,vote_answer_up ,vote_answer_down,reporting_trough_eppo,reminder_to_cn
+answer_create,answer_edit  ,vote_answer_up ,vote_answer_down,reporting_trough_eppo,reminder_to_cn#,reporting_obligation_validate,event_reporting_validate,pest_report_validate
+#reporting_obligation_translate,
 from schedule.periods import Year, Month, Week, Day
 from mezzanine.core.views import direct_to_template
 
@@ -89,6 +90,7 @@ urlpatterns = patterns("",
     url(r'^forum/', include('forum.urls')),
     url(r'^calls/', include('calls.urls')),
     url(r'^news/', include('news.urls')),
+    url(r'^iyph/', include('iyph.urls')),
 
 
 
@@ -239,7 +241,11 @@ urlpatterns = patterns("",
     url(r'^countries/(?P<country>[\w-]+)/pestreports/edit/(?P<id>\d+)/$',
         view=pest_report_edit,
         name='pest-report-edit'),
-
+#    url(r'^countries/(?P<country>[\w-]+)/pestreports/validate/(?P<id>\d+)/$',
+#        view=pest_report_validate,
+#        name='pest-report-validate'),
+#        
+        
     # publication list
     url(r'^publications/$',
         view=PublicationListView.as_view(),
@@ -293,6 +299,14 @@ urlpatterns = patterns("",
     url(r'^countries/(?P<country>[\w-]+)/reportingobligation/edit/(?P<id>\d+)/$',
         view=reporting_obligation_edit,
         name='reporting-obligation-edit'),
+#    url(r'^countries/(?P<country>[\w-]+)/reportingobligation/validate/(?P<id>\d+)/$',
+#        view=reporting_obligation_validate,
+#        name='reporting-obligation-validate'),
+#    url(r'^countries/(?P<country>[\w-]+)/reportingobligation/translate/(?P<lang>[\w-]+)/(?P<id>\d+)/$',
+#        view=reporting_obligation_translate,
+#        name='reporting-obligation-translate'),    
+#    
+            
     #-------------------------------------------#
     # event reporting list
     url(r'^countries/(?P<country>[\w-]+)/eventreporting/(?P<type>[\w-]+)$',
@@ -318,7 +332,10 @@ urlpatterns = patterns("",
     url(r'^countries/(?P<country>[\w-]+)/eventreporting/edit/(?P<id>\d+)/$',
         view=event_reporting_edit,
         name='event-reporting-edit'),
-
+#    url(r'^countries/(?P<country>[\w-]+)/eventreporting/validate/(?P<id>\d+)/$',
+#        view=event_reporting_validate,
+#        name='event-reporting-validate'),
+#        
 
     # event reporting list
     url(r'^countries/(?P<country>[\w-]+)/eventreporting/$',
