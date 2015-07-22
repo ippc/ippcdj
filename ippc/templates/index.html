@@ -1,5 +1,5 @@
 {% extends "base.html" %}
-{% load i18n mezzanine_tags %}
+{% load i18n mezzanine_tags translate_tags %}
 
 {% block meta_title %}{% trans "IPPC" %}{% endblock %}
 {# {% block title %}{% trans "Welcome to IPPC" %}{% endblock %} #}
@@ -35,11 +35,17 @@
         {% endif %}
         
         <h5>
-          <a class="dark" href="{{ entry.get_absolute_url }}">{{ entry.title }}</a><br>
+          <a class="dark" href="{{ entry.get_absolute_url }}">
+              {% with entry|get_object_translation as translated_page %}
+                  {{ translated_page.title|safe}}
+              {% endwith %}
+          </a><br>
           <small>{{ entry.publish_date|timesince }} {% trans "ago" %}.</small>
         </h5>
-        {{ entry.content|richtext_filter|safe|truncatewords_html:40 }} 
-				<p><small><a href="{{ entry.get_absolute_url }}">{% trans "Continue reading…" %}</a></small></p>
+         {% with entry|get_object_translation as translated_page %}
+                  {{ translated_page.content|richtext_filter|safe|truncatewords_html:40}}
+              {% endwith %}
+          <p><small><a href="{{ entry.get_absolute_url }}">{% trans "Continue reading…" %}</a></small></p>
       
 {# if the the forloop counter is divisible by 2, close the row-fluid <div> tag and open a new one #}
       </div>
