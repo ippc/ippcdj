@@ -75,9 +75,11 @@
 BLOG_USE_FEATURED_IMAGE = True
 CALLS_USE_FEATURED_IMAGE = True
 NEWS_USE_FEATURED_IMAGE = True
+IYPH_USE_FEATURED_IMAGE = True
 
 NEWS_POST_PER_PAGE = "14"
 CALLS_POST_PER_PAGE = "14"
+IYPH_POST_PER_PAGE = "14"
 
 # If True, the south application will be automatically added to the
 # INSTALLED_APPS setting.
@@ -267,6 +269,8 @@ INSTALLED_APPS = (
     "forum",
     "calls",
     "news",
+    "iyph",
+    
     "t_eppo",
     # or, even better, attachments that can be related to any model type
     
@@ -383,9 +387,10 @@ LANGUAGES = (
 # https://docs.djangoproject.com/en/dev/ref/settings/#locale-paths
 LOCALE_PATHS = (os.path.join(PROJECT_ROOT, "conf/locale"),)
 
-SEARCH_MODEL_CHOICES = ("pages.Page", "news.NewsPost","calls.CallsPost","ippc.Publication", "ippc.ReportingObligation","ippc.EventReporting","ippc.PestReport")
+SEARCH_MODEL_CHOICES = ("pages.Page", "news.NewsPost","calls.CallsPost","ippc.Publication", "ippc.ReportingObligation","ippc.EventReporting","ippc.PestReport","iyph.IyphPost")
 CALLS_SLUG = 'calls'
 NEWS_SLUG = 'news'
+IYPH_SLUG = 'iyph'
 # BLOG_SLUG = 'news'
 #CALLS_USE_FEATURED_IMAGE = 'True'
 FORUM_SLUG = 'forum'
