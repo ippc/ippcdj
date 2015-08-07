@@ -1,0 +1,92 @@
+{% extends "baseiyph.html" %}
+{% load i18n future mezzanine_tags iyph_tags keyword_tags disqus_tags %}
+
+{% block meta_title %}{% if page %}{{ page.richtextpage.meta_title }}{% else %}{% trans "Iyph" %}{% endif %}{% endblock %}
+
+{% block meta_keywords %}{% metablock %}
+{% keywords_for page as keywords %}
+{% for keyword in keywords %}
+{% if not forloop.first %}, {% endif %}
+{{ keyword }}
+{% endfor %}
+{% endmetablock %}{% endblock %}
+
+{% block meta_description %}{% metablock %}
+{{ page.description }}
+{% endmetablock %}{% endblock %}
+
+{% block title %}
+{% if page %}
+{# {% editable page.title %}{{ page.title }}{% endeditable %} #}
+{{ page.title }}
+{% else %}
+{% trans " " %}
+{% endif %}
+{% endblock %}
+
+{% block breadcrumb_menu %}
+<li><a href="/{{ LANGUAGE_CODE }}/iyph">{% trans "Home" %}</a><span class="divider">/</span></li>
+<li><a href="/{{ LANGUAGE_CODE }}/iyph/chronology/list">{% trans "Chronology List" %}</a><span class="divider">/</span></li>
+<li class="active">Chronology item</li>
+{% endblock %}
+
+{% block main %}
+<h3>
+    {% with chronology|get_object_translation as translated_page %}
+            {{ translated_page.title|safe }}
+    {% endwith %}
+    
+    
+    <small  class="pull-right"><a class="btn btn-small btn-info" href="/admin/iyph/chronology/{{ chronology.id }}">Edit as Admin</a></small><br>
+</h3>
+<h6>{{chronology.publish_date|date:"M Y" }}</h6>    
+
+<p>{% with chronology|get_object_translation as translated_page %}
+    {{ translated_page.summary|richtext_filter|safe  }}</p>
+{% endwith %}
+</div>
+
+<div class="span4 right">
+
+    <div class="panel panel-default">
+        <div class="panel-body">
+            <p>   
+                {% if user.is_superuser  or perms.iyph.add_iyphpost  %} 
+
+                <a class="btn btn-small btn-info" href="/admin/iyph/chronology/add/">{% trans "Add new chronology item" %}</a><br>
+
+                {% endif %}
+            </p>
+        </div>
+    </div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</div> 
+
+
+
+
+
+
+
+{% endblock %}
+
+
+{% block pageinfo %}{% endblock pageinfo %}
