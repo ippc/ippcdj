@@ -74,7 +74,11 @@
 {% block news_post_list_post_title %}
 {# {% editable news_post.title %} #}
 <h4>
-    <a href="{{ news_post.get_absolute_url }}">{{ news_post.title }}</a>
+    <a href="{{ news_post.get_absolute_url }}">
+          {% with news_post|get_object_translation as translated_page %}
+            {{ translated_page.title|safe }}
+    {% endwith %}
+   </a>
 </h4>
 {# {% endeditable %} #}
 {% endblock %}
@@ -104,7 +108,12 @@
 
 {% block news_post_list_post_content %}
 {# {% editable news_post.content %} #}
-{{ news_post.description_from_content|safe }}
+
+ {% with news_post|get_object_translation as translated_page %}
+             {{ translated_page.content|richtext_filter|safe |truncatewords_html:100 }}
+      
+    {% endwith %}
+
 {# {% endeditable %} #}
 {% endblock %}
 

@@ -1,5 +1,5 @@
 {% extends "news/news_post_list.html" %}
-{% load mezzanine_tags comment_tags keyword_tags rating_tags i18n future disqus_tags %}
+{% load mezzanine_tags comment_tags keyword_tags rating_tags i18n future disqus_tags news_tags %}
 
 {% block meta_title %}{{ news_post.meta_title }}{% endblock %}
 
@@ -14,13 +14,20 @@
 
 {% block title %}
 {# {% editable news_post.title %} #}
-{{ news_post.title }}
+{% with news_post|get_object_translation as translated_page %}
+             {{ translated_page.title|safe}}
+      
+    {% endwith %}
 {# {% endeditable %} #}
 {% endblock %}
 
 {% block breadcrumb_menu %}
 {{ block.super }}
-<li class="active">{{ news_post.title }}</li>
+<li class="active">
+ {% with news_post|get_object_translation as translated_page %}
+             {{ translated_page.title|safe}}
+      
+    {% endwith %}</li>
 {% endblock %}
 
 {# =note: the sidebar is in the filter_panel.html include #}
@@ -72,7 +79,12 @@
 
 {% block news_post_detail_content %}
 {# {% editable news_post.content %} #}
-{{ news_post.content|richtext_filter|safe }}
+
+
+ {% with news_post|get_object_translation as translated_page %}
+             {{ translated_page.content|richtext_filter|safe |truncatewords_html:100 }}
+      
+    {% endwith %}
 {# {% endeditable %} #}
 {% endblock %}
 

@@ -97,3 +97,21 @@ class NewsCategory(Slugged):
     @models.permalink
     def get_absolute_url(self):
         return ("news_post_list_category", (), {"category": self.slug})
+
+class Translatable(models.Model):
+    """ Translations of user-generated content - https://gist.github.com/renyi/3596248"""
+    lang = models.CharField(max_length=5, choices=settings.LANGUAGES)
+    
+    class Meta:
+        abstract = True
+        ordering = ("lang",)
+        
+class TransNewsPost(Translatable,   Slugged):
+    translation = models.ForeignKey(NewsPost, related_name="translation")
+    content = models.TextField(blank=True, null=True)
+    
+    class Meta:
+        verbose_name = _("Translated NewsPost")
+        verbose_name_plural = _("Translated NewsPosts")
+        ordering = ("lang",)
+   

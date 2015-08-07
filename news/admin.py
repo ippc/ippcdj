@@ -4,10 +4,13 @@ from copy import deepcopy
 from django.contrib import admin
 from django.utils.translation import ugettext_lazy as _
 
-from news.models import NewsPost, NewsCategory
+from news.models import NewsPost, NewsCategory,TransNewsPost
 from mezzanine.conf import settings
-from mezzanine.core.admin import DisplayableAdmin, OwnableAdmin
+from mezzanine.core.admin import DisplayableAdmin, OwnableAdmin,StackedDynamicInlineAdmin
 
+class TransNewsPostAdmin(StackedDynamicInlineAdmin):
+    model = TransNewsPost
+    fields = ("lang", "title", "content")
 
 newspost_fieldsets = deepcopy(DisplayableAdmin.fieldsets)
 newspost_fieldsets[0][1]["fields"].insert(1, "categories")
@@ -33,7 +36,7 @@ class NewsPostAdmin(DisplayableAdmin):
     list_display = newspost_list_display
     list_filter = newspost_list_filter
     filter_horizontal = ("categories", "related_posts",)
-
+    inlines = [ TransNewsPostAdmin]
     def save_form(self, request, form, change):
         """
         Super class ordering is important here - user must get saved first.
