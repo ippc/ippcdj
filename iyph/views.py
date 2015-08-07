@@ -49,11 +49,23 @@ def iyph_post_list(request, tag=None, year=None, month=None, username=None,
     iyph_posts = paginate(iyph_posts, request.GET.get("page", 1),
                           settings.IYPH_POST_PER_PAGE,
                           settings.MAX_PAGING_LINKS)
-    chronologies = Chronology.objects.all().order_by('-publish_date', 'title')
+    chronologies = Chronology.objects.all().order_by('publish_date', 'title')
     data= ''
+    i=1
     for chronology in chronologies:
-        data= data+'{"start": "'+str(chronology.publish_date)+'","end": "'+str(chronology.publish_date)+'","instant": false, "title": "'+chronology.publish_date.strftime("%b")+' '+chronology.publish_date.strftime("%Y")+'", "color": "#7FFFD4","textColor": "#000000", "caption": "'+chronology.title+'",  "trackNum": 1,  "classname": "special_event2 aquamarine", "description": "'+chronology.summary+'"},'                         
-
+        start_d=chronology.publish_date.strftime("%d")
+        start_b=chronology.publish_date.strftime("%b")
+        start_m=chronology.publish_date.strftime("%m")
+        start_y= chronology.publish_date.strftime("%Y")
+        end_d=int(start_d)+15
+        start=start_y+"-"+start_m+"-"+start_d
+        end=start_y+"-"+start_m+"-"+str(end_d)
+        title=start_b+' '+start_y
+        
+        chronology.publish_date.strftime("%b")
+        text="<a href='/iyph/chronology/list/"+chronology.slug+"'><b>"+chronology.title+"</b></a><br>"+chronology.summary
+        data= data+'{"start": "'+start+'","end": "'+end+'","instant": false, "title": "'+title+'", "color": "045FB4","textColor": "#000000", "caption": "'+chronology.title+'",  "trackNum": '+str(i)+',  "classname": "special_event2 aquamarine", "description": "'+text+'"},'                         
+        i=i+1  
     data = data[:-1]
     context = {"iyph_posts": iyph_posts, "year": year, "month": month,
                "tag": tag, "category": category, "author": author,"data": data}
