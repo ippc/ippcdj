@@ -44,6 +44,133 @@
 
 {% block main %}
 
+ <script type="text/javascript">
+      var tl;
+            var startProj = SimileAjax.DateTime.parseIso8601DateTime("2014-03");
+            var endProj = SimileAjax.DateTime.parseIso8601DateTime("2016");
+            
+            var event_data = 
+              {
+              "dateTimeFormat": "iso8601",
+              "events":[
+                    {% autoescape off %} 
+                        {{data}}
+                     {% endautoescape %}  
+                     ]
+              };
+
+            function onLoad() {
+                var tl_el = document.getElementById("tl");
+                var eventSource = new Timeline.DefaultEventSource();
+                var theme = Timeline.ClassicTheme.create();
+                theme.autoWidth = false; // Set the Timeline's "width" automatically.
+                theme.autoWidthMargin=10;
+                theme.event.bubble.width = 400;
+                theme.event.bubble.height = 120;
+
+                theme.ether.backgroundColors = ["#E6E6E6","#F7F7F7"];
+
+                theme.timeline_start = startProj;
+                theme.timeline_stop  = endProj;
+
+                theme.event.track.height = "20";
+                theme.event.tape.height = 10; // px
+                theme.event.track.height = theme.event.tape.height + 6;
+
+                var d = SimileAjax.DateTime.parseIso8601DateTime("2014-04");
+                var bandInfos = [
+
+                    Timeline.createBandInfo({
+                        layout:         'original',// original, overview, detailed
+                        eventSource:    eventSource,
+                        date:           d,
+                        width:          350,
+                        intervalUnit:  Timeline.DateTime.MONTH,
+                        intervalPixels: 100,
+                        //trackHeight: 10,
+                        theme :theme
+
+                    }),
+                    Timeline.createBandInfo({
+                        layout:         'overview',
+                        date:           d,
+                        trackHeight:    0.5,
+                        trackGap:       0.2,
+                        eventSource:    eventSource,
+                        width:          40,
+                        intervalUnit:   Timeline.DateTime.YEAR,
+                        //    showEventText:  false,
+                        intervalPixels: 200,
+                        theme :theme
+                    })
+
+                ];
+
+                bandInfos[1].highlight = true;
+                bandInfos[1].syncWith = 0;
+
+
+
+                bandInfos[1].decorators = [
+                    new Timeline.SpanHighlightDecorator({
+                        startDate:  startProj,
+                        endDate:    endProj,
+                        inFront:    false,
+                        color:      "red",
+                        opacity:    30,
+                        startLabel: "",
+                        endLabel:   "",
+                        theme:      theme
+                    })
+                ];
+
+
+                tl = Timeline.create(tl_el, bandInfos, Timeline.HORIZONTAL);
+                // show loading message
+                tl.showLoadingMessage();
+
+                eventSource.loadJSON(event_data, document.location.href);
+
+                // dismiss loading message
+                tl.hideLoadingMessage();
+
+                // setup highlight filters
+                setupFilterHighlightControls(document.getElementById("controls"), tl, [0,1], theme);
+
+            }
+            function centerProjStart() {
+                tl.getBand(1).setCenterVisibleDate(startProj);
+            }
+            
+            function centerProjEnd() {
+                tl.getBand(1).setCenterVisibleDate(endProj);
+            }
+
+            var resizeTimerID = null;
+            function onResize() {
+                if(resizeTimerID == null) {
+                    resizeTimerID = window.setTimeout(function() {
+                        resizeTimerID = null;
+                        tl.layout();
+                    }, 500);
+                }
+            }
+   
+   </script>
+    <style type="text/css">
+            .special_event2 {}
+            .tape-dashed, .small-dashed {border-top: dashed 5px ;background-color:transparent;margin-top:3px;}
+            .tape-dotted, .small-dotted {border-top: dotted 9px ;background-color:transparent;margin-top:3px;}
+            .tape-special_event2{border:2px outset;margin-top:-2px;}
+            .tape-backimage{background-image: url("bar.png");}
+            .clear { clear: both; }
+            .aquamarine{color: #7FFFD4;}
+            .brown{color:#A52A2A;}
+            .timeline-event-bubble-time{display:none;}
+
+        </style>
+             <div id="tl" class="timeline-default" style="height: 400px; border: 1px solid #aaa;"></div>
+   
 {% if tag or category or year or month or author %}
     {% block iyph_post_list_filterinfo %}
     <p>
