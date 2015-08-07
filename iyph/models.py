@@ -6,8 +6,8 @@ from mezzanine.core.fields import FileField
 from mezzanine.core.models import Displayable, Ownable, RichText, Slugged
 from mezzanine.generic.fields import CommentsField, RatingField
 from mezzanine.utils.models import AdminThumbMixin, upload_to
-
-
+from datetime import datetime
+from django.template.defaultfilters import slugify, lower
 class IyphPost(Displayable, Ownable, RichText, AdminThumbMixin):
     """
     A Iyph  post.
@@ -97,6 +97,52 @@ class IyphCategory(Slugged):
     @models.permalink
     def get_absolute_url(self):
         return ("iyph_post_list_category", (), {"category": self.slug})
+    
+    
+
+
+class Chronology (Displayable, models.Model):
+    """ Chronology """
+    # slug - provided by mezzanine.core.models.slugged (subclassed by displayable)
+    # title - provided by mezzanine.core.models.slugged (subclassed by displayable)
+    # status - provided by mezzanine.core.models.displayable
+    # publish_date - provided by mezzanine.core.models.displayable
+    modify_date = models.DateTimeField(_("Modified date"), blank=True, null=True, editable=False)
+    summary = models.TextField(_("Summary or Short Description"), blank=True, null=True)
+   
+    # attachments = AttachmentManager()
+    search_fields = ("title", "summary")
+
+    class Meta:
+        verbose_name_plural = _("Chronologies")
+        # abstract = True
+
+    def __unicode__(self):
+        return self.title
+     
+    # http://devwiki.beloblotskiy.com/index.php5/Django:_Decoupling_the_URLs  
+    @models.permalink # or: get_absolute_url = models.permalink(get_absolute_url) below
+    def get_absolute_url(self): # "view on site" link will be visible in admin interface
+        """Construct the absolute URL for a Chronology."""
+        print( 'year'+ self.publish_date.strftime("%Y"))
+        print( 'month'+ self.publish_date.strftime("%m"))
+        print( 'slug'+ self.slug)
+        return ('chronology-detail', (), {
+                            'year': self.publish_date.strftime("%Y"),
+                            'month': self.publish_date.strftime("%m"),
+                            'slug': self.slug})
+            
+    def save(self, *args, **kwargs):
+        ''' On save, update timestamps '''
+        if not self.id:
+            self.publish_date = datetime.today()
+            # Newly created object, so set slug
+            self.slug = slugify(self.title)
+        self.modify_date = datetime.now()
+        super(Chronology, self).save(*args, **kwargs)
+        
+        
+    
 class Translatable(models.Model):
     """ Translations of user-generated content - https://gist.github.com/renyi/3596248"""
     lang = models.CharField(max_length=5, choices=settings.LANGUAGES)
@@ -113,4 +159,14 @@ class TransIyphPost(Translatable,   Slugged):
         verbose_name = _("Translated Iyph")
         verbose_name_plural = _("Translated Iyph")
         ordering = ("lang",)
+
    
+class TransChronology(Translatable,   Slugged):
+    translation = models.ForeignKey(Chronology, related_name="translation")
+    summary = models.TextField(blank=True, null=True)
+    
+    class Meta:
+        verbose_name = _("Translated Chronology")
+        verbose_name_plural = _("Translated Chronology")
+        ordering = ("lang",)
+      

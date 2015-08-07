@@ -4,13 +4,19 @@ from copy import deepcopy
 from django.contrib import admin
 from django.utils.translation import ugettext_lazy as _
 
-from .models import IyphPost, IyphCategory,TransIyphPost
+from .models import IyphPost, IyphCategory,TransIyphPost,Chronology,TransChronology
 from mezzanine.conf import settings
 from mezzanine.core.admin import DisplayableAdmin, OwnableAdmin,StackedDynamicInlineAdmin
 
 class TransIyphPostAdmin(StackedDynamicInlineAdmin):
     model = TransIyphPost
     fields = ("lang", "title", "content")
+    
+
+
+class TransChronologyAdmin(StackedDynamicInlineAdmin):
+    model = TransChronology
+    fields = ("lang", "title", "summary")
     
 iyphpost_fieldsets = deepcopy(DisplayableAdmin.fieldsets)
 iyphpost_fieldsets[0][1]["fields"].insert(1, "categories")
@@ -76,3 +82,13 @@ class IyphCategoryAdmin(admin.ModelAdmin):
 
 admin.site.register(IyphPost, IyphPostAdmin)
 admin.site.register(IyphCategory, IyphCategoryAdmin)
+
+class ChronologyAdmin(admin.ModelAdmin):
+    save_on_top = True
+    list_display = ('title', 'publish_date', 'modify_date', 'status')
+    list_filter = ('title', 'publish_date', 'modify_date', 'status')
+    search_fields = ('title', 'summary')
+    prepopulated_fields = { 'slug': ['title'] }
+    inlines = [ TransChronologyAdmin]
+   
+admin.site.register(Chronology, ChronologyAdmin)

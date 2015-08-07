@@ -3,13 +3,13 @@ from calendar import month_name
 from django.http import Http404
 from django.shortcuts import get_object_or_404
 
-from iyph.models import IyphPost, IyphCategory
+from iyph.models import IyphPost, IyphCategory,Chronology
 from iyph.feeds import PostsRSS, PostsAtom
 from mezzanine.conf import settings
 from mezzanine.generic.models import Keyword
 from mezzanine.utils.views import render, paginate
 from mezzanine.utils.models import get_user_model
-
+from django.views.generic import ListView,DetailView
 User = get_user_model()
 
 
@@ -21,6 +21,7 @@ def iyph_post_list(request, tag=None, year=None, month=None, username=None,
     ``iyph/iyph_post_list_XXX.html`` where ``XXX`` is either the
     category slug or author's username if given.
     """
+    print(' --- SON qui!!!!!!!!!!')
     settings.use_editable()
     templates = []
     iyph_posts = IyphPost.objects.published(for_user=request.user)
@@ -48,8 +49,14 @@ def iyph_post_list(request, tag=None, year=None, month=None, username=None,
     iyph_posts = paginate(iyph_posts, request.GET.get("page", 1),
                           settings.IYPH_POST_PER_PAGE,
                           settings.MAX_PAGING_LINKS)
+    chronologies = Chronology.objects.all().order_by('-publish_date', 'title')
+    data= ''
+    for chronology in chronologies:
+        data= data+'{"start": "'+str(chronology.publish_date)+'","end": "'+str(chronology.publish_date)+'","instant": false, "title": "'+chronology.publish_date.strftime("%b")+' '+chronology.publish_date.strftime("%Y")+'", "color": "#7FFFD4","textColor": "#000000", "caption": "'+chronology.title+'",  "trackNum": 1,  "classname": "special_event2 aquamarine", "description": "'+chronology.summary+'"},'                         
+
+    data = data[:-1]
     context = {"iyph_posts": iyph_posts, "year": year, "month": month,
-               "tag": tag, "category": category, "author": author}
+               "tag": tag, "category": category, "author": author,"data": data}
     templates.append(template)
     return render(request, templates, context)
 
@@ -76,3 +83,31 @@ def iyph_post_feed(request, format, **kwargs):
         return {"rss": PostsRSS, "atom": PostsAtom}[format](**kwargs)(request)
     except KeyError:
         raise Http404()
+
+
+
+class ChronologyListView(ListView):
+    """    chronology  """
+    context_object_name = 'latest'
+    
+    model = Chronology
+    date_field = 'publish_date'
+    template_name = 'iyph/chronology_list.html'
+    queryset = Chronology.objects.all().order_by('-publish_date', 'title')
+    allow_future = False
+    allow_empty = True
+    paginate_by = 50
+
+
+
+class ChronologyDetailView(DetailView):
+    """ chronology_detail page """
+    model = Chronology
+    context_object_name = 'chronology'
+    template_name = 'iyph/chronology_detail.html'
+    queryset = Chronology.objects.filter()
+   
+    def get_context_data(self, **kwargs): # http://stackoverflow.com/a/15515220
+        context = super(ChronologyDetailView, self).get_context_data(**kwargs)
+        p = get_object_or_404(Chronology, slug=self.kwargs['slug'])
+        return context
