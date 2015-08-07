@@ -51,7 +51,8 @@
 <script type="text/javascript" src="/static/admin/js/calendar.js"></script>
 
 <script type="text/javascript" src="/static/admin/js/admin/DateTimeShortcuts.js"></script>
-
+<script src="http://api.simile-widgets.org/timeline/2.3.1/timeline-api.js?bundle=true" type="text/javascript"></script>
+ 
 {% include 'autocomplete_light/static.html' %}
 {# 'add another' form field functionality #}
 <script src="{% static "js/jquery.formset.js" %}"></script>
@@ -91,10 +92,11 @@
         })
        
     </script>
- {% endif %}  
+ {% endif %} 
+ 
 </head>
 
-<body id="{% block body_id %}body{% endblock %}" class="{% block body_class %}{% endblock %}">
+<body id="{% block body_id %}body{% endblock %}" class="{% block body_class %}{% endblock %}"onload="onLoad();" onresize="onResize();">
 
 <div class="navbar navbar-fixed-top">
 <div class="navbar-inner">
@@ -189,7 +191,7 @@
 	
 <div class="row-fluid">
 	<div class="span{% block mainspansize %}8{% endblock mainspansize %} middle">
-	    {% block main %}{% endblock %}
+    {% block main %}{% endblock %}
 	</div>
 
 	<div class="span{% block sidebarspansize %}4{% endblock sidebarspansize %} right">
