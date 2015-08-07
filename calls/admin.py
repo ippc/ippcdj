@@ -4,11 +4,15 @@ from copy import deepcopy
 from django.contrib import admin
 from django.utils.translation import ugettext_lazy as _
 
-from .models import CallsPost, CallsCategory
+from .models import CallsPost, CallsCategory,TransCallsPost
 from mezzanine.conf import settings
-from mezzanine.core.admin import DisplayableAdmin, OwnableAdmin
+from mezzanine.core.admin import DisplayableAdmin, OwnableAdmin,StackedDynamicInlineAdmin
 
 
+class TransCallsPostAdmin(StackedDynamicInlineAdmin):
+    model = TransCallsPost
+    fields = ("lang", "title", "content")
+    
 callspost_fieldsets = deepcopy(DisplayableAdmin.fieldsets)
 callspost_fieldsets[0][1]["fields"].insert(1, "categories")
 callspost_fieldsets[0][1]["fields"].extend(["content"])
@@ -22,6 +26,10 @@ callspost_fieldsets.insert(1, (_("Other posts"), {
     "fields": ("related_posts",)}))
 callspost_list_filter = deepcopy(DisplayableAdmin.list_filter) + ("categories",)
 
+
+
+
+
 #class CallsPostAdmin(DisplayableAdmin, OwnableAdmin):
 class CallsPostAdmin(DisplayableAdmin):
     """
@@ -31,6 +39,8 @@ class CallsPostAdmin(DisplayableAdmin):
     fieldsets = callspost_fieldsets
     list_display = callspost_list_display
     list_filter = callspost_list_filter
+    inlines = [ TransCallsPostAdmin]
+   
     filter_horizontal = ("categories", "related_posts",)
 
     def save_form(self, request, form, change):

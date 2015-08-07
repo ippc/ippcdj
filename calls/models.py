@@ -97,3 +97,22 @@ class CallsCategory(Slugged):
     @models.permalink
     def get_absolute_url(self):
         return ("calls_post_list_category", (), {"category": self.slug})
+
+class Translatable(models.Model):
+    """ Translations of user-generated content - https://gist.github.com/renyi/3596248"""
+    lang = models.CharField(max_length=5, choices=settings.LANGUAGES)
+    
+    class Meta:
+        abstract = True
+        ordering = ("lang",)
+        
+class TransCallsPost(Translatable,   Slugged):
+    translation = models.ForeignKey(CallsPost, related_name="translation")
+    content = models.TextField(blank=True, null=True)
+    
+    class Meta:
+        verbose_name = _("Translated CallsPost")
+        verbose_name_plural = _("Translated CallsPosts")
+        ordering = ("lang",)
+   
+        

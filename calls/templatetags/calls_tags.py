@@ -94,3 +94,26 @@ def quick_calls(context):
     """
     context["form"] = CallsPostForm()
     return context
+
+# https://gist.github.com/renyi/3596248
+from django import template
+from django.utils import translation
+
+from mezzanine.conf import settings
+
+
+@register.filter
+def get_object_translation(obj):
+    # get current language
+    lang = translation.get_language()
+
+    try:
+        # returns object with current translation
+        for i in obj.translation.all():
+            if i.lang == lang:
+                return i
+    except:
+        pass
+
+    # returns object without translation
+    return obj
