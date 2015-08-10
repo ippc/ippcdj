@@ -52,10 +52,17 @@ def iyph_post_list(request, tag=None, year=None, month=None, username=None,
     chronologies = Chronology.objects.all().order_by('publish_date', 'title')
     data= ''
     i=1
+    start_m=''
+    start_y=''
     for chronology in chronologies:
         start_d=chronology.publish_date.strftime("%d")
         start_b=chronology.publish_date.strftime("%b")
+        if chronology.publish_date.strftime("%Y")==start_y and chronology.publish_date.strftime("%m") ==start_m:
+            i=i+1  
+        else: 
+            i=1    
         start_m=chronology.publish_date.strftime("%m")
+        
         start_y= chronology.publish_date.strftime("%Y")
         end_d=int(start_d)+15
         start=start_y+"-"+start_m+"-"+start_d
@@ -64,8 +71,8 @@ def iyph_post_list(request, tag=None, year=None, month=None, username=None,
         
         chronology.publish_date.strftime("%b")
         text="<a href='/iyph/chronology/list/"+chronology.slug+"'><b>"+chronology.title+"</b></a><br>"+chronology.summary
-        data= data+'{"start": "'+start+'","end": "'+end+'","instant": false, "title": "'+title+'", "color": "045FB4","textColor": "#000000", "caption": "'+chronology.title+'",  "trackNum": '+str(i)+',  "classname": "special_event2 aquamarine", "description": "'+text+'"},'                         
-        i=i+1  
+        data= data+'{"start": "'+start+'","instant": false, "title": "'+title+'", "color": "045FB4","textColor": "red", "icon":"/static/img/dark-red-circle.png","caption": "'+chronology.title+'",  "trackNum": '+str(i)+',  "classname": "special_event2 aquamarine", "description": "'+text+'"},'                         
+        
     data = data[:-1]
     context = {"iyph_posts": iyph_posts, "year": year, "month": month,
                "tag": tag, "category": category, "author": author,"data": data}
