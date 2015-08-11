@@ -75,7 +75,7 @@
   height: 1.5em;}
 .timeline-date-label-em {color: #000;}
 
-/* horizontal */
+/* horizontal */ 
 .timeline-horizontal .timeline-date-label{padding-left:2px; }
 .timeline-horizontal .timeline-date-label{border-width:0 0 0 1px;}
 .timeline-horizontal .timeline-date-label-em{height:2em}
