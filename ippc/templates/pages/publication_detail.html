@@ -14,11 +14,7 @@
 
 {% block local_nav %}
 <div class="well localnav"> 
-    <p><a href="javascript:history.go(-1)">{% trans "« Go back" %}</a></p>
-    {% if user.is_superuser or perms.ippc.change_publication  %}
-         <a class="btn btn-small btn-info" href="/admin/ippc/publication/{{publication.id}}"><i class="icon-edit icon-white"></i> Edit as admin</a>     
-         <a class="btn btn-small btn-info" href="/publication/edit/{{publication.id}}"><i class="icon-edit icon-white"></i> Edit</a>     
-            <script type="text/javascript">
+    <script type="text/javascript">
     function toggle_visibility_rev(id) {
        var e = document.getElementById(id);
        if(e.style.display == 'block')
@@ -27,15 +23,28 @@
           e.style.display = 'block';
     }
     </script>
-    {% if versions %}<br><br>
-       <strong><a href="#" onclick="toggle_visibility_rev('rev');">{% trans "Revisions" %}</a></strong>  <br>
-            <div id="rev" style="display:none;">
+    <p><a href="javascript:history.go(-1)">{% trans "« Go back" %}</a></p>
+    {% if user.is_superuser or perms.ippc.change_publication  %}
+        {% if user.is_superuser %}
+         <a class="btn btn-small btn-info" href="/admin/ippc/publication/{{publication.id}}"><i class="icon-edit icon-white"></i> Edit as admin</a>     
+         <a class="btn btn-small btn-info" href="/publication/edit/{{publication.id}}"><i class="icon-edit icon-white"></i> Edit</a>     
+        {% endif %}
+        {% for group in request.user.groups.all %} 
+            {% if group.name == 'IPPC Secretariat'%}
+            <a class="btn btn-small btn-info" href="/admin/ippc/publication/{{publication.id}}"><i class="icon-edit icon-white"></i> Edit as admin</a>     
+         <a class="btn btn-small btn-info" href="/publication/edit/{{publication.id}}"><i class="icon-edit icon-white"></i> Edit</a>     
+         {% endif %}
+        {% endfor %}
+        
+        
+        {% if versions %}
+        <br><br>
+        <strong><a href="#" onclick="toggle_visibility_rev('rev');">{% trans "Revisions" %}</a></strong>  <br>
+        <div id="rev" style="display:none;">
                {% for object in versions %}
-                <small><a href="{% url 'publication-detail' object.pk  %}"> {% blocktrans with sometime=object.modify_date|date:"d-m-Y H:i" %}{{ sometime }}{% endblocktrans %}</a></small><br>
-            {% endfor %}</dd>
-             </div>
-       
-            
+                   <small><a href="{% url 'publication-detail' object.pk  %}"> {% blocktrans with sometime=object.modify_date|date:"d-m-Y H:i" %}{{ sometime }}{% endblocktrans %}</a></small><br>
+               {% endfor %}</dd>
+                 </div>
         {% endif %}
   {% endif %} 
     
