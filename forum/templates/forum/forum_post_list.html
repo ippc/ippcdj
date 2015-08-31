@@ -118,7 +118,10 @@
     <a href="{% url "forum_post_list_author" author %}">{{ author.get_full_name|default:author.username }}</a>
     {% endwith %}
     </td>
-    <td>{% blocktrans with sometime=forum_post.publish_date|timesince %}{{ sometime }} ago{% endblocktrans %}
+    <td>
+        {% blocktrans with sometime=forum_post.publish_date|date:"d M Y" %}{{ sometime }}{% endblocktrans %}
+ 
+     
     </td><td>  {% if settings.COMMENTS_DISQUS_SHORTNAME %}
     <a href="{{ forum_post.get_absolute_url }}#disqus_thread"
         data-disqus-identifier="{% disqus_id_for forum_post %}">

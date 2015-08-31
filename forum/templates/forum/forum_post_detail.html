@@ -62,7 +62,9 @@
         {% with forum_post.user as author %}
         <a href="{% url "forum_post_list_author" author %}">{{ author.get_full_name|default:author.username }}</a>
         {% endwith %}
-        {% blocktrans with sometime=forum_post.publish_date|timesince %}{{ sometime }} ago{% endblocktrans %}
+        {% blocktrans with sometime=forum_post.publish_date|date:"d M Y" %}{{ sometime }}{% endblocktrans %}
+ 
+    
     </h6>
     {% endeditable %}
   {% endblock %}
