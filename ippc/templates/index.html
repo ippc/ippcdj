@@ -40,7 +40,7 @@
                   {{ translated_page.title|safe}}
               {% endwith %}
           </a><br>
-          <small>{{ entry.publish_date|timesince }} {% trans "ago" %}.</small>
+          <small>{{ entry.publish_date|date:"D, d M Y, H:i" }}.</small>
         </h5>
          {% with entry|get_object_translation as translated_page %}
                   {{ translated_page.content|richtext_filter|safe|truncatewords_html:40}}
