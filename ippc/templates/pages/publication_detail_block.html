@@ -12,9 +12,10 @@
 <dl class="dl-horizontal">
   
      {% endif %}
+        {% if publication.publication_date %}
            <dt>{% trans "Published" %}</dt> 
            <dd>{% blocktrans with sometime=publication.publication_date|date:"D, d M Y, H:i" %}{{ sometime }}{% endblocktrans %}</dd> 
-
+        {% endif %}
           {% if publication.document_number %}
           <dt>{% trans "Doc #" %}</dt>
           <dd>{{ publication.document_number }}</dd>
@@ -24,7 +25,7 @@
           <dt>{% trans "Agenda #" %}</dt>
           <dd>{{ publication.agenda_number }}</dd>
           {% endif %}
-
+{% if publication.file_en  or publication.file_es or publication.file_ar or publication.file_fr or publication.file_ru or publication.file_zh%}
           <dt>{% trans "Files" %}</dt>
           <dd>
 
@@ -76,6 +77,7 @@
             {% endif %}
       
           </dd>
+           {% endif %}
           {% if publication.short_description %}
         
           <dt>{% trans "Description" %}</dt>
