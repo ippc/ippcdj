@@ -94,8 +94,8 @@
     {% endfor %}
     {% endif %}
     {% endwith %}
-    {% blocktrans with sometime=news_post.publish_date|timesince %}{{ sometime }} ago{% endblocktrans %}
-    {# {% blocktrans with thetime=news_post.publish_date|date:"D, d M Y, H:i" %} <span class="normal">on</span> {{ thetime }}{% endblocktrans %} #}
+   {#  {% blocktrans with sometime=news_post.publish_date|timesince %}{{ sometime }} ago{% endblocktrans %} #}
+   {% blocktrans with thetime=news_post.publish_date|date:"D, d M Y, H:i" %} <span class="normal">on</span> {{ thetime }}{% endblocktrans %}
 </h6>
 {# {% endeditable %} #}
 {% endblock %}
