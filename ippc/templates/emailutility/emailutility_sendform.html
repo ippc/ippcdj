@@ -155,7 +155,31 @@ function  checkNotify(theform,group,field){
      </tr>
     {% endfor %}
 
-</table><td>
+</table><br /><br />
+        <strong>Country editors:</strong><br />
+<p class="alert alert-warning"> The Country editors has been divided in smaller groups.</p>
+
+<table cellpadding=2>
+{% for g in emaile2 %}
+        <tr>
+            <td width="5"><img title="Open Group" src="/static/leaflet/images/zoom-in.png" onclick="javascript:viewMemb('viewe1_{{g.1}}');"/></td>
+            <td>  {{g.0}}</td>
+            <td width="5" title="Check all"><input type="checkbox" onClick="javascript:checkmembers(this.form,'usere1','e1',{{g.1}},'viewe1_{{g.1}}');void(0);" name="groupe1_{{g.1}}" value="viewe1_{{g.1}}"/></td>
+        </tr>
+        <tr><td/>
+        <td>
+        <div style="display:none" id="viewe1_{{g.1}}">
+        {% for  u in g|slice:"2:" %} 
+            <input onchange="javascript:checkNotify(this.form,'usere1_','checkgroups');" type="checkbox" name="usere1_{{g.1}}_0" value="{{u.2}}"/>{{u.0}} {{u.1}}<br/>
+        {% endfor %}
+        </div>
+        </td>
+     </tr>
+    {% endfor %}
+
+</table><br>
+        
+        <td>
     </tr>    
     
 </table>
