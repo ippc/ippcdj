@@ -14,7 +14,7 @@ CountryPage,PartnersPage, PestStatus, PestReport, IS_PUBLIC, IS_HIDDEN, Publicat
 PublicationFile,PublicationUrl,ReportingObligation_File,ReportingObligationUrl, EventreportingFile,EventreportingUrl,    ImplementationISPMFile,ImplementationISPMUrl, PestFreeAreaFile,PestFreeAreaUrl,\
 DraftProtocol,DraftProtocolComments,NotificationMessageRelate,CommentFile,Question, Answer,AnswerVotes,\
 ReportingObligation, BASIC_REP_TYPE_CHOICES, EventReporting, EVT_REP_TYPE_CHOICES,Website,CnPublication,PartnersPublication,PartnersNews, PartnersWebsite,CountryNews, \
-PestFreeArea,ImplementationISPM,REGIONS, IssueKeywordsRelate,CommodityKeywordsRelate,EventreportingFile,ReportingObligation_File
+PestFreeArea,ImplementationISPM,REGIONS, IssueKeywordsRelate,CommodityKeywordsRelate,EventreportingFile,ReportingObligation_File#TransReportingObligation
 from mezzanine.core.models import Displayable, CONTENT_STATUS_DRAFT, CONTENT_STATUS_PUBLISHED
 from .forms import PestReportForm,PublicationUrlFormSet,PublicationForm, PublicationFileFormSet, ReportingObligationForm, EventReportingForm, PestFreeAreaForm,\
 ImplementationISPMForm,IssueKeywordsRelateForm,CommodityKeywordsRelateForm,EventreportingFileFormSet,ReportingoblicationFileFormSet,\
@@ -26,7 +26,7 @@ PollForm,Poll_ChoiceFormSet,\
 PartnersNewsUrlFormSet,PartnersNewsForm, PartnersNewsFileFormSet,PartnersWebsiteUrlFormSet,PartnersWebsiteForm,\
 EmailUtilityMessageForm,EmailUtilityMessageFileFormSet,\
 CountryNewsUrlFormSet,CountryNewsForm, CountryNewsFileFormSet,NotificationMessageRelateForm,\
-DraftProtocolForm,  DraftProtocolFileFormSet,DraftProtocolCommentsForm,IppcUserProfileForm,QuestionForm, AnswerForm# , UserForm
+DraftProtocolForm,  DraftProtocolFileFormSet,DraftProtocolCommentsForm,IppcUserProfileForm,QuestionForm, AnswerForm##TransReportingObligationForm , UserForm
 
 
 from django.views.generic import ListView, MonthArchiveView, YearArchiveView, DetailView, TemplateView, CreateView
@@ -260,10 +260,16 @@ def reporting_trough_eppo(request):
 
 
 import datetime as dt
+import urllib2
+
 def reminder_getlink(cn,type,obj):
     return "https://www.ippc.int/countries/"+cn+"/"+type+"/"+str(obj.publish_date.strftime("%Y"))+'/'+str(obj.publish_date.strftime("%m"))+'/'+obj.slug+'/'
          
 def reminder_to_cn(request):
+#    #OCP 3 months: 90 days
+#    #reporting obligation 12 months
+#    # Pestreports and Emergency Actions 6 months
+#    
 #    BASIC_REP_TYPE_CHOICES_LABELS = (
 #        (1, ("Description of the NPPO")), 
 #        (2, ("Entry Points")),
@@ -272,104 +278,248 @@ def reminder_to_cn(request):
 #    )
 #    EVT_REP_TYPE_CHOICES_LABELS = (
 #        (1, ("Emergency Actions")), 
-#        (2, ("Non-compliance")),
-#        (3, ("Organizational Arrangements of Plant Protection")),
-#        (4, ("Pest status")),
-#        (5, ("Rationale for Phytosanitary Requirements")),
+#        #(2, ("Non-compliance")),
+#        #(3, ("Organizational Arrangements of Plant Protection")),
+#        #(4, ("Pest status")),
+#        #(5, ("Rationale for Phytosanitary Requirements")),
 #    )
-#    pestreport_range=dt.timedelta(days=193)
-#    ro_range=dt.timedelta(days=193)
-#    ev_range=dt.timedelta(days=193)
-#          
-#    textmessages=[]
-#    countriesList=CountryPage.objects.filter().exclude(id='-1')
-#    for cn in countriesList:
-#        if cn.send_reminder:
-#            country_slug = lower(slugify(cn))   
-#            countryo = get_object_or_404(CountryPage, page_ptr_id=cn.id)
-#            cp = countryo.contact_point_id
-#            editors = countryo.editors
-#            emails=[]
-#            cp_email=''
-#            e_email=''
-#            if cp != None:
-#                user_obj=User.objects.get(id=cp)
-#                cp_email=user_obj.email
-#                emails.append(cp_email)
-#            for e in editors.all():
-#                user_obj=User.objects.get(id=e.id)
-#                e_email=user_obj.email
-#                emails.append(e_email)
-##
-#            #check PEST REPORTS: 
-#            countpest=0
-#            pests_to_notify=''
-#            pestreports = PestReport.objects.filter(country_id=cn.id,status=CONTENT_STATUS_PUBLISHED, is_version=False)
-#            for p in pestreports:
-#                 if timezone.now()- p.modify_date > pestreport_range and p.report_status < 3:
-#                    countpest+=1
-#                    pests_to_notify+='<tr><td><a href="'+reminder_getlink(country_slug,'pestreports',p)+'">'+p.title+'</a></td><td>'+str(p.modify_date.strftime("%d-%m-%Y"))+'</td></tr>'
-#            if countpest > 0:     
-#                pests_to_notify='<tr><td colspan=2>&#160;</td></tr><tr><td colspan=2><strong>Pest reports</strong> in this list was last updated more than '+str(pestreport_range)+' ago.</td></tr><tr><td><strong>Title</strong></td><td><strong>Last modified date</strong></td></tr>'+pests_to_notify
-#       
-#            reportingobligation_to_notify=''
-#            for i in range(1,5):
-#                ro_to_notify=''
-#                ro=0
-#                reportingobligations = ReportingObligation.objects.filter(country_id=cn.id,reporting_obligation_type=i, is_version=False)
-#                for r in reportingobligations:
-#                  if timezone.now()- r.modify_date > ro_range :
-#                    ro = ro +1
-#                    ro_to_notify=ro_to_notify+'<tr><td><a href="'+reminder_getlink(country_slug,'reportingobligation',r)+'">'+r.title+'</a></td><td>'+str(r.modify_date.strftime("%d-%m-%Y"))+'</td></tr>'
-#                if ro > 0: 
-#                    reportingobligation_to_notify='<tr><td colspan=2><strong>'+str(dict(BASIC_REP_TYPE_CHOICES_LABELS)[i])+'</strong> in this list was last updated more than '+str(ro_range)+' ago.</td></tr><tr><td><strong>Title</strong></td><td><strong>Last modified date</strong></td></tr>'+ro_to_notify
-#        
-#            eventreporting_to_notify=''
-#            for i in range(1,6):
-#                evr_to_notify=''
-#                evr=0
-#                eventreportings = EventReporting.objects.filter(country_id=cn.id,event_rep_type=i, is_version=False)
-#                for e in eventreportings:
-#                  if timezone.now()- e.modify_date > ev_range :
-#                    evr = evr +1
-#                    evr_to_notify=evr_to_notify+'<tr><td><a href="'+reminder_getlink(country_slug,'eventreporting',e)+'">'+e.title+'</a></td><td>'+str(e.modify_date.strftime("%d-%m-%Y"))+'</td></tr>'
-#                if evr > 0:     
-#                    eventreporting_to_notify='<tr><td colspan=2><strong>'+str(dict(EVT_REP_TYPE_CHOICES_LABELS)[i])+'</strong> in this list was last updated more than '+str(ev_range)+' ago.</td></tr><tr><td><strong>Title</strong></td><td><strong>Last modified date</strong></td></tr>'+evr_to_notify
-#            textmessage=''
-#            if countpest >0 or ro >0 or evr >0:
-#                textmessage ='<table bgcolor="#FFFFFF" cellspacing="2" cellpadding="2" valign="top" width="100%" style="border: 1px solid #10501F;><tr><td width="100%" bgcolor="#FFFFFF" colspan=2>Please be informed that some of the information uploaded in the <b>International Phytosanitary Portal</b> need revisions.<br>This is the list of informations:<br><br></td></tr>'
-#                if countpest >0:
-#                   textmessage =textmessage +pests_to_notify
-#                if ro >0:
-#                   textmessage =textmessage +reportingobligation_to_notify
-#                if evr >0:
-#                   textmessage =textmessage +eventreporting_to_notify
-##
-#                textmessage =textmessage +'</table>'
-#                textmessages.append(textmessage)
-#                
-#                remider_message= ReminderMessage()
-#                remider_message.pk = None
-#                remider_message.emailfrom = "ippc@fao.org"
-#                remider_message.emailto = emails
-#                remider_message.subject = "IPPC Automatic reminder system notification for "+str(cn)+"["+str(timezone.now())+"]"
-#                remider_message.messagebody = textmessage
-#                remider_message.date = timezone.now()
-#                
-#                messages=[]
-#                message = mail.EmailMessage(remider_message.subject,remider_message.messagebody,remider_message.emailfrom,
-#                emails, ['paola.sentinelli@fao.org'])
-#                message.content_subtype = "html"
-#                messages.append(message)
-#                #connection = mail.get_connection()
-#                #connection.open()
-#                #sent=connection.send_messages(messages)
-#                #connection.close()
-#                
-#                remider_message.sent = True
-#                remider_message.save()
-#    context = {'textmessages':textmessages}
+#    ocp_range=dt.timedelta(days=90)
+#    ro_range=dt.timedelta(days=365)
+#    pestreport_range=dt.timedelta(days=182)
+#    ev_range=dt.timedelta(days=182)
 #    
+#    textmessages=[]
+#  
+#    date_day=20
+#    date12month=[7]
+#    date6month=[1,7]
+#    date3month=[1,4,7,10]
+#    if timezone.now().day == date_day:
+#        db = MySQLdb.connect(DATABASES["default"]["HOST"],DATABASES["default"]["USER"],DATABASES["default"]["PASSWORD"],DATABASES["default"]["NAME"])
+#        cursor = db.cursor()
+#                
+#        #every 12 months
+#        countriesList=CountryPage.objects.filter().exclude(id='-1')
+#        for cn in countriesList:
+#            if cn.send_reminder:
+#                country_slug = lower(slugify(cn))   
+#                countryo = get_object_or_404(CountryPage, page_ptr_id=cn.id)
+#                cp = countryo.contact_point_id
+#                editors = countryo.editors
+#                emails=[]
+#                cp_email=''
+#                e_email=''
+#                if cp != None:
+#                    user_obj=User.objects.get(id=cp)
+#                    cp_email=user_obj.email
+#                    emails.append(cp_email)
+#                for e in editors.all():
+#                    user_obj=User.objects.get(id=e.id)
+#                    e_email=user_obj.email
+#                    emails.append(e_email)
+#                
+#                if timezone.now().month in date12month :
+#                    reportingobligation_to_notify=''
+#                    ro_to_notify=''
+#                    for i in range(1,5):
+#                        ro=0
+#                        reportingobligations = ReportingObligation.objects.filter(country_id=cn.id,reporting_obligation_type=i, is_version=False)
+#                        for r in reportingobligations:
+#                          if timezone.now()- r.modify_date > ro_range :
+#                            sql = "UPDATE  ippc_reportingobligation set to_verify=True where id="+str(r.id)
+#                            print(sql)
+#                            try:
+#                                cursor.execute(sql)
+#                                db.commit()
+#                            except:
+#                                db.rollback()
+#
+#                              
+#                              
+#                              
+#                              
+#                              
+#                            ro = ro +1
+#                            ro_to_notify=ro_to_notify+'<tr><td>'+str(dict(BASIC_REP_TYPE_CHOICES_LABELS)[i])+'</td><td><a href="'+reminder_getlink(country_slug,'reportingobligation',r)+'">'+r.title+'</a></td><td>'+str(r.modify_date.strftime("%d-%m-%Y"))+'</td></tr>'
+#                    textmessage=''
+#                    if ro >0:
+#                        textmessage ='<table bgcolor="#FFFFFF" cellspacing="2" cellpadding="2" valign="top" width="100%" border=1 style="border: 1px solid #10501F;><tr><td width="100%" bgcolor="#FFFFFF" colspan=2><p>Dear Sir/Madam,<br><br>Please be informed that some of the information uploaded in the <b>International Phytosanitary Portal</b> need revisions.<br>The items listed below were last updated more than 12 months ago.<br><br></td></tr>'
+#                        reportingobligation_to_notify='<tr><td><strong>Title</strong></td><td><strong>Type</strong></td><td><strong>Last modified date</strong></td></tr>'+ro_to_notify
+#                        textmessage = textmessage +reportingobligation_to_notify +'</table>'
+#                        textmessages.append(textmessage)
+#
+#                        remider_message= ReminderMessage()
+#                        remider_message.pk = None
+#                        remider_message.emailfrom = "ippc@fao.org"
+#                        remider_message.emailto = emails
+#                        remider_message.subject = "IPPC Automatic 12 months reminder notification for "+str(cn)+" ["+str(timezone.now())+"]"
+#                        remider_message.messagebody = textmessage
+#                        remider_message.date = timezone.now()
+#
+#                        messages=[]
+#                        message = mail.EmailMessage(remider_message.subject,remider_message.messagebody,remider_message.emailfrom,
+#                        emails, ['paola.sentinelli@fao.org'])
+#                        message.content_subtype = "html"
+#                        messages.append(message)
+#                        #connection = mail.get_connection()
+#                        #connection.open()
+#                        #sent=connection.send_messages(messages)
+#                        #connection.close()
+#                        remider_message.sent = True
+#                        remider_message.save() 
+#
+#                #every 6 months                
+#                if timezone.now().month in date6month :
+#                    countpest=0
+#                    pests_to_notify=''
+#                    pestreports = PestReport.objects.filter(country_id=cn.id,status=CONTENT_STATUS_PUBLISHED, is_version=False)
+#                    for p in pestreports:
+#                         if timezone.now()- p.modify_date > pestreport_range and p.report_status < 3:
+#                            countpest+=1
+#                            pests_to_notify+='<tr><td><strong>Pest report</strong></td><td><a href="'+reminder_getlink(country_slug,'pestreports',p)+'">'+p.title+'</a></td><td>'+str(p.modify_date.strftime("%d-%m-%Y"))+'</td></tr>'
+#                            sql = "UPDATE  ippc_pestreport set to_verify=True where id="+str(p.id)
+#                            print(sql)
+#                            try:
+#                                cursor.execute(sql)
+#                                db.commit()
+#                            except:
+#                                db.rollback()
+#                    eventreporting_to_notify=''
+#                    evr_to_notify=''
+#                    evr=0
+#                    eventreportings = EventReporting.objects.filter(country_id=cn.id,event_rep_type=1, is_version=False)
+#                    for e in eventreportings:
+#                      if timezone.now()- e.modify_date > ev_range :
+#                        evr = evr +1
+#                        evr_to_notify=evr_to_notify+'<tr><td><strong>'+str(dict(EVT_REP_TYPE_CHOICES_LABELS)[1])+'</strong> </td><td><a href="'+reminder_getlink(country_slug,'eventreporting',e)+'">'+e.title+'</a></td><td>'+str(e.modify_date.strftime("%d-%m-%Y"))+'</td></tr>'
+#                        sql = "UPDATE  ippc_eventreporting set to_verify=True where id="+str(e.id)
+#                        print(sql)
+#                        try:
+#                            cursor.execute(sql)
+#                            db.commit()
+#                        except:
+#                            db.rollback()
+#                    textmessage=''
+#                    if countpest >0 or evr >0:
+#                        textmessage ='<table bgcolor="#FFFFFF" cellspacing="2" cellpadding="2" valign="top" width="100%" border=1  style="border: 1px solid #10501F;><tr><td width="100%" bgcolor="#FFFFFF" colspan=2>Dear Sir/Madam,<br><br>Please be informed that some of the information uploaded in the <b>International Phytosanitary Portal</b> need revisions.<br>The items listed below were last updated more than 6 months ago.<br><br></td></tr><tr><td><strong>Type</strong></td><td><strong>Title</strong></td><td><strong>Last modified date</strong></td></tr>'
+#                        if countpest >0:
+#                           textmessage =textmessage +pests_to_notify
+#                        if evr >0:
+#                           textmessage =textmessage +evr_to_notify
+#                        textmessage =textmessage +'</table>'
+#                        textmessages.append(textmessage)
+#
+#                        remider_message= ReminderMessage()
+#                        remider_message.pk = None
+#                        remider_message.emailfrom = "ippc@fao.org"
+#                        remider_message.emailto = emails
+#                        remider_message.subject = "IPPC Automatic 6 months reminder notification for "+str(cn)+" ["+str(timezone.now())+"]"
+#                        remider_message.messagebody = textmessage
+#                        remider_message.date = timezone.now()
+#
+#                        messages=[]
+#                        message = mail.EmailMessage(remider_message.subject,remider_message.messagebody,remider_message.emailfrom,
+#                        emails, ['paola.sentinelli@fao.org'])
+#                        message.content_subtype = "html"
+#                        messages.append(message)
+#                        #connection = mail.get_connection()
+#                        #connection.open()
+#                        #sent=connection.send_messages(messages)
+#                        #connection.close()
+#
+#                        remider_message.sent = True
+#                        remider_message.save()
+#                
+#                #every 3 months                           
+#                if timezone.now().month in date3month :
+#                    textmessage=''
+#                    textmessage ='<p>Dear Sir/Madam,<br><br><br> the IPPC team would like to ask you to <b>check the Contact details</b> specified in the <b><a href="https://www.ippc.int/countries/'+str(cn)+'">IPP Country page</a></b> and send us back any updates.<br><br>Best regards<br><br>IPPC Secretariat</p>'
+#                    textmessages.append(textmessage)
+#
+#                    remider_message= ReminderMessage()
+#                    remider_message.pk = None
+#                    remider_message.emailfrom = "ippc@fao.org"
+#                    remider_message.emailto = emails
+#                    remider_message.subject = "IPPC Automatic 3 month reminder notification for Contact Details for "+str(cn)+" ["+str(timezone.now())+"]"
+#                    remider_message.messagebody = textmessage
+#                    remider_message.date = timezone.now()
+#
+#                    messages=[]
+#                    message = mail.EmailMessage(remider_message.subject,remider_message.messagebody,remider_message.emailfrom,
+#                    emails, ['paola.sentinelli@fao.org'])
+#                    message.content_subtype = "html"
+#                    messages.append(message)
+#                    #connection = mail.get_connection()
+#                    #connection.open()
+#                    #sent=connection.send_messages(messages)
+#                    #connection.close()
+#                    remider_message.sent = True
+#                    remider_message.save()
+#                    
+#                #every 3 months       LINKS                    
+#                if timezone.now().month in date3month :
+#                    links_to_notify=''
+#                    url_to_notify=''
+#                    r_links=''
+#                    reportingobligations = ReportingObligation.objects.filter(country_id=cn.id, is_version=False)
+#                    for r in reportingobligations:
+#                       links_to_notify=''
+#                       url_to_notify='' 
+#                       reportingobligations_files= ReportingObligation_File.objects.filter(reportingobligation_id=r.id)
+#                       reportingobligations_urls= ReportingObligationUrl.objects.filter(reportingobligation_id=r.id)
+##                       for f in reportingobligations_files:
+##                          link=''
+##                          link='http://dev.ippc.int/en/'+str(f.file)
+##                          try:
+##                             urllib2.urlopen(link)
+##                          except:
+##                             print "invalid: ", link
+##                             links_to_notify=links_to_notify+link+'<br>'
+#                       for u in reportingobligations_urls:
+#                          url=''
+#                          url=str(u.url_for_more_information)
+#                          try:
+#                             urllib2.urlopen(url)
+#                          except:
+#                             print "invalid: ", url
+#                             url_to_notify=url_to_notify+url+'<br>'
+#                       if links_to_notify!='' or url_to_notify!='':
+#                         r_links= r_links+'<tr><td><a href="'+reminder_getlink(country_slug,'reportingobligation',r)+'">'+r.title+'</a></td><td>'+links_to_notify+url_to_notify+'</td></tr>'
+#                         
+#                    if r_links!='':
+#                        textmessage=''
+#                        textmessage ='<p>Dear Sir/Madam,<br><br>Please be informed that the <b>URLs or Attached files</b> contained in the informations reported below are <b>invalid</b>.<br></p>'
+#                        textmessage =textmessage+'<table bgcolor="#FFFFFF" cellspacing="2" cellpadding="2" valign="top" width="100%" border=1  style="border: 1px solid #10501F;"><tr><td><strong>Title</strong></td><td><strong>LINKS/FILES</strong></td></tr>'
+#                        textmessage=textmessage+ r_links
+#                        textmessage=textmessage+'</table>'
+#                        print('----------------------------------------')
+#                        print(textmessage)
+#                        print('----------------------------------------')
+#                        textmessages.append(textmessage)
+#
+#                        remider_message= ReminderMessage()
+#                        remider_message.pk = None
+#                        remider_message.emailfrom = "ippc@fao.org"
+#                        remider_message.emailto = emails
+#                        remider_message.subject = "IPPC Automatic 3 month reminder notification for Invalid LINKS and FILES for "+str(cn)+" ["+str(timezone.now())+"]"
+#                        remider_message.messagebody = textmessage
+#                        remider_message.date = timezone.now()
+#
+#                        messages=[]
+#                        message = mail.EmailMessage(remider_message.subject,remider_message.messagebody,remider_message.emailfrom,
+#                        emails, ['paola.sentinelli@fao.org'])
+#                        message.content_subtype = "html"
+#                        messages.append(message)
+#                        #connection = mail.get_connection()
+#                        #connection.open()
+#                        #sent=connection.send_messages(messages)
+#                        #connection.close()
+#                        remider_message.sent = True
+#                        remider_message.save()   
+#        db.close()
+#        
+#    #context = {'textmessages':textmessages}
+
     context = {}
     response = render(request, "countries/reminder_system.html", context)
     return response
@@ -460,6 +610,14 @@ class CountryView(TemplateView):
         context = super(TemplateView, self).get_context_data(**kwargs)
         context['event_types'] =EVT_REP_TYPE_CHOICES
         context['basic_types'] =BASIC_REP_TYPE_CHOICES 
+#        self.country = self.kwargs['country']
+#        ro=ReportingObligation.objects.filter(country__country_slug=self.country,is_version=False,to_verify=True).count()
+#        ev=EventReporting.objects.filter(country__country_slug=self.country,is_version=False,to_verify=True).count()
+#        p=PestReport.objects.filter(country__country_slug=self.country,is_version=False,to_verify=True).count()
+#        if ro>0 or ev>0 or p>0:
+#            context['ro_to_verify_1'] ='verify' 
+#        else:
+#            context['ro_to_verify_1'] ='noverify'
         context.update({
             'country': self.kwargs['country']
             # 'editors': self.kwargs['editors']
@@ -1231,6 +1389,35 @@ def pest_report_edit(request, country, id=None, template_name='countries/pest_re
         'form': form,'f_form':f_form,'u_form':u_form,'issueform': issueform,'commodityform': commodityform,  "pest_report": pest_report,'notifyrelateform':notifyrelateform
     }, context_instance=RequestContext(request))
 
+#
+## http://stackoverflow.com/a/1854453/412329
+#@login_required
+#@permission_required('ippc.change_pestreport', login_url="/accounts/login/")
+#def pest_report_validate(request, country, id=None):
+#    """ VALIDATE PestReport  """
+#    user = request.user
+#    author = user
+#    country = user.get_profile().country
+#    # country_id = PestReport.objects.filter(country__country_id=country.id)
+#    user_country_slug = lower(slugify(country))
+#    print(id)
+#    if id:
+#        pest_report = get_object_or_404(PestReport, country=country, pk=id)
+#        db = MySQLdb.connect(DATABASES["default"]["HOST"],DATABASES["default"]["USER"],DATABASES["default"]["PASSWORD"],DATABASES["default"]["NAME"])
+#        cursor = db.cursor()
+#        sql = "UPDATE ippc_pestreport set to_verify=False, verified_date='"+str(datetime.today())+"' where  id="+str(pest_report.id)
+#        print(sql)
+#        try:
+#            cursor.execute(sql)
+#            db.commit()
+#        except:
+#            print('dddddddddddddddddddddddddddddddddddddddddddddddddddddddd')
+#            db.rollback()
+#        db.close()            
+#        info(request, _("Successfully Validated Pest report."))
+#        return redirect("pest-report-detail", country=user_country_slug, year=pest_report.publish_date.strftime("%Y"), month=pest_report.publish_date.strftime("%m"), slug=pest_report.slug)
+
+
 class ReportingObligationListView(ListView):
     """    Reporting Obligation """
     context_object_name = 'latest'
@@ -1552,6 +1739,67 @@ def reporting_obligation_edit(request, country, id=None, template_name='countrie
         'form': form,'f_form':f_form,'u_form': u_form,'issueform': issueform,'commodityform': commodityform,  "reporting_obligation": reporting_obligation,'notifyrelateform':notifyrelateform
     }, context_instance=RequestContext(request))
 
+## http://stackoverflow.com/a/1854453/412329
+#@login_required
+#@permission_required('ippc.change_reportingobligation', login_url="/accounts/login/")
+#def reporting_obligation_translate(request,lang, country, id=None, template_name='countries/reporting_obligation_translate.html'):
+#    """ translate Reporting Obligation """
+#    user = request.user
+#    author = user
+#    country = user.get_profile().country
+#    # country_id = PestReport.objects.filter(country__country_id=country.id)
+#    user_country_slug = lower(slugify(country))
+#    if id:
+#        reporting_obligation = get_object_or_404(ReportingObligation, id=id)
+#        try:
+#            treporting_obligation = get_object_or_404(TransReportingObligation, translation_id=id,lang=lang)
+#        except:
+#            treporting_obligation = TransReportingObligation(lang=lang)        
+#    else:
+#            treporting_obligation = TransReportingObligation()
+#            reporting_obligation = ReportingObligation()
+#
+#    if request.POST:
+#        transform = TransReportingObligationForm(request.POST, instance=treporting_obligation)
+#        if transform.is_valid():
+#            transform.save()
+#            info(request, _("Successfully translated Reporting obligation."))
+#            return redirect("reporting-obligation-detail", country=user_country_slug, year=reporting_obligation.publish_date.strftime("%Y"), month=reporting_obligation.publish_date.strftime("%m"), slug=reporting_obligation.slug)
+#    else:
+#        transform = TransReportingObligationForm(instance=treporting_obligation)
+#        
+#    return render_to_response(template_name, {
+#        'transform':transform,'lang':lang,"reporting_obligation":reporting_obligation,"treporting_obligation": treporting_obligation,
+#    }, context_instance=RequestContext(request))
+#
+#
+#
+## http://stackoverflow.com/a/1854453/412329
+#@login_required
+#@permission_required('ippc.change_reportingobligation', login_url="/accounts/login/")
+#def reporting_obligation_validate(request, country, id=None):
+#    """ VALIDATE Reporting Obligation """
+#    user = request.user
+#    author = user
+#    country = user.get_profile().country
+#    # country_id = PestReport.objects.filter(country__country_id=country.id)
+#    user_country_slug = lower(slugify(country))
+#    print(id)
+#    if id:
+#        reporting_obligation = get_object_or_404(ReportingObligation, country=country, pk=id)
+#        db = MySQLdb.connect(DATABASES["default"]["HOST"],DATABASES["default"]["USER"],DATABASES["default"]["PASSWORD"],DATABASES["default"]["NAME"])
+#        cursor = db.cursor()
+#        sql = "UPDATE ippc_reportingobligation set to_verify=False, verified_date='"+str(datetime.today())+"' where  id="+str(reporting_obligation.id)
+#        print(sql)
+#        try:
+#            cursor.execute(sql)
+#            db.commit()
+#        except:
+#            print('dddddddddddddddddddddddddddddddddddddddddddddddddddddddd')
+#            db.rollback()
+#        db.close()            
+#        info(request, _("Successfully Validated Reporting obligation."))
+#        return redirect("reporting-obligation-detail", country=user_country_slug, year=reporting_obligation.publish_date.strftime("%Y"), month=reporting_obligation.publish_date.strftime("%m"), slug=reporting_obligation.slug)
 
 class EventReportingListView(ListView):
     """    Event Reporting """
@@ -1841,6 +2089,32 @@ def event_reporting_edit(request, country, id=None, template_name='countries/eve
     }, context_instance=RequestContext(request))
     
 
+## http://stackoverflow.com/a/1854453/412329
+#@login_required
+#@permission_required('ippc.change_eventreporting', login_url="/accounts/login/")
+#def event_reporting_validate(request, country, id=None):
+#    """ VALIDATE Event reporting  """
+#    user = request.user
+#    author = user
+#    country = user.get_profile().country
+#    # country_id = PestReport.objects.filter(country__country_id=country.id)
+#    user_country_slug = lower(slugify(country))
+#    print(id)
+#    if id:
+#        eventreporting = get_object_or_404(EventReporting, country=country, pk=id)
+#        db = MySQLdb.connect(DATABASES["default"]["HOST"],DATABASES["default"]["USER"],DATABASES["default"]["PASSWORD"],DATABASES["default"]["NAME"])
+#        cursor = db.cursor()
+#        sql = "UPDATE ippc_eventreporting set to_verify=False, verified_date='"+str(datetime.today())+"' where  id="+str(eventreporting.id)
+#        print(sql)
+#        try:
+#            cursor.execute(sql)
+#            db.commit()
+#        except:
+#            print('dddddddddddddddddddddddddddddddddddddddddddddddddddddddd')
+#            db.rollback()
+#        db.close()            
+#        info(request, _("Successfully Validated Event reporting."))
+#        return redirect("event-reporting-detail", country=user_country_slug, year=eventreporting.publish_date.strftime("%Y"), month=eventreporting.publish_date.strftime("%m"), slug=eventreporting.slug)
 
 class DraftProtocolListView(ListView):
     """    DraftProtocol """
@@ -4484,7 +4758,44 @@ def email_send(request):
 
         cp_set.append(users_all)
 
-
+    emaile2=[]
+    users_all_e=[]
+    for g in Group.objects.filter():
+        print (g)
+        if g.name == 'Country editor':
+            users = g.user_set.all()
+           
+            for u in users:
+                users_u=[]
+                #user_obj=User.objects.get(id=u.user_id)
+                
+                user_obj=User.objects.get(username=u)
+                if user_obj.is_active:
+                    userippc = get_object_or_404(IppcUserProfile, user_id=user_obj.id)
+           
+                
+                
+                    cn = get_object_or_404(CountryPage,id=userippc.country_id)
+                    users_u.append(str(cn))
+                    users_u.append(' ('+(unicode(userippc.first_name))+' '+(unicode(userippc.last_name))+') ')
+                    users_u.append(str(user_obj.email))
+                    users_all_e.append(users_u)
+    users_all_e2= split(users_all_e,30)   
+    j=0
+    users_all_e_2=[]
+    for xx in users_all_e2:
+        users_all_e_2=[]
+       
+        k=j+1
+        users_all_e_2.append("Country editors - Group "+str(k))
+        users_all_e_2.append(str(j))
+        j=j+1
+        for x in xx:
+            users_all_e_2.append(x)
+    
+        emaile2.append(users_all_e_2)
+            
+            
     if request.method == "POST":
         f_form =EmailUtilityMessageFileFormSet(request.POST, request.FILES)
         if form.is_valid() and f_form.is_valid():
@@ -4504,7 +4815,10 @@ def email_send(request):
                      emailto_all.append(str(uemail))
             for h in range(0,6):
                   for uemail in request.POST.getlist('usercp1_'+str(h)+'_0'):
-                     emailto_all.append(str(uemail))                     
+                     emailto_all.append(str(uemail)) 
+            for h in range(0,7):
+                  for uemail in request.POST.getlist('usere1_'+str(h)+'_0'):
+                     emailto_all.append(str(uemail))                        
             #print(emailto_all)
             new_emailmessage = form.save(commit=False)
             new_emailmessage.date=timezone.now()
@@ -4555,13 +4869,13 @@ def email_send(request):
             info(request, _("Email  sent."))
             return redirect("email-detail",new_emailmessage.id)
         else:
-             return render_to_response('emailutility/emailutility_send.html', {'form': form,'f_form': f_form,'emailgroups':g_set,'emailcp':cp_set,'emailcp2':cp_set0},
+             return render_to_response('emailutility/emailutility_send.html', {'form': form,'f_form': f_form,'emailgroups':g_set,'emailcp':cp_set,'emailcp2':cp_set0,'emaile2':emaile2},
              context_instance=RequestContext(request))
     else:
         form = EmailUtilityMessageForm(instance=EmailUtilityMessage())
         f_form =EmailUtilityMessageFileFormSet()
       
-    return render_to_response('emailutility/emailutility_send.html', {'form': form  ,'f_form': f_form,'emailgroups':g_set,'emailcp':cp_set,'emailcp2':cp_set0,},#'emailcpu':cpu_set,'emailcpi':cpi_set,'emailcpl':cpl_set
+    return render_to_response('emailutility/emailutility_send.html', {'form': form  ,'f_form': f_form,'emailgroups':g_set,'emailcp':cp_set,'emailcp2':cp_set0,'emaile2':emaile2},#'emailcpu':cpu_set,'emailcpi':cpi_set,'emailcpl':cpl_set
         context_instance=RequestContext(request))
 
    
