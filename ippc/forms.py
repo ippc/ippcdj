@@ -19,7 +19,7 @@ PartnersPublication,PartnersPublicationFile,PartnersPublicationUrl,\
 PartnersNews,PartnersNewsFile,PartnersNewsUrl, \
 CountryNews,CountryNewsFile,CountryNewsUrl, EmailUtilityMessage, EmailUtilityMessageFile,\
 DraftProtocol,DraftProtocolFile,DraftProtocolComments,NotificationMessageRelate,Poll,  Poll_Choice,\
-Question,Answer
+Question,Answer#,TransReportingObligation
 
 
 
@@ -396,6 +396,18 @@ PestReportUrlFormSet  = inlineformset_factory(PestReport,  PestReportUrl, extra=
 ReportingoblicationFileFormSet = inlineformset_factory(ReportingObligation,  ReportingObligation_File,extra=1)
 ReportingObligationUrlFormSet  = inlineformset_factory(ReportingObligation,  ReportingObligationUrl, extra=1)
 
+#class TransReportingObligationForm(forms.ModelForm):
+#    class Meta:
+#        model =  TransReportingObligation
+#        fields = [
+#           'lang', 
+#           'title', 
+#           'short_description',
+#           ]
+#        widgets = {   
+#           'lang' : forms.Select(attrs={'readonly':'True'}),
+#        }
+
 class DraftProtocolForm(forms.ModelForm):
     class Meta:
         model =  DraftProtocol
@@ -463,7 +475,7 @@ class EmailUtilityMessageForm(forms.ModelForm):
            'users',
            ]
        
-        exclude = ( 'date','sent', 'groups',)       
+        exclude = ( 'date','sent', 'groups','notsentto',)       
 EmailUtilityMessageFileFormSet = inlineformset_factory(EmailUtilityMessage,  EmailUtilityMessageFile,extra=1)
 
 
