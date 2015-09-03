@@ -1686,6 +1686,7 @@ class EmailUtilityMessage(models.Model):
     messagebody = models.TextField(_("Message: "),max_length=500,blank=True, null=True)
     date = models.DateTimeField('date')
     sent =  models.BooleanField()
+    notsentto = models.CharField(_("notsent: "),max_length=250)
     #User.__unicode__ = user_unicode_patch
     users = models.ManyToManyField(User,
             verbose_name=_("Send to single users:"),help_text=_("CTRL/Command+mouseclick for more than 1 selection"),
@@ -1840,3 +1841,14 @@ class TransPublicationLibraryPage(Translatable, RichText, Slugged):
         verbose_name_plural = _("Translated Publication Libraries")
         ordering = ("lang",)
         #unique_together = ("lang", "translation")
+#
+#class TransReportingObligation(Translatable,   Slugged):
+#    translation = models.ForeignKey(ReportingObligation, related_name="translation")
+#    short_description = models.CharField(max_length=1000, blank=True)
+#
+#    class Meta:
+#        verbose_name = _("Translated ReportingObligation")
+#        verbose_name_plural = _("Translated ReportingObligations")
+#        ordering = ("lang",)
+#        #unique_together = ("lang", "translation")
+#        
