@@ -16,7 +16,7 @@ CountryNews,CountryNewsFile,CountryNewsUrl,CommodityKeyword,PreferredLanguages, 
 PartnersWebsite,PartnersWebsiteUrl,\
 PartnersNews,PartnersNewsFile,PartnersNewsUrl, \
 EppoCode,IssueKeyword, CommodityKeyword,IssueKeywordsRelate,CommodityKeywordsRelate, ContactType, \
-IppcUserProfile,Question,Answer
+IppcUserProfile,Question,Answer#,TransReportingObligation
 
 from django.forms.models import inlineformset_factory
 from django.forms.formsets import formset_factory
@@ -125,6 +125,14 @@ from django.http import HttpResponseRedirect
 class PublicationLibraryAdmin(PageAdmin):
     inlines = (PublicationInline, TransPublicationLibraryPageAdmin,)
 admin.site.register(PublicationLibrary, PublicationLibraryAdmin)
+
+
+#class TransReportingObligationAdmin(StackedDynamicInlineAdmin):
+#    model = TransReportingObligation
+#    fields = ("lang", "title", "short_description")
+
+
+
 
 # Country Pages ----------------- 
 # http://mezzanine.jupo.org/docs/content-architecture.html#creating-custom-content-types
@@ -323,7 +331,7 @@ class ReportingObligationUrlInline(admin.TabularInline):
     formset = inlineformset_factory(ReportingObligation, ReportingObligationUrl,extra=1)
  
 class ReportingObligationAdmin(admin.ModelAdmin):
-    inlines = [ReportingObligationFileInline,ReportingObligationUrlInline, ]
+    inlines = [ReportingObligationFileInline,ReportingObligationUrlInline,]# TransReportingObligationAdmin
     save_on_top = True
     list_display = ('title', 'publication_date', 'modify_date',   'country')
     list_filter = ('title', 'publication_date', 'modify_date',  'country')
