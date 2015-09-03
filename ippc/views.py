@@ -31,7 +31,8 @@ DraftProtocolForm,  DraftProtocolFileFormSet,DraftProtocolCommentsForm,IppcUserP
 
 from django.views.generic import ListView, MonthArchiveView, YearArchiveView, DetailView, TemplateView, CreateView
 from django.core.urlresolvers import reverse
-from django.core.mail import send_mail
+from django.core.mail import send_mail,send_mass_mail
+
 from django.template.defaultfilters import slugify, lower
 from django.template import RequestContext
 from django.shortcuts import render_to_response, get_object_or_404, redirect
@@ -4761,7 +4762,7 @@ def email_send(request):
     emaile2=[]
     users_all_e=[]
     for g in Group.objects.filter():
-        print (g)
+       
         if g.name == 'Country editor':
             users = g.user_set.all()
            
@@ -4785,7 +4786,6 @@ def email_send(request):
     users_all_e_2=[]
     for xx in users_all_e2:
         users_all_e_2=[]
-       
         k=j+1
         users_all_e_2.append("Country editors - Group "+str(k))
         users_all_e_2.append(str(j))
@@ -4822,6 +4822,7 @@ def email_send(request):
             #print(emailto_all)
             new_emailmessage = form.save(commit=False)
             new_emailmessage.date=timezone.now()
+            
             new_emailmessage.emailto=emailto_all
             form.save()
             #save file to message in db
@@ -4864,6 +4865,8 @@ def email_send(request):
                
             #update status SENT/NOT SENT mail message in db
             new_emailmessage.sent=sent
+          
+            
             form.save()
            
             info(request, _("Email  sent."))
