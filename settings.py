@@ -270,7 +270,7 @@ INSTALLED_APPS = (
     "calls",
     "news",
     "iyph",
-    
+    #"pce",
     "t_eppo",
     # or, even better, attachments that can be related to any model type
     
