@@ -29,7 +29,9 @@ DraftProtocolDetailView,  draftprotocol_create, draftprotocol_edit,draftprotocol
 draftprotocol_comment_create,draftprotocol_comment_edit,PublicationLibraryView,commenta,contactPointExtractor,\
 CountryRegionsPercentageListView,CountryStatsreportsListView,CountryStatsTotalreportsListView,CountryRegionsUsersListView,CountryTotalUsersListView,\
 QuestionListView, QuestionDetailView, QuestionAnswersView,question_create,question_edit,\
-answer_create,answer_edit  ,vote_answer_up ,vote_answer_down,reporting_trough_eppo,reminder_to_cn#,reporting_obligation_validate,event_reporting_validate,pest_report_validate
+answer_create,answer_edit  ,vote_answer_up ,vote_answer_down,reporting_trough_eppo,reminder_to_cn
+
+#,reporting_obligation_validate,event_reporting_validate,pest_report_validate
 #reporting_obligation_translate,
 from schedule.periods import Year, Month, Week, Day
 from mezzanine.core.views import direct_to_template
@@ -91,6 +93,7 @@ urlpatterns = patterns("",
     url(r'^calls/', include('calls.urls')),
     url(r'^news/', include('news.urls')),
     url(r'^iyph/', include('iyph.urls')),
+    #url(r'^pce/', include('pce.urls')),
 
 
 
