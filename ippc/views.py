@@ -4690,7 +4690,6 @@ def split(arr, size):
 def email_send(request):
     """ Create email to send """
     form = EmailUtilityMessageForm(request.POST)
-    
     g_set=[]
     for g in Group.objects.filter():
         users = g.user_set.all()
@@ -4709,7 +4708,6 @@ def email_send(request):
         g_set.append(users_all)
     
     users_all=[]
- 
     cp_set0=[]
     users_all=[]
     cp=IppcUserProfile.objects.filter(contact_type=1)
@@ -4758,7 +4756,8 @@ def email_send(request):
                users_all.append(users_u)
 
         cp_set.append(users_all)
-
+   
+    
     emaile2=[]
     users_all_e=[]
     for g in Group.objects.filter():
@@ -4795,7 +4794,8 @@ def email_send(request):
     
         emaile2.append(users_all_e_2)
             
-            
+   
+           
     if request.method == "POST":
         f_form =EmailUtilityMessageFileFormSet(request.POST, request.FILES)
         if form.is_valid() and f_form.is_valid():
