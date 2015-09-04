@@ -475,7 +475,7 @@ class EmailUtilityMessageForm(forms.ModelForm):
            'users',
            ]
        
-        exclude = ( 'date','sent', 'groups','notsentto',)       
+        exclude = ( 'date','sent', 'groups',)       #,'notsentto'
 EmailUtilityMessageFileFormSet = inlineformset_factory(EmailUtilityMessage,  EmailUtilityMessageFile,extra=1)
 
 
