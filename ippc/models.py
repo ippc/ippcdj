@@ -1686,7 +1686,7 @@ class EmailUtilityMessage(models.Model):
     messagebody = models.TextField(_("Message: "),max_length=500,blank=True, null=True)
     date = models.DateTimeField('date')
     sent =  models.BooleanField()
-    notsentto = models.CharField(_("notsent: "),max_length=250)
+    #notsentto = models.CharField(_("notsent: "),max_length=250)
     #User.__unicode__ = user_unicode_patch
     users = models.ManyToManyField(User,
             verbose_name=_("Send to single users:"),help_text=_("CTRL/Command+mouseclick for more than 1 selection"),
