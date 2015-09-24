@@ -906,7 +906,7 @@ class PublicationListView(ListView):
     model = Publication
     date_field = 'modify_date'
     template_name = 'pages/publication_list.html'
-    queryset = Publication.objects.filter(status=IS_PUBLIC,is_version=False).order_by('-modify_date', 'title')
+    queryset = Publication.objects.filter(status=IS_PUBLIC,is_version=False).order_by('-publication_date', 'title')
     allow_future = False
     allow_empty = True
     paginate_by = 500
@@ -4771,12 +4771,16 @@ def email_send(request):
                 
                 user_obj=User.objects.get(username=u)
                 if user_obj.is_active:
+                    #print('$%$%$%$%$%$%$%$%$%$')
+                    #print(user_obj.id)
                     userippc = get_object_or_404(IppcUserProfile, user_id=user_obj.id)
-           
+                    print(userippc)
+                    
                 
                 
-                    cn = get_object_or_404(CountryPage,id=userippc.country_id)
-                    users_u.append(str(cn))
+                    #cn = get_object_or_404(CountryPage,id=userippc.country_id)
+                    #print(cn)
+                    #users_u.append(str(cn))
                     users_u.append(' ('+(unicode(userippc.first_name))+' '+(unicode(userippc.last_name))+') ')
                     users_u.append(str(user_obj.email))
                     users_all_e.append(users_u)
