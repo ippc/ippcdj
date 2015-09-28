@@ -161,7 +161,7 @@ if ( $.fn.DataTable.TableTools ) {
 
   $(document).ready( function() {
   			       $('#publications').dataTable( {
-								 "sPaginationType": "bootstrap",
+                                                                  "sPaginationType": "bootstrap",
   			         "oLanguage": {
   			           "sLengthMenu": ''
   			         }
