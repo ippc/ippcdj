@@ -116,7 +116,7 @@
         <td>{{ publication.document_number }}</td>
       
         <td>{{ publication.agenda_number }}</td>
-      {% endif %} 
+      {% endif %}
       <td><a href="{% url 'publication-detail' publication.pk %}">{{ publication.title }}</a></td>
       <td>
         {% if publication.file_en %}
