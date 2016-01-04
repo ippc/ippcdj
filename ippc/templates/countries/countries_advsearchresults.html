@@ -234,6 +234,7 @@ google.maps.event.addDomListener(window, 'load', initialize);
     <tr>
       <th>{% trans "Country" %}{{type}}</th>
       <th>{% trans "Report number" %}</th>
+      <th>{% trans "Date published" %}</th>
       <th>{% trans "Last updated" %}</th>
       <th>{% trans "Identity of Pest" %}</th>
       <th>{% trans "Host(s) or Article(s)" %}</th>
@@ -247,6 +248,7 @@ google.maps.event.addDomListener(window, 'load', initialize);
     <tr>
       <td><a href="{% url 'country' object.country.country_slug%}">{{ object.country }}</a></td>
       <td>{{ object.report_number}} </td>
+      <td>{{ object.publish_date|date:"d M Y" }}</td>
       <td>{{ object.modify_date|date:"d M Y" }}</td>
       <td>{{ object.pest_identity}} </td>
       <td>{{ object.hosts}} </td>
