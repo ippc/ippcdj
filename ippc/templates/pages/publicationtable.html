@@ -97,7 +97,13 @@
     <thead>
         <tr>{%if  page.publicationlibrary.show_agenda_doc_colums %}
             <th style="width:15%;">{% trans "Doc #" %}</th>
-            <th style="width:15%;">{% trans "Agenda #" %}</th>
+            <th style="width:15%;">{% if page.publicationlibrary.id == 999 %}
+                  {% trans "Year" %}
+            {%else%}
+                {% trans "Agenda #" %}
+            {%endif%}
+            
+            </th>
             {% endif %}
             <th>{% trans "Title" %}</th>
             <th>{% trans "Files" %}</th>

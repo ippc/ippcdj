@@ -22,7 +22,11 @@
           {% endif %}
 
           {% if publication.agenda_number %}
+          {% if publication.library.id == 999 %}
+           <dt>{% trans "Year" %}</dt>
+         {% else %}
           <dt>{% trans "Agenda #" %}</dt>
+          {% endif %}
           <dd>{{ publication.agenda_number }}</dd>
           {% endif %}
 {% if publication.file_en  or publication.file_es or publication.file_ar or publication.file_fr or publication.file_ru or publication.file_zh%}
