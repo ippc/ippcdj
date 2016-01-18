@@ -23,10 +23,15 @@
   </a>
   <span class="divider">/</span>
 </li-->
+{%if region_name == 'NPPOs' %}
+<li class="active">{% trans "List of NPPOs" %} 
+</li>
+{% else %}
 <li class="active">{% trans "Countries List" %} 
     {% if region_name %}
   from {{region_name}}
   {% endif %}</li>
+  {% endif %}
 {% endblock %}
 
 {% block local_nav %}
@@ -36,10 +41,14 @@
 
 {% block main %}
 <h1>
+{%if region_name == 'NPPOs' %}
+    {% trans "List of NPPOs" %} 
+{% else %}
   {% trans "List of Countries" %}
-  {% if region_name %}
+      {% if region_name %}
 	- {{region_name}}
-  {% endif %}
+      {% endif %}
+ {% endif %}
   </h1> 
 <div class="span7 middle">
 	<p>There are currently <strong>{{ number_of_cp }}</strong> contracting parties. Visit the <a href="http://www.fao.org/fileadmin/user_upload/legal/docs/004s-e.pdf">FAO Legal</a> website for details.</p>
