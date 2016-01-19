@@ -6071,16 +6071,20 @@ a.badge:focus {
 .carousel-indicators li {
   display: block;
   float: left;
-  width: 10px;
-  height: 10px;
+  width: 14px;
+  height: 14px;
   margin-left: 5px;
-  text-indent: -999px;
-  background-color: #ccc;
-  background-color: rgba(255, 255, 255, 0.25);
-  border-radius: 5px;
+  /*text-indent: -999px;*/
+  text-indent: 3px;
+  padding: 3px;
+  color: /*#ccc;*/#fff;;
+  background-color: /*#ccc;*/#3a87ad;
+  background-color: /*rgba(255, 255, 255, 0.25);*/#3a87ad;
+  /*border-radius: 5px;*/
 }
 
 .carousel-indicators .active {
+  color: /*#ccc;*/#3a87ad;;
   background-color: #fff;
 }
 
