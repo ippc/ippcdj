@@ -1,4 +1,4 @@
-from datetime import datetime
+from datetime import datetime,timedelta
 
 from django.db.models import Count, Q
 
@@ -7,6 +7,7 @@ from calls.models import CallsPost, CallsCategory
 from mezzanine.generic.models import Keyword
 from mezzanine import template
 from mezzanine.utils.models import get_user_model
+from django.utils import timezone
 
 User = get_user_model()
 
@@ -86,6 +87,30 @@ def calls_recent_posts(limit=5, tag=None, username=None, category=None):
             return []
     return list(calls_posts[:limit])
 
+@register.as_tag
+def calls_deadline_recent_posts(limit=5, category=None):
+    """
+    Put a list of recently published calls posts into the template
+    context. A tag title or slug, category title or slug or author's
+    username can also be specified to filter the recent posts returned.
+
+    Usage::
+
+        {% calls_deadline_recent_posts 5 as recent_posts %}
+        {% calls_deadline_recent_posts limit=5 category="python" as recent_posts %}
+     
+    """
+    calls_posts = CallsPost.objects.published().select_related("user")
+    title_or_slug = lambda s: Q(title=s) | Q(slug=s)
+    
+    if category is not None:
+        try:
+            category = CallsCategory.objects.get(title_or_slug(category))
+            calls_posts = calls_posts.filter(categories=category,deadline_date__range=(timezone.now(),'2016-12-31'  ) )
+        except CallsCategory.DoesNotExist:
+            return []
+   
+    return list(calls_posts[:limit])
 
 @register.inclusion_tag("admin/includes/quick_calls.html", takes_context=True)
 def quick_calls(context):
