@@ -27,7 +27,8 @@ class CallsPost(Displayable, Ownable, RichText, AdminThumbMixin):
                                  verbose_name=_("Related posts"), blank=True)
 
     admin_thumb_field = "featured_image"
-
+    deadline_date = models.DateTimeField(_("Deadline date"), blank=True, null=True, editable=True)
+   
     class Meta:
         verbose_name = _("Call")
         verbose_name_plural = _("Calls")
