@@ -15,7 +15,8 @@
 </script>
 <p><a href="#members" onclick="javascript:toggle_visibility('membersdiv');">show/hide Full list of Contacts</a><p>
 <div id="membersdiv" style="display:none;">     
-<table class="table table-condensed table-striped table-bordered" id="members">
+<table class="table table-condensed table-striped table-bordered" id="publications">
+
   
 {% if  page.id == 321 %} 
  <thead>
@@ -216,8 +217,5 @@
 </table>
     </div>
 
- {% block extra_js %} 
-   <script src="{% static "js/jquery.dataTables.js" %}"></script> 
-   <script src="{% static "js/DT_bootstrap.js" %}"></script> 
- {% endblock %} 
+ 
 {% endif %}
