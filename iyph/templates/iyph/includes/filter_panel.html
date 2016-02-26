@@ -2,10 +2,28 @@
 <div class="panel">
   <h3>{% trans "IYPH Toolbox" %}</h3>
   <ul class="unstyled recent-posts">
-  <li><a href="https://www.ippc.int/static/media/uploads/iyph/iyph_presentation_rev_newoutline_20150626.ppt">Introduction to IYPH</a></li>
-  <li><a href="https://youtu.be/hvaVaJVmIXU">IYPH seminar video</a></li>
+<b>{% trans "Advocacy:" %}</b><ul class="unstyled recent-posts">
+        <li><a href="https://www.ippc.int/static/media/uploads/iyph_2020_-_advocacy_document_2016-02-05.docx ">IYPH 2020 – ADVOCACY DOCUMENT</a></li>
   
   </ul>
+<b>{% trans "Presentations:" %}</b>
+<ul class="unstyled recent-posts">
+    <li><a href="https://www.ippc.int/static/media/uploads/iyph/iyph_presentation_rev_newoutline_20150626.ppt">Introduction to IYPH</a></li>
+   <li><a href="https://www.ippc.int/static/media/uploads/iyph_and_other_challenges_to_the_ippc.ppt">IYPH and other future challenges for the IPPC</a></li>
+   <li><a href="https://www.ippc.int/static/media/uploads/iyph_2020_giorin.ppt">ROK 2020 MIĘDZYNARODOWYM  ROKIEM  ZDROWIA  ROŚLIN</a></li>
+   <li><a href="https://www.ippc.int/static/media/uploads/general_iyph_presentation.ppt">General presentation to IYPH</a></li>
+ 
+  
+  </ul>
+
+<b>{% trans "Videos:" %}</b>
+    <ul class="unstyled recent-posts">
+        <li><a href="https://youtu.be/hvaVaJVmIXU">IYPH seminar video</a></li>
+  
+  </ul>
+
+  
+  
 </div>
 {% if user.is_superuser  or perms.iyph.add_iyphpost  %} 
     <div class="pull-right">
