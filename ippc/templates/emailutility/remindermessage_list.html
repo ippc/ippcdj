@@ -2,7 +2,7 @@
 {% load pages_tags mezzanine_tags i18n future staticfiles accounts_tags %}
 
 {% block meta_title %}
-  {% trans "Reminder system messeges" %}: 
+  {% trans "Reminder system messages" %}: 
 {% endblock %}
 
 {% block body_class %}wide{% endblock %}
@@ -14,7 +14,7 @@
   <span class="divider">/</span>
 </li>
 
-<li class="active">{% trans "Reminder system messeges" %}</li>
+<li class="active">{% trans "Reminder system messages" %}</li>
 {% endblock %}
 
 {% block local_nav %}
@@ -29,7 +29,7 @@
 <p class="pull-right"><a href="javascript:history.go(-1)">{% trans "« Go back" %}</a><br></p>
 
 <h1>
-  <small class="normal">{% trans "Reminder system list of email messeges sent:" %}</small>
+  <small class="normal">{% trans "Reminder system list of email messages sent:" %}</small>
 </h1> 
     {% if latest %}
     <table class="table table-condensed table-striped" id="publications">
@@ -44,12 +44,12 @@
         {% for object in latest %}
         <tr>
           <td><a href="{% url 'remindermessages-detail'  object.id %}">{{ object.subject }}</a></td>
-          <td>{{ object.date|date:"d M Y" }} at {{object.date|date:"H:m:s"}} CET</td>
+          <td>{{ object.date|date:"d M Y - H:m" }}</td>
           <td>      
                 {% if object.sent %}
-                <i class="icon-ok"></i> 
+                     <i class="icon-ok"></i> 
                 {% else %}
-                <i class="icon-exclamation-sign"> </i> not sent
+                     <i class="icon-exclamation-sign"> </i> not sent
                 {% endif %}
           </td>
         </tr>
@@ -61,9 +61,9 @@
     {% endif %}
 
 
-  {%else%}
-        <p>No permissions to see this page.</p>
-      {% endif %} 
+{%else%}
+    <p>No permissions to see this page.</p>
+{% endif %} 
       
 {% endblock %}
 
