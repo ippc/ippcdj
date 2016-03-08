@@ -1,0 +1,576 @@
+{% extends "base.html" %}
+{% load pages_tags mezzanine_tags i18n future staticfiles accounts_tags %}
+
+{% block meta_title %}
+{% trans "Countries Stats" %}: 
+{{ page.title }}
+{% endblock %}
+
+{% block body_class %}wide{% endblock %}
+
+{% block breadcrumb_menu %}
+<li><a href="/{{ LANGUAGE_CODE }}/">{% trans "Home" %}</a><span class="divider">/</span></li>
+<li>
+    <a href="/countries/">Countries</a>
+    <span class="divider">/</span>
+</li>
+<li>
+    <a href="/countries/statistics">Statistics</a>
+    <span class="divider">/</span>
+</li>
+
+<li class="active">{% trans "Countries Statistics: users per region that never logged in" %} </li>
+{% endblock %}
+
+{% block local_nav %}
+{% endblock local_nav %}
+
+{% block pageinfo %}
+{% endblock pageinfo %}
+
+{% block main %}
+
+<p class="pull-right">
+    <a href="javascript:history.go(-1)">{% trans "« Go back" %}</a>
+</p>
+<script type="text/javascript">
+  window.onload = function () {
+    var chart1 = new CanvasJS.Chart("chartContainer1",
+    {
+      title:{
+        text: "Percentage of Official Contact Points that never logged in"
+      },
+      legend:{
+        verticalAlign: "center",
+        horizontalAlign: "right",
+        fontSize: 16,
+        fontFamily: "Helvetica"        
+      },
+      theme: "theme2",
+      data: [
+      {        
+       type: "pie",       
+       indexLabelFontFamily: "Garamond",       
+       indexLabelFontSize: 16,
+       startAngle:-20,      
+       showInLegend: true,
+       toolTipContent:"{label}",
+       dataPoints: [
+             {% autoescape off %} 
+                {{datachart1}}
+             {% endautoescape %}  
+         ]
+     }
+     ]
+   });
+       chart1.render();
+   var chart2 = new CanvasJS.Chart("chartContainer2",
+    {
+      title:{
+        text: "Percentage of Official Contact Points that never logged in 2015"
+      },
+      legend:{
+        verticalAlign: "center",
+        horizontalAlign: "right",
+        fontSize: 16,
+        fontFamily: "Helvetica"        
+      },
+      theme: "theme2",
+      data: [
+      {        
+       type: "pie",       
+       indexLabelFontFamily: "Garamond",       
+       indexLabelFontSize: 16,
+       startAngle:-20,      
+       showInLegend: true,
+       toolTipContent:"{label}",
+       dataPoints: [
+             {% autoescape off %} 
+                {{datachart2}}
+             {% endautoescape %}  
+         ]
+     }
+     ]
+   });
+       chart2.render();    
+       
+       
+       var chart3 = new CanvasJS.Chart("chartContainer3",
+    {
+      title:{
+        text: "Percentage of Editors that never logged in"
+      },
+      legend:{
+        verticalAlign: "center",
+        horizontalAlign: "right",
+        fontSize: 16,
+        fontFamily: "Helvetica"        
+      },
+      theme: "theme2",
+      data: [
+      {        
+       type: "pie",       
+       indexLabelFontFamily: "Garamond",       
+       indexLabelFontSize: 16,
+       startAngle:-20,      
+       showInLegend: true,
+       toolTipContent:"{label}",
+       dataPoints: [
+             {% autoescape off %} 
+                {{datachart3}}
+             {% endautoescape %}  
+         ]
+     }
+     ]
+   });
+       chart3.render();  
+       
+       
+       var chart4 = new CanvasJS.Chart("chartContainer4",
+    {
+      title:{
+        text: "Percentage of Editors that never logged in 2015"
+      },
+      legend:{
+        verticalAlign: "center",
+        horizontalAlign: "right",
+        fontSize: 16,
+        fontFamily: "Helvetica"        
+      },
+      theme: "theme2",
+      data: [
+      {        
+       type: "pie",       
+       indexLabelFontFamily: "Garamond",       
+       indexLabelFontSize: 16,
+       startAngle:-20,      
+       showInLegend: true,
+       toolTipContent:"{label}",
+       dataPoints: [
+             {% autoescape off %} 
+                {{datachart4}}
+             {% endautoescape %}  
+         ]
+     }
+     ]
+   });
+       chart4.render();  
+       
+       
+       var chart_1 = new CanvasJS.Chart("chartContainer_1",
+    {
+      title:{
+        text: "Percentage of Information Points that never logged in"
+      },
+      legend:{
+        verticalAlign: "center",
+        horizontalAlign: "right",
+        fontSize: 16,
+        fontFamily: "Helvetica"        
+      },
+      theme: "theme2",
+      data: [
+      {        
+       type: "pie",       
+       indexLabelFontFamily: "Garamond",       
+       indexLabelFontSize: 16,
+       startAngle:-20,      
+       showInLegend: true,
+       toolTipContent:"{label}",
+       dataPoints: [
+             {% autoescape off %} 
+                {{datachart_1}}
+             {% endautoescape %}  
+         ]
+     }
+     ]
+   });
+       chart_1.render();  
+       
+    
+       
+       
+       var chart_2 = new CanvasJS.Chart("chartContainer_2",
+    {
+      title:{
+        text: "Percentage of Information Points that never logged in 2015"
+      },
+      legend:{
+        verticalAlign: "center",
+        horizontalAlign: "right",
+        fontSize: 16,
+        fontFamily: "Helvetica"        
+      },
+      theme: "theme2",
+      data: [
+      {        
+       type: "pie",       
+       indexLabelFontFamily: "Garamond",       
+       indexLabelFontSize: 16,
+       startAngle:-20,      
+       showInLegend: true,
+       toolTipContent:"{label}",
+       dataPoints: [
+             {% autoescape off %} 
+                {{datachart_2}}
+             {% endautoescape %}  
+         ]
+     }
+     ]
+   });
+       chart_2.render();  
+       
+       
+
+       
+       
+       var chart_3 = new CanvasJS.Chart("chartContainer_3",
+    {
+      title:{
+        text: "Percentage of Local contacts that never logged in"
+      },
+      legend:{
+        verticalAlign: "center",
+        horizontalAlign: "right",
+        fontSize: 16,
+        fontFamily: "Helvetica"        
+      },
+      theme: "theme2",
+      data: [
+      {        
+       type: "pie",       
+       indexLabelFontFamily: "Garamond",       
+       indexLabelFontSize: 16,
+       startAngle:-20,      
+       showInLegend: true,
+       toolTipContent:"{label}",
+       dataPoints: [
+             {% autoescape off %} 
+                {{datachart_3}}
+             {% endautoescape %}  
+         ]
+     }
+     ]
+   });
+       chart_3.render();  
+       
+       
+  
+       
+       
+       var chart_4 = new CanvasJS.Chart("chartContainer_4",
+    {
+      title:{
+        text: "Percentage of Local contacts that never logged in 2015"
+      },
+      legend:{
+        verticalAlign: "center",
+        horizontalAlign: "right",
+        fontSize: 16,
+        fontFamily: "Helvetica"        
+      },
+      theme: "theme2",
+      data: [
+      {        
+       type: "pie",       
+       indexLabelFontFamily: "Garamond",       
+       indexLabelFontSize: 16,
+       startAngle:-20,      
+       showInLegend: true,
+       toolTipContent:"{label}",
+       dataPoints: [
+             {% autoescape off %} 
+                {{datachart_4}}
+             {% endautoescape %}  
+         ]
+     }
+     ]
+   });
+       chart_4.render();  
+       
+           
+       
+       var chart_5 = new CanvasJS.Chart("chartContainer_5",
+    {
+      title:{
+        text: "Percentage of NCP Editors that never logged in "
+      },
+      legend:{
+        verticalAlign: "center",
+        horizontalAlign: "right",
+        fontSize: 16,
+        fontFamily: "Helvetica"        
+      },
+      theme: "theme2",
+      data: [
+      {        
+       type: "pie",       
+       indexLabelFontFamily: "Garamond",       
+       indexLabelFontSize: 16,
+       startAngle:-20,      
+       showInLegend: true,
+       toolTipContent:"{label}",
+       dataPoints: [
+             {% autoescape off %} 
+                {{datachart_5}}
+             {% endautoescape %}  
+         ]
+     }
+     ]
+   });
+       chart_5.render();  
+       
+       
+    
+       
+       
+       var chart_6 = new CanvasJS.Chart("chartContainer_6",
+    {
+      title:{
+        text: "Percentage of NCP Editors that never logged in 2015"
+      },
+      legend:{
+        verticalAlign: "center",
+        horizontalAlign: "right",
+        fontSize: 16,
+        fontFamily: "Helvetica"        
+      },
+      theme: "theme2",
+      data: [
+      {        
+       type: "pie",       
+       indexLabelFontFamily: "Garamond",       
+       indexLabelFontSize: 16,
+       startAngle:-20,      
+       showInLegend: true,
+       toolTipContent:"{label}",
+       dataPoints: [
+             {% autoescape off %} 
+                {{datachart_6}}
+             {% endautoescape %}  
+         ]
+     }
+     ]
+   });
+       chart_6.render();  
+       
+       
+  }
+  </script>
+<script src='{% static "/static/canvasjs/canvasjs.min.js" %}'></script>
+<h1>
+    <small class="normal">{% trans "The number of users per region that never logged in to the IPPC " %} </small>
+</h1> 
+<p>The tables and Graphs below summarize by region the number of IPPC Contact Points and IPP editors that never logged in.
+    <br>
+
+    <b>Date generated: </b>  {{ dategenerate|date:"d M Y, H:m" }}</p><br>
+<h1>
+    <small class="normal">{% trans "Contracting parties" %} </small>
+</h1> 
+<table class="table table-condensed table-striped">
+    <thead>
+        <tr>
+            <th colspan="4"></th>
+            <th colspan="4">REGIONS</th>
+        </tr> 
+        <tr>
+            <th></th>
+            <th>Africa</th>
+            <th>Asia</th>
+            <th>Europe</th>
+            <th>Latin America &amp; Caribbean</th>
+            <th>Near East</th>
+            <th>North America</th>
+            <th>Southwest Pacific</th>
+            <th>Total number</th>
+        </tr>
+
+    </thead>
+    <tbody>
+        <tr>
+            <th>No. of Contracting Parties:</th>
+            {% if latest %}
+            {% for object in region_cp %}
+            <th>{{ object.1 }} </th>
+            {% endfor %}
+            {% endif %}<td> </td>
+        </tr>
+        <tr>
+            <td>Contact points that never logged in</td>
+            {% if latest %}
+            {% for object in region_off_cp %}
+            <td>{{object.0}} </td>
+            {% endfor %}
+            {% endif %}
+
+            <td> {{tot_o_count}}</td>
+            </td>
+        </tr>
+        <tr>
+            <td>Contact points that not logged in 2015</td>
+            {% if latest %}
+            {% for object in region_off_cp %}
+            <td>{{object.1 }} </td>
+            {% endfor %}
+            {% endif %}
+
+            <td> {{tot_o_2015_count}}</td>
+            </td>
+        </tr>
+        <tr>
+            <td>Editors points that never logged in</td>
+            {% if latest %}
+            {% for object in region_off_cp %}
+            <td>{{object.2 }} </td>
+            {% endfor %}
+            {% endif %}
+
+            <td> {{tot_e_count}}</td>
+            </td>
+        </tr>
+        <tr>
+            <td>Editors points that not logged in 2015</td>
+            {% if latest %}
+            {% for object in region_off_cp %}
+            <td>{{object.3 }} </td>
+            {% endfor %}
+            {% endif %}
+
+            <td> {{tot_e_2015_count}}</td>
+            </td>
+        </tr>
+        <tr>
+    </tbody>
+
+</table>
+<table class="table table-condensed table-striped">
+    <tr>
+        <td>
+            <div id="chartContainer1" style="height:300px; width: 100%;">
+            </div>
+        </td>
+        <td>
+            <div id="chartContainer2" style="height:300px; width: 100%;">
+            </div>
+        </td>
+    </tr>
+    <tr>
+        <td><div id="chartContainer3" style="height:300px; width: 100%;">
+            </div>
+        </td>
+        <td>
+            <div id="chartContainer4" style="height:300px; width: 100%;">
+            </div></td>
+    </tr>
+</table>
+<h1>
+    <small class="normal">{% trans "Non-contracting parties" %} </small>
+</h1> 
+
+<table class="table table-condensed table-striped">
+    <thead>
+        <tr>
+            <th colspan="4"></th>
+            <th colspan="4">REGIONS</th>
+        </tr> 
+        <tr>
+            <th>&#160;</th>
+            <th>Africa</th>
+            <th>Asia</th>
+            <th>Europe</th>
+            <th>Latin America &amp; Caribbean</th>
+            <th>Near East</th>
+            <th>North America</th>
+            <th>Southwest Pacific</th>
+            <th>Total number</th>
+        </tr>
+        <tr>
+            <th>No. of countries:</th>
+            {% if latest %}
+            {% for object in region_ncp %}
+            <th>{{ object.1 }} </th>
+            {% endfor %}
+            {% endif %}<td> </td>
+        </tr>
+        <tr>
+            <td>Information Points that never logged in</td>
+            {% if latest %}
+            {% for object in region_info_ncp %}
+            <td>{{object.0 }} </td>
+            {% endfor %}
+            {% endif %} <td> {{tot_i_count}}</td>
+        </tr>
+        <tr><td>Information Points that never logged in 2015</td>
+            {% if latest %}
+            {% for object in region_info_ncp %}
+            <td>{{object.1 }} </td>
+            {% endfor %}
+            {% endif %} <td> {{tot_i_2015_count}}</td>
+        </tr>
+        <tr>
+            <td>Local contact that never logged in</td>
+            {% if latest %}
+            {% for object in region_local_ncp %}
+            <td>{{object.0 }} </td>
+            {% endfor %}
+            {% endif %}<td> {{tot_l_count}}</td>
+        </tr>
+        <tr>
+            <td>Local contact that never logged in 2015</td>
+            {% if latest %}
+            {% for object in region_local_ncp %}
+            <td>{{object.1 }} </td>
+            {% endfor %}
+            {% endif %}<td> {{tot_l_2015_count}}</td>
+        </tr>
+        <tr>
+            <td>Editors that never logged in  </td>
+            {% if latest %}
+            {% for object in region_editors %}
+            <td>{{object.0 }} </td>
+            {% endfor %}
+            {% endif %}<td> {{tot_encp_count}}</td>
+        </tr>
+        <tr>
+            <td>Editors that never logged in 2015</td>
+            {% if latest %}
+            {% for object in region_editors %}
+            <td>{{object.1 }} </td>
+            {% endfor %}
+            {% endif %}<td> {{tot_encp_2015_count}}</td>
+        </tr>
+
+        </tbody>
+
+</table>
+<table class="table table-condensed table-striped">
+     <tr>
+        <td>
+            <div id="chartContainer_1" style="height:300px; width: 100%;">
+            </div>
+        </td>
+        <td>
+            <div id="chartContainer_2" style="height:300px; width: 100%;">
+            </div>
+        </td>
+    </tr>
+    <tr>
+        <td><div id="chartContainer_3" style="height:300px; width: 100%;">
+            </div>
+        </td>
+        <td>
+            <div id="chartContainer_4" style="height:300px; width: 100%;">
+            </div></td>
+    </tr>
+     <tr>
+        <td><div id="chartContainer_5" style="height:300px; width: 100%;">
+            </div>
+        </td>
+        <td>
+            <div id="chartContainer_6" style="height:300px; width: 100%;">
+            </div></td>
+    </tr>
+</table>
+
+{% endblock %}
