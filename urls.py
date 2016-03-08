@@ -2,8 +2,14 @@ import autocomplete_light
 autocomplete_light.autodiscover()
 
 from django.conf.urls import patterns, include, url
+from django.http import HttpResponseRedirect
+from django.http import HttpResponse
+from django.contrib.sitemaps import GenericSitemap
+from mezzanine.pages.models import RichTextPage
+from .news.models import NewsPost
 
 # from django.contrib.auth.decorators import login_required
+
 # from django.contrib.admin.views.decorators import staff_member_required
 
 from django.contrib import admin
@@ -27,7 +33,7 @@ PollListView,PollResultsView,PollDetailView,vote_poll,poll_edit,poll_create,\
 email_send,EmailUtilityMessageDetailView,EmailUtilityMessageListView,ReminderMessageDetailView,ReminderMessageListView,\
 DraftProtocolDetailView,  draftprotocol_create, draftprotocol_edit,draftprotocol_compilecomments,\
 draftprotocol_comment_create,draftprotocol_comment_edit,PublicationLibraryView,commenta,contactPointExtractor,\
-CountryRegionsPercentageListView,CountryStatsreportsListView,CountryStatsTotalreportsListView,CountryRegionsUsersListView,CountryTotalUsersListView,\
+CountryRegionsPercentageListView,CountryStatsreportsListView,CountryStatsTotalreportsListView,CountryRegionsUsersListView,CountryTotalUsersListView,CountryRegionsUsersNeverLoggedListView,\
 QuestionListView, QuestionDetailView, QuestionAnswersView,question_create,question_edit,\
 answer_create,answer_edit  ,vote_answer_up ,vote_answer_down,reporting_trough_eppo,reminder_to_cn
 
@@ -49,11 +55,26 @@ import mezzanine_pagedown.urls
 js_info_dict = {
     'packages': ('ippc',),
 }
+# Sitemaps 
+# Define information to be published in dictionaries
+ippcnews_dict = {
+    'queryset': NewsPost.objects.published(),
+    'date_field': 'publish_date',
+    }
+page_dict = {
+    'queryset': RichTextPage.objects.published(),
+    }
+sitemaps = {
+    'pages': GenericSitemap(page_dict, priority=0.6),
+    'ippcnews': GenericSitemap(ippcnews_dict, priority=0.8),
+    }
 
 
 urlpatterns = patterns("",
     (r'^jsi18n/$', 'django.views.i18n.javascript_catalog', js_info_dict),
-	
+(r'^google10111c8a3426cf77\.html$', lambda r:HttpResponse("google-site-verification: google10111c8a3426cf77.html", mimetype="text/plain")),
+(r'^robots\.txt$', lambda r: HttpResponse("User-agent:*\nDisallow: ", mimetype="text/plain")),
+    url(r'^sitemap\.xml$', 'django.contrib.sitemaps.views.sitemap', {'sitemaps': sitemaps}),
 
    #---------IRSS:--------------------------#    
     #url("devirss.ippc.int/$', direct_to_template, {"template": "irss/index.html"}, name="irss"),
@@ -155,7 +176,9 @@ urlpatterns = patterns("",
         view=CountryListView.as_view(),
         # view=country_view(),
         name='country-list'),
+  
     # advanced results of reporting list
+    
     url(r'^countries/all/(?P<type>[\w-]+)/$',
         view=AdvancesSearchCNListView.as_view(),
         name='advsearch'),
@@ -181,6 +204,9 @@ urlpatterns = patterns("",
     url(r'^countries/statistics/total-users/$',
         view=CountryTotalUsersListView.as_view(),
         name='totalusers'),
+    url(r'^countries/statistics/region-users-neverlogged/$',
+        view=CountryRegionsUsersNeverLoggedListView.as_view(),
+        name='regionusers'),    
     #-------------------------------------------#    
     #POLL:
     
