@@ -4817,7 +4817,10 @@ class CountryRegionsUsersNeverLoggedListView(ListView):
         
         prev_year = datetime.now().year -1 
         context['prev_year']=prev_year
-        
+        context['tot_num_CP']=CountryPage.objects.filter(cp_ncp_t_type='CP').count()
+        context['tot_num_NCP']=CountryPage.objects.filter( cp_ncp_t_type='NCP').count()
+        context['tot_num_T']=CountryPage.objects.filter( cp_ncp_t_type='T').count()
+            
         tot_o_count=0   
         tot_o_2015_count=0
         tot_e_count=0
@@ -5045,6 +5048,9 @@ class CountryRegionsUsersNeverLoggedListView(ListView):
                 percoInfo2015=regionInfoncp[k-1][1]*100/numb_countriesperregionncp
                 percoeditncp=regionEditors[k-1][0]*100/numb_countriesperregionncp
                 percoeditncp2015=regionEditors[k-1][1]*100/numb_countriesperregionncp
+               
+            numb_countriesperregioterr=CountryPage.objects.filter(region=k,cp_ncp_t_type='T').count()
+            if numb_countriesperregioterr>0:
                 percoLocal=regionLocalterr[k-1][0]*100/numb_countriesperregioterr
                 percoLocal2015=regionLocalterr[k-1][1]*100/numb_countriesperregioterr
                 percoeditterr=regionEditorsTerr[k-1][0]*100/numb_countriesperregioterr
