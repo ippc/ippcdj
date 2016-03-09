@@ -67,7 +67,7 @@
    var chart2 = new CanvasJS.Chart("chartContainer2",
     {
       title:{
-        text: "Percentage of Official Contact Points that never logged in 2015"
+        text: "Percentage of Official Contact Points that not logged in  {{prev_year}}"
       },
       legend:{
         verticalAlign: "center",
@@ -98,7 +98,7 @@
        var chart3 = new CanvasJS.Chart("chartContainer3",
     {
       title:{
-        text: "Percentage of Editors that never logged in"
+        text: "Percentage of IPP Editors that never logged in"
       },
       legend:{
         verticalAlign: "center",
@@ -129,7 +129,7 @@
        var chart4 = new CanvasJS.Chart("chartContainer4",
     {
       title:{
-        text: "Percentage of Editors that never logged in 2015"
+        text: "Percentage of IPP Editors that not logged in {{prev_year}}"
       },
       legend:{
         verticalAlign: "center",
@@ -193,7 +193,7 @@
        var chart_2 = new CanvasJS.Chart("chartContainer_2",
     {
       title:{
-        text: "Percentage of Information Points that never logged in 2015"
+        text: "Percentage of Information Points that not logged in {{prev_year}}"
       },
       legend:{
         verticalAlign: "center",
@@ -261,7 +261,7 @@
        var chart_4 = new CanvasJS.Chart("chartContainer_4",
     {
       title:{
-        text: "Percentage of Local contacts that never logged in 2015"
+        text: "Percentage of Local contacts that not logged in {{prev_year}}"
       },
       legend:{
         verticalAlign: "center",
@@ -293,7 +293,7 @@
        var chart_5 = new CanvasJS.Chart("chartContainer_5",
     {
       title:{
-        text: "Percentage of NCP Editors that never logged in "
+        text: "Percentage of NCP IPP Editors that never logged in "
       },
       legend:{
         verticalAlign: "center",
@@ -327,7 +327,7 @@
        var chart_6 = new CanvasJS.Chart("chartContainer_6",
     {
       title:{
-        text: "Percentage of NCP Editors that never logged in 2015"
+        text: "Percentage of NCP IPP Editors that not logged in {{prev_year}}"
       },
       legend:{
         verticalAlign: "center",
@@ -356,10 +356,10 @@
        
       
        
-       var chart_8 = new CanvasJS.Chart("chartContainer_7",
+       var chart_7 = new CanvasJS.Chart("chartContainer_7",
     {
       title:{
-        text: "Percentage of Editors that never logged in 2015"
+        text: "Percentage of Local IPP Editors that never logged in"
       },
       legend:{
         verticalAlign: "center",
@@ -392,7 +392,7 @@
        var chart_8 = new CanvasJS.Chart("chartContainer_8",
     {
       title:{
-        text: "Percentage of Editors that never logged in 2015"
+        text: "Percentage of Local IPP Editors that not logged in {{prev_year}}"
       },
       legend:{
         verticalAlign: "center",
@@ -472,7 +472,7 @@
             </td>
         </tr>
         <tr>
-            <td>Contact points that not logged in 2015</td>
+            <td>Contact points that not logged in {{prev_year}}</td>
             {% if latest %}
             {% for object in region_off_cp %}
             <td>{{object.1 }} </td>
@@ -494,7 +494,7 @@
             </td>
         </tr>
         <tr>
-            <td>IPP Editors that not logged in 2015</td>
+            <td>IPP Editors that not logged in  {{prev_year}}</td>
             {% if latest %}
             {% for object in region_off_cp %}
             <td>{{object.3 }} </td>
@@ -565,7 +565,7 @@
             {% endfor %}
             {% endif %} <td> {{tot_i_count}}</td>
         </tr>
-        <tr><td>Information Points that never logged in 2015</td>
+        <tr><td>Information Points that never logged in  {{prev_year}}</td>
             {% if latest %}
             {% for object in region_info_ncp %}
             <td>{{object.1 }} </td>
@@ -574,7 +574,7 @@
         </tr>
         
         <tr>
-            <td>Editors that never logged in  </td>
+            <td>IPP Editors that never logged in  </td>
             {% if latest %}
             {% for object in region_editors %}
             <td>{{object.0 }} </td>
@@ -582,7 +582,7 @@
             {% endif %}<td> {{tot_encp_count}}</td>
         </tr>
         <tr>
-            <td>Editors that never logged in 2015</td>
+            <td>IPP Editors that never logged in  {{prev_year}}</td>
             {% if latest %}
             {% for object in region_editors %}
             <td>{{object.1 }} </td>
@@ -649,7 +649,7 @@
         </tr>
        
         <tr>
-            <td>Local contact that never logged in</td>
+            <td>Local contactc that never logged in</td>
             {% if latest %}
             {% for object in region_local_terr %}
             <td>{{object.0 }} </td>
@@ -657,7 +657,7 @@
             {% endif %}<td> {{tot_l_count}}</td>
         </tr>
         <tr>
-            <td>Local contact that never logged in 2015</td>
+            <td>Local contacts that never logged in  {{prev_year}}</td>
             {% if latest %}
             {% for object in region_local_terr %}
             <td>{{object.1 }} </td>
@@ -673,7 +673,7 @@
             {% endif %}<td> {{tot_encp_count}}</td>
         </tr>
         <tr>
-            <td>IPP Editors that never logged in 2015</td>
+            <td>IPP Editors that never logged in  {{prev_year}}</td>
             {% if latest %}
             {% for object in region_local_terr %}
             <td>{{object.1 }} </td>
