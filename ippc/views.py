@@ -1015,6 +1015,7 @@ class PublicationLibraryView(ListView):
         users_tpff=[]
         users_tpg=[]
         users_tppt=[]
+        users_esg=[]
         for g in Group.objects.filter():
             if g.name == 'IPPC Secretariat': 
                 users = g.user_set.all()
@@ -1119,8 +1120,24 @@ class PublicationLibraryView(ListView):
                    users_u.append((user_obj.username))
                    users_u.append((gg))
                    users_tppt.append(users_u)
+            if g.name == 'ePhyto Steering Group (ESG)': 
+                users = g.user_set.all()
+                for u in users:
+                   users_u=[]
+                   user_obj=User.objects.get(username=u)
+                   gg=''
+                   for h in user_obj.groups.all():
+                        gg=gg+str(h)+', '
+                   userippc = get_object_or_404(IppcUserProfile, user_id=user_obj.id)
+                   users_u.append((unicode(userippc.last_name)))
+                   users_u.append((unicode(userippc.first_name)))
+                   users_u.append((userippc.profile_photo))
+                   users_u.append((userippc.title))
+                   users_u.append((user_obj.username))
+                   users_u.append((gg))
+                   users_esg.append(users_u)       
             
-        print(users_sec)
+        
         context['secretariat']=users_sec
         context['users_sc']=users_sc
         context['users_bureau']=users_bureau
@@ -1129,6 +1146,7 @@ class PublicationLibraryView(ListView):
         context['users_tppt']=users_tppt
         context['users_tpg']=users_tpg
         context['users_tpfq']=users_tpfq
+        context['users_esg']=users_esg
         return context
     def get_queryset(self):
         queryset = DraftProtocol.objects.all()
