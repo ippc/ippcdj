@@ -458,7 +458,8 @@
             {% for object in region_cp %}
             <th>{{ object.1 }} </th>
             {% endfor %}
-            {% endif %}<td> </td>
+            {% endif %}
+            <th> {{tot_num_CP}}</th>
         </tr>
         <tr>
             <td>Contact points that never logged in</td>
@@ -550,12 +551,13 @@
             <th>Total number</th>
         </tr>
         <tr>
-            <th>No. of countries:</th>
+            <th>No. of Non-contracting parties</th>
             {% if latest %}
             {% for object in region_ncp %}
             <th>{{ object.1 }} </th>
             {% endfor %}
-            {% endif %}<td> </td>
+            {% endif %}     <th> {{tot_num_NCP}}
+      </th>
         </tr>
         <tr>
             <td>Information Points that never logged in</td>
@@ -640,12 +642,14 @@
             <th>Total number</th>
         </tr>
         <tr>
-            <th>No. of countries:</th>
+            <th>No. of Territories</th>
             {% if latest %}
             {% for object in region_terr %}
             <th>{{ object.1 }} </th>
             {% endfor %}
-            {% endif %}<td> </td>
+            {% endif %}       
+            <th> {{tot_num_T}}      </th>
+   
         </tr>
        
         <tr>
