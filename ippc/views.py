@@ -4815,19 +4815,23 @@ class CountryRegionsUsersNeverLoggedListView(ListView):
         regionLocalterr = []
         regionEditorsTerr = []
         
+        prev_year = datetime.now().year -1 
+        context['prev_year']=prev_year
         
         tot_o_count=0   
         tot_o_2015_count=0
         tot_e_count=0
         tot_e_2015_count=0
-        
         tot_i_count=0
         tot_i_2015_count=0
         tot_l_count=0
         tot_l_2015_count=0
         tot_encp_count=0
         tot_encp_2015_count=0
-        
+        tot_eterr_count=0
+        tot_eterr_2015_count=0
+            
+            
         for k,v in REGIONS:
             reg = v.lower()
             numCNcp = []
@@ -4866,7 +4870,6 @@ class CountryRegionsUsersNeverLoggedListView(ListView):
             infopoint = []
             local = []
             editorsncp = []
-            
             editorsterr = []
             
             o_count=0
@@ -4883,7 +4886,7 @@ class CountryRegionsUsersNeverLoggedListView(ListView):
                     if u.last_login.year == 1970:
                         #print(u.last_login.year)
                         o_count=o_count+1
-                    if u.last_login.year > 1970 and u.last_login.year!=2015:
+                    if u.last_login.year > 1970 and u.last_login.year!=prev_year:
                         print(u.last_login.year)
                         o_2015_count=o_2015_count+1
                 for o in editorneverlogg:
@@ -4891,7 +4894,7 @@ class CountryRegionsUsersNeverLoggedListView(ListView):
                     if u.last_login.year == 1970:
                         #print(u.last_login.year)
                         e_count=e_count+1
-                    if u.last_login.year > 1970 and u.last_login.year!=2015:
+                    if u.last_login.year > 1970 and u.last_login.year!=prev_year:
                         print(u.last_login.year)
                         e_2015_count=e_2015_count+1        
             official.append(o_count)
@@ -4908,8 +4911,7 @@ class CountryRegionsUsersNeverLoggedListView(ListView):
             tot_e_count+=e_count
             tot_e_2015_count+=e_2015_count
             
-            l_count=0
-            l_2015_count=0
+           
             i_count=0
             i_2015_count=0
             encp_count=0
@@ -4922,13 +4924,13 @@ class CountryRegionsUsersNeverLoggedListView(ListView):
                     u= User.objects.get(id=o.user_id)
                     if u.last_login.year == 1970:
                         i_count=i_count+1
-                    if u.last_login.year > 1970 and u.last_login.year!=2015:
+                    if u.last_login.year > 1970 and u.last_login.year!=prev_year:
                         i_2015_count=i_2015_count+1
                 for o in editorneverlogg:
                     u= User.objects.get(id=o.user_id)
                     if u.last_login.year == 1970:
                         encp_count=encp_count+1
-                    if u.last_login.year > 1970 and u.last_login.year!=2015:
+                    if u.last_login.year > 1970 and u.last_login.year!=prev_year:
                         encp_2015_count=encp_2015_count+1           
             infopoint.append(i_count)
             infopoint.append(i_2015_count)
@@ -4941,14 +4943,15 @@ class CountryRegionsUsersNeverLoggedListView(ListView):
             
             tot_i_count+=i_count
             tot_i_2015_count+=i_2015_count
-            tot_l_count+=l_count
-            tot_l_2015_count+=l_2015_count
             
             tot_encp_count+=encp_count
             tot_encp_2015_count+=encp_2015_count
             
             
-            
+            l_count=0
+            l_2015_count=0
+            eterr_count=0
+            eterr_2015_count=0
             
           #TERR
             for c in countriesperregioterr:
@@ -4959,24 +4962,24 @@ class CountryRegionsUsersNeverLoggedListView(ListView):
                     u= User.objects.get(id=o.user_id)
                     if u.last_login.year == 1970:
                         l_count=l_count+1
-                    if u.last_login.year > 1970 and u.last_login.year!=2015:
+                    if u.last_login.year > 1970 and u.last_login.year!=prev_year:
                         l_2015_count=l_2015_count+1   
                 for o in editorneverlogg:
                     u= User.objects.get(id=o.user_id)
                     if u.last_login.year == 1970:
                         #print(u.last_login.year)
                         eterr_count=eterr_count+1
-                    if u.last_login.year > 1970 and u.last_login.year!=2015:
+                    if u.last_login.year > 1970 and u.last_login.year!=prev_year:
                         #print(u.last_login.year)
                         eterr_2015_count=eterr_2015_count+1           
-            
+           
             local.append(l_count)
             local.append(l_2015_count)
             regionLocalterr.append(local)   
             context['region_local_terr']=regionLocalterr
-            editors.append(encp_count)
-            editors.append(encp_2015_count)
-            regionEditorsTerr.append(editors)   
+            editorsterr.append(encp_count)
+            editorsterr.append(encp_2015_count)
+            regionEditorsTerr.append(editorsterr)   
             context['region_terr_editors']=regionEditorsTerr
             
             tot_l_count+=l_count
