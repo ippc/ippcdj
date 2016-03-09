@@ -4806,12 +4806,14 @@ class CountryRegionsUsersNeverLoggedListView(ListView):
     
         regionCNcp = []
         regionCNncp = []
+        regionCNterr = []
         regionall= []
         regionOffcp = []
         regionUnOffcp = []
         regionInfoncp = []
-        regionLocalncp = []
         regionEditors = []
+        regionLocalterr = []
+        regionEditorsTerr = []
         
         
         tot_o_count=0   
@@ -4844,6 +4846,16 @@ class CountryRegionsUsersNeverLoggedListView(ListView):
             regionCNncp.append(numCNncp)
             context['region_ncp']=regionCNncp
             
+            
+            numCNterr = []
+            countriesperregioterr=CountryPage.objects.filter(region=k,cp_ncp_t_type='T')
+            numb_countriesperregioterr=countriesperregioterr.count()
+            numCNterr.append(reg)
+            numCNterr.append(numb_countriesperregioterr)
+            regionCNterr.append(numCNterr)
+            context['region_terr']=regionCNterr
+            
+            
             numAll = []
             numAll.append(reg)
             numAll.append(numb_countriesperregioncp+numb_countriesperregionncp)
@@ -4851,10 +4863,11 @@ class CountryRegionsUsersNeverLoggedListView(ListView):
             context['regions']=regionall
 
             official = []
-            unofficial = []
             infopoint = []
             local = []
-            editors = []
+            editorsncp = []
+            
+            editorsterr = []
             
             o_count=0
             o_2015_count=0
@@ -4904,48 +4917,26 @@ class CountryRegionsUsersNeverLoggedListView(ListView):
             #NCP
             for c in countriesperregionncp:
                 infop_neverlogg=IppcUserProfile.objects.filter(country=c.id,contact_type='3')
-                localp_neverlogg=IppcUserProfile.objects.filter(country=c.id,contact_type='4')
                 editorneverlogg=IppcUserProfile.objects.filter(country=c.id,contact_type='5')
-                print('-----------------------------------')
-                print(reg+str(localp_neverlogg.count()))
-                print(reg+str(infop_neverlogg.count()))
-                print(reg+str(editorneverlogg.count()))
-                print('-----------------------------------')
                 for o in infop_neverlogg:
                     u= User.objects.get(id=o.user_id)
                     if u.last_login.year == 1970:
-                        #print(u.last_login.year)
                         i_count=i_count+1
                     if u.last_login.year > 1970 and u.last_login.year!=2015:
-                        #print(u.last_login.year)
                         i_2015_count=i_2015_count+1
-                for o in localp_neverlogg:
-                    u= User.objects.get(id=o.user_id)
-                    if u.last_login.year == 1970:
-                        #print(u.last_login.year)
-                        l_count=l_count+1
-                    if u.last_login.year > 1970 and u.last_login.year!=2015:
-                        #print(u.last_login.year)
-                        l_2015_count=l_2015_count+1   
                 for o in editorneverlogg:
                     u= User.objects.get(id=o.user_id)
                     if u.last_login.year == 1970:
-                        #print(u.last_login.year)
                         encp_count=encp_count+1
                     if u.last_login.year > 1970 and u.last_login.year!=2015:
-                        #print(u.last_login.year)
                         encp_2015_count=encp_2015_count+1           
             infopoint.append(i_count)
             infopoint.append(i_2015_count)
             regionInfoncp.append(infopoint)   
             context['region_info_ncp']=regionInfoncp
-            local.append(l_count)
-            local.append(l_2015_count)
-            regionLocalncp.append(local)   
-            context['region_local_ncp']=regionLocalncp
-            editors.append(encp_count)
-            editors.append(encp_2015_count)
-            regionEditors.append(editors)   
+            editorsncp.append(encp_count)
+            editorsncp.append(encp_2015_count)
+            regionEditors.append(editorsncp)   
             context['region_editors']=regionEditors
             
             tot_i_count+=i_count
@@ -4956,22 +4947,45 @@ class CountryRegionsUsersNeverLoggedListView(ListView):
             tot_encp_count+=encp_count
             tot_encp_2015_count+=encp_2015_count
             
-#            for c in countriesperregionncp:
-#                i_count+=IppcUserProfile.objects.filter(country=c.id,contact_type='3').count()
-#                l_count+=IppcUserProfile.objects.filter(country=c.id,contact_type='4').count()
-#                e_count+=IppcUserProfile.objects.filter(country=c.id,contact_type='5').count()
-#            infopoint.append(i_count)
-#            regionInfoncp.append(infopoint)   
-#            context['region_info_ncp']=regionInfoncp
-#            local.append(l_count)
-#            regionLocalncp.append(local)   
-#            context['region_local_ncp']=regionLocalncp
-#            editors.append(e_count)
-#            regionEditors.append(editors)   
-#            context['region_editors']=regionEditors
-#            tot_i_count+=i_count
-#            tot_l_count+=l_count
-#            tot_e_count+=e_count
+            
+            
+            
+          #TERR
+            for c in countriesperregioterr:
+                localp_neverlogg=IppcUserProfile.objects.filter(country=c.id,contact_type='4')
+                editorneverlogg=IppcUserProfile.objects.filter(country=c.id,contact_type='5')
+              
+                for o in localp_neverlogg:
+                    u= User.objects.get(id=o.user_id)
+                    if u.last_login.year == 1970:
+                        l_count=l_count+1
+                    if u.last_login.year > 1970 and u.last_login.year!=2015:
+                        l_2015_count=l_2015_count+1   
+                for o in editorneverlogg:
+                    u= User.objects.get(id=o.user_id)
+                    if u.last_login.year == 1970:
+                        #print(u.last_login.year)
+                        eterr_count=eterr_count+1
+                    if u.last_login.year > 1970 and u.last_login.year!=2015:
+                        #print(u.last_login.year)
+                        eterr_2015_count=eterr_2015_count+1           
+            
+            local.append(l_count)
+            local.append(l_2015_count)
+            regionLocalterr.append(local)   
+            context['region_local_terr']=regionLocalterr
+            editors.append(encp_count)
+            editors.append(encp_2015_count)
+            regionEditorsTerr.append(editors)   
+            context['region_terr_editors']=regionEditorsTerr
+            
+            tot_l_count+=l_count
+            tot_l_2015_count+=l_2015_count
+            
+            tot_eterr_count+=eterr_count
+            tot_eterr_2015_count+=eterr_2015_count
+            
+            
             
         context['tot_o_count']=tot_o_count       
         context['tot_o_2015_count']=tot_o_2015_count       
@@ -4979,10 +4993,12 @@ class CountryRegionsUsersNeverLoggedListView(ListView):
         context['tot_e_2015_count']=tot_e_2015_count       
         context['tot_i_count']=tot_i_count       
         context['tot_i_2015_count']=tot_i_2015_count       
-        context['tot_l_count']=tot_l_count       
-        context['tot_l_2015_count']=tot_l_2015_count       
         context['tot_encp_count']=tot_encp_count       
         context['tot_encp_2015_count']=tot_encp_2015_count       
+        context['tot_l_count']=tot_l_count       
+        context['tot_l_2015_count']=tot_l_2015_count       
+        context['tot_eterr_count']=tot_eterr_count       
+        context['tot_eterr_2015_count']=tot_eterr_2015_count       
          
         
         datachart1=''
@@ -4995,6 +5011,8 @@ class CountryRegionsUsersNeverLoggedListView(ListView):
         datachart_4=''
         datachart_5=''
         datachart_6=''
+        datachart_7=''
+        datachart_8=''
         
         for k,v in REGIONS:
             reg = v.lower()
@@ -5022,17 +5040,21 @@ class CountryRegionsUsersNeverLoggedListView(ListView):
             if numb_countriesperregionncp>0:
                 percInfo=regionInfoncp[k-1][0]*100/numb_countriesperregionncp
                 percoInfo2015=regionInfoncp[k-1][1]*100/numb_countriesperregionncp
-                percoLocal=regionLocalncp[k-1][0]*100/numb_countriesperregionncp
-                percoLocal2015=regionLocalncp[k-1][1]*100/numb_countriesperregionncp
                 percoeditncp=regionEditors[k-1][0]*100/numb_countriesperregionncp
                 percoeditncp2015=regionEditors[k-1][1]*100/numb_countriesperregionncp
+                percoLocal=regionLocalterr[k-1][0]*100/numb_countriesperregioterr
+                percoLocal2015=regionLocalterr[k-1][1]*100/numb_countriesperregioterr
+                percoeditterr=regionEditorsTerr[k-1][0]*100/numb_countriesperregioterr
+                percoeditterr2015=regionEditorsTerr[k-1][1]*100/numb_countriesperregioterr
          
             datachart_1 += ' {  y: '+str(percInfo)+', legendText:"'+str(v.__unicode__())+'", label: "'+str(v.__unicode__())+': '+str(percInfo)+'%" },'
             datachart_2 += ' {  y: '+str(percoInfo2015)+', legendText:"'+str(v.__unicode__())+'", label: "'+str(v.__unicode__())+': '+str(percoInfo2015)+'%" },'
-            datachart_3 += ' {  y: '+str(percoLocal)+', legendText:"'+str(v.__unicode__())+'", label: "'+str(v.__unicode__())+': '+str(percoLocal)+'%" },'
-            datachart_4 += ' {  y: '+str(percoLocal2015)+', legendText:"'+str(v.__unicode__())+'", label: "'+str(v.__unicode__())+': '+str(percoLocal2015)+'%" },'
             datachart_5 += ' {  y: '+str(percoeditncp)+', legendText:"'+str(v.__unicode__())+'", label: "'+str(v.__unicode__())+': '+str(percoeditncp)+'%" },'
             datachart_6 += ' {  y: '+str(percoeditncp2015)+', legendText:"'+str(v.__unicode__())+'", label: "'+str(v.__unicode__())+': '+str(percoeditncp2015)+'%" },'
+            datachart_3 += ' {  y: '+str(percoLocal)+', legendText:"'+str(v.__unicode__())+'", label: "'+str(v.__unicode__())+': '+str(percoLocal)+'%" },'
+            datachart_4 += ' {  y: '+str(percoLocal2015)+', legendText:"'+str(v.__unicode__())+'", label: "'+str(v.__unicode__())+': '+str(percoLocal2015)+'%" },'
+            datachart_7 += ' {  y: '+str(percoeditterr)+', legendText:"'+str(v.__unicode__())+'", label: "'+str(v.__unicode__())+': '+str(percoeditterr)+'%" },'
+            datachart_8 += ' {  y: '+str(percoeditterr2015)+', legendText:"'+str(v.__unicode__())+'", label: "'+str(v.__unicode__())+': '+str(percoeditterr2015)+'%" },'
         
         context['datachart1']=datachart1       
         context['datachart2']=datachart2       
@@ -5044,6 +5066,8 @@ class CountryRegionsUsersNeverLoggedListView(ListView):
         context['datachart_4']=datachart_4       
         context['datachart_5']=datachart_5       
         context['datachart_6']=datachart_6       
+        context['datachart_7']=datachart_7       
+        context['datachart_8']=datachart_8       
         return context
 
 
