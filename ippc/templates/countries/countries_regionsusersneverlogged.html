@@ -354,6 +354,70 @@
    });
        chart_6.render();  
        
+      
+       
+       var chart_8 = new CanvasJS.Chart("chartContainer_7",
+    {
+      title:{
+        text: "Percentage of Editors that never logged in 2015"
+      },
+      legend:{
+        verticalAlign: "center",
+        horizontalAlign: "right",
+        fontSize: 16,
+        fontFamily: "Helvetica"        
+      },
+      theme: "theme2",
+      data: [
+      {        
+       type: "pie",       
+       indexLabelFontFamily: "Garamond",       
+       indexLabelFontSize: 16,
+       startAngle:-20,      
+       showInLegend: true,
+       toolTipContent:"{label}",
+       dataPoints: [
+             {% autoescape off %} 
+                {{datachart_7}}
+             {% endautoescape %}  
+         ]
+     }
+     ]
+   });
+       chart_7.render();  
+       
+        
+          
+       
+       var chart_8 = new CanvasJS.Chart("chartContainer_8",
+    {
+      title:{
+        text: "Percentage of Editors that never logged in 2015"
+      },
+      legend:{
+        verticalAlign: "center",
+        horizontalAlign: "right",
+        fontSize: 16,
+        fontFamily: "Helvetica"        
+      },
+      theme: "theme2",
+      data: [
+      {        
+       type: "pie",       
+       indexLabelFontFamily: "Garamond",       
+       indexLabelFontSize: 16,
+       startAngle:-20,      
+       showInLegend: true,
+       toolTipContent:"{label}",
+       dataPoints: [
+             {% autoescape off %} 
+                {{datachart_8}}
+             {% endautoescape %}  
+         ]
+     }
+     ]
+   });
+       chart_8.render();  
        
   }
   </script>
@@ -419,7 +483,7 @@
             </td>
         </tr>
         <tr>
-            <td>Editors points that never logged in</td>
+            <td>IPP Editors that never logged in</td>
             {% if latest %}
             {% for object in region_off_cp %}
             <td>{{object.2 }} </td>
@@ -430,7 +494,7 @@
             </td>
         </tr>
         <tr>
-            <td>Editors points that not logged in 2015</td>
+            <td>IPP Editors that not logged in 2015</td>
             {% if latest %}
             {% for object in region_off_cp %}
             <td>{{object.3 }} </td>
@@ -508,22 +572,7 @@
             {% endfor %}
             {% endif %} <td> {{tot_i_2015_count}}</td>
         </tr>
-        <tr>
-            <td>Local contact that never logged in</td>
-            {% if latest %}
-            {% for object in region_local_ncp %}
-            <td>{{object.0 }} </td>
-            {% endfor %}
-            {% endif %}<td> {{tot_l_count}}</td>
-        </tr>
-        <tr>
-            <td>Local contact that never logged in 2015</td>
-            {% if latest %}
-            {% for object in region_local_ncp %}
-            <td>{{object.1 }} </td>
-            {% endfor %}
-            {% endif %}<td> {{tot_l_2015_count}}</td>
-        </tr>
+        
         <tr>
             <td>Editors that never logged in  </td>
             {% if latest %}
@@ -555,6 +604,88 @@
             </div>
         </td>
     </tr>
+     <tr>
+        <td><div id="chartContainer_5" style="height:300px; width: 100%;">
+            </div>
+        </td>
+        <td>
+            <div id="chartContainer_6" style="height:300px; width: 100%;">
+            </div></td>
+    </tr>
+</table>
+
+
+
+
+
+<h1>
+    <small class="normal">{% trans "Territories" %} </small>
+</h1> 
+
+<table class="table table-condensed table-striped">
+    <thead>
+        <tr>
+            <th colspan="4"></th>
+            <th colspan="4">REGIONS</th>
+        </tr> 
+        <tr>
+            <th>&#160;</th>
+            <th>Africa</th>
+            <th>Asia</th>
+            <th>Europe</th>
+            <th>Latin America &amp; Caribbean</th>
+            <th>Near East</th>
+            <th>North America</th>
+            <th>Southwest Pacific</th>
+            <th>Total number</th>
+        </tr>
+        <tr>
+            <th>No. of countries:</th>
+            {% if latest %}
+            {% for object in region_terr %}
+            <th>{{ object.1 }} </th>
+            {% endfor %}
+            {% endif %}<td> </td>
+        </tr>
+       
+        <tr>
+            <td>Local contact that never logged in</td>
+            {% if latest %}
+            {% for object in region_local_terr %}
+            <td>{{object.0 }} </td>
+            {% endfor %}
+            {% endif %}<td> {{tot_l_count}}</td>
+        </tr>
+        <tr>
+            <td>Local contact that never logged in 2015</td>
+            {% if latest %}
+            {% for object in region_local_terr %}
+            <td>{{object.1 }} </td>
+            {% endfor %}
+            {% endif %}<td> {{tot_l_2015_count}}</td>
+        </tr>
+        <tr>
+            <td>IPP Editors that never logged in  </td>
+            {% if latest %}
+            {% for object in region_local_terr %}
+            <td>{{object.0 }} </td>
+            {% endfor %}
+            {% endif %}<td> {{tot_encp_count}}</td>
+        </tr>
+        <tr>
+            <td>IPP Editors that never logged in 2015</td>
+            {% if latest %}
+            {% for object in region_local_terr %}
+            <td>{{object.1 }} </td>
+            {% endfor %}
+            {% endif %}<td> {{tot_encp_2015_count}}</td>
+        </tr>
+
+        </tbody>
+
+</table>
+<table class="table table-condensed table-striped">
+
     <tr>
         <td><div id="chartContainer_3" style="height:300px; width: 100%;">
             </div>
@@ -564,11 +695,11 @@
             </div></td>
     </tr>
      <tr>
-        <td><div id="chartContainer_5" style="height:300px; width: 100%;">
+        <td><div id="chartContainer_7" style="height:300px; width: 100%;">
             </div>
         </td>
         <td>
-            <div id="chartContainer_6" style="height:300px; width: 100%;">
+            <div id="chartContainer_8" style="height:300px; width: 100%;">
             </div></td>
     </tr>
 </table>
