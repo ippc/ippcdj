@@ -5036,8 +5036,9 @@ class CountryRegionsUsersNeverLoggedListView(ListView):
             
             
             editorneverloggCount=editorneverlogg.count()
-            percoffedit=regionOffcp[k-1][2]*100/editorsCP
-            percoffedit2015=regionOffcp[k-1][3]*100/editorsCP
+            if editorCPcount>0:
+                percoffedit=regionOffcp[k-1][2]*100/editorCPcount
+                percoffedit2015=regionOffcp[k-1][3]*100/editorCPcount
          
            
             
@@ -5061,8 +5062,9 @@ class CountryRegionsUsersNeverLoggedListView(ListView):
             if numb_countriesperregionncp>0:
                 percInfo=regionInfoncp[k-1][0]*100/numb_countriesperregionncp
                 percoInfo2015=regionInfoncp[k-1][1]*100/numb_countriesperregionncp
-                percoeditncp=regionEditors[k-1][0]*100/editorNCPcount
-                percoeditncp2015=regionEditors[k-1][1]*100/editorNCPcount
+                if editorNCPcount>0:
+                    percoeditncp=regionEditors[k-1][0]*100/editorNCPcount
+                    percoeditncp2015=regionEditors[k-1][1]*100/editorNCPcount
             
                
             editorTcount=0
@@ -5074,8 +5076,9 @@ class CountryRegionsUsersNeverLoggedListView(ListView):
             if numb_countriesperregioterr>0:
                 percoLocal=regionLocalterr[k-1][0]*100/numb_countriesperregioterr
                 percoLocal2015=regionLocalterr[k-1][1]*100/numb_countriesperregioterr
-                percoeditterr=regionEditorsTerr[k-1][0]*100/editorTcount
-                percoeditterr2015=regionEditorsTerr[k-1][1]*100/editorTcount
+                if editorTcount>0:
+                    percoeditterr=regionEditorsTerr[k-1][0]*100/editorTcount
+                    percoeditterr2015=regionEditorsTerr[k-1][1]*100/editorTcount
          
             datachart_1 += ' {  y: '+str(percInfo)+', legendText:"'+str(v.__unicode__())+'", label: "'+str(v.__unicode__())+': '+str(percInfo)+'%" },'
             datachart_2 += ' {  y: '+str(percoInfo2015)+', legendText:"'+str(v.__unicode__())+'", label: "'+str(v.__unicode__())+': '+str(percoInfo2015)+'%" },'
