@@ -5056,7 +5056,7 @@ class CountryRegionsUsersNeverLoggedListView(ListView):
             percoeditncp=0
             percoeditncp2015=0
             editorNCPcount=0
-            percoeditncp=regionEditors[k-1][0]*100/editorNCPcount
+       
             
             for c in CountryPage.objects.filter(region=k,cp_ncp_t_type='NCP'):
                 editorsNCP=IppcUserProfile.objects.filter(country=c.id,contact_type='5').count()
