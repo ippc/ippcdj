@@ -5009,6 +5009,7 @@ class CountryRegionsUsersNeverLoggedListView(ListView):
                 infop_count=infop_count+IppcUserProfile.objects.filter(country=c.id,contact_type='3').count()
                 
             
+        context['aaaa']=IppcUserProfile.objects.filter(country=c.id,contact_type='3')
         context['tot_num_NCP']=CountryPage.objects.filter( cp_ncp_t_type='NCP').count() - infop_count
         context['infop_count']=infop_count
            
