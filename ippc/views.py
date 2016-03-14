@@ -5029,6 +5029,8 @@ class CountryRegionsUsersNeverLoggedListView(ListView):
             percoff=regionOffcp[k-1][0]*100/numb_countriesperregioncp
             percoff2015=regionOffcp[k-1][1]*100/numb_countriesperregioncp
             editorCPcount=0
+            percoffedit=0
+            percoffedit2015=0
             for c in CountryPage.objects.filter(region=k,cp_ncp_t_type='CP'):
                 editorsCP=IppcUserProfile.objects.filter(country=c.id,contact_type='5').count()
                 editorCPcount=editorCPcount+editorsCP
@@ -5054,6 +5056,8 @@ class CountryRegionsUsersNeverLoggedListView(ListView):
             percoeditncp=0
             percoeditncp2015=0
             editorNCPcount=0
+            percoeditncp=regionEditors[k-1][0]*100/editorNCPcount
+            
             for c in CountryPage.objects.filter(region=k,cp_ncp_t_type='NCP'):
                 editorsNCP=IppcUserProfile.objects.filter(country=c.id,contact_type='5').count()
                 editorNCPcount=editorNCPcount+editorsNCP
@@ -5071,7 +5075,8 @@ class CountryRegionsUsersNeverLoggedListView(ListView):
             for c in CountryPage.objects.filter(region=k,cp_ncp_t_type='T'):
                 editorsT=IppcUserProfile.objects.filter(country=c.id,contact_type='5').count()
                 editorTcount=editorTcount+editorsT
-           
+            percoeditterr=0
+            percoeditterr2015=0
             numb_countriesperregioterr=CountryPage.objects.filter(region=k,cp_ncp_t_type='T').count()
             if numb_countriesperregioterr>0:
                 percoLocal=regionLocalterr[k-1][0]*100/numb_countriesperregioterr
