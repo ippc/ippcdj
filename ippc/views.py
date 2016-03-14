@@ -4853,7 +4853,11 @@ class CountryRegionsUsersNeverLoggedListView(ListView):
                 infop_count1=infop_count1+IppcUserProfile.objects.filter(country=c.id,contact_type='3').count()
       
             newnum=numb_countriesperregionncp - infop_count1
-            
+            print("-------------------"+reg+"--------------------------")
+            print(numb_countriesperregionncp)
+            print(infop_count1)
+            print(newnum)
+           
             numCNncp.append(reg)
             numCNncp.append(newnum)
             regionCNncp.append(numCNncp)
@@ -5003,8 +5007,10 @@ class CountryRegionsUsersNeverLoggedListView(ListView):
         infop_count=0
         for c in countriesperregionncp:
                 infop_count=infop_count+IppcUserProfile.objects.filter(country=c.id,contact_type='3').count()
+                
             
         context['tot_num_NCP']=CountryPage.objects.filter( cp_ncp_t_type='NCP').count() - infop_count
+        context['infop_count']=infop_count
            
         context['tot_o_count']=tot_o_count       
         context['tot_o_2015_count']=tot_o_2015_count       
