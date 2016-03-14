@@ -4883,6 +4883,8 @@ class CountryRegionsUsersNeverLoggedListView(ListView):
             for c in countriesperregioncp:
                 offneverlogg=IppcUserProfile.objects.filter(country=c.id,contact_type='1')
                 editorneverlogg=IppcUserProfile.objects.filter(country=c.id,contact_type='5')
+                editorCPcount=editorneverlogg.count()
+              
                 
                 for o in offneverlogg:
                     u= User.objects.get(id=o.user_id)
@@ -5023,10 +5025,19 @@ class CountryRegionsUsersNeverLoggedListView(ListView):
         for k,v in REGIONS:
             reg = v.lower()
             numb_countriesperregioncp=CountryPage.objects.filter(region=k,cp_ncp_t_type='CP').count()
+              
             percoff=regionOffcp[k-1][0]*100/numb_countriesperregioncp
             percoff2015=regionOffcp[k-1][1]*100/numb_countriesperregioncp
-            percoffedit=regionOffcp[k-1][2]*100/numb_countriesperregioncp
-            percoffedit2015=regionOffcp[k-1][3]*100/numb_countriesperregioncp
+            editorCPcount=0
+            for c in CountryPage.objects.filter(region=k,cp_ncp_t_type='CP'):
+                editorsCP=IppcUserProfile.objects.filter(country=c.id,contact_type='5').count()
+                editorCPcount=editorCPcount+editorsCP
+            
+            
+            
+            editorneverloggCount=editorneverlogg.count()
+            percoffedit=regionOffcp[k-1][2]*100/editorsCP
+            percoffedit2015=regionOffcp[k-1][3]*100/editorsCP
          
            
             
@@ -5041,20 +5052,30 @@ class CountryRegionsUsersNeverLoggedListView(ListView):
             percoLocal2015=0
             percoeditncp=0
             percoeditncp2015=0
-    
+            editorNCPcount=0
+            for c in CountryPage.objects.filter(region=k,cp_ncp_t_type='NCP'):
+                editorsNCP=IppcUserProfile.objects.filter(country=c.id,contact_type='5').count()
+                editorNCPcount=editorNCPcount+editorsNCP
+          
             numb_countriesperregionncp=CountryPage.objects.filter(region=k,cp_ncp_t_type='NCP').count()
             if numb_countriesperregionncp>0:
                 percInfo=regionInfoncp[k-1][0]*100/numb_countriesperregionncp
                 percoInfo2015=regionInfoncp[k-1][1]*100/numb_countriesperregionncp
-                percoeditncp=regionEditors[k-1][0]*100/numb_countriesperregionncp
-                percoeditncp2015=regionEditors[k-1][1]*100/numb_countriesperregionncp
+                percoeditncp=regionEditors[k-1][0]*100/editorNCPcount
+                percoeditncp2015=regionEditors[k-1][1]*100/editorNCPcount
+            
                
+            editorTcount=0
+            for c in CountryPage.objects.filter(region=k,cp_ncp_t_type='T'):
+                editorsT=IppcUserProfile.objects.filter(country=c.id,contact_type='5').count()
+                editorTcount=editorTcount+editorsT
+           
             numb_countriesperregioterr=CountryPage.objects.filter(region=k,cp_ncp_t_type='T').count()
             if numb_countriesperregioterr>0:
                 percoLocal=regionLocalterr[k-1][0]*100/numb_countriesperregioterr
                 percoLocal2015=regionLocalterr[k-1][1]*100/numb_countriesperregioterr
-                percoeditterr=regionEditorsTerr[k-1][0]*100/numb_countriesperregioterr
-                percoeditterr2015=regionEditorsTerr[k-1][1]*100/numb_countriesperregioterr
+                percoeditterr=regionEditorsTerr[k-1][0]*100/editorTcount
+                percoeditterr2015=regionEditorsTerr[k-1][1]*100/editorTcount
          
             datachart_1 += ' {  y: '+str(percInfo)+', legendText:"'+str(v.__unicode__())+'", label: "'+str(v.__unicode__())+': '+str(percInfo)+'%" },'
             datachart_2 += ' {  y: '+str(percoInfo2015)+', legendText:"'+str(v.__unicode__())+'", label: "'+str(v.__unicode__())+': '+str(percoInfo2015)+'%" },'
