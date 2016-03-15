@@ -4995,7 +4995,7 @@ class CountryRegionsUsersNeverLoggedListView(ListView):
             context['region_local_terr']=regionLocalterr
             editorsterr.append(eterr_count)
             editorsterr.append(encp_2015_count)
-            regionEditorsTerr.append(eterr_2015_count)   
+            regionEditorsTerr.append(editorsterr)   
             context['region_terr_editors']=regionEditorsTerr
             
             tot_l_count+=l_count
