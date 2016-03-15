@@ -4993,9 +4993,9 @@ class CountryRegionsUsersNeverLoggedListView(ListView):
             local.append(l_2015_count)
             regionLocalterr.append(local)   
             context['region_local_terr']=regionLocalterr
-            editorsterr.append(encp_count)
+            editorsterr.append(eterr_count)
             editorsterr.append(encp_2015_count)
-            regionEditorsTerr.append(editorsterr)   
+            regionEditorsTerr.append(eterr_2015_count)   
             context['region_terr_editors']=regionEditorsTerr
             
             tot_l_count+=l_count
@@ -5045,9 +5045,10 @@ class CountryRegionsUsersNeverLoggedListView(ListView):
         datachart_6=''
         datachart_7=''
         datachart_8=''
-        
+       
         for k,v in REGIONS:
             reg = v.lower()
+            t=t+''+reg+': '
             numb_countriesperregioncp=CountryPage.objects.filter(region=k,cp_ncp_t_type='CP').count()
               
             percoff=regionOffcp[k-1][0]*100/numb_countriesperregioncp
@@ -5094,13 +5095,14 @@ class CountryRegionsUsersNeverLoggedListView(ListView):
                     percoeditncp=regionEditors[k-1][0]*100/editorNCPcount
                     percoeditncp2015=regionEditors[k-1][1]*100/editorNCPcount
             
-               
+            percoeditterr=0
+            percoeditterr2015=0   
             editorTcount=0
+            
             for c in CountryPage.objects.filter(region=k,cp_ncp_t_type='T'):
                 editorsT=IppcUserProfile.objects.filter(country=c.id,contact_type='5').count()
                 editorTcount=editorTcount+editorsT
-            percoeditterr=0
-            percoeditterr2015=0
+                
             numb_countriesperregioterr=CountryPage.objects.filter(region=k,cp_ncp_t_type='T').count()
             if numb_countriesperregioterr>0:
                 percoLocal=regionLocalterr[k-1][0]*100/numb_countriesperregioterr
@@ -5108,6 +5110,9 @@ class CountryRegionsUsersNeverLoggedListView(ListView):
                 if editorTcount>0:
                     percoeditterr=regionEditorsTerr[k-1][0]*100/editorTcount
                     percoeditterr2015=regionEditorsTerr[k-1][1]*100/editorTcount
+                else:
+                    percoeditterr=20+editorTcount
+                    percoeditterr2015=20+editorTcount
          
             datachart_1 += ' {  y: '+str(percInfo)+', legendText:"'+str(v.__unicode__())+'", label: "'+str(v.__unicode__())+': '+str(percInfo)+'%" },'
             datachart_2 += ' {  y: '+str(percoInfo2015)+', legendText:"'+str(v.__unicode__())+'", label: "'+str(v.__unicode__())+': '+str(percoInfo2015)+'%" },'
@@ -5117,6 +5122,8 @@ class CountryRegionsUsersNeverLoggedListView(ListView):
             datachart_4 += ' {  y: '+str(percoLocal2015)+', legendText:"'+str(v.__unicode__())+'", label: "'+str(v.__unicode__())+': '+str(percoLocal2015)+'%" },'
             datachart_7 += ' {  y: '+str(percoeditterr)+', legendText:"'+str(v.__unicode__())+'", label: "'+str(v.__unicode__())+': '+str(percoeditterr)+'%" },'
             datachart_8 += ' {  y: '+str(percoeditterr2015)+', legendText:"'+str(v.__unicode__())+'", label: "'+str(v.__unicode__())+': '+str(percoeditterr2015)+'%" },'
+        
+      
         
         context['datachart1']=datachart1       
         context['datachart2']=datachart2       
@@ -5130,6 +5137,7 @@ class CountryRegionsUsersNeverLoggedListView(ListView):
         context['datachart_6']=datachart_6       
         context['datachart_7']=datachart_7       
         context['datachart_8']=datachart_8       
+            
         return context
 
 
