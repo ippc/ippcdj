@@ -4808,11 +4808,12 @@ class CountryRegionsUsersNeverLoggedListView(ListView):
         regionCNncp = []
         regionCNterr = []
         regionall= []
+        
         regionOffcp = []
-        regionUnOffcp = []
         regionInfoncp = []
-        regionEditors = []
-        regionLocalterr = []
+        regionLocal = []
+        
+        regionEditorsInfo = []
         regionEditorsTerr = []
         
         prev_year = datetime.now().year -1 
@@ -4834,9 +4835,10 @@ class CountryRegionsUsersNeverLoggedListView(ListView):
         tot_eterr_count=0
         tot_eterr_2015_count=0
             
-            
+        t=''   
         for k,v in REGIONS:
             reg = v.lower()
+            t=t+reg+': '
             numCNcp = []
             countriesperregioncp=CountryPage.objects.filter(region=k,cp_ncp_t_type='CP')
             numb_countriesperregioncp=countriesperregioncp.count()
@@ -4954,8 +4956,8 @@ class CountryRegionsUsersNeverLoggedListView(ListView):
             context['region_info_ncp']=regionInfoncp
             editorsncp.append(encp_count)
             editorsncp.append(encp_2015_count)
-            regionEditors.append(editorsncp)   
-            context['region_editors']=regionEditors
+            regionEditorsInfo.append(editorsncp)   
+            context['region_editors']=regionEditorsInfo
             
             tot_i_count+=i_count
             tot_i_2015_count+=i_2015_count
@@ -4983,18 +4985,20 @@ class CountryRegionsUsersNeverLoggedListView(ListView):
                 for o in editorneverlogg:
                     u= User.objects.get(id=o.user_id)
                     if u.last_login.year == 1970:
+                        t=t+ '1970 - '+ u.last_name+', '
                         #print(u.last_login.year)
                         eterr_count=eterr_count+1
                     if u.last_login.year > 1970 and u.last_login.year!=prev_year:
                         #print(u.last_login.year)
+                        t=t+ '2015 - '+ u.last_name+', '
                         eterr_2015_count=eterr_2015_count+1           
            
             local.append(l_count)
             local.append(l_2015_count)
-            regionLocalterr.append(local)   
-            context['region_local_terr']=regionLocalterr
+            regionLocal.append(local)   
+            context['region_local_terr']=regionLocal
             editorsterr.append(eterr_count)
-            editorsterr.append(encp_2015_count)
+            editorsterr.append(eterr_2015_count)
             regionEditorsTerr.append(editorsterr)   
             context['region_terr_editors']=regionEditorsTerr
             
@@ -5031,6 +5035,7 @@ class CountryRegionsUsersNeverLoggedListView(ListView):
         context['tot_l_2015_count']=tot_l_2015_count       
         context['tot_eterr_count']=tot_eterr_count       
         context['tot_eterr_2015_count']=tot_eterr_2015_count       
+        context['t']=t       
          
         
         datachart1=''
@@ -5092,8 +5097,8 @@ class CountryRegionsUsersNeverLoggedListView(ListView):
                 percInfo=regionInfoncp[k-1][0]*100/numb_countriesperregionncp
                 percoInfo2015=regionInfoncp[k-1][1]*100/numb_countriesperregionncp
                 if editorNCPcount>0:
-                    percoeditncp=regionEditors[k-1][0]*100/editorNCPcount
-                    percoeditncp2015=regionEditors[k-1][1]*100/editorNCPcount
+                    percoeditncp=regionEditorsInfo[k-1][0]*100/editorNCPcount
+                    percoeditncp2015=regionEditorsInfo[k-1][1]*100/editorNCPcount
             
             percoeditterr=0
             percoeditterr2015=0   
@@ -5105,14 +5110,12 @@ class CountryRegionsUsersNeverLoggedListView(ListView):
                 
             numb_countriesperregioterr=CountryPage.objects.filter(region=k,cp_ncp_t_type='T').count()
             if numb_countriesperregioterr>0:
-                percoLocal=regionLocalterr[k-1][0]*100/numb_countriesperregioterr
-                percoLocal2015=regionLocalterr[k-1][1]*100/numb_countriesperregioterr
+                percoLocal=regionLocal[k-1][0]*100/numb_countriesperregioterr
+                percoLocal2015=regionLocal[k-1][1]*100/numb_countriesperregioterr
                 if editorTcount>0:
                     percoeditterr=regionEditorsTerr[k-1][0]*100/editorTcount
                     percoeditterr2015=regionEditorsTerr[k-1][1]*100/editorTcount
-                else:
-                    percoeditterr=20+editorTcount
-                    percoeditterr2015=20+editorTcount
+               
          
             datachart_1 += ' {  y: '+str(percInfo)+', legendText:"'+str(v.__unicode__())+'", label: "'+str(v.__unicode__())+': '+str(percInfo)+'%" },'
             datachart_2 += ' {  y: '+str(percoInfo2015)+', legendText:"'+str(v.__unicode__())+'", label: "'+str(v.__unicode__())+': '+str(percoInfo2015)+'%" },'
