@@ -622,7 +622,7 @@
 
 
 <h1>
-    <small class="normal">{% trans "Territories" %}</small>
+    <small class="normal">{% trans "Territories" %} </small>
 </h1> 
 
 <table class="table table-condensed table-striped">
@@ -654,7 +654,7 @@
         </tr>
        
         <tr>
-            <td>Local contactc that <b>never</b> logged in</td>
+            <td>Local contacts that <b>never</b> logged in</td>
             {% if latest %}
             {% for object in region_local_terr %}
             <td>{{object.0 }} </td>
@@ -672,7 +672,7 @@
         <tr>
             <td>IPP Editors that <b>never</b> logged in  </td>
             {% if latest %}
-            {% for object in region_local_terr %}
+            {% for object in region_terr_editors %}
             <td>{{object.0 }} </td>
             {% endfor %}
             {% endif %}<td> {{tot_encp_count}}</td>
@@ -680,7 +680,7 @@
         <tr>
             <td>IPP Editors that <b>did not log</b> in <b>{{prev_year}}</b></td>
             {% if latest %}
-            {% for object in region_local_terr %}
+            {% for object in region_terr_editors %}
             <td>{{object.1 }} </td>
             {% endfor %}
             {% endif %}<td> {{tot_encp_2015_count}}</td>
