@@ -28,7 +28,6 @@ EmailUtilityMessageForm,EmailUtilityMessageFileFormSet,\
 CountryNewsUrlFormSet,CountryNewsForm, CountryNewsFileFormSet,NotificationMessageRelateForm,\
 DraftProtocolForm,  DraftProtocolFileFormSet,DraftProtocolCommentsForm,IppcUserProfileForm,QuestionForm, AnswerForm##TransReportingObligationForm , UserForm
 
-
 from django.views.generic import ListView, MonthArchiveView, YearArchiveView, DetailView, TemplateView, CreateView
 from django.core.urlresolvers import reverse
 from django.core.mail import send_mail,send_mass_mail
@@ -6084,5 +6083,3 @@ def vote_answer_down(request,question_id,id=None,):
 #        v = PollVotes(user=request.user, poll=p,choice=selected_choice,comment=request.POST['comment'])
 #        v.save()
 #        return redirect("results", pk=p.id)
-	
-   
