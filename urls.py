@@ -36,7 +36,6 @@ draftprotocol_comment_create,draftprotocol_comment_edit,PublicationLibraryView,c
 CountryRegionsPercentageListView,CountryStatsreportsListView,CountryStatsTotalreportsListView,CountryRegionsUsersListView,CountryTotalUsersListView,CountryRegionsUsersNeverLoggedListView,\
 QuestionListView, QuestionDetailView, QuestionAnswersView,question_create,question_edit,\
 answer_create,answer_edit  ,vote_answer_up ,vote_answer_down,reporting_trough_eppo,reminder_to_cn
-
 #,reporting_obligation_validate,event_reporting_validate,pest_report_validate
 #reporting_obligation_translate,
 from schedule.periods import Year, Month, Week, Day
@@ -88,7 +87,7 @@ urlpatterns = patterns("",
 	
 	#----------Q&A:------------------------------#    
   
-    
+  
 
     url(r'^qa/$',QuestionListView.as_view(), name='index'),
     url(r'^qa/(?P<pk>\d+)/$', QuestionDetailView.as_view(), name='detail'),
@@ -114,7 +113,7 @@ urlpatterns = patterns("",
     url(r'^calls/', include('calls.urls')),
     url(r'^news/', include('news.urls')),
     url(r'^iyph/', include('iyph.urls')),
-    #url(r'^pce/', include('pce.urls')),
+   # url(r'^pce/', include('pce.urls')),
 
 
 
