@@ -248,7 +248,7 @@ VAL_PERCENT_7 = 8
 VAL_PERCENT_8 = 9
 VAL_PERCENT_9 = 10
 VAL_PERCENT_10 = 11
-VAL_PERCENT_10 = 12
+
 VAL_PERCENT = (
     (VAL_PERCENT_00, _("--- Please select ---")),
     (VAL_PERCENT_0, _("0")),
@@ -2137,7 +2137,7 @@ class Module2(Displayable, models.Model):
   
     session = models.ForeignKey(PceVersion)
     modify_date = models.DateTimeField(_("Modified date"), blank=True, null=True, editable=False)
-    m_1 = models.IntegerField(_("1.1. What is the legal system of the country?"), choices=CIVIL, default=None,help_text=_("Civil legislation system, which has its roots in Roman legislation and which is based on written legal codes. Napoleonic Code: Based on the primacy of statutes enacted by the legislature. These statutes are integrated into a comprehensive code designed to be applied by the courts with a minimum of judicial interpretation. Source: <a href='https://www.law.berkeley.edu/library/robbins/pdf/CommonLawCivilLawTraditions.pdf'>click here</a> Common Legislation: A system of legislation that is derived from judges' decisions (which arise from the judicial branch of government), rather than statutes or constitutions (which are derived from the legislative branch of government). Source: <a href='http://www.islamicsupremecouncil.org/understanding-islam/legal-rulings/52-understanding-islamic-law.html'>click here</a> Islamic legislation, which is derived from the Koran and can be found in the Middle East and in some African countries. "),)
+    m_1 = models.IntegerField(_("1.1. What is the legal system of the country?"), choices=CIVIL, default=None,help_text=_("Civil legislation system, which has its roots in Roman legislation and which is based on written legal codes. Napoleonic Code: Based on the primacy of statutes enacted by the legislature. These statutes are integrated into a comprehensive code designed to be applied by the courts with a minimum of judicial interpretation.Common Legislation: A system of legislation that is derived from judges' decisions (which arise from the judicial branch of government), rather than statutes or constitutions (which are derived from the legislative branch of government).  Source: <a href='https://www.law.berkeley.edu/library/robbins/pdf/CommonLawCivilLawTraditions.pdf'>click here</a> for Common Legislation. Islamic Llegislation, which is derived from the Koran and can be found in the Middle East and in some African countries Source: <a href='http://www.islamicsupremecouncil.org/understanding-islam/legal-rulings/52-understanding-islamic-law.html'>click here</a> for the Islamic legislation, which is derived from the Koran and can be found in the Middle East and in some African countries. "),)
     m_2 = models.TextField(_("1.2. How is legislation and regulations developed and enacted?"), blank=True, null=True,help_text=_("List the major steps (drafting to enactment) for a piece of legislation to be approved nationally for implementation."),)
     m_3 = models.TextField(_("1.3. How are legislative and executive functions and responsibilities distributed with government institutions and at different levels?"), blank=True, null=True,help_text=_(" "),)
     m_4 = models.TextField(_("1.4. Which existing policy frameworks (agriculture, decentralization, privatization, globalization, biosecurity, trade etc.) provide context for the development of the national phytosanitary legislation?"), blank=True, null=True,help_text=_(" "),)
@@ -2158,7 +2158,7 @@ class Module2(Displayable, models.Model):
     m_19 = models.NullBooleanField(_("4.2. Does the definitions section of the Legislation include a general statement specifying that any term not specifically defined shall have its normally accepted meaning, except that any term which also appears in the IPPC shall be defined by reference to that Convention and its associated documentation?"), choices=BOOL_CHOICES,blank=True, null=True,help_text=_("Note that the ISPM 5 Glossary of phytosanitary terms is updated annually. "),)
     m_20 = models.NullBooleanField(_("5.1. Is the NPPO responsible for the issuance of phytosanitary certificates to comply with the phytosanitary regulations of the importing country for consignments of plants, plant products and other regulated articles? (IPPC Art IV.2(a), <a href='https://www.ippc.int/en/publications/596/' target='_blank'>ISPM 1</a> Section 2.8 and 2.9)"), choices=BOOL_CHOICES,blank=True, null=True, help_text=_("Also see ISPMs <a href='https://www.ippc.int/en/publications/613/' target='_blank'>7</a> and <a href='https://www.ippc.int/en/publications/609/' target='_blank'>12</a>  "),)
     m_21 = models.NullBooleanField(_("5.2. Is the NPPO responsible for arranging for phytosanitary certification, in conformity with the certifying statement to be made pursuant to paragraph 2(b) of Article V of the New Revised Text of the IPPC?"), choices=BOOL_CHOICES,blank=True, null=True, help_text=_("Refers to the model phytosanitary certificate in the annex of the IPPC convention text "),)
-    m_22 = models.NullBooleanField(_("5.3. Is the NPPO responsible for the surveillance for plant pests on growing plants, including both areas under cultivation (e.g. fields, plantations, nurseries, gardens, greenhouses and laboratories) and wild flora, and of plants and plant products in storage or in transportation, particularly with the object of reporting the occurrence, outbreak and spread of pests, and of controlling those pests? (IPPC Art. IV.2b, and 2e and VII.2j and <a href='https://www.ippc.int/en/publications/596/' target='_blank'>ISPM 1</a> Section 2.6 and ISPMs:<a href='https://www.ippc.int/en/publications/615/' target='_blank'>No. 6</a> and <a href='https://www.ippc.int/en/publications/612/' target='_blank'>No. 8</a> )."), choices=BOOL_CHOICES,blank=True, null=True, help_text=_("List the current mandate of the agency designated to carry out the functions of the NPPO. Identify the responsibilities in terms of surveillance by other agencies other than the NPPO in the next question below. "),)
+    m_22 = models.NullBooleanField(_("5.3. Is the NPPO responsible for the surveillance for plant pests on growing plants, including both areas under cultivation (e.g. fields, plantations, nurseries, gardens, greenhouses and laboratories) and wild flora, and of plants and plant products in storage or in transportation, particularly with the object of reporting the occurrence, outbreak and spread of pests, and of controlling those pests? (IPPC Art. IV.2b, and 2e and VII.2j and <a href='https://www.ippc.int/en/publications/596/' target='_blank'>ISPM 1</a> Section 2.6 and ISPMs:<a href='https://www.ippc.int/en/publications/615/' target='_blank'>No. 6</a> and <a href='https://www.ippc.int/en/publications/612/' target='_blank'>No. 8</a> )."), choices=BOOL_CHOICES,blank=True, null=True, help_text=_("List the current mandate of the agency designated to carry out the functions of the NPPO. Identify the responsibilities in terms of surveillance by other agencies other than the NPPO in the next question below. <br> <br> <br><i>If answer is <b>Yes</b> go to question <b>5.5.</b></i>"),)
     m_23 = models.TextField(_("5.4. If no, is there another government department or agency responsible for pest surveillance activities? If so, name the organization and its relationship to the NPPO."), blank=True, null=True,help_text=_("If the relationship is formal and has legislation or documented procedure to reinforce it please enter the title of the reinforcing legislation in Question 2.7 above. "),)
     m_24 = models.NullBooleanField(_("5.5. Is the NPPO responsible for the inspection of consignments of plants and plant products moving in international traffic and, where appropriate, the inspection of other regulated articles , particularly with the object of preventing the introduction and/or spread of pests? (IPPC Art.IV.2c <a href='https://www.ippc.int/en/publications/596/' target='_blank'>ISPM 1</a> and ISPM No.20)"), choices=BOOL_CHOICES,blank=True, null=True, help_text=_(" "),)
     m_25 = models.NullBooleanField(_("5.6. Is the NPPO responsible for the disinfestation or disinfection of consignments of plants, plant products and other regulated articles moving in international traffic, to ensure phytosanitary requirements are met? IPPC Art.IV.2d"), choices=BOOL_CHOICES,blank=True, null=True, help_text=_(" "),)
@@ -2173,7 +2173,7 @@ class Module2(Displayable, models.Model):
     m_34 = models.NullBooleanField(_("5.15. Does the legislation mandate the Phytosanitary Authority to designate a contact point for the IPPC? (IPPC Article VIII.2, <a href='https://www.ippc.int/en/publications/596/' target='_blank'>ISPM 1</a> Section. 2.16)"), choices=BOOL_CHOICES,blank=True, null=True, help_text=_(" "),)
     m_35 = models.NullBooleanField(_("5.16. Does the legislation specify the NPPOs responsibility for providing justification concerning phytosanitary measures to other countries, if required? (IPPC Article VII.2c)"), choices=BOOL_CHOICES,blank=True, null=True, help_text=_(" "),)
     m_36 = models.NullBooleanField(_("5.17. Does the legislation specify the NPPO responsibility for providing information, where requested, by national, regional or international organizations regarding import and export regulations in force and regarding the technical requirements for plant material and other regulated articles? (IPPC Article VII.2c; <a href='https://www.ippc.int/en/publications/596/' target='_blank'>ISPM 1</a> Section 1.5)"), choices=BOOL_CHOICES,blank=True, null=True, help_text=_(" "),)
-    m_37 = models.NullBooleanField(_("6.1. Does the legislation contain a provision for stakeholder participation in NPPO matters?"), choices=BOOL_CHOICES,blank=True, null=True, help_text=_("Stakeholders include persons or agencies or groups that are beneficiaries of the services of the NPPO or function as partners in the delivery of services or in decision making. "),)
+    m_37 = models.NullBooleanField(_("6.1. Does the legislation contain a provision for stakeholder participation in NPPO matters?"), choices=BOOL_CHOICES,blank=True, null=True, help_text=_("Stakeholders include persons or agencies or groups that are beneficiaries of the services of the NPPO or function as partners in the delivery of services or in decision making.  <br> <br> <br><i>If answer is <b>No</b> go to question <b>7.1</b></i>"),)
     m_38 = models.NullBooleanField(_("6.2. Are stakeholders' roles, responsibilities and rights defined in the legislation?"), choices=BOOL_CHOICES,blank=True, null=True, help_text=_("Stakeholders include persons or agencies or groups that are beneficiaries of the services of the NPPO or function as partners in the delivery of services or in decision making. "),)
     m_39 = models.TextField(_("6.3. What arrangements are in place to ensure stakeholder participation in NPPO matters?"), blank=True, null=True,help_text=_("Particularly if there is no provision in the legislation for ensuring appropriate stakeholder participation. Stakeholders include persons or agencies or groups that are beneficiaries of the services of the NPPO or function as partners in the delivery of services or in decision making. "),)
     m_40 = models.NullBooleanField(_("7.1. Does the law, or its subsidiary legislation, establish the minimum requirements in terms of qualifications and skills of inspectors? <a href='https://www.ippc.int/en/publications/602/' target='_blank'>ISPM 20</a>  Section 5.2.1 and <a href='https://www.ippc.int/en/publications/613/' target='_blank'>ISPM 7</a> Section 3.1"), choices=BOOL_CHOICES,blank=True, null=True, help_text=_(" "),)
@@ -2239,7 +2239,7 @@ class Module2(Displayable, models.Model):
     m_100 = models.NullBooleanField(_("19.4. Does the legislation contain provisions for economic compensation to the owners affected by eradication procedures?"), choices=BOOL_CHOICES,blank=True, null=True, help_text=_(" "),)
     m_101 = models.NullBooleanField(_("19.5. Does the legislation allow for the destruction of plants that may not be infested but that have been exposed to the pest infestation, in buffer zones surrounding the infested plants?"), choices=BOOL_CHOICES,blank=True, null=True, help_text=_(" "),)
     m_102 = models.NullBooleanField(_("19.6. Does the legislation create a Phytosanitary Emergency Fund to be solely utilized in case of a declaration of a phytosanitary emergency?"), choices=BOOL_CHOICES,blank=True, null=True, help_text=_(" "),)
-    m_103 = models.NullBooleanField(_("20.1. Does the legislation establish the collection of fees by the NPPO services?"), choices=BOOL_CHOICES,blank=True, null=True, help_text=_("Fees are generally charged to recover costs of services offered by NPPOs. These fees may be charged by some NPPOs to cover costs of sampling, inspection, PRA, Export certification, pest diagnostics, as well as to owners of Pest free places or sites of production among other possible services.  "),)
+    m_103 = models.NullBooleanField(_("20.1. Does the legislation establish the collection of fees by the NPPO services?"), choices=BOOL_CHOICES,blank=True, null=True, help_text=_("Fees are generally charged to recover costs of services offered by NPPOs. These fees may be charged by some NPPOs to cover costs of sampling, inspection, PRA, Export certification, pest diagnostics, as well as to owners of Pest free places or sites of production among other possible services.   <br> <br> <br><i>If answer is <b>No</b> go to question <b>21.1.</b></i> "),)
     m_104 = models.NullBooleanField(_("20.2. Does the legislation allow for the NPPO to access the fees and fines collected, to improve its services?"), choices=BOOL_CHOICES,blank=True, null=True, help_text=_(" "),)
     m_105 = models.NullBooleanField(_("20.3. Are the NPPO fees non-discriminatory and non-protectionist?"), choices=BOOL_CHOICES,blank=True, null=True, help_text=_("Fees should follow the principle of national treatment and not become impediments to trade. Refer to Agreement on Sanitary and Phytosanitary Meaures of the WTO Annex C. 1f.  "),)
     m_106 = models.NullBooleanField(_("20.4. Are the NPPOs fees based on the actual cost of the services?"), choices=BOOL_CHOICES,blank=True, null=True, help_text=_("Refer to Agreement on Sanitary and Phytosanitary Meaures of the WTO Annex C. 1f. "),)
@@ -2426,23 +2426,7 @@ class M3_1(models.Model):
         verbose_name_plural = _("Name")
     pass
 
-#class M3_3(models.Model):
-#    """ M3_3 """
-#    name = models.CharField(_("name"), max_length=500)
-#    def __unicode__(self):
-#        return self.name
-#    class Meta:
-#        verbose_name_plural = _("Name")
-#    pass
 
-#class M3_9(models.Model):
-#    """ M3_9 """
-#    name = models.CharField(_("name"), max_length=500)
-#    def __unicode__(self):
-#        return self.name
-#    class Meta:
-#        verbose_name_plural = _("Name")
-#    pass
 
 class M3_10(models.Model):
     """ M3_10 """
@@ -2453,34 +2437,6 @@ class M3_10(models.Model):
         verbose_name_plural = _("Name")
     pass
 
-#class M3_14(models.Model):
-#    """ M3_14 """
-#    name = models.CharField(_("name"), max_length=500)
-#    def __unicode__(self):
-#        return self.name
-#    class Meta:
-#        verbose_name_plural = _("Name")
-#    pass
-#
-#class M3_15(models.Model):
-#    """ M3_15 """
-#    name = models.CharField(_("name"), max_length=500)
-#    def __unicode__(self):
-#        return self.name
-#        
-#    class Meta:
-#        verbose_name_plural = _("Name")
-#    pass
-#
-#class M3_16(models.Model):
-#    """ M3_16 """
-#    name = models.CharField(_("name"), max_length=500)
-#    def __unicode__(self):
-#        return self.name
-#        
-#    class Meta:
-#        verbose_name_plural = _("Name")
-#    pass
 
 class M3_17(models.Model):
     """ M3_1 """
@@ -2588,7 +2544,7 @@ class Module3(Displayable, models.Model):
     m_3 = models.IntegerField(_("3. How involved is the NPPO in national or sectoral policies?"), choices=VAL_M3_3, default=None,help_text=_(" "),)
     m_4 = models.NullBooleanField(_("4. Is there a written phytosanitary policy?"), choices=BOOL_CHOICES,blank=True, null=True, help_text=_("List titles of any supporting documentation, e.g. National Phytosanitary Policy, etc. "),)
     #m_4_1 = models.TextField(_("4.1. List titles of any supporting documentation:"), blank=True, null=True,)
-    m_5 = models.NullBooleanField(_("5. Have any relevant phytosanitary policy reviews been carried out within the last ten years?"), choices=BOOL_CHOICES,blank=True, null=True,)
+    m_5 = models.NullBooleanField(_("5. Have any relevant phytosanitary policy reviews been carried out within the last ten years?"), choices=BOOL_CHOICES,blank=True, null=True, help_text=_("<br> <br> <br><i>If answer is <b>No</b> go to question <b>6.</b></i>"),)
     m_6 = models.TextField(_("5.1. What were the key recommendations?"), blank=True, null=True,)
     m_7 = models.TextField(_("5.2. What is the status of their implementation?"), blank=True, null=True,)
     m_8 = models.TextField(_("6. Which other agricultural related policies contain goals, objectives and priorities of phytosanitary relevance?"), blank=True, null=True,)
@@ -2616,7 +2572,7 @@ class Module3(Displayable, models.Model):
     m_26 = models.NullBooleanField(_("24. Is the country a contracting party of the IPPC?"), choices=BOOL_CHOICES,blank=True, null=True,)
     m_27 = models.NullBooleanField(_("25. Is the country a signatory of the CBD?"), choices=BOOL_CHOICES,blank=True, null=True,)
     m_28 = models.NullBooleanField(_("26. Is the country a signatory of the Cartagena Protocol?"), choices=BOOL_CHOICES,blank=True, null=True,)
-    m_29 = models.NullBooleanField(_("27. Is the country a member of any Regional Plant Protection Organization?"), choices=BOOL_CHOICES,blank=True, null=True,)
+    m_29 = models.NullBooleanField(_("27. Is the country a member of any Regional Plant Protection Organization?"), choices=BOOL_CHOICES,blank=True, null=True,help_text=_("<br> <br> <br><i>If answer is <b>No</b> go to question <b>28.</b></i>"))
     m_30 = models.TextField(_("27.1. If yes indicate the name(s)"), blank=True, null=True,)
     #m_31
     m_32 = models.TextField(_("28.1. Other"), blank=True, null=True,)
@@ -2736,20 +2692,20 @@ class Module4(Displayable, models.Model):
     m_15 = models.NullBooleanField(_("15. Has the NPPO a system of performance indicators?"), choices=BOOL_CHOICES,blank=True, null=True, help_text=_("Performance indicators are derived from the strategic measures "),)
     m_16 = models.NullBooleanField(_("16. Has the NPPO a system of organizational incentives including rewards and punishments, to encourage or discourage its staff member's behaviors?"), choices=BOOL_CHOICES,blank=True, null=True, help_text=_(" "),)
     m_17 = models.IntegerField(_("17. Does the NPPO provide the possibility for career advancement?"), choices=DEGREE, default=None,help_text=_(" "),)
-    m_18 = models.NullBooleanField(_("18. Has the NPPO a strategy to execute core phytosanitary activities that includes the use of third parties in some NPPO's functions while maintaining the overall NPPO responsibility?"), choices=BOOL_CHOICES,blank=True, null=True, help_text=_("Use of third parties include sub-contracting some services to the private or governmental entities, approval or accreditation mechanisms, complete privatization "),)
+    m_18 = models.NullBooleanField(_("18. Has the NPPO a strategy to execute core phytosanitary activities that includes the use of third parties in some NPPO's functions while maintaining the overall NPPO responsibility?"), choices=BOOL_CHOICES,blank=True, null=True, help_text=_("Use of third parties include sub-contracting some services to the private or governmental entities, approval or accreditation mechanisms, complete privatization  <br> <br> <br><i>If answer is <b>No</b> go to question <b>19.</b></i> "),)
     m_19 = models.NullBooleanField(_("18.1. Has the NPPO legal authority and clear rules and regulations in place for this purpose?"), choices=BOOL_CHOICES,blank=True, null=True, help_text=_(" "),)
-    m_20 = models.NullBooleanField(_("19. Has the NPPO a strategy for the application of a cost recovery model?"), choices=BOOL_CHOICES,blank=True, null=True, help_text=_("With dwindling financial resources in national budgets a number of plant protection/health services worldwide have explored and begun to apply cost recovery models to ensure that the programmes they implemnt are relevant and respond to the needs of their stakeholders. The fees charged however are based on the actual or real costs of the services provided. Cost recovery models adopted by NPPOs tend to be supplemented from the national budget to varying degrees depending on the services being charged. Few if any have 100% cost recovery programmes. Annex C 2F of the WTO-SPS agreement is generally adhered to when considering implementation of a cost recovery fee structure. "),)
+    m_20 = models.NullBooleanField(_("19. Has the NPPO a strategy for the application of a cost recovery model?"), choices=BOOL_CHOICES,blank=True, null=True, help_text=_("With dwindling financial resources in national budgets a number of plant protection/health services worldwide have explored and begun to apply cost recovery models to ensure that the programmes they implemnt are relevant and respond to the needs of their stakeholders. The fees charged however are based on the actual or real costs of the services provided. Cost recovery models adopted by NPPOs tend to be supplemented from the national budget to varying degrees depending on the services being charged. Few if any have 100% cost recovery programmes. Annex C 2F of the WTO-SPS agreement is generally adhered to when considering implementation of a cost recovery fee structure.  <br> <br> <br><i>If answer is <b>No</b> go to question <b>23.</b></i> "),)
     m_21 = models.NullBooleanField(_("20. Does the legal system allow the NPPO to apply, collect and keep fees for particular services?"), choices=BOOL_CHOICES,blank=True, null=True, help_text=_(" "),)
     m_22 = models.NullBooleanField(_("21. Do all the stakeholders have the ability to pay fees?"), choices=BOOL_CHOICES,blank=True, null=True, help_text=_(" "),)
     m_23 = models.NullBooleanField(_("22. Do the fees differ for different stakeholders according to their ability to pay?"), choices=BOOL_CHOICES,blank=True, null=True, help_text=_(" "),)
-    m_24 = models.NullBooleanField(_("23. Has the NPPO a strategy to improve core phytosanitary activities that include sharing infrastructure?"), choices=BOOL_CHOICES,blank=True, null=True, help_text=_("For example, sharing of laboratories or inspection facilities or expertise"),)
+    m_24 = models.NullBooleanField(_("23. Has the NPPO a strategy to improve core phytosanitary activities that include sharing infrastructure?"), choices=BOOL_CHOICES,blank=True, null=True, help_text=_("For example, sharing of laboratories or inspection facilities or expertise. <br> <br> <br><i>If answer is <b>No</b> go to question <b>24.</b></i> "),)
     m_25 = models.TextField(_("23.1. If Yes, specify with whom"), blank=True, null=True,help_text=_(" "),)
-    m_26 = models.NullBooleanField(_("24. Has the NPPO a strategy to improve core phytosanitary activities that include sharing information systems?"), choices=BOOL_CHOICES,blank=True, null=True, help_text=_("Such as might be the case with pest surveillance systems, etc. "),)
+    m_26 = models.NullBooleanField(_("24. Has the NPPO a strategy to improve core phytosanitary activities that include sharing information systems?"), choices=BOOL_CHOICES,blank=True, null=True, help_text=_("Such as might be the case with pest surveillance systems, etc.  <br> <br> <br><i>If answer is <b>No</b> go to question <b>25.</b></i> "),)
     m_27 = models.NullBooleanField(_("24.1. Have Inter-agency collaborative agreements been established specifying which information will be shared, what resources will be contributed, operational rules, users rights, etc?"), choices=BOOL_CHOICES,blank=True, null=True, help_text=_(" "),)
     m_28 = models.TextField(_("24.2. If Yes, specify with which agencies and year of commencement"), blank=True, null=True,help_text=_(" "),)
     m_29 = models.NullBooleanField(_("24.3. Have compatible data systems been developed to this end?"), choices=BOOL_CHOICES,blank=True, null=True, help_text=_(" "),)
     m_30 = models.NullBooleanField(_("25. Has the NPPO a strategy to improve core phytosanitary activities that includes the implementation of total quality assurance systems?"), choices=BOOL_CHOICES,blank=True, null=True, help_text=_(" "),)
-    m_31 = models.NullBooleanField(_("26. Has the NPPO an efficient written set of operational procedures or manuals?"), choices=BOOL_CHOICES,blank=True, null=True, help_text=_(" "),)
+    m_31 = models.NullBooleanField(_("26. Has the NPPO an efficient written set of operational procedures or manuals?"), choices=BOOL_CHOICES,blank=True, null=True, help_text=_(" <br> <br> <br><i>If answer is <b>No</b> go to question <b>Section II.</b></i>  "),)
     m_32 = models.TextField(_("26.1. If Yes, provide the date and name of those manuals"), blank=True, null=True,help_text=_(" "),)
     m_33 = models.NullBooleanField(_("27. Does the operational procedure include internal technical audit procedures?"), choices=BOOL_CHOICES,blank=True, null=True, help_text=_(" "),)
     #m_34
@@ -2938,12 +2894,12 @@ class Module6(Displayable, models.Model):
   
     session = models.ForeignKey(PceVersion)
     modify_date = models.DateTimeField(_("Modified date"), blank=True, null=True, editable=False)
-    m_1 = models.NullBooleanField(_("1. Does the NPPO have sufficient financial resources for meeting its mission and goals?"), choices=BOOL_CHOICES,blank=True, null=True, help_text=_(" "),)
-    m_2 = models.NullBooleanField(_("1.1. Does the NPPO have sufficient financial resources for meeting all of its fixed costs?"), choices=BOOL_CHOICES,blank=True, null=True, help_text=_("Fixed costs are those expenses or costs that are unvarying. These include staff salaries, rental costs, lease etc."),)
-    m_3 = models.NullBooleanField(_("1.2. Does the NPPO have sufficient financial resources for meeting all of its variable costs?"), choices=BOOL_CHOICES,blank=True, null=True, help_text=_("Variable costs are those costs that vary with the change of volume of output. Also known as operating costs and may include labour costs, cost sof materials and supplies, fuel costs etc. "),)
+    m_1 = models.NullBooleanField(_("1. Does the NPPO have sufficient financial resources for meeting its mission and goals?"), choices=BOOL_CHOICES,blank=True, null=True, help_text=_(" <br> <br> <br><i>If answer is <b>No</b> go to question <b>2.</b></i>  "),)
+    m_2 = models.NullBooleanField(_("1.1. Does the NPPO have sufficient financial resources for meeting all of its fixed costs?"), choices=BOOL_CHOICES,blank=True, null=True, help_text=_("Fixed costs are those expenses or costs that are unvarying. These include staff salaries, rental costs, lease etc.<br> <br> <br><i>If answer is <b>No</b> go to question <b>2.</b></i> "),)
+    m_3 = models.NullBooleanField(_("1.2. Does the NPPO have sufficient financial resources for meeting all of its variable costs?"), choices=BOOL_CHOICES,blank=True, null=True, help_text=_("Variable costs are those costs that vary with the change of volume of output. Also known as operating costs and may include labour costs, cost sof materials and supplies, fuel costs etc. <br> <br> <br><i>If answer is <b>Yes</b> go to question <b>3.</b></i>  "),)
     m_4 = models.IntegerField(_("2. If insufficient, approximately what percentage increase in the NPPO budget would be required?"),choices=BUDGET, default=None,help_text=_(" "),)
     m_5 = models.NullBooleanField(_("3. Does the NPPO have its own program of finance including planning; managing and monitoring expenditure, cash flow and budget; ensuring an accountable and auditable financial system?"), choices=BOOL_CHOICES,blank=True, null=True, help_text=_(" "),)
-    m_6 = models.NullBooleanField(_("4. Does the NPPO charge for the service it provides?"), choices=BOOL_CHOICES,blank=True, null=True, help_text=_("Some NPPO 's may charge for all or certain of its services such as issuing certificates, inspection activities etc. "),)
+    m_6 = models.NullBooleanField(_("4. Does the NPPO charge for the service it provides?"), choices=BOOL_CHOICES,blank=True, null=True, help_text=_("Some NPPO 's may charge for all or certain of its services such as issuing certificates, inspection activities etc.  <br> <br> <br><i>If answer is <b>No</b> go to question <b>6.</b></i> "),)
     m_7 = models.NullBooleanField(_("5. Are the charges levied on a cost recovery basis?"), choices=BOOL_CHOICES,blank=True, null=True, help_text=_("Cost recovery means to recover all of the costs associated with a programme or service to ensure long-term sustainability. These charges are calculated on level of inputs provided by NPPO staff as well as associated costs of the service such as materials and supplies used. "),)
     m_8 = models.IntegerField(_("6. What are the NPPOs funding sources for the regular budget?"),choices=FUNDING, default=None,help_text=_(" "),)
     m_9 = models.IntegerField(_("7. How does the NPPO acquire resources to invest in the improvement of phytosanitary services?"),choices=ACQUIRE, default=None,help_text=_(" "),)
@@ -3079,7 +3035,7 @@ class Module7(Displayable, models.Model):
     m_18 = models.NullBooleanField(_("18. Is the NPPO's pest diagnostic laboratory approved or accredited by national or international bodies?"), choices=BOOL_CHOICES,blank=True, null=True, help_text=_(" "),)
     m_19 = models.NullBooleanField(_("19. Has the quality system and validation work of the NPPO's pest diagnostic laboratory ever been assessed by an accredited agency, third party authority or one or more collaborating laboratories?"), choices=BOOL_CHOICES,blank=True, null=True, help_text=_(" "),)
     m_20 = models.NullBooleanField(_("20. Is there a regulatory framework or standards for the approval/accreditation of external (non-NPPO) laboratories from the public or private sector, as service providers, including audit protocols?"), choices=BOOL_CHOICES,blank=True, null=True, help_text=_("This may include national accreditation schemes not usually run by the NPPO such as those of the National Standards Body. In some instances NPPOs may accredit external (regional or international) reference laboratories to perform specific pest diagnostics. These cases may require specific legislative provisions and other procedures to be undertaken for accreditation and audits. "),)
-    m_21 = models.NullBooleanField(_("21. Does the NPPO's laboratory cooperate through formal arrangements with other laboratories or institutions for routine diagnostics?"), choices=BOOL_CHOICES,blank=True, null=True, help_text=_("NPPO laboratories may not have the capacity to conduct all the functions required for plant pest diagnostics. In some cases, such as where advanced molecular techniques are needed, and where the NPPO may not have the skills or the equipment to perform the test, it may rely on a partner institution to do so. The institution may be either public or private or may reside in the country or located in another country. Such routine work may require the shipment or transfer of a fixed or variable quantity of samples and a formal arrangement may be required to ensure that the time and resources are allocated by the collaborating laboratories or institution to perform the diagnosis on a regular basis. This may also be the case where the NPPOs own laboratories are not suitably situated geographically. "),)
+    m_21 = models.NullBooleanField(_("21. Does the NPPO's laboratory cooperate through formal arrangements with other laboratories or institutions for routine diagnostics?"), choices=BOOL_CHOICES,blank=True, null=True, help_text=_("NPPO laboratories may not have the capacity to conduct all the functions required for plant pest diagnostics. In some cases, such as where advanced molecular techniques are needed, and where the NPPO may not have the skills or the equipment to perform the test, it may rely on a partner institution to do so. The institution may be either public or private or may reside in the country or located in another country. Such routine work may require the shipment or transfer of a fixed or variable quantity of samples and a formal arrangement may be required to ensure that the time and resources are allocated by the collaborating laboratories or institution to perform the diagnosis on a regular basis. This may also be the case where the NPPOs own laboratories are not suitably situated geographically. <br> <br> <br><i>If answer is <b>No</b> go to question <b>23.</b></i> "),)
     m_22= models.TextField(_("22. If so, with which institutions, how and on what?"), blank=True, null=True,help_text=_(" "),)
     #m_23 matrix
     m_24 = models.IntegerField(_("24. Rate the NPPO's Pest diagnostic laboratory current human resources capacity in terms of qualifications and skills:"),choices=BAD1, default=None,help_text=_(" "),)
@@ -3117,7 +3073,7 @@ class Module7(Displayable, models.Model):
     m_56 = models.NullBooleanField(_("50. Does the laboratory have an uninterruptible power supply (UPS)?"), choices=BOOL_CHOICES,blank=True, null=True, help_text=_(" "),)
     m_57 = models.NullBooleanField(_("51. Does the laboratory have an adequate and constant water supply system?"), choices=BOOL_CHOICES,blank=True, null=True, help_text=_(" "),)
     m_58 = models.NullBooleanField(_("52. Does the laboratory have adequate resources to respond to a pest outbreak?"), choices=BOOL_CHOICES,blank=True, null=True, help_text=_("Resources include staff, Scientific equipment, Communication equipment, supplies, etc. "),)
-    m_59 = models.NullBooleanField(_("53. Do the NPPO's phytosanitary contingency plans take into account the required laboratory support?"), choices=BOOL_CHOICES,blank=True, null=True, help_text=_(" "),)
+    m_59 = models.NullBooleanField(_("53. Do the NPPO's phytosanitary contingency plans take into account the required laboratory support?"), choices=BOOL_CHOICES,blank=True, null=True, help_text=_("<br> <br> <br><i>If answer is <b>No</b> go to question <b>Section III.</b></i> "),)
     m_60 = models.NullBooleanField(_("54. Does the laboratory staff participate in the preparation of the NPPO's phytosanitary contingency plans?"), choices=BOOL_CHOICES,blank=True, null=True, help_text=_(" "),)
     m_61 = models.IntegerField(_("1. How effective is the pest diagnostic service considering the NPPO's mission"),choices=WEAK, default=None,help_text=_(" "),)
     m_62 = models.NullBooleanField(_("2. Is there a set of good indicators for measuring the effectiveness of the pest diagnostic service?"), choices=BOOL_CHOICES,blank=True, null=True, help_text=_(" "),)
@@ -3347,7 +3303,7 @@ class Module8(Displayable, models.Model):
     m_11 = models.NullBooleanField(_("11. Does the NPPO have formal linkages with external sources (non-NPPO) of information on pest surveillance?"), choices=BOOL_CHOICES,blank=True, null=True, help_text=_(" "),)
     m_12 = models.NullBooleanField(_("12. Does the placement of pest surveillance activities within the NPPO structure make sense and facilitate the work?"), choices=BOOL_CHOICES,blank=True, null=True, help_text=_(" "),)
     m_13 = models.NullBooleanField(_("13. Is there an organizational chart of the pest surveillance service?"), choices=BOOL_CHOICES,blank=True, null=True, help_text=_(" "),)
-    m_14 = models.NullBooleanField(_("14. Does the NPPO engage relevant stakeholders to support and improve the quality of the pest surveillance service?"), choices=BOOL_CHOICES,blank=True, null=True, help_text=_(" "),)
+    m_14 = models.NullBooleanField(_("14. Does the NPPO engage relevant stakeholders to support and improve the quality of the pest surveillance service?"), choices=BOOL_CHOICES,blank=True, null=True, help_text=_(" <br> <br> <br><i>If answer is <b>No</b> go to question <b>15.</b></i> "),)
     m_15= models.TextField(_("14.1. If so, with which stakeholders and how?"), blank=True, null=True,help_text=_(" "),)
     m_16 = models.NullBooleanField(_("15. Does the NPPO's pest surveillance programs have well developed and compatible data systems to collect, store and report pest surveillance information?"), choices=BOOL_CHOICES,blank=True, null=True, help_text=_(" "),)
     m_17 = models.ManyToManyField(M8_17,verbose_name=_("16. Is the surveillance responsibilities of the NPPO limited to quarantine pests, regulated non-quarantine pests, and/or regulated pests, or does it also include non-regulated pests of national concern?"), blank=True, null=True,help_text=_(" "),)
@@ -3355,7 +3311,7 @@ class Module8(Displayable, models.Model):
     m_19 = models.NullBooleanField(_("18. Is there a computerized retrieval system for this information in use by the NPPO?"), choices=BOOL_CHOICES,blank=True, null=True, help_text=_(" "),)
     m_20 = models.NullBooleanField(_("19. Are GIS coordinates used to specify the location of pests detected during pest surveys?"), choices=BOOL_CHOICES,blank=True, null=True, help_text=_("GIS - geographic information system (GIS), or geographical information system: Any system that captures, stores, analyzes, manages, and presents data in relation to location (merges cartography and database technology). Coordinates are used in this context to refer to the system of marking geographical locations using a Geographic Positioning System (GPS) tool/device for use in GIS. "),)
     m_21 = models.NullBooleanField(_("20. Is there an NPPO's operational manual for general pest surveillance?"), choices=BOOL_CHOICES,blank=True, null=True, help_text=_(" "),)
-    m_22 = models.NullBooleanField(_("21. Is there a national database of plant pest records?"), choices=BOOL_CHOICES,blank=True, null=True, help_text=_("This a general/comprehensive list of pests and not a regulated pest list. "),)
+    m_22 = models.NullBooleanField(_("21. Is there a national database of plant pest records?"), choices=BOOL_CHOICES,blank=True, null=True, help_text=_("This a general/comprehensive list of pests and not a regulated pest list. <br> <br> <br><i>If answer is <b>No</b> go to question <b>25.</b></i> "),)
     m_23 = models.NullBooleanField(_("22. Are databases of plant pest records easily accessible by the NPPO?"), choices=BOOL_CHOICES,blank=True, null=True, help_text=_(" "),)
     m_24 = models.IntegerField(_("23. What proportion of the records can be verified from insect or culture collections?"),choices=RANGE1, default=None,help_text=_(" "),)
     m_25= models.TextField(_("24. Indicate the information sources from which plant pest records have been compiled."), blank=True, null=True,help_text=_("These sources may include: NPPOs, other national and local government agencies, research institutions, universities, scientific societies (including amateur specialists), producers, consultants, museums, the general public, scientific and trade journals, unpublished data and contemporary observations. In addition, the NPPO may obtain information from international sources such as FAO, Regional Plant Protection Organizations (RPPOs), etc. "),)
@@ -3528,20 +3484,20 @@ class Module9(Displayable, models.Model):
     m_12 = models.NullBooleanField(_("12. Does the national legislation provide a mechanism for obtaining emergency funds for pest eradication?"), choices=BOOL_CHOICES,blank=True, null=True, help_text=_(" "),)
     m_13 = models.NullBooleanField(_("13. Does the legislation contain provisions for economic compensation to the owners affected by eradication?"), choices=BOOL_CHOICES,blank=True, null=True, help_text=_(" "),)
     m_14 = models.NullBooleanField(_("14. Are the NPPO's pest eradication activities centralized under a national manager?"), choices=BOOL_CHOICES,blank=True, null=True, help_text=_(" "),)
-    m_15 = models.NullBooleanField(_("15. Is there a management team established to provide direction and co-ordination to pest eradication activities?"), choices=BOOL_CHOICES,blank=True, null=True, help_text=_(" "),)
+    m_15 = models.NullBooleanField(_("15. Is there a management team established to provide direction and co-ordination to pest eradication activities?"), choices=BOOL_CHOICES,blank=True, null=True, help_text=_("<br> <br> <br><i>If answer is <b>No</b> go to question <b>17.</b></i>  "),)
     m_16 = models.NullBooleanField(_("16. Does the management team have written responsibilities to carry out its functions effectively and in accordance with the International Standard"), choices=BOOL_CHOICES,blank=True, null=True, help_text=_(" "),)
     m_17 = models.NullBooleanField(_("17. Does the placement of the pest eradication activities within the NPPO structure make sense and facilitate the work?"), choices=BOOL_CHOICES,blank=True, null=True, help_text=_(" "),)
     m_18 = models.NullBooleanField(_("18. Is there an organizational chart of the pest eradication program?"), choices=BOOL_CHOICES,blank=True, null=True, help_text=_(" "),)
     m_19 = models.NullBooleanField(_("19. Are there job descriptions establishing the mandates, functions and responsibilities of the Pest eradication staff?"), choices=BOOL_CHOICES,blank=True, null=True, help_text=_(" "),)
-    m_20 = models.NullBooleanField(_("20. Does the NPPO engage relevant stakeholders to support and improve the quality of the pest eradication programme?"), choices=BOOL_CHOICES,blank=True, null=True, help_text=_(" "),)
+    m_20 = models.NullBooleanField(_("20. Does the NPPO engage relevant stakeholders to support and improve the quality of the pest eradication programme?"), choices=BOOL_CHOICES,blank=True, null=True, help_text=_("<br> <br> <br><i>If answer is <b>No</b> go to question <b>22.</b></i>  "),)
     m_21= models.TextField(_("21. If so, with which stakeholders and how?"), blank=True, null=True,help_text=_(" "),)
-    m_22 = models.NullBooleanField(_("22. Is there an operational manual or a set of guidelines for pest eradication?"), choices=BOOL_CHOICES,blank=True, null=True, help_text=_(" "),)
+    m_22 = models.NullBooleanField(_("22. Is there an operational manual or a set of guidelines for pest eradication?"), choices=BOOL_CHOICES,blank=True, null=True, help_text=_(" <br> <br> <br><i>If answer is <b>No</b> go to question <b>26.</b></i> "),)
     m_23 = models.NullBooleanField(_("23. If yes, are the national guidelines for pest eradication consistent with the international standard?"), choices=BOOL_CHOICES,blank=True, null=True, help_text=_(" "),)
     m_24= models.TextField(_("24. List the pests for which national standards or guidelines for pest eradication have been developed?"), blank=True, null=True,help_text=_(" "),)
     m_25= models.TextField(_("25. List the pests for which national standards or guidelines for pest eradication are currently being conducted?"), blank=True, null=True,help_text=_(" "),)
     m_26 = models.NullBooleanField(_("26. Are GIS coordinates used to specify the location of pests detected during pest eradication?"), choices=BOOL_CHOICES,blank=True, null=True, help_text=_("GIS - geographic information system (GIS), or geographical information system: Any system that captures, stores, analyzes, manages, and presents data in relation to location (merges cartography and database technology). Coordinates are used in this context to refer to the system of marking geographical locations using a Geographic Positioning System (GPS) tool/device for use in GIS. "),)
     m_27 = models.NullBooleanField(_("27. Does the NPPO's pest eradication programs have well developed and compatible data systems to collect, store and report pest distribution and eradication information?"), choices=BOOL_CHOICES,blank=True, null=True, help_text=_(" "),)
-    m_28 = models.NullBooleanField(_("28. Does the NPPO have contingency plans to address specific pests or pest groups that have a high potential for introduction, and for which an eradication plan is deemed to be both feasible and necessary, before the pest is found in an area."), choices=BOOL_CHOICES,blank=True, null=True, help_text=_(" "),)
+    m_28 = models.NullBooleanField(_("28. Does the NPPO have contingency plans to address specific pests or pest groups that have a high potential for introduction, and for which an eradication plan is deemed to be both feasible and necessary, before the pest is found in an area."), choices=BOOL_CHOICES,blank=True, null=True, help_text=_("<br> <br> <br><i>If answer is <b>No</b> go to question <b>30.</b></i>  "),)
     m_29 = models.NullBooleanField(_("29. Do the contingency plans identify the stakeholders that must be involved in case of an emergency, and its roles and responsibilities?"), choices=BOOL_CHOICES,blank=True, null=True, help_text=_(" "),)
     m_30 = models.NullBooleanField(_("30. Are the responsibilities and roles of other NPPO's programs considered and incorporated in the eradication plans?"), choices=BOOL_CHOICES,blank=True, null=True, help_text=_("Other relevant NPPO programmes or elements that could impact on the efficiency and effectiveness of the pest eradication programme or plans could include pest diagnostic, surveillance, internal quarantine, and human resources such as phytosanitary inspectors. "),)
     #m_31 =
@@ -3712,9 +3668,9 @@ class Module10(Displayable, models.Model):
     m_5 = models.NullBooleanField(_("5. Does the legislation grant authority to the NPPO's inspectors to treat or require treatment of imported consignments or other regulated articles including conveyances, or refuse the entry of consignments, order their reshipment or destruction?"), choices=BOOL_CHOICES,blank=True, null=True, help_text=_(" "),)
     m_6 = models.NullBooleanField(_("6. Does the legislation grant authority to take emergency action?"), choices=BOOL_CHOICES,blank=True, null=True, help_text=_(" "),)
     m_7 = models.NullBooleanField(_("7. Does the legislation grant authority to the NPPO's inspectors to set and collect fees for import-related activities or associated with penalties?"), choices=BOOL_CHOICES,blank=True, null=True, help_text=_(" "),)
-    m_8 = models.NullBooleanField(_("8. Is the NPPO the sole official service responsible for the operation and/or organization and management of the phytosanitary import regulatory system?"), choices=BOOL_CHOICES,blank=True, null=True, help_text=_(" "),)
+    m_8 = models.NullBooleanField(_("8. Is the NPPO the sole official service responsible for the operation and/or organization and management of the phytosanitary import regulatory system?"), choices=BOOL_CHOICES,blank=True, null=True, help_text=_(" <br> <br> <br><i>If answer is <b>Yes</b> go to question <b>9.</b></i> "),)
     m_9= models.TextField(_("8.1. If not, clearly identify who performs this function and how it is conducted."), blank=True, null=True,help_text=_(" "),)
-    m_10 = models.NullBooleanField(_("9. Are there other public or private services or agencies cooperating with the NPPO in the phytosanitary control of imported commodities?"), choices=BOOL_CHOICES,blank=True, null=True, help_text=_(" "),)
+    m_10 = models.NullBooleanField(_("9. Are there other public or private services or agencies cooperating with the NPPO in the phytosanitary control of imported commodities?"), choices=BOOL_CHOICES,blank=True, null=True, help_text=_("<br> <br> <br><i>If answer is <b>No</b> go to question <b>13.</b></i>  "),)
     m_11 = models.NullBooleanField(_("10. Are the roles of those public or private services or agencies clearly specified with distinct separation of responsibilities and functions?"), choices=BOOL_CHOICES,blank=True, null=True, help_text=_(" "),)
     m_12 = models.NullBooleanField(_("11. Are effective liaison mechanisms with those public or private services or agencies clearly identified?"), choices=BOOL_CHOICES,blank=True, null=True, help_text=_(" "),)
     m_13 = models.NullBooleanField(_("12. Does the NPPO have procedures to facilitate cooperation, information sharing and joint clearance activities with other relevant public or private services or agencies as appropriate?"), choices=BOOL_CHOICES,blank=True, null=True, help_text=_(" "),)
@@ -3736,7 +3692,7 @@ class Module10(Displayable, models.Model):
     m_29 = models.NullBooleanField(_("28. Does the NPPO's import regulatory system structure make organizational sense and facilitate the work?"), choices=BOOL_CHOICES,blank=True, null=True, help_text=_(" "),)
     m_30 = models.NullBooleanField(_("29. Is there an organizational chart linking the elements of the import regulatory system?"), choices=BOOL_CHOICES,blank=True, null=True, help_text=_(" "),)
  # m_31
-    m_32 = models.NullBooleanField(_("31. Are NPPO's phytosanitary service providers who have been approved/or accredited by the NPPO involved in the import process?"), choices=BOOL_CHOICES,blank=True, null=True, help_text=_(" "),)
+    m_32 = models.NullBooleanField(_("31. Are NPPO's phytosanitary service providers who have been approved/or accredited by the NPPO involved in the import process?"), choices=BOOL_CHOICES,blank=True, null=True, help_text=_(" <br> <br> <br><i>If answer is <b>No</b> go to question <b>32.</b></i> "),)
   # m_33
     m_34 = models.NullBooleanField(_("32. Does the NPPO have a management system for the development, maintenance and revision of the import regulatory system and the phytosanitary regulations?"), choices=BOOL_CHOICES,blank=True, null=True, help_text=_(" "),)
     m_35 = models.NullBooleanField(_("33. Is there a written procedure for making available and keeping updated lists of regulated pests, as per <a href='https://www.ippc.int/en/publications/603/' target='_blank'>ISPM 19</a>?"), choices=BOOL_CHOICES,blank=True, null=True, help_text=_(" "),)
@@ -3954,7 +3910,7 @@ class Module11(Displayable, models.Model):
   
     session = models.ForeignKey(PceVersion)
     modify_date = models.DateTimeField(_("Modified date"), blank=True, null=True, editable=False)
-    m_1 = models.NullBooleanField(_("1. Is there a mission statement specifying that all the NPPO's phytosanitary measures shall be technically justified?"), choices=BOOL_CHOICES,blank=True, null=True, help_text=_(" "),)
+    m_1 = models.NullBooleanField(_("1. Is there a mission statement specifying that all the NPPO's phytosanitary measures shall be technically justified?"), choices=BOOL_CHOICES,blank=True, null=True, help_text=_(" <br> <br> <br><i>If answer is <b>No</b> go to question <b>3.</b></i> "),)
     #m_2  
     #m_3   
     m_4 = models.NullBooleanField(_("4. Does the PRA unit have a strategic and operational plan?"), choices=BOOL_CHOICES,blank=True, null=True, help_text=_(" "),)
@@ -3970,7 +3926,7 @@ class Module11(Displayable, models.Model):
    #m_14
     m_15 = models.NullBooleanField(_("15. Does the legislation require that prior to their adoption, the proposed mitigation measures and uncertainties shall be communicated to stakeholders and other interested parties, including other contracting parties, RPPOs and NPPOs, as appropriate?"), choices=BOOL_CHOICES,blank=True, null=True, help_text=_(" "),)
     m_16 = models.NullBooleanField(_("16. Does the legislation require that the adopted phytosanitary requirements, restrictions or prohibitions, shall be immediately published and transmitted to contracting parties that NPPO believes may be directly affected? (according to IPPC Article VII.2b)"), choices=BOOL_CHOICES,blank=True, null=True, help_text=_(" "),)
-    m_17 = models.NullBooleanField(_("17. Does the legislation require the importer to request a Phytosanitary Import Permit, in order to allow the NPPO to establish the phytosanitary measures in advance?"), choices=BOOL_CHOICES,blank=True, null=True, help_text=_(" "),)
+    m_17 = models.NullBooleanField(_("17. Does the legislation require the importer to request a Phytosanitary Import Permit, in order to allow the NPPO to establish the phytosanitary measures in advance?"), choices=BOOL_CHOICES,blank=True, null=True, help_text=_(" <br> <br> <br><i>If answer is <b>No</b> go to question <b>19.</b></i> "),)
     m_18 = models.NullBooleanField(_("18. If yes, does the legislation grant authority to reject consignments arriving without a phytosanitary import permit if required?"), choices=BOOL_CHOICES,blank=True, null=True, help_text=_(" "),)
     m_19 = models.NullBooleanField(_("19. Can the recommendations of a PRA conducted on technical grounds be over-ruled by the government because of other than technical considerations?"), choices=BOOL_CHOICES,blank=True, null=True, help_text=_(" "),)
     m_20 = models.NullBooleanField(_("20. Does the legislation establish the NPPO obligation to promptly review the PRA, when there is new relevant information available?"), choices=BOOL_CHOICES,blank=True, null=True, help_text=_(" "),)
@@ -3979,12 +3935,12 @@ class Module11(Displayable, models.Model):
     m_23 = models.NullBooleanField(_("23. Does the PRA staff have written job descriptions to carry out their functions effectively and in accordance with international phytosanitary standards?"), choices=BOOL_CHOICES,blank=True, null=True, help_text=_(" "),)
     m_24 = models.NullBooleanField(_("24. Does the NPPO's PRA service's structure make organizational sense and facilitate the work?"), choices=BOOL_CHOICES,blank=True, null=True, help_text=_(" "),)
     m_25 = models.NullBooleanField(_("25. Is there an organizational chart of the PRA service?"), choices=BOOL_CHOICES,blank=True, null=True, help_text=_(" "),)
-    m_26 = models.NullBooleanField(_("26. Does the NPPO have linkages with the relevant stakeholders to get support and improve the quality of the PRA service?"), choices=BOOL_CHOICES,blank=True, null=True, help_text=_(" "),)
+    m_26 = models.NullBooleanField(_("26. Does the NPPO have linkages with the relevant stakeholders to get support and improve the quality of the PRA service?"), choices=BOOL_CHOICES,blank=True, null=True, help_text=_("<br> <br> <br><i>If answer is <b>No</b> go to question <b>28.</b></i>  "),)
     m_27= models.TextField(_("27. If so, with which stakeholders and for what ?"), blank=True, null=True,help_text=_(" "),)
-    m_28 = models.NullBooleanField(_("28. Are NPPO's phytosanitary service providers approved/ accredited or contracted by the NPPO, involved in some steps of the PRA process?"), choices=BOOL_CHOICES,blank=True, null=True, help_text=_(" "),)
+    m_28 = models.NullBooleanField(_("28. Are NPPO's phytosanitary service providers approved/ accredited or contracted by the NPPO, involved in some steps of the PRA process?"), choices=BOOL_CHOICES,blank=True, null=True, help_text=_("<br> <br> <br><i>If answer is <b>No</b> go to question <b>30.</b></i>  "),)
     m_29= models.TextField(_("29. If yes, in which steps?"), blank=True, null=True,help_text=_(" "),)
     m_30 = models.NullBooleanField(_("30. Does the NPPO have a management system that ensures that all requirements, including, legislative, technical and administrative requirements, are satisfied for PRA to be performed?"), choices=BOOL_CHOICES,blank=True, null=True, help_text=_(" "),)
-    m_31 = models.NullBooleanField(_("31. Does the NPPO's PRA process have an operational manual?"), choices=BOOL_CHOICES,blank=True, null=True, help_text=_(" "),)
+    m_31 = models.NullBooleanField(_("31. Does the NPPO's PRA process have an operational manual?"), choices=BOOL_CHOICES,blank=True, null=True, help_text=_(" <br> <br> <br><i>If answer is <b>No</b> go to question <b>33.</b></i> "),)
     m_32 = models.NullBooleanField(_("32. If yes, is the PRA operational manual consistent with the relevant ISPMs and periodically reviewed?"), choices=BOOL_CHOICES,blank=True, null=True, help_text=_(" "),)
     #m_33
     m_34 = models.NullBooleanField(_("34. Is this information stored in a computerized retrieval system?"), choices=BOOL_CHOICES,blank=True, null=True, help_text=_(" "),)
@@ -4010,7 +3966,7 @@ class Module11(Displayable, models.Model):
     m_54 = models.NullBooleanField(_("54. Does the NPPO have ready access to expertise for determining under what circumstances integrated pest management measures (systems approach) can be used and can they evaluate the measures?"), choices=BOOL_CHOICES,blank=True, null=True, help_text=_(" "),)
     m_55 = models.NullBooleanField(_("55. Does the NPPO have ready access to expertise to evaluate the integrated risk management measures proposed by trading partners?"), choices=BOOL_CHOICES,blank=True, null=True, help_text=_(" "),)
     m_56 = models.NullBooleanField(_("56. Does the NPPO currently accept integrated pest risk management measures developed by trading partners on imported commodities?"), choices=BOOL_CHOICES,blank=True, null=True, help_text=_(" "),)
-    m_57 = models.NullBooleanField(_("57. Does the NPPO undertake any research on various integrated pest risk management measures?"), choices=BOOL_CHOICES,blank=True, null=True, help_text=_(" "),)
+    m_57 = models.NullBooleanField(_("57. Does the NPPO undertake any research on various integrated pest risk management measures?"), choices=BOOL_CHOICES,blank=True, null=True, help_text=_(" <br> <br> <br><i>If answer is <b>Yes</b> go to question <b>59.</b></i> "),)
     m_58 = models.NullBooleanField(_("58. If no, are there any other institutions or agencies (government and private) within the country undertaking such research?"), choices=BOOL_CHOICES,blank=True, null=True, help_text=_(" "),)
     m_59 = models.IntegerField(_("59. How many people have been sufficiently trained to carry out PRA?"),choices=PERC1, default=None,help_text=_(" "),)
     m_60 = models.IntegerField(_("60. How frequent are training programs for staff involved in PRA?"),choices=TRAIN2, default=None,help_text=_(" "),)
@@ -4207,7 +4163,7 @@ class Module12(Displayable, models.Model):
   
     session = models.ForeignKey(PceVersion)
     modify_date = models.DateTimeField(_("Modified date"), blank=True, null=True, editable=False)
-    m_1 = models.NullBooleanField(_("1. Is the mandate of the PFA,ALPP,PFPP or PFPS programmes consistent with the NPPO's mission?"), choices=BOOL_CHOICES,blank=True, null=True, help_text=_(" "),)
+    m_1 = models.NullBooleanField(_("1. Is the mandate of the PFA,ALPP,PFPP or PFPS programmes consistent with the NPPO's mission?"), choices=BOOL_CHOICES,blank=True, null=True, help_text=_(" <br> <br> <br><i>If answer is <b>No</b> go to question <b>3.</b></i> "),)
     #m_2
     #m_3
     m_4 = models.NullBooleanField(_("4. Is there a strategic and operational plan for the establishment and maintenance of PFA,ALPP,PFPP or PFPS?"), choices=BOOL_CHOICES,blank=True, null=True, help_text=_(" "),)
@@ -4218,13 +4174,13 @@ class Module12(Displayable, models.Model):
     m_9 = models.NullBooleanField(_("9. Does the national legislation allow the NPPO to establish, declare, maintain and seek recognition of PFA,ALPP,PFPP or PFPS, in compliance with the international guidelines?"), choices=BOOL_CHOICES,blank=True, null=True, help_text=_(" "),)
     m_10 = models.NullBooleanField(_("10. Is there a legal provision for the charge of a cost recovery fee to the owners of PFPP or PFPS?"), choices=BOOL_CHOICES,blank=True, null=True, help_text=_(" "),)
     m_11 = models.NullBooleanField(_("11. In case of a pest outbreak in a PFA,ALPP,PFPP or PFPS, does the legislation allow the NPPO to adopt the eradication/suppression measures required to re-establish the pest status in the area of concern?"), choices=BOOL_CHOICES,blank=True, null=True, help_text=_(" "),)
-    m_12 = models.NullBooleanField(_("12. Does the legislation allow the NPPO to establish internal procedures to assure the traceability of consignments from a PFA,ALPP,PFPP or PFPS towards the port of export?"), choices=BOOL_CHOICES,blank=True, null=True, help_text=_(" "),)
+    m_12 = models.NullBooleanField(_("12. Does the legislation allow the NPPO to establish internal procedures to assure the traceability of consignments from a PFA,ALPP,PFPP or PFPS towards the port of export?"), choices=BOOL_CHOICES,blank=True, null=True, help_text=_("  <br> <br> <br><i>If answer is <b>No</b> go to question <b>14.</b></i>"),)
     m_13 = models.NullBooleanField(_("13. Does the legislation allow the NPPO to establish internal procedures to assure the traceability of consignments from a PFA,ALPP,PFPP or PFPS towards the port of export?"), choices=BOOL_CHOICES,blank=True, null=True, help_text=_(" "),)
     m_14 = models.NullBooleanField(_("14. Are the NPPO's PFA,ALPP,PFPP or PFPS programs, centralized under a national manager?"), choices=BOOL_CHOICES,blank=True, null=True, help_text=_(" "),)
     m_15 = models.NullBooleanField(_("15. Do NPPO's PFA,ALPP,PFPP or PFPS program's structures make organizational sense and facilitate the work?"), choices=BOOL_CHOICES,blank=True, null=True, help_text=_(" "),)
     m_16 = models.NullBooleanField(_("16. Is there an organizational chart of the PFA,ALPP,PFPP or PFPS program?"), choices=BOOL_CHOICES,blank=True, null=True, help_text=_(" "),)
     m_17 = models.NullBooleanField(_("17. Are there written job descriptions establishing the mandates, functions and responsibilities of the PFA,ALPP,PFPP or PFPS program staff?"), choices=BOOL_CHOICES,blank=True, null=True, help_text=_(" "),)
-    m_18 = models.NullBooleanField(_("18. Does the NPPO have linkages with the relevant stakeholders (non NPPO) to get support for the PFA,ALPP,PFPP or PFPS programs?"), choices=BOOL_CHOICES,blank=True, null=True, help_text=_(" "),)
+    m_18 = models.NullBooleanField(_("18. Does the NPPO have linkages with the relevant stakeholders (non NPPO) to get support for the PFA,ALPP,PFPP or PFPS programs?"), choices=BOOL_CHOICES,blank=True, null=True, help_text=_(" <br> <br> <br><i>If answer is <b>No</b> go to question <b>20</b></i> "),)
     m_19= models.TextField(_("19. If yes, with which stakeholders and for what?"), blank=True, null=True,help_text=_(" "),)
     m_20 = models.NullBooleanField(_("20. Is there a national standard or set of guidelines or Operational Manual for PFA,ALPP,PFPP or PFPS programs, including procedures for establishment, declaration, maintenance, re-establishment, recognition, etc?"), choices=BOOL_CHOICES,blank=True, null=True, help_text=_(" "),)
     m_21 = models.NullBooleanField(_("21. Does the NPPO have the human resources to monitor the establishment and maintenance of pest freedom and appropriate buffer zones?"), choices=BOOL_CHOICES,blank=True, null=True, help_text=_(" "),)
@@ -4368,7 +4324,7 @@ class Module13(Displayable, models.Model):
   
     session = models.ForeignKey(PceVersion)
     modify_date = models.DateTimeField(_("Modified date"), blank=True, null=True, editable=False)
-    m_1 = models.NullBooleanField(_("1. Is the mandate of the export certification program activities consistent with the NPPO's mission?"), choices=BOOL_CHOICES,blank=True, null=True, help_text=_(" "),)
+    m_1 = models.NullBooleanField(_("1. Is the mandate of the export certification program activities consistent with the NPPO's mission?"), choices=BOOL_CHOICES,blank=True, null=True, help_text=_("  <br> <br> <br><i>If answer is <b>No</b> go to question <b>3.</b></i>"),)
     #m_2  
     #m_3   
     m_4 = models.NullBooleanField(_("4. Is there a strategic and operational plan for the export certification activities?"), choices=BOOL_CHOICES,blank=True, null=True, help_text=_(" "),)
@@ -4380,24 +4336,24 @@ class Module13(Displayable, models.Model):
     m_10 = models.NullBooleanField(_("10. Does the present legislation comply with the model phytosanitary and re-export certificates as described in the annex of the revised text of the IPPC (1997)?"), choices=BOOL_CHOICES,blank=True, null=True, help_text=_(" "),)
     m_11 = models.NullBooleanField(_("11. Does the NPPO have the authority to refuse the issuance of the phytosanitary certificate for the export of consignments which do not meet an importing country's requirements?"), choices=BOOL_CHOICES,blank=True, null=True, help_text=_(" "),)
     m_12 = models.NullBooleanField(_("12. Does the NPPO have the authority to approve/accredit phytosanitary service providers from the official or private sectors to collaborate in the export certification program (field inspection, packing inspection, treatment, inspection and storage facilities, etc)?"), choices=BOOL_CHOICES,blank=True, null=True, help_text=_(" "),)
-    m_13 = models.NullBooleanField(_("13. Does the legislation allow NPPO to charge fees for the services provided by the export certification program?"), choices=BOOL_CHOICES,blank=True, null=True, help_text=_(" "),)
-    m_14 = models.NullBooleanField(_("14. If yes, are those fees charged on a cost recovery base?"), choices=BOOL_CHOICES,blank=True, null=True, help_text=_(" "),)
+    m_13 = models.NullBooleanField(_("13. Does the legislation allow NPPO to charge fees for the services provided by the export certification program?"), choices=BOOL_CHOICES,blank=True, null=True, help_text=_("  <br> <br> <br><i>If answer is <b>No</b> go to question <b>16.</b></i>"),)
+    m_14 = models.NullBooleanField(_("14. If yes, are those fees charged on a cost recovery base?"), choices=BOOL_CHOICES,blank=True, null=True, help_text=_("  <br> <br> <br><i>If answer is <b>No</b> go to question <b>16.</b></i>"),)
     m_15 = models.NullBooleanField(_("15. If yes, are those fees updated as needed?"), choices=BOOL_CHOICES,blank=True, null=True, help_text=_(" "),)
     m_16 = models.NullBooleanField(_("16. Is there a national manager responsible for the export certification system?"), choices=BOOL_CHOICES,blank=True, null=True, help_text=_(" "),)
     m_17 = models.NullBooleanField(_("17. Does the export certification staff have written job descriptions to carry out its function effectively and in accordance with the International Standards?"), choices=BOOL_CHOICES,blank=True, null=True, help_text=_(" "),)
     m_18 = models.NullBooleanField(_("18. Does NPPO's export certification program's structure make organizational sense and facilitate the work?"), choices=BOOL_CHOICES,blank=True, null=True, help_text=_(" "),)
     m_19 = models.NullBooleanField(_("19. Is there an organizational chart of the export certification program?"), choices=BOOL_CHOICES,blank=True, null=True, help_text=_(" "),)
-    m_20 = models.NullBooleanField(_("20. Does the NPPO have linkages with the relevant stakeholders to get support and improve the quality of the export certification program?"), choices=BOOL_CHOICES,blank=True, null=True, help_text=_(" "),)
+    m_20 = models.NullBooleanField(_("20. Does the NPPO have linkages with the relevant stakeholders to get support and improve the quality of the export certification program?"), choices=BOOL_CHOICES,blank=True, null=True, help_text=_(" <br> <br> <br><i>If answer is <b>No</b> go to question <b>23.</b></i>"),)
     m_21= models.TextField(_("21. If so, with which stakeholders and for what?"), blank=True, null=True,help_text=_(" "),)
    #m_22
-    m_23 = models.NullBooleanField(_("23. Are NPPO's phytosanitary service providers approved/accredited by the NPPO involved in some steps of the export certification process?"), choices=BOOL_CHOICES,blank=True, null=True, help_text=_(" "),)
+    m_23 = models.NullBooleanField(_("23. Are NPPO's phytosanitary service providers approved/accredited by the NPPO involved in some steps of the export certification process?"), choices=BOOL_CHOICES,blank=True, null=True, help_text=_("  <br> <br> <br><i>If answer is <b>No</b> go to question <b>25.</b></i>"),)
     m_24 = models.IntegerField(_("24. If yes, in which steps?"),choices=INSP, default=None,help_text=_(" "),)
     m_25 = models.NullBooleanField(_("25. Does the NPPO have a management system that ensures that all requirements, including certification, legislative and technical requirements and administrative requirements, are satisfied for each certificate issued?"), choices=BOOL_CHOICES,blank=True, null=True, help_text=_(" "),)
     m_26 = models.NullBooleanField(_("26. Does the NPPO's export certification have an operational manual?"), choices=BOOL_CHOICES,blank=True, null=True, help_text=_(" "),)
-    m_27 = models.NullBooleanField(_("27. Does the NPPO maintain up-to-date information on the import requirements of importing countries?"), choices=BOOL_CHOICES,blank=True, null=True, help_text=_(" "),)
+    m_27 = models.NullBooleanField(_("27. Does the NPPO maintain up-to-date information on the import requirements of importing countries?"), choices=BOOL_CHOICES,blank=True, null=True, help_text=_(" <br> <br> <br><i>If answer is <b>No</b> go to question <b>29.</b></i>"),)
     m_28 = models.NullBooleanField(_("28. Is this information stored in a computerized retrieval system?"), choices=BOOL_CHOICES,blank=True, null=True, help_text=_(" "),)
     #m_29
-    m_30 = models.NullBooleanField(_("30. Is a copy of each phytosanitary certificate retained (hard copy or electronic version) for purposes of validation and trace back?"), choices=BOOL_CHOICES,blank=True, null=True, help_text=_(" "),)
+    m_30 = models.NullBooleanField(_("30. Is a copy of each phytosanitary certificate retained (hard copy or electronic version) for purposes of validation and trace back?"), choices=BOOL_CHOICES,blank=True, null=True, help_text=_("  <br> <br> <br><i>If answer is <b>No</b> go to question <b>33.</b></i>"),)
    #m_31
     m_32 = models.NullBooleanField(_("32. Is this information stored in a computerized retrieval system?"), choices=BOOL_CHOICES,blank=True, null=True, help_text=_(" "),)
     m_33 = models.NullBooleanField(_("33. If required by the imported country, are all consignments and their certification traceable through all stages of production, handling and transport to the point of export?"), choices=BOOL_CHOICES,blank=True, null=True, help_text=_(" "),)
@@ -4407,7 +4363,7 @@ class Module13(Displayable, models.Model):
     m_37 = models.NullBooleanField(_("37. Has the NPPO made available an IPPC contact point for the importing country's NPPO to which cases of non-compliance can be reported?"), choices=BOOL_CHOICES,blank=True, null=True, help_text=_(" "),)
     m_38 = models.NullBooleanField(_("38. Has the NPPO established procedures for investigating reports from importing countries of non-compliant consignments covered by a phytosanitary certificate?"), choices=BOOL_CHOICES,blank=True, null=True, help_text=_(" "),)
     m_39 = models.NullBooleanField(_("39. Does the NPPO have an internal technical audit program to improve the quality of the export certification program?"), choices=BOOL_CHOICES,blank=True, null=True, help_text=_(" "),)
-    m_40 = models.NullBooleanField(_("40. Are the phytosanitary and re-export certificates issued by the NPPO in accordance with the model certificates in the IPPC annex?"), choices=BOOL_CHOICES,blank=True, null=True, help_text=_(" "),)
+    m_40 = models.NullBooleanField(_("40. Are the phytosanitary and re-export certificates issued by the NPPO in accordance with the model certificates in the IPPC annex?"), choices=BOOL_CHOICES,blank=True, null=True, help_text=_(" <br> <br> <br><i>If answer is <b>No</b> go to question <b>42.</b></i>"),)
     m_41 = models.NullBooleanField(_("41. Are those certificates issued in accordance with the good practices for certification's issuance as established in <a href='https://www.ippc.int/en/publications/609/' target='_blank'>ISPM 12</a>?"), choices=BOOL_CHOICES,blank=True, null=True, help_text=_(" "),)
     m_42 = models.IntegerField(_("42. If an imported consignment is then exported to another country, and it has not been exposed to infestation or contamination by pests without loss of its integrity or identity, what model certificate is used by the NPPO?"),choices=PHY, default=None,help_text=_(" "),)
     m_43 = models.IntegerField(_("43. If an imported or in transit consignment has not been exposed to infestation or contamination by pests, but has lost its integrity or identity, or has been processed to change its nature, what model certificate is used by the NPPO?"),choices=PHY, default=None,help_text=_(" "),)
@@ -4681,31 +4637,31 @@ class ProblemAnalysis(Displayable, models.Model):
     
     cause_a_1= models.TextField(_("Primary"), blank=True, null=True,)
     cause_b_1= models.TextField(_("Secondary"), blank=True, null=True,)
-    w_1= models.TextField(_("Major weaknesses needing to be addressed"), blank=True, null=True,)
+    #w_1= models.TextField(_("Major weaknesses needing to be addressed"), blank=True, null=True,)
     consequence_a_1= models.TextField(_("Primary"), blank=True, null=True,)
     consequence_b_1= models.TextField(_("Secondary"), blank=True, null=True,)
    
     cause_a_2= models.TextField(_("Primary"), blank=True, null=True,)
     cause_b_2= models.TextField(_("Secondary"), blank=True, null=True,)
-    w_2= models.TextField(_("Major weaknesses needing to be addressed"), blank=True, null=True,)
+    #w_2= models.TextField(_("Major weaknesses needing to be addressed"), blank=True, null=True,)
     consequence_a_2= models.TextField(_("Primary"), blank=True, null=True,)
     consequence_b_2= models.TextField(_("Secondary"), blank=True, null=True,)
    
     cause_a_3= models.TextField(_("Primary"), blank=True, null=True,)
     cause_b_3= models.TextField(_("Secondary"), blank=True, null=True,)
-    w_3= models.TextField(_("Major weaknesses needing to be addressed"), blank=True, null=True,)
+    #w_3= models.TextField(_("Major weaknesses needing to be addressed"), blank=True, null=True,)
     consequence_a_3= models.TextField(_("Primary"), blank=True, null=True,)
     consequence_b_3= models.TextField(_("Secondary"), blank=True, null=True,)
    
     cause_a_4= models.TextField(_("Primary"), blank=True, null=True,)
     cause_b_4= models.TextField(_("Secondary"), blank=True, null=True,)
-    w_4= models.TextField(_("Major weaknesses needing to be addressed"), blank=True, null=True,)
+    #w_4= models.TextField(_("Major weaknesses needing to be addressed"), blank=True, null=True,)
     consequence_a_4= models.TextField(_("Primary"), blank=True, null=True,)
     consequence_b_4= models.TextField(_("Secondary"), blank=True, null=True,)
    
     cause_a_5= models.TextField(_("Primary"), blank=True, null=True,)
     cause_b_5= models.TextField(_("Secondary"), blank=True, null=True,)
-    w_5= models.TextField(_("Major weaknesses needing to be addressed"), blank=True, null=True,)
+    #w_5= models.TextField(_("Major weaknesses needing to be addressed"), blank=True, null=True,)
     consequence_a_5= models.TextField(_("Primary"), blank=True, null=True,)
     consequence_b_5= models.TextField(_("Secondary"), blank=True, null=True,)
    

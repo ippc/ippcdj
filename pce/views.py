@@ -27,7 +27,7 @@ from .models import ROLE,INSUFF0, INTEREST,  IMPORTANCE,  PARTICIPANT, LEVEL,PRI
     Module12,Module12Weaknesses,Module12Grid2,Module12Grid3,Module12Grid_29,Module12Matrix22,\
     Module11,Module11Weaknesses,Module11Grid2,Module11Grid3,Module11Grid12,Module11Grid14,Module11Grid33,Module11Matrix42,\
     Module13,Module13Weaknesses,Module13Grid2,Module13Grid3,Module13Grid22,Module13Grid29,Module13Grid31,Module13Matrix47,\
-    Membership1,Membership2  ,M5_3  
+    Membership1,Membership2  ,M5_3 ,M3_1,M3_10,M3_17 ,M8_17
         
 from .forms import  PceVersionForm,PceVersionForm2,PceVersionForm1,PceVersionForm3,\
     StakeholdersForm,StakeholdersFieldsFormSet,ProblemAnalysisForm,\
@@ -392,7 +392,28 @@ def getModuleNameAndId(modulenum,sessionid):
 def getWeakenessFromModuleNameAndId(modulenum,sessionid):
     module = None
     weaknesses= None
-    print('getWeakenessFromModuleNameAndId')     
+    print('')     
+    print('')     
+    print('')     
+    print('')     
+    print('')     
+    print('')     
+    print('')     
+    print('---------------------------getWeakenessFromModuleNameAndId'+str(modulenum) )    
+    print('')     
+    print('')     
+    print('')     
+    print('')     
+    print('')     
+    print('')     
+    print('')     
+    print('')     
+    print('')     
+    print('')     
+    print('')     
+    print('')     
+    print('')     
+    print('')     
     try: 
         if modulenum ==2:
            module = get_object_or_404(Module2, session=sessionid)
@@ -444,6 +465,14 @@ def getWeakenessFromModuleNameAndId(modulenum,sessionid):
     except:
         module = None
         weaknesses = None
+    print(weaknesses.w1)  
+    print(weaknesses.w2)  
+    print("")  
+    print("")  
+    print("")  
+    print("")  
+    print("")  
+    print("")  
     return weaknesses                 
 
 def is_stakeholder_filled(id,module):
@@ -3178,7 +3207,7 @@ class Module1ListView(ListView):
     context_object_name = 'latest'
     model = Module1
     date_field = 'publish_date'
-    template_name = 'pce/module_1_view.html'
+    template_name = 'pce/module_1.html'#'pce/module_1_view.html'
     queryset = Module1.objects.all().order_by('-modify_date', 'title')
     allow_future = False
     allow_empty = True
@@ -3196,6 +3225,7 @@ class Module1ListView(ListView):
         context = super(Module1ListView, self).get_context_data(**kwargs)
         context['country'] = self.kwargs['country']
         context['sessionid'] = self.kwargs['sessionid']
+        context['context'] = 'View'
         context['regions'] =REGIONS
         #crops = Crops.objects.all().order_by()
        
@@ -3279,115 +3309,75 @@ class Module1ListPDFView(PDFTemplateView):
     context_object_name = 'latest'
     model = Module1
     date_field = 'publish_date'
-    template_name = 'pce/module_1_pdf.html'
+    template_name = 'pce/module_1.html'#'pce/module_1_pdf.html'
     
     def get_context_data(self, **kwargs): # http://stackoverflow.com/a/15515220
         context = super(Module1ListPDFView, self).get_context_data(**kwargs)
         context['country'] = self.kwargs['country']
         context['sessionid'] = self.kwargs['sessionid']
-        REGION_0 = 0
-        REGION_1 = 1
-        REGION_2 = 2
-        REGION_3 = 3
-        REGION_4 = 4
-        REGION_5 = 5
-        REGION_6 = 6
-        REGION_7 = 7
+        context['context'] = 'Pdf'
+       
         REGIONS = (
-            (REGION_0, ("--- Please select ---")),
-            (REGION_1, ("Africa")),
-            (REGION_2, ("Asia")),
-            (REGION_3, ("Europe")),
-            (REGION_4, ("Latin America and Caribbean")),
-            (REGION_5, ("Near East")),
-            (REGION_6, ("North America")),
-            (REGION_7, ("South West Pacific")),
+            (0, _("--- Please select ---")),
+            (1, _("Africa")),
+            (2, _("Asia")),
+            (3, _("Europe")),
+            (4, _("Latin America and Caribbean")),
+            (5, _("Near East")),
+            (6, _("North America")),
+            (7, _("South West Pacific")),
         )
-        VAL_IMP_0 = 0
-        VAL_IMP_1 = 1
-        VAL_IMP_2 = 2
-        VAL_IMP_3 = 3
-        VAL_IMP_4 = 4
-        VAL_IMP_5 = 5
-        VAL_IMP_6 = 6
-        VAL_IMP_7 = 7
-        VAL_IMP_8 = 8
-        VAL_IMP_9 = 9
+       
         VAL_IMP = (
-            (VAL_IMP_0, ("--- Please select ---")),
-            (VAL_IMP_1, ("Not known")),
-            (VAL_IMP_2, ("0 to $100,000")),
-            (VAL_IMP_3, ("$100,000 to $500,000")),
-            (VAL_IMP_4, ("$500,000 to $1M")),
-            (VAL_IMP_5, ("$1M to $10M")),
-            (VAL_IMP_6, ("$10M to $25M")),
-            (VAL_IMP_7, ("$25M to $50M")),
-            (VAL_IMP_8, ("$50M to $100M")),
-            (VAL_IMP_9, ("Greater than $100M ")),
-        )
-
-        VAL_EXP_0 = 0
-        VAL_EXP_1 = 1
-        VAL_EXP_2 = 2
-        VAL_EXP_3 = 3
-        VAL_EXP_4 = 4
-        VAL_EXP_5 = 5
-        VAL_EXP_6 = 6
-        VAL_EXP_7 = 7
-        VAL_EXP_8 = 8
-        VAL_EXP_9 = 9
-        VAL_EXP = (
-             (VAL_EXP_0, ("--- Please select ---")),
-             (VAL_EXP_1, ("Unknown")),
-            (VAL_EXP_2, ("0 to $100,000")),
-            (VAL_EXP_3, ("$100,000 to $500,000")),
-            (VAL_EXP_4, ("$500,000 to $1M")),
-            (VAL_EXP_5, ("$1M to $10M")),
-            (VAL_EXP_6, ("$10M to $50M")),
-            (VAL_EXP_7, ("$25M to $50M")),
-            (VAL_EXP_8, ("greater than $50M")),
-        )
-
-        VAL_PERCENT_00 = 0
-        VAL_PERCENT_0 = 1
-        VAL_PERCENT_1 = 2
-        VAL_PERCENT_2 = 3
-        VAL_PERCENT_3 = 4
-        VAL_PERCENT_4 = 5
-        VAL_PERCENT_5 = 6
-        VAL_PERCENT_6 = 7
-        VAL_PERCENT_7 = 8
-        VAL_PERCENT_8 = 9
-        VAL_PERCENT_9 = 10
-        VAL_PERCENT_10 = 11
-        VAL_PERCENT_10 = 12
-        VAL_PERCENT = (
-            (VAL_PERCENT_00, ("--- Please select ---")),
-            (VAL_PERCENT_0, ("0")),
-            (VAL_PERCENT_1, ("10")),
-            (VAL_PERCENT_2, ("20")),
-            (VAL_PERCENT_3, ("30")),
-            (VAL_PERCENT_4, ("40")),
-            (VAL_PERCENT_5, ("50")),
-            (VAL_PERCENT_6, ("60")),
-            (VAL_PERCENT_7, ("70")),
-            (VAL_PERCENT_8, ("80")),
-            (VAL_PERCENT_9, ("90")),
-            (VAL_PERCENT_10, ("100")),
+            (0, _("--- Please select ---")),
+            (1, _("Not known")),
+            (2, _("0 to $100,000")),
+            (3, _("$100,000 to $500,000")),
+            (4, _("$500,000 to $1M")),
+            (5, _("$1M to $10M")),
+            (6, _("$10M to $25M")),
+            (7, _("$25M to $50M")),
+            (8, _("$50M to $100M")),
+            (9, _("Greater than $100M ")),
         )
 
        
-        NUM_BILATERAL_0=0
-        NUM_BILATERAL_1=1
-        NUM_BILATERAL_2=2
-        NUM_BILATERAL_3=3
-        NUM_BILATERAL_4=4
+        VAL_EXP = (
+             (0, _("--- Please select ---")),
+             (1, _("Unknown")),
+            (2, _("0 to $100,000")),
+            (3, _("$100,000 to $500,000")),
+            (4, _("$500,000 to $1M")),
+            (5, _("$1M to $10M")),
+            (6, _("$10M to $50M")),
+            (7, _("$25M to $50M")),
+            (8, _("greater than $50M")),
+        )
+
+    
+        VAL_PERCENT = (
+            (0, _("--- Please select ---")),
+            (1, _("0")),
+            (2, _("10")),
+            (3, _("20")),
+            (4, _("30")),
+            (5, _("40")),
+            (6, _("50")),
+            (7, _("60")),
+            (8, _("70")),
+            (9, _("80")),
+            (10, _("90")),
+            (11, _("100")),
+        )
+
+       
+       
         NUM_BILATERAL = (
-            (NUM_BILATERAL_0, ("--- Please select ---")),
-            (NUM_BILATERAL_1, ("1-3")),
-            (NUM_BILATERAL_2, ("4-6")),
-            (NUM_BILATERAL_3, ("7-10")),
-            (NUM_BILATERAL_4, ("greater than 10")),
+            (0, _("--- Please select ---")),
+            (1, _("1-3")),
+            (2, _("4-6")),
+            (3, _("7-10")),
+            (4, _("greater than 10")),
         )
         context['regions'] =REGIONS
         context['VAL_IMP'] =VAL_IMP
@@ -3401,9 +3391,11 @@ class Module1ListPDFView(PDFTemplateView):
         id=''
         if  'id' in self.kwargs:
             id = self.kwargs['id']
+            context['latest']=  Module1.objects.filter(id=id)
+        else:
+            context['latest']= ''
         context['id'] = id
-        context['latest']=  Module1.objects.filter(id=id)
-    
+        
         can_see=0
        
         session = get_object_or_404(PceVersion,  pk= self.kwargs['sessionid'])
@@ -3533,7 +3525,7 @@ def module1_create(request, country,sessionid=None):
             #return redirect("module1-edit",country=user_country_slug,sessionid=pceversion.id,id=module1.id,)
             return redirect("module-list",country=user_country_slug,id=pceversion.id,)
         else:
-            return render_to_response('pce/module_1_edit.html', {'form': form,'form26': form26,'form7': form7,'form8': form8,'form11': form11,'form20': form20,'form21': form21,
+            return render_to_response('pce/module_1.html', {'context' : 'Edit','form': form,'form26': form26,'form7': form7,'form8': form8,'form11': form11,'form20': form20,'form21': form21,
              'sessionid':sessionid,'can_edit':can_edit,'m_percentage':m_percentage,'tot_percentage':tot_percentage,'is_st_filled':is_st_filled,'is_pa_filled':is_pa_filled,'is_sa_filled':is_sa_filled,'is_lf_filled':is_lf_filled,'st_id':st_id,'pa_id':pa_id,'sa_id':sa_id,'module':5,
             },
             context_instance=RequestContext(request))
@@ -3547,13 +3539,13 @@ def module1_create(request, country,sessionid=None):
         form20 =  Module1MajorPartenerImportFormSet()
         form21 = Module1MajorPartenerExportFormSet()
 
-    return render_to_response('pce/module_1_edit.html', {'form': form,'form26': form26,'form7': form7,'form8': form8,
+    return render_to_response('pce/module_1.html', {'context' : 'Edit','form': form,'form26': form26,'form7': form7,'form8': form8,
             'form11': form11,'form20': form20,'form21': form21,'sessionid':sessionid, 'can_edit':can_edit,'m_percentage':m_percentage,'tot_percentage':tot_percentage,'is_st_filled':is_st_filled,'is_pa_filled':is_pa_filled,'is_sa_filled':is_sa_filled,'is_lf_filled':is_lf_filled,'st_id':st_id,'pa_id':pa_id,'sa_id':sa_id,'module':1,},
             context_instance=RequestContext(request))
 
 @login_required
 @permission_required('pce.add_pceversion', login_url="/accounts/login/")
-def module1_edit(request, country, id=None,sessionid=None, template_name='pce/module_1_edit.html'):
+def module1_edit(request, country, id=None,sessionid=None, template_name='pce/module_1.html'):
     """ Edit module_1 """
     user = request.user
     author = user
@@ -3641,7 +3633,7 @@ def module1_edit(request, country, id=None,sessionid=None, template_name='pce/mo
         form20 =  Module1MajorPartenerImportFormSet(instance=module1)
         form21 = Module1MajorPartenerExportFormSet(instance=module1)
         
-    return render_to_response(template_name, {
+    return render_to_response(template_name, {'context' : 'Edit',
         'form': form,'form26': form26,'form7': form7,'form8': form8,
         'form11': form11,'form20': form20,'form21': form21,'sessionid':sessionid,'can_edit':can_edit,'m_percentage':m_percentage,'sessionid':sessionid,'is_st_filled':is_st_filled,'is_pa_filled':is_pa_filled,'is_sa_filled':is_sa_filled,'is_lf_filled':is_lf_filled,'st_id':st_id,'pa_id':pa_id,'sa_id':sa_id,'module':1,'tot_percentage':tot_percentage},  
         context_instance=RequestContext(request))
@@ -3651,7 +3643,7 @@ class Module2ListView(ListView):
     context_object_name = 'latest'
     model = Module2
     date_field = 'publish_date'
-    template_name = 'pce/module_2_view.html'
+    template_name = 'pce/module_2.html'
     queryset = Module2.objects.all().order_by('-modify_date', 'title')
     allow_future = False
     allow_empty = True
@@ -3668,6 +3660,7 @@ class Module2ListView(ListView):
         context = super(Module2ListView, self).get_context_data(**kwargs)
         context['country'] = self.kwargs['country']
         context['sessionid'] = self.kwargs['sessionid']
+        context['context'] = 'View'
         id=''
         if  'id' in self.kwargs:
             id = self.kwargs['id']
@@ -3733,314 +3726,189 @@ class Module2ListPDFView(PDFTemplateView):
     context_object_name = 'latest'
     model = Module1
     date_field = 'publish_date'
-    template_name = 'pce/module_2_pdf.html'
+    template_name = 'pce/module_2.html'
     
     def get_context_data(self, **kwargs): # http://stackoverflow.com/a/15515220
         context = super(Module2ListPDFView, self).get_context_data(**kwargs)
         context['country'] = self.kwargs['country']
         context['sessionid'] = self.kwargs['sessionid']
-        DEFINITIONS_0 = 0
-        DEFINITIONS_1 = 1
-        DEFINITIONS_2 = 2
-        DEFINITIONS_3 = 3
-        DEFINITIONS_4 = 4
-        DEFINITIONS_5 = 5
+        context['context'] = 'Pdf'   
+       
         DEFINITIONS = (
-            (DEFINITIONS_0, ("--- Please select ---")),
-            (DEFINITIONS_1, ("Not at all")),
-            (DEFINITIONS_2, ("Major improvements required")),
-            (DEFINITIONS_3, ("Mostly")),
-            (DEFINITIONS_4, ("Minor modifications needed")),
-            (DEFINITIONS_5, ("Totally")),
+            (0, _("--- Please select ---")),
+            (1, _("Not at all")),
+            (2, _("Major improvements required")),
+            (3, _("Mostly")),
+            (4, _("Minor modifications needed")),
+            (5, _("Totally")),
         ) 
-        DEFINITIONS1_0 = 0
-        DEFINITIONS1_1 = 1
-        DEFINITIONS1_2 = 2
-        DEFINITIONS1_3 = 3
-        DEFINITIONS1_4 = 4
-        DEFINITIONS1_5 = 5
+       
         DEFINITIONS1 = (
-            (DEFINITIONS1_0, ("--- Please select ---")),
-            (DEFINITIONS1_1, ("Not at all")),
-            (DEFINITIONS1_2, ("Major improvements required")),
-            (DEFINITIONS1_3, ("Mostly")),
-            (DEFINITIONS1_4, ("Minor improvements needed")),
-            (DEFINITIONS1_5, ("Totally")),
+            (0, _("--- Please select ---")),
+            (1, _("Not at all")),
+            (2, _("Major improvements required")),
+            (3, _("Mostly")),
+            (4, _("Minor improvements needed")),
+            (5, _("Totally")),
         ) 
-        ACT_0 = 0
-        ACT_1 = 1
-        ACT_2 = 2
-        ACT_3 = 3
-        ACT_4 = 4
-        ACT_5 = 5
+     
         ACT = (
-            (ACT_0, ("--- Please select ---")),
-            (ACT_1, ("Not updated")),
-            (ACT_2, ("Under revision")),
-            (ACT_3, ("For Cabinet consideration")),
-            (ACT_4, ("For consideration at Parliament")),
-            (ACT_5, ("Updated to IPPC 1997")),
+            (0, _("--- Please select ---")),
+            (1, _("Not updated")),
+            (2, _("Under revision")),
+            (3, _("For Cabinet consideration")),
+            (4, _("For consideration at Parliament")),
+            (5, _("Updated to IPPC 1997")),
         )
-        CIVIL_0 = 0
-        CIVIL_1 = 1
-        CIVIL_2 = 2
-        CIVIL_3 = 3
-        CIVIL_4 = 4
-
+    
         CIVIL = (
-            (CIVIL_0, ("--- Please select ---")),
-            (CIVIL_1, ("Civil law system")),
-            (CIVIL_2, ("Common law system")),
-            (CIVIL_3, ("Religious law")),
-            (CIVIL_4, ("Pluralistic system")),
+            (0, _("--- Please select ---")),
+            (1, _("Civil law system")),
+            (2, _("Common law system")),
+            (3, _("Religious law")),
+            (44, _("Pluralistic system")),
         )
         
-        YEAR_0 = 0
-        YEAR_1 = 1
-        YEAR_2 = 2
-        YEAR_3 = 3
-        YEAR_4 = 4
-        YEAR_5 = 5
-        YEAR_6 = 6
-        YEAR_7 = 7
-        YEAR_8 = 8
-        YEAR_9 = 9
-        YEAR_10 = 10
-        YEAR_11 = 11
-        YEAR_12 = 12
-        YEAR_13 = 13
-        YEAR_14 = 14
-        YEAR_15 = 15
-        YEAR_16 = 16
-        YEAR_17 = 17
-        YEAR_18 = 18
-        YEAR_19 = 19
-        YEAR_20 = 20
-        YEAR_21 = 21
-        YEAR_22 = 22
-        YEAR_23 = 23
-        YEAR_24 = 24
-        YEAR_25 = 25
-        YEAR_26 = 26
-        YEAR_27 = 27
-        YEAR_28 = 28
-        YEAR_29 = 29
-        YEAR_30 = 30
-        YEAR_31 = 31
-        YEAR_32 = 32
-        YEAR_33 = 33
-        YEAR_34 = 34
-        YEAR_35 = 35
-        YEAR_36 = 36
-        YEAR_37 = 37
-        YEAR_38 = 38
-        YEAR_39 = 39
-        YEAR_40 = 40
-        YEAR_41 = 41
-        YEAR_42 = 42
-        YEAR_43 = 43
-        YEAR_44 = 44
-        YEAR_45 = 45
-        YEAR_46 = 46
-        YEAR_47 = 47
-        YEAR_48 = 48
-        YEAR_49 = 49
-        YEAR_50 = 50
-        YEAR_51 = 51
-        YEAR_52 = 52
-        YEAR_53 = 53
-        YEAR_54 = 54
-        YEAR_55 = 55
-        YEAR_56 = 56
-        YEAR_57 = 57
-        YEAR_58 = 58
-        YEAR_59 = 59
-        YEAR_60 = 60
-        YEAR_61 = 61
-        YEAR_62 = 62
-        YEAR_63 = 63
-        YEAR_64 = 64
-        YEAR_65 = 65
-        YEAR_66 = 66
-        YEAR_67 = 67
-        YEAR_68 = 68
-        YEAR_69 = 69
-        YEAR_70 = 70
-        YEAR_71 = 71
-        YEAR_72 = 72
-        YEAR_73 = 73
-        YEAR_74 = 74
-        YEAR_75 = 75
-        YEAR_76 = 76
-        YEAR_77 = 77
-        YEAR_78 = 78
-        YEAR_79 = 79
-        YEAR_80 = 80
-        YEAR_81 = 81
-        YEAR_82 = 82
-        YEAR_83 = 83
-        YEAR_84 = 84
-        YEAR_85 = 85
-        YEAR_86 = 86
-        YEAR_87 = 87
-        YEAR_88 = 88
-        YEAR_89 = 89
-        YEAR_90 = 90
-        YEAR_91 = 91
-        YEAR_92 = 92
-        YEAR_93 = 93
-        YEAR_94 = 94
-        YEAR_95 = 95
-        YEAR_96 = 96
-        YEAR_97 = 97
-        YEAR_98 = 98
-        YEAR_99 = 99
-        YEAR_100 = 100
-        YEAR_101 = 101
-        YEAR_102 = 102
-        YEAR_103 = 103
-        YEAR_104 = 104
-        YEAR_105 = 105
-        YEAR_106 = 106
-        YEAR_107 = 107
-        YEAR_108 = 108
-        YEAR_109 = 109
-        YEAR_110 = 110
-        YEAR_111 = 111
-        YEAR_112 = 112
-        YEAR_113 = 113
-        YEAR_114 = 114
-        YEAR_115 = 115
+      
         YEAR = (
-        (YEAR_0, ("--Please Select--")),
-        (YEAR_1, ("1901")),
-        (YEAR_2, ("1902")),
-        (YEAR_3, ("1903")),
-        (YEAR_4, ("1904")),
-        (YEAR_5, ("1905")),
-        (YEAR_6, ("1906")),
-        (YEAR_7, ("1907")),
-        (YEAR_8, ("1908")),
-        (YEAR_9, ("1909")),
-        (YEAR_10, ("1910")),
-        (YEAR_11, ("1911")),
-        (YEAR_12, ("1912")),
-        (YEAR_13, ("1913")),
-        (YEAR_14, ("1914")),
-        (YEAR_15, ("1915")),
-        (YEAR_16, ("1916")),
-        (YEAR_17, ("1917")),
-        (YEAR_18, ("1918")),
-        (YEAR_19, ("1919")),
-        (YEAR_20, ("1920")),
-        (YEAR_21, ("1921")),
-        (YEAR_22, ("1922")),
-        (YEAR_23, ("1923")),
-        (YEAR_24, ("1924")),
-        (YEAR_25, ("1925")),
-        (YEAR_26, ("1926")),
-        (YEAR_27, ("1927")),
-        (YEAR_28, ("1928")),
-        (YEAR_29, ("1929")),
-        (YEAR_30, ("1930")),
-        (YEAR_31, ("1931")),
-        (YEAR_32, ("1932")),
-        (YEAR_33, ("1933")),
-        (YEAR_34, ("1934")),
-        (YEAR_35, ("1935")),
-        (YEAR_36, ("1936")),
-        (YEAR_37, ("1937")),
-        (YEAR_38, ("1938")),
-        (YEAR_39, ("1939")),
-        (YEAR_40, ("1940")),
-        (YEAR_41, ("1941")),
-        (YEAR_42, ("1942")),
-        (YEAR_43, ("1943")),
-        (YEAR_44, ("1944")),
-        (YEAR_45, ("1945")),
-        (YEAR_46, ("1946")),
-        (YEAR_47, ("1947")),
-        (YEAR_48, ("1948")),
-        (YEAR_49, ("1949")),
-        (YEAR_50, ("1950")),
-        (YEAR_51, ("1951")),
-        (YEAR_52, ("1952")),
-        (YEAR_53, ("1953")),
-        (YEAR_54, ("1954")),
-        (YEAR_55, ("1955")),
-        (YEAR_56, ("1956")),
-        (YEAR_57, ("1957")),
-        (YEAR_58, ("1958")),
-        (YEAR_59, ("1959")),
-        (YEAR_60, ("1960")),
-        (YEAR_61, ("1961")),
-        (YEAR_62, ("1962")),
-        (YEAR_63, ("1963")),
-        (YEAR_64, ("1964")),
-        (YEAR_65, ("1965")),
-        (YEAR_66, ("1966")),
-        (YEAR_67, ("1967")),
-        (YEAR_68, ("1968")),
-        (YEAR_69, ("1969")),
-        (YEAR_70, ("1970")),
-        (YEAR_71, ("1971")),
-        (YEAR_72, ("1972")),
-        (YEAR_73, ("1973")),
-        (YEAR_74, ("1974")),
-        (YEAR_75, ("1975")),
-        (YEAR_76, ("1976")),
-        (YEAR_77, ("1977")),
-        (YEAR_78, ("1978")),
-        (YEAR_79, ("1979")),
-        (YEAR_80, ("1980")),
-        (YEAR_81, ("1981")),
-        (YEAR_82, ("1982")),
-        (YEAR_83, ("1983")),
-        (YEAR_84, ("1984")),
-        (YEAR_85, ("1985")),
-        (YEAR_86, ("1986")),
-        (YEAR_87, ("1987")),
-        (YEAR_88, ("1988")),
-        (YEAR_89, ("1989")),
-        (YEAR_90, ("1990")),
-        (YEAR_91, ("1991")),
-        (YEAR_92, ("1992")),
-        (YEAR_93, ("1993")),
-        (YEAR_94, ("1994")),
-        (YEAR_95, ("1995")),
-        (YEAR_96, ("1996")),
-        (YEAR_97, ("1997")),
-        (YEAR_98, ("1998")),
-        (YEAR_99, ("1999")),
-        (YEAR_100, ("2000")),
-        (YEAR_101, ("2001")),
-        (YEAR_102, ("2002")),
-        (YEAR_103, ("2003")),
-        (YEAR_104, ("2004")),
-        (YEAR_105, ("2005")),
-        (YEAR_106, ("2006")),
-        (YEAR_107, ("2007")),
-        (YEAR_108, ("2008")),
-        (YEAR_109, ("2009")),
-        (YEAR_110, ("2010")),
-        (YEAR_111, ("2011")),
-        (YEAR_112, ("2012")),
-        (YEAR_113, ("2013")),
-        (YEAR_114, ("2014")),
-        (YEAR_115, ("2015")),
+        (0, _("--Please Select--")),
+        (1, _("1901")),
+        (2, _("1902")),
+        (3, _("1903")),
+        (4, _("1904")),
+        (5, _("1905")),
+        (6, _("1906")),
+        (7, _("1907")),
+        (8, _("1908")),
+        (9, _("1909")),
+        (10, _("1910")),
+        (11, _("1911")),
+        (12, _("1912")),
+        (13, _("1913")),
+        (14, _("1914")),
+        (15, _("1915")),
+        (16, _("1916")),
+        (17, _("1917")),
+        (18, _("1918")),
+        (19, _("1919")),
+        (20, _("1920")),
+        (21, _("1921")),
+        (22, _("1922")),
+        (23, _("1923")),
+        (24, _("1924")),
+        (25, _("1925")),
+        (26, _("1926")),
+        (27, _("1927")),
+        (28, _("1928")),
+        (29, _("1929")),
+        (30, _("1930")),
+        (31, _("1931")),
+        (32, _("1932")),
+        (33, _("1933")),
+        (34, _("1934")),
+        (35, _("1935")),
+        (36, _("1936")),
+        (37, _("1937")),
+        (38, _("1938")),
+        (39, _("1939")),
+        (40, _("1940")),
+        (41, _("1941")),
+        (42, _("1942")),
+        (43, _("1943")),
+        (44, _("1944")),
+        (45, _("1945")),
+        (46, _("1946")),
+        (47, _("1947")),
+        (48, _("1948")),
+        (49, _("1949")),
+        (50, _("1950")),
+        (51, _("1951")),
+        (52, _("1952")),
+        (53, _("1953")),
+        (54, _("1954")),
+        (55, _("1955")),
+        (56, _("1956")),
+        (57, _("1957")),
+        (58, _("1958")),
+        (59, _("1959")),
+        (60, _("1960")),
+        (61, _("1961")),
+        (62, _("1962")),
+        (63, _("1963")),
+        (64, _("1964")),
+        (65, _("1965")),
+        (66, _("1966")),
+        (67, _("1967")),
+        (68, _("1968")),
+        (69, _("1969")),
+        (70, _("1970")),
+        (71, _("1971")),
+        (72, _("1972")),
+        (73, _("1973")),
+        (74, _("1974")),
+        (75, _("1975")),
+        (76, _("1976")),
+        (77, _("1977")),
+        (78, _("1978")),
+        (79, _("1979")),
+        (80, _("1980")),
+        (81, _("1981")),
+        (82, _("1982")),
+        (83, _("1983")),
+        (84, _("1984")),
+        (85, _("1985")),
+        (86, _("1986")),
+        (87, _("1987")),
+        (88, _("1988")),
+        (89, _("1989")),
+        (90, _("1990")),
+        (91, _("1991")),
+        (92, _("1992")),
+        (93, _("1993")),
+        (94, _("1994")),
+        (95, _("1995")),
+        (96, _("1996")),
+        (97, _("1997")),
+        (98, _("1998")),
+        (99, _("1999")),
+        (100, _("2000")),
+        (101, _("2001")),
+        (102, _("2002")),
+        (103, _("2003")),
+        (104, _("2004")),
+        (105, _("2005")),
+        (106, _("2006")),
+        (107, _("2007")),
+        (108, _("2008")),
+        (109, _("2009")),
+        (110, _("2010")),
+        (111, _("2011")),
+        (112, _("2012")),
+        (113, _("2013")),
+        (114, _("2014")),
+        (115, _("2015")),
         )
-
+        THEM1 = (
+            (0, _("--- Please select ---")),
+            (1,_("None of them")),
+            (2,_("One of them")),
+            (3,_("Two of them")),
+            (4,_("All of them")),
+        )
         context['DEFINITIONS'] =DEFINITIONS
         context['DEFINITIONS1'] =DEFINITIONS1
         context['ACT'] =ACT
         context['CIVIL'] =CIVIL
         context['YEAR'] =YEAR
+        context['THEM1'] =THEM1
         
         id=''
+        context['latest']= ''
         if  'id' in self.kwargs:
             id = self.kwargs['id']
+            context['latest']=  Module2.objects.filter(id=id)
+    
         context['id'] = id
-        context['latest']=  Module2.objects.filter(id=id)
     
         can_see=0
        
@@ -4132,18 +4000,18 @@ def module2_create(request, country,sessionid=None):
             info(request, _("Successfully saved Module 2."))
             return redirect("module-list",country=user_country_slug,id=pceversion.id,)
         else:
-             return render_to_response('pce/module_2_edit.html', {'form': form,'form123': form123,'sessionid':sessionid,'can_edit':can_edit,'m_percentage':m_percentage,'tot_percentage':tot_percentage,'is_st_filled':is_st_filled,'is_pa_filled':is_pa_filled,'is_sa_filled':is_sa_filled,'is_lf_filled':is_lf_filled,'st_id':st_id,'pa_id':pa_id,'sa_id':sa_id,'module':2,},
+             return render_to_response('pce/module_2.html', {'context':'Edit','form': form,'form123': form123,'sessionid':sessionid,'can_edit':can_edit,'m_percentage':m_percentage,'tot_percentage':tot_percentage,'is_st_filled':is_st_filled,'is_pa_filled':is_pa_filled,'is_sa_filled':is_sa_filled,'is_lf_filled':is_lf_filled,'st_id':st_id,'pa_id':pa_id,'sa_id':sa_id,'lf_id':lf_id,'module':2,},
              context_instance=RequestContext(request))
     else:
         form = Module2Form(initial={'country': country,'session': pceversion.id})
         form123= Module2WeaknessesFormSet()
 
-    return render_to_response('pce/module_2_edit.html', {'form': form,'form123': form123,'sessionid':sessionid,'can_edit':can_edit,'m_percentage':m_percentage,'tot_percentage':tot_percentage,'is_st_filled':is_st_filled,'is_pa_filled':is_pa_filled,'is_sa_filled':is_sa_filled,'is_lf_filled':is_lf_filled,'st_id':st_id,'pa_id':pa_id,'sa_id':sa_id,'module':2,},
+    return render_to_response('pce/module_2.html', {'context':'Edit','form': form,'form123': form123,'sessionid':sessionid,'can_edit':can_edit,'m_percentage':m_percentage,'tot_percentage':tot_percentage,'is_st_filled':is_st_filled,'is_pa_filled':is_pa_filled,'is_sa_filled':is_sa_filled,'is_lf_filled':is_lf_filled,'st_id':st_id,'pa_id':pa_id,'sa_id':sa_id,'lf_id':lf_id,'module':2,},
             context_instance=RequestContext(request))
 
 @login_required
 @permission_required('pce.add_pceversion', login_url="/accounts/login/")
-def module2_edit(request, country, id=None,sessionid=None, template_name='pce/module_2_edit.html'):
+def module2_edit(request, country, id=None,sessionid=None, template_name='pce/module_2.html'):
     """ Edit module_2 """
     user = request.user
     author = user
@@ -4198,7 +4066,7 @@ def module2_edit(request, country, id=None,sessionid=None, template_name='pce/mo
         form123= Module2WeaknessesFormSet(instance=module2)
       
     return render_to_response(template_name, {
-      'form': form,'form123': form123,'sessionid':sessionid,'can_edit':can_edit,'m_percentage':m_percentage,'tot_percentage':tot_percentage,'is_st_filled':is_st_filled,'is_pa_filled':is_pa_filled,'is_sa_filled':is_sa_filled,'is_lf_filled':is_lf_filled,'st_id':st_id,'pa_id':pa_id,'sa_id':sa_id,'module':2,
+      'context':'Edit','form': form,'form123': form123,'sessionid':sessionid,'can_edit':can_edit,'m_percentage':m_percentage,'tot_percentage':tot_percentage,'is_st_filled':is_st_filled,'is_pa_filled':is_pa_filled,'is_sa_filled':is_sa_filled,'is_lf_filled':is_lf_filled,'st_id':st_id,'pa_id':pa_id,'sa_id':sa_id,'lf_id':lf_id,'module':2,
 
     }, context_instance=RequestContext(request))
 
@@ -4207,7 +4075,7 @@ class Module3ListView(ListView):
     context_object_name = 'latest'
     model = Module3
     date_field = 'publish_date'
-    template_name = 'pce/module_3_view.html'
+    template_name = 'pce/module_3.html'
     queryset = Module3.objects.all().order_by('-modify_date', 'title')
     allow_future = False
     allow_empty = True
@@ -4224,11 +4092,142 @@ class Module3ListView(ListView):
         context = super(Module3ListView, self).get_context_data(**kwargs)
         context['country'] = self.kwargs['country']
         context['sessionid'] = self.kwargs['sessionid']
+        context['context'] = 'View'
         id=''
         if  'id' in self.kwargs:
             id = self.kwargs['id']
         context['id'] = id
+        
+        VAL_M3_3 = (
+            (0, _("--- Please select ---")),
+            (1, _("No involvement")),
+            (2, _("Partial involvement (provide comments)")),
+            (3, _("Consulted only on phytosanitary issues")),
+            (4, _("Consulted generally on all matters (as a partner)")),
+            (5, _("Active stakeholder in the process")),
 
+        )
+
+        VAL_M3_9 = (
+            (0, _("--- Please select ---")),
+            (1, _("absent from the process")),
+            (2, _("limited involvement")),
+            (3, _("mostly")),
+            (4, _("involved")),
+            (5, _("Highly involved")),
+
+        )
+      
+        VAL_M3_14 = (
+            (0, _("--- Please select ---")),
+            (1, _("Severe limitations")),
+            (2, _("Limited")),
+            (3, _("Marginally adequate")),
+            (4, _("Good")),
+            (5, _("Excellent")),
+
+        )
+       
+        VAL_M3_15 = (
+            (0, _("--- Please select ---")),
+            (1, _("Very")),
+            (2, _("High")),
+            (3, _("Medium")),
+            (4, _("Low")),
+
+        )
+
+        
+        VAL_M3_16 = (
+            (0, _("--- Please select ---")),
+            (1, _("Not at all")),
+            (2, _("Very slightly")),
+            (3, _("Slightly")),
+            (4, _("Supportive")),
+            (5, _("Very supportive")),
+
+        )
+
+        STABLE = (
+            (0, _("--- Please select ---")),
+            (1, _("Very unstable")),
+            (2, _("Unstable")),
+            (3, _("Slightly Stable")),
+            (4, _("Stable")),
+            (5, _("Very Stable")),
+        ) 
+
+
+        CONDITIONS = (
+            (0, _("--- Please select ---")),
+            (1, _("Not at all (poor conditions and salaries)")),
+            (2, _("Somewhat adequate (conditions fine but not salaries)")),
+            (3, _("Almost (salaries fine but not conditions)")),
+            (4, _("Adequate (reasonable salaries and conditions acceptable to the standard of living)")),
+            (5, _("Totally (salaries and conditions are competitive)")),
+        ) 
+
+        RATE = (
+            (0, _("--- Please select ---")),
+            (1, _("None")),
+            (2, _("Insufficient")),
+            (3, _("Moderate")),
+            (4, _("Good")),
+            (5, _("Excellent")),
+        ) 
+
+        SUPPORT = (
+            (0, _("--- Please select ---")),
+            (1, _("Not at all")),
+            (2, _("Minimal support")),
+            (3, _("Supportive")),
+            (4, _("Moderately supportive")),
+            (5, _("Very supportive")),
+        ) 
+
+
+        PARTIAL = (
+            (0, _("--- Please select ---")),
+            (1, _("Not at all")),
+            (2, _("Partially")),
+            (3, _("Selectively")),
+            (4, _("Mostly")),
+            (5, _("All")),
+        ) 
+        RATE1 = (
+        (0, _("--- Please select ---")),
+        (1, _("Capacity None existent")),
+        (2, _("Insufficient")),
+        (3, _("Moderate")),
+        (4, _("Good")),
+        (5, _("Excellent")),
+        )
+        SERVICE = (
+            (0, _("--- Please select ---")),
+            (1, _("None existent")),
+            (2, _("Formative stages")),
+            (3, _("Limited to a specific sub-area")),
+            (4, _("Developed but targeted")),
+            (5, _("Well developed and broad")),
+        ) 
+     #context['regions'] =REGIONS
+        context['VAL_M3_3'] =VAL_M3_3
+        context['VAL_M3_9'] =VAL_M3_9
+        context['VAL_M3_14'] =VAL_M3_14
+        context['VAL_M3_15'] =VAL_M3_15
+        context['VAL_M3_16'] =VAL_M3_16
+        context['STABLE'] =STABLE
+        context['CONDITIONS'] =CONDITIONS
+        context['RATE'] =RATE
+        context['RATE1'] =RATE1
+        context['SUPPORT'] =SUPPORT
+        context['SERVICE'] =SERVICE
+        context['PARTIAL'] =PARTIAL
+        context['PRIORITY'] =PRIORITY
+        context['M3_1']=   M3_1.objects.filter()
+        context['M3_10']=  M3_10.objects.filter()
+        context['M3_17']=  M3_17.objects.filter()
+        
         can_edit=0
         can_see=0
         st_id=''
@@ -4286,7 +4285,187 @@ class Module3ListView(ListView):
         context['lf_id'] = lf_id
         
         return context
+class Module3ListPDFView(PDFTemplateView):
+    context_object_name = 'latest'
+    model = Module3
+    date_field = 'publish_date'
+    template_name = 'pce/module_3.html'
+    
+    def get_context_data(self, **kwargs): # http://stackoverflow.com/a/15515220
+        context = super(Module3ListPDFView, self).get_context_data(**kwargs)
+        context['country'] = self.kwargs['country']
+        context['sessionid'] = self.kwargs['sessionid']
+        context['context'] = 'Pdf'   
+        
+        VAL_M3_3 = (
+            (0, _("--- Please select ---")),
+            (1, _("No involvement")),
+            (2, _("Partial involvement (provide comments)")),
+            (3, _("Consulted only on phytosanitary issues")),
+            (4, _("Consulted generally on all matters (as a partner)")),
+            (5, _("Active stakeholder in the process")),
 
+        )
+
+        VAL_M3_9 = (
+            (0, _("--- Please select ---")),
+            (1, _("absent from the process")),
+            (2, _("limited involvement")),
+            (3, _("mostly")),
+            (4, _("involved")),
+            (5, _("Highly involved")),
+
+        )
+      
+        VAL_M3_14 = (
+            (0, _("--- Please select ---")),
+            (1, _("Severe limitations")),
+            (2, _("Limited")),
+            (3, _("Marginally adequate")),
+            (4, _("Good")),
+            (5, _("Excellent")),
+
+        )
+       
+        VAL_M3_15 = (
+            (0, _("--- Please select ---")),
+            (1, _("Very")),
+            (2, _("High")),
+            (3, _("Medium")),
+            (4, _("Low")),
+
+        )
+
+        
+        VAL_M3_16 = (
+            (0, _("--- Please select ---")),
+            (1, _("Not at all")),
+            (2, _("Very slightly")),
+            (3, _("Slightly")),
+            (4, _("Supportive")),
+            (5, _("Very supportive")),
+
+        )
+
+        STABLE = (
+            (0, _("--- Please select ---")),
+            (1, _("Very unstable")),
+            (2, _("Unstable")),
+            (3, _("Slightly Stable")),
+            (4, _("Stable")),
+            (5, _("Very Stable")),
+        ) 
+
+
+        CONDITIONS = (
+            (0, _("--- Please select ---")),
+            (1, _("Not at all (poor conditions and salaries)")),
+            (2, _("Somewhat adequate (conditions fine but not salaries)")),
+            (3, _("Almost (salaries fine but not conditions)")),
+            (4, _("Adequate (reasonable salaries and conditions acceptable to the standard of living)")),
+            (5, _("Totally (salaries and conditions are competitive)")),
+        ) 
+
+        RATE = (
+            (0, _("--- Please select ---")),
+            (1, _("None")),
+            (2, _("Insufficient")),
+            (3, _("Moderate")),
+            (4, _("Good")),
+            (5, _("Excellent")),
+        ) 
+
+        SUPPORT = (
+            (0, _("--- Please select ---")),
+            (1, _("Not at all")),
+            (2, _("Minimal support")),
+            (3, _("Supportive")),
+            (4, _("Moderately supportive")),
+            (5, _("Very supportive")),
+        ) 
+
+
+        PARTIAL = (
+            (0, _("--- Please select ---")),
+            (1, _("Not at all")),
+            (2, _("Partially")),
+            (3, _("Selectively")),
+            (4, _("Mostly")),
+            (5, _("All")),
+        ) 
+        RATE1 = (
+        (0, _("--- Please select ---")),
+        (1, _("Capacity None existent")),
+        (2, _("Insufficient")),
+        (3, _("Moderate")),
+        (4, _("Good")),
+        (5, _("Excellent")),
+        )
+        SERVICE = (
+            (0, _("--- Please select ---")),
+            (1, _("None existent")),
+            (2, _("Formative stages")),
+            (3, _("Limited to a specific sub-area")),
+            (4, _("Developed but targeted")),
+            (5, _("Well developed and broad")),
+        ) 
+     #context['regions'] =REGIONS
+        context['VAL_M3_3'] =VAL_M3_3
+        context['VAL_M3_9'] =VAL_M3_9
+        context['VAL_M3_14'] =VAL_M3_14
+        context['VAL_M3_15'] =VAL_M3_15
+        context['VAL_M3_16'] =VAL_M3_16
+        context['STABLE'] =STABLE
+        context['CONDITIONS'] =CONDITIONS
+        context['RATE'] =RATE
+        context['RATE1'] =RATE1
+        context['SUPPORT'] =SUPPORT
+        context['SERVICE'] =SERVICE
+        context['PARTIAL'] =PARTIAL
+        context['PRIORITY'] =PRIORITY
+        context['M3_1']=   M3_1.objects.filter()
+        context['M3_10']=  M3_10.objects.filter()
+        context['M3_17']=  M3_17.objects.filter()
+                  
+        
+        id=''
+        context['latest']=''
+        if  'id' in self.kwargs:
+            id = self.kwargs['id']
+            context['latest']=  Module3.objects.filter(id=id)
+        context['id'] = id
+     
+        can_see=0
+       
+        session = get_object_or_404(PceVersion,  pk= self.kwargs['sessionid'])
+    
+        if canSee(session.id,session.country,self.request.user,'3'):
+            can_see=1
+        if  can_see:  
+            module= 3
+            module3=None
+            form   = Module3FormView()
+            form31 = Module3GridFormSet()
+            form33 = Module3WeaknessesFormSet()
+            if id!='':
+                module3 = get_object_or_404(Module3,  id=self.kwargs['id'])
+                form   = Module3FormView(instance=module3)
+                form31 = Module3GridFormSet(instance=module3)
+                form33 = Module3WeaknessesFormSet(instance=module3)
+     
+            context['form']=form
+            context['form31']=form31
+            context['form33']=form33
+            context['module3']=module3
+            context['module']=module
+            context['version_number'] = session.version_number
+            context['sessionstatus'] = session.status
+            context['tot_percentage'] = get_tot_percentage(self.kwargs['sessionid'])
+            context['m_percentage'] = get_percentage_module_filled(3,self.kwargs['sessionid'])
+         
+        context['can_see'] = can_see
+        
+        return context
 @login_required
 @permission_required('pce.add_pceversion', login_url="/accounts/login/")
 def module3_create(request, country,sessionid=None):
@@ -4349,7 +4528,7 @@ def module3_create(request, country,sessionid=None):
             info(request, _("Successfully saved Module 3."))
             return redirect("module-list",country=user_country_slug,id=pceversion.id,)
         else:
-             return render_to_response('pce/module_3_edit.html', {'form': form,'form31': form31,'form33': form33,'sessionid':sessionid,'can_edit':can_edit,'m_percentage':m_percentage,'tot_percentage':tot_percentage,'is_st_filled':is_st_filled,'is_pa_filled':is_pa_filled,'is_sa_filled':is_sa_filled,'is_lf_filled':is_lf_filled,'st_id':st_id,'pa_id':pa_id,'sa_id':sa_id,'module':3,},
+             return render_to_response('pce/module_3.html', {'context':'Edit','form': form,'form31': form31,'form33': form33,'sessionid':sessionid,'can_edit':can_edit,'m_percentage':m_percentage,'tot_percentage':tot_percentage,'is_st_filled':is_st_filled,'is_pa_filled':is_pa_filled,'is_sa_filled':is_sa_filled,'is_lf_filled':is_lf_filled,'st_id':st_id,'pa_id':pa_id,'sa_id':sa_id,'lf_id':lf_id,'module':3,},
              context_instance=RequestContext(request))
 
     else:
@@ -4357,12 +4536,12 @@ def module3_create(request, country,sessionid=None):
         form31 = Module3GridFormSet()
         form33 = Module3WeaknessesFormSet()
     
-    return render_to_response('pce/module_3_edit.html', {'form': form,'form31': form31,'form33': form33,'sessionid':sessionid,'can_edit':can_edit,'m_percentage':m_percentage,'tot_percentage':tot_percentage,'is_st_filled':is_st_filled,'is_pa_filled':is_pa_filled,'is_sa_filled':is_sa_filled,'is_lf_filled':is_lf_filled,'st_id':st_id,'pa_id':pa_id,'sa_id':sa_id,'module':3,},
+    return render_to_response('pce/module_3.html', {'context':'Edit','form': form,'form31': form31,'form33': form33,'sessionid':sessionid,'can_edit':can_edit,'m_percentage':m_percentage,'tot_percentage':tot_percentage,'is_st_filled':is_st_filled,'is_pa_filled':is_pa_filled,'is_sa_filled':is_sa_filled,'is_lf_filled':is_lf_filled,'st_id':st_id,'pa_id':pa_id,'sa_id':sa_id,'lf_id':lf_id,'module':3,},
             context_instance=RequestContext(request))
 
 @login_required
 @permission_required('pce.add_pceversion', login_url="/accounts/login/")
-def module3_edit(request, country, id=None,sessionid=None, template_name='pce/module_3_edit.html'):
+def module3_edit(request, country, id=None,sessionid=None, template_name='pce/module_3.html'):
     """ Edit module_3 """
     user = request.user
     author = user
@@ -4405,7 +4584,7 @@ def module3_edit(request, country, id=None,sessionid=None, template_name='pce/mo
         form31= Module3GridFormSet(request.POST,instance=module3)
         form33 = Module3WeaknessesFormSet(request.POST,instance=module3)
     
-        print('SSSSSSSSSSSSSSSSSS')     
+        
             
         if form.is_valid()and form31.is_valid() and form33.is_valid() :
             form.save()
@@ -4426,7 +4605,7 @@ def module3_edit(request, country, id=None,sessionid=None, template_name='pce/mo
         form33 = Module3WeaknessesFormSet(instance=module3)
     
     return render_to_response(template_name, {
-        'form': form,'form31': form31,'form33': form33,'sessionid':sessionid,'can_edit':can_edit,'m_percentage':m_percentage,'tot_percentage':tot_percentage,'is_st_filled':is_st_filled,'is_pa_filled':is_pa_filled,'is_sa_filled':is_sa_filled,'is_lf_filled':is_lf_filled,'st_id':st_id,'pa_id':pa_id,'sa_id':sa_id,'module':3,
+        'context':'Edit','form': form,'form31': form31,'form33': form33,'sessionid':sessionid,'can_edit':can_edit,'m_percentage':m_percentage,'tot_percentage':tot_percentage,'is_st_filled':is_st_filled,'is_pa_filled':is_pa_filled,'is_sa_filled':is_sa_filled,'is_lf_filled':is_lf_filled,'st_id':st_id,'pa_id':pa_id,'sa_id':sa_id,'lf_id':lf_id,'module':3,
     }, context_instance=RequestContext(request))
 
 #MODULE 4
@@ -4435,7 +4614,7 @@ class Module4ListView(ListView):
     context_object_name = 'latest'
     model = Module4
     date_field = 'publish_date'
-    template_name = 'pce/module_4_view.html'
+    template_name = 'pce/module_4.html'
     queryset = Module4.objects.all().order_by('-modify_date', 'title')
     allow_future = False
     allow_empty = True
@@ -4452,6 +4631,7 @@ class Module4ListView(ListView):
         context = super(Module4ListView, self).get_context_data(**kwargs)
         context['country'] = self.kwargs['country']
         context['sessionid'] = self.kwargs['sessionid']
+        context['context'] = 'View'
         id=''
         if  'id' in self.kwargs:
             id = self.kwargs['id']
@@ -4519,123 +4699,82 @@ class Module4ListPDFView(PDFTemplateView):
     context_object_name = 'latest'
     model = Module4
     date_field = 'publish_date'
-    template_name = 'pce/module_4_pdf.html'
+    template_name = 'pce/module_4.html'
     
     def get_context_data(self, **kwargs): # http://stackoverflow.com/a/15515220
         context = super(Module4ListPDFView, self).get_context_data(**kwargs)
         context['country'] = self.kwargs['country']
         context['sessionid'] = self.kwargs['sessionid']
-         
-        STATEMENT_0=0
-        STATEMENT_1=1
-        STATEMENT_2=2
-        STATEMENT_3=3
-        STATEMENT_4=4
-        STATEMENT_5=5
+        context['context'] = 'Pdf'   
+        
+       
         STATEMENT = (
-            (STATEMENT_0,("--- Please select ---")),
-            (STATEMENT_1,("No statement exists")),
-                (STATEMENT_2,("Under consideration")),
-                (STATEMENT_3,("In a draft document")),
-                (STATEMENT_4,("In an internal strategic plan")),
-                (STATEMENT_5,("In a published strategic plan ")),
+            (0,_("--- Please select ---")),
+            (1,_("No statement exists")),
+                (2,_("Under consideration")),
+                (3,_("In a draft document")),
+                (4,_("In an internal strategic plan")),
+                (5,_("In a published strategic plan ")),
         )
 
-
-
-        MODERATE_0=0
-        MODERATE_1=1
-        MODERATE_2=2
-        MODERATE_3=3
-        MODERATE_4=4
-        MODERATE_5=5
         MODERATE = (
-            (MODERATE_0,("--- Please select ---")),
-                (MODERATE_1,("Not at all")),
-                (MODERATE_2,("Slightly")),
-                (MODERATE_3,("Moderately")),
-                (MODERATE_4,("Very much")),
-                (MODERATE_5,("Completely")),
+            (0,_("--- Please select ---")),
+                (1,_("Not at all")),
+                (2,_("Slightly")),
+                (3,_("Moderately")),
+                (4,_("Very much")),
+                (5,_("Completely")),
         )
 
-        HQ_0=0
-        HQ_1=1
-        HQ_2=2
-        HQ_3=3
-        HQ_4=4
-        HQ_5=5
         HQ = (
-                (HQ_0,("--- Please select ---")),
-                (HQ_1,("Not at all")),
-                (HQ_2,("Very few")),
-                (HQ_3,("Only staff at HQ")),
-                (HQ_4,("HQ and some in the field")),
-                (HQ_5,("Yes, all staff")),
+                (0,_("--- Please select ---")),
+                (1,_("Not at all")),
+                (2,_("Very few")),
+                (3,_("Only staff at HQ")),
+                (4,_("HQ and some in the field")),
+                (5,_("Yes, all staff")),
         )
 
-        WRITTEN_0=0
-        WRITTEN_1=1
-        WRITTEN_2=2
-        WRITTEN_3=3
+      
         WRITTEN = (
-        (WRITTEN_0,("--- Please select ---")),
-        (WRITTEN_1,("Not at all")),
-        (WRITTEN_2,("Yes, informal")),
-        (WRITTEN_3,("Yes, written")),
+        (0,_("--- Please select ---")),
+        (1,_("Not at all")),
+        (2,_("Yes, informal")),
+        (3,_("Yes, written")),
         )
 
-
-        INPUTSTAKE_0=0
-        INPUTSTAKE_1=1
-        INPUTSTAKE_2=2
-        INPUTSTAKE_3=3
         INPUTSTAKE = (
-                (INPUTSTAKE_0,("--- Please select ---")),
-                (INPUTSTAKE_1,("No input by stakeholders")),
-                (INPUTSTAKE_2,("Stakeholders comment on plans submitted by NPPO after they are developed")),
-                (INPUTSTAKE_3,("Stakeholders actively involved in the planning process")),
+                (0,_("--- Please select ---")),
+                (1,_("No input by stakeholders")),
+                (2,_("Stakeholders comment on plans submitted by NPPO after they are developed")),
+                (3,_("Stakeholders actively involved in the planning process")),
         )
-        THEM_0=0
-        THEM_1=1
-        THEM_2=2
-        THEM_3=3
-        THEM_4=4
-        THEM_5=5
+       
         THEM = (
-                (THEM_0,("--- Please select ---")),
-                (THEM_1,("None at all")),
-                (THEM_2,("A few of them")),
-                (THEM_3,("Some of them")),
-                (THEM_4,("Most of them")),
-                (THEM_5,("All of them")),
+                (0,_("--- Please select ---")),
+                (1,_("None at all")),
+                (2,_("A few of them")),
+                (3,_("Some of them")),
+                (4,_("Most of them")),
+                (5,_("All of them")),
         )
-        DEGREE_0=0
-        DEGREE_1=1
-        DEGREE_2=2
-        DEGREE_3=3
-        DEGREE_4=4
-        DEGREE_5=5
+       
         DEGREE = (
-        (DEGREE_0, ("--- Please select ---")),
-        (DEGREE_1,("Not at all")),
-        (DEGREE_2,("To a small degree")),
-        (DEGREE_3,("To a medium degree")),
-        (DEGREE_4,("To a large degree")),
-        (DEGREE_5,("Completely")),
+        (DEGREE_0, _("--- Please select ---")),
+        (DEGREE_1,_("Not at all")),
+        (DEGREE_2,_("To a small degree")),
+        (DEGREE_3,_("To a medium degree")),
+        (DEGREE_4,_("To a large degree")),
+        (DEGREE_5,_("Completely")),
         )
-        TERM_0=0
-        TERM_1=1
-        TERM_2=2
-        TERM_3=3
-        TERM_4=4
-        TERM_5=5
+       
         TERM = (
-                (TERM_0, ("--- Please select ---")),
-                (TERM_1,("Never")),
-                (TERM_2,("Rarely")),
-                (TERM_3,("Sometimes, no fixed term ")),
-                (TERM_4,("Accordingly with an established term ")),
-                (TERM_5,("Annually")),
+                (TERM_0, _("--- Please select ---")),
+                (TERM_1,_("Never")),
+                (TERM_2,_("Rarely")),
+                (TERM_3,_("Sometimes, no fixed term ")),
+                (TERM_4,_("Accordingly with an established term ")),
+                (TERM_5,_("Annually")),
         )
         context['STATEMENT'] =STATEMENT
         context['MODERATE'] =MODERATE
@@ -4647,10 +4786,11 @@ class Module4ListPDFView(PDFTemplateView):
         context['HQ'] =HQ
        
         id=''
+        context['latest']=''
         if  'id' in self.kwargs:
             id = self.kwargs['id']
+            context['latest']=  Module4.objects.filter(id=id)
         context['id'] = id
-        context['latest']=  Module4.objects.filter(id=id)
     
         can_see=0
        
@@ -4751,18 +4891,18 @@ def module4_create(request, country,sessionid=None):
             info(request, _("Successfully saved Module 4."))
             return redirect("module-list",country=user_country_slug,id=pceversion.id,)
         else:
-             return render_to_response('pce/module_4_edit.html', {'form': form,'form34': form34,'sessionid':sessionid,'sessionid':sessionid,'can_edit':can_edit,'m_percentage':m_percentage,'tot_percentage':tot_percentage,'is_st_filled':is_st_filled,'is_pa_filled':is_pa_filled,'is_sa_filled':is_sa_filled,'is_lf_filled':is_lf_filled,'st_id':st_id,'pa_id':pa_id,'sa_id':sa_id,'module':4,},
+             return render_to_response('pce/module_4.html', {'context':'Edit','form': form,'form34': form34,'sessionid':sessionid,'sessionid':sessionid,'can_edit':can_edit,'m_percentage':m_percentage,'tot_percentage':tot_percentage,'is_st_filled':is_st_filled,'is_pa_filled':is_pa_filled,'is_sa_filled':is_sa_filled,'is_lf_filled':is_lf_filled,'st_id':st_id,'pa_id':pa_id,'sa_id':sa_id,'lf_id':lf_id,'module':4,},
              context_instance=RequestContext(request))
     else:
         form = Module4Form(initial={'country': country,'session': pceversion.id})
         form34 = Module4WeaknessesFormSet()
     
-    return render_to_response('pce/module_4_edit.html', {'form': form,'form34': form34,'sessionid':sessionid,'sessionid':sessionid,'can_edit':can_edit,'m_percentage':m_percentage,'tot_percentage':tot_percentage,'is_st_filled':is_st_filled,'is_pa_filled':is_pa_filled,'is_sa_filled':is_sa_filled,'is_lf_filled':is_lf_filled,'st_id':st_id,'pa_id':pa_id,'sa_id':sa_id,'module':4,},
+    return render_to_response('pce/module_4.html', {'context':'Edit','form': form,'form34': form34,'sessionid':sessionid,'sessionid':sessionid,'can_edit':can_edit,'m_percentage':m_percentage,'tot_percentage':tot_percentage,'is_st_filled':is_st_filled,'is_pa_filled':is_pa_filled,'is_sa_filled':is_sa_filled,'is_lf_filled':is_lf_filled,'st_id':st_id,'pa_id':pa_id,'sa_id':sa_id,'lf_id':lf_id,'module':4,},
             context_instance=RequestContext(request))
 
 @login_required
 @permission_required('pce.add_pceversion', login_url="/accounts/login/")
-def module4_edit(request, country, id=None,sessionid=None, template_name='pce/module_4_edit.html'):
+def module4_edit(request, country, id=None,sessionid=None, template_name='pce/module_4.html'):
     """ Edit module_4 """
     user = request.user
     author = user
@@ -4817,7 +4957,7 @@ def module4_edit(request, country, id=None,sessionid=None, template_name='pce/mo
         form34 = Module4WeaknessesFormSet(instance=module4)
       
     return render_to_response(template_name, {
-        'form': form, 'form34': form34,'sessionid':sessionid,	'sessionid':sessionid,'can_edit':can_edit,'m_percentage':m_percentage,'tot_percentage':tot_percentage,'is_st_filled':is_st_filled,'is_pa_filled':is_pa_filled,'is_sa_filled':is_sa_filled,'is_lf_filled':is_lf_filled,'st_id':st_id,'pa_id':pa_id,'sa_id':sa_id,'module':4,
+        'context':'Edit','form': form, 'form34': form34,'sessionid':sessionid,	'sessionid':sessionid,'can_edit':can_edit,'m_percentage':m_percentage,'tot_percentage':tot_percentage,'is_st_filled':is_st_filled,'is_pa_filled':is_pa_filled,'is_sa_filled':is_sa_filled,'is_lf_filled':is_lf_filled,'st_id':st_id,'pa_id':pa_id,'sa_id':sa_id,'lf_id':lf_id,'module':4,
          
     }, context_instance=RequestContext(request))
 #MODULE 5
@@ -4825,7 +4965,7 @@ class Module5ListView(ListView):
     context_object_name = 'latest'
     model = Module5
     date_field = 'publish_date'
-    template_name = 'pce/module_5_view.html'
+    template_name = 'pce/module_5.html'
     queryset = Module5.objects.all().order_by('-modify_date', 'title')
     allow_future = False
     allow_empty = True
@@ -4842,6 +4982,7 @@ class Module5ListView(ListView):
         context = super(Module5ListView, self).get_context_data(**kwargs)
         context['country'] = self.kwargs['country']
         context['sessionid'] = self.kwargs['sessionid']
+        context['context'] = 'View'
         id=''
         if  'id' in self.kwargs:
             id = self.kwargs['id']
@@ -4875,6 +5016,7 @@ class Module5ListView(ListView):
             context['form']=form
             context['form25']=form25
             context['module5']=module5
+            context['m5_3']=  M5_3.objects.filter()
          
             context['module']=module
             context['version_number'] = session.version_number
@@ -4911,13 +5053,14 @@ class Module5ListPDFView(PDFTemplateView):
     context_object_name = 'latest'
     model = Module5
     date_field = 'publish_date'
-    template_name = 'pce/module_5_pdf.html'
+    template_name = 'pce/module_5.html'
     
     def get_context_data(self, **kwargs): # http://stackoverflow.com/a/15515220
         context = super(Module5ListPDFView, self).get_context_data(**kwargs)
         context['country'] = self.kwargs['country']
         context['sessionid'] = self.kwargs['sessionid']
-      
+        context['context'] = 'Pdf'   
+        
         ACHIEVE = (
             (0, _("--- Please select ---")),
             (1,_("Very difficult")),
@@ -4995,10 +5138,11 @@ class Module5ListPDFView(PDFTemplateView):
         context['THEM'] =THEM
         
         id=''
+        context['latest']=''
         if  'id' in self.kwargs:
             id = self.kwargs['id']
+            context['latest']=  Module5.objects.filter(id=id)
         context['id'] = id
-        context['latest']=  Module5.objects.filter(id=id)
     
         can_see=0
        
@@ -5094,7 +5238,7 @@ def module5_create(request, country,sessionid=None):
 
             return redirect("module-list",country=user_country_slug,id=pceversion.id,)
         else:
-             return render_to_response('pce/module_5_edit.html', {'form': form,'form25': form25,'sessionid':sessionid,'can_edit':can_edit,'m_percentage':m_percentage,'tot_percentage':tot_percentage,'is_st_filled':is_st_filled,'is_pa_filled':is_pa_filled,'is_sa_filled':is_sa_filled,'is_lf_filled':is_lf_filled,'st_id':st_id,'pa_id':pa_id,'sa_id':sa_id,'module':5,},
+             return render_to_response('pce/module_5.html', {'context':'Edit','form': form,'form25': form25,'sessionid':sessionid,'can_edit':can_edit,'m_percentage':m_percentage,'tot_percentage':tot_percentage,'is_st_filled':is_st_filled,'is_pa_filled':is_pa_filled,'is_sa_filled':is_sa_filled,'is_lf_filled':is_lf_filled,'st_id':st_id,'pa_id':pa_id,'sa_id':sa_id,'lf_id':lf_id,'module':5,},
              context_instance=RequestContext(request))
 
     else:
@@ -5102,12 +5246,12 @@ def module5_create(request, country,sessionid=None):
         form25 = Module5WeaknessesFormSet()
         
 
-    return render_to_response('pce/module_5_edit.html', {'form': form,'form25': form25,'sessionid':sessionid,'can_edit':can_edit,'m_percentage':m_percentage,'tot_percentage':tot_percentage,'is_st_filled':is_st_filled,'is_pa_filled':is_pa_filled,'is_sa_filled':is_sa_filled,'is_lf_filled':is_lf_filled,'st_id':st_id,'pa_id':pa_id,'sa_id':sa_id,'module':5,},
+    return render_to_response('pce/module_5.html', {'context':'Edit','form': form,'form25': form25,'sessionid':sessionid,'can_edit':can_edit,'m_percentage':m_percentage,'tot_percentage':tot_percentage,'is_st_filled':is_st_filled,'is_pa_filled':is_pa_filled,'is_sa_filled':is_sa_filled,'is_lf_filled':is_lf_filled,'st_id':st_id,'pa_id':pa_id,'sa_id':sa_id,'lf_id':lf_id,'module':5,},
             context_instance=RequestContext(request))
 
 @login_required
 @permission_required('pce.add_pceversion', login_url="/accounts/login/")
-def module5_edit(request, country, id=None,sessionid=None, template_name='pce/module_5_edit.html'):
+def module5_edit(request, country, id=None,sessionid=None, template_name='pce/module_5.html'):
     """ Edit module_5 """
     user = request.user
     author = user
@@ -5168,7 +5312,7 @@ def module5_edit(request, country, id=None,sessionid=None, template_name='pce/mo
         form25 = Module5WeaknessesFormSet(instance=module5)
       
     return render_to_response(template_name, {
-        'form': form, 'form25': form25,'sessionid':sessionid,'can_edit':can_edit,'m_percentage':m_percentage,'tot_percentage':tot_percentage,'is_st_filled':is_st_filled,'is_pa_filled':is_pa_filled,'is_sa_filled':is_sa_filled,'is_lf_filled':is_lf_filled,'st_id':st_id,'pa_id':pa_id,'sa_id':sa_id,'module':5,'module':5,
+        'context':'Edit','form': form, 'form25': form25,'sessionid':sessionid,'can_edit':can_edit,'m_percentage':m_percentage,'tot_percentage':tot_percentage,'is_st_filled':is_st_filled,'is_pa_filled':is_pa_filled,'is_sa_filled':is_sa_filled,'is_lf_filled':is_lf_filled,'st_id':st_id,'pa_id':pa_id,'sa_id':sa_id,'lf_id':lf_id,'module':5,'module':5,
     }, context_instance=RequestContext(request))
 
 
@@ -5177,7 +5321,7 @@ class Module6ListView(ListView):
     context_object_name = 'latest'
     model = Module6
     date_field = 'publish_date'
-    template_name = 'pce/module_6_view.html'
+    template_name = 'pce/module_6.html'
     queryset = Module6.objects.all().order_by('-modify_date', 'title')
     allow_future = False
     allow_empty = True
@@ -5194,6 +5338,7 @@ class Module6ListView(ListView):
         context = super(Module6ListView, self).get_context_data(**kwargs)
         context['country'] = self.kwargs['country']
         context['sessionid'] = self.kwargs['sessionid']
+        context['context'] = 'View'
         id=''
         if  'id' in self.kwargs:
             id = self.kwargs['id']
@@ -5260,13 +5405,14 @@ class Module6ListPDFView(PDFTemplateView):
     context_object_name = 'latest'
     model = Module6
     date_field = 'publish_date'
-    template_name = 'pce/module_6_pdf.html'
+    template_name = 'pce/module_6.html'
     
     def get_context_data(self, **kwargs): # http://stackoverflow.com/a/15515220
         context = super(Module6ListPDFView, self).get_context_data(**kwargs)
         context['country'] = self.kwargs['country']
         context['sessionid'] = self.kwargs['sessionid']
-      
+        context['context'] = 'Pdf'   
+        
         BUDGET = (
         (0, _("--- Please select ---")),
         (1, _("less than 10 % of the NPPO budget")),
@@ -5410,13 +5556,13 @@ class Module6ListPDFView(PDFTemplateView):
         context['BAD'] =BAD
 
         
+       
         id=''
-        
-        if 'id' in self.kwargs:
+        context['latest']=''
+        if  'id' in self.kwargs:
             id = self.kwargs['id']
-            
+            context['latest']=  Module6.objects.filter(id=id)
         context['id'] = id
-        context['latest']=  Module6.objects.filter(id=id)
     
         can_see=0
         session = get_object_or_404(PceVersion,  pk= self.kwargs['sessionid'])
@@ -5513,7 +5659,7 @@ def module6_create(request, country,sessionid=None):
 
             return redirect("module-list",country=user_country_slug,id=pceversion.id,)
         else:
-             return render_to_response('pce/module_6_edit.html', {'form': form,'form37': form37,'sessionid':sessionid,'can_edit':can_edit,'m_percentage':m_percentage,'tot_percentage':tot_percentage,'is_st_filled':is_st_filled,'is_pa_filled':is_pa_filled,'is_sa_filled':is_sa_filled,'is_lf_filled':is_lf_filled,'st_id':st_id,'pa_id':pa_id,'sa_id':sa_id,'module':6,},
+             return render_to_response('pce/module_6.html', {'context':'Edit','form': form,'form37': form37,'sessionid':sessionid,'can_edit':can_edit,'m_percentage':m_percentage,'tot_percentage':tot_percentage,'is_st_filled':is_st_filled,'is_pa_filled':is_pa_filled,'is_sa_filled':is_sa_filled,'is_lf_filled':is_lf_filled,'st_id':st_id,'pa_id':pa_id,'sa_id':sa_id,'lf_id':lf_id,'module':6,},
              context_instance=RequestContext(request))
 
     else:
@@ -5521,12 +5667,12 @@ def module6_create(request, country,sessionid=None):
         form37 = Module6WeaknessesFormSet()
         
 
-    return render_to_response('pce/module_6_edit.html', {'form': form,'form37': form37,'sessionid':sessionid,'can_edit':can_edit,'m_percentage':m_percentage,'tot_percentage':tot_percentage,'is_st_filled':is_st_filled,'is_pa_filled':is_pa_filled,'is_sa_filled':is_sa_filled,'is_lf_filled':is_lf_filled,'st_id':st_id,'pa_id':pa_id,'sa_id':sa_id,'module':6,},
+    return render_to_response('pce/module_6.html', {'context':'Edit','form': form,'form37': form37,'sessionid':sessionid,'can_edit':can_edit,'m_percentage':m_percentage,'tot_percentage':tot_percentage,'is_st_filled':is_st_filled,'is_pa_filled':is_pa_filled,'is_sa_filled':is_sa_filled,'is_lf_filled':is_lf_filled,'st_id':st_id,'pa_id':pa_id,'sa_id':sa_id,'lf_id':lf_id,'module':6,},
             context_instance=RequestContext(request))
 
 @login_required
 @permission_required('pce.add_pceversion', login_url="/accounts/login/")
-def module6_edit(request, country, id=None,sessionid=None, template_name='pce/module_6_edit.html'):
+def module6_edit(request, country, id=None,sessionid=None, template_name='pce/module_6.html'):
     """ Edit module_6 """
     user = request.user
     author = user
@@ -5586,7 +5732,7 @@ def module6_edit(request, country, id=None,sessionid=None, template_name='pce/mo
         form37 = Module6WeaknessesFormSet(instance=module6)
       
     return render_to_response(template_name, {
-        'form': form, 'form37': form37,'sessionid':sessionid,'can_edit':can_edit,'m_percentage':m_percentage,'tot_percentage':tot_percentage,'is_st_filled':is_st_filled,'is_pa_filled':is_pa_filled,'is_sa_filled':is_sa_filled,'is_lf_filled':is_lf_filled,'st_id':st_id,'pa_id':pa_id,'sa_id':sa_id,'module':6,
+        'context':'Edit','form': form, 'form37': form37,'sessionid':sessionid,'can_edit':can_edit,'m_percentage':m_percentage,'tot_percentage':tot_percentage,'is_st_filled':is_st_filled,'is_pa_filled':is_pa_filled,'is_sa_filled':is_sa_filled,'is_lf_filled':is_lf_filled,'st_id':st_id,'pa_id':pa_id,'sa_id':sa_id,'lf_id':lf_id,'module':6,
 
     }, context_instance=RequestContext(request))
 
@@ -5595,7 +5741,7 @@ class Module7ListView(ListView):
     context_object_name = 'latest'
     model = Module7
     date_field = 'publish_date'
-    template_name = 'pce/module_7_view.html'
+    template_name = 'pce/module_7.html'
     queryset = Module7.objects.all().order_by('-modify_date', 'title')
     allow_future = False
     allow_empty = True
@@ -5612,6 +5758,7 @@ class Module7ListView(ListView):
         context = super(Module7ListView, self).get_context_data(**kwargs)
         context['country'] = self.kwargs['country']
         context['sessionid'] = self.kwargs['sessionid']
+        context['context'] = 'View'
         context['VAL_AV'] =VAL_AV
         context['BOOL_CHOICESM_M'] =BOOL_CHOICESM_M
    
@@ -5704,7 +5851,7 @@ class Module7ListPDFView(PDFTemplateView):
     context_object_name = 'latest'
     model = Module7
     date_field = 'publish_date'
-    template_name = 'pce/module_7_pdf.html'
+    template_name = 'pce/module_7.html'
     
     def get_context_data(self, **kwargs): # http://stackoverflow.com/a/15515220
         context = super(Module7ListPDFView, self).get_context_data(**kwargs)
@@ -5712,7 +5859,8 @@ class Module7ListPDFView(PDFTemplateView):
         context['sessionid'] = self.kwargs['sessionid']
         context['VAL_AV'] =VAL_AV
         context['BOOL_CHOICESM_M'] =BOOL_CHOICESM_M
-   
+        context['context'] = 'Pdf'   
+        
         GEO =(
         (0, _("--- Please select ---")),
         (1, _("Not at all")),
@@ -5835,12 +5983,11 @@ class Module7ListPDFView(PDFTemplateView):
 
         
         id=''
-        
-        if 'id' in self.kwargs:
+        context['latest']=''
+        if  'id' in self.kwargs:
             id = self.kwargs['id']
-            
+            context['latest']=  Module7.objects.filter(id=id)
         context['id'] = id
-        context['latest']=  Module7.objects.filter(id=id)
     
         can_see=0
         session = get_object_or_404(PceVersion,  pk= self.kwargs['sessionid'])
@@ -5975,7 +6122,7 @@ def module7_create(request, country,sessionid=None):
 
             return redirect("module-list",country=user_country_slug,id=pceversion.id,)
         else:
-             return render_to_response('pce/module_7_edit.html', {'form': form,'form14': form14,'form23': form23,'form37': form37,'form39': form39,'form41': form41,'form43': form43,'form45': form45,'form69': form69,'sessionid':sessionid,'can_edit':can_edit,'m_percentage':m_percentage,'tot_percentage':tot_percentage,'is_st_filled':is_st_filled,'is_pa_filled':is_pa_filled,'is_sa_filled':is_sa_filled,'is_lf_filled':is_lf_filled,'st_id':st_id,'pa_id':pa_id,'sa_id':sa_id,'module':7,},
+             return render_to_response('pce/module_7.html', {'context':'Edit','form': form,'form14': form14,'form23': form23,'form37': form37,'form39': form39,'form41': form41,'form43': form43,'form45': form45,'form69': form69,'sessionid':sessionid,'can_edit':can_edit,'m_percentage':m_percentage,'tot_percentage':tot_percentage,'is_st_filled':is_st_filled,'is_pa_filled':is_pa_filled,'is_sa_filled':is_sa_filled,'is_lf_filled':is_lf_filled,'st_id':st_id,'pa_id':pa_id,'sa_id':sa_id,'lf_id':lf_id,'module':7,},
              context_instance=RequestContext(request))
 
     else:
@@ -5990,12 +6137,12 @@ def module7_create(request, country,sessionid=None):
         form69 = Module7WeaknessesFormSet()
       
 
-    return render_to_response('pce/module_7_edit.html', {'form': form,'form14': form14,'form23': form23,'form37': form37,'form39': form39,'form41': form41,'form43': form43,'form45': form45,'form69': form69,'sessionid':sessionid,'can_edit':can_edit,'m_percentage':m_percentage,'tot_percentage':tot_percentage,'is_st_filled':is_st_filled,'is_pa_filled':is_pa_filled,'is_sa_filled':is_sa_filled,'is_lf_filled':is_lf_filled,'st_id':st_id,'pa_id':pa_id,'sa_id':sa_id,'module':7,},
+    return render_to_response('pce/module_7.html', {'context':'Edit','form': form,'form14': form14,'form23': form23,'form37': form37,'form39': form39,'form41': form41,'form43': form43,'form45': form45,'form69': form69,'sessionid':sessionid,'can_edit':can_edit,'m_percentage':m_percentage,'tot_percentage':tot_percentage,'is_st_filled':is_st_filled,'is_pa_filled':is_pa_filled,'is_sa_filled':is_sa_filled,'is_lf_filled':is_lf_filled,'st_id':st_id,'pa_id':pa_id,'sa_id':sa_id,'lf_id':lf_id,'module':7,},
             context_instance=RequestContext(request))
 
 @login_required
 @permission_required('pce.add_pceversion', login_url="/accounts/login/")
-def module7_edit(request, country, id=None,sessionid=None, template_name='pce/module_7_edit.html'):
+def module7_edit(request, country, id=None,sessionid=None, template_name='pce/module_7.html'):
     """ Edit module_7 """
     user = request.user
     author = user
@@ -6081,7 +6228,7 @@ def module7_edit(request, country, id=None,sessionid=None, template_name='pce/mo
         form69 = Module7WeaknessesFormSet(instance=module7)
     
     return render_to_response(template_name, {
-        'form': form, 'form14': form14,'form23': form23,'form37': form37,'form39': form39,'form41': form41,'form43': form43,'form45': form45,'form69': form69,'sessionid':sessionid,'can_edit':can_edit,'m_percentage':m_percentage,'tot_percentage':tot_percentage,'is_st_filled':is_st_filled,'is_pa_filled':is_pa_filled,'is_sa_filled':is_sa_filled,'is_lf_filled':is_lf_filled,'st_id':st_id,'pa_id':pa_id,'sa_id':sa_id,'module':7,
+        'context':'Edit','form': form, 'form14': form14,'form23': form23,'form37': form37,'form39': form39,'form41': form41,'form43': form43,'form45': form45,'form69': form69,'sessionid':sessionid,'can_edit':can_edit,'m_percentage':m_percentage,'tot_percentage':tot_percentage,'is_st_filled':is_st_filled,'is_pa_filled':is_pa_filled,'is_sa_filled':is_sa_filled,'is_lf_filled':is_lf_filled,'st_id':st_id,'pa_id':pa_id,'sa_id':sa_id,'lf_id':lf_id,'module':7,
     }, context_instance=RequestContext(request))
 
 #MODULE 8
@@ -6089,7 +6236,7 @@ class Module8ListView(ListView):
     context_object_name = 'latest'
     model = Module8
     date_field = 'publish_date'
-    template_name = 'pce/module_8_view.html'
+    template_name = 'pce/module_8.html'
     queryset = Module8.objects.all().order_by('-modify_date', 'title')
     allow_future = False
     allow_empty = True
@@ -6106,6 +6253,7 @@ class Module8ListView(ListView):
         context = super(Module8ListView, self).get_context_data(**kwargs)
         context['country'] = self.kwargs['country']
         context['sessionid'] = self.kwargs['sessionid']
+        context['context'] = 'View'
         context['VAL_AV'] =VAL_AV
         context['BOOL_CHOICESM_M'] =BOOL_CHOICESM_M
         id=''
@@ -6185,13 +6333,15 @@ class Module8ListPDFView(PDFTemplateView):
     context_object_name = 'latest'
     model = Module8
     date_field = 'publish_date'
-    template_name = 'pce/module_8_pdf.html'
+    template_name = 'pce/module_8.html'
     
     def get_context_data(self, **kwargs): # http://stackoverflow.com/a/15515220
         context = super(Module8ListPDFView, self).get_context_data(**kwargs)
         context['country'] = self.kwargs['country']
         context['sessionid'] = self.kwargs['sessionid']
-        
+        context['context'] = 'Pdf'   
+        context['VAL_AV'] =VAL_AV
+        context['BOOL_CHOICESM_M'] =BOOL_CHOICESM_M
         
         RANGE1=(
         (0, _("--- Please select ---")),
@@ -6296,15 +6446,15 @@ class Module8ListPDFView(PDFTemplateView):
         context['NOTATALL1'] =NOTATALL1
         context['WEAK'] =WEAK
         context['WEAK4'] =WEAK4
-
+        context['M8_17']=  M8_17.objects.filter()
+     
         
         id=''
-        
-        if 'id' in self.kwargs:
+        context['latest']=''
+        if  'id' in self.kwargs:
             id = self.kwargs['id']
-            
+            context['latest']=  Module8.objects.filter(id=id)
         context['id'] = id
-        context['latest']=  Module8.objects.filter(id=id)
     
         can_see=0
         session = get_object_or_404(PceVersion,  pk= self.kwargs['sessionid'])
@@ -6341,7 +6491,7 @@ class Module8ListPDFView(PDFTemplateView):
             context['version_number'] = session.version_number
             context['sessionstatus'] = session.status
             context['tot_percentage'] = get_tot_percentage(self.kwargs['sessionid'])
-            context['m_percentage'] = get_percentage_module_filled(7,self.kwargs['sessionid'])
+            context['m_percentage'] = get_percentage_module_filled(8,self.kwargs['sessionid'])
 
         context['can_see'] = can_see
         
@@ -6421,7 +6571,7 @@ def module8_create(request, country,sessionid=None):
             return redirect("module-list",country=user_country_slug,id=pceversion.id,)
         else:
             info(request, _("AAAAAAAAAAAAAAAAAA"))
-            return render_to_response('pce/module_8_edit.html', {'form': form,'form3': form3,'form18': form18,'form30': form30,'form45': form45,'sessionid':sessionid,'can_edit':can_edit,'m_percentage':m_percentage,'tot_percentage':tot_percentage,'is_st_filled':is_st_filled,'is_pa_filled':is_pa_filled,'is_sa_filled':is_sa_filled,'is_lf_filled':is_lf_filled,'st_id':st_id,'pa_id':pa_id,'sa_id':sa_id,'module':8,},
+            return render_to_response('pce/module_8.html', {'context':'Edit','form': form,'form3': form3,'form18': form18,'form30': form30,'form45': form45,'sessionid':sessionid,'can_edit':can_edit,'m_percentage':m_percentage,'tot_percentage':tot_percentage,'is_st_filled':is_st_filled,'is_pa_filled':is_pa_filled,'is_sa_filled':is_sa_filled,'is_lf_filled':is_lf_filled,'st_id':st_id,'pa_id':pa_id,'sa_id':sa_id,'lf_id':lf_id,'module':8,},
             context_instance=RequestContext(request))
 
     else:
@@ -6434,12 +6584,12 @@ def module8_create(request, country,sessionid=None):
  
       
 
-    return render_to_response('pce/module_8_edit.html', {'form': form,'form3': form3,'form18': form18,'form30': form30,'form45': form45,'sessionid':sessionid,'can_edit':can_edit,'m_percentage':m_percentage,'tot_percentage':tot_percentage,'is_st_filled':is_st_filled,'is_pa_filled':is_pa_filled,'is_sa_filled':is_sa_filled,'is_lf_filled':is_lf_filled,'st_id':st_id,'pa_id':pa_id,'sa_id':sa_id,'module':8,},
+    return render_to_response('pce/module_8.html', {'context':'Edit','form': form,'form3': form3,'form18': form18,'form30': form30,'form45': form45,'sessionid':sessionid,'can_edit':can_edit,'m_percentage':m_percentage,'tot_percentage':tot_percentage,'is_st_filled':is_st_filled,'is_pa_filled':is_pa_filled,'is_sa_filled':is_sa_filled,'is_lf_filled':is_lf_filled,'st_id':st_id,'pa_id':pa_id,'sa_id':sa_id,'lf_id':lf_id,'module':8,},
             context_instance=RequestContext(request))
 
 @login_required
 @permission_required('pce.add_pceversion', login_url="/accounts/login/")
-def module8_edit(request, country, id=None,sessionid=None, template_name='pce/module_8_edit.html'):
+def module8_edit(request, country, id=None,sessionid=None, template_name='pce/module_8.html'):
     """ Edit module_8 """
     user = request.user
     author = user
@@ -6515,7 +6665,7 @@ def module8_edit(request, country, id=None,sessionid=None, template_name='pce/mo
         form45 = Module8WeaknessesFormSet(instance=module8)
      
     return render_to_response(template_name, {
-        'form': form, 'form3': form3,'form18': form18,'form30': form30,'form45': form45,'sessionid':sessionid,'can_edit':can_edit,'m_percentage':m_percentage,'tot_percentage':tot_percentage,'is_st_filled':is_st_filled,'is_pa_filled':is_pa_filled,'is_sa_filled':is_sa_filled,'is_lf_filled':is_lf_filled,'st_id':st_id,'pa_id':pa_id,'sa_id':sa_id,'module':8,
+        'context':'Edit','form': form, 'form3': form3,'form18': form18,'form30': form30,'form45': form45,'sessionid':sessionid,'can_edit':can_edit,'m_percentage':m_percentage,'tot_percentage':tot_percentage,'is_st_filled':is_st_filled,'is_pa_filled':is_pa_filled,'is_sa_filled':is_sa_filled,'is_lf_filled':is_lf_filled,'st_id':st_id,'pa_id':pa_id,'sa_id':sa_id,'lf_id':lf_id,'module':8,
     }, context_instance=RequestContext(request))
 
 #MODULE 9
@@ -6523,7 +6673,7 @@ class Module9ListView(ListView):
     context_object_name = 'latest'
     model = Module9
     date_field = 'publish_date'
-    template_name = 'pce/module_9_view.html'
+    template_name = 'pce/module_9.html'
     queryset = Module9.objects.all().order_by('-modify_date', 'title')
     allow_future = False
     allow_empty = True
@@ -6540,6 +6690,7 @@ class Module9ListView(ListView):
         context = super(Module9ListView, self).get_context_data(**kwargs)
         context['country'] = self.kwargs['country']
         context['sessionid'] = self.kwargs['sessionid']
+        context['context'] = 'View'
         context['VAL_AV'] =VAL_AV
         context['BOOL_CHOICESM_M'] =BOOL_CHOICESM_M
         id=''
@@ -6621,12 +6772,13 @@ class Module9ListPDFView(PDFTemplateView):
     context_object_name = 'latest'
     model = Module9
     date_field = 'publish_date'
-    template_name = 'pce/module_9_pdf.html'
+    template_name = 'pce/module_9.html'
     
     def get_context_data(self, **kwargs): # http://stackoverflow.com/a/15515220
         context = super(Module9ListPDFView, self).get_context_data(**kwargs)
         context['country'] = self.kwargs['country']
         context['sessionid'] = self.kwargs['sessionid']
+        context['context'] = 'Pdf'   
         
         PERC2=(
         (0, _("--- Please select ---")),
@@ -6703,6 +6855,8 @@ class Module9ListPDFView(PDFTemplateView):
         (5, _("Very sufficient")),
         )
 
+        context['VAL_AV'] =VAL_AV
+        context['BOOL_CHOICESM_M'] =BOOL_CHOICESM_M
      
         
     
@@ -6719,12 +6873,11 @@ class Module9ListPDFView(PDFTemplateView):
 
         
         id=''
-        
-        if 'id' in self.kwargs:
+        context['latest']=''
+        if  'id' in self.kwargs:
             id = self.kwargs['id']
-            
+            context['latest']=  Module9.objects.filter(id=id)
         context['id'] = id
-        context['latest']=  Module9.objects.filter(id=id)
     
         can_see=0
         session = get_object_or_404(PceVersion,  pk= self.kwargs['sessionid'])
@@ -6764,7 +6917,7 @@ class Module9ListPDFView(PDFTemplateView):
             context['version_number'] = session.version_number
             context['sessionstatus'] = session.status
             context['tot_percentage'] = get_tot_percentage(self.kwargs['sessionid'])
-            context['m_percentage'] = get_percentage_module_filled(7,self.kwargs['sessionid'])
+            context['m_percentage'] = get_percentage_module_filled(9,self.kwargs['sessionid'])
 
         context['can_see'] = can_see
         
@@ -6842,7 +6995,7 @@ def module9_create(request, country,sessionid=None):
 
             return redirect("module-list",country=user_country_slug,id=pceversion.id,)
         else:
-             return render_to_response('pce/module_9_edit.html', {'form': form,'form1': form1,'form5': form5,'form31': form31,'form35': form35,'form47': form47,'sessionid':sessionid,'can_edit':can_edit,'m_percentage':m_percentage,'tot_percentage':tot_percentage,'is_st_filled':is_st_filled,'is_pa_filled':is_pa_filled,'is_sa_filled':is_sa_filled,'is_lf_filled':is_lf_filled,'st_id':st_id,'pa_id':pa_id,'sa_id':sa_id,'module':9,},
+             return render_to_response('pce/module_9.html', {'context':'Edit','form': form,'form1': form1,'form5': form5,'form31': form31,'form35': form35,'form47': form47,'sessionid':sessionid,'can_edit':can_edit,'m_percentage':m_percentage,'tot_percentage':tot_percentage,'is_st_filled':is_st_filled,'is_pa_filled':is_pa_filled,'is_sa_filled':is_sa_filled,'is_lf_filled':is_lf_filled,'st_id':st_id,'pa_id':pa_id,'sa_id':sa_id,'lf_id':lf_id,'module':9,},
              context_instance=RequestContext(request))
 
     else:
@@ -6856,12 +7009,12 @@ def module9_create(request, country,sessionid=None):
  
       
 
-    return render_to_response('pce/module_9_edit.html', {'form': form,'form1': form1,'form5': form5,'form31': form31,'form35': form35,'form47': form47,'sessionid':sessionid,'can_edit':can_edit,'m_percentage':m_percentage,'tot_percentage':tot_percentage,'is_st_filled':is_st_filled,'is_pa_filled':is_pa_filled,'is_sa_filled':is_sa_filled,'is_lf_filled':is_lf_filled,'st_id':st_id,'pa_id':pa_id,'sa_id':sa_id,'module':9,},
+    return render_to_response('pce/module_9.html', {'context':'Edit','form': form,'form1': form1,'form5': form5,'form31': form31,'form35': form35,'form47': form47,'sessionid':sessionid,'can_edit':can_edit,'m_percentage':m_percentage,'tot_percentage':tot_percentage,'is_st_filled':is_st_filled,'is_pa_filled':is_pa_filled,'is_sa_filled':is_sa_filled,'is_lf_filled':is_lf_filled,'st_id':st_id,'pa_id':pa_id,'sa_id':sa_id,'lf_id':lf_id,'module':9,},
             context_instance=RequestContext(request))
 
 @login_required
 @permission_required('pce.add_pceversion', login_url="/accounts/login/")
-def module9_edit(request, country, id=None,sessionid=None, template_name='pce/module_9_edit.html'):
+def module9_edit(request, country, id=None,sessionid=None, template_name='pce/module_9.html'):
     """ Edit module_9 """
     user = request.user
     author = user
@@ -6933,7 +7086,7 @@ def module9_edit(request, country, id=None,sessionid=None, template_name='pce/mo
         form47 = Module9WeaknessesFormSet( instance=module9)
       
     return render_to_response(template_name, {
-        'form': form, 'form1': form1,'form5': form5,'form31': form31,'form35': form35,'form47': form47,'sessionid':sessionid,'can_edit':can_edit,'m_percentage':m_percentage,'tot_percentage':tot_percentage,'is_st_filled':is_st_filled,'is_pa_filled':is_pa_filled,'is_sa_filled':is_sa_filled,'is_lf_filled':is_lf_filled,'st_id':st_id,'pa_id':pa_id,'sa_id':sa_id,'module':9,
+        'context':'Edit','form': form, 'form1': form1,'form5': form5,'form31': form31,'form35': form35,'form47': form47,'sessionid':sessionid,'can_edit':can_edit,'m_percentage':m_percentage,'tot_percentage':tot_percentage,'is_st_filled':is_st_filled,'is_pa_filled':is_pa_filled,'is_sa_filled':is_sa_filled,'is_lf_filled':is_lf_filled,'st_id':st_id,'pa_id':pa_id,'sa_id':sa_id,'lf_id':lf_id,'module':9,
     }, context_instance=RequestContext(request))
 
 #MODULE 10
@@ -6941,7 +7094,7 @@ class Module10ListView(ListView):
     context_object_name = 'latest'
     model = Module10
     date_field = 'publish_date'
-    template_name = 'pce/module_10_view.html'
+    template_name = 'pce/module_10.html'
     queryset = Module10.objects.all().order_by('-modify_date', 'title')
     allow_future = False
     allow_empty = True
@@ -6958,6 +7111,7 @@ class Module10ListView(ListView):
         context = super(Module10ListView, self).get_context_data(**kwargs)
         context['country'] = self.kwargs['country']
         context['sessionid'] = self.kwargs['sessionid']
+        context['context'] = 'View'
         context['VAL_AV'] =VAL_AV
         context['BOOL_CHOICESM_M'] =BOOL_CHOICESM_M
         id=''
@@ -7045,13 +7199,15 @@ class Module10ListPDFView(PDFTemplateView):
     context_object_name = 'latest'
     model = Module10
     date_field = 'publish_date'
-    template_name = 'pce/module_10_pdf.html'
+    template_name = 'pce/module_10.html'
     
     def get_context_data(self, **kwargs): # http://stackoverflow.com/a/15515220
         context = super(Module10ListPDFView, self).get_context_data(**kwargs)
         context['country'] = self.kwargs['country']
         context['sessionid'] = self.kwargs['sessionid']
-        
+        context['context'] = 'Pdf'   
+        context['VAL_AV'] =VAL_AV
+        context['BOOL_CHOICESM_M'] =BOOL_CHOICESM_M
 
 
 
@@ -7118,12 +7274,11 @@ class Module10ListPDFView(PDFTemplateView):
 
         
         id=''
-        
-        if 'id' in self.kwargs:
+        context['latest']=''
+        if  'id' in self.kwargs:
             id = self.kwargs['id']
-            
+            context['latest']=  Module10.objects.filter(id=id)
         context['id'] = id
-        context['latest']=  Module10.objects.filter(id=id)
     
         can_see=0
         session = get_object_or_404(PceVersion,  pk= self.kwargs['sessionid'])
@@ -7171,7 +7326,7 @@ class Module10ListPDFView(PDFTemplateView):
             context['version_number'] = session.version_number
             context['sessionstatus'] = session.status
             context['tot_percentage'] = get_tot_percentage(self.kwargs['sessionid'])
-            context['m_percentage'] = get_percentage_module_filled(7,self.kwargs['sessionid'])
+            context['m_percentage'] = get_percentage_module_filled(10,self.kwargs['sessionid'])
 
         context['can_see'] = can_see
         
@@ -7259,7 +7414,7 @@ def module10_create(request, country,sessionid=None):
 
             return redirect("module-list",country=user_country_slug,id=pceversion.id,)
         else:
-             return render_to_response('pce/module_10_edit.html', {'form': form,'form23': form23,'form31': form31,'form33': form33,'form37': form37,'form45': form45,'form46': form46,'form47': form47,'form61': form61,'sessionid':sessionid,'can_edit':can_edit,'m_percentage':m_percentage,'tot_percentage':tot_percentage,'is_st_filled':is_st_filled,'is_pa_filled':is_pa_filled,'is_sa_filled':is_sa_filled,'is_lf_filled':is_lf_filled,'st_id':st_id,'pa_id':pa_id,'sa_id':sa_id,'module':10,},
+             return render_to_response('pce/module_10.html', {'context':'Edit','form': form,'form23': form23,'form31': form31,'form33': form33,'form37': form37,'form45': form45,'form46': form46,'form47': form47,'form61': form61,'sessionid':sessionid,'can_edit':can_edit,'m_percentage':m_percentage,'tot_percentage':tot_percentage,'is_st_filled':is_st_filled,'is_pa_filled':is_pa_filled,'is_sa_filled':is_sa_filled,'is_lf_filled':is_lf_filled,'st_id':st_id,'pa_id':pa_id,'sa_id':sa_id,'lf_id':lf_id,'module':10,},
              context_instance=RequestContext(request))
 
     else:
@@ -7276,12 +7431,12 @@ def module10_create(request, country,sessionid=None):
  
       
 
-    return render_to_response('pce/module_10_edit.html', {'form': form,'form23': form23,'form31': form31,'form33': form33,'form37': form37,'form45': form45,'form46': form46,'form47': form47,'form61': form61,'sessionid':sessionid,'can_edit':can_edit,'m_percentage':m_percentage,'tot_percentage':tot_percentage,'is_st_filled':is_st_filled,'is_pa_filled':is_pa_filled,'is_sa_filled':is_sa_filled,'is_lf_filled':is_lf_filled,'st_id':st_id,'pa_id':pa_id,'sa_id':sa_id,'module':10,},
+    return render_to_response('pce/module_10.html', {'context':'Edit','form': form,'form23': form23,'form31': form31,'form33': form33,'form37': form37,'form45': form45,'form46': form46,'form47': form47,'form61': form61,'sessionid':sessionid,'can_edit':can_edit,'m_percentage':m_percentage,'tot_percentage':tot_percentage,'is_st_filled':is_st_filled,'is_pa_filled':is_pa_filled,'is_sa_filled':is_sa_filled,'is_lf_filled':is_lf_filled,'st_id':st_id,'pa_id':pa_id,'sa_id':sa_id,'lf_id':lf_id,'module':10,},
             context_instance=RequestContext(request))
 
 @login_required
 @permission_required('pce.add_pceversion', login_url="/accounts/login/")
-def module10_edit(request, country, id=None,sessionid=None, template_name='pce/module_10_edit.html'):
+def module10_edit(request, country, id=None,sessionid=None, template_name='pce/module_10.html'):
     """ Edit module_10 """
     user = request.user
     author = user
@@ -7372,14 +7527,14 @@ def module10_edit(request, country, id=None,sessionid=None, template_name='pce/m
         form61 = Module10WeaknessesFormSet( instance=module10)
       
     return render_to_response(template_name, {
-        'form': form,'form23': form23,'form31': form31,'form33': form33,'form37': form37,'form45': form45,'form46': form46,'form47': form47,'form61': form61,'sessionid':sessionid,'can_edit':can_edit,'m_percentage':m_percentage,'tot_percentage':tot_percentage,'is_st_filled':is_st_filled,'is_pa_filled':is_pa_filled,'is_sa_filled':is_sa_filled,'is_lf_filled':is_lf_filled,'st_id':st_id,'pa_id':pa_id,'sa_id':sa_id,'module':10,
+        'context':'Edit','form': form,'form23': form23,'form31': form31,'form33': form33,'form37': form37,'form45': form45,'form46': form46,'form47': form47,'form61': form61,'sessionid':sessionid,'can_edit':can_edit,'m_percentage':m_percentage,'tot_percentage':tot_percentage,'is_st_filled':is_st_filled,'is_pa_filled':is_pa_filled,'is_sa_filled':is_sa_filled,'is_lf_filled':is_lf_filled,'st_id':st_id,'pa_id':pa_id,'sa_id':sa_id,'lf_id':lf_id,'module':10,
     }, context_instance=RequestContext(request))
 #MODULE 11
 class Module11ListView(ListView):
     context_object_name = 'latest'
     model = Module11
     date_field = 'publish_date'
-    template_name = 'pce/module_11_view.html'
+    template_name = 'pce/module_11.html'
     queryset = Module11.objects.all().order_by('-modify_date', 'title')
     allow_future = False
     allow_empty = True
@@ -7396,6 +7551,7 @@ class Module11ListView(ListView):
         context = super(Module11ListView, self).get_context_data(**kwargs)
         context['country'] = self.kwargs['country']
         context['sessionid'] = self.kwargs['sessionid']
+        context['context'] = 'View'
         context['VAL_AV'] =VAL_AV
         context['BOOL_CHOICESM_M'] =BOOL_CHOICESM_M
         id=''
@@ -7477,7 +7633,169 @@ class Module11ListView(ListView):
         context['lf_id'] = lf_id
         
         return context
+class Module11ListPDFView(PDFTemplateView):
+    context_object_name = 'latest'
+    model = Module11
+    date_field = 'publish_date'
+    template_name = 'pce/module_11.html'
+    
+    def get_context_data(self, **kwargs): # http://stackoverflow.com/a/15515220
+        context = super(Module11ListPDFView, self).get_context_data(**kwargs)
+        context['country'] = self.kwargs['country']
+        context['sessionid'] = self.kwargs['sessionid']
+        context['context'] = 'Pdf'   
+        context['VAL_AV'] =VAL_AV
+        
+        context['BOOL_CHOICESM_M'] =BOOL_CHOICESM_M
+        RATHER = (
+            (0, _("--- Please select ---")),
+            (1, _("Not at all")),
+            (2, _("Rather low")),
+            (3, _("Intermediate")),
+            (4, _("Much")),
+            (5, _("Very much so")),
+        ) 
 
+        BAD2 = (
+        (0, _("--- Please select ---")),
+        (1, _("Very badly")),
+        (2, _("Badly")),
+        (3, _("Intermediate")),
+        (4, _("Well")),
+        (5, _("Very well")),
+        )
+        EFF=(
+        (0, _("--- Please select ---")),
+        (1,_("Very ineffective")),
+        (2,_("Ineffective")),
+        (3,_("Intermediate")),
+        (4,_("Effective")),
+        (5,_("Very effective")),
+        )
+        INSUFF7=(
+        (0, _("--- Please select ---")),
+        (1, _("Totally insufficient")),
+        (2, _("insufficient")),
+        (3, _("Huge limitations")),
+        (4, _("Minor limitations")),
+        (5, _("Without limitations")),
+        )
+        WEAK=(
+        (0, _("--- Please select ---")),
+        (1, _("Very weak")),
+        (2, _("Weak")),
+        (3, _("Intermediate")),
+        (4, _("Good")),
+        (5, _("Very good")),
+        )
+        OUT=(
+        (0, _("--- Please select ---")),
+        (1,_("all outsourced")),
+        (2,_("Partially outsourced")),
+        (3,_("All done in house")),
+        )
+        LIM=(
+        (0, _("--- Please select ---")),
+        (1,_("Not at all")),
+        (2,_("Severe limitations")),
+        (3,_("Limited")),
+        (4,_("Few limitations")),
+        (5,_("Completely sufficient")),
+        )
+        PERC1=(
+        (0, _("--- Please select ---")),
+        (1,_("0")),
+        (2, _("1-25")),
+        (3,_("26-50")),
+        (4, _("51-75")),
+        (5, _(">75")),
+        )
+        THEM = (
+                (0, _("--- Please select ---")),
+                (1,_("None at all")),
+                (2,_("A few of them")),
+                (3,_("Some of them")),
+                (4,_("Most of them")),
+                (5,_("All of them")),
+        )
+        TRAIN2 =(
+        (0, _("--- Please select ---")),
+        (1,_("No programmed training")),
+        (2, _("Once in 5 years")),
+        (3,_("Once in 3 years")),
+        (4, _("Once in 2 years")),
+        (5, _("Once per year")),
+        )
+
+ 
+                   
+        context['RATHER'] =RATHER
+        context['BAD2'] =BAD2
+        context['EFF'] =EFF
+        context['INSUFF7'] =INSUFF7
+        context['WEAK'] =WEAK
+        context['OUT'] =OUT
+        context['LIM'] =LIM
+        context['PERC1'] =PERC1
+        context['TRAIN2'] =TRAIN2
+        context['THEM'] =THEM
+       
+        
+        id=''
+        context['latest']=''
+        if  'id' in self.kwargs:
+            id = self.kwargs['id']
+            context['latest']=  Module11.objects.filter(id=id)
+        context['id'] = id
+    
+        can_see=0
+        session = get_object_or_404(PceVersion,  pk= self.kwargs['sessionid'])
+    
+        if canSee(session.id,session.country,self.request.user,'11'):
+            can_see=1
+        if  can_see:  
+            module= 11
+            module11=None
+            form   = Module11FormView()
+            form2 = Module11Grid2FormSet()
+            form3 = Module11Grid3FormSet()
+            form12 = Module11Grid12FormSet()
+            form14 = Module11Grid14FormSet()
+            form33 = Module11Grid33FormSet()
+            form42 = Module11Matrix42FormSet()
+            form66= Module11WeaknessesFormSet()
+      
+            if id!='':
+                module11 = get_object_or_404(Module11,  id=self.kwargs['id'])
+                form   = Module11FormView(instance=module11)
+                form2 = Module11Grid2FormSet(instance=module11)
+                form3 = Module11Grid3FormSet(instance=module11)
+                form12 = Module11Grid12FormSet(instance=module11)
+                form14 = Module11Grid14FormSet(instance=module11)
+                form33 = Module11Grid33FormSet(instance=module11)
+                form42 = Module11Matrix42FormSet(instance=module11)
+                form66= Module11WeaknessesFormSet(instance=module11)
+     
+            context['form']=form
+            context['form2']=form2
+            context['form3']=form3
+            context['form12']=form12
+            context['form14']=form14
+            context['form33']=form33
+            context['form42']=form42
+            context['form66']=form66
+            context['module11']=module11
+            
+            context['module']=module
+         
+            context['version_number'] = session.version_number
+            context['sessionstatus'] = session.status
+            context['tot_percentage'] = get_tot_percentage(self.kwargs['sessionid'])
+            context['m_percentage'] = get_percentage_module_filled(11,self.kwargs['sessionid'])
+
+        context['can_see'] = can_see
+        
+        return context
 @login_required
 @permission_required('pce.add_pceversion', login_url="/accounts/login/")
 def module11_create(request, country,sessionid=None):
@@ -7556,7 +7874,7 @@ def module11_create(request, country,sessionid=None):
 
             return redirect("module-list",country=user_country_slug,id=pceversion.id,)
         else:
-             return render_to_response('pce/module_11_edit.html', {'form': form,'form2': form2,'form3': form3,'form12': form12,'form14': form14,'form33': form33,'form42': form42,'form66': form66,'sessionid':sessionid,'can_edit':can_edit,'m_percentage':m_percentage,'tot_percentage':tot_percentage,'is_st_filled':is_st_filled,'is_pa_filled':is_pa_filled,'is_sa_filled':is_sa_filled,'is_lf_filled':is_lf_filled,'st_id':st_id,'pa_id':pa_id,'sa_id':sa_id,'module':11,},
+             return render_to_response('pce/module_11.html', {'context':'Edit','form': form,'form2': form2,'form3': form3,'form12': form12,'form14': form14,'form33': form33,'form42': form42,'form66': form66,'sessionid':sessionid,'can_edit':can_edit,'m_percentage':m_percentage,'tot_percentage':tot_percentage,'is_st_filled':is_st_filled,'is_pa_filled':is_pa_filled,'is_sa_filled':is_sa_filled,'is_lf_filled':is_lf_filled,'st_id':st_id,'pa_id':pa_id,'sa_id':sa_id,'lf_id':lf_id,'module':11,},
              context_instance=RequestContext(request))
 
     else:
@@ -7571,12 +7889,12 @@ def module11_create(request, country,sessionid=None):
       
       
 
-    return render_to_response('pce/module_11_edit.html', {'form': form,'form2': form2,'form3': form3,'form12': form12,'form14': form14,'form33': form33,'form42': form42,'form66': form66,'sessionid':sessionid,'can_edit':can_edit,'m_percentage':m_percentage,'tot_percentage':tot_percentage,'is_st_filled':is_st_filled,'is_pa_filled':is_pa_filled,'is_sa_filled':is_sa_filled,'is_lf_filled':is_lf_filled,'st_id':st_id,'pa_id':pa_id,'sa_id':sa_id,'module':11,},
+    return render_to_response('pce/module_11.html', {'context':'Edit','form': form,'form2': form2,'form3': form3,'form12': form12,'form14': form14,'form33': form33,'form42': form42,'form66': form66,'sessionid':sessionid,'can_edit':can_edit,'m_percentage':m_percentage,'tot_percentage':tot_percentage,'is_st_filled':is_st_filled,'is_pa_filled':is_pa_filled,'is_sa_filled':is_sa_filled,'is_lf_filled':is_lf_filled,'st_id':st_id,'pa_id':pa_id,'sa_id':sa_id,'lf_id':lf_id,'module':11,},
             context_instance=RequestContext(request))
 
 @login_required
 @permission_required('pce.add_pceversion', login_url="/accounts/login/")
-def module11_edit(request, country, id=None,sessionid=None, template_name='pce/module_11_edit.html'):
+def module11_edit(request, country, id=None,sessionid=None, template_name='pce/module_11.html'):
     """ Edit module_11 """
     user = request.user
     author = user
@@ -7665,14 +7983,14 @@ def module11_edit(request, country, id=None,sessionid=None, template_name='pce/m
         form66= Module11WeaknessesFormSet(instance=module11)
       
     return render_to_response(template_name, {
-       'form': form,'form2': form2,'form3': form3,'form12': form12,'form14': form14,'form33': form33,'form42': form42,'form66': form66,'sessionid':sessionid,'can_edit':can_edit,'m_percentage':m_percentage,'tot_percentage':tot_percentage,'is_st_filled':is_st_filled,'is_pa_filled':is_pa_filled,'is_sa_filled':is_sa_filled,'is_lf_filled':is_lf_filled,'st_id':st_id,'pa_id':pa_id,'sa_id':sa_id,'module':11,
+       'context':'Edit','form': form,'form2': form2,'form3': form3,'form12': form12,'form14': form14,'form33': form33,'form42': form42,'form66': form66,'sessionid':sessionid,'can_edit':can_edit,'m_percentage':m_percentage,'tot_percentage':tot_percentage,'is_st_filled':is_st_filled,'is_pa_filled':is_pa_filled,'is_sa_filled':is_sa_filled,'is_lf_filled':is_lf_filled,'st_id':st_id,'pa_id':pa_id,'sa_id':sa_id,'lf_id':lf_id,'module':11,
     }, context_instance=RequestContext(request))
 #MODULE 12
 class Module12ListView(ListView):
     context_object_name = 'latest'
     model = Module12
     date_field = 'publish_date'
-    template_name = 'pce/module_12_view.html'
+    template_name = 'pce/module_12.html'
     queryset = Module12.objects.all().order_by('-modify_date', 'title')
     allow_future = False
     allow_empty = True
@@ -7689,6 +8007,7 @@ class Module12ListView(ListView):
         context = super(Module12ListView, self).get_context_data(**kwargs)
         context['country'] = self.kwargs['country']
         context['sessionid'] = self.kwargs['sessionid']
+        context['context'] = 'View'
         context['vals'] =INSUFF0
         context['VAL_AV'] =VAL_AV
         context['BOOL_CHOICESM_M'] =BOOL_CHOICESM_M
@@ -7764,7 +8083,150 @@ class Module12ListView(ListView):
         context['lf_id'] = lf_id
         
         return context
+class Module12ListPDFView(PDFTemplateView):
+    context_object_name = 'latest'
+    model = Module12
+    date_field = 'publish_date'
+    template_name = 'pce/module_12.html'
+    
+    def get_context_data(self, **kwargs): # http://stackoverflow.com/a/15515220
+        context = super(Module12ListPDFView, self).get_context_data(**kwargs)
+        context['country'] = self.kwargs['country']
+        context['sessionid'] = self.kwargs['sessionid']
+        context['context'] = 'Pdf'   
+        context['vals'] =INSUFF0
+        context['VAL_AV'] =VAL_AV
+        context['BOOL_CHOICESM_M'] =BOOL_CHOICESM_M
+        RATHER = (
+            (0, _("--- Please select ---")),
+            (1, _("Not at all")),
+            (2, _("Rather low")),
+            (3, _("Intermediate")),
+            (4, _("Much")),
+            (5, _("Very much so")),
+        ) 
 
+        BAD2 = (
+        (0, _("--- Please select ---")),
+        (1, _("Very badly")),
+        (2, _("Badly")),
+        (3, _("Intermediate")),
+        (4, _("Well")),
+        (5, _("Very well")),
+        )
+        EFF=(
+        (0, _("--- Please select ---")),
+        (1,_("Very ineffective")),
+        (2,_("Ineffective")),
+        (3,_("Intermediate")),
+        (4,_("Effective")),
+        (5,_("Very effective")),
+        )
+     
+        WEAK=(
+        (0, _("--- Please select ---")),
+        (1, _("Very weak")),
+        (2, _("Weak")),
+        (3, _("Intermediate")),
+        (4, _("Good")),
+        (5, _("Very good")),
+        )
+       
+    
+        THEM = (
+                (0, _("--- Please select ---")),
+                (1,_("None at all")),
+                (2,_("A few of them")),
+                (3,_("Some of them")),
+                (4,_("Most of them")),
+                (5,_("All of them")),
+        )
+        TRAIN2 =(
+        (0, _("--- Please select ---")),
+        (1,_("No programmed training")),
+        (2, _("Once in 5 years")),
+        (3,_("Once in 3 years")),
+        (4, _("Once in 2 years")),
+        (5, _("Once per year")),
+        )
+        INSUFF8=(
+        (0, _("--- Please select ---")),
+        (1, _("Totally insufficient")),
+        (2, _("Insufficient")),
+        (3, _("Intermediate")),
+        (4, _("Not enough")),
+        (5, _("Very sufficien")),
+        )
+ 
+        PERC3=(
+        (0, _("--- Please select ---")),
+        (1,_("None")),
+        (2, _("5%")),
+        (3,_("20%")),
+        (4, _("40%")),
+        (5, _(">40%")),
+        )          
+        context['RATHER'] =RATHER
+        context['BAD2'] =BAD2
+        context['EFF'] =EFF
+        context['INSUFF8'] =INSUFF8
+        context['WEAK'] =WEAK
+        context['PERC3'] =PERC3
+        context['TRAIN2'] =TRAIN2
+        context['THEM'] =THEM
+       
+        
+
+        
+        
+        id=''
+        context['latest']=''
+        if  'id' in self.kwargs:
+            id = self.kwargs['id']
+            context['latest']=  Module12.objects.filter(id=id)
+        context['id'] = id
+    
+        can_see=0
+        session = get_object_or_404(PceVersion,  pk= self.kwargs['sessionid'])
+    
+        if canSee(session.id,session.country,self.request.user,'12'):
+            can_see=1
+        if  can_see:  
+            module= 12
+            module12=None
+            form   = Module12FormView()
+            form2 = Module12Grid2FormSet()
+            form3 = Module12Grid3FormSet()
+            form29 = Module12Grid29FormSet()
+            form22 = Module12Matrix22FormSet()
+            form34= Module12WeaknessesFormSet()
+            if id!='':
+                module12 = get_object_or_404(Module12,  id=self.kwargs['id'])
+                form   = Module12FormView(instance=module12)
+                form2 = Module12Grid2FormSet(instance=module12)
+                form3 = Module12Grid3FormSet(instance=module12)
+                form29 = Module12Grid29FormSet(instance=module12)
+                form22 = Module12Matrix22FormSet(instance=module12)
+                form34= Module12WeaknessesFormSet(instance=module12)
+            context['module12']=module12
+            context['form']=form
+            context['form2']=form2
+            context['form3']=form3
+            context['form29']=form29
+            context['form22']=form22
+            context['form34']=form34
+            
+            
+            context['module']=module
+         
+            context['version_number'] = session.version_number
+            context['sessionstatus'] = session.status
+            context['tot_percentage'] = get_tot_percentage(self.kwargs['sessionid'])
+            context['m_percentage'] = get_percentage_module_filled(12,self.kwargs['sessionid'])
+
+        context['can_see'] = can_see
+        
+        return context
 @login_required
 @permission_required('pce.add_pceversion', login_url="/accounts/login/")
 def module12_create(request, country,sessionid=None):
@@ -7838,7 +8300,7 @@ def module12_create(request, country,sessionid=None):
 
             return redirect("module-list",country=user_country_slug,id=pceversion.id,)
         else:
-             return render_to_response('pce/module_12_edit.html', {'form': form,'form2': form2,'form3': form3,'form22': form22,'form29': form29,'form34': form34,'sessionid':sessionid,'can_edit':can_edit,'m_percentage':m_percentage,'tot_percentage':tot_percentage,'is_st_filled':is_st_filled,'is_pa_filled':is_pa_filled,'is_sa_filled':is_sa_filled,'is_lf_filled':is_lf_filled,'st_id':st_id,'pa_id':pa_id,'sa_id':sa_id,'module':12,  },
+             return render_to_response('pce/module_12.html', {'context':'Edit','form': form,'form2': form2,'form3': form3,'form22': form22,'form29': form29,'form34': form34,'sessionid':sessionid,'can_edit':can_edit,'m_percentage':m_percentage,'tot_percentage':tot_percentage,'is_st_filled':is_st_filled,'is_pa_filled':is_pa_filled,'is_sa_filled':is_sa_filled,'is_lf_filled':is_lf_filled,'st_id':st_id,'pa_id':pa_id,'sa_id':sa_id,'lf_id':lf_id,'module':12,  },
              context_instance=RequestContext(request))
 
     else:
@@ -7850,12 +8312,12 @@ def module12_create(request, country,sessionid=None):
         form34= Module12WeaknessesFormSet()
       
 
-    return render_to_response('pce/module_12_edit.html', {'form': form,'form2': form2,'form3': form3,'form22': form22,'form29': form29,'form34': form34,'sessionid':sessionid,'can_edit':can_edit,'m_percentage':m_percentage,'tot_percentage':tot_percentage,'is_st_filled':is_st_filled,'is_pa_filled':is_pa_filled,'is_sa_filled':is_sa_filled,'is_lf_filled':is_lf_filled,'st_id':st_id,'pa_id':pa_id,'sa_id':sa_id,'module':12,  },
+    return render_to_response('pce/module_12.html', {'context':'Edit','form': form,'form2': form2,'form3': form3,'form22': form22,'form29': form29,'form34': form34,'sessionid':sessionid,'can_edit':can_edit,'m_percentage':m_percentage,'tot_percentage':tot_percentage,'is_st_filled':is_st_filled,'is_pa_filled':is_pa_filled,'is_sa_filled':is_sa_filled,'is_lf_filled':is_lf_filled,'st_id':st_id,'pa_id':pa_id,'sa_id':sa_id,'lf_id':lf_id,'module':12,  },
             context_instance=RequestContext(request))
 
 @login_required
 @permission_required('pce.add_pceversion', login_url="/accounts/login/")
-def module12_edit(request, country, id=None,sessionid=None, template_name='pce/module_12_edit.html'):
+def module12_edit(request, country, id=None,sessionid=None, template_name='pce/module_12.html'):
     """ Edit module_12 """
     user = request.user
     author = user
@@ -7937,7 +8399,7 @@ def module12_edit(request, country, id=None,sessionid=None, template_name='pce/m
      
       
     return render_to_response(template_name, {
-        'form': form,'form2': form2,'form3': form3,'form22': form22,'form29': form29,'form34': form34,'sessionid':sessionid,'can_edit':can_edit,'m_percentage':m_percentage,'tot_percentage':tot_percentage,'is_st_filled':is_st_filled,'is_pa_filled':is_pa_filled,'is_sa_filled':is_sa_filled,'is_lf_filled':is_lf_filled,'st_id':st_id,'pa_id':pa_id,'sa_id':sa_id,'module':12,  
+        'context':'Edit','form': form,'form2': form2,'form3': form3,'form22': form22,'form29': form29,'form34': form34,'sessionid':sessionid,'can_edit':can_edit,'m_percentage':m_percentage,'tot_percentage':tot_percentage,'is_st_filled':is_st_filled,'is_pa_filled':is_pa_filled,'is_sa_filled':is_sa_filled,'is_lf_filled':is_lf_filled,'st_id':st_id,'pa_id':pa_id,'sa_id':sa_id,'lf_id':lf_id,'module':12,  
     }, context_instance=RequestContext(request))
 
 #MODULE 13
@@ -7945,7 +8407,7 @@ class Module13ListView(ListView):
     context_object_name = 'latest'
     model = Module13
     date_field = 'publish_date'
-    template_name = 'pce/module_13_view.html'
+    template_name = 'pce/module_13.html'
     queryset = Module13.objects.all().order_by('-modify_date', 'title')
     allow_future = False
     allow_empty = True
@@ -7962,6 +8424,7 @@ class Module13ListView(ListView):
         context = super(Module13ListView, self).get_context_data(**kwargs)
         context['country'] = self.kwargs['country']
         context['sessionid'] = self.kwargs['sessionid']
+        context['context'] = 'View'
         context['VAL_AV'] =VAL_AV
         context['BOOL_CHOICESM_M'] =BOOL_CHOICESM_M
         id=''
@@ -8043,7 +8506,135 @@ class Module13ListView(ListView):
         context['lf_id'] = lf_id
         
         return context
+class Module13ListPDFView(PDFTemplateView):
+    context_object_name = 'latest'
+    model = Module13
+    date_field = 'publish_date'
+    template_name = 'pce/module_13.html'
+    
+    def get_context_data(self, **kwargs): # http://stackoverflow.com/a/15515220
+        context = super(Module13ListPDFView, self).get_context_data(**kwargs)
+        context['country'] = self.kwargs['country']
+        context['sessionid'] = self.kwargs['sessionid']
+        context['context'] = 'Pdf'   
+        context['VAL_AV'] =VAL_AV
+        context['BOOL_CHOICESM_M'] =BOOL_CHOICESM_M
+    
 
+        LIM1=(
+          (0, _("--- Please select ---")),
+          (1,_("Totally insufficient")),
+          (2,_("Insufficient")),
+          (3,_("With strong limitations")),
+          (4,_("With some limitations")),
+          (5,_("Without limitations")),
+          )
+
+        WEAK=(
+        (0, _("--- Please select ---")),
+        (1, _("Very weak")),
+        (2, _("Weak")),
+        (3, _("Intermediate")),
+        (4, _("Good")),
+        (5, _("Very good")),
+        )
+       
+    
+        TRAIN2 =(
+        (0, _("--- Please select ---")),
+        (1,_("No programmed training")),
+        (2, _("Once in 5 years")),
+        (3,_("Once in 3 years")),
+        (4, _("Once in 2 years")),
+        (5, _("Once per year")),
+        )
+                
+       
+        INSP=(
+        (0, _("--- Please select ---")),
+        (1,_("Pest diagnostic")),
+        (2,_("Treatment")),
+        (3,_("Field inspection")),
+        (4,_("Packing inspection")),
+        (5,_("Inspection and storage facilities")),
+        )   
+        FEW=(
+        (0, _("--- Please select ---")),
+        (1,_("None")),
+        (2,_("Few")),
+        (3,_("Some")),
+        (4,_("Most")),
+        (5,_("All")),
+        )
+        PHY=(
+        (0, _("--- Please select ---")),
+        (1,_("None")),
+        (2,_("Phytosanitary certificate")),
+        (3,_("Re-export certificate")),
+        )      
+        context['WEAK'] =WEAK
+        context['TRAIN2'] =TRAIN2
+        context['LIM1'] =LIM1
+        context['FEW'] =FEW
+        context['PHY'] =PHY
+        context['INSP'] =INSP
+  
+        
+        id=''
+        context['latest']=''
+        if  'id' in self.kwargs:
+            id = self.kwargs['id']
+            context['latest']=  Module13.objects.filter(id=id)
+        context['id'] = id
+        
+        module=13
+        can_see=0
+        session = get_object_or_404(PceVersion,  pk= self.kwargs['sessionid'])
+    
+        if canSee(session.id,session.country,self.request.user,'13'):
+            can_see=1
+        if  can_see:  
+            module13=None
+            form   = Module13FormView()
+            form2 = Module13Grid2FormSet()
+            form3 = Module13Grid3FormSet()
+            form22 = Module13Grid22FormSet()
+            form29 = Module13Grid29FormSet()
+            form31 = Module13Grid31FormSet()
+            form47 = Module13Matrix47FormSet()
+            form66= Module13WeaknessesFormSet()
+            if id!='':
+                module13 = get_object_or_404(Module13,  id=self.kwargs['id'])
+                form   = Module13FormView(instance=module13)
+                form2 = Module13Grid2FormSet(instance=module13)
+                form3 = Module13Grid3FormSet(instance=module13)
+                form22 = Module13Grid22FormSet(instance=module13)
+                form29 = Module13Grid29FormSet(instance=module13)
+                form31 = Module13Grid31FormSet(instance=module13)
+                form47 = Module13Matrix47FormSet(instance=module13)
+                form66= Module13WeaknessesFormSet(instance=module13)
+      
+            context['module13']=module13
+            context['form']=form
+            context['form2']=form2
+            context['form3']=form3
+            context['form22']=form22
+            context['form29']=form29
+            context['form31']=form31
+            context['form47']=form47
+            context['form66']=form66
+            
+            
+            context['module']=module
+         
+            context['version_number'] = session.version_number
+            context['sessionstatus'] = session.status
+            context['tot_percentage'] = get_tot_percentage(self.kwargs['sessionid'])
+            context['m_percentage'] = get_percentage_module_filled(13,self.kwargs['sessionid'])
+
+        context['can_see'] = can_see
+        
+        return context
 @login_required
 @permission_required('pce.add_pceversion', login_url="/accounts/login/")
 def module13_create(request, country,sessionid=None):
@@ -8123,7 +8714,7 @@ def module13_create(request, country,sessionid=None):
 
             return redirect("module-list",country=user_country_slug,id=pceversion.id,)
         else:
-             return render_to_response('pce/module_13_edit.html', {'form': form,'form2': form2,'form3': form3,'form22': form22,'form29': form29,'form31': form31,'form47': form47,'form66': form66,'sessionid':sessionid,'can_edit':can_edit,'m_percentage':m_percentage,'tot_percentage':tot_percentage,'is_st_filled':is_st_filled,'is_pa_filled':is_pa_filled,'is_sa_filled':is_sa_filled,'is_lf_filled':is_lf_filled,'st_id':st_id,'pa_id':pa_id,'sa_id':sa_id,'module':13,  },
+             return render_to_response('pce/module_13.html', {'context':'Edit','form': form,'form2': form2,'form3': form3,'form22': form22,'form29': form29,'form31': form31,'form47': form47,'form66': form66,'sessionid':sessionid,'can_edit':can_edit,'m_percentage':m_percentage,'tot_percentage':tot_percentage,'is_st_filled':is_st_filled,'is_pa_filled':is_pa_filled,'is_sa_filled':is_sa_filled,'is_lf_filled':is_lf_filled,'st_id':st_id,'pa_id':pa_id,'sa_id':sa_id,'lf_id':lf_id,'module':13,  },
              context_instance=RequestContext(request))
 
     else:
@@ -8138,12 +8729,12 @@ def module13_create(request, country,sessionid=None):
       
       
 
-    return render_to_response('pce/module_13_edit.html', {'form': form,'form2': form2,'form3': form3,'form22': form22,'form29': form29,'form31': form31,'form47': form47,'form66': form66,'sessionid':sessionid,'can_edit':can_edit,'m_percentage':m_percentage,'tot_percentage':tot_percentage,'is_st_filled':is_st_filled,'is_pa_filled':is_pa_filled,'is_sa_filled':is_sa_filled,'is_lf_filled':is_lf_filled,'st_id':st_id,'pa_id':pa_id,'sa_id':sa_id,'module':5,  },
+    return render_to_response('pce/module_13.html', {'context':'Edit','form': form,'form2': form2,'form3': form3,'form22': form22,'form29': form29,'form31': form31,'form47': form47,'form66': form66,'sessionid':sessionid,'can_edit':can_edit,'m_percentage':m_percentage,'tot_percentage':tot_percentage,'is_st_filled':is_st_filled,'is_pa_filled':is_pa_filled,'is_sa_filled':is_sa_filled,'is_lf_filled':is_lf_filled,'st_id':st_id,'pa_id':pa_id,'sa_id':sa_id,'lf_id':lf_id,'module':13,  },
             context_instance=RequestContext(request))
 
 @login_required
 @permission_required('pce.add_pceversion', login_url="/accounts/login/")
-def module13_edit(request, country, id=None,sessionid=None, template_name='pce/module_13_edit.html'):
+def module13_edit(request, country, id=None,sessionid=None, template_name='pce/module_13.html'):
     """ Edit module_13 """
     user = request.user
     author = user
@@ -8239,7 +8830,7 @@ def module13_edit(request, country, id=None,sessionid=None, template_name='pce/m
         form66= Module13WeaknessesFormSet(instance=module13)
       
     return render_to_response(template_name, {
-       'form': form,'form2': form2,'form3': form3,'form22': form22,'form29': form29,'form31': form31,'form47': form47,'form66': form66,'sessionid':sessionid,'can_edit':can_edit,'m_percentage':m_percentage,'tot_percentage':tot_percentage,'is_st_filled':is_st_filled,'is_pa_filled':is_pa_filled,'is_sa_filled':is_sa_filled,'is_lf_filled':is_lf_filled,'st_id':st_id,'pa_id':pa_id,'sa_id':sa_id,'module':13,  
+       'context':'Edit','form': form,'form2': form2,'form3': form3,'form22': form22,'form29': form29,'form31': form31,'form47': form47,'form66': form66,'sessionid':sessionid,'can_edit':can_edit,'m_percentage':m_percentage,'tot_percentage':tot_percentage,'is_st_filled':is_st_filled,'is_pa_filled':is_pa_filled,'is_sa_filled':is_sa_filled,'is_lf_filled':is_lf_filled,'st_id':st_id,'pa_id':pa_id,'sa_id':sa_id,'lf_id':lf_id,'module':13,  
     }, context_instance=RequestContext(request))
 
 
@@ -8265,6 +8856,7 @@ class StakeholdersListView(ListView):
         context['country'] = self.kwargs['country']
         context['module'] = self.kwargs['module']
         context['sessionid'] = self.kwargs['sessionid']
+        context['context'] = 'View'
         context['roles'] =ROLE
         context['interests'] =INTEREST
         context['influences'] =INTEREST
@@ -8327,62 +8919,45 @@ class StakeholdersListPDFView(PDFTemplateView):
     context_object_name = 'latest'
     model = Stakeholders
     date_field = 'publish_date'
-    template_name = "pce/stakeholders_pdf.html"
+    template_name = "pce/stakeholders.html"
      
     def get_context_data(self, **kwargs): # http://stackoverflow.com/a/15515220
         context = super(StakeholdersListPDFView, self).get_context_data(**kwargs)
         context['country'] = self.kwargs['country']
         context['module'] = self.kwargs['module']
         context['sessionid'] = self.kwargs['sessionid']
-        ROLE_0=0
-        ROLE_1=1
-        ROLE_2=2
-        ROLE_3=3
-        ROLE_4=4
+        context['context'] = 'Pdf'
         ROLE_ = (
-            (ROLE_0, ("--- Please select ---")),
-            (ROLE_1, ("Group leader")),
-            (ROLE_2, ("Client")),
-            (ROLE_3, ("Oversight")),
-            (ROLE_4, ("Advocate")),
+            (0, _("--- Please select ---")),
+            (1, _("Group leader")),
+            (2, _("Client")),
+            (3, _("Oversight")),
+            (4, _("Advocate")),
         )
-        INTEREST_0=0
-        INTEREST_1=1
-        INTEREST_2=2
+     
         INTEREST_ = (
-            (INTEREST_0, ("--- Please select ---")),
-            (INTEREST_1, ("Low")),
-            (INTEREST_2, ("High")),
+            (0, _("--- Please select ---")),
+            (1, _("Low")),
+            (2, _("High")),
 
         )            
 
-
-        IMPORTANCE_0=0
-        IMPORTANCE_1=1
-        IMPORTANCE_2=2
-        IMPORTANCE_3=3
-        IMPORTANCE_4=4
-        IMPORTANCE_5=5
         IMPORTANCE_ = (
-            (IMPORTANCE_0, ("--- Please select ---")),
-            (IMPORTANCE_1, ("0")),
-            (IMPORTANCE_2, ("1")),
-            (IMPORTANCE_3, ("2")),
-            (IMPORTANCE_4, ("3")),
-            (IMPORTANCE_5, ("4")),
+            (0, _("--- Please select ---")),
+            (1, _("0")),
+            (2, _("1")),
+            (3, _("2")),
+            (4, _("3")),
+            (5, _("4")),
         )   
 
-        LEVEL_0=0
-        LEVEL_1=1
-        LEVEL_2=2
-        LEVEL_3=3
-        LEVEL_4=4
+       
         LEVEL_ = (
-            (LEVEL_0, ("--- Please select ---")),
-            (LEVEL_1, ("WORKSHOP PARTICIPANT")),
-            (LEVEL_2, ("SURVEY PARTICIPANT")),
-            (LEVEL_3, ("FOCUS GROUP MEMBER")),
-            (LEVEL_4, ("KEEP INFORMED")),
+            (0, _("--- Please select ---")),
+            (1, _("WORKSHOP PARTICIPANT")),
+            (2, _("SURVEY PARTICIPANT")),
+            (3, _("FOCUS GROUP MEMBER")),
+            (4, _("KEEP INFORMED")),
         )  
 
         context['roles'] =ROLE_
@@ -8466,20 +9041,20 @@ def stakeholders_create(request, country,sessionid=None,module=None):
             return redirect("stakeholders-list", country=user_country_slug, sessionid=sessionid, module=module,id=new_stake.id)
     
         else:
-             return render_to_response('pce/stakeholders_edit.html', {'form': form,'form2': form2,'sessionid':sessionid,'can_edit':can_edit,'version_number':pceversion.version_number,'tot_percentage':get_tot_percentage(sessionid),'module':module,'sessionid':pceversion.id, 'm_percentage':percentage_module,  'is_st_filled':is_st_filled,'is_pa_filled':is_pa_filled,'is_sa_filled':is_sa_filled,    'is_lf_filled':is_lf_filled, },
+             return render_to_response('pce/stakeholders.html', {'context': 'Edit','form': form,'form2': form2,'sessionid':sessionid,'can_edit':can_edit,'version_number':pceversion.version_number,'tot_percentage':get_tot_percentage(sessionid),'module':module,'sessionid':pceversion.id, 'm_percentage':percentage_module,  'is_st_filled':is_st_filled,'is_pa_filled':is_pa_filled,'is_sa_filled':is_sa_filled,    'is_lf_filled':is_lf_filled, },
              context_instance=RequestContext(request))
     else:
         form = StakeholdersForm(initial={'country': country,'session': pceversion.id,'module': module})
         form2 = StakeholdersFieldsFormSet()
        
 
-    return render_to_response('pce/stakeholders_edit.html',{'form': form,'form2': form2,'can_edit':can_edit,'version_number':pceversion.version_number,'tot_percentage':get_tot_percentage(sessionid),'module':module,'sessionid':pceversion.id, 'm_percentage':percentage_module,  'is_st_filled':is_st_filled,'is_pa_filled':is_pa_filled,'is_sa_filled':is_sa_filled,    'is_lf_filled':is_lf_filled, },
+    return render_to_response('pce/stakeholders.html',{'context': 'Edit','form': form,'form2': form2,'can_edit':can_edit,'version_number':pceversion.version_number,'tot_percentage':get_tot_percentage(sessionid),'module':module,'sessionid':pceversion.id, 'm_percentage':percentage_module,  'is_st_filled':is_st_filled,'is_pa_filled':is_pa_filled,'is_sa_filled':is_sa_filled,    'is_lf_filled':is_lf_filled, },
         context_instance=RequestContext(request))
 
         
 @login_required
 @permission_required('pce.add_pceversion', login_url="/accounts/login/")
-def stakeholders_edit(request, country, id=None,sessionid=None,module=None, template_name='pce/stakeholders_edit.html'):
+def stakeholders_edit(request, country, id=None,sessionid=None,module=None, template_name='pce/stakeholders.html'):
     """ Edit stakeholders """
     user = request.user
     author = user
@@ -8517,14 +9092,14 @@ def stakeholders_edit(request, country, id=None,sessionid=None,module=None, temp
             info(request, _("Successfully saved Stakeholders for Module "+str(module)))
             return redirect("stakeholders-list", country=user_country_slug, sessionid=sessionid, module=module,id=id)
         else:
-             return render_to_response('pce/stakeholders_edit.html', {'form': form,'form2': form2,'can_edit':can_edit,'version_number':pceversion.version_number,'tot_percentage':get_tot_percentage(sessionid),'module':module,'sessionid':pceversion.id,'m_percentage':percentage_module,  'is_st_filled':is_st_filled,'is_pa_filled':is_pa_filled,'is_sa_filled':is_sa_filled,    'is_lf_filled':is_lf_filled,},
+             return render_to_response('pce/stakeholders.html', {'context': 'Edit','form': form,'form2': form2,'can_edit':can_edit,'version_number':pceversion.version_number,'tot_percentage':get_tot_percentage(sessionid),'module':module,'sessionid':pceversion.id,'m_percentage':percentage_module,  'is_st_filled':is_st_filled,'is_pa_filled':is_pa_filled,'is_sa_filled':is_sa_filled,    'is_lf_filled':is_lf_filled,},
              context_instance=RequestContext(request))
     else:
         form = StakeholdersForm(instance=stakeholder)
         form2 = StakeholdersFieldsFormSet(instance=stakeholder)
       
     return render_to_response(template_name, {
-        'form': form,'form2': form2,'can_edit':can_edit,'version_number':pceversion.version_number,'tot_percentage':get_tot_percentage(sessionid),'module':module,'sessionid':pceversion.id,'m_percentage':percentage_module,  'is_st_filled':is_st_filled,'is_pa_filled':is_pa_filled,'is_sa_filled':is_sa_filled,    'is_lf_filled':is_lf_filled,
+        'context': 'Edit','form': form,'form2': form2,'can_edit':can_edit,'version_number':pceversion.version_number,'tot_percentage':get_tot_percentage(sessionid),'module':module,'sessionid':pceversion.id,'m_percentage':percentage_module,  'is_st_filled':is_st_filled,'is_pa_filled':is_pa_filled,'is_sa_filled':is_sa_filled,    'is_lf_filled':is_lf_filled,
     }, context_instance=RequestContext(request))
     
     
@@ -8555,6 +9130,7 @@ class ProblemAnalysisListView(ListView):
         context['country'] = self.kwargs['country']
         context['module'] = self.kwargs['module']
         context['sessionid'] = self.kwargs['sessionid']
+        context['context'] = 'View'
         pa_id=''
         st_id=''
         sa_id=''
@@ -8573,6 +9149,9 @@ class ProblemAnalysisListView(ListView):
         if canEdit(self.kwargs['sessionid'],session.country,self.request.user,str(self.kwargs['module'])) and session.status==1:
             can_edit=1
         if  can_see or can_edit: 
+            
+            context['weakeness']=getWeakenessFromModuleNameAndId(int(self.kwargs['module']),int(self.kwargs['sessionid']))
+            
             
             context['moduleid']=getModuleNameAndId(int(self.kwargs['module']),int(self.kwargs['sessionid']))[0]
             context['modulename'] = getModuleNameAndId(int(self.kwargs['module']),int(self.kwargs['sessionid']))[1]
@@ -8607,7 +9186,7 @@ class ProblemAnalysisListPDFView(PDFTemplateView):
     context_object_name = 'latest'
     model = ProblemAnalysis
     date_field = 'publish_date'
-    template_name = 'pce/problemanalysis_pdf.html'
+    template_name = 'pce/problemanalysis.html'
     
   
     def get_context_data(self, **kwargs): # http://stackoverflow.com/a/15515220
@@ -8615,6 +9194,7 @@ class ProblemAnalysisListPDFView(PDFTemplateView):
         context['country'] = self.kwargs['country']
         context['module'] = self.kwargs['module']
         context['sessionid'] = self.kwargs['sessionid']
+        context['context'] =  'Pdf'
         pa_id=''
         if 'id' in self.kwargs:
             pa_id = self.kwargs['id']
@@ -8627,6 +9207,7 @@ class ProblemAnalysisListPDFView(PDFTemplateView):
         if canSee(self.kwargs['sessionid'],session.country,self.request.user,str(self.kwargs['module'])):
             can_see=1
         if  can_see : 
+            context['weakeness']=getWeakenessFromModuleNameAndId(int(self.kwargs['module']),int(self.kwargs['sessionid']))
             
             context['moduleid']=getModuleNameAndId(int(self.kwargs['module']),int(self.kwargs['sessionid']))[0]
             context['modulename'] = getModuleNameAndId(int(self.kwargs['module']),int(self.kwargs['sessionid']))[1]
@@ -8667,7 +9248,8 @@ def problemanalysis_create(request, country,sessionid=None,module=None):
           if pceversion.status==1 and canEdit(sessionid,pceversion.country,user,str(module)):
             can_edit=1
             weakeness=getWeakenessFromModuleNameAndId(int(module),sessionid)
-        
+    print("weakeness")    
+    print(weakeness)    
     if request.method == "POST":
         form = ProblemAnalysisForm(request.POST, request.FILES)
         
@@ -8684,18 +9266,18 @@ def problemanalysis_create(request, country,sessionid=None,module=None):
             info(request, _("Successfully saved Problem Analysis for Module "+str(module)))
             return redirect("problemanalysis-list", country=user_country_slug, sessionid=sessionid,module=module,id=new_pa.id)
         else:
-             return render_to_response('pce/problemanalysis_edit.html', {'form': form,'can_edit':can_edit,'sessionid':sessionid,'version_number':pceversion.version_number,'tot_percentage':get_tot_percentage(sessionid),'m_percentage':percentage_module,'module':module, 'is_st_filled':is_st_filled,'is_pa_filled':is_pa_filled,'is_sa_filled':is_sa_filled,    'is_lf_filled':is_lf_filled,'weakeness':weakeness},
+             return render_to_response('pce/problemanalysis.html', {'context': 'Edit','form': form,'can_edit':can_edit,'sessionid':sessionid,'version_number':pceversion.version_number,'tot_percentage':get_tot_percentage(sessionid),'m_percentage':percentage_module,'module':module, 'is_st_filled':is_st_filled,'is_pa_filled':is_pa_filled,'is_sa_filled':is_sa_filled,    'is_lf_filled':is_lf_filled,'weakeness':weakeness},
              context_instance=RequestContext(request))
     else:
         form = ProblemAnalysisForm(initial={'country': country,'sessionid':sessionid,'module': module})
     
-    return render_to_response('pce/problemanalysis_edit.html',{'form': form,'can_edit':can_edit,'sessionid':sessionid,'version_number':pceversion.version_number,'tot_percentage':get_tot_percentage(sessionid),'m_percentage':percentage_module,'module':module, 'is_st_filled':is_st_filled,'is_pa_filled':is_pa_filled,'is_sa_filled':is_sa_filled,    'is_lf_filled':is_lf_filled,'weakeness':weakeness},
+    return render_to_response('pce/problemanalysis.html',{'context': 'Edit','form': form,'can_edit':can_edit,'sessionid':sessionid,'version_number':pceversion.version_number,'tot_percentage':get_tot_percentage(sessionid),'m_percentage':percentage_module,'module':module, 'is_st_filled':is_st_filled,'is_pa_filled':is_pa_filled,'is_sa_filled':is_sa_filled,    'is_lf_filled':is_lf_filled,'weakeness':weakeness},
         context_instance=RequestContext(request))
 
         
 @login_required
 @permission_required('pce.add_pceversion', login_url="/accounts/login/")
-def problemanalysis_edit(request, country, id=None,sessionid=None,module=None, template_name='pce/problemanalysis_edit.html'):
+def problemanalysis_edit(request, country, id=None,sessionid=None,module=None, template_name='pce/problemanalysis.html'):
     """ Edit problemanalysis """
     user = request.user
     author = user
@@ -8704,11 +9286,14 @@ def problemanalysis_edit(request, country, id=None,sessionid=None,module=None, t
     pceversion = get_object_or_404(PceVersion,  pk=sessionid)
     can_edit=0
     can_see=0
-    
+    weakeness=None
     if id:
         pa = get_object_or_404(ProblemAnalysis, pk=id)
         if pceversion.status==1 and canEdit(sessionid,pceversion.country,user,str(module)):
             can_edit=1
+            weakeness=getWeakenessFromModuleNameAndId(int(module),sessionid)
+            print("weakeness")    
+            print(weakeness.w2)
     else:
         pa = ProblemAnalysis()
     
@@ -8731,7 +9316,7 @@ def problemanalysis_edit(request, country, id=None,sessionid=None,module=None, t
             
             return redirect("problemanalysis-list", country=user_country_slug, sessionid=sessionid,module=module,id=id)
         else:
-             return render_to_response('pce/problemanalysis_edit.html', {'form': form,'can_edit':can_edit,'can_see':can_see,'sessionid':sessionid,'version_number':pceversion.version_number,'tot_percentage':get_tot_percentage(sessionid),'m_percentage':percentage_module,'module':module, 'is_st_filled':is_st_filled,'is_pa_filled':is_pa_filled,'is_sa_filled':is_sa_filled,    'is_lf_filled':is_lf_filled},
+             return render_to_response('pce/problemanalysis.html', {'context': 'Edit','form': form,'can_edit':can_edit,'can_see':can_see,'sessionid':sessionid,'version_number':pceversion.version_number,'tot_percentage':get_tot_percentage(sessionid),'m_percentage':percentage_module,'module':module, 'is_st_filled':is_st_filled,'is_pa_filled':is_pa_filled,'is_sa_filled':is_sa_filled,    'is_lf_filled':is_lf_filled,'weakeness':weakeness},
              context_instance=RequestContext(request))
        
     else:
@@ -8740,7 +9325,7 @@ def problemanalysis_edit(request, country, id=None,sessionid=None,module=None, t
       
       
     return render_to_response(template_name, {
-        'form': form,'can_edit':can_edit,'can_see':can_see,'sessionid':sessionid,'version_number':pceversion.version_number,'tot_percentage':get_tot_percentage(sessionid),'m_percentage':percentage_module,'module':module, 'is_st_filled':is_st_filled,'is_pa_filled':is_pa_filled,'is_sa_filled':is_sa_filled,    'is_lf_filled':is_lf_filled},
+       'context': 'Edit', 'form': form,'can_edit':can_edit,'can_see':can_see,'sessionid':sessionid,'version_number':pceversion.version_number,'tot_percentage':get_tot_percentage(sessionid),'m_percentage':percentage_module,'module':module, 'is_st_filled':is_st_filled,'is_pa_filled':is_pa_filled,'is_sa_filled':is_sa_filled,    'is_lf_filled':is_lf_filled,'weakeness':weakeness},
         context_instance=RequestContext(request))
     
     
@@ -8767,6 +9352,7 @@ class SwotAnalysisListView(ListView):
         context['country'] = self.kwargs['country']
         context['module'] = self.kwargs['module']
         context['sessionid'] = self.kwargs['sessionid']
+        context['context'] = 'View'
         #context['sa_id'] = self.kwargs['id']
        
       
@@ -8797,6 +9383,7 @@ class SwotAnalysisListView(ListView):
             can_edit=1
         if  can_see or can_edit: 
             
+            context['weakeness']=getWeakenessFromModuleNameAndId(int(self.kwargs['module']),int(self.kwargs['sessionid']))
             
             context['problemanalysis'] = get_object_or_404(ProblemAnalysis, session_id=self.kwargs['sessionid'],module=self.kwargs['module'])
             context['version_number'] = session.version_number            
@@ -8832,7 +9419,7 @@ class SwotAnalysisListPDFView(PDFTemplateView):
     context_object_name = 'latest'
     model = SwotAnalysis
     date_field = 'publish_date'
-    template_name = 'pce/swotanalysis_pdf.html'
+    template_name = 'pce/swotanalysis.html'
     
   
     def get_context_data(self, **kwargs): # http://stackoverflow.com/a/15515220
@@ -8845,8 +9432,9 @@ class SwotAnalysisListPDFView(PDFTemplateView):
             sa_id = self.kwargs['id']
         context['sa_id'] = sa_id
         context['latest'] =  SwotAnalysis.objects.filter(id= sa_id)
-        
-       
+        context['context'] = 'Pdf'
+        context['weakeness']=getWeakenessFromModuleNameAndId(int(self.kwargs['module']),int(self.kwargs['sessionid']))
+            
          
         latest1= SwotAnalysis1.objects.filter(swotanalysis_id= sa_id)
         latest2= SwotAnalysis2.objects.filter(swotanalysis_id= sa_id)
@@ -8936,7 +9524,8 @@ def swotanalysis_create(request, country,sessionid=None,module=None):
            if pceversion.status==1 and canEdit(sessionid,pceversion.country,user,str(module)):
             can_edit=1    
             problemanalysis = get_object_or_404(ProblemAnalysis, session_id=sessionid,module=module)
-     
+            weakeness=getWeakenessFromModuleNameAndId(int(module),sessionid)
+            
     if request.method == "POST":
         form = SwotAnalysisForm(request.POST, request.FILES)
         form1 = SwotAnalysis1FormSet(request.POST)
@@ -8969,7 +9558,7 @@ def swotanalysis_create(request, country,sessionid=None,module=None):
             info(request, _("Successfully saved SwotAnalysis for Module "+str(module)))
             return redirect("swotanalysis-list",country=user_country_slug, sessionid=sessionid,module=module,id=new_sa.id)
         else:
-             return render_to_response('pce/swotanalysis_edit.html', {'form': form,'form1': form1,'form2': form2,'form3': form3,'form4': form4,'form5': form5,'can_edit':can_edit,'sessionid':sessionid,'version_number':pceversion.version_number,'tot_percentage':get_tot_percentage(sessionid),'m_percentage':percentage_module,'module':module, 'is_st_filled':is_st_filled,'is_pa_filled':is_pa_filled,'is_sa_filled':is_sa_filled,    'is_lf_filled':is_lf_filled,'problemanalysis':problemanalysis},
+             return render_to_response('pce/swotanalysis.html', {'context':'Edit','form': form,'form1': form1,'form2': form2,'form3': form3,'form4': form4,'form5': form5,'can_edit':can_edit,'sessionid':sessionid,'version_number':pceversion.version_number,'tot_percentage':get_tot_percentage(sessionid),'m_percentage':percentage_module,'module':module, 'is_st_filled':is_st_filled,'is_pa_filled':is_pa_filled,'is_sa_filled':is_sa_filled,    'is_lf_filled':is_lf_filled,'problemanalysis':problemanalysis,'weakeness':weakeness},
              context_instance=RequestContext(request))
     else:
         form = SwotAnalysisForm(initial={'country': country,'session': pceversion.id,'module': module})
@@ -8979,13 +9568,13 @@ def swotanalysis_create(request, country,sessionid=None,module=None):
         form4 = SwotAnalysis4FormSet()
         form5 = SwotAnalysis5FormSet()
     
-    return render_to_response('pce/swotanalysis_edit.html',{'form': form,'form1': form1,'form2': form2,'form3': form3,'form4': form4,'form5': form5,'can_edit':can_edit,'sessionid':sessionid,'version_number':pceversion.version_number,'tot_percentage':get_tot_percentage(sessionid),'m_percentage':percentage_module,'module':module, 'is_st_filled':is_st_filled,'is_pa_filled':is_pa_filled,'is_sa_filled':is_sa_filled,    'is_lf_filled':is_lf_filled,'problemanalysis':problemanalysis},
+    return render_to_response('pce/swotanalysis.html',{'context':'Edit','form': form,'form1': form1,'form2': form2,'form3': form3,'form4': form4,'form5': form5,'can_edit':can_edit,'sessionid':sessionid,'version_number':pceversion.version_number,'tot_percentage':get_tot_percentage(sessionid),'m_percentage':percentage_module,'module':module, 'is_st_filled':is_st_filled,'is_pa_filled':is_pa_filled,'is_sa_filled':is_sa_filled,    'is_lf_filled':is_lf_filled,'problemanalysis':problemanalysis,'weakeness':weakeness},
         context_instance=RequestContext(request))
 
         
 @login_required
 @permission_required('pce.add_pceversion', login_url="/accounts/login/")
-def swotanalysis_edit(request, country, id=None,sessionid=None,module=None, template_name='pce/swotanalysis_edit.html'):
+def swotanalysis_edit(request, country, id=None,sessionid=None,module=None, template_name='pce/swotanalysis.html'):
     """ Edit SwotAnalysis """
     user = request.user
     author = user
@@ -9006,6 +9595,7 @@ def swotanalysis_edit(request, country, id=None,sessionid=None,module=None, temp
         if pceversion.status==1 and canEdit(sessionid,pceversion.country,user,str(module)):
             can_edit=1
             problemanalysis = get_object_or_404(ProblemAnalysis, session_id=sessionid,module=module)
+            weakeness=getWeakenessFromModuleNameAndId(int(module),sessionid)
     else:
         sa = SwotAnalysis()
          
@@ -9036,7 +9626,7 @@ def swotanalysis_edit(request, country, id=None,sessionid=None,module=None, temp
             info(request, _("Successfully saved SwotAnalysis for Module "+str(module)))
             return redirect("swotanalysis-list",country=user_country_slug, sessionid=sessionid,module=module,id=id)
         else:
-             return render_to_response('pce/SwotAnalysis_edit.html', {'form': form,'form1': form1,'form2': form2,'form3': form3,'form4': form4,'form5': form5,'can_edit':can_edit,'sessionid':sessionid,'version_number':pceversion.version_number,'tot_percentage':get_tot_percentage(sessionid),'m_percentage':percentage_module,'module':module, 'is_st_filled':is_st_filled,'is_pa_filled':is_pa_filled,'is_sa_filled':is_sa_filled,    'is_lf_filled':is_lf_filled,'problemanalysis':problemanalysis},
+             return render_to_response('pce/swotanalysis.html', {'context':'Edit','form': form,'form1': form1,'form2': form2,'form3': form3,'form4': form4,'form5': form5,'can_edit':can_edit,'sessionid':sessionid,'version_number':pceversion.version_number,'tot_percentage':get_tot_percentage(sessionid),'m_percentage':percentage_module,'module':module, 'is_st_filled':is_st_filled,'is_pa_filled':is_pa_filled,'is_sa_filled':is_sa_filled,    'is_lf_filled':is_lf_filled,'problemanalysis':problemanalysis,'weakeness':weakeness},
              context_instance=RequestContext(request))
     else:
         form = SwotAnalysisForm(instance=sa)
@@ -9047,7 +9637,7 @@ def swotanalysis_edit(request, country, id=None,sessionid=None,module=None, temp
         form5 = SwotAnalysis5FormSet(instance=sa)
       
     return render_to_response(template_name, {
-        'form': form,'form1': form1,'form2': form2,'form3': form3,'form4': form4,'form5': form5,'can_edit':can_edit,'sessionid':sessionid,'version_number':pceversion.version_number,'tot_percentage':get_tot_percentage(sessionid),'m_percentage':percentage_module,'module':module, 'is_st_filled':is_st_filled,'is_pa_filled':is_pa_filled,'is_sa_filled':is_sa_filled,    'is_lf_filled':is_lf_filled,'problemanalysis':problemanalysis
+        'context':'Edit','form': form,'form1': form1,'form2': form2,'form3': form3,'form4': form4,'form5': form5,'can_edit':can_edit,'sessionid':sessionid,'version_number':pceversion.version_number,'tot_percentage':get_tot_percentage(sessionid),'m_percentage':percentage_module,'module':module, 'is_st_filled':is_st_filled,'is_pa_filled':is_pa_filled,'is_sa_filled':is_sa_filled,    'is_lf_filled':is_lf_filled,'problemanalysis':problemanalysis,'weakeness':weakeness
     }, context_instance=RequestContext(request))
    
   
@@ -9073,8 +9663,8 @@ class LogicalFrameworkListView(ListView):
         context['country'] = self.kwargs['country']
         context['module'] = self.kwargs['module']
         context['sessionid'] = self.kwargs['sessionid']
+        context['context'] = 'View'
         
-        #context['lf_id'] = self.kwargs['id']
         st_id=''
         pa_id=''
         sa_id=''
@@ -9094,7 +9684,8 @@ class LogicalFrameworkListView(ListView):
             latest4= LogicalFrameworkAct4.objects.filter(logicalframework_id= self.id)
             latest5= LogicalFrameworkAct5.objects.filter(logicalframework_id= self.id)
             context['problemanalysis']    = get_object_or_404(ProblemAnalysis, session_id=self.kwargs['sessionid'],module=self.kwargs['module'])
-   
+            context['weakeness']=getWeakenessFromModuleNameAndId(int(self.kwargs['module']),int(self.kwargs['sessionid']))
+       
             context['latest1'] = latest1
             context['latest2'] = latest2
             context['latest3'] = latest3
@@ -9133,13 +9724,14 @@ class LogicalFrameworkListPDFView(PDFTemplateView):
     context_object_name = 'latest'
     model = LogicalFramework
     date_field = 'publish_date'
-    template_name = 'pce/logicalframework_pdf.html'
+    template_name = 'pce/logicalframework.html'
  
     def get_context_data(self, **kwargs): # http://stackoverflow.com/a/15515220
         context = super(LogicalFrameworkListPDFView, self).get_context_data(**kwargs)
         context['country'] = self.kwargs['country']
         context['module'] = self.kwargs['module']
         context['sessionid'] = self.kwargs['sessionid']
+        context['context'] = 'Pdf'
        
         context['lf_id'] = self.kwargs['id']
         context['latest'] =     LogicalFramework.objects.filter(id= self.kwargs['id'])
@@ -9156,7 +9748,8 @@ class LogicalFrameworkListPDFView(PDFTemplateView):
             latest4= LogicalFrameworkAct4.objects.filter(logicalframework_id= self.kwargs['id'])
             latest5= LogicalFrameworkAct5.objects.filter(logicalframework_id= self.kwargs['id'])
             context['problemanalysis']    = get_object_or_404(ProblemAnalysis, session_id=self.kwargs['sessionid'],module=self.kwargs['module'])
-   
+            context['weakeness']=getWeakenessFromModuleNameAndId(int(self.kwargs['module']),int(self.kwargs['sessionid']))
+       
             context['latest1'] = latest1
             context['latest2'] = latest2
             context['latest3'] = latest3
@@ -9189,7 +9782,7 @@ def logicalframework_create(request, country,sessionid=None,module=None):
     is_pa_filled= ( is_problemanalysis_filled(sessionid,module)>0)
     is_sa_filled= ( is_swotanalysis_filled(sessionid,module)>0)
     is_lf_filled=(  is_logicalframework_filled(sessionid,module)>0)
-    
+    weakeness=None
   
     can_edit=0
     problemanalysis=None
@@ -9200,7 +9793,8 @@ def logicalframework_create(request, country,sessionid=None,module=None):
           if pceversion.status==1 and canEdit(sessionid,pceversion.country,user,str(module)):
             can_edit=1
             problemanalysis    = get_object_or_404(ProblemAnalysis, session_id=sessionid,module=module)
-   
+            weakeness=getWeakenessFromModuleNameAndId(int(module),sessionid)
+       
            
     if request.method == "POST":
         form = LogicalFrameworkForm(request.POST, request.FILES)
@@ -9235,7 +9829,7 @@ def logicalframework_create(request, country,sessionid=None,module=None):
             
             return redirect("logicalframework-list", country=user_country_slug, sessionid=sessionid,module=module,id=new_lf.id)
         else:
-             return render_to_response('pce/logicalframework_edit.html', {'form': form,'form1': form1,'form2': form2,'form3': form3,'form4': form4,'form5': form5,'can_edit':can_edit,'sessionid':sessionid,'version_number':pceversion.version_number,'tot_percentage':get_tot_percentage(sessionid),'m_percentage':percentage_module,'module':module, 'is_st_filled':is_st_filled,'is_pa_filled':is_pa_filled,'is_sa_filled':is_sa_filled,    'is_lf_filled':is_lf_filled,'problemanalysis':problemanalysis},
+             return render_to_response('pce/logicalframework.html', {'context': 'Edit','form': form,'form1': form1,'form2': form2,'form3': form3,'form4': form4,'form5': form5,'can_edit':can_edit,'sessionid':sessionid,'version_number':pceversion.version_number,'tot_percentage':get_tot_percentage(sessionid),'m_percentage':percentage_module,'module':module, 'is_st_filled':is_st_filled,'is_pa_filled':is_pa_filled,'is_sa_filled':is_sa_filled,    'is_lf_filled':is_lf_filled,'problemanalysis':problemanalysis,'weakeness':weakeness},
              context_instance=RequestContext(request))
        
     else:
@@ -9248,13 +9842,13 @@ def logicalframework_create(request, country,sessionid=None,module=None):
         
        
 
-    return render_to_response('pce/logicalframework_edit.html',{'form': form,'form1': form1,'form2': form2,'form3': form3,'form4': form4,'form5': form5,'can_edit':can_edit,'sessionid':sessionid,'version_number':pceversion.version_number,'tot_percentage':get_tot_percentage(sessionid),'m_percentage':percentage_module,'module':module, 'is_st_filled':is_st_filled,'is_pa_filled':is_pa_filled,'is_sa_filled':is_sa_filled,    'is_lf_filled':is_lf_filled,'problemanalysis':problemanalysis},
+    return render_to_response('pce/logicalframework.html',{'context': 'Edit','form': form,'form1': form1,'form2': form2,'form3': form3,'form4': form4,'form5': form5,'can_edit':can_edit,'sessionid':sessionid,'version_number':pceversion.version_number,'tot_percentage':get_tot_percentage(sessionid),'m_percentage':percentage_module,'module':module, 'is_st_filled':is_st_filled,'is_pa_filled':is_pa_filled,'is_sa_filled':is_sa_filled,    'is_lf_filled':is_lf_filled,'problemanalysis':problemanalysis,'weakeness':weakeness},
         context_instance=RequestContext(request))
 
         
 @login_required
 @permission_required('pce.add_pceversion', login_url="/accounts/login/")
-def logicalframework_edit(request, country, id=None,sessionid=None,module=None, template_name='pce/logicalframework_edit.html'):
+def logicalframework_edit(request, country, id=None,sessionid=None,module=None, template_name='pce/logicalframework.html'):
     """ Edit LogicalFramework """
     user = request.user
     author = user
@@ -9267,7 +9861,7 @@ def logicalframework_edit(request, country, id=None,sessionid=None,module=None, 
     is_pa_filled= ( is_problemanalysis_filled(sessionid,module)>0)
     is_sa_filled= ( is_swotanalysis_filled(sessionid,module)>0)
     is_lf_filled=(  is_logicalframework_filled(sessionid,module)>0)
- 
+    weakeness=None
   
     can_edit=0
     problemanalysis=None
@@ -9276,7 +9870,7 @@ def logicalframework_edit(request, country, id=None,sessionid=None,module=None, 
         if pceversion.status==1 and canEdit(sessionid,pceversion.country,user,str(module)):
             can_edit=1
             problemanalysis    = get_object_or_404(ProblemAnalysis, session_id=sessionid,module=module)
-   
+            weakeness=getWeakenessFromModuleNameAndId(int(module),sessionid)
     else:
         lf = LogicalFramework()
    
@@ -9309,7 +9903,7 @@ def logicalframework_edit(request, country, id=None,sessionid=None,module=None, 
           
             return redirect("logicalframework-list", country=user_country_slug, sessionid=sessionid,module=module,id=id)
         else:
-             return render_to_response('pce/logicalframework_edit.html', {'form': form,'form1': form1,'form2': form2,'form3': form3,'form4': form4,'form5': form5,'can_edit':can_edit,'sessionid':sessionid,'version_number':pceversion.version_number,'tot_percentage':get_tot_percentage(sessionid),'m_percentage':percentage_module,'module':module, 'is_st_filled':is_st_filled,'is_pa_filled':is_pa_filled,'is_sa_filled':is_sa_filled,    'is_lf_filled':is_lf_filled,'problemanalysis':problemanalysis},
+             return render_to_response('pce/logicalframework.html', {'context': 'Edit','form': form,'form1': form1,'form2': form2,'form3': form3,'form4': form4,'form5': form5,'can_edit':can_edit,'sessionid':sessionid,'version_number':pceversion.version_number,'tot_percentage':get_tot_percentage(sessionid),'m_percentage':percentage_module,'module':module, 'is_st_filled':is_st_filled,'is_pa_filled':is_pa_filled,'is_sa_filled':is_sa_filled,    'is_lf_filled':is_lf_filled,'problemanalysis':problemanalysis,'weakeness':weakeness},
              context_instance=RequestContext(request))
        
     else:
@@ -9323,7 +9917,7 @@ def logicalframework_edit(request, country, id=None,sessionid=None,module=None, 
        
       
     return render_to_response(template_name, {
-      'form': form,'form1': form1,'form2': form2,'form3': form3,'form4': form4,'form5': form5,'can_edit':can_edit,'sessionid':sessionid,'version_number':pceversion.version_number,'tot_percentage':get_tot_percentage(sessionid),'m_percentage':percentage_module,'module':module, 'is_st_filled':is_st_filled,'is_pa_filled':is_pa_filled,'is_sa_filled':is_sa_filled,    'is_lf_filled':is_lf_filled,'problemanalysis':problemanalysis},
+      'context': 'Edit','form': form,'form1': form1,'form2': form2,'form3': form3,'form4': form4,'form5': form5,'can_edit':can_edit,'sessionid':sessionid,'version_number':pceversion.version_number,'tot_percentage':get_tot_percentage(sessionid),'m_percentage':percentage_module,'module':module, 'is_st_filled':is_st_filled,'is_pa_filled':is_pa_filled,'is_sa_filled':is_sa_filled,    'is_lf_filled':is_lf_filled,'problemanalysis':problemanalysis,'weakeness':weakeness},
   context_instance=RequestContext(request))
   
 from docx import Document
@@ -9593,7 +10187,7 @@ def generate_report(request, country,sessionid=None):
             countryname=str(user.get_profile().country)
             regionname=str(dict(REGIONS_LABELS)[module1.region])
            
-            p=document.add_paragraph(""+countryname+" is a country situated in "+regionname+".  It has population of about "+str(module1.m_3)+". Total land area is "+str(module1.m_4)+" sq.km. with a total arable land area of "+str(module1.m_5)+" sq.km. Total natural vegetation occupies "+str(module1.m_6)+" sq.km.\n\nThe major crops grown in the country are: "+str(m1m7)+".\n\nTen major imports of plant and plant products are: "+str(m1m8)+". Total value of imports of plant and plant products (including forestry products) amounted to "+str(dict(VAL_IMP)[module1.m_9])+" in "+countryname+"  major trading partners in plants and plant products imports are "+str(m1m20)+".\n\nTen major exports of plant and plant products are: "+str(m1m11)+". Total value of exports of plant and plant products (including forestry products) amounted to "+str(dict(VAL_EXP)[module1.m_12])+" in "+countryname+" major trading partners in plants and plant products exports are "+str(m1m21)+". "+str(dict(VAL_PERCENT)[module1.m_13])+" % of total exports (includes Forestry) are re-export consignments.\n\nThe Gross National Income (GNI) per capita is estimated at "+str(module1.m_14)+" US $; latest GDP in US $ (World Bank) is "+str(module1.m_15)+". Percentage contribution of agriculture (including forestry) to GDP is about "+str(dict(VAL_PERCENT)[module1.m_16])+" %; with about "+str(dict(VAL_PERCENT)[module1.m_17])+" % for plants and plant products (including forestry). The agricultural labour force (including forestry) as a percentage of total labour force is "+str(dict(VAL_PERCENT)[module1.m_18])+" %. "+str(dict(VAL_PERCENT)[module1.m_19])+" % of the agricultural labour force is directly employed in the production of plant and plant products (including forestry).\n\n"+countryname+"  has membership of, or is signatory to, the following organizations/ conventions: "+str(m1m22)+". It is a member of the following Regional economic integration/ co-operation organizations: "+str(m1m23)+". Currently there are "+str(dict(NUM_BILATERAL)[module1.m_24])+" bilateral phytosanitary arrangements in operation and "+str(dict(NUM_BILATERAL)[module1.m_25])+"  more negotiations are in progress.\n\nDuring the last few years, major aid programs that have significantly contributed to phytosanitary capacity development or strengthening in the country include : "+str(m1m26)+". ")
+            p=document.add_paragraph(""+countryname+" is a country situated in "+regionname+".  It has population of about "+str(module1.m_3)+". Total land area is "+str(module1.m_4)+" sq.km. with a total arable land area of "+str(module1.m_5)+" sq.km. Total natural vegetation occupies "+str(module1.m_6)+" sq.km.\n\nThe major crops grown in the country are: "+str(m1m7)+".\n\nTen major imports of plant and plant products are: "+str(m1m8)+". Total value of imports of plant and plant products (including forestry products) amounted to "+str(dict(VAL_IMP)[module1.m_9])+" in "+countryname+"'s  major trading partners in plants and plant products imports are "+str(m1m20)+".\n\nTen major exports of plant and plant products are: "+str(m1m11)+". Total value of exports of plant and plant products (including forestry products) amounted to "+str(dict(VAL_EXP)[module1.m_12])+" in "+countryname+"''s major trading partners in plants and plant products exports are "+str(m1m21)+". "+str(dict(VAL_PERCENT)[module1.m_13])+" % of total exports (includes Forestry) are re-export consignments.\n\nThe Gross National Income (GNI) per capita is estimated at "+str(module1.m_14)+" US $; latest GDP in US $ (World Bank) is "+str(module1.m_15)+". Percentage contribution of agriculture (including forestry) to GDP is about "+str(dict(VAL_PERCENT)[module1.m_16])+" %; with about "+str(dict(VAL_PERCENT)[module1.m_17])+" % for plants and plant products (including forestry). The agricultural labour force (including forestry) as a percentage of total labour force is "+str(dict(VAL_PERCENT)[module1.m_18])+" %. "+str(dict(VAL_PERCENT)[module1.m_19])+" % of the agricultural labour force is directly employed in the production of plant and plant products (including forestry).\n\n"+countryname+"  has membership of or is signatory to, the following organizations/ conventions: "+str(m1m22)+". It is a member of the following Regional economic integration/ co-operation organizations: "+str(m1m23)+". Currently there are "+str(dict(NUM_BILATERAL)[module1.m_24])+" bilateral phytosanitary arrangements in operation and "+str(dict(NUM_BILATERAL)[module1.m_25])+"  more negotiations are in progress.\n\nDuring the last few years, major aid programs that have significantly contributed to phytosanitary capacity development or strengthening in the country include : "+str(m1m26)+". ")
             document.add_paragraph()
             document.add_paragraph()
             document.add_paragraph()
@@ -9877,7 +10471,7 @@ def generate_report(request, country,sessionid=None):
             document.add_paragraph()
             p=document.add_paragraph("")
             p.add_run('5.1 Programme overview :').bold = True
-            document.add_paragraph("The programme overview table constitutes the development strategy for the NPPO during the .... year period 20...- 20...\nIt summarizes the following\ncriteria:\n- Development focus area (i.e. the different modules)\n- Overall objective/Goal of the whole plan\n- Specific objective/purpose related to the overall objectives/goal for each module\n- Outputs expected to result from each activity\nAn estimate of the funds required to realize the activities of the programme is ....\n\nA log frame matrix and indicative work plan for each module can be seen in Annex 1")
+            document.add_paragraph("The programme overview table constitutes the development strategy for the NPPO during the .... year period 20...- 20...\nIt summarizes the following criteria:\n- Development focus area (i.e. the different modules)\n- Overall objective/Goal of the whole plan\n- Specific objective/purpose related to the overall objectives/goal for each module\n- Outputs expected to result from each activity\nAn estimate of the funds required to realize the activities of the programme is ....\n\nA log frame matrix and indicative work plan for each module can be seen in Annex 1")
             p=document.add_paragraph("")
             p.add_run('Programme overview :').bold = True
           
@@ -9942,7 +10536,7 @@ def generate_report(request, country,sessionid=None):
            
             document.add_paragraph()
             p=document.add_paragraph("")
-            p.add_run('Appendix 1 - Strategic framework').bold = True
+            p.add_run('Annex 1 - Strategic framework').bold = True
             document.add_paragraph()
             document.add_paragraph("Strategic framework consists of Logical frameworks and associated work plans for each applied module ")
             document.add_paragraph()
@@ -10362,7 +10956,7 @@ def generate_report(request, country,sessionid=None):
             p=document.add_paragraph("")
             p.add_run("Module 9 - "+str(m_names[9])).bold = True
             p=document.add_paragraph("")
-            p.add_run("The human resources of the pest surveillance activities").bold = True
+            p.add_run("The human resources involved in eradication programmes").bold = True
          
        
             
