@@ -35,7 +35,7 @@
 
         {% if  publication.groups.all %}
         {% for g in request.user.groups.all %}
-        {% if g.name == 'Observers' or g in page.get_content_model.groups.all and g not in publication.groups.all %}
+        {% if g.name == 'Observers' or g.name == 'SC Observers' or g in page.get_content_model.groups.all and g not in publication.groups.all %}
         <tr id="media-file-{{ publication.id }}">
            {%if  page.publicationlibrary.show_agenda_doc_colums %}
             <td>{{ publication.document_number }}</td>
