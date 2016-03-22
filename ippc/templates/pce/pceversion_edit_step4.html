@@ -1,0 +1,73 @@
+{% extends "pce/basepce.html" %}
+{% load pages_tags translate_tags mezzanine_tags i18n future staticfiles accounts_tags %}
+
+{% block meta_title %}{% trans "Configuration" %} - {{ user.get_profile.country.name}} {% endblock %}
+
+
+
+{% block body_class %}wide{% endblock %}
+
+{% block breadcrumb_menu %}
+<li>
+    <a href="/pce/{{ user.get_profile.country.name }}/sessions">{% trans "PCE Home" %}</a>
+    <span class="divider">/</span>
+</li>
+<li class="active">
+    {{ user.get_profile.country.name }} - {% trans " PCE Configuration: Finished" %}
+</li>
+
+{% endblock %}
+
+{% block local_nav %}
+{% endblock local_nav %}
+
+{% block pageinfo %}
+{% endblock pageinfo %}
+
+{% block main %}
+{% if can_edit %}
+
+<div class="row-fluid">
+    <div class="span8">
+        <div class="panel panel-info">
+            <div  class="alert alert-success" role="alert">
+                <h3>{% trans "Configuration Complete!" %}</h3>
+            </div>
+            <div class="panel-body">
+                
+                    {% trans "You can now:" %}<a href="/pce/{{ user.get_profile.country.name|slugify }}/session/{{sessionid}}/modules"> {% trans "Begin work" %} </a><br>
+                    {% trans "Remember you can track your progress at any time in the " %}<a href="/pce/{{ user.get_profile.country.name|slugify }}/session/dashboard/{{sessionid}}"> {% trans "Dashboard" %} </a><br>
+                    {% trans "If you are a Manager you can also go back and modify the PCE configuration at any time by click on the Configuration tab on the top navigation bar." %}
+                
+            </div>
+        </div>      
+    </div>
+
+
+
+    {% include "pce/userdetails_panel.html" %} </div>
+  <div class="row-fluid"><div class="span8"> </div>
+   
+    <div class="span4">
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <h4 class="panel-title"> {% trans "Configuration Progress" %}</h4>
+            </div>
+            <div class="panel-body">
+                <b>1. </b>{% trans "Basic Information  " %}<span class="icon-ok"> </span><br>
+                <b>2. </b>{% trans "Q & A Modules " %}<span class="icon-ok"> </span><br>
+                <b>3.</b>{% trans "User Groups  " %}<span class="icon-ok"> </span><br>
+            </div>
+        </div>
+    </div>
+
+
+
+</div>
+{% else %}
+      <p class="alert alert-warning">{% trans "No permissions to see this page." %}</p>
+ 
+{% endif %}
+
+{% endblock %}
+

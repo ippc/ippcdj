@@ -1,0 +1,207 @@
+{% extends "pce/basepce.html" %}
+{% load pages_tags translate_tags mezzanine_tags i18n future staticfiles accounts_tags %}
+
+{% block meta_title %}{% trans "Configuration" %} - {{ user.get_profile.country.name}} {% endblock %}
+
+
+
+{% block body_class %}wide{% endblock %}
+
+{% block breadcrumb_menu %}
+<li>
+    <a href="/pce/{{ user.get_profile.country.name }}/sessions">{% trans "PCE Home" %}</a>
+    <span class="divider">/</span>
+</li>
+<li class="active">
+    {{ user.get_profile.country.name }} - {% trans "Configuration Step 3 of 3" %}
+</li>
+{% endblock %}
+
+{% block local_nav %}
+{% endblock local_nav %}
+
+{% block pageinfo %}
+{% endblock pageinfo %}
+
+{% block main %}
+{% if can_edit %}
+
+<h1><span class="normal">{% trans "Configuration Step 3 of 3" %}</span></h1>
+<div class="row-fluid">
+    <div class="span8">
+        <div class="panel panel-info">
+            <div  class="alert alert-success" role="alert">
+                <h5 class="panel-title"> {% trans "User Groups (Stakeholders)" %}</h5>
+            </div>
+            <div class="panel-body">
+
+
+                <p>{% trans "Please assign a coordinator/editor with corresponding email adress who will be responsable for completing each module." %}</p>
+
+                <form class="customform" method="POST" action="" enctype="multipart/form-data">
+                    {% csrf_token %}
+                    {% if form.non_field_errors or form.errors %}
+                    <div class="alert alert-error">{% trans "Please correct the errors below." %}
+                        <ul>
+                            {% for error in form.non_field_errors %}
+                            <li>{{ error }}</li>
+                            {% endfor %}
+                            {% for error in form.errors %}
+                            <li>{{ error }}</li>
+                            {% endfor %}
+                        </ul>
+                    </div>
+                    {% endif %}
+
+                 <div class="panel panel-default">
+                        <div class="alert alert-success">
+                            <h5 class="panel-title"> {% trans "SYSTEM LEVEL" %}</h5>
+                        </div>
+                        <div class="panel-body">
+                            <div class="panel panel-default">
+                                <div class="panel-heading">
+                                    <h6 class="panel-title"> {% trans "Group 1: Country Profile and Environmental Forces Modules" %}</h6>
+                                </div>
+                                <div class="panel-body">
+                                    <b>{% trans "First name" %}   </b><input id="id_ed1_firstname" value="{{pceversion.ed1_firstname}}" maxlength="250" name="ed1_firstname" type="text" /><br>
+                                    <b>{% trans "Last name" %}  </b><input id="id_ed1_lastname" value="{{pceversion.ed1_lastname}}" maxlength="250" name="ed1_lastname" type="text" /><br>
+                                    <b>{% trans "Email" %}  </b><input id="id_ed1_email" value="{{pceversion.ed1_email}}" maxlength="250" name="ed1_email" type="text" /><br>
+                                </div>
+                            </div>	
+                            <div class="panel panel-default">
+                                <div class="panel-heading">
+                                    <h6 class="panel-title"> {% trans "Group 2: National Phytosanitary Legislation Module" %}</h6>
+                                </div>
+                                <div class="panel-body">
+                                    <b>{% trans "First name" %}  </b><input id="id_ed2_firstname" value="{{pceversion.ed2_firstname}}" maxlength="250" name="ed2_firstname" type="text" /><br>
+                                    <b>{% trans "Last name" %}  </b><input id="id_ed2_lastname" value="{{pceversion.ed2_lastname}}" maxlength="250" name="ed2_lastname" type="text" /><br>
+                                    <b>{% trans "Email" %}  </b><input id="id_ed2_email" value="{{pceversion.ed2_email}}" maxlength="250" name="ed2_email" type="text" /><br>
+                                </div>
+                            </div>	
+                        </div>
+                    </div>         
+
+                    <div class="panel panel-default">
+                        <div class="alert alert-success">
+                            <h5 class="panel-title"> {% trans "ORGANIZAION LEVEL" %}</h5>
+                        </div>
+                        <div class="panel-body">
+                            <div class="panel panel-default">
+                                <div class="panel-heading">
+                                    <h6 class="panel-title"> {% trans "Group 3: NPPO modules" %}</h6>
+                                    <em>This group contains the following modules:" %}<br>
+                                        - {% trans "NPPO's mission and strategy" %}<br>
+                                        - {% trans "NPPO's Structure and Processes" %}<br>
+                                        - {% trans "NPPO's Resources" %}</em>
+                                </div>
+                                <div class="panel-body">
+                                    <b>{% trans "First name" %}  </b><input id="id_ed3_firstname" value="{{pceversion.ed3_firstname}}" maxlength="250" name="ed3_firstname" type="text" /><br>
+                                    <b>{% trans "Last name" %}  </b><input id="id_ed3_lastname" value="{{pceversion.ed3_lastname}}"  maxlength="250" name="ed3_lastname" type="text" /><br>
+                                    <b>{% trans "Email" %}  </b><input id="id_ed3_email" value="{{pceversion.ed3_email}}" maxlength="250" name="ed3_email" type="text" /><br>
+                                </div>
+                            </div>	
+                        </div>
+                    </div>                         
+
+                    <div class="panel panel-default">
+                        <div class="alert alert-success">
+                            <h5 class="panel-title"> {% trans "CORE ACTIVITIES LEVEL" %}</h5>
+                        </div>
+                        <div class="panel-body">
+                            <div class="panel panel-default">
+                                <div class="panel-heading">
+                                    <h6 class="panel-title"> {% trans "Group 4: Pest Diagnostic Capacity Module" %}</h6>
+                                </div>
+                                <div class="panel-body">
+                                    <b>{% trans "First name" %} </b><input id="id_ed4_firstname" value="{{pceversion.ed4_firstname}}" maxlength="250" name="ed4_firstname" type="text" /><br>
+                                    <b>{% trans "Last name" %}  </b><input id="id_ed4_lastname" value="{{pceversion.ed4_lastname}}"  maxlength="250" name="ed4_lastname" type="text" /><br>
+                                    <b>{% trans "Email" %}  </b><input id="id_ed4_email" value="{{pceversion.ed4_email}}" maxlength="250" name="ed4_email" type="text" /><br>
+                                </div>
+                            </div>	
+                            <div class="panel panel-default">
+                                <div class="panel-heading">
+                                    <h6 class="panel-title"> {% trans "Group 5: Pest Surveillance and Reporting Module" %}</h6>
+                                </div>
+                                <div class="panel-body">
+                                    <b>{% trans "First name" %}  </b><input id="id_ed5_firstname" value="{{pceversion.ed5_firstname}}" maxlength="250" name="ed5_firstname" type="text" /><br>
+                                    <b>{% trans "Last name" %}  </b><input id="id_ed5_lastname" value="{{pceversion.ed5_lastname}}"  maxlength="250" name="ed5_lastname" type="text" /><br>
+                                    <b>{% trans "Email" %}  </b><input id="id_ed5_email" value="{{pceversion.ed5_email}}" maxlength="250" name="ed5_email" type="text" /><br>
+                                </div>
+                            </div>	
+
+                            <div class="panel panel-default">
+                                <div class="panel-heading">
+                                    <h6 class="panel-title"> {% trans "Group 6: Pest Eradication Module" %}</h6>
+                                </div>
+                                <div class="panel-body">
+                                    <b>{% trans "First name" %}  </b><input id="id_ed6_firstname" value="{{pceversion.ed6_firstname}}" maxlength="250" name="ed6_firstname" type="text" /><br>
+                                    <b>{% trans "Last name" %}  </b><input id="id_ed6_lastname" value="{{pceversion.ed6_lastname}}"  maxlength="250" name="ed6_lastname" type="text" /><br>
+                                    <b>{% trans "Email" %}  </b><input id="id_ed6_email" value="{{pceversion.ed6_email}}" maxlength="250" name="ed6_email" type="text" /><br>
+                                </div>
+                            </div>	
+                       
+
+                            <div class="panel panel-default">
+                                <div class="panel-heading">
+                                    <h6 class="panel-title"> {% trans "Group 7: Pest Exclusion Modules" %}</h6>
+                                    <em>{% trans "This group contains the following modules:" %}<br>
+                                        - {% trans "PHYTOSANITARY IMPORT REGULATORY SYSTEM" %}<br>
+                                        - {% trans "PEST RISK ANALYSIS" %}</em>
+                                </div>
+                                <div class="panel-body">
+                                    <b>{% trans "First name" %}  </b><input id="id_ed7_firstname" value="{{pceversion.ed7_firstname}}" maxlength="250" name="ed7_firstname" type="text" /><br>
+                                    <b>{% trans "Last name " %} </b><input id="id_ed7_lastname" value="{{pceversion.ed7_lastname}}" maxlength="250" name="ed7_lastname" type="text" /><br>
+                                    <b>{% trans "Email" %}  </b><input id="id_ed7_email" value="{{pceversion.ed7_email}}" maxlength="250" name="ed7_email" type="text" /><br>
+                                </div>
+                            </div>	
+
+
+                            <div class="panel panel-default">
+                                <div class="panel-heading">
+                                    <h6 class="panel-title"> {% trans "Group 8: Market Access Modules" %}</h6>
+                                    <em>{% trans "This group contains the following modules:" %}<br>
+                                        - {% trans "Market Access PEST FREE AREAS, PLACES AND SITES, LOW PEST PREVALENCE AREAS" %}<br>
+                                        - {% trans "EXPORT CERTIFICATION, RE-EXPORT, TRANSIT" %}</em>
+                                </div>
+                                <div class="panel-body">
+                                    <b>{% trans "First name" %}  </b><input id="id_ed8_firstname" value="{{pceversion.ed8_firstname}}" maxlength="250" name="ed8_firstname" type="text" /><br>
+                                    <b>{% trans "Last name" %}  </b><input id="id_ed8_lastname" value="{{pceversion.ed8_lastname}}"  maxlength="250" name="ed8_lastname" type="text" /><br>
+                                    <b>{% trans "Email" %}  </b><input id="id_ed8_email" value="{{pceversion.ed8_email}}" maxlength="250" name="ed8_email" type="text" /><br>
+                                </div>
+                            </div>	
+                        </div>
+                    </div>
+                   
+            </div>                           
+       
+        <div class="form-actions">
+            <button type="submit" class="btn btn-info btn-large" tabindex="7">{% trans "Save and Go to next step" %}</button> {% trans "or" %} <a href="javascript:history.go(-1)">{% trans "Cancel" %}</a>
+        </div>   </div>
+        </form>
+</div>    
+{% include "pce/userdetails_panel.html" %}
+<div class="span4">
+    <div class="panel panel-default">
+        <div class="panel-heading">
+            <h6 class="panel-title"> {% trans "Configuration Progress" %}</h6>
+        </div>
+        <div class="panel-body">
+            <b>1.   </b>{% trans "Basic Information" %}<br>
+            <b>2.   </b>{% trans "Q & A Modules" %}<br>
+            <b>3.  </b><span class="label label-success">{% trans "User Groups" %}</span><br>
+        </div>
+    </div>
+</div>
+
+</div>
+
+{% else %}
+<p class="alert alert-warning">{% trans "No permissions to see this page." %}</p>
+
+{% endif %}
+
+{% endblock %}
+
+
+
+

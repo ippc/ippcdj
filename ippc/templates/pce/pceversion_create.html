@@ -1,0 +1,114 @@
+{% extends "pce/basepce.html" %}
+{% load pages_tags translate_tags mezzanine_tags i18n future staticfiles accounts_tags %}
+
+{% block meta_title %}{% trans "Configuration" %} - {{ user.get_profile.country.name}} {% endblock %}
+
+
+
+{% block body_class %}wide{% endblock %}
+
+{% block breadcrumb_menu %}
+<li>
+    <a href="/pce">{% trans "PCE Home" %}</a>
+    <span class="divider">/</span>
+</li>
+<li class="active">
+    {{ user.get_profile.country.name }} - {% trans " PCE Configuration: Basic Information" %}
+</li>
+
+
+{% endblock %}
+
+{% block local_nav %}
+{% endblock local_nav %}
+
+{% block pageinfo %}
+{% endblock pageinfo %}
+
+{% block main %}
+
+<script type="text/javascript">
+window.onload = function () {
+    checkRules();
+}
+function checkRules()
+{
+    
+    document.getElementById('id_firstname_facilitator').disabled=document.getElementById('id_is_facilitated_1').checked;
+    document.getElementById('id_lastname_facilitator').disabled=document.getElementById('id_is_facilitated_1').checked;
+    document.getElementById('id_email_facilitator').disabled=document.getElementById('id_is_facilitated_1').checked;
+}
+</script>
+
+
+<h1><span class="normal">{% trans "Configuration Step 1 of 3" %}</span></h1>
+{% if can_edit %}
+<div class="row-fluid">
+    <div class="span8">
+        <div class="panel panel-info">
+            <div  class="alert alert-success" role="alert">
+                <h3 class="panel-title"> {% trans "Basic Information" %}</h3>
+            </div>
+            <div class="panel-body">
+
+
+                <p>{% trans "Thank you for using the Phytosanitary Capacity Evalutation tool. Please complete provide the following basic information to begin." %}</p>
+
+                <form class="customform" method="POST" action="" enctype="multipart/form-data">
+                    {% csrf_token %}
+                    <fieldset>
+                             {% for f in form %}
+        {% if not f.is_hidden%}
+      
+                <div class="control-group">
+                    <label>{{f.label}}</label>
+                    <div class="controls">
+                        {% if f.name == 'is_facilitated' %}
+                        <input id="id_is_facilitated_0" name="is_facilitated" type="radio" {%if f.value == 1 %}checked="checked"{% endif%} value="True" onclick="checkRules();">{% trans "Yes" %}&#160;
+                        <input id="id_is_facilitated_1" name="is_facilitated" type="radio" {%if f.value == 0 %}checked="checked"{% endif%} value="False" onclick="checkRules();">{% trans "No" %}
+                          {% else %}
+                            {{f}}
+                        {% endif %}
+                    </div>
+                </div>
+           
+                                  
+{% endif %}{% endfor %}
+                        <div class="form-actions">
+                            <button type="submit" class="btn btn-info btn-large" tabindex="7">{% trans "Save and Go to next step" %}</button> or <a href="javascript:history.go(-1)">{% trans "Cancel" %}</a>
+                        </div>
+                    </fieldset>
+                </form>
+            </div>
+
+        </div>      
+    </div>
+
+
+
+    {% include "pce/userdetails_panel.html" %}
+
+    <div class="span4">
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <h4 class="panel-title"> {% trans "Configuration Progress" %}</h4>
+            </div>
+            <div class="panel-body">
+                <b>1. </b><span class="label label-success">{% trans "Basic Information" %}</span><br>
+                <b>2. </b>{% trans "Q & A Modules" %}<br>
+                <b>3.</b>{% trans "User Groups" %}<br>
+            </div>
+        </div>
+    </div>
+
+</div>
+{% else %}
+    {% if can_see %}
+        <p class="alert alert-warning">{% trans "The latest session is still open, you can only" %} <a href="/pce/{{ user.get_profile.country.name|slugify }}/session/create_step1/{{version_id}}/">{% trans "re-configure!" %}</a></p>
+    {% else %}
+      <p class="alert alert-warning">{% trans "No permissions to see this page." %}</p>
+    {% endif %}
+{% endif %}
+
+{% endblock %}
+

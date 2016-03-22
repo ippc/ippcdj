@@ -1,0 +1,60 @@
+{% load i18n future mezzanine_tags accounts_tags %}
+<div class="panel panel-default">
+    <div class="panel-heading">
+        <h3 class="panel-title"> {% trans "Module" %}: {{ module }}</h3>
+    </div>
+    <div class="panel-body">
+        <div class="progress">
+            <div class="progress-bar" role="progressbar" aria-valuenow="{{m_percentage}}" aria-valuemin="0" aria-valuemax="100" style="width: {{m_percentage}}%;">
+                <span class="sr-only">{{m_percentage}}% {% trans "Complete" %}</span>
+            </div>
+        </div>
+        <div>
+            <ul>
+                <li>
+                   {%if is_st_filled %}
+                    <a href="/pce/{{ user.get_profile.country.name|slugify }}/{{sessionid}}/{{module}}/stakeholders/view/{{st_id}}"><span class="label label-success">{% trans "Stakeholders" %}</span></a><span class="icon-ok"> </span>
+                    {% else%}
+                        {% trans "Stakeholders" %}
+                    {% endif%}
+                </li>{% if module == '1' or module == 1 %}&#160;{% else%}
+                <li>{%if is_pa_filled %}
+                       <a href="/pce/{{ user.get_profile.country.name|slugify }}/{{sessionid}}/{{module}}/problemanalysis/{{pa_id}}"><span class="label label-success">{% trans "Problem Analysis" %}</span></a><span class="icon-ok"> </span>
+                    {% else%}
+                    {%if is_st_filled and m_percentage == 100 %}
+                    <a href="/pce/{{ user.get_profile.country.name|slugify }}/{{sessionid}}/{{module}}/problemanalysis/view">{% trans "Problem Analysis" %}</a>
+
+                    {% else%}
+
+                    {% trans "Problem Analysis" %}
+                    {% endif%}
+                    {% endif%}    
+                </li>
+                <li>{%if is_sa_filled %}
+                    <a href="/pce/{{ user.get_profile.country.name|slugify }}/{{sessionid}}/{{module}}/swotanalysis/{{sa_id}}"><span class="label label-success">{% trans "Swot Analysis" %}</span></a><span class="icon-ok"> </span>
+                    {% else%}
+                    {%if is_pa_filled %}
+                    <a href="/pce/{{ user.get_profile.country.name|slugify }}/{{sessionid}}/{{module}}/swotanalysis/view">{% trans "Swot Analysis" %}</a>
+
+
+                    {% else%}
+
+                    {% trans "Swot Analysis" %}
+                    {% endif%}{% endif%}</li>
+                <li>{%if is_lf_filled %}
+                    <a href="/pce/{{ user.get_profile.country.name|slugify }}/{{sessionid}}/{{module}}/logicalframework/{{lf_id}}"><span class="label label-success">{% trans "Logical Framework" %}</span></a><span class="icon-ok"> </span>
+                    {% else%}
+                    {%if is_sa_filled %}
+                    <a href="/pce/{{ user.get_profile.country.name|slugify }}/{{sessionid}}/{{module}}/logicalframework/view">{% trans "Logical Framework" %}</a>
+
+
+                    {% else%}
+                    {% trans "Logical Framework" %}
+                    {% endif%}
+
+                    {% endif%}</li>{% endif%}
+
+            </ul>
+        </div>
+    </div>
+</div>

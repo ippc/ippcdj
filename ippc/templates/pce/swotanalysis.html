@@ -1,0 +1,478 @@
+{% extends "pce/basepce.html" %}
+{% load pages_tags translate_tags mezzanine_tags i18n future staticfiles accounts_tags %}
+{% if context == 'View' or context == 'Edit'%}
+{% block meta_title %}{% trans "Swot Analysis" %} - {{ user.get_profile.country.name}} {% endblock %}
+
+{% block body_class %}wide{% endblock %}
+
+{% block breadcrumb_menu %}
+<li>
+    <a href="/pce/{{ user.get_profile.country.name }}/sessions">{% trans "PCE Home" %}</a>
+    <span class="divider">/</span>
+</li>
+<li>
+    <a href="/pce/{{ user.get_profile.country.name|slugify }}/session/dashboard/{{sessionid}}">  {% trans "PCE Dashboard for" %} {{ user.get_profile.country.name }}</a>
+    <span class="divider">/</span>
+<li>
+<li class="active">{% trans "Swot Analysis for Module " %}{{module}}</li>
+{% endblock %}
+
+{% block local_nav %}
+{% endblock local_nav %}
+
+{% block pageinfo %}
+{% endblock pageinfo %}
+
+
+{%endif%}
+
+{% block main %}
+{% block content %}
+<div id="content">
+
+    {% if can_edit and context == 'Edit' or can_see and context == 'View' or can_see and context == 'Pdf' %}
+
+    <div class="row-fluid">
+        <div class="span8">
+
+            <h4>{% trans "Swot Analysis" %}</h4>
+            {% if  context == 'Edit' or   context == 'View'  %}
+            {% include "pce/tools_panel.html" %} 
+            {%endif%}
+        </div>
+        {% include "pce/userdetails_panel.html" %} 
+
+        <div class="row-fluid">
+            <div class="span12">
+                <div class="panel panel-info">
+                    <div  class="alert alert-success" role="alert">
+                        <h3 class="panel-title"> {% trans "Swot Analysis - Module" %} {{module}}
+                         {% if context == 'View' and can_edit  and id != ''%}  
+                        <span  class="pull-right">  
+                            <a  class="btn btn-info" href="/pce/{{ user.get_profile.country.name|slugify }}/{{sessionid}}/{{module}}/swotanalysis/edit/{{sa_id}}">Edit table</a>
+                        </span>
+                        {% endif %}  </h3>
+                       
+                    </div>
+                    <div class="panel-body">
+                        {% if context == 'Edit' %}
+     <form class="customform" method="POST" action="" enctype="multipart/form-data">
+                            {% csrf_token %}
+                            <fieldset>
+                                {% if form.non_field_errors or form.errors %}
+                                <div class="alert alert-error">{% trans "Please correct the errors below." %}
+                                    <ul>
+                                        {% for error in form.non_field_errors %}
+                                        <li>{{ error }}</li>
+                                        {% endfor %}
+                                        {% for error in form.errors %}
+                                        <li>{{ error }}</li>
+                                        {% endfor %}
+                                    </ul>
+                                </div>
+                                {% endif %}
+
+                                {% fields_for form %}
+
+                                {{ form1.management_form }}
+                                {{ form1.non_form_errors }}
+                                {{ form2.management_form }}
+                                {{ form2.non_form_errors }}
+                                {{ form3.management_form }}
+                                {{ form3.non_form_errors }}
+                                {{ form4.management_form }}
+                                {{ form4.non_form_errors }}
+                                {{ form5.management_form }}
+                                {{ form5.non_form_errors }}
+                                <table class="table" >
+                                    <thead>
+                                        <tr class="success" >
+                                            <th colspan="2" style="background:#A4A4A4; "> {% trans "Internal factors" %}</th>						
+                                            <th colspan="2" style="background:#BDBDBD; "> {% trans "External factors" %}</th>
+                                        </tr>
+                                        <tr class="success">
+                                            <th>{% trans "Strengths" %}</th>						
+                                            <th>{% trans "Weaknesses" %}</th>
+                                            <th>{% trans "Opportunities" %}</th>
+                                            <th>{% trans "Threats" %}</th>
+                                            <th>{% trans "Action(s) Required" %}</th>
+                                            <th>{% trans "Priority" %}</th>
+                                            <th>{% trans "Type" %}</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+
+                                        {% for form in form1 %}   
+                                        <tr class="inline {{ form1.prefix }}"> 
+                                            {% for f in form %}
+                                            {% if not f.label == 'Swotanalysis' and not f.label == 'Id'%}
+                                            {% if f.label == 'Strengths'%}
+                                            <td>{{f}} </td>
+                                            <td style="background:#ffc; "> <b>{% trans "Weakness" %} 1:</b>{{weakeness.w1}} </td>
+                                            {%else%}
+                                            <td>{{f}} </td>
+                                            {% endif %} 
+                                            {% else %}
+                                            {{f.as_hidden}}
+                                            {% endif %}    
+                                            {% endfor %}
+                                            {% if form1.can_delete %}
+                                            <td> {{ form.DELETE }} </td>
+                                            {% endif %}
+                                        </tr> 
+                                        {% endfor %}
+                                        {% for form in form2 %}   
+                                        <tr class="inline {{ form2.prefix }}"> 
+                                            {% for f in form %}
+                                            {% if not f.label == 'Swotanalysis' and not f.label == 'Id'%}
+                                            {% if f.label == 'Strengths'%}
+                                            <td>{{f}} </td>
+                                            <td style="background:#ffc; "> <b>{% trans "Weakness" %} 2:</b>{{weakeness.w2}} </td>
+                                            {%else%}
+                                            <td>{{f}} </td>
+                                            {% endif %} 
+                                            {% else %}
+                                            {{f.as_hidden}}
+                                            {% endif %}    
+                                            {% endfor %} 
+                                            {% if form2.can_delete %}
+                                            <td> {{ form.DELETE }} </td>
+                                            {% endif %}
+                                        </tr> 
+                                        {% endfor %}
+                                        {% for form in form3 %}   
+                                        <tr class="inline {{ form3.prefix }}"> 
+                                            {% for f in form %}
+                                            {% if not f.label == 'Swotanalysis' and not f.label == 'Id'%}
+                                            {% if f.label == 'Strengths'%}
+                                            <td>{{f}} </td>
+                                            <td style="background:#ffc; "> <b>{% trans "Weakness" %} 3:</b>{{weakeness.w3}} </td>
+                                            {%else%}
+                                            <td>{{f}} </td>
+                                            {% endif %} 
+                                            {% else %}
+                                            {{f.as_hidden}}
+                                            {% endif %}    
+                                            {% endfor %} 
+                                            {% if form3.can_delete %}
+                                            <td> {{ form.DELETE }} </td>
+                                            {% endif %}
+                                        </tr> 
+                                        {% endfor %}
+                                        {% for form in form4 %}   
+                                        <tr class="inline {{ form4.prefix }}"> 
+                                            {% for f in form %}
+                                            {% if not f.label == 'Swotanalysis' and not f.label == 'Id'%}
+                                            {% if f.label == 'Strengths'%}
+                                            <td>{{f}} </td>
+                                            <td style="background:#ffc; "> <b>{% trans "Weakness" %} 4:</b>{{weakeness.w4}} </td>
+                                            {%else%}
+                                            <td>{{f}} </td>
+                                            {% endif %} 
+                                            {% else %}
+                                            {{f.as_hidden}}
+                                            {% endif %}    
+                                            {% endfor %}
+                                            {% if form4.can_delete %}
+                                            <td> {{ form.DELETE }} </td>
+                                            {% endif %}
+                                        </tr> 
+                                        {% endfor %}
+                                        {% for form in form5 %}   
+                                        <tr class="inline {{ form5.prefix }}"> 
+                                            {% for f in form %}
+                                            {% if not f.label == 'Swotanalysis' and not f.label == 'Id'%}
+                                            {% if f.label == 'Strengths'%}
+                                            <td>{{f}} </td>
+                                            <td style="background:#ffc; "> <b>{% trans "Weakness" %} 5:</b>{{weakeness.w5}} </td>
+                                            {%else%}
+                                            <td>{{f}} </td>
+                                            {% endif %} 
+                                            {% else %}
+                                            {{f.as_hidden}}
+                                            {% endif %}    
+                                            {% endfor %}
+                                            {% if form5.can_delete %}
+                                            <td> {{ form.DELETE }} </td>
+                                            {% endif %}
+                                        </tr> 
+                                        {% endfor %}
+                                    </tbody> 
+
+
+                                </table>  
+
+
+
+
+                                <div class="form-actions">
+                                    <a class="btn btn-small btn-info" href="javascript:history.go(-1)">{% trans "Close" %}</a>
+                                    <button type="submit" class="btn btn-info btn-large" tabindex="7" value="save">{% trans "Save" %}</button>
+                                </div>
+                            </fieldset>
+                        </form>             
+
+                        {%else%}  
+                        {% if latest1 %}
+                        <table class="table">
+                            <thead>
+                                <tr class="success">
+                                    <th colspan="2" style="background:#A4A4A4; "> {% trans "Internal factors" %}</th>						
+                                    <th colspan="2" style="background:#BDBDBD; "> {% trans "External factors" %}</th>
+
+                                </tr>
+
+                            </thead>
+                            <tbody>
+
+                                {% for object in latest1 %} 
+                                {%if  forloop.counter == 1 %}
+                                <tr class="success">
+                                    <td style="background:#eee; "> {% trans "Strengths" %}</th>						
+                                    <td style="background:#eee;"> {% trans "Weaknesses" %}</th>
+                                    <td style="background:#eee;"> {% trans "Opportunities" %}</td>
+                                    <td style="background:#eee;"> {% trans "Threats " %}</td>
+                                    <td style="background:#eee; "> {% trans "Action(s) Required" %}</td>
+                                    <td style="background:#eee; "> {% trans "Priority" %}</td>
+                                    <td style="background:#eee; "> {% trans "Type" %}</td>
+                                </tr>
+                                {% endif %}
+                                <tr> 
+                                    <td>{{object.strengths}}</td>
+                                    {%if  forloop.counter == 1 %} 
+                                    <td style="background:#ffc; "> <b>{% trans "Weakness" %} 1:</b>{{weakeness.w1}}</td>
+                                    {% else %}
+                                    <td> </td>
+
+                                    {%endif%}
+                                    <td>{{object.opportunities}}</td>
+                                    <td>{{object.threats}}</td>
+                                    <td>1.{{forloop.counter}} {{object.actions}}</td>
+                                    <td>{% for key, val in priority %}
+                                        {% if key == object.priority and object.priority != 0 %}
+                                        {{val}} 
+                                        {% else %}
+                                        &#160;     
+                                        {% endif %}
+                                        {% endfor %}  
+                                    </td>
+                                    <td>{% for key, val in type %}
+                                        {% if key == object.type and object.type != 0 %}
+                                        {{val}} 
+                                        {% else %}
+                                        &#160;     
+                                        {% endif %}
+                                        {% endfor %}  
+                                    </td>
+                                </tr>  
+                                {% endfor%}  
+                                {% endif %}  
+                                {% if latest2 %} 
+                                {% for object in latest2 %} 
+                                {%if  forloop.counter == 1 %}
+                                <tr class="success">
+                                    <td style="background:#eee;"> {% trans "Strengths" %}</th>						
+                                    <td style="background:#eee;"> {% trans "Weakness" %}</th>
+                                    <td style="background:#eee;"> {% trans "Opportunities" %}</td>
+                                    <td style="background:#eee;"> {% trans "Threats " %}</td>
+                                    <td style="background:#eee; "> {% trans "Action(s) Required" %}</td>
+                                    <td style="background:#eee; "> {% trans "Priority" %}</td>
+                                    <td style="background:#eee; "> {% trans "Type" %}</td>
+                                </tr>
+                                {% endif %}
+                                <tr> 
+                                    <td>{{object.strengths}}</td>
+                                    {%if  forloop.counter == 1 %} 
+                                    <td style="background:#ffc; "> <b>{% trans "Weakness" %} 2:</b>{{weakeness.w2}}</td>
+                                    {% else %}
+                                    <td> </td>
+
+                                    {%endif%}
+                                    <td>{{object.opportunities}}</td>
+                                    <td>{{object.threats}}</td>
+                                    <td>2.{{forloop.counter}} {{object.actions}}</td>
+                                    <td>{% for key, val in priority %}
+                                        {% if key == object.priority and object.priority != 0 %}
+                                        {{val}} 
+                                        {% else %}
+                                        &#160;     
+                                        {% endif %}
+                                        {% endfor %}  
+                                    </td>
+                                    <td>{% for key, val in type %}
+                                        {% if key == object.type and object.type != 0 %}
+                                        {{val}} 
+                                        {% else %}
+                                        &#160;     
+                                        {% endif %}
+                                        {% endfor %}  
+                                    </td>
+                                </tr>
+                                {% endfor%}  
+                                {% endif %}  
+                                {% if latest3 %} 
+                                {% for object in latest3 %} 
+                                {%if  forloop.counter == 1 %}
+                                <tr class="success">
+                                    <td style="background:#eee;"> {% trans "Strengths" %}</th>						
+                                    <td style="background:#eee;"> {% trans "Weakness" %}</th>
+                                    <td style="background:#eee;"> {% trans "Opportunities" %}</td>
+                                    <td style="background:#eee;"> {% trans "Threats " %}</td>
+                                    <td style="background:#eee; "> {% trans "Action(s) Required" %}</td>
+                                    <td style="background:#eee; "> {% trans "Priority" %}</td>
+                                    <td style="background:#eee; "> {% trans "Type" %}</td>
+                                </tr>
+                                {% endif %}
+                                <tr> 
+                                    <td>{{object.strengths}}</td>
+                                    {%if  forloop.counter == 1 %} 
+                                    <td style="background:#ffc; "> <b>{% trans "Weakness" %} 3:</b>{{weakeness.w3}}</td>
+                                    {% else %}
+                                    <td> </td>
+
+                                    {%endif%}
+                                    <td>{{object.opportunities}}</td>
+                                    <td>{{object.threats}}</td>
+                                    <td>3.{{forloop.counter}} {{object.actions}}</td>
+                                    <td>{% for key, val in priority %}
+                                        {% if key == object.priority and object.priority != 0 %}
+                                        {{val}} 
+                                        {% else %}
+                                        &#160;     
+                                        {% endif %}
+                                        {% endfor %}  
+                                    </td>
+                                    <td>{% for key, val in type %}
+                                        {% if key == object.type and object.type != 0 %}
+                                        {{val}} 
+                                        {% else %}
+                                        &#160;     
+                                        {% endif %}
+                                        {% endfor %}  
+                                    </td>
+                                </tr>
+                                {% endfor%}  
+                                {% endif %}  
+                                {% if latest4 %} 
+                                {% for object in latest4 %} 
+                                {%if  forloop.counter == 1 %}
+                                <tr class="success">
+                                    <td style="background:#eee;"> {% trans "Strengths" %}</th>						
+                                    <td style="background:#eee;"> {% trans "Weakness" %}</th>
+                                    <td style="background:#eee;"> {% trans "Opportunities" %}</td>
+                                    <td style="background:#eee;"> {% trans "Threats " %}</td>
+                                    <td style="background:#eee; "> {% trans "Action(s) Required" %}</td>
+                                    <td style="background:#eee; "> {% trans "Priority" %}</td>
+                                    <td style="background:#eee; "> {% trans "Type" %}</td>
+                                </tr>
+                                {% endif %}
+                                <tr> 
+                                    <td>{{object.strengths}}</td>
+                                    {%if  forloop.counter == 1 %} 
+                                    <td style="background:#ffc; "> <b>{% trans "Weakness" %} 4:</b>{{weakeness.w4}}</td>
+                                    {% else %}
+                                    <td> </td>
+
+                                    {%endif%}
+                                    <td>{{object.opportunities}}</td>
+                                    <td>{{object.threats}}</td>
+                                    <td>4.{{forloop.counter}} {{object.actions}}</td>
+                                    <td>{% for key, val in priority %}
+                                        {% if key == object.priority and object.priority != 0 %}
+                                        {{val}} 
+                                        {% else %}
+                                        &#160;     
+                                        {% endif %}
+                                        {% endfor %}  
+                                    </td>
+                                    <td>{% for key, val in type %}
+                                        {% if key == object.type and object.type != 0 %}
+                                        {{val}} 
+                                        {% else %}
+                                        &#160;     
+                                        {% endif %}
+                                        {% endfor %}  
+                                    </td>
+                                </tr>
+                                {% endfor%}  
+                                {% endif %}  
+                                {% if latest5 %} 
+                                {% for object in latest5 %} 
+                                {%if  forloop.counter == 1 %}
+                                <tr class="success">
+                                    <td style="background:#eee;"> {% trans "Strengths" %}</th>						
+                                    <td style="background:#eee;"> {% trans "Weakness" %}</th>
+                                    <td style="background:#eee;"> {% trans "Opportunities" %}</td>
+                                    <td style="background:#eee;"> {% trans "Threats " %}</td>
+                                    <td style="background:#eee; "> {% trans "Action(s) Required" %}</td>
+                                    <td style="background:#eee; "> {% trans "Priority" %}</td>
+                                    <td style="background:#eee; "> {% trans "Type" %}</td>
+                                </tr>
+                                {% endif %}
+                                <tr> 
+                                    <td>{{object.strengths}}</td>
+                                    {%if  forloop.counter == 1 %} 
+                                    <td style="background:#ffc; "> <b>{% trans "Weakness" %} 5:</b>{{weakeness.w5}}</td>
+                                    {% else %}
+                                    <td> </td>
+
+                                    {%endif%}
+                                    <td>{{object.opportunities}}</td>
+                                    <td>{{object.threats}}</td>
+                                    <td>5.{{forloop.counter}} {{object.actions}}</td>
+                                    <td>{% for key, val in priority %}
+                                        {% if key == object.priority and object.priority != 0 %}
+                                        {{val}} 
+                                        {% else %}
+                                        &#160;     
+                                        {% endif %}
+                                        {% endfor %}  
+                                    </td>
+                                    <td>{% for key, val in type %}
+                                        {% if key == object.type and object.type != 0 %}
+                                        {{val}} 
+                                        {% else %}
+                                        &#160;     
+                                        {% endif %}
+                                        {% endfor %}  
+                                    </td>
+                                </tr>
+                                {% endfor%}  
+
+
+                            </tbody>
+                        </table>   
+                        {% endif %} {% if context == 'View'%}
+                        <span  class="pull-left"><a  class="btn btn-info" href="/pce/{{ user.get_profile.country.name|slugify }}/{{sessionid}}/{{modulename}}/view/{{moduleid}}"><- {% trans "back to Module" %} {{module}}</a></span>
+                        &#160;&#160;&#160;<a class="btn  btn-info" href="javascript:window.print();">{% trans "PRINT" %}</a>  
+                        {% if lf_id != ''%}  
+                        &#160;&#160;&#160;<a  class="btn btn-info" href="/pce/{{ user.get_profile.country.name|slugify }}/{{sessionid}}/{{module}}/swotanalysis/pdf/{{sa_id}}">{% trans "Export as PDF" %}</a>
+                        <span  class="pull-right"><a class="btn btn-info" href="/pce/{{ user.get_profile.country.name|slugify }}/{{sessionid}}/{{module}}/logicalframework/{{lf_id}}">{% trans "Go to Logical Framework for Module" %} {{module}} -></a></span>
+
+                        {% endif%}
+                        {% endif%}
+                        {% endif %}
+
+                       
+                    </div>
+
+                </div>      
+            </div>
+
+        </div>
+
+        {% else %}{% nevercache %}
+        {% include "pce/permission_block.html" %}
+        {% endnevercache %}
+        {% endif %}
+
+    </div> 
+    {% endblock %}
+    {% endblock %}
+
+
+
+    {% block extra_js %}
+    <script src="{% static "js/jquery.dataTables.js" %}"></script>
+    <script src="{% static "js/DT_bootstrap.js" %}"></script>
+    {% endblock %}

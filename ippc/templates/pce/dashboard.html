@@ -1,0 +1,311 @@
+{% extends 'pce/basepce.html' %}
+{% load module_extras %}
+{% load pages_tags translate_tags mezzanine_tags i18n future staticfiles accounts_tags %}
+
+{% block meta_title %}{% trans "PCE Dashboard" %} - {{ user.get_profile.country.name}} {% endblock %}
+
+
+
+{% block body_class %}wide{% endblock %}
+
+{% block breadcrumb_menu %}
+<li>
+    <a href="/pce/{{ user.get_profile.country.name }}/sessions">{% trans "PCE Home" %}</a>
+    <span class="divider">/</span>
+</li>
+<li class="active">
+    {% trans "Dashboard" %} {{ user.get_profile.country.name }}
+</li>
+
+{% endblock %}
+
+{% block local_nav %}
+{% endblock local_nav %}
+
+{% block pageinfo %}
+{% endblock pageinfo %}
+
+{% block main %}
+{% if can_see %}
+<div class="row-fluid">
+    <div class="span8">
+        <h4>{{ user.get_profile.country.name }}</h4>
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <h3 class="panel-title">{% trans "Overall progress in this Session of the PCE" %}<span  class="pull-right">    <a  class="btn btn-mini btn-info" href="/pce/{{ user.get_profile.country.name|slugify }}/session/{{sessionid}}/modules">{% trans "Go to Module List" %}</a></span></h3>
+            </div>
+            <div class="panel-body">
+                <div class="progress">
+                    <div class="progress-bar" role="progressbar" aria-valuenow="{{tot_percentage}}" aria-valuemin="0" aria-valuemax="100" style="width: {{tot_percentage}}%;">
+                        <span class="sr-only">{{tot_percentage}}% {% trans "Complete" %}</span>
+                    </div>
+                </div>
+            </div>
+         </div>
+         <br>
+         <span  class="pull-left"> 
+         {% if can_close %}
+            {%if sessionstatus == 1 %}
+                <a class="btn btn-small btn-info" href="/pce/{{ user.get_profile.country.name|slugify }}/session/create_step1/{{sessionid}}">{% trans "Re-Configure this session" %}</a>
+                <br>
+                <a  class="btn btn-small btn-info" href="/pce/{{ user.get_profile.country.name|slugify }}/closesession/{{sessionid}}">{% trans "Cancel this session" %}</a>
+               {%if tot_percentage == '100.00' %}
+                <br>
+                <br>
+                <a  class="btn btn-small btn-info" href="/pce/{{ user.get_profile.country.name|slugify }}/completesession/{{sessionid}}">{% trans "CLOSE this session and set as COMPLETED" %}</a>
+               
+                {% endif %} 
+            {% endif %} 
+             {%if tot_percentage == '100.00' %}
+                 <br>
+            <a  class="btn btn-small btn-info" href="/pce/{{ user.get_profile.country.name|slugify }}/report/{{sessionid}}">{% trans "Generate Report" %}</a>
+        {% endif %}  {% endif %} 
+        <br>
+        <br> 
+        </span>
+      
+        
+    </div> 
+     {% include "pce/userdetails_panel.html" %}
+</div>
+
+</div> 
+<div class="row-fluid">
+
+    <div class="panel panel-default">
+        <div class="panel-heading">
+            <h4 class="panel-title"> {% trans "Status Of Evaluation" %}</h4>
+        </div>
+        <div class="panel-body">
+            <table class="table">
+               <tbody>
+                    <tr class="success">
+                        <td>&#160; </td>		
+                        <td colspan="3"><b>{% trans "Systems Level" %}<b></td>
+                        <td colspan="3"><b>{% trans "Organization Level" %}<b></td>
+                        <td colspan="7"><b>{% trans "Core Activities Level"  %}<b></td>
+                    </tr>
+           
+               
+               
+                    <tr class="success">
+                        <td><b>{% trans "Modules:" %}</b></td>
+                        {% for i in range %}
+                            {% if i in  chosen_modules %}
+                                {% for key,value in m_ids.items %}
+                                   {% if key == i %}
+                                       {% if key in filled_stakeh_array %}
+                                            {% if value != '' %}
+                                                <td><a href="/pce/{{ user.get_profile.country.name|slugify }}/{{sessionid}}/module{{key}}/edit/{{value}}"><span class="label label-success">&#160;&#160;&#160;{{key}}&#160;&#160;&#160;</span></a></td>
+                                              {% else %}
+                                                <td><a href="/pce/{{ user.get_profile.country.name|slugify }}/{{sessionid}}/module{{key}}/edit"><span class="label label-success">&#160;&#160;&#160;{{key}}&#160;&#160;&#160;</span></a></td>
+                                            {% endif %}
+                                          {% else %}
+                                            <td><span class="label label-success">&#160;&#160;&#160;{{key}}&#160;&#160;&#160;</span></td>
+                                        {% endif %}      
+                                      {% endif %} 
+                                   {% endfor %}       
+                            {% else %}
+                              <td>{{i}}</td>
+                           {% endif %}      
+                                   
+                         {% endfor %}
+                    </tr>
+                    <tr>
+                        <th scope="row">{% trans "Stakeholders" %}</th>
+                         {% for i in range %}
+                            {% if i in  chosen_modules %}
+                                {% for key,value in stake_ids.items %}
+                                   {% if key == i %}
+                                        {% if value != '' %}
+                                          <td><a href="/pce/{{ user.get_profile.country.name|slugify }}/{{sessionid}}/{{key}}/stakeholders/view/{{value}}">{% trans "View" %}</a></td>
+                                        {% else %}
+                                          <td><a href="/pce/{{ user.get_profile.country.name|slugify }}/{{sessionid}}/{{key}}/stakeholders/view">{% trans "View" %}</a></td>
+                                        {% endif %} 
+                                    {% else %}
+                                      
+                                    {% endif %} 
+                                {% endfor %}       
+                            {% else %}
+                              <td>&#160;</td>
+                           {% endif %}      
+                                   
+                         {% endfor %}
+                        
+                        
+                    </tr>
+                   
+                     <tr>
+                        <td><b>{% trans "Modules:" %}</b></td>
+                        {% for i in range %}
+                            {% if i in  chosen_modules %}
+                                {% for key,value in m_ids.items %}
+                                   {% if key == i %}
+                                       {% if key in filled_stakeh_array %}
+                                            {% if value != '' %}
+                                                <td><a href="/pce/{{ user.get_profile.country.name|slugify }}/{{sessionid}}/module{{key}}/view/{{value}}">{% trans "View" %}</a></td>
+                                              {% else %}
+                                                <td><a href="/pce/{{ user.get_profile.country.name|slugify }}/{{sessionid}}/module{{key}}/empty">{% trans "View" %}</a></td>
+                                            {% endif %}
+                                          {% else %}
+                                            <td>{% trans "View" %}</td>
+                                        {% endif %}      
+                                      {% endif %} 
+                                   {% endfor %}       
+                            {% else %}
+                              <td>&#160;</td>
+                           {% endif %}      
+                                   
+                         {% endfor %}
+                    </tr>
+                    
+                    <tr class="warning">
+                        <th scope="row">{% trans "Problem Analysis" %}</th>
+                         {% for i in range %}
+                              <td>
+                                {% if i in  chosen_modules %}
+                                    {% for key,value in pa_ids.items %}
+                                       {% if key == i and key != 1 %}
+                                            {%if key in filled_stakeh_array and key in filled_m_array %}
+                                                {% if value != '' %}
+                                                   <a href="/pce/{{ user.get_profile.country.name|slugify }}/{{sessionid}}/{{key}}/problemanalysis/{{value}}">{% trans "View" %}</a>
+                                                {% else %}
+                                                   <a href="/pce/{{ user.get_profile.country.name|slugify }}/{{sessionid}}/{{key}}/problemanalysis/view">{% trans "View" %}</a>
+                                                {% endif %}
+                                            {%else%}
+                                                 View
+                                            {% endif %}
+                                        {% endif %}
+                                    {% endfor %}     
+                                 {% else %}
+                                 &#160;
+                                {% endif %}      
+                              </td>    
+                         {% endfor %}
+                    </tr>
+                  
+
+                     <tr>
+                        <th scope="row">{% trans "Swot Analysis" %}</th>
+                        {% for i in range %}
+                              <td>
+                                {% if i in  chosen_modules %}
+                                    {% for key,value in sa_ids.items %}
+                                       {% if key == i  and key != 1 %}
+                                            {%if key in filled_stakeh_array and key in filled_pa_array and key in filled_m_array %}
+                                                {% if value != '' %}
+                                  <a href="/pce/{{ user.get_profile.country.name|slugify }}/{{sessionid}}/{{key}}/swotanalysis/{{value}}">{% trans "View" %}</a>
+                                {% else %}
+                                  <a href="/pce/{{ user.get_profile.country.name|slugify }}/{{sessionid}}/{{key}}/swotanalysis/view">{% trans "View" %}</a>
+                                {% endif %}
+                                            {%else%}
+                                                 View
+                                            {% endif %}
+                                        {% endif %}
+                                    {% endfor %}     
+                                 {% else %}
+                                 &#160;
+                                {% endif %}      
+                              </td>    
+                         {% endfor %}
+                     </tr>
+                   
+                    <tr class="warning">
+                        <th scope="row">{% trans "Logical Framework" %}</th>
+                         {% for i in range %}
+                              <td>
+                                {% if i in  chosen_modules %}
+                                    {% for key,value in lf_ids.items %}
+                                       {% if key == i   and key != 1  %}
+                                             {%if key in filled_stakeh_array and key in filled_pa_array and key in filled_sa_array and key in filled_m_array %}
+                                                    {% if value != '' %}
+                                  <a href="/pce/{{ user.get_profile.country.name|slugify }}/{{sessionid}}/{{key}}/logicalframework/{{value}}">{% trans "View" %}</a> 
+                                {% else %}
+                                   <a href="/pce/{{ user.get_profile.country.name|slugify }}/{{sessionid}}/{{key}}/logicalframework/view">{% trans "View" %}</a> 
+                                {% endif %}
+                                            {%else%}
+                                                 View
+                                            {% endif %}
+                                        {% endif %}
+                                    {% endfor %}     
+                                 {% else %}
+                                 &#160;
+                                {% endif %}      
+                              </td>    
+                         {% endfor %}
+                         
+                        </tr>
+                    
+                    <tr class="warning">
+                        <th scope="row">{% trans "Full PCE" %}</th>
+                        {% for i in range %}
+                              <td>
+                                {% if i in  chosen_modules %}
+                                    {% for key,value in full_pce.items %}
+                                       {% if key == i %}
+                                        <div class="progress">
+                                            <div class="progress-bar" role="progressbar" aria-valuenow="{{value}}" aria-valuemin="0" aria-valuemax="100" style="width: {{value}}%;">
+                                                 <span class="sr-only">{{value}}%</span>
+                                             </div>
+                                        </div> 
+                                       {% if value == 100 and sessionstatus == 1 %}
+                                      {% for key1,value1 in m_status.items %}
+                                      {% if key1 == key %}
+                                         {% if value1 == 4 %}
+                                            <span class="label label-warning"><small>{% trans "validated" %}</small></span>
+                                         {% else %}
+                                                {% if can_validate %}
+                                                    {% if value1 == 3 %}
+                                                        <span class="label label-warning">{% trans "SENT to validator" %}</span><br>
+                                                    {% endif %} 
+                                                    {% for key2,value2 in m_ids.items %}
+                                                        {% if key2 == key %}
+                                                            <a class="btn btn-small btn-info" href="/pce/{{ user.get_profile.country.name|slugify }}/{{sessionid}}/module{{key}}/validate/{{value2}}">{% trans "Validate" %}</a>
+                                                        {% endif %}  
+                                                    {% endfor %} 
+                                                {% elif can_sendtovalidator %}
+                                                    {% if value1 == 3 %}
+                                                       <span class="label label-warning">{% trans "SENT to validator" %}</span>
+                                                    {%else%}    
+                                                        {% for key2,value2 in m_ids.items %}
+                                                            {% if key2 == key %}
+                                                            <a class="btn btn-small btn-info" href="/pce/{{ user.get_profile.country.name|slugify }}/{{sessionid}}/module{{key}}/send/{{value2}}">{% trans "Send to Validator" %}</a>
+                                                            {% endif %}  
+                                                        {% endfor %}   
+                                                    {% endif %} 
+                                                {% endif %}
+                                          {% endif %}   
+                                       {% endif %}   
+                                    {% endfor %} 
+                                         
+                                     
+                                 {% endif %}
+                                       
+                                        {% endif %}    
+                                {% endfor %}    
+                                {% else %}
+                                 &#160;
+                                {% endif %}  
+                              </td>    
+                         {% endfor %}
+                         
+                        
+                        
+                        
+                           
+                                   
+                        
+                    </tr>
+                    
+ 
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div> </div>
+
+{% else %}
+<p class="alert alert-warning">{% trans "No permissions to see this page." %}</p>
+{% endif %}
+
+{% endblock %}

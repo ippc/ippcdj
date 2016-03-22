@@ -1,0 +1,23 @@
+ {% load i18n future mezzanine_tags accounts_tags %}
+ <div class="span4">
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <h4 class="panel-title"> {% trans "User Details" %}</h4>
+            </div>
+            <div class="panel-body">
+                <b>{% trans "User" %}:</b>{{ request.user.username}}<br>
+                <b>{% trans "Role" %}:</b>
+                    {% for group in request.user.groups.all %}
+                        {% if 'PCE' in group.name %}
+                            {{group.name}} 
+                        {% endif %}
+                    {% endfor %}
+                <br>
+                <b>{% trans "Country" %}:</b> {{ user.get_profile.country.name }}<br>
+                <b>{% trans "Current PCE Session" %}:</b> {{version_number}}<br>
+                <b>{% trans "Closed PCE Session" %}:</b> <a href="/pce/{{ user.get_profile.country.name|slugify}}/sessions">{% trans "other sessions ->" %}</a>
+                <br>
+                <b>{% trans "Actual Overall Progress" %}:</b> {{tot_percentage}}% {% trans "Complete" %}<br>
+            </div>
+        </div>
+    </div>

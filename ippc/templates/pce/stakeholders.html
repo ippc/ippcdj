@@ -1,0 +1,264 @@
+{% extends "pce/basepce.html" %}
+{% load pages_tags translate_tags mezzanine_tags i18n future staticfiles accounts_tags %}
+
+{% if context == 'View' or context == 'Edit'%}
+    {% block meta_title %}{% trans "Stakeholders" %} - {{ user.get_profile.country.name}} {% endblock %}
+    {% block body_class %}wide{% endblock %}
+
+    {% block breadcrumb_menu %}
+        <li>
+            <a href="/pce/{{ user.get_profile.country.name }}/sessions">{% trans "PCE Home" %}</a>
+            <span class="divider">/</span>
+        </li>
+        <li>
+            <a href="/pce/{{ user.get_profile.country.name|slugify }}/session/dashboard/{{sessionid}}">  {% trans "PCE Dashboard for" %} {{ user.get_profile.country.name }}</a>
+            <span class="divider">/</span>
+        <li>
+        <li class="active">{% trans "Stakeholders for Module " %}{{module}}</li>
+    {% endblock %}
+
+    {% block local_nav %}
+    {% endblock local_nav %}
+
+    {% block pageinfo %}
+    {% endblock pageinfo %}
+{%endif%}
+
+{% block main %}
+{% block content %}
+<div id="content">
+
+{% if can_edit and context == 'Edit' or can_see and context == 'View' or can_see and context == 'Pdf' %}
+
+<div class="row-fluid">
+    <div class="span8">
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <h3 class="panel-title">{% trans "Stakeholders" %}</h3>
+            </div>
+            {% if  context == 'Edit' or   context == 'View'  %}
+
+            <div class="panel-body">
+                 {% include "pce/tools_panel.html" %} 
+            </div>{%endif%}
+        </div>   
+    </div>
+    {% include "pce/userdetails_panel.html" %} 
+
+    <div class="row-fluid">
+        <div class="span12">
+            <div class="panel panel-info">
+                <div  class="alert alert-success" role="alert">
+                    <h5 class="panel-title"> {% trans "Stakeholders - Module" %} {{module}}
+                     {% if context == 'View' and can_edit  and id != ''%}  
+                     <span  class="pull-right"> 
+                         <a  class="btn btn-info" href="/pce/{{ user.get_profile.country.name|slugify }}/{{sessionid}}/{{module}}/stakeholders/edit/{{stakeid}}">{% trans "Edit table" %}</a>
+                     </span>
+                     {% endif %}</h5>
+                </div>
+                <div class="panel-body">
+                  {% if context == 'Edit' %} 
+                   <form class="customform" method="POST" action="" enctype="multipart/form-data">
+                        {% csrf_token %}
+                   
+                        <fieldset> 
+                                    {% if context == 'Edit' %} 
+                                     {% if form.non_field_errors or form.errors %}
+                                            <div class="alert alert-error">{% trans "Please correct the errors below." %}
+                                                <ul>
+                                                    {% for error in form.non_field_errors %}
+                                                    <li>{{ error }}</li>
+                                                    {% endfor %}
+                                                    {% for error in form.errors %}
+                                                    <li>{{ error }}</li>
+                                                    {% endfor %}
+                                                </ul>
+                                            </div>
+                                        {% endif %}
+                                      {% endif %}
+                            
+                            {% fields_for form %}
+                            {{ form2.management_form }}
+                            {{ form2.non_form_errors }}
+                            <table class="table table-striped">
+                                <tbody>
+                                    {% for form in form2 %}   
+                                    <tr class="inline {{ form2.prefix }}"> 
+                                        {{ form.id }} 
+                                        {% for f in form %}
+                                        {% if not f.label == 'Stakeholder' and not f.label == 'Id' and not f.label == 'Delete'%}
+                                            {% if f.label == 'Role'%}
+                                                </td><td>
+                                                <b>{{f.label}}:{{f}}<br>
+                                                {%elif f.label == 'Interest'%}
+                                               <b>{{f.label}}</b>:{{f}}<br>
+                                                {%elif f.label == 'Influence'%}
+                                                <b>{{f.label}}:</b>  {{f}}<br>
+                                                {%elif f.label == 'Level'%}
+                                                <b>{{f.label}}:</b> {{f}}</td>
+                                            {% else %}
+                                             {% if  f.label == 'First name'%}
+                                              <td> <b>{{f.label}}:</b> {{f}}<br>
+                                            {% else%}
+                                             
+                                                <b>{{f.label}}:</b> {{f}}<br>
+                                            {% endif %}  
+                                            {% endif %}  
+                                        {% else %}
+                                                 {{f.as_hidden}}
+                                        {% endif %} 
+                                    {% endfor %}
+                                    {% if form2.can_delete %}
+                                      <td> <b>  {{ form.DELETE }} </b></td>
+                                    {% endif %} 
+                                    </tr> 
+                                </tbody> 
+                                {% endfor %} 
+                            </table>  
+
+                            <div class="form-actions">
+                                <a class="btn btn-small btn-info" href="javascript:history.go(-1)">{% trans "Close" %}</a>
+                                <button type="submit" class="btn btn-info btn-large" tabindex="7" value="save">{% trans "Save" %}</button>
+                            </div>
+                        </fieldset>
+                    </form>
+                      {% else %}
+                            <table class="table">
+                                <thead>
+                                    <tr class="success">
+                                        <th>{% trans "First Name" %}</th>
+                                        <th>{% trans "Last Name" %}</th>
+                                        <th>{% trans "Email" %}</th>
+                                        <th>{% trans "Organisation/division" %}</th>
+                                        <th>{% trans "Metadata" %}</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                {% if latest %}
+                                    {% for object in latest %}
+                                            <tr> 
+                                                <td>{{object.firstname}}</td>
+                                                <td>{{object.lastname}}</td>
+                                                <td>{{object.email}}</td>
+                                                <td>{{object.organisation}}</td>
+                                                <td><b>{% trans "Role" %}:</b>
+                                                    {% if object.role != None and object.role != 0%}
+                                                        {% for key, val in roles %}
+                                                        {% ifequal key object.role %}
+                                                            {{val}}    
+                                                        {% endifequal %}
+                                                        {% endfor %}  
+                                                    {% endif %}  <br>
+                                                        <b>{% trans "Interest" %}:</b>
+                                                       {% if object.interest != None and object.interest != 0%}
+                                                           {% for key, val in interests %}
+                                                            {% ifequal key object.interest %}
+                                                                {{val}}    
+                                                            {% endifequal %}
+                                                            {% endfor %}  
+                                                       {% endif %} <br>
+                                                     <b>{% trans "Influence" %}:</b>
+                                                        {% if object.influence != None and object.influence != 0%}
+                                                   {% for key, val in influences %}
+                                                     {% ifequal key object.influence %}
+                                                         {{val}}    
+                                                     {% endifequal %}
+                                                     {% endfor %}
+                                                       {% endif %} <br>
+                                                    <b>{% trans "Level" %}:</b>
+                                                   {% if object.level != None and object.level != 0%}
+                                                    {% for key, val in levels %}
+                                                     {% ifequal key object.level %}
+                                                         {{val}}    
+                                                     {% endifequal %}
+                                                     {% endfor %}
+                                                   {% endif %} </td> 
+                                             </tr>  
+                                    {% endfor %}  
+                                 
+                            {% else %} 
+                                     {% if context == 'Pdf'  %} 
+                                        {% for i in loop_times %}
+                                           <tr> 
+                                               <td><input type="text"/></td>
+                                               <td><input type="text"/></td>
+                                               <td><input type="text"/></td>
+                                               <td><input type="text"/></td>
+                                               <td><b>{% trans "Role" %}:</b>
+                                                   <ul>
+                                                   {% for key, val in roles %}
+                                                   {% if key != 0 %}
+                                                  <li>{{val}}</li> 
+                                                   {% endif %}
+                                                   {% endfor %}  
+                                                   </ul>
+                                                   <b>{% trans "Interest" %}:</b>
+                                                   <ul> {% for  key,val in interests %}
+                                                  {% if key != 0 %}  <li>{{val}}</li> 
+                                                   {% endif %} 
+                                                   {% endfor %}  
+                                                   </ul>
+                                                   <b>{% trans "Influence" %}:</b>
+                                                   <ul> {% for  key,val in influences %}
+                                                  {% if key != 0 %}  <li>{{val}}</li> 
+                                                   {% endif %}
+                                                   {% endfor %}  
+                                                  </ul>
+                                                   <b>{% trans "Level" %}:</b>
+                                                   <ul> {% for  key,val in levels %}
+                                                   {% if key != 0 %} <li>{{val}}</li>  
+                                                   {% endif %}
+                                                   {% endfor %} </ul>  
+                                                    </td> 
+                                           </tr>  
+                                           {% endfor %}  
+                                    {% endif %}
+                            {% endif %}
+                            </tbody>
+                         </table> 
+                         {% if context == 'View'  %}
+                                    {% if is_st_filled %} 
+                                    {% if moduleid != ''  %}           
+                                       {% if  can_edit %}
+                                            <a  class="btn btn-info" href="/pce/{{ user.get_profile.country.name|slugify }}/{{sessionid}}/{{modulename}}/edit/{{moduleid}}"><- {% trans "back to Module" %} {{module}}</a></span></h3>
+                                       {% else %}           
+                                        <a  class="btn btn-info" href="/pce/{{ user.get_profile.country.name|slugify }}/{{sessionid}}/{{modulename}}/view/{{moduleid}}"><- {% trans "back to Module" %} {{module}}</a></span></h3>
+                                        {% endif %} 
+                                    {% else  %}           
+                                        {% if  can_edit %}
+                                        <a  class="btn btn-info" href="/pce/{{ user.get_profile.country.name|slugify }}/{{sessionid}}/{{modulename}}/edit/"><- {% trans "back to Module" %} {{module}}</a></span></h3>
+                                        {% else %}           
+                                        <a  class="btn btn-info" href="/pce/{{ user.get_profile.country.name|slugify }}/{{sessionid}}/{{modulename}}/empty/"><- {% trans "back to Module" %} {{module}}</a></span></h3>
+                                        {% endif %} 
+                                    {% endif %} 
+                                    {% endif %}      
+                                    &#160;&#160;&#160;
+                                    <a class="btn btn-large btn-info" href="javascript:window.print();">{% trans "PRINT" %}</a>
+                                   &#160;&#160;&#160;
+                                    <a class="btn btn-large btn-info" href="/pce/{{ user.get_profile.country.name|slugify }}/{{sessionid}}/{{module}}/stakeholders/pdf/{{st_id}}">{% trans "Export as PDF" %}</a>
+                        {% endif %}   
+
+
+               
+                    
+                
+                  {% endif %}      
+    
+
+
+   
+
+
+
+                </div>
+            </div>      
+        </div>
+ </div> {% else %}{% nevercache %}
+        {% include "pce/permission_block.html" %}
+        {% endnevercache %}
+        {% endif %}
+
+   </div> 
+    {% endblock %}
+    {% endblock %}
+

@@ -1,0 +1,251 @@
+{% extends 'pce/basepcepdf.html' %}
+{% load module_extras %}
+{% load pages_tags translate_tags mezzanine_tags i18n future staticfiles accounts_tags %}
+
+{% block content %}
+<div id="content">
+
+    <h5> {% trans "Swot Analysis - Module" %} {{module}}</h5>
+
+    {% include "pce/userdetails_panel.html" %} </th>  
+
+<br><br>
+                
+     {% if latest1 %}
+                <table class="table">
+                                <thead>
+                                     <tr class="success">
+                                        <th colspan="2" style="background:#A4A4A4; "> {% trans "Internal factors" %}</th>						
+                                        <th colspan="2" style="background:#BDBDBD; "> {% trans "External factors" %}</th>
+                                      
+                                    </tr>
+                                  
+                                </thead>
+                                <tbody>
+                                 
+                                    {% for object in latest1 %} 
+                                      {%if  forloop.counter == 1 %}
+                                      <tr class="success">
+                                        <td><b>{% trans "Strengths" %}</b></th>						
+                                        <td><b> {% trans "Weaknesses" %}</b></th>
+                                        <td><b><b> {% trans "Opportunities" %}</b></td>
+                                        <td><b> {% trans "Threats " %}</b></td>
+                                        <td style="background:#eee; "><b> {% trans "Action(s) Required" %}</b></td>
+                                        <td style="background:#eee; "><b> {% trans "Priority" %}</b></td>
+                                        <td style="background:#eee; "> <b>{% trans "Type" %}</b></td>
+                                    </tr>
+                                      {% endif %}
+                                    <tr> 
+                                        <td>{{object.strengths}}<br><br><br></td>
+                                       {%if  forloop.counter == 1 %} 
+                                       <td style="background:#ffc; "> <b>{% trans "Weakness" %} 1:</b>{{weakeness.w1}}</td>
+                                        {% else %}
+                                        <td><br><br><br> </td>
+                                       
+                                       {%endif%}
+                                        <td>{{object.opportunities}}<br><br><br></td>
+                                        <td>{{object.threats}}<br><br><br></td>
+                                        <td>1.{{forloop.counter}} {{object.actions}}<br><br><br></td>
+                                        <td>{% for key, val in priority %}
+                                            {% if key == object.priority and object.priority != 0 %}
+                                                {{val}} 
+                                            {% else %}
+                                               &#160;     
+                                            {% endif %}
+                                            {% endfor %} <br><br><br> 
+                                        </td>
+                                          <td>{% for key, val in type %}
+                                            {% if key == object.type and object.type != 0 %}
+                                                {{val}} 
+                                            {% else %}
+                                               &#160;     
+                                            {% endif %}
+                                            {% endfor %}  <br><br><br>
+                                        </td>
+                                    </tr>  
+                                    {% endfor%}  
+                               {% endif %}  
+                                {% if latest2 %} 
+                                    {% for object in latest2 %} 
+                                   {%if  forloop.counter == 1 %}
+                                      <tr class="success">
+                                   <td><b>{% trans "Strengths" %}</b></th>						
+                                        <td><b> {% trans "Weaknesses" %}</b></th>
+                                        <td><b><b> {% trans "Opportunities" %}</b></td>
+                                        <td><b> {% trans "Threats " %}</b></td>
+                                        <td style="background:#eee; "><b> {% trans "Action(s) Required" %}</b></td>
+                                        <td style="background:#eee; "><b> {% trans "Priority" %}</b></td>
+                                        <td style="background:#eee; "> <b>{% trans "Type" %}</b></td>
+                             </tr>
+                                      {% endif %}
+                                    <tr> 
+                                        <td>{{object.strengths}}<br><br><br></td>
+                                                                             {%if  forloop.counter == 1 %} 
+                                       <td style="background:#ffc; "> <b>{% trans "Weakness" %} 2:</b>{{weakeness.w2}}</td>
+                                        {% else %}
+                                        <td> <br><br><br></td>
+                                       
+                                       {%endif%}
+                                   <td>{{object.opportunities}}<br><br><br></td>
+                                        <td>{{object.threats}}<br><br><br></td>
+                                        <td>2.{{forloop.counter}} {{object.actions}}<br><br><br></td>
+                                        <td>{% for key, val in priority %}
+                                            {% if key == object.priority and object.priority != 0 %}
+                                                {{val}} 
+                                            {% else %}
+                                               &#160;     
+                                            {% endif %}
+                                            {% endfor %}  <br><br><br>
+                                        </td>
+                                          <td>{% for key, val in type %}
+                                            {% if key == object.type and object.type != 0 %}
+                                                {{val}} 
+                                            {% else %}
+                                               &#160;     
+                                            {% endif %}
+                                            {% endfor %}  <br><br><br>
+                                        </td>
+                                    </tr>
+                                    {% endfor%}  
+                               {% endif %}  
+                                {% if latest3 %} 
+                                    {% for object in latest3 %} 
+                                     {%if  forloop.counter == 1 %}
+                                      <tr class="success">
+                                          <td><b>{% trans "Strengths" %}</b></th>						
+                                        <td><b> {% trans "Weaknesses" %}</b></th>
+                                        <td><b><b> {% trans "Opportunities" %}</b></td>
+                                        <td><b> {% trans "Threats " %}</b></td>
+                                        <td style="background:#eee; "><b> {% trans "Action(s) Required" %}</b></td>
+                                        <td style="background:#eee; "><b> {% trans "Priority" %}</b></td>
+                                        <td style="background:#eee; "> <b>{% trans "Type" %}</b></td>
+                                  </tr>
+                                      {% endif %}
+                                    <tr> 
+                                        <td>{{object.strengths}}<br><br><br></td>
+                                                                         {%if  forloop.counter == 1 %} 
+                                       <td style="background:#ffc; "> <b>{% trans "Weakness" %} 3:</b>{{weakeness.w3}}</td>
+                                        {% else %}
+                                        <td> <br><br><br></td>
+                                       
+                                       {%endif%}
+      <td>{{object.opportunities}}<br><br><br></td>
+                                        <td>{{object.threats}}<br><br><br></td>
+                                        <td>3.{{forloop.counter}} {{object.actions}}<br><br><br></td>
+                                        <td>{% for key, val in priority %}
+                                            {% if key == object.priority and object.priority != 0 %}
+                                                {{val}} 
+                                            {% else %}
+                                               &#160;     
+                                            {% endif %}
+                                            {% endfor %}  <br><br><br>
+                                        </td>
+                                          <td>{% for key, val in type %}
+                                            {% if key == object.type and object.type != 0 %}
+                                                {{val}} 
+                                            {% else %}
+                                               &#160;     
+                                            {% endif %}
+                                            {% endfor %}  <br><br><br>
+                                        </td>
+                                    </tr>
+                                    {% endfor%}  
+                               {% endif %}  
+                                {% if latest4 %} 
+                                    {% for object in latest4 %} 
+                                     {%if  forloop.counter == 1 %}
+                                      <tr class="success">
+                                      <td><b>{% trans "Strengths" %}</b></th>						
+                                        <td><b> {% trans "Weaknesses" %}</b></th>
+                                        <td><b><b> {% trans "Opportunities" %}</b></td>
+                                        <td><b> {% trans "Threats " %}</b></td>
+                                        <td style="background:#eee; "><b> {% trans "Action(s) Required" %}</b></td>
+                                        <td style="background:#eee; "><b> {% trans "Priority" %}</b></td>
+                                        <td style="background:#eee; "> <b>{% trans "Type" %}</b></td>
+                               </tr>
+                                      {% endif %}
+                                    <tr> 
+                                        <td>{{object.strengths}}<br><br><br></td>
+                                                                       {%if  forloop.counter == 1 %} 
+                                       <td style="background:#ffc; "> <b>{% trans "Weakness" %} 4:</b>{{weakeness.w4}}</td>
+                                        {% else %}
+                                        <td><br><br><br> </td>
+                                       
+                                       {%endif%}
+        <td>{{object.opportunities}}<br><br><br></td>
+                                        <td>{{object.threats}}<br><br><br></td>
+                                        <td>4.{{forloop.counter}} {{object.actions}}<br><br><br></td>
+                                        <td>{% for key, val in priority %}
+                                            {% if key == object.priority and object.priority != 0 %}
+                                                {{val}} 
+                                            {% else %}
+                                               &#160;     
+                                            {% endif %}
+                                            {% endfor %} <br><br><br> 
+                                        </td>
+                                          <td>{% for key, val in type %}
+                                            {% if key == object.type and object.type != 0 %}
+                                                {{val}} 
+                                            {% else %}
+                                               &#160;     
+                                            {% endif %}
+                                            {% endfor %}  <br><br><br>
+                                        </td>
+                                    </tr>
+                                    {% endfor%}  
+                               {% endif %}  
+                                {% if latest5 %} 
+                                    {% for object in latest5 %} 
+                                     {%if  forloop.counter == 1 %}
+                                      <tr class="success">
+                                      <td><b>{% trans "Strengths" %}</b></th>						
+                                        <td><b> {% trans "Weaknesses" %}</b></th>
+                                        <td><b><b> {% trans "Opportunities" %}</b></td>
+                                        <td><b> {% trans "Threats " %}</b></td>
+                                        <td style="background:#eee; "><b> {% trans "Action(s) Required" %}</b></td>
+                                        <td style="background:#eee; "><b> {% trans "Priority" %}</b></td>
+                                        <td style="background:#eee; "> <b>{% trans "Type" %}</b></td>
+                                  </tr>
+                                      {% endif %}
+                                    <tr> 
+                                        <td>{{object.strengths}}<br><br><br></td>
+                                                                              {%if  forloop.counter == 1 %} 
+                                       <td style="background:#ffc; "> <b>{% trans "Weakness" %} 5:</b>{{weakeness.w5}}</td>
+                                        {% else %}
+                                        <td> </td>
+                                       
+                                       {%endif%}
+ <td>{{object.opportunities}}</td>
+                                        <td>{{object.threats}}</td>
+                                        <td>5.{{forloop.counter}} {{object.actions}}</td>
+                                        <td>{% for key, val in priority %}
+                                            {% if key == object.priority and object.priority != 0 %}
+                                                {{val}} 
+                                            {% else %}
+                                               &#160;     
+                                            {% endif %}
+                                            {% endfor %}  
+                                        </td>
+                                          <td>{% for key, val in type %}
+                                            {% if key == object.type and object.type != 0 %}
+                                                {{val}} 
+                                            {% else %}
+                                               &#160;     
+                                            {% endif %}
+                                            {% endfor %}  
+                                        </td>
+                                    </tr>
+                                    {% endfor%}  
+                            
+                                
+                                </tbody>
+                    </table>      {% endif %}
+               
+
+</div> 
+
+
+
+
+{% endblock %}
+

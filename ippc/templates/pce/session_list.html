@@ -1,0 +1,112 @@
+{% extends 'pce/basepce.html' %}
+{% load module_extras %}
+{% load pages_tags translate_tags mezzanine_tags i18n future staticfiles accounts_tags %}
+
+{% block meta_title %}{% trans "PCE Sessions List" %} - {{ user.get_profile.country.name}} {% endblock %}
+
+{% block body_class %}wide{% endblock %}
+
+{% block breadcrumb_menu %}
+<li>
+    <a href="/pce/{{ user.get_profile.country.name }}/sessions">{% trans "PCE Home" %}</a>
+    <span class="divider">/</span>
+</li>
+<li class="active">
+    {{ user.get_profile.country.name }} {% trans " PCE Sessions" %}
+</li>
+{% endblock %}
+
+{% block local_nav %}
+{% endblock local_nav %}
+
+{% block pageinfo %}
+{% endblock pageinfo %}
+
+{% block main %}
+{% if can_see %}
+
+<div class="row-fluid">
+    <div class="span3">
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <h4 class="panel-title"> {% trans "User Details" %}</h4>
+            </div>
+            <div class="panel-body">
+                <b>{% trans "User" %}:</b> {{ user.get_profile}}<br>
+                <b>{% trans "Role" %}:</b> 
+                {% for group in request.user.groups.all %}
+                {% if 'PCE' in group.name %}
+                {{group.name}} <br>
+                {% endif %}
+                {% endfor %}
+                <b>{% trans "Country" %}:</b> {{ user.get_profile.country.name }}<br>
+            </div>
+        </div>
+    </div>
+    <div class="span9">
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <h3 class="panel-title">{% trans "PCE Sessions" %} </h3>
+            </div>
+            <div class="panel-body">
+                <p>{% trans " Click on a PCE Session title below to continue your work" %}
+                    {% if  can_edit %}
+                    {% if latest_closed  or empty %}
+                    or  <a  class="btn btn-info" href="/pce/{{ user.get_profile.country.name|slugify }}/session/create_step1">{% trans "Start new session" %}</a>.</p>
+                {% endif %}
+                {% else %}
+                .</p>
+                {% endif %}
+
+            </div>
+        </div>
+        
+        {% if latest %}
+        <table class="table">
+            <thead>
+                <tr class="success">
+                    <th>{% trans "Country" %}</th>					
+                    <th>{% trans "Session" %}</th>
+                    <th>{% trans "Status" %}</th>
+                    <th>{% trans "Deadline" %}</th>
+                    <th>{% trans "Last updated" %}</th>
+                    <th>{% trans "Date Completed" %}</th>
+                    <th>{% trans "Projet date completation" %}</th>
+                    
+                    
+                </tr>
+            </thead>
+            <tbody>
+                {% for object in latest %}
+                <tr class="warning">
+                    <td>{{ user.get_profile.country.name }}</th>			
+                    <td> <a href="/pce/{{ user.get_profile.country.name|slugify}}/session/dashboard/{{object.id}}/">{{ object.version_number}}</td>
+                        
+                    <td>{% if object.status == 1 %}
+                        {% trans "open" %}
+                        {% elif object.status == 2 %}
+                        {% trans "closed" %}
+                        {% elif object.status == 3 %}
+                        {% trans "completed" %}
+                        {% endif %}
+                    </td>
+                    <td>{{ object.projet_date_completation|date:"d M Y" }}</td>
+                    <td>{{ object.modify_date|date:"d M Y" }}</td>
+                    <td>{{ object.completed_date|date:"d M Y" }}</td>
+                    <td>{{ object.projet_date_completation|date:"d M Y" }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+        {% endif%}
+    </div> 
+</div>
+{% else %}
+<p class="alert alert-warning">{% trans "No permissions to see this page."%}</p>
+{% endif %}
+
+{% endblock %}
+{% block extra_js %}
+<script src="{% static "js/jquery.dataTables.js" %}"></script>
+<script src="{% static "js/DT_bootstrap.js" %}"></script>
+{% endblock %}

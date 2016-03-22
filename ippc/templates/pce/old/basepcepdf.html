@@ -1,0 +1,569 @@
+{%if context == 'View' or context == 'Edit' %}
+<!doctype html>
+<html lang="{{ LANGUAGE_CODE }}"{% if LANGUAGE_BIDI %} dir="rtl"{% endif %}>
+      {% load pages_tags mezzanine_tags i18n future staticfiles %}
+      <head>
+
+        <meta http-equiv="Content-type" content="text/html; charset=utf-8">
+        <meta name="viewport" content="width=device-width">
+        <meta name="robots" content="index,follow">
+        <meta name="keywords" content="{% block meta_keywords %}{% endblock %}">
+        <meta name="description" content="{% block meta_description %}{% endblock %}">
+        <title>{% block meta_title %}{% endblock %} - {% trans "Phytosanitary Capacity Evaluation" %}</title>
+        <link rel="shortcut icon" href="{% static "img/favicon.ico" %}">
+              <link rel="stylesheet" type="text/css" href="/static/grappelli/css/widgets.css">
+        {% ifinstalled mezzanine.blog %}
+        <link rel="alternate" type="application/rss+xml" title="RSS" href="{% url "blog_post_feed" "rss" %}">
+              <link rel="alternate" type="application/atom+xml" title="Atom" href="{% url "blog_post_feed" "atom" %}">
+              {% endifinstalled %}
+              {% compress css %}
+              <link rel="stylesheet" href="{% static "css/bootstrap.css" %}">
+              <link rel="stylesheet" href="{% static "css/mezzanine.css" %}">
+              <link rel="stylesheet" href="{% static "css/bootstrap-responsive.css" %}">
+              <link rel="stylesheet" href="{% static "css/pce.css" %}">
+              <link rel="stylesheet" href="{% static "css/chosen.css" %}">
+              {% if LANGUAGE_BIDI %}
+              <link rel="stylesheet" href="{% static "css/rtl.css" %}">
+              {% endif %}
+              {% ifinstalled cartridge.shop %}
+              <link rel="stylesheet" href="{% static "css/cartridge.css" %}">
+              {% if LANGUAGE_BIDI %}
+              <link rel="stylesheet" href="{% static "css/cartridge.rtl.css" %}">
+              {% endif %}
+              {% endifinstalled %}
+              {% block extra_css %}{% endblock %}
+              {% endcompress %}
+
+              {% compress js %}
+        <script src="{% static "mezzanine/js/"|add:settings.JQUERY_FILENAME %}"></script>
+        <script src="{% static "js/bootstrap.js" %}"></script>
+        <script src="{% static "js/bootstrap-extras.js" %}"></script>
+        <script src="{% static "js/chosen.jquery.min.js" %}"></script>
+        <script src="{% static "js/jquery.min.js" %}"></script>
+
+        <script type="text/javascript" src="{% url "django.views.i18n.javascript_catalog" %}"></script>
+        <script type="text/javascript" src="/static/admin/js/core.js"></script>
+
+        <!--script type="text/javascript" src="/static/admin/js/admin/RelatedObjectLookups.js">        </script-->
+        <script type="tepxt/javascript" src="/static/admin/js/jquery.min.js"></script> 
+        <script type="text/javascript" src="/static/admin/js/jquery.init.js"></script> 
+        <script type="text/javascript" src="/static/admin/js/actions.min.js"></script> 
+        <script type="text/javascript" src="/static/admin/js/calendar.js"></script>
+
+        <script type="text/javascript" src="/static/admin/js/admin/DateTimeShortcuts.js"></script>
+        <script type="text/javascript" src="/static/js/jsPDF-master/dist/jspdf.min.js"></script>
+        {% include 'autocomplete_light/static.html' %}
+        {# 'add another' form field functionality #}
+        <script src="{% static "js/jquery.formset.js" %}"></script>
+
+        {# {% block extra_js %}{% endblock %} #} {# MOVED TO BOTTOM #}
+        {% endcompress %}
+        <!--[if lt IE 9]>
+        <script src="{% static "js/html5shiv.js" %}"></script>
+        <![endif]-->
+ <script type="text/javascript">
+        function toggle_visibility(id) {
+
+                 var e = document.getElementById(id);
+                if (e.style.display == 'block'){
+                        e.style.display = 'none';
+                    }
+                    else{
+                       e.style.display = 'block';
+                    }
+        }
+
+    </script>  {% if form1.prefix %}
+        <script type="text/javascript">
+            $(function() {
+                $(".inline.{{ form1.prefix }}").formset({
+                    prefix: "{{ form1.prefix }}",
+                })
+            })
+
+        </script>
+        {% endif %} 
+        {% if form2.prefix %}
+        <script type="text/javascript">
+            $(function() {
+                $(".inline.{{ form2.prefix }}").formset({
+                    prefix: "{{ form2.prefix }}",
+                })
+            })
+
+        </script>
+        {% endif %} 
+        
+        
+            {% if form3.prefix %}
+        <script type="text/javascript">
+            $(function() {
+                $(".inline.{{ form3.prefix }}").formset({
+                    prefix: "{{ form3.prefix }}",
+                })
+            })
+
+        </script>
+        {% endif %} 
+        
+        
+            {% if form4.prefix %}
+        <script type="text/javascript">
+            $(function() {
+                $(".inline.{{ form4.prefix }}").formset({
+                    prefix: "{{ form4.prefix }}",
+                })
+            })
+
+        </script>
+        {% endif %} 
+        
+        {% if form5.prefix %}
+        <script type="text/javascript">
+            $(function() {
+                $(".inline.{{ form5.prefix }}").formset({
+                    prefix: "{{ form5.prefix }}",
+                })
+            })
+
+        </script>
+        {% endif %} 
+        
+        {% if u_form.prefix %}
+        <script type="text/javascript">
+
+            $(function() {
+                $(".inline.{{ u_form.prefix }}").formset({
+                    prefix: "{{ u_form.prefix }}",
+                })
+            })
+        </script>
+        {% endif %} 
+        {% if c_form.prefix %}
+        <script type="text/javascript">
+            $(function() {
+                $(".inline.{{ c_form.prefix }}").formset({
+                    prefix: "{{ c_form.prefix }}",
+                })
+            })
+
+        </script>
+        {% endif %}  
+    </head>
+
+    <body id="{% block body_id %}body{% endblock %}" class="{% block body_class %}{% endblock %}">
+
+        <div class="navbar navbar-fixed-top">
+            <div class="navbar-inner">
+
+                <div class="container-fluid">
+
+                    {# <p style="margin:0;" class="alert alert-success small">We are currently transitioning to a redesigned website. If you see an error, please check the <a href="https://www.ippc.int/en/faq/#WebsiteIssues">list of known issues in the FAQ</a>.</p> #}
+                    {# language bar #}
+                    {# http://pythonhosted.org/django-localeurl/usage.html #}
+                    {% load localeurl_tags %}
+                    <ul class="nav nav-pills small pull-left languagebar">
+                        {% for lang in LANGUAGES %}
+                        {% ifequal lang.0 LANGUAGE_CODE %}
+                        <li class="active"><a href="#">{{ lang.1 }}</a></li>
+                        {% else %}
+                        <li><a href="{{ request.path|chlocale:lang.0 }}">{{ lang.1 }}</a></li>
+                        {% endifequal %}
+                        {% endfor %}
+                    </ul>
+
+                  
+    <div class="nav-collapse collapse">
+        {# toolbar, user panel, login/logout #}
+        <div class="pull-right text-right">
+            {% nevercache %}
+            {% include "pce/user_panel.html" %}
+            {% endnevercache %}
+         
+        </div>
+    </div>
+        
+
+                    <a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                    </a>
+
+                    <div class="pull-left" style="clear:left;">
+                        <a class="brand" href="/{{ LANGUAGE_CODE }}/pce">
+                            <img src="/static/img/ippc-logo-glyph-web-80x42.png" class="printlogo">
+                            <strong>
+                                {% trans "Phytosanitary Capacity Evaluation" %}
+                            </strong>
+                            <br>
+                            <em class="small quiet">{% blocktrans %}text{% endblocktrans %}</em>
+                        </a>
+                    </div>
+
+                    <div class="nav-collapse collapse">
+                        <ul class="nav nav-collapse pull-left" style="clear:both;">
+                            <li class="dropdown">
+                                <a href="/pce">{% trans "About PCE" %}</a>
+                            </li>
+                            {% if request.user.is_authenticated %}
+                            <li class="dropdown">
+                                <a href="/pce/{{ user.get_profile.country.name|slugify}}/sessions">{% trans "PCE Home" %}</a>
+                            </li>     
+                             <!--li class="dropdown">
+
+                                <a href="/pce/{{ user.get_profile.country.name|slugify}}/dashboard">{% trans "Dashboard" %}</a>
+                            </li-->     
+                            {% endif%}
+                        </ul> 
+                    </div>
+                </div> {# /.navbar navbar-fixed-top #}
+            </div> {# /.navbar-inner #}
+        </div> {# /.container-fluid #}
+
+        <div class="container-fluid">
+
+            {% block bread %}
+            <ul class="breadcrumb">
+                {% spaceless %}
+                {% block breadcrumb_menu %}
+                {% endblock %}
+                {% endspaceless %}
+            </ul>
+            {% endblock bread %}
+
+            {% nevercache %}
+            {% for message in messages %}
+            <div class="alert alert-{{ message.tags }}" data-alert="alert">
+                <a class="close" href="#" onclick="$(this).parent().fadeOut('fast');
+                        return false;">×</a>
+                {% if message.message == "Successfully signed up" %}
+                {{ "You have successfully activated your account! <b style='color:#060;'>Please set a new password below &darr;</b>" }}
+                {# {% elif message.message == "Item removed from wishlist" %} #}
+                {# {{ "Item removed from your Favorites" }} #}
+                {% else %}
+                {{ message }}
+                {% endif %}
+            </div>
+            {% endfor %}
+            {% endnevercache %}
+
+            <h2>{% block title %}{% endblock %}</h2>
+
+        </div> {# /.container-fluid #}
+
+        <div class="container-fluid">
+
+            <div class="row-fluid">
+                <div class="span{% block mainspansize %}8{% endblock mainspansize %} middle">
+                    {% block main %}{% endblock %}
+                </div>
+
+                <div class="span{% block sidebarspansize %}4{% endblock sidebarspansize %} right">
+                    {% block local_nav %}
+                    {% block trans %}
+                    {% endblock trans %}
+                    {% endblock local_nav %}
+
+
+                </div> {# /.span4 right #}
+
+            </div> {# /.container-fluid #}
+        </div> {# /.row-fluid #}
+
+        <footer>
+            <div class="container-fluid">
+                {% page_menu "pages/menus/footer.html" %}
+                <div class="span6 muted left">
+                    <p class="text-left">{% trans "IPPC on Social Media:" %} <a href="http://www.facebook.com/pages/IPPC-Protecting-the-worlds-plant-resources-from-pests/113230338690380" class="icn-facebook">Facebook</a> | <a href="https://twitter.com/ippcnews" class="icn-twitter">Twitter</a></p>
+                </div> {# /.span6 muted left #}
+
+                <div class="span5 right muted small">
+                    <p class="text-right">
+                        {% trans "The IPPC Secretariat is hosted &amp; provided by" %} <a href="http://www.fao.org">FAO</a>
+                        <a style="vertical-align:bottom;" class="imglink" href="http://www.fao.org"><img class="faologo" src="{% static "img/fao-logo.gif" %}" alt="{% trans "Food and Agriculture Organization Logo" %}" height="58" width="58"></a>
+                        <br>
+                        <a style="margin-right:66px;" href="{% url 'page' 'legal' %}">{% trans "Copyright & Disclaimer" %}</a>
+                    </p>
+                </div> {# /.span5 right muted small #}
+            </div>
+        </footer> {# /.container-fluid #}
+
+        {# {% include "includes/footer_scripts.html" %} #}
+        {% compress js %}
+
+        {# better country selector using chosen - http://harvesthq.github.io/chosen/ #}
+        <script type="text/javascript" charset="utf-8">
+            $(".chosen-select").chosen()
+        </script>
+
+        {% block extra_js %}{% endblock %}
+        {% endcompress %}
+        {% comment %} Google Analytics {% endcomment %}
+        <script>
+                    (function(i, s, o, g, r, a, m) {
+                        i['GoogleAnalyticsObject'] = r;
+                        i[r] = i[r] || function() {
+                            (i[r].q = i[r].q || []).push(arguments)
+                        }, i[r].l = 1 * new Date();
+                        a = s.createElement(o),
+                                m = s.getElementsByTagName(o)[0];
+                        a.async = 1;
+                        a.src = g;
+                        m.parentNode.insertBefore(a, m)
+                    })(window, document, 'script', '//www.google-analytics.com/analytics.js', 'ga');
+
+            ga('create', 'UA-26969258-1', 'auto');
+            ga('send', 'pageview');
+
+        </script>
+
+    </body>
+</html>
+{% else %}
+<!DOCTYPE html>
+<html>
+<head>
+      {% load pages_tags mezzanine_tags i18n future staticfiles %}
+    <title>{{ title|default:"" }}</title>
+        
+    {% block style_base %}
+        {% comment %}
+            See DEFAULT_CSS in https://github.com/chrisglass/xhtml2pdf/blob/master/xhtml2pdf/default.py
+            for base style.
+        {% endcomment %}
+
+          
+        {% block layout_style %}  
+           
+<style type="text/css">
+
+html {
+    font-family: Helvetica;
+    font-size: 10px;
+    font-weight: normal;
+    color: #000000;
+    background-color: transparent;
+    margin: 0;
+    padding: 0;
+    line-height: 150%;
+    border: 1px none;
+    display: inline;
+    width: auto;
+    height: auto;
+    white-space: normal;
+}
+b,strong {
+    font-weight: bold;
+}
+i,em {
+    font-style: italic;
+}
+u {
+    text-decoration: underline;
+}
+s,strike {
+    text-decoration: line-through;
+}
+a {
+    text-decoration: underline;
+    color: blue;
+}
+ins {
+    color: green;
+    text-decoration: underline;
+}
+del {
+    color: red;
+    text-decoration: line-through;
+}
+pre,
+code,
+kbd,
+samp,
+tt {
+    font-family: "Courier New";
+}
+h5 {font-size:1.5em;}
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+    font-weight:bold;
+    -pdf-outline: true;
+    -pdf-outline-open: false;
+}
+h1 {
+    /*18px via YUI Fonts CSS foundation*/
+    font-size:138.5%;
+    -pdf-outline-level: 0;
+}
+h2 {
+    /*16px via YUI Fonts CSS foundation*/
+    font-size:123.1%;
+    -pdf-outline-level: 1;
+}
+h3 {
+    /*14px via YUI Fonts CSS foundation*/
+    font-size:108%;
+    -pdf-outline-level: 2;
+}
+h4 {
+    -pdf-outline-level: 3;
+}
+h5 {
+    -pdf-outline-level: 4;
+}
+h6 {
+    -pdf-outline-level: 5;
+}
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+p,
+pre,
+hr {
+    margin:1em 0;
+}
+
+th{
+  background-color: #dff0d8;
+}
+ div.userde {background:#eee; }
+address,
+blockquote,
+body,
+center,
+dl,
+dir,
+div,
+fieldset,
+form,
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+hr,
+isindex,
+menu,
+noframes,
+noscript,
+ol,
+p,
+pre,
+table,
+th,
+tr,
+td,
+ul,
+li,
+dd,
+dt,
+pdftoc {
+    display: block;
+}
+table {
+    border:1px solid gray;padding:5px;
+}
+tr,
+th,
+td {
+    vertical-align: top;
+    
+    width: auto;
+}
+th {
+    text-align: center;
+    vertical-align: middle;
+    margin-top: 1.5em;
+    margin-bottom: 1.5em;
+    font-weight: bold;
+}
+center {
+    text-align: center;
+}
+big {
+    font-size: 125%;
+}
+small {
+    font-size: 75%;
+}
+ul {
+    margin-left: 1.5em;
+    list-style-type: disc;
+}
+ul ul {
+    list-style-type: circle;
+}
+ul ul ul {
+    list-style-type: square;
+}
+ol {
+    list-style-type: decimal;
+    margin-left: 1.5em;
+}
+pre {
+    white-space: pre;
+}
+blockquote {
+    margin-left: 1.5em;
+    margin-right: 1.5em;
+}
+noscript {
+    display: none;
+}
+
+                @page {
+                    size: {{ pagesize|default:"A4" }};
+                    margin-left: 2.5cm;
+                    margin-right: 2.5cm;
+                    margin-top: 2.5cm;
+                    margin-bottom: 2cm;
+
+                    @frame header {
+                        -pdf-frame-content: page-header;
+                        margin-top: 0.7cm;
+                        margin-right: 2mm;
+                        margin-bottom: 0cm;
+                        margin-left: 1.2cm;
+                    }
+
+                    @frame footer {
+                        -pdf-frame-content: page-footer;
+                        bottom: 0cm;
+                        margin-left: 1cm;
+                        margin-right: 1cm;
+                        height: 1cm;
+                    }
+                }
+            </style>
+        {%endblock%}
+        {% block extra_style %}{% endblock %}
+    {% endblock %}
+</head>
+<body>
+    <div>
+        {%block page_header%}
+        {%endblock%}
+
+        {%block content%}
+        {%endblock%}
+    </div>
+
+    <div id="page-footer">
+        {%block page_foot%}
+            {% comment %}
+                <pdf:pagenumber />
+            {% endcomment %}
+        {%endblock%}
+    </div>
+</body>
+</html>
+{%endif%}

@@ -1,0 +1,157 @@
+{% extends "pce/basepce.html" %}
+{% load pages_tags translate_tags mezzanine_tags i18n future staticfiles accounts_tags %}
+
+{% block meta_title %}{% trans "Configuration" %} - {{ user.get_profile.country.name}} {% endblock %}
+
+
+
+{% block body_class %}wide{% endblock %}
+
+{% block breadcrumb_menu %}
+<li>
+    <a href="/pce/{{ user.get_profile.country.name }}/sessions">{% trans "PCE Home" %}</a>
+    <span class="divider">/</span>
+</li>
+<li class="active">
+    {{ user.get_profile.country.name }} - {% trans " PCE Re-Configuration: Q & A Modules" %}
+</li>
+
+{% endblock %}
+
+{% block local_nav %}
+{% endblock local_nav %}
+
+{% block pageinfo %}
+{% endblock pageinfo %}
+
+{% block main %}
+{% if can_edit %}
+
+<script type="text/javascript">
+  window.onload = function () {
+      valuemodules=document.getElementById('id_chosen_modules').value;
+      var vals = valuemodules.split(',');
+       
+      for(var m=0;m<vals.length;m++){
+            e=document.getElementById('full_'+vals[m]);
+           
+            if(e){
+                 e.checked =true;
+            }
+        }
+}
+var checkflag = "false";
+function check(theform)
+{
+    if (checkflag == "false")
+    {
+        for (i = 0; i < theform.elements.length; i++)
+        {
+            if (!theform.elements[i].disabled)
+                theform.elements[i].checked = true;
+        }
+        checkflag = "true";
+        return "Un-check All";
+    }
+    else
+    {
+        for (i = 0; i < theform.elements.length; i++)
+        {
+            theform.elements[i].checked = false;
+        }
+        checkflag = "false";
+        return "Check All";
+    }
+}
+</script>
+<h1><span class="normal">{% trans "Configuration Step 2 of 3" %}</span></h1>
+<div class="row-fluid">
+    <div class="span8">
+        <div class="panel panel-info">
+            <div  class="alert alert-success" role="alert">
+                <h3 class="panel-title"> {% trans "Q & A Modules" %}</h3>
+            </div>
+            <div class="panel-body">
+                <p>{% trans "Please select the questionnaire modules you would like to include in the evaluation. If you need more detailed information about a module's contents, click on 'more'." %}</p>
+                <form class="customform" method="POST" action="" enctype="multipart/form-data">
+                    {% csrf_token %}
+                    <fieldset>
+                        {% include "pce/pceversion_form.html" %}
+                        <input id="checks" class="btn btn-info btn-mini"  onClick="javascript:this.value = check(this.form);" value="Check All" type="button"/>
+
+                        <div class="panel panel-default">
+                            <div class="panel-heading">
+                                <h4 class="panel-title"> {% trans "SYSTEM LEVEL" %}</h4>
+                            </div>
+                            <div class="panel-body">
+                                <input type="checkbox" name="full_1" id="full_1" value="1"  />{% trans "COUNTRY PROFILE" %} <br>
+                                <input type="checkbox" name="full_2" id="full_2" value="2"  />{% trans "National phytosanitary legislation" %} <br>
+                                <input type="checkbox" name="full_3" id="full_3" value="3"  />{% trans "Environmental forces assessment" %} <br> 
+                            </div>
+                        </div>				
+                        <div class="panel panel-default">
+                            <div class="panel-heading">
+                                <h4 class="panel-title"> {% trans "ORGANIZATION LEVEL" %}</h4>
+                            </div>
+                            <div class="panel-body">
+                                <input type="checkbox" name="full_4" id="full_4" value="4"  />{% trans "NPPO's mission and strategy" %} <br>
+                                <input type="checkbox" name="full_5" id="full_5" value="5"  />{% trans "NPPO's structure and processes" %} <br>
+                                <input type="checkbox" name="full_6" id="full_6" value="6"  />{% trans "NPPO's Resources" %} <br>
+
+                            </div>
+                        </div>	
+                        <div class="panel panel-default">
+                            <div class="panel-heading">
+                                <h4 class="panel-title"> {% trans "CORE ACTIVITIES" %}</h4>
+                            </div>
+                            <div class="panel-body">
+                               
+                                        <input type="checkbox" name="full_7"  id="full_7" value="7"  />{% trans "Pest diagnostic capacity" %}<br>
+                                        <input type="checkbox" name="full_8" id="full_8"  value="8"  />{% trans "NPPO pest surveillance and pest reporting capacity" %}<br>
+                                        <input type="checkbox" name="full_9"  id="full_9" value="9"  />{% trans "Pest eradication capacity" %}<br>
+
+                                
+                                        <input type="checkbox" name="full_10" id="full_10"  value="10"  />{% trans "Phytosanitary import regulatory system" %}<br>
+                                        <input type="checkbox" name="full_11" id="full_11"  value="11"  />{% trans "Pest risk analysis" %}<br>
+                                 
+                                        <input type="checkbox" name="full_12"  id="full_12" value="12"  />{% trans "Pest free areas, places and sites, low pest prevalence areas" %}<br>
+                                        <input type="checkbox" name="full_13"  id="full_13" value="13"  />{% trans "Export certification, re-export, transit" %}<br>
+                                    </div>
+                                </div>	
+                            </div>
+                        </div>	         
+                         <div class="form-actions">
+                            <button type="submit" class="btn btn-info btn-large" tabindex="7">{% trans "Save and Go to next step" %}</button> or <a href="javascript:history.go(-1)">{% trans "Cancel" %}</a>
+                        </div>
+                    </fieldset>
+                </form>
+            </div>
+
+        </div>      
+    </div>
+
+
+
+    {% include "pce/userdetails_panel.html" %}
+    <div class="span4">
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <h4 class="panel-title"> {% trans "Configuration Progress" %}</h4>
+            </div>
+            <div class="panel-body">
+                <b>1. </b>{% trans "Basic Information" %}<span class="icon-ok"> </span><br>
+                <b>2. </b><span class="label label-success">{% trans "Q & A Modules" %}</span><br>
+                <b>3.</b>{% trans "User Groups" %}<br>
+            </div>
+        </div>
+    </div>
+
+
+
+</div>
+{% else %}
+      <p class="alert alert-warning">{% trans "No permissions to see this page." %}</p>
+ 
+{% endif %}
+{% endblock %}
+

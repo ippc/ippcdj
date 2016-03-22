@@ -1,0 +1,30 @@
+{% load i18n future mezzanine_tags accounts_tags %}
+<div class="form-actions">
+{% if context == 'Edit' %}  
+    <a class="btn btn-small btn-info" href="javascript:history.go(-1)">{% trans "Cancel" %}</a>
+    <button type="submit" class="btn btn-info btn-large" tabindex="7" value="save">{% trans "Save" %}</button>
+
+    <span class="pull-right">
+        <a class="btn btn-large btn-info" href="javascript:window.print();" >{% trans "PRINT" %}</a>
+            {%if module != 1 %}
+     
+            {%if is_pa_filled %}
+                <a class="btn btn-large btn btn-info" href="/pce/{{ user.get_profile.country.name|slugify }}/{{sessionid}}/{{module}}/problemanalysis/{{pa_id}}">{% trans "Go to Problem Analysis for Module" %} {{module}} -></a>
+            {% else%}
+                {%if is_st_filled and m_percentage == 100 %}
+                    <a class="btn btn-large  btn btn-info" href="/pce/{{ user.get_profile.country.name|slugify }}/{{sessionid}}/{{module}}/problemanalysis/view">{% trans "Go to Problem Analysis for Module" %} {{module}} -></a>
+                {% endif%}  
+            {% endif%}  
+            {% endif%}  
+     
+{% endif %}
+</span> 
+{% if context == 'View' %}                 
+    {% if id != ''%}            
+        <a class="btn btn-large btn-info" href="/pce/{{ user.get_profile.country.name|slugify }}/{{sessionid}}/module{{module}}/pdf/{{id}}">{% trans "Export as PDF" %}</a>
+    {% else%}            
+        <a class="btn btn-large btn-info" href="/pce/{{ user.get_profile.country.name|slugify }}/{{sessionid}}/module{{module}}/pdf_empty/">{% trans "Export as PDF" %}</a>
+    {% endif %}   
+   <a class="btn btn-large btn-info" href="javascript:window.print();" >{% trans "PRINT" %}</a>
+    {% endif %} 
+</div>
