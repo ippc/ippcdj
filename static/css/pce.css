@@ -208,9 +208,12 @@ fieldset {}
 .icn-facebook {background-position:0 -2772px;}
 textarea.input-xlarge {width:150px; height:150px;}
 textarea.zzz {width:500px; height:150px;}
+textarea.zzz1 {width:150px; height:150px;}
 select.zzz {width:100px;}
-select.yyy {width:500px;}
-input.zzz {width:100px;}
+select.yyy1 {width:500px;height: 100%;}
+select.yyy {width:500px; }
+input.zzz {width:50px;}
+input.zzz1 {width:30px;}
 p.backtotop a {background:url(/static/img/icons.gif) no-repeat 0 -2574px; padding:1px 0 2px 20px !important; }
 .calls-list-detail, .news-list-detail {margin-bottom:3em;}
 
