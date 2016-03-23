@@ -113,7 +113,7 @@ urlpatterns = patterns("",
     url(r'^calls/', include('calls.urls')),
     url(r'^news/', include('news.urls')),
     url(r'^iyph/', include('iyph.urls')),
-   # url(r'^pce/', include('pce.urls')),
+    url(r'^pce/', include('pce.urls')),
 
 
 
