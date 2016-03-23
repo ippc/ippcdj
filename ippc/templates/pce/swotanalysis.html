@@ -446,7 +446,7 @@
                         <span  class="pull-left"><a  class="btn btn-info" href="/pce/{{ user.get_profile.country.name|slugify }}/{{sessionid}}/{{modulename}}/view/{{moduleid}}"><- {% trans "back to Module" %} {{module}}</a></span>
                         &#160;&#160;&#160;<a class="btn  btn-info" href="javascript:window.print();">{% trans "PRINT" %}</a>  
                         {% if lf_id != ''%}  
-                        &#160;&#160;&#160;<a  class="btn btn-info" href="/pce/{{ user.get_profile.country.name|slugify }}/{{sessionid}}/{{module}}/swotanalysis/pdf/{{sa_id}}">{% trans "Export as PDF" %}</a>
+                        &#160;&#160;&#160;<a  class="btn btn-info" href="/pce/{{ user.get_profile.country.name|slugify }}/{{sessionid}}/{{module}}/swotanalysis/pdf/{{sa_id}}" target="_blank">{% trans "Export as PDF" %}</a>
                         <span  class="pull-right"><a class="btn btn-info" href="/pce/{{ user.get_profile.country.name|slugify }}/{{sessionid}}/{{module}}/logicalframework/{{lf_id}}">{% trans "Go to Logical Framework for Module" %} {{module}} -></a></span>
 
                         {% endif%}

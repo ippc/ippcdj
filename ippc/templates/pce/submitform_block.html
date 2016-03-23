@@ -21,9 +21,9 @@
 </span> 
 {% if context == 'View' %}                 
     {% if id != ''%}            
-        <a class="btn btn-large btn-info" href="/pce/{{ user.get_profile.country.name|slugify }}/{{sessionid}}/module{{module}}/pdf/{{id}}">{% trans "Export as PDF" %}</a>
+        <a class="btn btn-large btn-info" href="/pce/{{ user.get_profile.country.name|slugify }}/{{sessionid}}/module{{module}}/pdf/{{id}}" target="_blank">{% trans "Export as PDF" %}</a>
     {% else%}            
-        <a class="btn btn-large btn-info" href="/pce/{{ user.get_profile.country.name|slugify }}/{{sessionid}}/module{{module}}/pdf_empty/">{% trans "Export as PDF" %}</a>
+        <a class="btn btn-large btn-info" href="/pce/{{ user.get_profile.country.name|slugify }}/{{sessionid}}/module{{module}}/pdf_empty/" target="_blank">{% trans "Export as PDF" %}</a>
     {% endif %}   
    <a class="btn btn-large btn-info" href="javascript:window.print();" >{% trans "PRINT" %}</a>
     {% endif %} 

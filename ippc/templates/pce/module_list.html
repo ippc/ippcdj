@@ -210,6 +210,13 @@
                                       {% if key1 == i %}
                                          {% if value1 == 4 %}
                                              <span class="label label-warning">VALIDATED</span>
+                                                   {% for key2,value2 in m_ids.items %}
+                                                  {% if key2 == key %}
+                                                            <a class="btn btn-small btn-warning" href="/pce/{{ user.get_profile.country.name|slugify }}/{{sessionid}}/module{{key}}/unvalidate/{{value2}}">{% trans "Unvalidate" %}</a>
+                                                        {% endif %}  
+                                                    {% endfor %}     
+                                             
+                                                  
                                          {% else %}
                                              {% if can_validate %}
                                                     {% if value1 == 3 %}

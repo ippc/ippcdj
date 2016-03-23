@@ -218,7 +218,7 @@
                    <span  class="pull-left"><a  class="btn btn-info" href="/pce/{{ user.get_profile.country.name|slugify }}/{{sessionid}}/{{modulename}}/view/{{moduleid}}"><- {% trans "back to Module" %} {{module}}</a></span>
                 &#160;&#160;&#160;<a class="btn  btn-info" href="javascript:window.print();">{% trans "PRINT" %}</a>
                 &#160;&#160;&#160;
-                         <a class="btn  btn-info" href="/pce/{{ user.get_profile.country.name|slugify }}/{{sessionid}}/{{module}}/problemanalysis/pdf/{{pa_id}}">{% trans "Export as PDF" %}</a>
+                         <a class="btn  btn-info" href="/pce/{{ user.get_profile.country.name|slugify }}/{{sessionid}}/{{module}}/problemanalysis/pdf/{{pa_id}}"  target="_blank">{% trans "Export as PDF" %}</a>
      {% if sa_id != ''%}  
                     <span  class="pull-right"><a class="btn btn-info" href="/pce/{{ user.get_profile.country.name|slugify }}/{{sessionid}}/{{module}}/swotanalysis/{{sa_id}}">{% trans "Got to Swot Analysis for Module" %} {{module}} -></a></span>
                     {% endif %}

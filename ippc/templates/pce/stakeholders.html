@@ -235,7 +235,7 @@
                                     &#160;&#160;&#160;
                                     <a class="btn btn-large btn-info" href="javascript:window.print();">{% trans "PRINT" %}</a>
                                    &#160;&#160;&#160;
-                                    <a class="btn btn-large btn-info" href="/pce/{{ user.get_profile.country.name|slugify }}/{{sessionid}}/{{module}}/stakeholders/pdf/{{st_id}}">{% trans "Export as PDF" %}</a>
+                                    <a class="btn btn-large btn-info" href="/pce/{{ user.get_profile.country.name|slugify }}/{{sessionid}}/{{module}}/stakeholders/pdf/{{st_id}}" target="_blank">{% trans "Export as PDF" %}</a>
                         {% endif %}   
 
 

@@ -92,7 +92,7 @@
                                     </tr>
                                     
                                <tr class="success">
-                                        <td>{% trans "Objective" %}</td>
+                                        <td>{% trans "Purpose" %}</td>
                                         <td>{% trans "Key Indicator" %}</td>
                                         <td>{% trans "Means of Verification" %}</td>
                                         <td>{% trans "Assumptions" %}</td>
@@ -357,7 +357,7 @@
                              </tr>  
                              {% endfor%}  
                             <tr class="success">
-                                <td style="background:#BDBDBD; ">{% trans "Objective" %}</td>
+                                <td style="background:#BDBDBD; ">{% trans "Purpose" %}</td>
                                 <td style="background:#BDBDBD; ">{% trans "Key Indicator" %}</td>
                                 <td style="background:#BDBDBD; ">{% trans "Means of Verification" %}</td>
                                 <td style="background:#BDBDBD; ">{% trans "Assumptions" %}</td>
@@ -563,7 +563,7 @@
                  
            <a  class="btn btn-info" href="/pce/{{ user.get_profile.country.name|slugify }}/{{sessionid}}/{{modulename}}/view/{{moduleid}}"><- {% trans "back to Module" %} {{module}}</a></span></h3>
         &#160;&#160;&#160;<a class="btn  btn-info" href="javascript:window.print();">{% trans "PRINT" %}</a>
-            &#160;&#160;&#160;    <a  class="btn btn-info" href="/pce/{{ user.get_profile.country.name|slugify }}/{{sessionid}}/{{module}}/logicalframework/pdf/{{lf_id}}">{% trans "Export as PDF" %}</a>
+        &#160;&#160;&#160;    <a  class="btn btn-info" href="/pce/{{ user.get_profile.country.name|slugify }}/{{sessionid}}/{{module}}/logicalframework/pdf/{{lf_id}}" target="_blank">{% trans "Export as PDF" %}</a>
               {% endif %} 
        {% endif %}
          

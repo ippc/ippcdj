@@ -1,0 +1,57 @@
+{% extends 'pce/basepce.html' %}
+{% load module_extras %}
+{% load pages_tags translate_tags mezzanine_tags i18n future staticfiles accounts_tags %}
+
+{% block meta_title %}{% trans "PCE Training materials" %}{% endblock %}
+
+
+
+{% block body_class %}wide{% endblock %}
+
+{% block breadcrumb_menu %}
+<li>
+    <a href="/pce/">{% trans "PCE Home" %}</a>
+    <span class="divider">/</span>
+</li>
+<li class="active">
+    {% trans "PCE Training materials" %} 
+</li>
+
+{% endblock %}
+
+{% block local_nav %}
+{% endblock local_nav %}
+
+{% block pageinfo %}
+{% endblock pageinfo %}
+
+{% block main %}
+
+<div class="row-fluid">
+    <div class="span8">
+        <h4>{% trans "PCE Training materials"  %}</h4>
+    </div> 
+</div>
+
+<div class="row-fluid">
+
+    <div class="panel panel-default">
+        <div class="panel-heading">
+            <h4 class="panel-title"> {% trans "---" %}</h4>
+        </div>
+        <div class="panel-body">
+            <table class="table">
+               <tbody>
+                    <tr class="success">
+                        <!--td>&#160; </td>		
+                        <td colspan="3"><b>{% trans "Systems Level" %}<b></td>
+                        <td colspan="3"><b>{% trans "Organization Level" %}<b></td>
+                        <td colspan="7"><b>{% trans "Core Activities Level"  %}<b></td-->
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+{% endblock %}

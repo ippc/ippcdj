@@ -191,16 +191,27 @@
                         <span class="icon-bar"></span>
                     </a>
 
-                    <div class="pull-left" style="clear:left;">
-                        <a class="brand" href="/{{ LANGUAGE_CODE }}/pce">
-                            <img src="/static/img/ippc-logo-glyph-web-80x42.png" class="printlogo">
+                    
+                      <div class="pull-left" style="clear:left;">
+                      <a href="http://www.fao.org"><img src="/static/img/FAO-logo.png" alt="FAO"></a>
+                    </div>
+
+                  
+                    
+                    
+                      <div class="pull-right" style="clear:right;">
+                        <a class="brand" href="/{{ LANGUAGE_CODE }}">
+                            <img src="/static/img/ippc-logo-glyph-web-80x42.png" class="printlogo" alt="IPPC">
                             <strong>
-                                {% trans "Phytosanitary Capacity Evaluation" %}
+                               {% trans "Phytosanitary Capacity Evaluation" %}
                             </strong>
                             <br>
-                            <em class="small quiet">{% blocktrans %}text{% endblocktrans %}</em>
+                            <em class="small quiet">{% blocktrans %}&#160;{% endblocktrans %}</em>
                         </a>
                     </div>
+                    
+                    
+                   
 
                     <div class="nav-collapse collapse">
                         <ul class="nav nav-collapse pull-left" style="clear:both;">
@@ -208,13 +219,10 @@
                                 <a href="/pce">{% trans "About PCE" %}</a>
                             </li>
                             {% if request.user.is_authenticated %}
-                            <li class="dropdown">
-                                <a href="/pce/{{ user.get_profile.country.name|slugify}}/sessions">{% trans "PCE Home" %}</a>
-                            </li>     
-                             <!--li class="dropdown">
+                                <li class="dropdown">
+                                    <a href="/pce/{{ user.get_profile.country.name|slugify}}/sessions">{% trans "PCE Home" %}</a>
+                                </li>     
 
-                                <a href="/pce/{{ user.get_profile.country.name|slugify}}/dashboard">{% trans "Dashboard" %}</a>
-                            </li-->     
                             {% endif%}
                         </ul> 
                     </div>
