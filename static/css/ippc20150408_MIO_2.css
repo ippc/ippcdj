@@ -205,6 +205,7 @@ fieldset {}
 .icn-delete {background-position:0 -2640px;}
 .icn-lock {background-position:0 -2710px;}
 .icn-twitter {background-position:0 -2705px;}
+.icn-linkedin {background:url(/static/img/icons.gif) no-repeat 0 -2862px;}
 .icn-facebook {background-position:0 -2772px;}
 
 
@@ -241,6 +242,54 @@ li#neareast a {width:30px; height:20px;}
 /*.icn-twitter {background-position:0 -17px;}*/
 
 div.input_id_password1, div.input_id_password2 {background:#eee; padding:1em;}
+
+
+/* New homepage styles - 20 January 2016 =============================== */
+
+body.homepage p, li, dd, dt {line-height:130% !important;}
+body.homepage ul {margin:0 0 10px 0;}
+body.homepage dl {margin:0;}
+body.homepage dt {width:auto; margin-right:5px;}
+body.homepage dd {margin-left:60px;}
+/*body.homepage h4 {letter-spacing:0.1em; text-transform:uppercase; font-weight:normal;}*/
+body.homepage h4, body.homepage h6 {margin:5px 0 2px; line-height:130%;}
+body.homepage h4 a {color:#000;}
+body.homepage h6 {color:#000;}
+body.homepage .panel {padding:5px 10px; margin-bottom:10px; line-height:130%;}
+body.homepage ol.carousel-indicators li {background:rgba(255,255,255,0.75); border:1px solid #eee; border-radius:5px; padding:3px 3px 5px; line-height:100%; color:#777;}
+body.homepage ol.carousel-indicators li.active {color:#000;}
+body.homepage a.quiet {color:#666;}
+
+body.homepage form.navbar-search {margin:-5px 0 0 0;}
+body.homepage .breadcrumb {display:none;}
+
+.homesidebar {background:#fff; padding:10px; border-radius:5px;}
+.homesidebar .panel {border:0; padding:0; margin:0; background:transparent;}
+body.homepage .chosen-container {max-width:190px !important;}
+body.homepage .chosen-default {color:#000;}
+
+/*.homepage-about-box {background:;}*/
+.homepage-ippcnews-box {background:;}
+/*.homepage-announcements-box {background:#eee;}*/
+.homepage-callsdeadlines-box {background:;}
+.homepage-resourcestools-box {background:;}
+.homepage-briefnews-box {background:;}
+.homepage-information-box {background:#ffc;}
+
+/*.homepage-resources-box {background:rgba(254, 214, 140, 0.58);}*/
+.homepage-resources-box {background:rgba(153, 20, 13, 0.11);}
+/*.homepage-activities-box {background:rgba(188, 231, 140, 0.58); color:#000;}*/
+.homepage-activities-box {background:rgba(125, 157, 0, 0.3); color:#000;}
+/*.homepage-activities-box a {color:#000;}*/
+/*.homepage-activities-box h6 {color:#f90 !important;}*/
+
+/*footer {background:rgba(223, 138, 84, 0.44); padding:20px 10px; border: 1px solid #eee; border-radius:5px; color:#000;}*/
+footer {background:rgba(125, 157, 0, 0.77); padding:5px 5px; border: 1px solid #eee; border-radius:5px; color:#fff;}
+footer li {float:none;}
+footer .panel a {color:#fff;}
+footer .panel {background:transparent; border:0;}
+
+
 
 @media print {
   * {

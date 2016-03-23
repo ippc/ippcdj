@@ -82,6 +82,24 @@
  {% endif %} 
 
 
+ 
+{% if report.to_verify %}
+ <dt>&#160;</dt>   
+ <dd> 
+    <p style="color:red"><b>{% trans "data to be verified" %}</b>
+    {% if perms.ippc.change_pestreport and request.user.get_profile.country.name == page.title %}
+        <a class="btn btn-small btn-info" href="{% url 'pest-report-validate' report.country.name|slugify report.id %}"><i class="icon-edit icon-white"></i> {% trans "click here to VALIDATE" %}</a>
+    {% endif %}
+    </p>
+</dd>
+{% endif %}
+{% if report.to_verify == 0 and report.verified_date != '' %}
+<dt>&#160;</dt>   
+<dd> 
+    <p style="color:green"> <b>{% trans "data verified on " %}{{report.verified_date}}</b></p>
+ </dd>
+{% endif %}
+
   <dt>{% trans "Publication Date" %}</dt>
   <dd>{% blocktrans with sometime=report.publish_date|date:"D, d M Y, H:i" %}{{ sometime }}{% endblocktrans %}</dd>
   
@@ -128,7 +146,7 @@
      
   {% if report.summary %}
   <dt>{% trans "Summary" %}</dt>
-  <dd>{{ report.summary }}</dd>
+   <dd>{{ report.summary|richtext_filter|safe  }}</dd>
   {% endif %}
   
 

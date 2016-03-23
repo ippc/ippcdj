@@ -1,5 +1,6 @@
 {% extends "base.html" %}
-{% load pages_tags mezzanine_tags i18n future staticfiles accounts_tags %}
+{% load pages_tags mezzanine_tags i18n future staticfiles accounts_tags translate_tags%}
+
 
 {% block meta_title %}{% trans "Latest Reporting Obligation" %}{% endblock %}
 
@@ -34,7 +35,8 @@
             {% endif %}
 
             {% if perms.ippc.change_reportingobligation and request.user.get_profile.country.name == page.title %}
-                <a class="btn btn-small btn-info" href="{% url 'reporting-obligation-edit' reportingobligation.country.name|slugify reportingobligation.id %}"><i class="icon-edit icon-white"></i> Edit</a>
+                <a class="btn btn-small btn-info" href="{% url 'reporting-obligation-edit' reportingobligation.country.name|slugify reportingobligation.id %}"><i class="icon-edit icon-white"></i> Edit</a><br><br>
+                {#a class="btn btn-small btn-default" href="{% url 'reporting-obligation-translate' reportingobligation.country.name|slugify 'fr' reportingobligation.id %}">{% trans "translate in FR" %}</a><br#}
             {% endif %}
  
         {% if versions %}
@@ -69,8 +71,14 @@
 {% endblock pageinfo %}
 
 {% block main %}
-<h1>{{ reportingobligation.title }}</h1> 
+<h1>{% with reportingobligation|get_object_translation as translated_page %}
+            {{ translated_page.title|safe }}
+    {% endwith %}
+</h1> 
 
+ 
+    
+      
 {% if reportingobligation.is_version %}
 <dl class="dl-horizontal" style="border: 3px double red;    padding: 0.5em;">
  <dt>&#160;</dt>
@@ -89,7 +97,24 @@
   </dd>
   {% endif %}
   
- {% if reportingobligation.publication_date %}
+{% if reportingobligation.to_verify %}
+ <dt>&#160;</dt>   
+ <dd> 
+    <p style="color:red"><b>{% trans "data to be verified" %}</b>
+    {% if perms.ippc.change_reportingobligation and request.user.get_profile.country.name == page.title %}
+        <a class="btn btn-small btn-info" href="{% url 'reporting-obligation-validate' reportingobligation.country.name|slugify reportingobligation.id %}"><i class="icon-edit icon-white"></i> {% trans "click here to VALIDATE" %}</a>
+    {% endif %}
+    </p>
+</dd>
+{% endif %}
+{% if reportingobligation.to_verify == 0 and reportingobligation.verified_date != '' %}
+<dt>&#160;</dt>   
+<dd> 
+    <p style="color:green"> <b>{% trans "data verified on " %}{{reportingobligation.verified_date}}</b></p>
+ </dd>
+{% endif %}
+
+{% if reportingobligation.publication_date %}
   <dt>{% trans "Publication Date" %}</dt>
   <dd>{% blocktrans with sometime=reportingobligation.publication_date|date:"d-m-Y" %}{{ sometime }}{% endblocktrans %}</dd>
 {% endif %}
@@ -102,7 +127,14 @@
 
  {% if reportingobligation.short_description != ''  and reportingobligation.short_description != ''   %}
   <dt>{% trans "Short Description" %}</dt>
-  <dd>{{ reportingobligation.short_description|richtext_filter|safe }}</dd>
+  <dd>
+      {% with reportingobligation|get_object_translation as translated_page %}
+            {{ translated_page.short_description|richtext_filter|safe }}
+    {% endwith %}
+
+      
+      
+  </dd>
   {% endif %}
   
   {% if reportingobligation.contact_for_more_information != ''  and reportingobligation.contact_for_more_information != ' ' %}

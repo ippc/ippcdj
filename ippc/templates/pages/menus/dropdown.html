@@ -7,6 +7,8 @@
 
 {% if branch_level == 0 %}
 <ul class="nav nav-collapse pull-left" style="clear:both;">
+    <li{% if page.id == None %} class="active"{% endif %}><a href="/"><span class="icon-home" title="Home">&#160;</span></a></li>
+
     {% for page in page_branch %}
     {# {% if not has_home and page.is_primary and forloop.first %} #}
     {# <li class="{% if on_home %} active{% endif %}" id="dropdown-menu-home"> #}

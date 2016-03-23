@@ -1,8 +1,25 @@
 {% extends "base.html" %}
 {% load pages_tags translate_tags mezzanine_tags i18n future staticfiles accounts_tags %}
 
+
 {% block meta_title %}
-  {{ page.title }}
+    {% with page.richtextpage|get_object_translation as translated_page %}
+            {{ translated_page.title|safe }}
+    {% endwith %}
+{% endblock %}
+
+{% block meta_keywords %}{% metablock %}
+
+{% endmetablock %}{% endblock %}
+
+{% block meta_description %}{% metablock %}
+{{ page.description }}
+{% endmetablock %}{% endblock %}
+
+{% block title %}
+    {% with page.richtextpage|get_object_translation as translated_page %}
+            {{ translated_page.title|safe }}
+    {% endwith %}
 {% endblock %}
 
 {% block breadcrumb_menu %}
@@ -61,7 +78,7 @@
       </tr>
     </thead>
     <tbody>
-      {% for editor in page.get_content_model.editors.all %}
+      {% for editor in page.get_content_model.editors.all  %}
         <tr>
           <td>{{ editor.get_profile.first_name }} {{ editor.get_profile.last_name }} 
               {% if  user.is_superuser %}<a class="btn btn-mini  pull-right" href="/admin/auth/user/{{ editor.get_profile.user_id }}">Edit User as Admin</a>{% endif %} <br></td>
@@ -75,7 +92,7 @@
    <table class="table table-condensed table-striped">
    <thead>
       <tr>
-          <th colspan="2">{% trans "National Reporting Obligations" %}</th>
+          <th colspan="2">{% trans "National Reporting Obligations" %} {% if ro_to_verify_1 == 'verify'%} <p style="color:red"> <b>{% trans "Data to be verified" %}</b>: Some of the data reported in the country page need revision.{% endif %} </th>
       </tr>
       </thead>
      <tbody>

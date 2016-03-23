@@ -1,4 +1,4 @@
-﻿/**
+/**
 * @preserve CanvasJS HTML5 & JavaScript Charts - v1.3.0 GA - http://canvasjs.com/ 
 * Copyright 2013 fenopix
 */

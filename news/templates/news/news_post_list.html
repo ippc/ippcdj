@@ -16,12 +16,18 @@
 {% endmetablock %}{% endblock %}
 
 {% block title %}
-{% if page %}
+
+
+    {% if category %}
+      {{ category }} 
+    {% else%}
 {# {% editable page.title %}{{ page.title }}{% endeditable %} #}
-{{ page.title }}
-{% else %}
-{% trans "News" %}
-{% endif %}
+        {% if page %}
+             {{ page.title }}
+        {% else %}
+              {% trans "News" %}
+        {% endif %}
+        {% endif %}
 {% endblock %}
 
 {% block breadcrumb_menu %}
@@ -31,7 +37,8 @@
 {% if tag %}
     {% trans "Tag:" %} {{ tag }}
 {% else %}{% if category %}
-    <!--{% trans "Category:" %} {{ category }}-->
+    {% trans "Category:" %} {{ category }}
+   
 {% else %}{% if year or month %}
     {% if month %}{{ month }}, {% endif %}{{ year }}
 {% else %}{% if author %}
@@ -49,8 +56,9 @@
     <p>
     {% if tag %}
         {% trans "Viewing tagged as: " %} <strong>{{ tag }}</strong>
-    {% else %}{% if category %}
-       <!-- {% trans "Viewing posts for the category" %} <strong>{{ category }}</strong>-->
+    {% else %}{% if category %}<!--strong>{{ category }}</strong-->
+       {# trans "Viewing posts for the category" #} <!--strong>{{ category }}</strong-->
+        
     {% else %}{% if year or month %}
         {% trans "Viewing items from" %} <strong>{% if month %}{{ month }}, {% endif %}
         {{ year }}</strong>
@@ -102,7 +110,10 @@
 
 {% if  news_post.featured_image %}{#settings.news_USE_FEATURED_IMAGE and #}
 {% block news_post_list_post_featured_image %}
-<img class="featured-thumb" src="{{ MEDIA_URL }}{% thumbnail news_post.featured_image 90 90 %}">
+<img class="featured-thumb" src="{{ MEDIA_URL }}{{news_post.featured_image}}" style="width:90px;height:90px;">
+<!--img class="featured-thumb" src="{{ MEDIA_URL }}{# thumbnail news_post.featured_image 90 90 #}"-->
+
+
 {% endblock %}
 {% endif %}
 

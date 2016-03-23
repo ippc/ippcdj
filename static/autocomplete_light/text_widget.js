@@ -21,31 +21,31 @@ For now, the script is composed of these parts:
 jQuery.fn.getSelectionStart = function(){
     // Written by jQuery4U
     // http://www.jquery4u.com/snippets/6-jquery-cursor-functions/#.UDPQ9xXtFw8
-Â Â Â Â if(this.lengh == 0) return -1;
-Â Â Â Â input = this[0];
-Â 
-Â Â Â Â var pos = input.value.length;
-Â 
-Â Â Â Â if (input.createTextRange) {
+        if(this.lengh == 0) return -1;
+        input = this[0];
+  
+        var pos = input.value.length;
+  
+        if (input.createTextRange) {
         if (window.getSelection) {
             var r = window.getSelection(); //IE11
         } else {
             var r = document.selection.createRange().duplicate();
             r.moveEnd('character', input.value.length);
         }
-Â Â Â Â Â Â Â Â if (r.text == '')
-    Â Â Â Â Â Â Â Â pos = input.value.length;
-Â Â Â Â Â Â Â Â pos = input.value.lastIndexOf(r.text);
-Â Â Â Â } else if(typeof(input.selectionStart)!="undefined")
-Â Â Â Â pos = input.selectionStart;
-Â 
-Â Â Â Â return pos;
+                if (r.text == '')
+                    pos = input.value.length;
+                pos = input.value.lastIndexOf(r.text);
+        } else if(typeof(input.selectionStart)!="undefined")
+        pos = input.selectionStart;
+  
+        return pos;
 }
 
 jQuery.fn.getCursorPosition = function(){
     // Written by jQuery4U
-Â Â Â Â if(this.lengh == 0) return -1;
-Â Â Â Â return $(this).getSelectionStart();
+        if(this.lengh == 0) return -1;
+        return $(this).getSelectionStart();
 }
 
 // Return the word on which the cursor is on.

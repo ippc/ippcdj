@@ -48,6 +48,12 @@
     {# {% blocktrans with sometime=calls_post.publish_date|timesince %}{{ sometime }} ago{% endblocktrans %} #}
     {% blocktrans with sometime=calls_post.publish_date|date:"D, d M Y, H:i" %}on {{ sometime }}{% endblocktrans %}    
 </h6>
+{% if calls_post.deadline_date != null %}
+<h6>
+    {% trans "Deadline " %}
+   {% blocktrans with thetime=calls_post.deadline_date|date:"D, d M Y, H:i" %} <span class="normal">on</span> {{ thetime }}{% endblocktrans %}
+</h6>
+    {% endif %}
 {# {% endeditable %} #}
 {% endblock %}
 {# {% block calls_post_detail_commentlink %} #}

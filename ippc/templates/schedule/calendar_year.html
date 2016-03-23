@@ -15,8 +15,8 @@
 <li class="active">{% trans "Year" %}</li>
 {% endblock breadcrumb_menu %}
 
+{% block main %}
 
-{% block local_nav %}
 <div class="well localnav">
     {% if user.is_superuser or can_add %} 
     <a class="btn btn-small btn-info" href="/create/event/calendar/">{% trans "Add Event" %}</a>
@@ -27,12 +27,7 @@
        {% trans "See Month Calendar" %}
     </a>
 </div>
-{% endblock local_nav %}
 
-{% block pageinfo %}
-{% endblock pageinfo %}
-
-{% block main %}
 <div class="calendarname"><h1>{% trans "Calendar of Events<" %}/h1></div><br><br>
 
 {% prevnext "year_calendar" calendar.slug periods.year "Y" %}<br><br>

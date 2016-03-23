@@ -71,6 +71,8 @@
         <th>{% trans "Report files" %}</th>
         <th>{% trans "Publication Date" %}</th>
         <th>{% trans "Last Updated" %}</th>
+        <th>{% trans "To verify" %}</th>
+        <th>&#160;</th>
    </tr>
     {% for object in latest %}<br>
     {% if object.event_rep_type == key  %}
@@ -84,7 +86,16 @@
         {% endif %}
      </td>
      <td>{{ object.publish_date|date:"d M Y" }}</td>
-      <td>{{ object.modify_date|date:"d M Y" }}
+      <td>{{ object.modify_date|date:"d M Y" }}</td>
+     <td>
+          {% if object.to_verify %}
+             <p style="color:red"><b>{% trans "to be verified" %}</b></p>
+          {% else %}
+                {% if  object.verified_date != '' %}
+                  <p style="color:green"> <b>{% trans "verified on " %}{{object.verified_date|date:"d M Y"}}</p>
+                {% endif %}
+          {% endif %}
+      </td>
         {% if user.is_superuser %} 
             <a class="small pull-right" href="/admin/ippc/eventreporting/{{ object.id }}"><i class="icon-edit"></i> Edit as Admin</a><br>
         {% endif %}

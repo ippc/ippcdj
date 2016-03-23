@@ -31,7 +31,7 @@
 {% if tag %}
     {% trans "Tag:" %} {{ tag }}
 {% else %}{% if category %}
-    <!--{% trans "Category:" %} {{ category }}-->
+    {% trans "Category:" %} {{ category }}
 {% else %}{% if year or month %}
     {% if month %}{{ month }}, {% endif %}{{ year }}
 {% else %}{% if author %}
@@ -50,7 +50,7 @@
     {% if tag %}
         {% trans "Viewing tagged as: " %} <strong>{{ tag }}</strong>
     {% else %}{% if category %}
-       <!-- {% trans "Viewing posts for the category" %} <strong>{{ category }}</strong>-->
+        {% trans "Viewing posts for the category" %} <strong>{{ category }}</strong>
     {% else %}{% if year or month %}
         {% trans "Viewing items from" %} <strong>{% if month %}{{ month }}, {% endif %}
         {{ year }}</strong>
@@ -96,7 +96,13 @@
     {% endwith %}
    {# {% blocktrans with sometime=calls_post.publish_date|timesince %}{{ sometime }} ago{% endblocktrans %} #}
    {% blocktrans with thetime=calls_post.publish_date|date:"D, d M Y, H:i" %} <span class="normal">on</span> {{ thetime }}{% endblocktrans %}
+{{category}}</h6>
+{% if calls_post.deadline_date != null %}
+<h6>
+    {% trans "Deadline " %}
+   {% blocktrans with thetime=calls_post.deadline_date|date:"D, d M Y, H:i" %} <span class="normal">on</span> {{ thetime }}{% endblocktrans %}
 </h6>
+    {% endif %}
 {# {% endeditable %} #}
 {% endblock %}
 

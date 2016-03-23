@@ -19,11 +19,11 @@ msgstr ""
 
 #: settings.py:396 ippc/templates/base.html:11 ippc/templates/base.html.py:147
 msgid "International Plant Protection Convention"
-msgstr "االتفاقية الدولية لوقاية النباتات"
+msgstr "الاتفاقية الدولية لوقاية النباتات "
 
 #: settings.py:397 ippc/templates/base.html:150
 msgid "Protecting the world's plant resources from pests"
-msgstr "حامية املوارد النباتية يف العامل من اآلفات"
+msgstr "حماية الموارد النباتية في العالم من الآفات"
 
 #: settings.py:443
 msgid "Secretariat"
@@ -1210,7 +1210,7 @@ msgstr ""
 #: ippc/models.py:1032
 #, fuzzy
 msgid "International Organization"
-msgstr "االتفاقية الدولية لوقاية النباتات"
+msgstr ""
 
 #: ippc/models.py:1033
 msgid "Research Institute"
@@ -4306,10 +4306,3 @@ msgstr ""
 msgid "Never. This is a 'one time only' event."
 msgstr ""
 
-#, fuzzy
-#~ msgid "The International Plant Protection Convention (IPPC) is an"
-#~ msgstr "االتفاقية الدولية لوقاية النباتات"
-
-#, fuzzy
-#~ msgid "international agreement"
-#~ msgstr "االتفاقية الدولية لوقاية النباتات"

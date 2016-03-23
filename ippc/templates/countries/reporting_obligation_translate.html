@@ -34,20 +34,33 @@
 {% endblock pageinfo %}
 
 {% block main %}
-
 <p class="pull-right">
   <a href="javascript:history.go(-1)">{% trans " Cancel and go back" %}</a>
 </p>
 
-<h1><small class="normal">{% trans "Editing" %}</small> {{ reporting_obligation.title }} <br><small class="normal">{% trans "Last updated on" %} {{reporting_obligation.modify_date}}</small></h1>
+<h1><small class="normal">{% trans "Translating:" %}<br> {{ reporting_obligation.title }}</small></h1>
 
-<form enctype="multipart/form-data" class="customform" method="POST" action="{% url 'reporting-obligation-edit' reporting_obligation.country.country_slug reporting_obligation.id %}">
+<form enctype="multipart/form-data" class="customform" method="POST">
     {% csrf_token %}
     <fieldset>
-        {% include "countries/reporting_obligation_form.html" %}
-        <div class="form-actions">
-            <button type="submit" class="btn btn-info btn-large">{% trans "Update Report" %}</button> {% trans "or" %} <a href="javascript:history.go(-1)">{% trans "Cancel" %}</a>
-        </div>
+    {% load pages_tags translate_tags mezzanine_tags ippc_tags i18n future staticfiles accounts_tags %} 
+
+    {% if form.non_field_errors or form.errors %}
+    <div class="alert alert-error">{% trans "Please correct the errors below." %}
+    <ul>
+    {% for error in form.non_field_errors %}
+    <li>{{ error }}</li>
+    {% endfor %}
+    {% for error in form.errors %}
+    <li>{{ error }}</li>
+    {% endfor %}
+    </ul>
+    </div>
+    {% endif %}
+    {% fields_for transform %}
+    <div class="form-actions">
+          <button type="submit" class="btn btn-info btn-large">{% trans "Translate Report" %}</button> {% trans "or" %} <a href="javascript:history.go(-1)">{% trans "Cancel" %}</a>
+    </div>
     </fieldset>
 </form>
 

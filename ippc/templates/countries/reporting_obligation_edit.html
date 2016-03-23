@@ -45,6 +45,7 @@
     {% csrf_token %}
     <fieldset>
         {% include "countries/reporting_obligation_form.html" %}
+    
         <div class="form-actions">
             <button type="submit" class="btn btn-info btn-large">{% trans "Update Report" %}</button> {% trans "or" %} <a href="javascript:history.go(-1)">{% trans "Cancel" %}</a>
         </div>
