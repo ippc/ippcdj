@@ -270,7 +270,7 @@ INSTALLED_APPS = (
     "calls",
     "news",
     "iyph",
-    #"pce",
+   
     "t_eppo",
     # or, even better, attachments that can be related to any model type
     
@@ -298,8 +298,10 @@ INSTALLED_APPS = (
     "django_markdown",
     "envelope",
     "loginas",
+    "pce",
+    "easy_pdf",
 )
-
+# 
 # NEWSLETTER_CONFIRM_EMAIL = False
 
 # List of processors used by RequestContext to populate the context.
