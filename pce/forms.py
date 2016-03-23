@@ -19,7 +19,7 @@ from .models import PceVersion,Module1,Module1Aid,Module1MajorCrops,Module1Major
 SwotAnalysis, SwotAnalysis1,SwotAnalysis2,SwotAnalysis3,SwotAnalysis4,SwotAnalysis5,Crops,\
 LogicalFramework,LogicalFrameworkAct1,LogicalFrameworkAct2,LogicalFrameworkAct3,LogicalFrameworkAct4,LogicalFrameworkAct5,\
 Module3,Module3Grid,Module3Weaknesses,\
-    Module2,Module2Weaknesses,\
+    Module2,Module2Weaknesses ,\
 Module4,Module4Weaknesses, Module5,Module5Weaknesses,Module6,Module6Weaknesses,\
 Module7,Module7Weaknesses, Module7Grid, Module7Matrix23,Module7Matrix37,Module7Matrix39,Module7Matrix41,Module7Matrix43,Module7Matrix45,\
 Module8,Module8Weaknesses,Module8Grid3,Module8Grid18,Module8Matrix30,\
