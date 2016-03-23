@@ -85,7 +85,7 @@ def get_profile():
     return IppcUserProfile.objects.all()
 
 def add_toStakeholders(user,modulenum,pceversionid,fname,lname,email):
-    pceversion = get_object_or_404(PceVersion,  pk=pceversionid)
+    pceversion = get_object_or_404(PceVersion ,  pk=pceversionid)
          
     stake= Stakeholders()
     try:

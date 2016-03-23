@@ -22,7 +22,7 @@ from .views import PceDashboardListView,PceVersionDetailView,PceSessionListView,
     Module9ListPDFView,Module10ListPDFView,Module11ListPDFView,Module12ListPDFView,Module13ListPDFView,Module3ListPDFView
 
 #-------------- PCE ---------------------------------#
-urlpatterns = patterns("pce.views",
+urlpatterns = patterns("pce.views",  
     url(r"^$", direct_to_template, {"template": "pce/index.html"}, name="pce"),
  
     #TRAINING MATERIAL

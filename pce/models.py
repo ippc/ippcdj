@@ -70,7 +70,7 @@ OPEN = 1
 SENT = 3
 VALIDATED =4
 MODULES_STATUS_CHOICES = (
-    (OPEN, _("open")), 
+    (OPEN, _("open") ), 
     (SENT, _("sent to validator")),
     (VALIDATED, _("validates")),
 )

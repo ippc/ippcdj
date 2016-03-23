@@ -20,7 +20,7 @@ from django_markdown.admin import MarkdownModelAdmin
 import autocomplete_light
 #import autocomplete_light_registry
 
-#from django_markdown.widgets import MarkdownWidget
+#from django_markdown.widgets  import MarkdownWidget
 
 
 #from django.contrib.auth.admin import UserAdmin

@@ -29,7 +29,7 @@ and 'D' would represent 2^15.
 
 $S$<hash>
 
-while in Django the passwords are stored as
+while in Django  the passwords are stored as
 
 S$<hash>
 
