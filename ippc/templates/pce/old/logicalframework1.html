@@ -1,0 +1,354 @@
+{% extends 'pce/basepce.html' %}
+{% load module_extras %}
+{% load pages_tags translate_tags mezzanine_tags i18n future staticfiles accounts_tags %}
+
+{% block meta_title %}{% trans "Logical Framework" %} - {{ user.get_profile.country.name}} {% endblock %}
+
+
+
+{% block body_class %}wide{% endblock %}
+{% block breadcrumb_menu %}
+<li>
+    <a href="/pce/{{ user.get_profile.country.name }}/sessions">{% trans "PCE Home" %}</a>
+    <span class="divider">/</span>
+</li>
+<li>
+    <a href="/pce/{{ user.get_profile.country.name|slugify }}/session/dashboard/{{sessionid}}">  {% trans "PCE Dashboard for" %} {{ user.get_profile.country.name }}</a>
+    <span class="divider">/</span>
+<li>
+<li class="active">{% trans "Logical Framework for Module " %}{{module}}</li>
+{% endblock %}
+
+
+{% block local_nav %}
+{% endblock local_nav %}
+
+{% block pageinfo %}
+{% endblock pageinfo %}
+
+{% block main %}
+{% if can_see %}
+
+
+
+<div class="row-fluid">
+    <div class="span8">
+ 
+   <h4>{% trans "Logical Framework" %}</h4>
+      {% include "pce/tools_panel.html" %} 
+
+        
+    </div>
+    {% include "pce/userdetails_panel.html" %} 
+
+    <div class="row-fluid">
+        <div class="span12">
+            <div class="panel panel-info">
+                <div  class="alert alert-success" role="alert">
+                    <h3 class="panel-title">  {% trans "Logical Framework - Module" %} {{module}}
+                   {% if can_edit %}
+                   <span  class="pull-right">  
+                   <a  class="btn btn-info" href="/pce/{{ user.get_profile.country.name|slugify }}/{{sessionid}}/{{module}}/logicalframework/edit/{{lf_id}}">{% trans "Edit table" %}</a>
+                   </span>
+                   {% endif%}
+                    </h3>
+                </div>
+                <div class="panel-body">
+                    {% if latest %} 
+                <table class="table">
+                        <tr class="success">
+                            <td colspan="1">{% trans "Overall Objective" %}</td>
+                            <td colspan="1">{% trans "Key Indicator" %}</td>
+                            <td colspan="1">{% trans "Means of Verification" %}</td>
+                            <td>{% trans "Assumptions" %}</td>
+                        </tr>  
+                        {% for object in latest %} 
+                        <tr> 
+                            <td colspan="1">{{object.overobjective}}</td>
+                            <td colspan="1">{{object.keyindicator0}}</td>
+                            <td colspan="1">{{object.verification0}}</td>
+                            <td colspan="1">{{object.assumptions0}}</td>
+                            
+                        </tr>  
+                        {% endfor%}  
+                        <tr class="success">
+                            <td colspan="1">{% trans "Objective" %}</td>
+                            <td colspan="1">{% trans "Key Indicator" %}</td>
+                            <td colspan="1">{% trans "Means of Verification" %}</td>
+                            <td colspan="1">{% trans "Assumptions" %}</td>
+                        </tr>
+                        {% for object in latest %} 
+                        <tr> 
+                            <td colspan="1">{{object.objective}}</td>
+                            <td colspan="1">{{object.keyindicator}}</td>
+                            <td colspan="1">{{object.verification}}</td>
+                            <td colspan="1">{{object.assumptions}}</td>
+                         
+                        </tr>
+                          {% endfor%}  
+                          <tr>
+                            <td  colspan="4" style="background:#ffc; "><b>{% trans "Weakness 1" %}</b>: {{weakeness.w1}}</td>
+                         </tr>      {% for object in latest %} 
+                  
+                         <tr class="success">
+                            <td>{% trans "Output 1" %}</td>
+                            <td>{% trans "Key Indicator" %}</td>
+                            <td>{% trans "Means of Verification" %}</td>
+                            <td>{% trans "Assumptions" %}</td>
+                            <!--td colspan="3">&#160;</td-->
+                        </tr>
+                        <tr> 
+                            <td><b>1)</b> {{object.output1}}</td>
+                            <td>{{object.keyindicator1}}</td>
+                            <td>{{object.verification1}}</td>
+                            <td>{{object.assumptions1}}</td>
+                            <!--td colspan="3">&#160;</td-->
+                        </tr>    
+                        
+                           <tr class="success">
+                            <td>Activity</td>
+                            <!--td style="background:#BDBDBD; ">Target</td>
+                            <td style="background:#BDBDBD; ">Source</td>
+                            <td style="background:#BDBDBD; ">External factors</td-->
+                            <td style="background:#eee; ">{% trans "Estimated cost" %}</td>
+                            <td style="background:#eee; ">{% trans "Responsable person" %}</td>
+                            <td style="background:#eee; ">{% trans "Deadline" %}</td>
+                        </tr>        {% endfor %} 
+                  
+                          {% if latest1 %} 
+                                    {% for object in latest1 %} 
+                                    <tr> 
+                                        <td><b>1.{{forloop.counter}})</b>{{object.activity1}}</td>
+                                        <!--td>{{object.target}}</td>
+                                        <td>{{object.sourcverification}}</td>
+                                        <td>{{object.external}}</td-->
+                                        <td>{{object.cost}}</td>
+                                        <td>{{object.responsible}}</td>
+                                        <td>{{object.deadline}}</td>
+                                    </tr>  
+                                    {% endfor%}  
+                               {% endif %}  
+                        
+                    
+                               <tr>
+                            <td  colspan="4" style="background:#ffc; "><b>{% trans "Weakness 2" %}</b>: {{weakeness.w2}}</td>
+                         </tr>
+                        
+						<tr class="success">
+                            <td>{% trans "Output 2" %}</td>
+                            <td>{% trans "Key Indicator" %}</td>
+                            <td>{% trans "Means of Verification" %}</td>
+                            <td>{% trans "Assumptions" %}</td>
+                            <!--td colspan="3">&#160;</td-->
+                        </tr>      {% for object in latest %} 
+                  
+                        <tr> 
+                            <td><b>2)</b> {{object.output2}}</td>
+                            <td>{{object.keyindicator2}}</td>
+                            <td>{{object.verification2}}</td>
+                            <td>{{object.assumptions2}}</td>
+                            <!--td colspan="3">&#160;</td-->
+                        </tr>    
+                        
+                           <tr class="success">
+                            <td>Activity</td>
+                            <!--td style="background:#BDBDBD; ">Target</td>
+                            <td style="background:#BDBDBD; ">Source</td>
+                            <td style="background:#BDBDBD; ">External factors</td-->
+                            <td style="background:#eee; ">{% trans "Estimated cost" %}</td>
+                            <td style="background:#eee; ">{% trans "Responsable person" %}</td>
+                            <td style="background:#eee; ">{% trans "Deadline" %}</td>
+                        </tr>          
+                              {% endfor %} 
+                  
+                        
+                        
+                              
+                                {% if latest2 %} 
+                                    {% for object in latest2 %} 
+                                   <tr> 
+                                        <td><b>2.{{forloop.counter}})</b>{{object.activity2}}</td>
+                                            <!--td>{{object.target}}</td>
+                                        <td>{{object.sourcverification}}</td>
+                                        <td>{{object.external}}</td---->
+                                        <td>{{object.cost}}</td>
+                                        <td>{{object.responsible}}</td>
+                                        <td>{{object.deadline}}</td>
+                                    </tr>  
+                                    {% endfor%}  
+                               {% endif %}  
+                               
+                                  <tr>
+                            <td  colspan="4" style="background:#ffc; "><b>{% trans "Weakness 3" %}</b>: {{weakeness.w3}}</td>
+                         </tr>
+                         <tr class="success">
+                            <td>{% trans "Output 3" %}</td>
+                            <td>{% trans "Key Indicator" %}</td>
+                            <td>{% trans "Means of Verification" %}</td>
+                            <td>{% trans "Assumptions" %}</td>
+                            <!--td colspan="3">&#160;</td-->
+                        </tr>
+                        <tr>       {% for object in latest %} 
+                  
+                            <td><b>3)</b> {{object.output3}}</td>
+                            <td>{{object.keyindicator3}}</td>
+                            <td>{{object.verification3}}</td>
+                            <td>{{object.assumptions3}}</td>
+                            <!--td colspan="3">&#160;</td-->{% endfor%}  
+                        </tr>    
+                        
+                           <tr class="success">
+                            <td>Activity</td>
+                            <!--td style="background:#BDBDBD; ">Target</td>
+                            <td style="background:#BDBDBD; ">Source</td>
+                            <td style="background:#BDBDBD; ">External factors</td-->
+                           <td style="background:#eee; ">{% trans "Estimated cost" %}</td>
+                            <td style="background:#eee; ">{% trans "Responsable person" %}</td>
+                            <td style="background:#eee; ">{% trans "Deadline" %}</td>
+                        </tr>         
+                        
+                                {% if latest3 %} 
+                                    {% for object in latest3 %} 
+                                       <tr> 
+                                        <td><b>3.{{forloop.counter}})</b>{{object.activity3}}</td>
+                                         <!--td>{{object.target}}</td>
+                                        <td>{{object.sourcverification}}</td>
+                                        <td>{{object.external}}</td-->
+                                        <td>{{object.cost}}</td>
+                                        <td>{{object.responsible}}</td>
+                                        <td>{{object.deadline}}</td>
+                                    </tr>  
+                                    {% endfor%}  
+                               {% endif %} 
+                               
+                               
+                                  <tr>
+                            <td  colspan="4" style="background:#ffc; "><b>{% trans "Weakness 4" %}</b>: {{weakeness.w4}}</td>
+                         </tr>
+                         <tr class="success">
+                            <td>{% trans "Output 4" %}</td>
+                            <td>{% trans "Key Indicator" %}</td>
+                            <td>{% trans "Means of Verification" %}</td>
+                            <td>{% trans "Assumptions" %}</td>
+                            <td colspan="4">&#160;</td>
+                        </tr>
+                        <tr>       {% for object in latest %} 
+                  
+                            <td><b>4)</b> {{object.output4}}</td>
+                            <td>{{object.keyindicator4}}</td>
+                            <td>{{object.verification4}}</td>
+                            <td>{{object.assumptions4}}</td>
+                            <td colspan="4">&#160;</td>{% endfor%}  
+                        </tr>    
+                        
+                           <tr class="success">
+                            <td>Activity</td>
+                            <!--td style="background:#BDBDBD; ">Target</td>
+                            <td style="background:#BDBDBD; ">Source</td>
+                            <td style="background:#BDBDBD; ">External factors</td-->
+                           <td style="background:#eee; ">{% trans "Estimated cost" %}</td>
+                            <td style="background:#eee; ">{% trans "Responsable person" %}</td>
+                            <td style="background:#eee; ">{% trans "Deadline" %}</td>
+                        </tr>      
+                        
+                        
+                                {% if latest4 %} 
+                                    {% for object in latest4 %} 
+                                      <tr> 
+                                        <td><b>4.{{forloop.counter}})</b>{{object.activity4}}</td>
+                                            <!--td>{{object.target}}</td>
+                                        <td>{{object.sourcverification}}</td>
+                                        <td>{{object.external}}</td-->
+                                        <td>{{object.cost}}</td>
+                                        <td>{{object.responsible}}</td>
+                                        <td>{{object.deadline}}</td>
+                                    </tr>  
+                                    {% endfor%}  
+                               {% endif %} 
+                               
+                               
+                                  <tr>
+                            <td  colspan="4" style="background:#ffc; "><b>{% trans "Weakness 5" %}</b>: {{weakeness.w5}}</td>
+                         </tr>
+                         <tr class="success">
+                            <td>{% trans "Output 5" %}</td>
+                            <td>{% trans "Key Indicator" %}</td>
+                            <td>{% trans "Means of Verification" %}</td>
+                            <td>{% trans "Assumptions" %}</td>
+                            <td colspan="5">&#160;</td>
+                        </tr>
+                        <tr>       {% for object in latest %} 
+                  
+                            <td><b>5)</b> {{object.output5}}</td>
+                            <td>{{object.keyindicator5}}</td>
+                            <td>{{object.verification5}}</td>
+                            <td>{{object.assumptions5}}</td>
+                            <td colspan="5">&#160;</td>{% endfor%}  
+                        </tr>    
+                        
+                           <tr class="success">
+                            <td>Activity</td>
+                            <!--td style="background:#BDBDBD; ">Target</td>
+                            <td style="background:#BDBDBD; ">Source</td>
+                            <td style="background:#BDBDBD; ">External factors</td-->
+                           <td style="background:#eee; ">{% trans "Estimated cost" %}</td>
+                            <td style="background:#eee; ">{% trans "Responsable person" %}</td>
+                            <td style="background:#eee; ">{% trans "Deadline" %}</td>
+                        </tr>      
+                                {% if latest5 %} 
+                                    {% for object in latest5 %} 
+                                     <tr> 
+                                      <td><b>4.{{forloop.counter}})</b>{{object.activity5}}</td>
+                                            <!--td>{{object.target}}</td>
+                                        <td>{{object.sourcverification}}</td>
+                                        <td>{{object.external}}</td-->
+                                        <td>{{object.cost}}</td>
+                                        <td>{{object.responsible}}</td>
+                                        <td>{{object.deadline}}</td>
+                                    </tr>  
+                                    {% endfor%}  
+                               {% endif %}   
+                               
+                    </table> 
+        {% endif%} 
+            
+                 
+           <a  class="btn btn-info" href="/pce/{{ user.get_profile.country.name|slugify }}/{{sessionid}}/{{modulename}}/view/{{moduleid}}"><- {% trans "back to Module" %} {{module}}</a></span></h3>
+        &#160;&#160;&#160;<a class="btn  btn-info" href="javascript:window.print();">{% trans "PRINT" %}</a>
+            &#160;&#160;&#160;    <a  class="btn btn-info" href="/pce/{{ user.get_profile.country.name|slugify }}/{{sessionid}}/{{module}}/logicalframework/pdf/{{lf_id}}">{% trans "Export as PDF" %}</a>
+                    </div>
+
+            </div>      
+        </div>
+
+    </div>
+
+
+</div> 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+{% else %}
+ {% nevercache %}
+            {% include "pce/permission_block.html" %}
+            {% endnevercache %}
+{% endif %}
+
+{% endblock %}
+{% block extra_js %}
+<script src="{% static "js/jquery.dataTables.js" %}"></script>
+<script src="{% static "js/DT_bootstrap.js" %}"></script>
+{% endblock %}

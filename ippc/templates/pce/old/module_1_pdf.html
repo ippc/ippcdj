@@ -1,0 +1,398 @@
+
+{% extends 'pce/basepcepdf.html' %}
+{% load module_extras %}
+{% load pages_tags translate_tags mezzanine_tags i18n future staticfiles accounts_tags %}
+
+{% block content %}
+<div id="content">
+{% if can_see %}    
+<h5 style="background:#dff0d8;"> {% trans "Module 1  - Country Profile" %}</h5>
+{% include "pce/userdetails_panel.html" %} </th>  
+<br><br>           
+<p style="background:#faf2cc;">{% trans "Develop a profile of the country's economic and phytosanitary activity and to establish its relative importance in the nation's economy." %}</p>
+<table class="table">
+              <tr>
+              <td width="70%" style="background:#BDBDBD;"><b>{% trans "No. Question" %}</b></td>
+              <td width="30%" style="background:#BDBDBD;"><b>{% trans "Tip" %}</b></td>
+              </tr>
+              <tbody>
+                  {% for f in form %}
+                  {% if not f.is_hidden and not f.name == 'm_comment' and not f.name == 'c_country' and not f.name == 'c_region' and not f.name == 'c_m_3' and not f.name == 'c_m_4' and not f.name == 'c_m_5' and not f.name == 'c_m_6' and not f.name == 'c_m_7' and not f.name == 'c_m_8' and not f.name == 'c_m_9' and not f.name == 'c_m_10' and not f.name == 'c_m_11' and not f.name == 'c_m_12' and not f.name == 'c_m_13' and not f.name == 'c_m_14' and not f.name == 'c_m_15' and not f.name == 'c_m_16' and not f.name == 'c_m_17' and not f.name == 'c_m_18' and not f.name == 'c_m_19' and not f.name == 'c_m_20' and not f.name == 'c_m_21' and not f.name == 'c_m_21' and not f.name == 'c_m_22' and not f.name == 'c_m_23' and not f.name == 'c_m_24' and not f.name == 'c_m_25'  and not f.name == 'c_m_26' %}
+                   <tr>
+                      <td>
+                          <div class="control-group">
+                              <label><b>{% if f.name == 'country'%}1. {% endif %}{{f.label|safe}}</b><br></label>
+                              <div class="controls">
+                              {%if f.name == 'm_10' %}
+                                  <ul>
+                                  <li>
+                                      <label for="id_{{f.name}}_1" class="control-label">
+                                      <input readonly="true" id="id_{{f.name}}_1" name ="{{f.name}}" type="radio" value="True" {% if f.value == True %}checked{%endif%}>{% if f.value == True %}<b><u>{%endif%}{% trans "Yes" %} {% if f.value == True %} </u> &#10003; </b>{%endif%}</label>
+                                  </li>
+                                  <li> 
+                                     <label for="id_{{f.name}}_2" class="control-label">
+                                     <input readonly="true" id="id_{{f.name}}_2" name ="{{f.name}}" type="radio" value="False" {% if f.value == False %}checked{%endif%}> {% if f.value == False %}<b><u>{%endif%}{% trans "No" %}{% if f.value == False %} </u>  &#10003; </b>{%endif%}</label>
+                                  </li>
+                                  </ul>                                                   
+                              {%else%}
+
+                                  {% if f.name == 'country'%}
+                                   {{country}}
+                                  {%elif f.name == 'region'%}
+                                      {% for key, val in regions %}
+                                      {% ifequal key f.value %}
+                                       <b><u>{{val}}</u>  &#10003;</b>    
+                                      {%else%}
+                                        {{val}} 
+                                      {% endifequal %}<br>
+                                      {% endfor %}  
+                                {%elif f.name == 'm_9'%}
+                                      {% for key, val in VAL_IMP %}
+                                         {% ifequal key f.value %}
+                                       <b><u>{{val}}</u>  &#10003;</b>    
+                                      {%else%}
+                                        {{val}}   
+                                      {% endifequal %}<br>
+                                      {% endfor %}  
+                                  {%elif f.name == 'm_12'%}
+                                      {% for key, val in VAL_EXP %}
+                                       {% ifequal key f.value %}
+                                       <b><u>{{val}}</u>  &#10003;</b>    
+                                      {%else%}
+                                        {{val}}   
+                                      {% endifequal %}<br>
+                                      {% endfor %}  
+                                    {%elif f.name == 'm_13' or f.name == 'm_16' or f.name == 'm_17' or f.name == 'm_18' or f.name == 'm_19'%}
+                                      {% for key, val in VAL_PERCENT %}
+                                        {% ifequal key f.value %}
+                                       <b><u>{{val}}</u>  &#10003;</b>    
+                                      {%else%}
+                                        {{val}}   
+                                      {% endifequal %}<br>
+                                      {% endfor %}  
+                                       {%elif f.name == 'm_24' or f.name == 'm_25'%}
+                                       {% for key, val in NUM_BILATERAL %}
+                                        {% ifequal key f.value %}
+                                             <b><u>{{val}}</u>  &#10003;</b>    
+                                        {%else%}
+                                          {{val}}    
+                                        {% endifequal %}<br>
+                                      {% endfor %}  
+                                      {%elif f.name == 'm_22' %}
+                                          {% for o in membership1 %}
+                                               {% if o.id in f.value %}
+                                                   <b><u> {{o}}</u> &#10003;</b>
+                                                 {% else %}
+                                                  {{o}}
+                                               {% endif %}
+                                    <br>
+
+                                      {% endfor %} 
+                                       {%elif f.name == 'm_23' %}
+                                          {% for o in membership2 %}
+                                               {% if o.id in f.value %}
+                                                   <b><u> {{o}}</u> &#10003;</b>
+                                                 {% else %}
+                                                  {{o}}
+                                               {% endif %}
+                                    <br>
+
+                                      {% endfor %} 
+                                 {%else%}
+                                  {{f}}
+                                    {% endif %}
+                                    {% endif %}
+                              </div>
+                          </div>
+                          <div class="pcecomment">
+                          <b>{% trans "Comment:" %}</b><br>  
+                              {%if f.name == 'country' %}{% for fff in form %}{%if fff.name == 'c_country'%}{{fff.value}}{%endif%}{%endfor%}{%endif%}
+                              {%if f.name == 'region' %}{% for fff in form %}{%if fff.name == 'c_region'%}{{fff.value}}{%endif%}{%endfor%}{%endif%}
+                              {%if f.name == 'm_3' %}{% for fff in form %}{%if fff.name == 'c_m_3'%}{{fff.value}}{%endif%}{%endfor%}{%endif%}
+                              {%if f.name == 'm_4' %}{% for fff in form %}{%if fff.name == 'c_m_4'%}{{fff.value}}{%endif%}{%endfor%}{%endif%}
+                              {%if f.name == 'm_5' %}{% for fff in form %}{%if fff.name == 'c_m_5'%}{{fff.value}}{%endif%}{%endfor%}{%endif%}
+                              {%if f.name == 'm_6' %}{% for fff in form %}{%if fff.name == 'c_m_6'%}{{fff.value}}{%endif%}{%endfor%}{%endif%}
+                              {%if f.name == 'm_9' %}{% for fff in form %}{%if fff.name == 'c_m_9'%}{{fff.value}}{%endif%}{%endfor%}{%endif%}
+                              {%if f.name == 'm_10' %}{% for fff in form %}{%if fff.name == 'c_m_10'%}{{fff.value}}{%endif%}{%endfor%}{%endif%}
+                              {%if f.name == 'm_12' %}{% for fff in form %}{%if fff.name == 'c_m_12'%}{{fff.value}}{%endif%}{%endfor%}{%endif%}
+                              {%if f.name == 'm_13' %}{% for fff in form %}{%if fff.name == 'c_m_13'%}{{fff.value}}{%endif%}{%endfor%}{%endif%}
+                              {%if f.name == 'm_14' %}{% for fff in form %}{%if fff.name == 'c_m_14'%}{{fff.value}}{%endif%}{%endfor%}{%endif%}
+                              {%if f.name == 'm_15' %}{% for fff in form %}{%if fff.name == 'c_m_15'%}{{fff.value}}{%endif%}{%endfor%}{%endif%}
+                              {%if f.name == 'm_16' %}{% for fff in form %}{%if fff.name == 'c_m_16'%}{{fff.value}}{%endif%}{%endfor%}{%endif%}
+                              {%if f.name == 'm_17' %}{% for fff in form %}{%if fff.name == 'c_m_17'%}{{fff.value}}{%endif%}{%endfor%}{%endif%}
+                              {%if f.name == 'm_18' %}{% for fff in form %}{%if fff.name == 'c_m_18'%}{{fff.value}}{%endif%}{%endfor%}{%endif%}
+                              {%if f.name == 'm_19' %}{% for fff in form %}{%if fff.name == 'c_m_19'%}{{fff.value}}{%endif%}{%endfor%}{%endif%}
+                              {%if f.name == 'm_22' %}{% for fff in form %}{%if fff.name == 'c_m_22'%}{{fff.value}}{%endif%}{%endfor%}{%endif%}
+                              {%if f.name == 'm_23' %}{% for fff in form %}{%if fff.name == 'c_m_23'%}{{fff.value}}{%endif%}{%endfor%}{%endif%}
+                              {%if f.name == 'm_24' %}{% for fff in form %}{%if fff.name == 'c_m_24'%}{{fff.value}}{%endif%}{%endfor%}{%endif%}
+                              {%if f.name == 'm_25' %}{% for fff in form %}{%if fff.name == 'c_m_25'%}{{fff.value}}{%endif%}{%endfor%}{%endif%}
+                          </div>
+
+                      </td>
+                      <td>{{f.help_text|safe}}</td>
+                  </tr>
+                 {% if f.name == 'm_6' %}
+                  <tr>
+                      <td>
+                         <div class="control-group">
+                         <label><b>{% trans "7. List 10 major crops grown in the country" %}</b><br></label>
+                         <div class="controls">
+                          <div class="panel panel-default">
+                          <div class="panel-body">
+                              <table>
+                                  <thead>
+                                <th>{% trans "CROPS" %}</th>					
+                                                        <th>{% trans "Propagation" %}</th>
+                                                        <th>{% trans "Germplasm" %}</th>
+                                                        <th>{% trans "Consumption" %}</th>
+                                                        <th>{% trans "Wooden and Cane Products" %}</th>
+                                                        <th>{% trans "Industrial Products" %}</th>
+                                                        <th>{% trans "Other Uses" %}</th>
+                                  </thead>
+                                  <tbody>
+                                  {% for form in form7 %}
+                                     <tr> 
+                                      {% for ff in form %}
+                                         {%if not ff.label == 'Module1' and not ff.label == 'Delete' and not ff.label == 'Id'%}
+                                       <td>{%if ff.label == 'Crops' %}
+                                              {% if ff.value == None %}
+                                                &#160;
+                                              {% else %}
+                                              {{ff.value}}
+                                              {% endif %}
+                                              {% else %}
+                                              {% if ff.value == True or  ff.value == False %}
+                                                 {% if ff.value == True%}<b>&#10003;</b>{%endif%}
+                                              {% endif %}
+                                          {% endif %}
+                                      </td>
+                                       
+                                      {% endif %}
+                                      {% endfor %}
+                                     </tr> 
+                                  </tbody> 
+                                     {% endfor %} 
+                              </table>  
+                          </div>  
+                          </div>
+                        </div>  </div>
+                            <div class="pcecomment">
+                          <b>{% trans "Comment:" %}</b><br>  
+                            {% for fff in form %}{%if fff.name == 'c_m_7'%}{{fff.value}}{%endif%}{%endfor%}
+                          </div>
+                      </td>
+                      <td>{% trans "Enter the scientific names followed by the local name." %}</td>
+                  </tr>
+                      <tr>
+                      <td>
+                         <div class="control-group">
+                         <label><b>{% trans "8. List 10 major Imports of plant and plant products."%}</b><br></label>
+                         <div class="controls">
+
+                          <div class="panel panel-default">
+                          <div class="panel-body">
+                              <table>
+                                  <thead>
+                                      <th>{% trans "CROPS" %}</th>					
+                                                        <th>{% trans "Propagation" %}</th>
+                                                        <th>{% trans "Germplasm" %}</th>
+                                                        <th>{% trans "Consumption" %}</th>
+                                                        <th>{% trans "Wooden and Cane Products" %}</th>
+                                                        <th>{% trans "Industrial Products" %}</th>
+                                                        <th>{% trans "Other Uses" %}</th>
+                                  </thead>
+                                  <tbody>
+                                  {% for form in form8 %}
+                                     <tr> 
+                                      {% for ff in form %}
+                                               {%if not ff.label == 'Module1' and not ff.label == 'Delete' and not ff.label == 'Id'%}
+
+                                         <td>{%if ff.label == 'Crops' %}
+                                              {% if ff.value == None %}
+                                                &#160;
+                                              {% else %}
+                                              {{ff.value}}
+                                              {% endif %}
+                                              {% else %}
+                                              {% if ff.value == True or  ff.value == False %}
+                                                 {% if ff.value == True%}<b>&#10003;</b>{%endif%}
+                                              {% endif %}
+                                          {% endif %}
+                                      </td>
+                                       
+                                      {% endif %}
+                                      {% endfor %}
+                                     </tr> 
+                                  </tbody> 
+                                     {% endfor %} 
+                              </table>  
+                          </div>  
+                          </div>
+                        </div>  </div>
+                         <div class="pcecomment">
+                          <b>{% trans "Comment:" %}</b><br>  
+                            {% for fff in form %}{%if fff.name == 'c_m_8'%}{{fff.value}}{%endif%}{%endfor%}
+                          </div>  
+                      </td>
+                      <td>{% trans "Enter the scientific names followed by the local name."%}</td>
+                  </tr>
+                  {% elif f.name == 'm_10' %}
+                  <tr>
+                      <td>
+                         <div class="control-group">
+                         <label><b>11. List 10 major exports of plant and plant products.</b><br></label>
+                         <div class="controls">
+                          <div class="panel panel-default">
+                          <div class="panel-body">
+                              <table>
+                                  <thead>
+                                      <th>{% trans "CROPS" %}</th>					
+                                                        <th>{% trans "Propagation" %}</th>
+                                                        <th>{% trans "Germplasm" %}</th>
+                                                        <th>{% trans "Consumption" %}</th>
+                                                        <th>{% trans "Wooden and Cane Products" %}</th>
+                                                        <th>{% trans "Industrial Products" %}</th>
+                                                        <th>{% trans "Other Uses" %}</th>
+                                  </thead>
+                                  <tbody>
+                                  {% for form in form11 %}
+                                     <tr> 
+                                      {% for ff in form %}
+                                               {%if not ff.label == 'Module1' and not ff.label == 'Delete' and not ff.label == 'Id'%}
+                           <td>{%if ff.label == 'Crops' %}
+                                              {% if ff.value == None %}
+                                                &#160;
+                                              {% else %}
+                                              {{ff.value}}
+                                              {% endif %}
+                                              {% else %}
+                                              {% if ff.value == True or  ff.value == False %}
+                                                 {% if ff.value == True%}<b>&#10003;</b>{%endif%}
+                                              {% endif %}
+                                          {% endif %}
+                                      </td>
+                                       
+                                      {% endif %}
+                                      {% endfor %}
+                                     </tr> 
+                                  </tbody> 
+                                     {% endfor %} 
+                              </table>  
+                          </div>  
+                          </div>
+                        </div>  </div>
+                       <div class="pcecomment">
+                          <b>{% trans "Comment:" %}</b><br>  
+                            {% for fff in form %}{%if fff.name == 'c_m_11'%}{{fff.value}}{%endif%}{%endfor%}
+                          </div></td>
+                      <td>{% trans "Enter the scientific names followed by the local name." %}</td>
+                  </tr>
+                {% elif f.name == 'm_19' %}
+                  <tr>
+                      <td>
+                         <div class="control-group">
+                         <label><b>{% trans "20. List up to 10 major trading partners in Plants and Plant Products : Imports" %}</b><br></label>
+                             <div class="controls">
+                           <div class="panel panel-default">
+                          <div class="panel-body">
+                              {% trans "Countries:"%}<br>					
+                                  {% for form in form20 %}
+                                      {% for ff in form %}
+                                       {%if not ff.label == 'Module1' and not ff.label == 'Delete' and not ff.label == 'Id'%}
+                                                 {% if ff.value != None %}
+                                             {{ff.value}}
+                                              {% endif %}
+
+                                           <br> 
+                                      {% endif %}    {% endfor %}
+
+                                     {% endfor %} 
+
+                          </div>  
+                          </div>
+                        </div>  </div>
+                           <div class="pcecomment">
+                          <b>{% trans "Comment:" %}</b><br>  
+                            {% for fff in form %}{%if fff.name == 'c_m_20'%}{{fff.value}}{%endif%}{%endfor%}
+                          </div>
+                      </td>
+                      <td> </td>
+                  </tr>
+                   <tr>
+                      <td>
+                         <div class="control-group">
+                             <label><b>{% trans "21. List up to 10 major trading partners in Plants and Plant Products : Exports" %}</b><br></label>
+                         <div class="controls">
+
+                          <div class="panel panel-default">
+                          <div class="panel-body">
+                              {% trans "Countries:" %}<br>					
+                                  {% for form in form21 %}
+                                      {% for ff in form %}
+                                       {%if not ff.label == 'Module1' and not ff.label == 'Delete' and not ff.label == 'Id'%}
+
+                                           {% if ff.value != None %}
+                                                 {{ff.value}}
+                                              {% endif %}
+                                       <br>  
+                                      {% endif %}    {% endfor %}
+
+                                     {% endfor %} 
+
+                          </div>  
+                          </div>
+                        </div>  </div>
+                       <div class="pcecomment">
+                          <b>{% trans "Comment:" %}</b><br>  
+                            {% for fff in form %}{%if fff.name == 'c_m_21'%}{{fff.value}}{%endif%}{%endfor%}
+                          </div></td>
+                      <td> </td>
+                  </tr>
+                  {% endif %}
+
+
+
+
+
+
+                  {% endif %}
+                  {% endfor%} 
+
+                  <tr>
+                      <td>
+                           <div class="control-group">
+                              <label><b>{% trans "26. List up to 5 major aid programs that have significantly contributed to phytosanitary capacity development or strengthening in the country." %}</b><br><br></label>
+                         <div class="controls"> 
+
+                          {% for form in form26 %}
+                          <div class="panel panel-default">
+                              <div class="panel-body">
+                                  {% for ff in form %}
+                                  {%if not ff.label == 'Module1' and not ff.label == 'Delete' and not ff.label == 'Id'%}
+                                    {{ff.label}}:     {% if ff.value != None %}{{ff.value}}
+                                              {% endif %}
+                                       <br>   
+                                  {% endif %}
+                                  {% endfor %}
+                              </div></div><hr>
+                          {% endfor %}   </div>
+                          </div>
+                           <div class="pcecomment">
+                          <b>{% trans "Comment:" %}</b><br>  
+                            {% for fff in form %}{%if fff.name == 'c_m_26'%}{{fff.value}}{%endif%}{%endfor%}
+                          </div>
+                      </td>
+                      <td>{% trans "Enter the most recent information dating as far back as 5 years ago."%}</td>
+                  </tr>
+
+              </tbody>        
+          </table>
+{% else %}
+            {% nevercache %}
+            {% include "pce/permission_block.html" %}
+            {% endnevercache %}
+  {% endif %}
+        </div>
+
+{% endblock %}
+

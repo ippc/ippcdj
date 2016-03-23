@@ -1,0 +1,430 @@
+
+{% extends 'pce/basepcepdf.html' %}
+{% load module_extras %}
+{% load pages_tags translate_tags mezzanine_tags i18n future staticfiles accounts_tags %}
+
+{% block content %}
+<div id="content">
+{% if can_see %}
+    <h5 style="background:#dff0d8;">{% trans "Module 8- NPPO pest surveillance and pest reporting capacity" %}</h5>
+    {% include "pce/userdetails_panel.html" %} </th>  
+<br><br>           
+<p style="background:#faf2cc;">{% trans "Pest surveillance is a core activity and an essential component of the NPPO capacity. Under IPPC Article IV b, the NPPO have the obligation to perform the surveillance of growing plants, including both areas under cultivation (inter alia fields, plantations, nurseries, gardens, greenhouses and laboratories) and wild flora, and of plants and plant products in storage or in transportation, particularly with the object of reporting the occurrence, outbreak and spread of pests, and of controlling those pests, including the reporting referred to under Article VIII paragraph 1(a). Also the IPPC provides that Contracting parties shall, to the best of their ability, conduct surveillance for pests and develop and maintain adequate information on pest status in order to support categorization of pests, and for the development of appropriate phytosanitary measures. (Article VII.2j). Furthermore IPPC Article IV 2e assign to the NPPO the responsibility for the protection of endangered areas and the designation, maintenance and surveillance of pest free areas and areas of low pest prevalence. ISPM 6 describes the components of survey and monitoring systems for the purpose of pest detection and the supply of information for use in pest risk analyses, the establishment of pest free areas and, where appropriate, the preparation of pest lists. Pest reporting is also a critical obligation under the IPPC. Under IPPC Article VIII 1a establish that Contracting parties ... shall cooperate ... to the fullest practicable extent in ... the reporting of the occurrence, outbreak or spread of pests that may be of immediate or potential danger ... to other contracting parties In this respect, they should follow the procedures established in ISPM No. 17 and other relevant procedures. ISPM 17 describes the responsibilities of and requirements for contracting parties in reporting the occurrence, outbreak and spread of pests in areas for which they are responsible. It also provides guidance on reporting successful eradication of pests and establishment of Pest Free Areas. <br>Guiding questions for the capacity assessment of NPPO's Pest Surveillance program<br>Keep the following questions in mind while working through this module:<br>1. What is the existing situation and performance of NPPO's pest surveillance and pest reporting activities? <br>2. What is the desired future situation of NPPO's pest surveillance and pest reporting activities? <br>3. What are the major gaps in the current capacity of NPPO's for pest surveillance and for pest reporting? <br>4. What are the capacity building needs and requirements to improve the performance of the NPPO's pest surveillance and pest reporting programs? " %}</p>
+                            <table class="table">
+                        
+                                <tr class="success">
+                                     <td colspan="2" style="background:#EBEBEB;"><b>{% trans "A. Mission and strategy" %}</b></td>
+                                    </tr>
+                                   <tr class="success">
+                                    <td width="70%" style="background:#BDBDBD;">{% trans "No. Question" %}</td>
+                                    <td width="30%" style="background:#BDBDBD;">{% trans "Tip" %}</td>
+                                </tr>
+                                <tbody>
+                                    {% for f in form %}
+                                   {% if not f.is_hidden and not f.name == 'c_m_1' and not f.name == 'c_m_2' and not f.name == 'c_m_3' and not f.name == 'c_m_4' and not f.name == 'c_m_5' and not f.name == 'c_m_6' and not f.name == 'c_m_7' and not f.name == 'c_m_8' and not f.name == 'c_m_9' and not f.name == 'c_m_10' and not f.name == 'c_m_11' and not f.name == 'c_m_12' and not f.name == 'c_m_13' and not f.name == 'c_m_14' and not f.name == 'c_m_15' and not f.name == 'c_m_16' and not f.name == 'c_m_17' and not f.name == 'c_m_18' and not f.name == 'c_m_19' and not f.name == 'c_m_20' and not f.name == 'c_m_21' and not f.name == 'c_m_22' and not f.name == 'c_m_23' and not f.name == 'c_m_24' and not f.name == 'c_m_25' and not f.name == 'c_m_26' and not f.name == 'c_m_27' and not f.name == 'c_m_28' and not f.name == 'c_m_29' and not f.name == 'c_m_30' and not f.name == 'c_m_31' and not f.name == 'c_m_32' and not f.name == 'c_m_33' and not f.name == 'c_m_34' and not f.name == 'c_m_35' and not f.name == 'c_m_36' and not f.name == 'c_m_37' and not f.name == 'c_m_38' and not f.name == 'c_m_39' and not f.name == 'c_m_40' and not f.name == 'c_m_41' and not f.name == 'c_m_42' and not f.name == 'c_m_43' and not f.name == 'c_m_44' and not f.name == 'c_m_45'  %}
+                                   
+                                    <tr>
+                                        <td>
+                                            <div class="control-group">
+                                                <label>{{f.label |safe}}</label>
+                                                <div class="controls">
+                                                    {%if f.name == 'm_1' or f.name == 'm_2' or f.name == 'm_4' or f.name == 'm_5' or f.name == 'm_6' or f.name == 'm_7' or f.name == 'm_10' or f.name == 'm_11' or f.name == 'm_12' or f.name == 'm_13' or f.name == 'm_14' or f.name == 'm_16' or f.name == 'm_19' or f.name == 'm_20' or f.name == 'm_21' or f.name == 'm_22' or f.name == 'm_23' or f.name == 'm_28' or f.name == 'm_29' or f.name == 'm_36' or f.name == 'm_39' or f.name == 'm_41' %}
+                                                     <ul>
+                                                <li>
+                                                    <label for="id_{{f.name}}_1" class="control-label">
+                                                        <input  readonly="true" id="id_{{f.name}}_1" name ="{{f.name}}" type="radio" value="True" {% if f.value == True %}checked{%endif%}> {% if f.value == True %}<u><b>{%endif%}{% trans "Yes" %}{% if f.value == True %} </b></u> <b> &#10003;</b>{%endif%} </label>
+                                                </li>
+                                                <li> 
+                                                    <label for="id_{{f.name}}_2" class="control-label">
+                                                        <input  readonly="true" id="id_{{f.name}}_2" name ="{{f.name}}" type="radio" value="False" {% if f.value == False %}checked{%endif%} > {% if f.value == False %}<u><b>{%endif%}{% trans "No" %}{% if f.value == False %} </b></u> <b> &#10003;</b>{%endif%} </label>
+
+
+            
+        
+      
+                                </ul>        
+ {%elif f.name == 'm_24'%}
+                        {% for key, val in RANGE1 %}
+                        {% ifequal key f.value %}
+                         <b><u>{{val}}</u>  &#10003;</b>    
+                        {%else%}
+                        {{val}}   
+                        {% endifequal %}<br>
+                        {% endfor %}     
+                        {%elif f.name == 'm_26'%}
+                        {% for key, val in NUMPLANT %}
+                        {% ifequal key f.value %}
+                         <b><u>{{val}}</u>  &#10003;</b>    
+                        {%else%}
+                        {{val}}   
+                        {% endifequal %}<br>
+                        {% endfor %}     
+
+                        {%elif f.name == 'm_31' or  f.name == 'm_32'%}
+                        {% for key, val in WEAK3 %}
+                        {% ifequal key f.value %}
+                         <b><u>{{val}}</u>  &#10003;</b>    
+                        {%else%}
+                        {{val}}   
+                        {% endifequal %}<br>
+                        {% endfor %}     
+
+                        {%elif f.name == 'm_33'%}
+                        {% for key, val in INSUFF3 %}
+                        {% ifequal key f.value %}
+                         <b><u>{{val}}</u>  &#10003;</b>    
+                        {%else%}
+                        {{val}}   
+                        {% endifequal %}<br>
+                        {% endfor %}     
+
+                        {%elif f.name == 'm_34'%}
+                        {% for key, val in PERC0 %}
+                        {% ifequal key f.value %}
+                         <b><u>{{val}}</u>  &#10003;</b>    
+                        {%else%}
+                        {{val}}   
+                        {% endifequal %}<br>
+                        {% endfor %}     
+                        {%elif f.name == 'm_35'%}
+                        {% for key, val in PROGRAMMED %}
+                        {% ifequal key f.value %}
+                         <b><u>{{val}}</u>  &#10003;</b>    
+                        {%else%}
+                        {{val}}   
+                        {% endifequal %}<br>
+                        {% endfor %}     
+                        {%elif f.name == 'm_37'%}
+                        {% for key, val in NOTATALL1 %}
+                        {% ifequal key f.value %}
+                         <b><u>{{val}}</u>  &#10003;</b>    
+                        {%else%}
+                        {{val}}   
+                        {% endifequal %}<br>
+                        {% endfor %}     
+
+                        {%elif f.name == 'm_38' or f.name == 'm_40'%}
+                        {% for key, val in WEAK %}
+                        {% ifequal key f.value %}
+                         <b><u>{{val}}</u>  &#10003;</b>    
+                        {%else%}
+                        {{val}}   
+                        {% endifequal %}<br>
+                        {% endfor %}     
+
+                        {%elif f.name == 'm_42'%}
+                        {% for key, val in NOTATALL %}
+                        {% ifequal key f.value %}
+                         <b><u>{{val}}</u>  &#10003;</b>    
+                        {%else%}
+                        {{val}}   
+                        {% endifequal %}<br>
+                        {% endfor %}     
+                        {%elif f.name == 'm_44'%}
+                        {% for key, val in WEAK4 %}
+                        {% ifequal key f.value %}
+                         <b><u>{{val}}</u>  &#10003;</b>    
+                        {%else%}
+                        {{val}}   
+                        {% endifequal %}<br>
+                        {% endfor %} 
+                            {%elif f.name == 'm_17' %}
+                                          {% for o in M8_17 %}
+                                               {% if o.id in f.value %}
+                                                   <b><u> {{o}}</u> &#10003; </b>
+                                                 {% else %}
+                                                  {{o}}
+                                               {% endif %}
+                                    <br>
+
+                                      {% endfor %}  
+                                                    {%else%}
+                                                    {{f}}
+                                                      {% endif %}
+                                                </div>
+                                            </div>
+                                              <div class="pcecomment">
+                                            <b>{% trans "Comment:" %}</b><br>  
+                                        
+{%if f.name == 'm_1' %}{% for fff in form %}{%if fff.name == 'c_m_1'%}{{fff.value}}{%endif%}{%endfor%}{%endif%}
+{%if f.name == 'm_2' %}{% for fff in form %}{%if fff.name == 'c_m_2'%}{{fff.value}}{%endif%}{%endfor%}{%endif%}
+{%if f.name == 'm_3' %}{% for fff in form %}{%if fff.name == 'c_m_3'%}{{fff.value}}{%endif%}{%endfor%}{%endif%}
+{%if f.name == 'm_4' %}{% for fff in form %}{%if fff.name == 'c_m_4'%}{{fff.value}}{%endif%}{%endfor%}{%endif%}
+{%if f.name == 'm_5' %}{% for fff in form %}{%if fff.name == 'c_m_5'%}{{fff.value}}{%endif%}{%endfor%}{%endif%}
+{%if f.name == 'm_6' %}{% for fff in form %}{%if fff.name == 'c_m_6'%}{{fff.value}}{%endif%}{%endfor%}{%endif%}
+{%if f.name == 'm_7' %}{% for fff in form %}{%if fff.name == 'c_m_7'%}{{fff.value}}{%endif%}{%endfor%}{%endif%}
+{%if f.name == 'm_8' %}{% for fff in form %}{%if fff.name == 'c_m_8'%}{{fff.value}}{%endif%}{%endfor%}{%endif%}
+{%if f.name == 'm_9' %}{% for fff in form %}{%if fff.name == 'c_m_9'%}{{fff.value}}{%endif%}{%endfor%}{%endif%}
+{%if f.name == 'm_10' %}{% for fff in form %}{%if fff.name == 'c_m_10'%}{{fff.value}}{%endif%}{%endfor%}{%endif%}
+{%if f.name == 'm_11' %}{% for fff in form %}{%if fff.name == 'c_m_11'%}{{fff.value}}{%endif%}{%endfor%}{%endif%}
+{%if f.name == 'm_12' %}{% for fff in form %}{%if fff.name == 'c_m_12'%}{{fff.value}}{%endif%}{%endfor%}{%endif%}
+{%if f.name == 'm_13' %}{% for fff in form %}{%if fff.name == 'c_m_13'%}{{fff.value}}{%endif%}{%endfor%}{%endif%}
+{%if f.name == 'm_14' %}{% for fff in form %}{%if fff.name == 'c_m_14'%}{{fff.value}}{%endif%}{%endfor%}{%endif%}
+{%if f.name == 'm_15' %}{% for fff in form %}{%if fff.name == 'c_m_15'%}{{fff.value}}{%endif%}{%endfor%}{%endif%}
+{%if f.name == 'm_16' %}{% for fff in form %}{%if fff.name == 'c_m_16'%}{{fff.value}}{%endif%}{%endfor%}{%endif%}
+{%if f.name == 'm_17' %}{% for fff in form %}{%if fff.name == 'c_m_17'%}{{fff.value}}{%endif%}{%endfor%}{%endif%}
+{%if f.name == 'm_18' %}{% for fff in form %}{%if fff.name == 'c_m_18'%}{{fff.value}}{%endif%}{%endfor%}{%endif%}
+{%if f.name == 'm_19' %}{% for fff in form %}{%if fff.name == 'c_m_19'%}{{fff.value}}{%endif%}{%endfor%}{%endif%}
+{%if f.name == 'm_20' %}{% for fff in form %}{%if fff.name == 'c_m_20'%}{{fff.value}}{%endif%}{%endfor%}{%endif%}
+{%if f.name == 'm_21' %}{% for fff in form %}{%if fff.name == 'c_m_21'%}{{fff.value}}{%endif%}{%endfor%}{%endif%}
+{%if f.name == 'm_22' %}{% for fff in form %}{%if fff.name == 'c_m_22'%}{{fff.value}}{%endif%}{%endfor%}{%endif%}
+{%if f.name == 'm_23' %}{% for fff in form %}{%if fff.name == 'c_m_23'%}{{fff.value}}{%endif%}{%endfor%}{%endif%}
+{%if f.name == 'm_24' %}{% for fff in form %}{%if fff.name == 'c_m_24'%}{{fff.value}}{%endif%}{%endfor%}{%endif%}
+{%if f.name == 'm_25' %}{% for fff in form %}{%if fff.name == 'c_m_25'%}{{fff.value}}{%endif%}{%endfor%}{%endif%}
+{%if f.name == 'm_26' %}{% for fff in form %}{%if fff.name == 'c_m_26'%}{{fff.value}}{%endif%}{%endfor%}{%endif%}
+{%if f.name == 'm_27' %}{% for fff in form %}{%if fff.name == 'c_m_27'%}{{fff.value}}{%endif%}{%endfor%}{%endif%}
+{%if f.name == 'm_28' %}{% for fff in form %}{%if fff.name == 'c_m_28'%}{{fff.value}}{%endif%}{%endfor%}{%endif%}
+{%if f.name == 'm_29' %}{% for fff in form %}{%if fff.name == 'c_m_29'%}{{fff.value}}{%endif%}{%endfor%}{%endif%}
+{%if f.name == 'm_30' %}{% for fff in form %}{%if fff.name == 'c_m_30'%}{{fff.value}}{%endif%}{%endfor%}{%endif%}
+{%if f.name == 'm_31' %}{% for fff in form %}{%if fff.name == 'c_m_31'%}{{fff.value}}{%endif%}{%endfor%}{%endif%}
+{%if f.name == 'm_32' %}{% for fff in form %}{%if fff.name == 'c_m_32'%}{{fff.value}}{%endif%}{%endfor%}{%endif%}
+{%if f.name == 'm_33' %}{% for fff in form %}{%if fff.name == 'c_m_33'%}{{fff.value}}{%endif%}{%endfor%}{%endif%}
+{%if f.name == 'm_34' %}{% for fff in form %}{%if fff.name == 'c_m_34'%}{{fff.value}}{%endif%}{%endfor%}{%endif%}
+{%if f.name == 'm_35' %}{% for fff in form %}{%if fff.name == 'c_m_35'%}{{fff.value}}{%endif%}{%endfor%}{%endif%}
+{%if f.name == 'm_36' %}{% for fff in form %}{%if fff.name == 'c_m_36'%}{{fff.value}}{%endif%}{%endfor%}{%endif%}
+{%if f.name == 'm_37' %}{% for fff in form %}{%if fff.name == 'c_m_37'%}{{fff.value}}{%endif%}{%endfor%}{%endif%}
+{%if f.name == 'm_38' %}{% for fff in form %}{%if fff.name == 'c_m_38'%}{{fff.value}}{%endif%}{%endfor%}{%endif%}
+{%if f.name == 'm_39' %}{% for fff in form %}{%if fff.name == 'c_m_39'%}{{fff.value}}{%endif%}{%endfor%}{%endif%}
+{%if f.name == 'm_40' %}{% for fff in form %}{%if fff.name == 'c_m_40'%}{{fff.value}}{%endif%}{%endfor%}{%endif%}
+{%if f.name == 'm_41' %}{% for fff in form %}{%if fff.name == 'c_m_41'%}{{fff.value}}{%endif%}{%endfor%}{%endif%}
+{%if f.name == 'm_42' %}{% for fff in form %}{%if fff.name == 'c_m_42'%}{{fff.value}}{%endif%}{%endfor%}{%endif%}
+{%if f.name == 'm_43' %}{% for fff in form %}{%if fff.name == 'c_m_43'%}{{fff.value}}{%endif%}{%endfor%}{%endif%}
+{%if f.name == 'm_44' %}{% for fff in form %}{%if fff.name == 'c_m_44'%}{{fff.value}}{%endif%}{%endfor%}{%endif%}
+{%if f.name == 'm_45' %}{% for fff in form %}{%if fff.name == 'c_m_45'%}{{fff.value}}{%endif%}{%endfor%}{%endif%}
+         </div> </td>
+                                        <td>{{f.help_text|safe}}</td>
+                                    </tr>
+                                        {% if f.name == 'm_2' %} 
+                                     <tr>
+                                        <td>
+                                           <div class="control-group">
+                                           <label>{% trans "3. Are the objectives of the surveillance service SMART?" %}</label>
+                                           <div class="controls">
+                                             <div class="panel panel-default">
+                                            <div class="panel-body">
+                                                <table>
+                                                   
+                                                    <tbody>
+                                                    {% for form in form3 %}
+                                                       
+                                                        {% for ff in form %}
+                                                        {%if not ff.label == 'Module8' and not ff.label == 'Delete' and not ff.label == 'Id'%}
+                                                        <tr>  <td> {{ff.label}}</td>
+                                                              <td> <input readonly="true" type="radio" {% if ff.value == True%}checked{%endif%}> {% if ff.value == True %}<u><b>{%endif%}{% trans "Yes" %}{% if ff.value == True %} </b></u> <b> &#10003;</b>{%endif%} 
+                                                                  <input readonly="true" type="radio" {% if ff.value == False%}checked{%endif%}>  {% if ff.value == False %}<u><b>{%endif%}{% trans "No" %}{% if ff.value == False %} </b></u> <b> &#10003;</b>{%endif%} 
+                                                     
+                                                        </td>
+                                                         {% else %}
+                                                        {% endif %}   
+                                                    </tr>  
+                                                    {% endfor %}
+                                                       
+                                                    </tbody> 
+                                                       {% endfor %} 
+                                                </table>  
+                                            </div>  
+                                            </div>
+                                          </div>  </div>
+                                        <div class="pcecomment">
+                                            <b>{% trans "Comment:" %}</b><br>  
+                                              {% for fff in form %}{%if fff.name == 'c_m_3'%}{{fff.value}}{%endif%}{%endfor%}
+                                            </div>  </td>
+                                        <td></td>
+                                    </tr>
+                                     {% elif f.name == 'm_5' %} 
+                                     <tr class="success">
+                                        <td colspan="2" style="background:#EBEBEB;"><b>{% trans "B. Organizational structure, competences and culture" %}</b></td>
+                                     </tr>
+                                      {% elif f.name == 'm_17' %} 
+                                     <tr class="success">
+                                        <td colspan="2" style="background:#EBEBEB;"><b>{% trans "C.  Documented procedures" %}</b></td>
+                                     </tr>     
+                                     <tr>
+                                        <td>
+                                           <div class="control-group">
+                                           <label>{% trans "17. Indicate if the following information is kept by the NPPO" %}</label>
+                                           <div class="controls">
+                                            <div class="panel panel-default">
+                                            <div class="panel-body">
+                                                <table>
+                                                   
+                                                    <tbody>
+                                                    {% for form in form18 %}
+                                                       
+                                                        {% for ff in form %}
+                                                        {%if not ff.label == 'Module8' and not ff.label == 'Delete' and not ff.label == 'Id'%}
+                                                        <tr>  <td> {{ff.label}}</td>
+                                                         <td> <input readonly="true" type="radio" {% if ff.value == True%}checked{%endif%}> {% if ff.value == True %}<u><b>{%endif%}{% trans "Yes" %}{% if ff.value == True %} </b></u> <b> &#10003;</b>{%endif%} 
+                                                                  <input readonly="true" type="radio" {% if ff.value == False%}checked{%endif%}>  {% if ff.value == False %}<u><b>{%endif%}{% trans "No" %}{% if ff.value == False %} </b></u> <b> &#10003;</b>{%endif%} 
+                                                     
+                                                        </td>
+                                                         {% else %}{{ff.as_hidden}}
+                                                        {% endif %}   </tr>  {% endfor %}
+                                                       
+                                                    </tbody> 
+                                                       {% endfor %} 
+                                                </table>  
+                                            </div>  
+                                            </div>
+                                          </div>  </div>
+                                        <div class="pcecomment">
+                                            <b>{% trans "Comment:" %}</b><br>  
+                                              {% for fff in form %}{%if fff.name == 'c_m_18'%}{{fff.value}}{%endif%}{%endfor%}
+                                            </div>  </td>
+                                        <td></td>
+                                    </tr> {% elif f.name == 'm_20' %} 
+                                     <tr class="success">
+                                        <td colspan="2" style="background:#EBEBEB;"><b>{% trans "D. General surveillance" %}</b></td>
+                                     </tr>
+                                     {% elif f.name == 'm_25' %} 
+                                     <tr class="success">
+                                        <td colspan="2" style="background:#EBEBEB;"><b>{% trans "E. Specific surveys" %}</b></td>
+                                     </tr>
+                                     {% elif f.name == 'm_29' %} 
+                                     <tr class="success">
+                                        <td colspan="2" style="background:#EBEBEB;"><b>{% trans "F. Staffing" %}</b></td>
+                                     </tr> 
+                                     
+                                         <tr>
+                                        <td>
+                                            <label>{% trans "29. Use the matrix to assess the human resources of the pest surveillance activities" %}</label>
+                                        </td></td><td> </tr> 
+                                         </table>
+                                               <table>
+                                                    
+                                                    <thead>
+                                                        <tr>
+                                                            <th colspan="7"><center>{% trans "PEST SURVEILLANCE  - HUMAN RESOURCES" %}</center></th>					
+                                                        </tr>
+                                                        <tr>
+                                                            <th colspan="5"><center>{% trans "Current" %}</center></th>					
+                                                            <th colspan="2"><center>{% trans "Required" %}</center></th>					
+                                                        </tr>
+                                                         <tr>
+                                                             <th colspan="1">&#160;</th>
+                                                             <th colspan="2">{% trans "PEST SURVEILLANCE AND SUPPORT STAFF" %}</th>					
+                                                             <th colspan="2">{% trans "SURVEILLANCE MANAGERS" %}</th>
+                                                              <th colspan="2">&#160;</th>
+                                                        </tr>
+                                                       <tr>
+                                                             <th colspan="1"  style="width:100px">&#160;</th>
+                                                             <th colspan="1"  style="width:100px">{% trans "No. of Staff" %}</th>					
+                                                             <th colspan="1"  style="width:100px">{% trans "Average years of experience" %}</th>
+                                                             <th colspan="1"  style="width:100px">{% trans "No. of Staff" %}</th>					
+                                                             <th colspan="1"  style="width:100px">{% trans "Average years of experience" %}</th>
+                                                             <th colspan="1"  style="width:100px">{% trans "Surveillance/support" %}</th>  
+                                                             <th colspan="1"  style="width:100px">{% trans "Managers" %}&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;</th>
+                                                        </tr>
+                                                    </thead>
+                                                    
+                                               
+                                                    {% for form in form30 %}
+                                                   {%if  forloop.counter == 1 %}
+                                                      <tr>   <td colspan="7" style="background:#EBEBEB;"><b>{% trans "General surveillance" %}</b></td></tr>
+                                                    <tr><td>{% trans "Doctoral equivalent" %}</td>
+                                                        {%elif  forloop.counter == 2 or forloop.counter == 6  or forloop.counter == 10%}
+                                                    <tr><td>{% trans "Master equivalent" %}</td>
+                                                        {%elif  forloop.counter == 3 or forloop.counter == 7  or forloop.counter == 11       %}
+                                                    <tr><td>{% trans "Bachelor equivalent" %}</td>
+                                                        {%elif  forloop.counter == 4 or forloop.counter == 8  or forloop.counter == 12 %}
+                                                    <tr><td>{% trans "Lower than bachelor level" %}</td>
+
+                                                        {%elif  forloop.counter == 5 %}
+                                                        <td colspan="7" style="background:#EBEBEB;"><b>{% trans "Specific surveillance" %}</b></td></tr>
+                                                    <tr><td>{% trans "Doctoral equivalent" %}</td>
+                                                        {%elif  forloop.counter == 9 %}
+                                                        <td colspan="7" style="background:#EBEBEB;"><b>{% trans "Total" %}</b></td></tr>
+                                                    <tr><td>{% trans "Doctoral equivalent" %}</td>
+
+                                                   
+                                                   
+                                                   
+                                                   
+                                                   
+                                                        
+                                                           {% endif %}
+                                                        {% for ff in form %}
+                                                        {%if not ff.label == 'Module8' and not ff.label == 'Delete' and not ff.label == 'Id'%}
+                                            
+                                                         <td>{% if ff.value == None or ff.value == 0 %}
+                                                                  &#160;
+                                                              {% else %}
+                                                              {% if  ff.label == 'Nstaff' or  ff.label == 'Nstafflab' %}
+                                                                    {{ff.value}}
+                                                              {% elif  ff.label == 'Support' or  ff.label == 'Managers' %}
+                                                                    {% for key1,value1 in BOOL_CHOICESM_M %}
+                                                                       {%if   ff.value  == key1 %}
+                                                                            {{value1}}
+                                                                      {% endif %}
+                                                                    {% endfor %} 
+                                                               {%else%}
+                                                                    {% for key1,value1 in VAL_AV %}
+                                                                         {%if   ff.value  == key1 %}
+                                                                           {{value1}}
+                                                                          {% endif %}
+                                                                    {% endfor %}  
+                                                                {% endif %} {% endif %}</td>
+                                                         {% else %}
+                                                        {% endif %}    {% endfor %}
+                                                       </tr> 
+                                                
+                                                       {% endfor %} 
+                                            </table> 
+<table>
+    <tr class="success">
+        <td width="70%"> <div class="pcecomment">
+                <b>{% trans "Comment:" %}</b><br>  
+                {% for fff in form %}{%if fff.name == 'c_m_30'%}{{fff.value}}{%endif%}{%endfor%}
+            </div> </td>
+        <td width="30%"></td>
+    </tr>  
+                                       
+                                     
+                                     {% elif f.name == 'm_37' %} 
+                                     <tr class="success">
+                                        <td colspan="2" style="background:#EBEBEB;"><b>{% trans "Section III pest surveillance performance" %}</b></td>
+                                     </tr>
+                                  
+                                    {% endif %}
+                                  
+                                    {% endif %}
+                                    {% endfor%}
+                                    <tr class="success">
+                                       <td colspan="2" style="background:#EBEBEB;"><b>{% trans "Section IV - Weaknesses" %}</b></td>
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                             <div class="control-group">
+                                                <label>{% trans "1. Please identify a minimum of five of the most critical weaknesses that affect the performance of the NPPO's pest surveillance services in order of priority (1=Highest)" %}</label>
+                                           <div class="controls">
+                                               {% for form in form45 %}
+                                            <div class="panel panel-default">
+                                                <div class="panel-body">
+                                                    {% for ff in form %}
+                                                    {%if not ff.label == 'Module8' and not ff.label == 'Delete' and not ff.label == 'Id'%}
+                                                 <b>{{ff.label}}: </b>    {% if ff.value != None %}
+                            {{ff.value}}
+                            {% endif %}
+                            <br>   {% else %}{{ff.as_hidden}}{% endif %}
+                            {% endfor %}
+                        </div></div>
+                    {% endfor %}   </div>
+            </div>
+            <div class="pcecomment">
+                                            <b>{% trans "Comment:" %}</b><br>  
+                                              {% for fff in form %}{%if fff.name == 'c_m_45'%}{{fff.value}}{%endif%}{%endfor%}
+                                            </div>  </td>
+                                        <td></td>
+                                    </tr>
+                                     
+                                </tbody>        
+                            </table>
+                          
+{% else %}
+            {% nevercache %}
+            {% include "pce/permission_block.html" %}
+            {% endnevercache %}
+  {% endif %}
+        </div>
+
+{% endblock %}

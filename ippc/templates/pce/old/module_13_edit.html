@@ -1,0 +1,684 @@
+{% extends "pce/basepce.html" %}
+{% load pages_tags translate_tags mezzanine_tags i18n future staticfiles accounts_tags %}
+
+{% block meta_title %}{% trans "Module 13 - Export certification, re-export, transit" %} - {{ user.get_profile.country.name}} {% endblock %}
+
+{% block body_class %}wide{% endblock %}
+
+{% block breadcrumb_menu %}
+<li>
+    <a href="/pce/{{ user.get_profile.country.name }}/sessions">{% trans "PCE Home" %}</a>
+    <span class="divider">/</span>
+</li>
+<li>
+    <a href="/pce/{{ user.get_profile.country.name|slugify }}/session/dashboard/{{sessionid}}">  {% trans "PCE Dashboard for" %} {{ user.get_profile.country.name }}</a>
+    <span class="divider">/</span>
+<li>
+<li class="active">{% trans "Module 13 - Export certification, re-export, transit" %}</li>
+{% endblock %}
+
+{% block local_nav %}
+{% endblock local_nav %}
+
+{% block pageinfo %}
+{% endblock pageinfo %}
+
+{% block main %}
+<script type="text/javascript">
+window.onload = function () {
+    checkRules();
+}
+function checkRules()
+{
+     document.getElementById('id_module13grid2_set-0-c1_1').disabled=document.getElementById('id_m_1_2').checked;
+     document.getElementById('id_module13grid2_set-0-c1_2').disabled=document.getElementById('id_m_1_2').checked;
+     document.getElementById('id_module13grid2_set-0-c2_1').disabled=document.getElementById('id_m_1_2').checked;
+     document.getElementById('id_module13grid2_set-0-c2_2').disabled=document.getElementById('id_m_1_2').checked;
+     document.getElementById('id_module13grid2_set-0-c3_1').disabled=document.getElementById('id_m_1_2').checked;
+     document.getElementById('id_module13grid2_set-0-c3_2').disabled=document.getElementById('id_m_1_2').checked;
+     document.getElementById('id_module13grid2_set-0-c4_1').disabled=document.getElementById('id_m_1_2').checked;
+     document.getElementById('id_module13grid2_set-0-c4_2').disabled=document.getElementById('id_m_1_2').checked;
+    if (document.getElementById('id_m_1_2').checked){
+        document.getElementById('id_module13grid2_set-0-c1_1').checked=false
+        document.getElementById('id_module13grid2_set-0-c1_2').checked=false
+        document.getElementById('id_module13grid2_set-0-c2_1').checked=false
+        document.getElementById('id_module13grid2_set-0-c2_2').checked=false
+        document.getElementById('id_module13grid2_set-0-c3_1').checked=false
+        document.getElementById('id_module13grid2_set-0-c3_2').checked=false
+        document.getElementById('id_module13grid2_set-0-c4_1').checked=false
+        document.getElementById('id_module13grid2_set-0-c4_2').checked=false
+   }
+    document.getElementById('id_m_14_1').disabled=document.getElementById('id_m_13_2').checked;
+    document.getElementById('id_m_14_2').disabled=document.getElementById('id_m_13_2').checked;
+    document.getElementById('id_m_15_1').disabled=document.getElementById('id_m_13_2').checked;
+    document.getElementById('id_m_15_2').disabled=document.getElementById('id_m_13_2').checked;
+    if (document.getElementById('id_m_13_2').checked){
+        document.getElementById('id_m_14_1').checked=false
+        document.getElementById('id_m_14_2').checked=false
+        document.getElementById('id_m_15_1').checked=false
+        document.getElementById('id_m_15_2').checked=false
+   } 
+  if(!document.getElementById('id_m_13_2').checked ){
+   document.getElementById('id_m_15_1').disabled=document.getElementById('id_m_14_2').checked;
+   document.getElementById('id_m_15_2').disabled=document.getElementById('id_m_14_2').checked;
+  if (document.getElementById('id_m_14_2').checked){
+    
+        document.getElementById('id_m_15_1').checked=false
+        document.getElementById('id_m_15_2').checked=false
+   }}
+   document.getElementById('id_m_21').disabled=document.getElementById('id_m_20_2').checked;
+    document.getElementById('id_module13grid22_set-0-c1_1').disabled=document.getElementById('id_m_20_2').checked;
+     document.getElementById('id_module13grid22_set-0-c1_2').disabled=document.getElementById('id_m_20_2').checked;
+     document.getElementById('id_module13grid22_set-0-c2_1').disabled=document.getElementById('id_m_20_2').checked;
+     document.getElementById('id_module13grid22_set-0-c2_2').disabled=document.getElementById('id_m_20_2').checked;
+     document.getElementById('id_module13grid22_set-0-c3_1').disabled=document.getElementById('id_m_20_2').checked;
+     document.getElementById('id_module13grid22_set-0-c3_2').disabled=document.getElementById('id_m_20_2').checked;
+    
+   if (document.getElementById('id_m_20_2').checked){
+        document.getElementById('id_m_21').value=""
+         document.getElementById('id_module13grid22_set-0-c1_1').checked=false
+     document.getElementById('id_module13grid22_set-0-c1_2').checked=false
+     document.getElementById('id_module13grid22_set-0-c2_1').checked=false
+     document.getElementById('id_module13grid22_set-0-c2_2').checked=false
+     document.getElementById('id_module13grid22_set-0-c3_1').checked=false
+     document.getElementById('id_module13grid22_set-0-c3_2').checked=false
+    
+   }  
+    
+   
+     document.getElementById('id_m_24').disabled=document.getElementById('id_m_23_2').checked;
+    if (document.getElementById('id_m_23_2').checked){
+    document.getElementById('id_m_24').id="id_m_24_bis";
+    var hiddencontainer =document.getElementById('hiddencontainer');
+    var input = document.createElement("input");
+                input.type = "hidden";
+                input.name = "m_24";
+                input.id = "id_m_24";
+                input.value = 0
+                hiddencontainer.appendChild(input);
+    } 
+ document.getElementById('id_m_28_1').disabled=document.getElementById('id_m_27_2').checked;
+ document.getElementById('id_m_28_2').disabled=document.getElementById('id_m_27_2').checked;
+     if (document.getElementById('id_m_27_2').checked){
+      
+      
+         document.getElementById('id_m_28_1').checked=false
+       document.getElementById('id_m_28_2').checked=false
+
+   } 
+    document.getElementById('id_m_32_1').disabled=document.getElementById('id_m_30_2').checked;
+ document.getElementById('id_m_32_2').disabled=document.getElementById('id_m_30_2').checked;
+ document.getElementById('id_module13grid31_set-0-c1_1').disabled=document.getElementById('id_m_30_2').checked;
+ document.getElementById('id_module13grid31_set-0-c1_2').disabled=document.getElementById('id_m_30_2').checked;
+ document.getElementById('id_module13grid31_set-0-c2_1').disabled=document.getElementById('id_m_30_2').checked;
+ document.getElementById('id_module13grid31_set-0-c2_2').disabled=document.getElementById('id_m_30_2').checked;
+ document.getElementById('id_module13grid31_set-0-c3_1').disabled=document.getElementById('id_m_30_2').checked;
+ document.getElementById('id_module13grid31_set-0-c3_2').disabled=document.getElementById('id_m_30_2').checked;
+ document.getElementById('id_module13grid31_set-0-c4_1').disabled=document.getElementById('id_m_30_2').checked;
+ document.getElementById('id_module13grid31_set-0-c4_2').disabled=document.getElementById('id_m_30_2').checked;
+ document.getElementById('id_module13grid31_set-0-c5_1').disabled=document.getElementById('id_m_30_2').checked;
+ document.getElementById('id_module13grid31_set-0-c5_2').disabled=document.getElementById('id_m_30_2').checked;
+ 
+ 
+     if (document.getElementById('id_m_30_2').checked){
+      document.getElementById('id_module13grid31_set-0-c1_1').checked=false
+ document.getElementById('id_module13grid31_set-0-c1_2').checked=false
+ document.getElementById('id_module13grid31_set-0-c2_1').checked=false
+ document.getElementById('id_module13grid31_set-0-c2_2').checked=false
+ document.getElementById('id_module13grid31_set-0-c3_1').checked=false
+ document.getElementById('id_module13grid31_set-0-c3_2').checked=false
+ document.getElementById('id_module13grid31_set-0-c4_1').checked=false
+ document.getElementById('id_module13grid31_set-0-c4_2').checked=false
+ document.getElementById('id_module13grid31_set-0-c5_1').checked=false
+ document.getElementById('id_module13grid31_set-0-c5_2').checked=false
+ 
+      
+         document.getElementById('id_m_32_1').checked=false
+       document.getElementById('id_m_32_2').checked=false
+
+   }
+    document.getElementById('id_m_41_1').disabled=document.getElementById('id_m_40_2').checked;
+    document.getElementById('id_m_41_2').disabled=document.getElementById('id_m_40_2').checked;
+     if (document.getElementById('id_m_40_2').checked){
+ 
+      document.getElementById('id_m_41_1').checked=false
+       document.getElementById('id_m_41_2').checked=false
+
+   }
+   
+}
+
+</script>
+
+<h1><span class="normal">{% trans "Module 13 - Export certification, re-export, transit" %}</span></h1>
+{% if can_edit %}
+   
+<p><a href="/pce/{{ user.get_profile.country.name|slugify }}/session/{{sessionid}}/modules"><< {% trans "Back to Module List" %}</a></p>
+
+
+<div class="row-fluid">
+    <div class="span8">
+     {% include "pce/tools_panel.html" %} 
+    </div>
+    {% include "pce/userdetails_panel.html" %} 
+     
+    <div class="row-fluid">
+        <div class="span12">
+            <div class="panel panel-info">
+                <div  class="alert alert-success" role="alert">
+                    <h3 class="panel-title"> {% trans "Export certification, re-export, transit" %}</h3>
+                </div>
+                <div class="panel-body">
+                    <p class="alert alert-warning">{% trans "Export certification is an essential component and a core activity of the NPPO. Under IPPC Article V it is established that, Contracting parties should exercise due diligence in operating an export certification system and ensuring the accuracy of the information and additional declarations contained in phytosanitary certificates. 'Each contracting party shall make arrangements for phytosanitary certification  ' Also under IPPC Article IV.2.a it is indicated that ... The responsibilities of an official national plant protection organization shall include the issuance of certificates relating to the phytosanitary regulations of the importing contracting party for consignments of plants, plant products and other regulated articles'. <a href='https://www.ippc.int/en/publications/613/'>ISPM 7</a> - Phytosanitary certification system (2011): describes the components of a national system for the issuance of phytosanitary certificates for export. Exported consignments certified under these systems should meet the current phytosanitary requirements of the importing country. The basic elements of the phytosanitary certification process include:  	ascertaining the relevant phytosanitary requirements of the importing country (including import permits if required) 	verifying that the consignment conforms to those requirements at the time of certification 	issuance of a phytosanitary certificate. The requirements for a certification system to fulfill these functions comprise the following: 	legal authority 	management responsibility, including resources, documentation, communication and review mechanism. <a href='https://www.ippc.int/en/publications/609/'>ISPM 12</a> - Phytosanitary certificates (2011): describes principles and guidelines for the preparation and issue of phytosanitary certificates. <a href='https://www.ippc.int/en/publications/598/'>ISPM 23</a> - Guidelines for inspection (2005): describes the procedures for the inspection of consignments of plants and plant products and other regulated articles at import and export. <a href='https://www.ippc.int/en/publications/595/'>ISPM 25</a> - Consignments in Transit (2006): The standard describes procedures to identify, assess and manage phytosanitary risks associated with consignments of regulated articles, which pass through a country without being imported, in a manner that any phytosanitary measures applied in the country of transit are technically justified and necessary to prevent the introduction into and/or spread of pests within the transit country. International trade may involve the movement of consignments of regulated articles which pass through a country without being imported, under Customs1 control. Such movements may present a phytosanitary risk to the country of transit. Contracting parties to the IPPC may apply measures to consignments in transit through their territories (Articles VII.1c and VII.2g of the IPPC, 1997), provided that the measures are technically justified and necessary to prevent the introduction and/or spread of pests (Article VII.4 of the IPPC, 1997). This standard provides guidelines by which the National Plant Protection Organization (NPPO) of the country of transit may decide which movements require intervention of the NPPO and are subject to the application of phytosanitary measures, and if so, the type of phytosanitary measures to be applied. In such cases the responsibilities and elements of the transit system are described, together with the need for cooperation,communication, non-discrimination, review and documentation.<br>Guidance for the capacity assessment of the NPPO's export certification program <br>Keep the following questions in mind while working through this module: <br>1. What is the existing situation and performance of NPPO's export activities? <br>2. What is the desired situation of NPPO's export activities in the mid term? <br>3. What are the major gaps in the current capacity of NPPO's for exports? <br>4. What are the capacity building needs and requirements to improve the performance of the NPPO's exports programs? " %}</p>
+                    <form class="customform" method="POST" action="" enctype="multipart/form-data">
+                        {% csrf_token %}
+                        <div id="hiddencontainer"></div>
+                  <fieldset>
+                            {% if form.non_field_errors or form.errors %}
+                            <div class="alert alert-error">{% trans "Please correct the errors below." %}
+                                <ul>
+                                    {% for error in form.non_field_errors %}
+                                    <li>{{ error }}</li>
+                                    {% endfor %}
+                                    {% for error in form.errors %}
+                                    <li>{{ error }}</li>
+                                    {% endfor %}
+                                </ul>
+                            </div>
+                            {% endif %}
+                            {#% fields_for form %#}
+                            <table class="table">
+                            
+                                  <tr class="success">
+                                         <td colspan="2"><b>{% trans "Current situation assessment" %}</b></td>
+                                    </tr>
+                              <tr class="success">
+                                         <td colspan="2"><b>{% trans "A. Mission and strategy" %}</b></td>
+                                    </tr>
+                                    <tr class="success">
+                                        <th>{% trans "No. Question" %}</th>
+                                        <th>{% trans "Tip" %}</th>
+                                    </tr>
+                                <tbody> 
+                                    {% for f in form %}
+                                   {% if not f.is_hidden and not f.name == 'c_m_1' and not f.name == 'c_m_2' and not f.name == 'c_m_3' and not f.name == 'c_m_4' and not f.name == 'c_m_5' and not f.name == 'c_m_6' and not f.name == 'c_m_7' and not f.name == 'c_m_8' and not f.name == 'c_m_9' and not f.name == 'c_m_10' and not f.name == 'c_m_11' and not f.name == 'c_m_12' and not f.name == 'c_m_13' and not f.name == 'c_m_14' and not f.name == 'c_m_15' and not f.name == 'c_m_16' and not f.name == 'c_m_17' and not f.name == 'c_m_18' and not f.name == 'c_m_19' and not f.name == 'c_m_20' and not f.name == 'c_m_21' and not f.name == 'c_m_22' and not f.name == 'c_m_23' and not f.name == 'c_m_24' and not f.name == 'c_m_25' and not f.name == 'c_m_26' and not f.name == 'c_m_27' and not f.name == 'c_m_28' and not f.name == 'c_m_29' and not f.name == 'c_m_30' and not f.name == 'c_m_31' and not f.name == 'c_m_32' and not f.name == 'c_m_33' and not f.name == 'c_m_34' and not f.name == 'c_m_35' and not f.name == 'c_m_36' and not f.name == 'c_m_37' and not f.name == 'c_m_38' and not f.name == 'c_m_39' and not f.name == 'c_m_40' and not f.name == 'c_m_41' and not f.name == 'c_m_42' and not f.name == 'c_m_43' and not f.name == 'c_m_44' and not f.name == 'c_m_45' and not f.name == 'c_m_46' and not f.name == 'c_m_47' and not f.name == 'c_m_48' and not f.name == 'c_m_49' and not f.name == 'c_m_50' and not f.name == 'c_m_51' and not f.name == 'c_m_52' and not f.name == 'c_m_53' and not f.name == 'c_m_54' and not f.name == 'c_m_55' and not f.name == 'c_m_56' and not f.name == 'c_m_57' and not f.name == 'c_m_58' and not f.name == 'c_m_59' and not f.name == 'c_m_60' and not f.name == 'c_m_61' and not f.name == 'c_m_62' and not f.name == 'c_m_63' and not f.name == 'c_m_64' and not f.name == 'c_m_65' and not f.name == 'c_m_66'  %}
+                                    <tr>
+                                        <td>
+                                            <div class="control-group">
+                                                <label>{{f.label|safe}}</label>
+                                                <div class="controls">
+                                                       {%if f.name == 'm_1' or f.name == 'm_4' or f.name == 'm_5' or f.name == 'm_6' or f.name == 'm_7' or f.name == 'm_9' or f.name == 'm_10' or f.name == 'm_11' or f.name == 'm_12' or f.name == 'm_13' or f.name == 'm_14' or f.name == 'm_15' or f.name == 'm_16' or f.name == 'm_17' or f.name == 'm_18' or f.name == 'm_19' or f.name == 'm_20' or f.name == 'm_23' or f.name == 'm_25' or f.name == 'm_26' or f.name == 'm_27' or f.name == 'm_28' or f.name == 'm_30' or f.name == 'm_32' or f.name == 'm_33' or f.name == 'm_34' or f.name == 'm_35' or f.name == 'm_36' or f.name == 'm_37' or f.name == 'm_38' or f.name == 'm_39' or f.name == 'm_40' or f.name == 'm_41' or f.name == 'm_44' or f.name == 'm_45' or f.name == 'm_53' or f.name == 'm_59' or f.name == 'm_61' %}
+                                                    <ul>
+                                                    <li>
+                                                        <label for="id_{{f.name}}_1" class="control-label">
+                                                        <input id="id_{{f.name}}_1" name ="{{f.name}}" type="radio" value="True" {% if f.value == True %}checked{%endif%} onclick="checkRules();"> {% trans "Yes"%}</label>
+                                                    </li>
+                                                    <li> 
+                                                       <label for="id_{{f.name}}_2" class="control-label">
+                                                       <input id="id_{{f.name}}_2" name ="{{f.name}}" type="radio" value="False" {% if f.value == False %}checked{%endif%} onclick="checkRules();"> {% trans "No"%}</label>
+                                                    </li>
+                                                    </ul>                                                   
+                                                    {%else%}
+                                                    {{f}}
+                                                      {% endif %}
+                                                </div>
+                                            </div>
+                                          <a href="#{{f.name}}" onclick="javascript:toggle_visibility('c_{{f.name}}');">{% trans "add comment" %}</a>
+                                            <div id="c_{{f.name}}" style="display:none;">       
+
+{%if f.name == 'm_1' %}{% for fff in form %}{%if fff.name == 'c_m_1'%}<textarea class="zzz"  id="id_c_{{f.name}}" name="c_{{f.name}}">{{fff.value}}</textarea>{%endif%}{%endfor%}{%endif%}
+{%if f.name == 'm_2' %}{% for fff in form %}{%if fff.name == 'c_m_2'%}<textarea class="zzz"  id="id_c_{{f.name}}" name="c_{{f.name}}">{{fff.value}}</textarea>{%endif%}{%endfor%}{%endif%}
+{%if f.name == 'm_3' %}{% for fff in form %}{%if fff.name == 'c_m_3'%}<textarea class="zzz"  id="id_c_{{f.name}}" name="c_{{f.name}}">{{fff.value}}</textarea>{%endif%}{%endfor%}{%endif%}
+{%if f.name == 'm_4' %}{% for fff in form %}{%if fff.name == 'c_m_4'%}<textarea class="zzz"  id="id_c_{{f.name}}" name="c_{{f.name}}">{{fff.value}}</textarea>{%endif%}{%endfor%}{%endif%}
+{%if f.name == 'm_5' %}{% for fff in form %}{%if fff.name == 'c_m_5'%}<textarea class="zzz"  id="id_c_{{f.name}}" name="c_{{f.name}}">{{fff.value}}</textarea>{%endif%}{%endfor%}{%endif%}
+{%if f.name == 'm_6' %}{% for fff in form %}{%if fff.name == 'c_m_6'%}<textarea class="zzz"  id="id_c_{{f.name}}" name="c_{{f.name}}">{{fff.value}}</textarea>{%endif%}{%endfor%}{%endif%}
+{%if f.name == 'm_7' %}{% for fff in form %}{%if fff.name == 'c_m_7'%}<textarea class="zzz"  id="id_c_{{f.name}}" name="c_{{f.name}}">{{fff.value}}</textarea>{%endif%}{%endfor%}{%endif%}
+{%if f.name == 'm_8' %}{% for fff in form %}{%if fff.name == 'c_m_8'%}<textarea class="zzz"  id="id_c_{{f.name}}" name="c_{{f.name}}">{{fff.value}}</textarea>{%endif%}{%endfor%}{%endif%}
+{%if f.name == 'm_9' %}{% for fff in form %}{%if fff.name == 'c_m_9'%}<textarea class="zzz"  id="id_c_{{f.name}}" name="c_{{f.name}}">{{fff.value}}</textarea>{%endif%}{%endfor%}{%endif%}
+{%if f.name == 'm_10' %}{% for fff in form %}{%if fff.name == 'c_m_10'%}<textarea class="zzz"  id="id_c_{{f.name}}" name="c_{{f.name}}">{{fff.value}}</textarea>{%endif%}{%endfor%}{%endif%}
+{%if f.name == 'm_11' %}{% for fff in form %}{%if fff.name == 'c_m_11'%}<textarea class="zzz"  id="id_c_{{f.name}}" name="c_{{f.name}}">{{fff.value}}</textarea>{%endif%}{%endfor%}{%endif%}
+{%if f.name == 'm_12' %}{% for fff in form %}{%if fff.name == 'c_m_12'%}<textarea class="zzz"  id="id_c_{{f.name}}" name="c_{{f.name}}">{{fff.value}}</textarea>{%endif%}{%endfor%}{%endif%}
+{%if f.name == 'm_13' %}{% for fff in form %}{%if fff.name == 'c_m_13'%}<textarea class="zzz"  id="id_c_{{f.name}}" name="c_{{f.name}}">{{fff.value}}</textarea>{%endif%}{%endfor%}{%endif%}
+{%if f.name == 'm_14' %}{% for fff in form %}{%if fff.name == 'c_m_14'%}<textarea class="zzz"  id="id_c_{{f.name}}" name="c_{{f.name}}">{{fff.value}}</textarea>{%endif%}{%endfor%}{%endif%}
+{%if f.name == 'm_15' %}{% for fff in form %}{%if fff.name == 'c_m_15'%}<textarea class="zzz"  id="id_c_{{f.name}}" name="c_{{f.name}}">{{fff.value}}</textarea>{%endif%}{%endfor%}{%endif%}
+{%if f.name == 'm_16' %}{% for fff in form %}{%if fff.name == 'c_m_16'%}<textarea class="zzz"  id="id_c_{{f.name}}" name="c_{{f.name}}">{{fff.value}}</textarea>{%endif%}{%endfor%}{%endif%}
+{%if f.name == 'm_17' %}{% for fff in form %}{%if fff.name == 'c_m_17'%}<textarea class="zzz"  id="id_c_{{f.name}}" name="c_{{f.name}}">{{fff.value}}</textarea>{%endif%}{%endfor%}{%endif%}
+{%if f.name == 'm_18' %}{% for fff in form %}{%if fff.name == 'c_m_18'%}<textarea class="zzz"  id="id_c_{{f.name}}" name="c_{{f.name}}">{{fff.value}}</textarea>{%endif%}{%endfor%}{%endif%}
+{%if f.name == 'm_19' %}{% for fff in form %}{%if fff.name == 'c_m_19'%}<textarea class="zzz"  id="id_c_{{f.name}}" name="c_{{f.name}}">{{fff.value}}</textarea>{%endif%}{%endfor%}{%endif%}
+{%if f.name == 'm_20' %}{% for fff in form %}{%if fff.name == 'c_m_20'%}<textarea class="zzz"  id="id_c_{{f.name}}" name="c_{{f.name}}">{{fff.value}}</textarea>{%endif%}{%endfor%}{%endif%}
+{%if f.name == 'm_21' %}{% for fff in form %}{%if fff.name == 'c_m_21'%}<textarea class="zzz"  id="id_c_{{f.name}}" name="c_{{f.name}}">{{fff.value}}</textarea>{%endif%}{%endfor%}{%endif%}
+{%if f.name == 'm_22' %}{% for fff in form %}{%if fff.name == 'c_m_22'%}<textarea class="zzz"  id="id_c_{{f.name}}" name="c_{{f.name}}">{{fff.value}}</textarea>{%endif%}{%endfor%}{%endif%}
+{%if f.name == 'm_23' %}{% for fff in form %}{%if fff.name == 'c_m_23'%}<textarea class="zzz"  id="id_c_{{f.name}}" name="c_{{f.name}}">{{fff.value}}</textarea>{%endif%}{%endfor%}{%endif%}
+{%if f.name == 'm_24' %}{% for fff in form %}{%if fff.name == 'c_m_24'%}<textarea class="zzz"  id="id_c_{{f.name}}" name="c_{{f.name}}">{{fff.value}}</textarea>{%endif%}{%endfor%}{%endif%}
+{%if f.name == 'm_25' %}{% for fff in form %}{%if fff.name == 'c_m_25'%}<textarea class="zzz"  id="id_c_{{f.name}}" name="c_{{f.name}}">{{fff.value}}</textarea>{%endif%}{%endfor%}{%endif%}
+{%if f.name == 'm_26' %}{% for fff in form %}{%if fff.name == 'c_m_26'%}<textarea class="zzz"  id="id_c_{{f.name}}" name="c_{{f.name}}">{{fff.value}}</textarea>{%endif%}{%endfor%}{%endif%}
+{%if f.name == 'm_27' %}{% for fff in form %}{%if fff.name == 'c_m_27'%}<textarea class="zzz"  id="id_c_{{f.name}}" name="c_{{f.name}}">{{fff.value}}</textarea>{%endif%}{%endfor%}{%endif%}
+{%if f.name == 'm_28' %}{% for fff in form %}{%if fff.name == 'c_m_28'%}<textarea class="zzz"  id="id_c_{{f.name}}" name="c_{{f.name}}">{{fff.value}}</textarea>{%endif%}{%endfor%}{%endif%}
+{%if f.name == 'm_29' %}{% for fff in form %}{%if fff.name == 'c_m_29'%}<textarea class="zzz"  id="id_c_{{f.name}}" name="c_{{f.name}}">{{fff.value}}</textarea>{%endif%}{%endfor%}{%endif%}
+{%if f.name == 'm_30' %}{% for fff in form %}{%if fff.name == 'c_m_30'%}<textarea class="zzz"  id="id_c_{{f.name}}" name="c_{{f.name}}">{{fff.value}}</textarea>{%endif%}{%endfor%}{%endif%}
+{%if f.name == 'm_31' %}{% for fff in form %}{%if fff.name == 'c_m_31'%}<textarea class="zzz"  id="id_c_{{f.name}}" name="c_{{f.name}}">{{fff.value}}</textarea>{%endif%}{%endfor%}{%endif%}
+{%if f.name == 'm_32' %}{% for fff in form %}{%if fff.name == 'c_m_32'%}<textarea class="zzz"  id="id_c_{{f.name}}" name="c_{{f.name}}">{{fff.value}}</textarea>{%endif%}{%endfor%}{%endif%}
+{%if f.name == 'm_33' %}{% for fff in form %}{%if fff.name == 'c_m_33'%}<textarea class="zzz"  id="id_c_{{f.name}}" name="c_{{f.name}}">{{fff.value}}</textarea>{%endif%}{%endfor%}{%endif%}
+{%if f.name == 'm_34' %}{% for fff in form %}{%if fff.name == 'c_m_34'%}<textarea class="zzz"  id="id_c_{{f.name}}" name="c_{{f.name}}">{{fff.value}}</textarea>{%endif%}{%endfor%}{%endif%}
+{%if f.name == 'm_35' %}{% for fff in form %}{%if fff.name == 'c_m_35'%}<textarea class="zzz"  id="id_c_{{f.name}}" name="c_{{f.name}}">{{fff.value}}</textarea>{%endif%}{%endfor%}{%endif%}
+{%if f.name == 'm_36' %}{% for fff in form %}{%if fff.name == 'c_m_36'%}<textarea class="zzz"  id="id_c_{{f.name}}" name="c_{{f.name}}">{{fff.value}}</textarea>{%endif%}{%endfor%}{%endif%}
+{%if f.name == 'm_37' %}{% for fff in form %}{%if fff.name == 'c_m_37'%}<textarea class="zzz"  id="id_c_{{f.name}}" name="c_{{f.name}}">{{fff.value}}</textarea>{%endif%}{%endfor%}{%endif%}
+{%if f.name == 'm_38' %}{% for fff in form %}{%if fff.name == 'c_m_38'%}<textarea class="zzz"  id="id_c_{{f.name}}" name="c_{{f.name}}">{{fff.value}}</textarea>{%endif%}{%endfor%}{%endif%}
+{%if f.name == 'm_39' %}{% for fff in form %}{%if fff.name == 'c_m_39'%}<textarea class="zzz"  id="id_c_{{f.name}}" name="c_{{f.name}}">{{fff.value}}</textarea>{%endif%}{%endfor%}{%endif%}
+{%if f.name == 'm_40' %}{% for fff in form %}{%if fff.name == 'c_m_40'%}<textarea class="zzz"  id="id_c_{{f.name}}" name="c_{{f.name}}">{{fff.value}}</textarea>{%endif%}{%endfor%}{%endif%}
+{%if f.name == 'm_41' %}{% for fff in form %}{%if fff.name == 'c_m_41'%}<textarea class="zzz"  id="id_c_{{f.name}}" name="c_{{f.name}}">{{fff.value}}</textarea>{%endif%}{%endfor%}{%endif%}
+{%if f.name == 'm_42' %}{% for fff in form %}{%if fff.name == 'c_m_42'%}<textarea class="zzz"  id="id_c_{{f.name}}" name="c_{{f.name}}">{{fff.value}}</textarea>{%endif%}{%endfor%}{%endif%}
+{%if f.name == 'm_43' %}{% for fff in form %}{%if fff.name == 'c_m_43'%}<textarea class="zzz"  id="id_c_{{f.name}}" name="c_{{f.name}}">{{fff.value}}</textarea>{%endif%}{%endfor%}{%endif%}
+{%if f.name == 'm_44' %}{% for fff in form %}{%if fff.name == 'c_m_44'%}<textarea class="zzz"  id="id_c_{{f.name}}" name="c_{{f.name}}">{{fff.value}}</textarea>{%endif%}{%endfor%}{%endif%}
+{%if f.name == 'm_45' %}{% for fff in form %}{%if fff.name == 'c_m_45'%}<textarea class="zzz"  id="id_c_{{f.name}}" name="c_{{f.name}}">{{fff.value}}</textarea>{%endif%}{%endfor%}{%endif%}
+{%if f.name == 'm_46' %}{% for fff in form %}{%if fff.name == 'c_m_46'%}<textarea class="zzz"  id="id_c_{{f.name}}" name="c_{{f.name}}">{{fff.value}}</textarea>{%endif%}{%endfor%}{%endif%}
+{%if f.name == 'm_47' %}{% for fff in form %}{%if fff.name == 'c_m_47'%}<textarea class="zzz"  id="id_c_{{f.name}}" name="c_{{f.name}}">{{fff.value}}</textarea>{%endif%}{%endfor%}{%endif%}
+{%if f.name == 'm_48' %}{% for fff in form %}{%if fff.name == 'c_m_48'%}<textarea class="zzz"  id="id_c_{{f.name}}" name="c_{{f.name}}">{{fff.value}}</textarea>{%endif%}{%endfor%}{%endif%}
+{%if f.name == 'm_49' %}{% for fff in form %}{%if fff.name == 'c_m_49'%}<textarea class="zzz"  id="id_c_{{f.name}}" name="c_{{f.name}}">{{fff.value}}</textarea>{%endif%}{%endfor%}{%endif%}
+{%if f.name == 'm_50' %}{% for fff in form %}{%if fff.name == 'c_m_50'%}<textarea class="zzz"  id="id_c_{{f.name}}" name="c_{{f.name}}">{{fff.value}}</textarea>{%endif%}{%endfor%}{%endif%}
+{%if f.name == 'm_51' %}{% for fff in form %}{%if fff.name == 'c_m_51'%}<textarea class="zzz"  id="id_c_{{f.name}}" name="c_{{f.name}}">{{fff.value}}</textarea>{%endif%}{%endfor%}{%endif%}
+{%if f.name == 'm_52' %}{% for fff in form %}{%if fff.name == 'c_m_52'%}<textarea class="zzz"  id="id_c_{{f.name}}" name="c_{{f.name}}">{{fff.value}}</textarea>{%endif%}{%endfor%}{%endif%}
+{%if f.name == 'm_53' %}{% for fff in form %}{%if fff.name == 'c_m_53'%}<textarea class="zzz"  id="id_c_{{f.name}}" name="c_{{f.name}}">{{fff.value}}</textarea>{%endif%}{%endfor%}{%endif%}
+{%if f.name == 'm_54' %}{% for fff in form %}{%if fff.name == 'c_m_54'%}<textarea class="zzz"  id="id_c_{{f.name}}" name="c_{{f.name}}">{{fff.value}}</textarea>{%endif%}{%endfor%}{%endif%}
+{%if f.name == 'm_55' %}{% for fff in form %}{%if fff.name == 'c_m_55'%}<textarea class="zzz"  id="id_c_{{f.name}}" name="c_{{f.name}}">{{fff.value}}</textarea>{%endif%}{%endfor%}{%endif%}
+{%if f.name == 'm_56' %}{% for fff in form %}{%if fff.name == 'c_m_56'%}<textarea class="zzz"  id="id_c_{{f.name}}" name="c_{{f.name}}">{{fff.value}}</textarea>{%endif%}{%endfor%}{%endif%}
+{%if f.name == 'm_57' %}{% for fff in form %}{%if fff.name == 'c_m_57'%}<textarea class="zzz"  id="id_c_{{f.name}}" name="c_{{f.name}}">{{fff.value}}</textarea>{%endif%}{%endfor%}{%endif%}
+{%if f.name == 'm_58' %}{% for fff in form %}{%if fff.name == 'c_m_58'%}<textarea class="zzz"  id="id_c_{{f.name}}" name="c_{{f.name}}">{{fff.value}}</textarea>{%endif%}{%endfor%}{%endif%}
+{%if f.name == 'm_59' %}{% for fff in form %}{%if fff.name == 'c_m_59'%}<textarea class="zzz"  id="id_c_{{f.name}}" name="c_{{f.name}}">{{fff.value}}</textarea>{%endif%}{%endfor%}{%endif%}
+{%if f.name == 'm_60' %}{% for fff in form %}{%if fff.name == 'c_m_60'%}<textarea class="zzz"  id="id_c_{{f.name}}" name="c_{{f.name}}">{{fff.value}}</textarea>{%endif%}{%endfor%}{%endif%}
+{%if f.name == 'm_61' %}{% for fff in form %}{%if fff.name == 'c_m_61'%}<textarea class="zzz"  id="id_c_{{f.name}}" name="c_{{f.name}}">{{fff.value}}</textarea>{%endif%}{%endfor%}{%endif%}
+{%if f.name == 'm_62' %}{% for fff in form %}{%if fff.name == 'c_m_62'%}<textarea class="zzz"  id="id_c_{{f.name}}" name="c_{{f.name}}">{{fff.value}}</textarea>{%endif%}{%endfor%}{%endif%}
+{%if f.name == 'm_63' %}{% for fff in form %}{%if fff.name == 'c_m_63'%}<textarea class="zzz"  id="id_c_{{f.name}}" name="c_{{f.name}}">{{fff.value}}</textarea>{%endif%}{%endfor%}{%endif%}
+{%if f.name == 'm_64' %}{% for fff in form %}{%if fff.name == 'c_m_64'%}<textarea class="zzz"  id="id_c_{{f.name}}" name="c_{{f.name}}">{{fff.value}}</textarea>{%endif%}{%endfor%}{%endif%}
+{%if f.name == 'm_65' %}{% for fff in form %}{%if fff.name == 'c_m_65'%}<textarea class="zzz"  id="id_c_{{f.name}}" name="c_{{f.name}}">{{fff.value}}</textarea>{%endif%}{%endfor%}{%endif%}
+{%if f.name == 'm_66' %}{% for fff in form %}{%if fff.name == 'c_m_66'%}<textarea class="zzz"  id="id_c_{{f.name}}" name="c_{{f.name}}">{{fff.value}}</textarea>{%endif%}{%endfor%}{%endif%}
+        </div>  </td>
+                                        <td>{{f.help_text|safe}}</td>
+                                    </tr>
+                                  
+                                     {% if f.name == 'm_1' %} 
+                                     <tr>
+                                        <td>
+                                           <div class="control-group">
+                                           <label>{% trans "2. Does the mission statement answer the following:" %}</label>
+                                           <div class="controls">
+                                            {{ form2.management_form }}
+                                            {{ form2.non_form_errors }}
+                                            <div class="panel panel-default">
+                                            <div class="panel-body">
+                                                <table>
+                                                   
+                                                    <tbody>
+                                                    {% for form in form2 %}
+                                                       
+                                                        {% for ff in form %}
+                                                        {%if not ff.label == 'Module13' and not ff.label == 'Delete' and not ff.label == 'Id'%}
+                                                        <tr>  <td> {{ff.label}}</td>
+                                                         <td> {%if ff.name == 'c1' or ff.name == 'c2' or ff.name == 'c3' or ff.name == 'c4'%}
+                                                    <ul>
+                                                    <li>
+                                                        <label for="id_module13grid2_set-0-{{ff.name}}_1" class="control-label">
+                                                        <input id="id_module13grid2_set-0-{{ff.name}}_1" name ="module13grid2_set-0-{{ff.name}}" type="radio" value="True" {% if ff.value == True %}checked{%endif%}> {% trans "Yes"%}</label>
+                                                    </li>
+                                                    <li> 
+                                                       <label for="id_module13grid2_set-0-{{ff.name}}_2" class="control-label">
+                                                       <input id="id_module13grid2_set-0-{{ff.name}}_2" name ="module13grid2_set-0-{{ff.name}}" type="radio" value="False" {% if ff.value == False %}checked{%endif%}> {% trans "No"%}</label>
+                                                    </li>
+                                                    </ul>                                                   
+                                                    {%else%}
+                                                    {{ff}}
+                                                      {% endif %}</td>
+                                                         {% else %}{{ff.as_hidden}}
+                                                        {% endif %}   </tr>  {% endfor %}
+                                                       
+                                                    </tbody> 
+                                                       {% endfor %} 
+                                                </table>  
+                                            </div>  
+                                            </div>
+                                          </div>  </div>
+                                          <a href="#id_2" onclick="javascript:toggle_visibility('c_m_2');">{% trans "add comment" %}</a>
+                                            <div id="c_m_2" style="display:none;">
+                                            {% for fff in form %}{%if fff.name == 'c_m_2'%}<textarea class="zzz"  id="id_c_m_2" name="c_m_2">{{fff.value}}</textarea>{%endif%}{%endfor%}
+                                            </div></td>
+                                        <td></td>
+                                    </tr>
+                                         <tr>
+                                        <td>
+                                           <div class="control-group">
+                                           <label>{% trans "3. Are the objectives of the export certification program SMART?" %}</label>
+                                           <div class="controls">
+                                            {{ form3.management_form }}
+                                            {{ form3.non_form_errors }}
+                                            <div class="panel panel-default">
+                                            <div class="panel-body">
+                                                <table>
+                                                   
+                                                    <tbody>
+                                                    {% for form in form3 %}
+                                                       
+                                                        {% for ff in form %}
+                                                        {%if not ff.label == 'Module13' and not ff.label == 'Delete' and not ff.label == 'Id'%}
+                                                        <tr>  <td> {{ff.label}}</td>
+                                                         <td> {%if ff.name == 'c1' or ff.name == 'c2' or ff.name == 'c3' or ff.name == 'c4'%}
+                                                    <ul>
+                                                    <li>
+                                                        <label for="id_module13grid3_set-0-{{ff.name}}_1" class="control-label">
+                                                        <input id="id_module13grid3_set-0-{{ff.name}}_1" name ="module13grid3_set-0-{{ff.name}}" type="radio" value="True" {% if ff.value == True %}checked{%endif%}> {% trans "Yes"%}</label>
+                                                    </li>
+                                                    <li> 
+                                                       <label for="id_module13grid3_set-0-{{ff.name}}_2" class="control-label">
+                                                       <input id="id_module13grid3_set-0-{{ff.name}}_2" name ="module13grid3_set-0-{{ff.name}}" type="radio" value="False" {% if ff.value == False %}checked{%endif%}> {% trans "No"%}</label>
+                                                    </li>
+                                                    </ul>                                                   
+                                                    {%else%}
+                                                    {{ff}}
+                                                      {% endif %}</td>
+                                                         {% else %}{{ff.as_hidden}}
+                                                        {% endif %}   </tr>  {% endfor %}
+                                                       
+                                                    </tbody> 
+                                                       {% endfor %} 
+                                                </table>  
+                                            </div>  
+                                            </div>
+                                          </div>  </div>
+                                        <a href="#id_3" onclick="javascript:toggle_visibility('c_m_3');">{% trans "add comment" %}</a>
+                                            <div id="c_m_3" style="display:none;">
+                                            {% for fff in form %}{%if fff.name == 'c_m_3'%}<textarea class="zzz"  id="id_c_m_3" name="c_m_3">{{fff.value}}</textarea>{%endif%}{%endfor%}
+                                            </div></td>
+                                        <td></td>
+                                    </tr>
+                                      {% elif f.name == 'm_8' %} 
+                                     <tr class="success">
+                                        <td colspan="2"><b>{% trans "B. Enabling legislation" %}</b></td>
+                                     </tr>     
+                                       {% elif f.name == 'm_15' %} 
+                                     <tr class="success">
+                                        <td colspan="2"><b>{% trans "C. Organizational structure, competences and culture" %}</b></td>
+                                     </tr> 
+                                      {% elif f.name == 'm_21' %} 
+                                     <tr>
+                                        <td>
+                                           <div class="control-group">
+                                           <label>{% trans "22. Does the NPPO have procedures in place for timely communication to relevant personnel and to industry (within the country) concerning changes in:" %}</label>
+                                           <div class="controls">
+                                            {{ form22.management_form }}
+                                            {{ form22.non_form_errors }}
+                                            <div class="panel panel-default">
+                                            <div class="panel-body">
+                                                <table>
+                                                   
+                                                    <tbody>
+                                                    {% for form in form22 %}
+                                                       
+                                                        {% for ff in form %}
+                                                        {%if not ff.label == 'Module13' and not ff.label == 'Delete' and not ff.label == 'Id'%}
+                                                        <tr>  <td> {{ff.label}}</td>
+                                                         <td> {%if ff.name == 'c1' or ff.name == 'c2' or ff.name == 'c3' %}
+                                                    <ul>
+                                                    <li>
+                                                        <label for="id_module13grid22_set-0-{{ff.name}}_1" class="control-label">
+                                                        <input id="id_module13grid22_set-0-{{ff.name}}_1" name ="module13grid22_set-0-{{ff.name}}" type="radio" value="True" {% if ff.value == True %}checked{%endif%}> {% trans "Yes"%}</label>
+                                                    </li>
+                                                    <li> 
+                                                       <label for="id_module13grid22_set-0-{{ff.name}}_2" class="control-label">
+                                                       <input id="id_module13grid22_set-0-{{ff.name}}_2" name ="module13grid22_set-0-{{ff.name}}" type="radio" value="False" {% if ff.value == False %}checked{%endif%}> {% trans "No"%}</label>
+                                                    </li>
+                                                    </ul>                                                   
+                                                    {%else%}
+                                                    {{ff}}
+                                                      {% endif %}</td>
+                                                         {% else %}{{ff.as_hidden}}
+                                                        {% endif %}   </tr>  {% endfor %}
+                                                       
+                                                    </tbody> 
+                                                       {% endfor %} 
+                                                </table>  
+                                            </div>  
+                                            </div>
+                                          </div>  </div>
+                                         <a href="#id_22" onclick="javascript:toggle_visibility('c_m_22');">{% trans "add comment" %}</a>
+                                            <div id="c_m_22" style="display:none;">
+                                            {% for fff in form %}{%if fff.name == 'c_m_22'%}<textarea class="zzz"  id="id_c_m_22" name="c_m_22">{{fff.value}}</textarea>{%endif%}{%endfor%}
+                                            </div></td>
+                                        <td></td>
+                                    </tr>
+                                     {% elif f.name == 'm_24' %} 
+                                     <tr class="success">
+                                        <td colspan="2"><b>{% trans "D. Documented procedures" %}</b></td>
+                                     </tr> 
+                                       {% elif f.name == 'm_28' %} 
+                                     <tr>
+                                        <td>
+                                           <div class="control-group">
+                                           <label>{% trans "29. Does the NPPO have documented procedures and work instructions to cover the following key aspects of the certification system:" %}</label>
+                                           <div class="controls">
+                                            {{ form29.management_form }}
+                                            {{ form29.non_form_errors }}
+                                            <div class="panel panel-default">
+                                            <div class="panel-body">
+                                                <table>
+                                                   
+                                                    <tbody>
+                                                    {% for form in form29 %}
+                                                       
+                                                        {% for ff in form %}
+                                                        {%if not ff.label == 'Module13' and not ff.label == 'Delete' and not ff.label == 'Id'%}
+                                                        <tr>  <td> {{ff.label}}</td>
+                                                         <td> {%if ff.name == 'c1' or ff.name == 'c2' or ff.name == 'c3' or ff.name == 'c4' or ff.name == 'c5' or ff.name == 'c6' or ff.name == 'c7' or ff.name == 'c8' or ff.name == 'c9' or ff.name == 'c10' or ff.name == 'c11' or ff.name == 'c12'%}
+                                                    <ul>
+                                                    <li>
+                                                        <label for="id_module13grid29_set-0-{{ff.name}}_1" class="control-label">
+                                                        <input id="id_module13grid29_set-0-{{ff.name}}_1" name ="module13grid29_set-0-{{ff.name}}" type="radio" value="True" {% if ff.value == True %}checked{%endif%}> {% trans "Yes"%}</label>
+                                                    </li>
+                                                    <li> 
+                                                       <label for="id_module13grid29_set-0-{{ff.name}}_2" class="control-label">
+                                                       <input id="id_module13grid29_set-0-{{ff.name}}_2" name ="module13grid29_set-0-{{ff.name}}" type="radio" value="False" {% if ff.value == False %}checked{%endif%}> {% trans "No"%}</label>
+                                                    </li>
+                                                    </ul>                                                   
+                                                    {%else%}
+                                                    {{ff}}
+                                                      {% endif %}</td>
+                                                         {% else %}{{ff.as_hidden}}
+                                                        {% endif %}   </tr>  {% endfor %}
+                                                       
+                                                    </tbody> 
+                                                       {% endfor %} 
+                                                </table>  
+                                            </div>  
+                                            </div>
+                                          </div>  </div>
+                                        <a href="#id_29" onclick="javascript:toggle_visibility('c_m_29');">{% trans "add comment" %}</a>
+                                            <div id="c_m_29" style="display:none;">
+                                            {% for fff in form %}{%if fff.name == 'c_m_29'%}<textarea class="zzz"  id="id_c_m_29" name="c_m_29">{{fff.value}}</textarea>{%endif%}{%endfor%}
+                                            </div> </td>
+                                        <td></td>
+                                    </tr>
+                                      {% elif f.name == 'm_30' %} 
+                                     <tr>
+                                        <td>
+                                           <div class="control-group">
+                                           <label>{% trans "31. For each phytosanitary certificate are records kept as appropriate on:" %}</label>
+                                           <div class="controls">
+                                            {{ form31.management_form }}
+                                            {{ form31.non_form_errors }}
+                                            <div class="panel panel-default">
+                                            <div class="panel-body">
+                                                <table>
+                                                   
+                                                    <tbody>
+                                                    {% for form in form31 %}
+                                                       
+                                                        {% for ff in form %}
+                                                        {%if not ff.label == 'Module13' and not ff.label == 'Delete' and not ff.label == 'Id'%}
+                                                        <tr>  <td> {{ff.label}}</td>
+                                                         <td> {%if ff.name == 'c1' or ff.name == 'c2' or ff.name == 'c3' or ff.name == 'c4' or ff.name == 'c5'%}
+                                                    <ul>
+                                                    <li>
+                                                        <label for="id_module13grid31_set-0-{{ff.name}}_1" class="control-label">
+                                                        <input id="id_module13grid31_set-0-{{ff.name}}_1" name ="module13grid31_set-0-{{ff.name}}" type="radio" value="True" {% if ff.value == True %}checked{%endif%}> {% trans "Yes"%}</label>
+                                                    </li>
+                                                    <li> 
+                                                       <label for="id_module13grid31_set-0-{{ff.name}}_2" class="control-label">
+                                                       <input id="id_module13grid31_set-0-{{ff.name}}_2" name ="module13grid31_set-0-{{ff.name}}" type="radio" value="False" {% if ff.value == False %}checked{%endif%}> {% trans "No"%}</label>
+                                                    </li>
+                                                    </ul>                                                   
+                                                    {%else%}
+                                                    {{ff}}
+                                                      {% endif %}</td>
+                                                         {% else %}{{ff.as_hidden}}
+                                                        {% endif %}   </tr>  {% endfor %}
+                                                       
+                                                    </tbody> 
+                                                       {% endfor %} 
+                                                </table>  
+                                            </div>  
+                                            </div>
+                                          </div>  </div>
+                                        <a href="#id_31" onclick="javascript:toggle_visibility('c_m_31');">{% trans "add comment" %}</a>
+                                            <div id="c_m_31" style="display:none;">
+                                            {% for fff in form %}{%if fff.name == 'c_m_31'%}<textarea class="zzz"  id="id_c_m_31" name="c_m_31">{{fff.value}}</textarea>{%endif%}{%endfor%}
+                                            </div> </td>
+                                        <td></td>
+                                    </tr>
+                                      {% elif f.name == 'm_46' %} 
+                                     <tr class="success">
+                                        <td colspan="2"><b>{% trans "E. Staffing" %}</b></td>
+                                     </tr>   
+                                       
+                                     
+                                         <tr>
+                                        <td>
+                                           <div class="control-group">
+                                           <label>{% trans "47. Using the matrix privided, assess the human resources in the NPPO export certification program" %}</label>
+                                           <div class="controls">
+                                            {{ form47.management_form }}
+                                            {{ form47.non_form_errors }}
+                                            <div class="panel panel-default">
+                                            <div class="panel-body">
+                                                <table>
+                                                    <thead>
+                                                        <tr>
+                                                            <th colspan="7"><center>{% trans "EXPORT CERTIFICATION - HUMAN RESOURCES" %}</center></th>					
+                                                        </tr>
+                                                        <tr>
+                                                            <th colspan="4"><center>{% trans "Current" %}</center></th>					
+                                                            <th colspan="2"><center>{% trans "Required" %}</center></th>					
+                                                        </tr>
+                                                         <tr>
+                                                             <th colspan="1">&#160;</th>
+                                                             <th colspan="2">{% trans "Inspector and support Staff" %}</th>					
+                                                             <th colspan="2">{% trans "Export managers" %}</th>
+                                                             <th colspan="2">&#160;</th>
+                                                        </tr>
+                                                       <tr>
+                                                             <th colspan="1" style="width:50px">&#160;</th>
+                                                             <th colspan="1" style="width:50px">{% trans "No. of Staff" %}</th>					
+                                                             <th colspan="1" style="width:50px">{% trans "Average years of experience" %}</th>
+                                                             <th colspan="1" style="width:50px">{% trans "No. of Staff" %}</th>					
+                                                             <th colspan="1" style="width:50px">{% trans "Average years of experience" %}</th>
+                                                             <th colspan="1" style="width:50px">{% trans "Inspector/support Staff" %}</th>					
+                                                             <th colspan="1" style="width:50px">{% trans "Export managers" %}</th>
+                                                        </tr>
+                                                    </thead>
+                                                    
+                                               
+                                                    {% for form in form47 %}
+                                                       {%if  forloop.counter == 1 %}
+                                                          <tr> <td style="width:50px">{% trans "Doctoral equivalent" %}</td>
+                                                       {%elif  forloop.counter == 2 %}
+                                                       <tr><td style="width:50px">{% trans "Master equivalent" %}</td>
+                                                      {%elif  forloop.counter == 3   %}
+                                                       <tr><td style="width:50px">{% trans "Bachelor equivalent" %}</td>
+                                                      {%elif  forloop.counter == 4  %}
+                                                       <tr><td style="width:50px">{% trans "Lower than bachelor level" %}</td>
+                                                      
+                                                          
+                                                           {% endif %}
+                                                        {% for ff in form %}
+                                                        {%if not ff.label == 'Module13' and not ff.label == 'Delete' and not ff.label == 'Id'%}
+                                            
+                                                         <td> {{ff}}</td>
+                                                         {% else %}{{ff.as_hidden}}
+                                                        {% endif %}    {% endfor %}
+                                                       </tr> 
+                                                
+                                                       {% endfor %} 
+                                                </table>  
+                                            </div>  
+                                            </div>
+                                          </div>  </div>
+                                       <a href="#id_47" onclick="javascript:toggle_visibility('c_m_47');">{% trans "add comment" %}</a>
+                                            <div id="c_m_47" style="display:none;">
+                                            {% for fff in form %}{%if fff.name == 'c_m_47'%}<textarea class="zzz"  id="id_c_m_47" name="c_m_47">{{fff.value}}</textarea>{%endif%}{%endfor%}
+                                            </div>  </td>
+                                        <td></td>
+                             
+                                     </tr> 
+                                     
+                                     {% elif f.name == 'm_53' %} 
+                                     <tr class="success">
+                                        <td colspan="2"><b>{% trans "F. Equipment" %}</b></td>
+                                     </tr>
+                                     {% elif f.name == 'm_57' %} 
+                                     <tr class="success">
+                                        <td colspan="2"><b>{% trans "Section III - NPPO export certification performancet" %}</b></td>
+                                     </tr>
+                                    
+                                     
+                                    {% endif %}
+                                  
+                                    {% endif %}
+                                    {% endfor%}
+                                    <tr class="success">
+                                       <td colspan="2"><b>{% trans "
+Section IV - Weaknesses" %}</b></td>
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                             <div class="control-group">
+                                                <label>{% trans "1. Please identify the five most critical weaknesses for NPPO's export certification performance in order of priority (1=Highest)" %}</label>
+                                           <div class="controls">
+                                               {{ form66.management_form }}
+                                            {{ form66.non_form_errors }}
+                                            {% for form in form66 %}
+                                            <div class="panel panel-default">
+                                                <div class="panel-body">
+                                                    {% for ff in form %}
+                                                    {%if not ff.label == 'Module13' and not ff.label == 'Delete' and not ff.label == 'Id'%}
+                                                    {{ff.label}} {{ff}}<br>   {% else %}{{ff.as_hidden}}
+                                                    {% endif %}
+                                                    {% endfor %}
+                                                </div></div>
+                                            {% endfor %}   </div>
+                                            </div>
+                                       <a href="#id_66" onclick="javascript:toggle_visibility('c_m_66');">{% trans "add comment" %}</a>
+                                            <div id="c_m_66" style="display:none;">
+                                            {% for fff in form %}{%if fff.name == 'c_m_66'%}<textarea class="zzz"  id="id_c_m_66" name="c_m_66">{{fff.value}}</textarea>{%endif%}{%endfor%}
+                                            </div>  </td>
+                                        <td></td>
+                                    </tr>
+                                   </tbody>        
+                            </table>
+                            <div class="form-actions">
+                                <a class="btn btn-small btn-info" href="javascript:history.go(-1)">{% trans "Close" %}</a>
+                                <button type="submit" class="btn btn-info btn-large" tabindex="7" value="save">{% trans "Save" %}</button>
+                                 {% nevercache %}
+            {% include "pce/goto_pa_block.html" %}
+            {% endnevercache %}         <span class="pull-right">     <a class="btn btn-large btn-info" href="javascript:window.print();" >{% trans "PRINT" %}</a></span> 
+                   </div>
+                            </fieldset>
+                        </form>
+                        </div>
+
+                    </div>      
+                    </div>
+
+</div> {% else %}{% nevercache %}
+            {% include "pce/permission_block.html" %}
+            {% endnevercache %}
+
+{% endif %}
+{% endblock %}
+
