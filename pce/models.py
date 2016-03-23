@@ -4608,11 +4608,11 @@ class StakeholdersFields(models.Model):
     email = models.CharField(_("Email"), blank=True, null=True,max_length=250,)
     organisation = models.CharField(_("Organisation/division"), blank=True, null=True,max_length=250,)
     
-    role = models.IntegerField(_("Role"), choices=ROLE, default=ROLE_0 ,blank=True)
-    interest = models.IntegerField(_("Interest"), choices=INTEREST, default=INTEREST_0,blank=True)
-    influence = models.IntegerField(_("Influence"), choices=INTEREST, default=INTEREST_0,blank=True)
-    level = models.IntegerField(_("Level"), choices=LEVEL, default=LEVEL_0,blank=True)
-
+    role = models.IntegerField(_("Role"), choices=ROLE, default=None)
+    interest = models.IntegerField(_("Interest"), choices=INTEREST, default=None)
+    influence = models.IntegerField(_("Influence"), choices=INTEREST,default=None)
+    level = models.IntegerField(_("Level"), choices=LEVEL,default=None)
+  
     def __unicode__(self):  
         return self.lastname+self.firstname+'.'
     def name(self):

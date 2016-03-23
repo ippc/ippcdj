@@ -123,7 +123,6 @@ def check_and_addUser(firstname,lastname,email,grp,num,country):
         c=user.groups.filter(name=grp_name).count()
         if c==0:
             user.groups.add(g1)
-            print('>>> ADDING TO GRP '+grp_name)
     else:
         #create new user
         user1=User()
@@ -140,9 +139,14 @@ def check_and_addUser(firstname,lastname,email,grp,num,country):
         userp.last_name=lastname
         userp.country=country
         userp.save()
+        
+        user_email = []
+        user_email.append(email)
+      
+          
         msg='Please go to reset your password to set a password.'
-        subject='An PCE account has been created for you.'  
-        message = mail.EmailMessage(subject,msg,'ippc@fao.org', ['paola.sentinelli@fao.org'], ['paola.sentinelli@fao.org'])
+        subject='A PCE account has been created for you.'  
+        message = mail.EmailMessage(subject,msg,'ippc@fao.org', user_email, ['paola.sentinelli@fao.org'])
         message.content_subtype = "html"
         sent =0
         try:
@@ -392,28 +396,7 @@ def getModuleNameAndId(modulenum,sessionid):
 def getWeakenessFromModuleNameAndId(modulenum,sessionid):
     module = None
     weaknesses= None
-    print('')     
-    print('')     
-    print('')     
-    print('')     
-    print('')     
-    print('')     
-    print('')     
-    print('---------------------------getWeakenessFromModuleNameAndId'+str(modulenum) )    
-    print('')     
-    print('')     
-    print('')     
-    print('')     
-    print('')     
-    print('')     
-    print('')     
-    print('')     
-    print('')     
-    print('')     
-    print('')     
-    print('')     
-    print('')     
-    print('')     
+   
     try: 
         if modulenum ==2:
            module = get_object_or_404(Module2, session=sessionid)
@@ -465,14 +448,7 @@ def getWeakenessFromModuleNameAndId(modulenum,sessionid):
     except:
         module = None
         weaknesses = None
-    print(weaknesses.w1)  
-    print(weaknesses.w2)  
-    print("")  
-    print("")  
-    print("")  
-    print("")  
-    print("")  
-    print("")  
+   
     return weaknesses                 
 
 def is_stakeholder_filled(id,module):
@@ -599,7 +575,7 @@ def get_percentage_module_filled(num_mod,version):
         percent=(i*100/tot_num_fields)
        
     if num_mod == 2:
-        tot_num_fields=123
+        tot_num_fields=122
         i=0
         modules = Module2.objects.filter(session_id=version).count()
         if modules>0:
@@ -3143,6 +3119,58 @@ def module_validate(request, country, sessionid=None,module=None,id=None ):
 
                 info(request, _("Successfully VALIDATED Module: "+str(module)+"."))
                 return redirect("pceversion-list", country=user_country_slug,  id=sessionid)
+       
+@login_required
+@permission_required('pce.add_pceversion', login_url="/accounts/login/")
+def module_unvalidate(request, country, sessionid=None,module=None,id=None ):
+    """ UN-VALIDATE Module """
+    user = request.user
+    author = user
+    country1=country
+    country=user.get_profile().country
+    user_country_slug = lower(slugify(country))
+    modnum='module'+str(module)
+    
+    if id and module:
+         if user.groups.filter(name='Admin') or (country1 == user_country_slug and user.groups.filter(name='PCE Manager/Validator')) :
+            moduletovalidate=None
+            percentage_module=get_percentage_module(sessionid,int(module))
+            try:
+                if modnum == 'module1':
+                    moduletovalidate = get_object_or_404(Module1, id=id)
+                elif modnum=='module2':
+                    moduletovalidate = get_object_or_404(Module2, id=id)
+                elif modnum=='module3':
+                    moduletovalidate = get_object_or_404(Module3, id=id)
+                elif modnum=='module4':
+                    moduletovalidate = get_object_or_404(Module4, id=id)
+                elif modnum=='module5':
+                    moduletovalidate = get_object_or_404(Module5, id=id)
+                elif modnum=='module6':
+                    moduletovalidate = get_object_or_404(Module6, id=id)
+                elif modnum=='module7':
+                    moduletovalidate = get_object_or_404(Module7, id=id)
+                elif modnum=='module8':
+                    moduletovalidate = get_object_or_404(Module8, id=id)
+                elif modnum=='module9':
+                    moduletovalidate = get_object_or_404(Module9, id=id)
+                elif modnum=='module10':
+                    moduletovalidate = get_object_or_404(Module10, id=id)
+                elif modnum=='module11':
+                    moduletovalidate = get_object_or_404(Module11, id=id)
+                elif modnum=='module12':
+                    moduletovalidate = get_object_or_404(Module12, id=id)
+                elif  modnum=='module13':
+                    moduletovalidate = get_object_or_404(Module13, id=id)
+            except:
+                print('--------------ERROR --')
+            
+            if percentage_module == 100:
+                moduletovalidate.status=2
+                moduletovalidate.save()
+
+                info(request, _("Successfully UN-VALIDATED Module: "+str(module)+"."))
+                return redirect("pceversion-list", country=user_country_slug,  id=sessionid)
 
 @login_required
 @permission_required('pce.add_pceversion', login_url="/accounts/login/")
@@ -3190,9 +3218,18 @@ def module_sendtovalidator(request, country, sessionid=None,module=None,id=None 
             if percentage_module == 100:
                 moduletovalidate.status=3
                 moduletovalidate.save()
+                idcountry=user.get_profile().country_id
+                pce_validators=IppcUserProfile.objects.filter(country=idcountry)
+                validator_email = []
+         
+                for u in pce_validators:
+                    user_obj=User.objects.get(id=u.user_id)
+                    if user_obj.groups.filter(name='PCE Manager/Validator'):
+                        validator_email.append(user_obj.email)
+      
                 msg='Dear '+str(country1)+' PCE Manager,<br><br>this message is to notify that the PCE Editor completed the module: '+str(module)+'.<br><br>You can now VALIDATE the module going to the <a href="www.ippc.int/pce/'+str(user_country_slug)+'/session/dashboard/'+str(sessionid)+'">PCE Dashbaord<strong></strong></a>.'
                 subject='PCE NOTIFICATION ['+str(country)+']'  
-                notifificationmessage = mail.EmailMessage(subject,msg,'ippc@fao.org', ['paola.sentinelli@fao.org'], ['paola.sentinelli@fao.org'])
+                notifificationmessage = mail.EmailMessage(subject,msg,'ippc@fao.org', validator_email, ['paola.sentinelli@fao.org'])
                 notifificationmessage.content_subtype = "html"
                 try:
                     sent =notifificationmessage.send()
@@ -3550,6 +3587,9 @@ def module1_edit(request, country, id=None,sessionid=None, template_name='pce/mo
     user = request.user
     author = user
     country=user.get_profile().country
+    
+       
+             
     user_country_slug = lower(slugify(country))
     pceversion = get_object_or_404(PceVersion,  pk=sessionid)
     stakeholders = Stakeholders.objects.filter(session=sessionid)
@@ -9446,29 +9486,21 @@ class SwotAnalysisListPDFView(PDFTemplateView):
         context['latest3'] = latest3
         context['latest4'] = latest4
         context['latest5'] = latest5
-        PRIORITY_0 =0
-        PRIORITY_1 = 1
-        PRIORITY_2 = 2
-        PRIORITY_3 = 3
-        PRIORITY_4 = 4
-        PRIORITY_5 = 5
+     
         PRIORITY_ = (
-            (PRIORITY_0, ("--- Please select ---")),
-            (PRIORITY_1, ("Very Low")),
-            (PRIORITY_2, ("Low")),
-            (PRIORITY_3, ("Medium")),
-            (PRIORITY_4, ("High")),
-            (PRIORITY_5, ("Very high")),
+            (PRIORITY_0, _("--- Please select ---")),
+            (PRIORITY_1, _("Very Low")),
+            (PRIORITY_2, _("Low")),
+            (PRIORITY_3, _("Medium")),
+            (PRIORITY_4, _("High")),
+            (PRIORITY_5, _("Very high")),
         )
-        TYPE_0=0
-        TYPE_1=1
-        TYPE_2=2
-        TYPE_3=3
+    
         TYPE_ = (
-            (TYPE_0, ("--- Please select ---")),
-            (TYPE_1, ("A) National coordination and political willigness")),
-            (TYPE_2, ("B) Like A plus small technical assisstance")),
-            (TYPE_3, ("C) Like A plus significant investments")),
+            (TYPE_0, _("--- Please select ---")),
+            (TYPE_1, _("A) National coordination and political willigness")),
+            (TYPE_2, _("B) Like A plus small technical assisstance")),
+            (TYPE_3, _("C) Like A plus significant investments")),
         )        
 
         context['priority'] =PRIORITY_
@@ -10078,92 +10110,54 @@ def generate_report(request, country,sessionid=None):
                 m1m23=str(o)+',' 
             m1m23=m1m23[:-1]  
             
-            VAL_IMP_0 = 0
-            VAL_IMP_1 = 1
-            VAL_IMP_2 = 2
-            VAL_IMP_3 = 3
-            VAL_IMP_4 = 4
-            VAL_IMP_5 = 5
-            VAL_IMP_6 = 6
-            VAL_IMP_7 = 7
-            VAL_IMP_8 = 8
-            VAL_IMP_9 = 9
+         
             VAL_IMP = (
-                (VAL_IMP_0, ("--- Please select ---")),
-                (VAL_IMP_1, ("Not known")),
-                (VAL_IMP_2, ("0 to $100,000")),
-                (VAL_IMP_3, ("$100,000 to $500,000")),
-                (VAL_IMP_4, ("$500,000 to $1M")),
-                (VAL_IMP_5, ("$1M to $10M")),
-                (VAL_IMP_6, ("$10M to $25M")),
-                (VAL_IMP_7, ("$25M to $50M")),
-                (VAL_IMP_8, ("$50M to $100M")),
-                (VAL_IMP_9, ("Greater than $100M ")),
+                (0, _("--- Please select ---")),
+                (1, _("Not known")),
+                (2, _("0 to $100,000")),
+                (3, _("$100,000 to $500,000")),
+                (4, _("$500,000 to $1M")),
+                (5, _("$1M to $10M")),
+                (6, _("$10M to $25M")),
+                (7, _("$25M to $50M")),
+                (8, _("$50M to $100M")),
+                (9, _("Greater than $100M ")),
             )
 
-            
-            VAL_EXP_0 = 0
-            VAL_EXP_1 = 1
-            VAL_EXP_2 = 2
-            VAL_EXP_3 = 3
-            VAL_EXP_4 = 4
-            VAL_EXP_5 = 5
-            VAL_EXP_6 = 6
-            VAL_EXP_7 = 7
-            VAL_EXP_8 = 8
-            VAL_EXP_9 = 9
             VAL_EXP = (
-                (VAL_EXP_0, ("--- Please select ---")),
-                (VAL_EXP_1, ("Unknown")),
-                (VAL_EXP_2, ("0 to $100,000")),
-                (VAL_EXP_3, ("$100,000 to $500,000")),
-                (VAL_EXP_4, ("$500,000 to $1M")),
-                (VAL_EXP_5, ("$1M to $10M")),
-                (VAL_EXP_6, ("$10M to $50M")),
-                (VAL_EXP_7, ("$25M to $50M")),
-                (VAL_EXP_8, ("greater than $50M")),
+                (0, _("--- Please select ---")),
+                (1, _("Unknown")),
+                (2, _("0 to $100,000")),
+                (3, _("$100,000 to $500,000")),
+                (4, _("$500,000 to $1M")),
+                (5, _("$1M to $10M")),
+                (6, _("$10M to $50M")),
+                (7, _("$25M to $50M")),
+                (8, _("greater than $50M")),
             )
 
-            VAL_PERCENT_00 = 0
-            VAL_PERCENT_0 = 1
-            VAL_PERCENT_1 = 2
-            VAL_PERCENT_2 = 3
-            VAL_PERCENT_3 = 4
-            VAL_PERCENT_4 = 5
-            VAL_PERCENT_5 = 6
-            VAL_PERCENT_6 = 7
-            VAL_PERCENT_7 = 8
-            VAL_PERCENT_8 = 9
-            VAL_PERCENT_9 = 10
-            VAL_PERCENT_10 = 11
-            VAL_PERCENT_10 = 12
+      
             VAL_PERCENT = (
-                (VAL_PERCENT_00, ("--- Please select ---")),
-                (VAL_PERCENT_0, ("0")),
-                (VAL_PERCENT_1, ("10")),
-                (VAL_PERCENT_2, ("20")),
-                (VAL_PERCENT_3, ("30")),
-                (VAL_PERCENT_4, ("40")),
-                (VAL_PERCENT_5, ("50")),
-                (VAL_PERCENT_6, ("60")),
-                (VAL_PERCENT_7, ("70")),
-                (VAL_PERCENT_8, ("80")),
-                (VAL_PERCENT_9, ("90")),
-                (VAL_PERCENT_10, ("100")),
+                (0, _("--- Please select ---")),
+                (1, _("0")),
+                (2, _("10")),
+                (3, _("20")),
+                (4, _("30")),
+                (5, _("40")),
+                (6, _("50")),
+                (7, _("60")),
+                (8, _("70")),
+                (9, _("80")),
+                (10, _("90")),
+                (11, _("100")),
             )
 
-           
-            NUM_BILATERAL_0=0
-            NUM_BILATERAL_1=1
-            NUM_BILATERAL_2=2
-            NUM_BILATERAL_3=3
-            NUM_BILATERAL_4=4
             NUM_BILATERAL = (
-                (NUM_BILATERAL_0, ("--- Please select ---")),
-                (NUM_BILATERAL_1, ("1-3")),
-                (NUM_BILATERAL_2, ("4-6")),
-                (NUM_BILATERAL_3, ("7-10")),
-                (NUM_BILATERAL_4, ("greater than 10")),
+                (0, _("--- Please select ---")),
+                (1, _("1-3")),
+                (2, _("4-6")),
+                (3, _("7-10")),
+                (4, _("greater than 10")),
             )  
             #  ---- Cover Letter ----
             document.add_heading('Phytosanitary Capacity Evaluation (PCE) - REPORT', 0)
@@ -10175,13 +10169,13 @@ def generate_report(request, country,sessionid=None):
             p.add_run('1. Introduction:').bold = True
            
             REGIONS_LABELS = (
-            (1, ("Africa")),
-            (2, ("Asia")),
-            (3, ("Europe")),
-            (4, ("Latin America and Caribbean")),
-            (5, ("Near East")),
-            (6, ("North America")),
-            (7, ("South West Pacific")),
+            (1, _("Africa")),
+            (2, _("Asia")),
+            (3, _("Europe")),
+            (4, _("Latin America and Caribbean")),
+            (5, _("Near East")),
+            (6, _("North America")),
+            (7, _("South West Pacific")),
             )
             document.add_paragraph()
             countryname=str(user.get_profile().country)
@@ -10727,16 +10721,16 @@ def generate_report(request, country,sessionid=None):
             document.add_paragraph("")
           
             VAL_AV = (
-                (0, (" ")),
-                (1, ("0-5")),
-                (2, ("5-10")),
-                (3, ("10-20")),
-                (4, (">20")),
+                (0, _(" ")),
+                (1, _("0-5")),
+                (2, _("5-10")),
+                (3, _("10-20")),
+                (4, _(">20")),
              )
             BOOL_CHOICESM_M = (
-                (0, (" ")),
-                (1, ("Yes")),
-                (2, ("No")),
+                (0, _(" ")),
+                (1, _("Yes")),
+                (2, _("No")),
             )  
          
             p=document.add_paragraph("")

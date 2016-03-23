@@ -14,7 +14,7 @@ from .views import PceDashboardListView,PceVersionDetailView,PceSessionListView,
     module5_create,module5_edit,module6_create,module6_edit,module7_create,module7_edit,module8_create,module8_edit,\
     module9_create,module9_edit,module10_create,module10_edit,module11_create,module11_edit,\
     module12_create,module12_edit, module13_create,module13_edit,\
-    pceversion_close,module_validate,module_sendtovalidator,\
+    pceversion_close,module_validate,module_unvalidate,module_sendtovalidator,\
     Module1ListView,Module2ListView,Module3ListView,Module4ListView,Module5ListView,Module6ListView,\
     Module7ListView,Module8ListView,Module9ListView,Module10ListView,Module11ListView,Module12ListView,Module13ListView,\
     generate_report,pceversion_completed,StakeholdersListPDFView,ProblemAnalysisListPDFView,SwotAnalysisListPDFView,LogicalFrameworkListPDFView,\
@@ -24,6 +24,9 @@ from .views import PceDashboardListView,PceVersionDetailView,PceSessionListView,
 #-------------- PCE ---------------------------------#
 urlpatterns = patterns("pce.views",
     url(r"^$", direct_to_template, {"template": "pce/index.html"}, name="pce"),
+ 
+    #TRAINING MATERIAL
+    url(r'^training_material/$', direct_to_template, {"template": "pce/training_material_page.html"}, name="pce"),
    
     #DASHBOARD-list of sessions:
     url(r'^(?P<country>[\w-]+)/sessions/$', view=PceSessionListView.as_view(), name='pce-session-list'),
@@ -43,6 +46,8 @@ urlpatterns = patterns("pce.views",
 
     #VALIDATEMODULE
     url(r'^(?P<country>[\w-]+)/(?P<sessionid>\d+)/module(?P<module>\d+)/validate/(?P<id>\d+)/$',view=module_validate,  name='module_validate'),
+    #UN-VALIDATEMODULE
+    url(r'^(?P<country>[\w-]+)/(?P<sessionid>\d+)/module(?P<module>\d+)/unvalidate/(?P<id>\d+)/$',view=module_unvalidate,  name='module_unvalidate'),
     #SENT TO VALIDATOR
     url(r'^(?P<country>[\w-]+)/(?P<sessionid>\d+)/module(?P<module>\d+)/send/(?P<id>\d+)/$',view=module_sendtovalidator,  name='module_sendtovalidator'),
         
