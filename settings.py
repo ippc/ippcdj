@@ -166,7 +166,7 @@ DATABASES = {
         "NAME": "",
         # Not used with sqlite3.
         "USER": "",
-        # Not used with sqlite3.
+        # Not used with sqlite3 .
         "PASSWORD": "",
         # Set to empty string for localhost. Not used with sqlite3.
         "HOST": "",
@@ -381,7 +381,7 @@ LANGUAGES = (
 #    ('en', 'English'),
  #   ('fr', 'Français'),
 #    ('es', 'Español'),
-#    ('ru', 'Ру�?�?кий'),
+#    ('ru', 'Ру�?�?кий'),
 #    ('ar', 'العربية'),
 #    ('zh', '简体中文'),
 #)
