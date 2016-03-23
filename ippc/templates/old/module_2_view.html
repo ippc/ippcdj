@@ -1,0 +1,378 @@
+{% extends "pce/basepce.html" %}
+{% load pages_tags translate_tags mezzanine_tags i18n future staticfiles accounts_tags %}
+
+{% block meta_title %}{% trans "Module 2 - National phytosanitary legislation" %} - {{ user.get_profile.country.name}} {% endblock %}
+
+{% block body_class %}wide{% endblock %}
+
+{% block breadcrumb_menu %}
+<li>
+    <a href="/pce/{{ user.get_profile.country.name }}/sessions">{% trans "PCE Home" %}</a>
+    <span class="divider">/</span>
+</li>
+<li>
+    <a href="/pce/{{ user.get_profile.country.name|slugify }}/session/dashboard/{{sessionid}}">  {% trans "PCE Dashboard for" %} {{ user.get_profile.country.name }}</a>
+    <span class="divider">/</span>
+<li>
+<li class="active">{% trans "Module 2 - National phytosanitary legislation" %}</li>
+{% endblock %}
+
+{% block local_nav %}
+{% endblock local_nav %}
+
+{% block pageinfo %}
+{% endblock pageinfo %}
+
+{% block main %}
+<h1><span class="normal">{% trans "Module 2 - National phytosanitary legislation" %}</span></h1>
+{% if can_see %}
+<p><a href="/pce/{{ user.get_profile.country.name|slugify }}/session/{{sessionid}}/modules"><< {% trans "Back to Module List" %}</a></p>
+
+
+<div class="row-fluid">
+    <div class="span8">
+     {% include "pce/tools_panel.html" %} 
+    </div>
+    {% include "pce/userdetails_panel.html" %} 
+     
+    <div class="row-fluid">
+        <div class="span12">
+            <div class="panel panel-info">
+                <div  class="alert alert-success" role="alert">
+                    <h3 class="panel-title"> {% trans "National phytosanitary legislation" %}</h3>
+                       {% if can_edit  and id != ''%}   
+                        <span  class="pull-right">  
+                          <a  class="btn btn-info" href="/pce/{{ user.get_profile.country.name|slugify }}/{{sessionid}}/module2/edit/{{id}}">Edit Module</a>
+                        </span>
+                        {%endif%}
+                </div>
+                <div class="panel-body">
+             <p class="alert alert-warning">{% trans "Guiding questions for a phytosanitary capacity needs assessment on phytosanitary legislation keep the following questions in mind while working through this module:<br>1. What is the existing legal and regulatory framework for phytosanitary activities in the country?<br>2. What benefits should an improved legal and regulatory framework for phytosanitary activities provide in the medium term?<br>3. What are the major gaps in the current national framework of Phytosanitary Law/Act, regulations and standards?<br>4. What are the requirements to create coherent and up-to-date phytosanitary legislation that protects plant health and support international safe trade of plants, plant products and other regulated articles? See the document <a href='http://www.fao.org/fileadmin/user_upload/legal/docs/lpo63.pdf'>FAO Legal Paper 63 (2007)</a> on line by Jessica Vapnek and Danielle Manzella" %}</p>
+                                     <fieldset>
+                        <table class="table">
+                          <tr class="success">
+                                        <td colspan="2"><b>{% trans "1. National legal system" %}</b></td>
+                                    </tr>
+                                    <tr class="success">
+                                        <th>{% trans "No. Question" %}</th>
+                                        <th>{% trans "Tip" %}</th>
+                                    </tr>
+                                <tbody> 
+                                    {% for f in form %}
+                                      {% if not f.is_hidden and not f.name == 'c_m_1' and not f.name == 'c_m_2' and not f.name == 'c_m_3' and not f.name == 'c_m_4' and not f.name == 'c_m_5' and not f.name == 'c_m_6' and not f.name == 'c_m_7' and not f.name == 'c_m_8' and not f.name == 'c_m_9' and not f.name == 'c_m_10' and not f.name == 'c_m_11' and not f.name == 'c_m_12' and not f.name == 'c_m_13' and not f.name == 'c_m_14' and not f.name == 'c_m_15' and not f.name == 'c_m_16' and not f.name == 'c_m_17' and not f.name == 'c_m_18' and not f.name == 'c_m_19' and not f.name == 'c_m_20' and not f.name == 'c_m_21' and not f.name == 'c_m_22' and not f.name == 'c_m_23' and not f.name == 'c_m_24' and not f.name == 'c_m_25' and not f.name == 'c_m_26' and not f.name == 'c_m_27' and not f.name == 'c_m_28' and not f.name == 'c_m_29' and not f.name == 'c_m_30' and not f.name == 'c_m_31' and not f.name == 'c_m_32' and not f.name == 'c_m_33' and not f.name == 'c_m_34' and not f.name == 'c_m_35' and not f.name == 'c_m_36' and not f.name == 'c_m_37' and not f.name == 'c_m_38' and not f.name == 'c_m_39' and not f.name == 'c_m_40' and not f.name == 'c_m_41' and not f.name == 'c_m_42' and not f.name == 'c_m_43' and not f.name == 'c_m_44' and not f.name == 'c_m_45' and not f.name == 'c_m_46' and not f.name == 'c_m_47' and not f.name == 'c_m_48' and not f.name == 'c_m_49' and not f.name == 'c_m_50' and not f.name == 'c_m_51' and not f.name == 'c_m_52' and not f.name == 'c_m_53' and not f.name == 'c_m_54' and not f.name == 'c_m_55' and not f.name == 'c_m_56' and not f.name == 'c_m_57' and not f.name == 'c_m_58' and not f.name == 'c_m_59' and not f.name == 'c_m_60' and not f.name == 'c_m_61' and not f.name == 'c_m_62' and not f.name == 'c_m_63' and not f.name == 'c_m_64' and not f.name == 'c_m_65' and not f.name == 'c_m_66' and not f.name == 'c_m_67' and not f.name == 'c_m_68' and not f.name == 'c_m_69' and not f.name == 'c_m_70' and not f.name == 'c_m_71' and not f.name == 'c_m_72' and not f.name == 'c_m_73' and not f.name == 'c_m_74' and not f.name == 'c_m_75' and not f.name == 'c_m_76' and not f.name == 'c_m_77' and not f.name == 'c_m_78' and not f.name == 'c_m_79' and not f.name == 'c_m_80' and not f.name == 'c_m_81' and not f.name == 'c_m_82' and not f.name == 'c_m_83' and not f.name == 'c_m_84' and not f.name == 'c_m_85' and not f.name == 'c_m_86' and not f.name == 'c_m_87' and not f.name == 'c_m_88' and not f.name == 'c_m_89' and not f.name == 'c_m_90' and not f.name == 'c_m_91' and not f.name == 'c_m_92' and not f.name == 'c_m_93' and not f.name == 'c_m_94' and not f.name == 'c_m_95' and not f.name == 'c_m_96' and not f.name == 'c_m_97' and not f.name == 'c_m_98' and not f.name == 'c_m_99' and not f.name == 'c_m_100' and not f.name == 'c_m_101' and not f.name == 'c_m_102' and not f.name == 'c_m_103' and not f.name == 'c_m_104' and not f.name == 'c_m_105' and not f.name == 'c_m_106' and not f.name == 'c_m_107' and not f.name == 'c_m_108' and not f.name == 'c_m_109' and not f.name == 'c_m_110' and not f.name == 'c_m_111' and not f.name == 'c_m_112' and not f.name == 'c_m_113' and not f.name == 'c_m_114' and not f.name == 'c_m_115' and not f.name == 'c_m_116' and not f.name == 'c_m_117' and not f.name == 'c_m_118' and not f.name == 'c_m_119' and not f.name == 'c_m_120' and not f.name == 'c_m_121' and not f.name == 'c_m_122' and not f.name == 'c_m_123' %}
+                                  <tr>
+                                        <td>
+                                            <div class="control-group">
+                                                <label>{{f.label|safe}}</label>
+                                                <div class="controls">
+                                                    {%if f.name == 'm_5' or f.name == 'm_8' or f.name == 'm_16' or f.name == 'm_17' or f.name == 'm_19' or f.name == 'm_20' or f.name == 'm_21' or f.name == 'm_22' or f.name == 'm_24' or f.name == 'm_25' or f.name == 'm_26' or f.name == 'm_27' or f.name == 'm_28' or f.name == 'm_29' or f.name == 'm_30' or f.name == 'm_31' or f.name == 'm_32' or f.name == 'm_33' or f.name == 'm_34' or f.name == 'm_35' or f.name == 'm_36' or f.name == 'm_37' or f.name == 'm_38' or f.name == 'm_40' or f.name == 'm_41' or f.name == 'm_42' or f.name == 'm_43' or f.name == 'm_44' or f.name == 'm_45' or f.name == 'm_46' or f.name == 'm_47' or f.name == 'm_48' or f.name == 'm_49' or f.name == 'm_50' or f.name == 'm_51' or f.name == 'm_52' or f.name == 'm_53' or f.name == 'm_54' or f.name == 'm_55' or f.name == 'm_56' or f.name == 'm_57' or f.name == 'm_58' or f.name == 'm_59' or f.name == 'm_60' or f.name == 'm_61' or f.name == 'm_62' or f.name == 'm_63' or f.name == 'm_64' or f.name == 'm_65' or f.name == 'm_66' or f.name == 'm_67' or f.name == 'm_68' or f.name == 'm_69' or f.name == 'm_70' or f.name == 'm_71' or f.name == 'm_72' or f.name == 'm_73' or f.name == 'm_74' or f.name == 'm_75' or f.name == 'm_76' or f.name == 'm_77' or f.name == 'm_78' or f.name == 'm_79' or f.name == 'm_80' or f.name == 'm_81' or f.name == 'm_82' or f.name == 'm_83' or f.name == 'm_84' or f.name == 'm_85' or f.name == 'm_86' or f.name == 'm_87' or f.name == 'm_88' or f.name == 'm_89' or f.name == 'm_90' or f.name == 'm_91' or f.name == 'm_92' or f.name == 'm_93' or f.name == 'm_94' or f.name == 'm_95' or f.name == 'm_96' or f.name == 'm_97' or f.name == 'm_98' or f.name == 'm_99' or f.name == 'm_100' or f.name == 'm_101' or f.name == 'm_102' or f.name == 'm_103' or f.name == 'm_104' or f.name == 'm_105' or f.name == 'm_106' or f.name == 'm_107' or f.name == 'm_108' or f.name == 'm_109' or f.name == 'm_110' or f.name == 'm_111' or f.name == 'm_112' or f.name == 'm_113' or f.name == 'm_115' or f.name == 'm_116' or f.name == 'm_117' or f.name == 'm_118' or f.name == 'm_119' or f.name == 'm_120' or f.name == 'm_121' or f.name == 'm_122' %}
+                                                    <ul>
+                                                    <li>
+                                                        <label for="id_{{f.name}}_1" class="control-label">
+                                                        <input  readonly="true" id="id_{{f.name}}_1" name ="{{f.name}}" type="radio" value="True" {% if f.value == True %}checked{%endif%}> {% trans "Yes" %}</label>
+                                                    </li>
+                                                    <li> 
+                                                       <label for="id_{{f.name}}_2" class="control-label">
+                                                       <input  readonly="true" id="id_{{f.name}}_2" name ="{{f.name}}" type="radio" value="False" {% if f.value == False %}checked{%endif%} > {% trans "No" %}</label>
+                                                    </li>
+                                                    </ul>                                                   
+                                                    {%else%}
+                                                    {{f}}
+                                                      {% endif %}
+                                                </div>
+                                            </div>
+                                              <div class="pcecomment">
+                                            <b>{% trans "Comment:" %}</b><br>  
+                                        
+{%if f.name == 'm_1' %}{% for fff in form %}{%if fff.name == 'c_m_1'%}{{fff.value}}{%endif%}{%endfor%}{%endif%}
+{%if f.name == 'm_2' %}{% for fff in form %}{%if fff.name == 'c_m_2'%}{{fff.value}}{%endif%}{%endfor%}{%endif%}
+{%if f.name == 'm_3' %}{% for fff in form %}{%if fff.name == 'c_m_3'%}{{fff.value}}{%endif%}{%endfor%}{%endif%}
+{%if f.name == 'm_4' %}{% for fff in form %}{%if fff.name == 'c_m_4'%}{{fff.value}}{%endif%}{%endfor%}{%endif%}
+{%if f.name == 'm_5' %}{% for fff in form %}{%if fff.name == 'c_m_5'%}{{fff.value}}{%endif%}{%endfor%}{%endif%}
+{%if f.name == 'm_6' %}{% for fff in form %}{%if fff.name == 'c_m_6'%}{{fff.value}}{%endif%}{%endfor%}{%endif%}
+{%if f.name == 'm_7' %}{% for fff in form %}{%if fff.name == 'c_m_7'%}{{fff.value}}{%endif%}{%endfor%}{%endif%}
+{%if f.name == 'm_8' %}{% for fff in form %}{%if fff.name == 'c_m_8'%}{{fff.value}}{%endif%}{%endfor%}{%endif%}
+{%if f.name == 'm_9' %}{% for fff in form %}{%if fff.name == 'c_m_9'%}{{fff.value}}{%endif%}{%endfor%}{%endif%}
+{%if f.name == 'm_10' %}{% for fff in form %}{%if fff.name == 'c_m_10'%}{{fff.value}}{%endif%}{%endfor%}{%endif%}
+{%if f.name == 'm_11' %}{% for fff in form %}{%if fff.name == 'c_m_11'%}{{fff.value}}{%endif%}{%endfor%}{%endif%}
+{%if f.name == 'm_12' %}{% for fff in form %}{%if fff.name == 'c_m_12'%}{{fff.value}}{%endif%}{%endfor%}{%endif%}
+{%if f.name == 'm_13' %}{% for fff in form %}{%if fff.name == 'c_m_13'%}{{fff.value}}{%endif%}{%endfor%}{%endif%}
+{%if f.name == 'm_14' %}{% for fff in form %}{%if fff.name == 'c_m_14'%}{{fff.value}}{%endif%}{%endfor%}{%endif%}
+{%if f.name == 'm_15' %}{% for fff in form %}{%if fff.name == 'c_m_15'%}{{fff.value}}{%endif%}{%endfor%}{%endif%}
+{%if f.name == 'm_16' %}{% for fff in form %}{%if fff.name == 'c_m_16'%}{{fff.value}}{%endif%}{%endfor%}{%endif%}
+{%if f.name == 'm_17' %}{% for fff in form %}{%if fff.name == 'c_m_17'%}{{fff.value}}{%endif%}{%endfor%}{%endif%}
+{%if f.name == 'm_18' %}{% for fff in form %}{%if fff.name == 'c_m_18'%}{{fff.value}}{%endif%}{%endfor%}{%endif%}
+{%if f.name == 'm_19' %}{% for fff in form %}{%if fff.name == 'c_m_19'%}{{fff.value}}{%endif%}{%endfor%}{%endif%}
+{%if f.name == 'm_20' %}{% for fff in form %}{%if fff.name == 'c_m_20'%}{{fff.value}}{%endif%}{%endfor%}{%endif%}
+{%if f.name == 'm_21' %}{% for fff in form %}{%if fff.name == 'c_m_21'%}{{fff.value}}{%endif%}{%endfor%}{%endif%}
+{%if f.name == 'm_22' %}{% for fff in form %}{%if fff.name == 'c_m_22'%}{{fff.value}}{%endif%}{%endfor%}{%endif%}
+{%if f.name == 'm_23' %}{% for fff in form %}{%if fff.name == 'c_m_23'%}{{fff.value}}{%endif%}{%endfor%}{%endif%}
+{%if f.name == 'm_24' %}{% for fff in form %}{%if fff.name == 'c_m_24'%}{{fff.value}}{%endif%}{%endfor%}{%endif%}
+{%if f.name == 'm_25' %}{% for fff in form %}{%if fff.name == 'c_m_25'%}{{fff.value}}{%endif%}{%endfor%}{%endif%}
+{%if f.name == 'm_26' %}{% for fff in form %}{%if fff.name == 'c_m_26'%}{{fff.value}}{%endif%}{%endfor%}{%endif%}
+{%if f.name == 'm_27' %}{% for fff in form %}{%if fff.name == 'c_m_27'%}{{fff.value}}{%endif%}{%endfor%}{%endif%}
+{%if f.name == 'm_28' %}{% for fff in form %}{%if fff.name == 'c_m_28'%}{{fff.value}}{%endif%}{%endfor%}{%endif%}
+{%if f.name == 'm_29' %}{% for fff in form %}{%if fff.name == 'c_m_29'%}{{fff.value}}{%endif%}{%endfor%}{%endif%}
+{%if f.name == 'm_30' %}{% for fff in form %}{%if fff.name == 'c_m_30'%}{{fff.value}}{%endif%}{%endfor%}{%endif%}
+{%if f.name == 'm_31' %}{% for fff in form %}{%if fff.name == 'c_m_31'%}{{fff.value}}{%endif%}{%endfor%}{%endif%}
+{%if f.name == 'm_32' %}{% for fff in form %}{%if fff.name == 'c_m_32'%}{{fff.value}}{%endif%}{%endfor%}{%endif%}
+{%if f.name == 'm_33' %}{% for fff in form %}{%if fff.name == 'c_m_33'%}{{fff.value}}{%endif%}{%endfor%}{%endif%}
+{%if f.name == 'm_34' %}{% for fff in form %}{%if fff.name == 'c_m_34'%}{{fff.value}}{%endif%}{%endfor%}{%endif%}
+{%if f.name == 'm_35' %}{% for fff in form %}{%if fff.name == 'c_m_35'%}{{fff.value}}{%endif%}{%endfor%}{%endif%}
+{%if f.name == 'm_36' %}{% for fff in form %}{%if fff.name == 'c_m_36'%}{{fff.value}}{%endif%}{%endfor%}{%endif%}
+{%if f.name == 'm_37' %}{% for fff in form %}{%if fff.name == 'c_m_37'%}{{fff.value}}{%endif%}{%endfor%}{%endif%}
+{%if f.name == 'm_38' %}{% for fff in form %}{%if fff.name == 'c_m_38'%}{{fff.value}}{%endif%}{%endfor%}{%endif%}
+{%if f.name == 'm_39' %}{% for fff in form %}{%if fff.name == 'c_m_39'%}{{fff.value}}{%endif%}{%endfor%}{%endif%}
+{%if f.name == 'm_40' %}{% for fff in form %}{%if fff.name == 'c_m_40'%}{{fff.value}}{%endif%}{%endfor%}{%endif%}
+{%if f.name == 'm_41' %}{% for fff in form %}{%if fff.name == 'c_m_41'%}{{fff.value}}{%endif%}{%endfor%}{%endif%}
+{%if f.name == 'm_42' %}{% for fff in form %}{%if fff.name == 'c_m_42'%}{{fff.value}}{%endif%}{%endfor%}{%endif%}
+{%if f.name == 'm_43' %}{% for fff in form %}{%if fff.name == 'c_m_43'%}{{fff.value}}{%endif%}{%endfor%}{%endif%}
+{%if f.name == 'm_44' %}{% for fff in form %}{%if fff.name == 'c_m_44'%}{{fff.value}}{%endif%}{%endfor%}{%endif%}
+{%if f.name == 'm_45' %}{% for fff in form %}{%if fff.name == 'c_m_45'%}{{fff.value}}{%endif%}{%endfor%}{%endif%}
+{%if f.name == 'm_46' %}{% for fff in form %}{%if fff.name == 'c_m_46'%}{{fff.value}}{%endif%}{%endfor%}{%endif%}
+{%if f.name == 'm_47' %}{% for fff in form %}{%if fff.name == 'c_m_47'%}{{fff.value}}{%endif%}{%endfor%}{%endif%}
+{%if f.name == 'm_48' %}{% for fff in form %}{%if fff.name == 'c_m_48'%}{{fff.value}}{%endif%}{%endfor%}{%endif%}
+{%if f.name == 'm_49' %}{% for fff in form %}{%if fff.name == 'c_m_49'%}{{fff.value}}{%endif%}{%endfor%}{%endif%}
+{%if f.name == 'm_50' %}{% for fff in form %}{%if fff.name == 'c_m_50'%}{{fff.value}}{%endif%}{%endfor%}{%endif%}
+{%if f.name == 'm_51' %}{% for fff in form %}{%if fff.name == 'c_m_51'%}{{fff.value}}{%endif%}{%endfor%}{%endif%}
+{%if f.name == 'm_52' %}{% for fff in form %}{%if fff.name == 'c_m_52'%}{{fff.value}}{%endif%}{%endfor%}{%endif%}
+{%if f.name == 'm_53' %}{% for fff in form %}{%if fff.name == 'c_m_53'%}{{fff.value}}{%endif%}{%endfor%}{%endif%}
+{%if f.name == 'm_54' %}{% for fff in form %}{%if fff.name == 'c_m_54'%}{{fff.value}}{%endif%}{%endfor%}{%endif%}
+{%if f.name == 'm_55' %}{% for fff in form %}{%if fff.name == 'c_m_55'%}{{fff.value}}{%endif%}{%endfor%}{%endif%}
+{%if f.name == 'm_56' %}{% for fff in form %}{%if fff.name == 'c_m_56'%}{{fff.value}}{%endif%}{%endfor%}{%endif%}
+{%if f.name == 'm_57' %}{% for fff in form %}{%if fff.name == 'c_m_57'%}{{fff.value}}{%endif%}{%endfor%}{%endif%}
+{%if f.name == 'm_58' %}{% for fff in form %}{%if fff.name == 'c_m_58'%}{{fff.value}}{%endif%}{%endfor%}{%endif%}
+{%if f.name == 'm_59' %}{% for fff in form %}{%if fff.name == 'c_m_59'%}{{fff.value}}{%endif%}{%endfor%}{%endif%}
+{%if f.name == 'm_60' %}{% for fff in form %}{%if fff.name == 'c_m_60'%}{{fff.value}}{%endif%}{%endfor%}{%endif%}
+{%if f.name == 'm_61' %}{% for fff in form %}{%if fff.name == 'c_m_61'%}{{fff.value}}{%endif%}{%endfor%}{%endif%}
+{%if f.name == 'm_62' %}{% for fff in form %}{%if fff.name == 'c_m_62'%}{{fff.value}}{%endif%}{%endfor%}{%endif%}
+{%if f.name == 'm_63' %}{% for fff in form %}{%if fff.name == 'c_m_63'%}{{fff.value}}{%endif%}{%endfor%}{%endif%}
+{%if f.name == 'm_64' %}{% for fff in form %}{%if fff.name == 'c_m_64'%}{{fff.value}}{%endif%}{%endfor%}{%endif%}
+{%if f.name == 'm_65' %}{% for fff in form %}{%if fff.name == 'c_m_65'%}{{fff.value}}{%endif%}{%endfor%}{%endif%}
+{%if f.name == 'm_66' %}{% for fff in form %}{%if fff.name == 'c_m_66'%}{{fff.value}}{%endif%}{%endfor%}{%endif%}
+{%if f.name == 'm_67' %}{% for fff in form %}{%if fff.name == 'c_m_67'%}{{fff.value}}{%endif%}{%endfor%}{%endif%}
+{%if f.name == 'm_68' %}{% for fff in form %}{%if fff.name == 'c_m_68'%}{{fff.value}}{%endif%}{%endfor%}{%endif%}
+{%if f.name == 'm_69' %}{% for fff in form %}{%if fff.name == 'c_m_69'%}{{fff.value}}{%endif%}{%endfor%}{%endif%}
+{%if f.name == 'm_70' %}{% for fff in form %}{%if fff.name == 'c_m_70'%}{{fff.value}}{%endif%}{%endfor%}{%endif%}
+{%if f.name == 'm_71' %}{% for fff in form %}{%if fff.name == 'c_m_71'%}{{fff.value}}{%endif%}{%endfor%}{%endif%}
+{%if f.name == 'm_72' %}{% for fff in form %}{%if fff.name == 'c_m_72'%}{{fff.value}}{%endif%}{%endfor%}{%endif%}
+{%if f.name == 'm_73' %}{% for fff in form %}{%if fff.name == 'c_m_73'%}{{fff.value}}{%endif%}{%endfor%}{%endif%}
+{%if f.name == 'm_74' %}{% for fff in form %}{%if fff.name == 'c_m_74'%}{{fff.value}}{%endif%}{%endfor%}{%endif%}
+{%if f.name == 'm_75' %}{% for fff in form %}{%if fff.name == 'c_m_75'%}{{fff.value}}{%endif%}{%endfor%}{%endif%}
+{%if f.name == 'm_76' %}{% for fff in form %}{%if fff.name == 'c_m_76'%}{{fff.value}}{%endif%}{%endfor%}{%endif%}
+{%if f.name == 'm_77' %}{% for fff in form %}{%if fff.name == 'c_m_77'%}{{fff.value}}{%endif%}{%endfor%}{%endif%}
+{%if f.name == 'm_78' %}{% for fff in form %}{%if fff.name == 'c_m_78'%}{{fff.value}}{%endif%}{%endfor%}{%endif%}
+{%if f.name == 'm_79' %}{% for fff in form %}{%if fff.name == 'c_m_79'%}{{fff.value}}{%endif%}{%endfor%}{%endif%}
+{%if f.name == 'm_80' %}{% for fff in form %}{%if fff.name == 'c_m_80'%}{{fff.value}}{%endif%}{%endfor%}{%endif%}
+{%if f.name == 'm_81' %}{% for fff in form %}{%if fff.name == 'c_m_81'%}{{fff.value}}{%endif%}{%endfor%}{%endif%}
+{%if f.name == 'm_82' %}{% for fff in form %}{%if fff.name == 'c_m_82'%}{{fff.value}}{%endif%}{%endfor%}{%endif%}
+{%if f.name == 'm_83' %}{% for fff in form %}{%if fff.name == 'c_m_83'%}{{fff.value}}{%endif%}{%endfor%}{%endif%}
+{%if f.name == 'm_84' %}{% for fff in form %}{%if fff.name == 'c_m_84'%}{{fff.value}}{%endif%}{%endfor%}{%endif%}
+{%if f.name == 'm_85' %}{% for fff in form %}{%if fff.name == 'c_m_85'%}{{fff.value}}{%endif%}{%endfor%}{%endif%}
+{%if f.name == 'm_86' %}{% for fff in form %}{%if fff.name == 'c_m_86'%}{{fff.value}}{%endif%}{%endfor%}{%endif%}
+{%if f.name == 'm_87' %}{% for fff in form %}{%if fff.name == 'c_m_87'%}{{fff.value}}{%endif%}{%endfor%}{%endif%}
+{%if f.name == 'm_88' %}{% for fff in form %}{%if fff.name == 'c_m_88'%}{{fff.value}}{%endif%}{%endfor%}{%endif%}
+{%if f.name == 'm_89' %}{% for fff in form %}{%if fff.name == 'c_m_89'%}{{fff.value}}{%endif%}{%endfor%}{%endif%}
+{%if f.name == 'm_90' %}{% for fff in form %}{%if fff.name == 'c_m_90'%}{{fff.value}}{%endif%}{%endfor%}{%endif%}
+{%if f.name == 'm_91' %}{% for fff in form %}{%if fff.name == 'c_m_91'%}{{fff.value}}{%endif%}{%endfor%}{%endif%}
+{%if f.name == 'm_92' %}{% for fff in form %}{%if fff.name == 'c_m_92'%}{{fff.value}}{%endif%}{%endfor%}{%endif%}
+{%if f.name == 'm_93' %}{% for fff in form %}{%if fff.name == 'c_m_93'%}{{fff.value}}{%endif%}{%endfor%}{%endif%}
+{%if f.name == 'm_94' %}{% for fff in form %}{%if fff.name == 'c_m_94'%}{{fff.value}}{%endif%}{%endfor%}{%endif%}
+{%if f.name == 'm_95' %}{% for fff in form %}{%if fff.name == 'c_m_95'%}{{fff.value}}{%endif%}{%endfor%}{%endif%}
+{%if f.name == 'm_96' %}{% for fff in form %}{%if fff.name == 'c_m_96'%}{{fff.value}}{%endif%}{%endfor%}{%endif%}
+{%if f.name == 'm_97' %}{% for fff in form %}{%if fff.name == 'c_m_97'%}{{fff.value}}{%endif%}{%endfor%}{%endif%}
+{%if f.name == 'm_98' %}{% for fff in form %}{%if fff.name == 'c_m_98'%}{{fff.value}}{%endif%}{%endfor%}{%endif%}
+{%if f.name == 'm_99' %}{% for fff in form %}{%if fff.name == 'c_m_99'%}{{fff.value}}{%endif%}{%endfor%}{%endif%}
+{%if f.name == 'm_100' %}{% for fff in form %}{%if fff.name == 'c_m_100'%}{{fff.value}}{%endif%}{%endfor%}{%endif%}
+{%if f.name == 'm_101' %}{% for fff in form %}{%if fff.name == 'c_m_101'%}{{fff.value}}{%endif%}{%endfor%}{%endif%}
+{%if f.name == 'm_102' %}{% for fff in form %}{%if fff.name == 'c_m_102'%}{{fff.value}}{%endif%}{%endfor%}{%endif%}
+{%if f.name == 'm_103' %}{% for fff in form %}{%if fff.name == 'c_m_103'%}{{fff.value}}{%endif%}{%endfor%}{%endif%}
+{%if f.name == 'm_104' %}{% for fff in form %}{%if fff.name == 'c_m_104'%}{{fff.value}}{%endif%}{%endfor%}{%endif%}
+{%if f.name == 'm_105' %}{% for fff in form %}{%if fff.name == 'c_m_105'%}{{fff.value}}{%endif%}{%endfor%}{%endif%}
+{%if f.name == 'm_106' %}{% for fff in form %}{%if fff.name == 'c_m_106'%}{{fff.value}}{%endif%}{%endfor%}{%endif%}
+{%if f.name == 'm_107' %}{% for fff in form %}{%if fff.name == 'c_m_107'%}{{fff.value}}{%endif%}{%endfor%}{%endif%}
+{%if f.name == 'm_108' %}{% for fff in form %}{%if fff.name == 'c_m_108'%}{{fff.value}}{%endif%}{%endfor%}{%endif%}
+{%if f.name == 'm_109' %}{% for fff in form %}{%if fff.name == 'c_m_109'%}{{fff.value}}{%endif%}{%endfor%}{%endif%}
+{%if f.name == 'm_110' %}{% for fff in form %}{%if fff.name == 'c_m_110'%}{{fff.value}}{%endif%}{%endfor%}{%endif%}
+{%if f.name == 'm_111' %}{% for fff in form %}{%if fff.name == 'c_m_111'%}{{fff.value}}{%endif%}{%endfor%}{%endif%}
+{%if f.name == 'm_112' %}{% for fff in form %}{%if fff.name == 'c_m_112'%}{{fff.value}}{%endif%}{%endfor%}{%endif%}
+{%if f.name == 'm_113' %}{% for fff in form %}{%if fff.name == 'c_m_113'%}{{fff.value}}{%endif%}{%endfor%}{%endif%}
+{%if f.name == 'm_114' %}{% for fff in form %}{%if fff.name == 'c_m_114'%}{{fff.value}}{%endif%}{%endfor%}{%endif%}
+{%if f.name == 'm_115' %}{% for fff in form %}{%if fff.name == 'c_m_115'%}{{fff.value}}{%endif%}{%endfor%}{%endif%}
+{%if f.name == 'm_116' %}{% for fff in form %}{%if fff.name == 'c_m_116'%}{{fff.value}}{%endif%}{%endfor%}{%endif%}
+{%if f.name == 'm_117' %}{% for fff in form %}{%if fff.name == 'c_m_117'%}{{fff.value}}{%endif%}{%endfor%}{%endif%}
+{%if f.name == 'm_118' %}{% for fff in form %}{%if fff.name == 'c_m_118'%}{{fff.value}}{%endif%}{%endfor%}{%endif%}
+{%if f.name == 'm_119' %}{% for fff in form %}{%if fff.name == 'c_m_119'%}{{fff.value}}{%endif%}{%endfor%}{%endif%}
+{%if f.name == 'm_120' %}{% for fff in form %}{%if fff.name == 'c_m_120'%}{{fff.value}}{%endif%}{%endfor%}{%endif%}
+{%if f.name == 'm_121' %}{% for fff in form %}{%if fff.name == 'c_m_121'%}{{fff.value}}{%endif%}{%endfor%}{%endif%}
+{%if f.name == 'm_122' %}{% for fff in form %}{%if fff.name == 'c_m_122'%}{{fff.value}}{%endif%}{%endfor%}{%endif%}
+{%if f.name == 'm_123' %}{% for fff in form %}{%if fff.name == 'c_m_123'%}{{fff.value}}{%endif%}{%endfor%}{%endif%}
+                      </div>
+                                        </td>
+                                        <td>{{f.help_text|richtext_filter|safe}}</td>
+                                    </tr>
+                                  
+                                     {% if f.name == 'm_7' %} 
+                                      <tr class="success">
+                                        <td colspan="2"><b>{% trans "2. A. NPPO establishment" %}</b></td>
+                                     </tr> 
+                                      {% elif f.name == 'm_14' %} 
+                                     <tr class="success">
+                                        <td colspan="2"><b>{% trans "3. B. Scope" %}</b></td>
+                                     </tr>     
+                                       {% elif f.name == 'm_17' %} 
+                                     <tr class="success">
+                                        <td colspan="2"><b>{% trans "4. C. Definitions" %}</b></td>
+                                     </tr>  
+                                     
+                                      {% elif f.name == 'm_19' %} 
+                                     <tr class="success">
+                                        <td colspan="2"><b>{% trans "5. D. NPPO administration" %}</b></td>
+                                     </tr>  
+                                      <tr class="success">
+                                        <td colspan="2"><b>{% trans "5. D.1 NPPO functions" %}</b></td>
+                                     </tr>  
+                                      {% elif f.name == 'm_36' %} 
+                                     <tr class="success">
+                                        <td colspan="2"><b>{% trans "6. D.2 Stakeholders participation" %}</b></td>
+                                     </tr>  
+                                      {% elif f.name == 'm_39' %} 
+                                     <tr class="success">
+                                        <td colspan="2"><b>{% trans "7. D.3 Inspectors" %}</b></td>
+                                     </tr>  
+                                       <tr class="success">
+                                        <td colspan="2"><b>{% trans "7. D.3.1 Appointment" %}</b></td>
+                                     </tr>
+                                       {% elif f.name == 'm_44' %} 
+                                     <tr class="success">
+                                        <td colspan="2"><b>{% trans "8. D.3.2 Duties" %}</b></td>
+                                     </tr> 
+                                     
+                                       {% elif f.name == 'm_44' %} 
+                                     <tr class="success">
+                                        <td colspan="2"><b>{% trans "8. D.3.2 Duties" %}</b></td>
+                                     </tr>  {% elif f.name == 'm_52' %} 
+                                     <tr class="success">
+                                        <td colspan="2"><b>{% trans "9. D.3.3 Powers" %}</b></td>
+                                     </tr>  {% elif f.name == 'm_58' %} 
+                                     <tr class="success">
+                                        <td colspan="2"><b>{% trans "10. D.3.4 Liability" %}</b></td>
+                                     </tr>  {% elif f.name == 'm_59' %} 
+                                     <tr class="success">
+                                        <td colspan="2"><b>{% trans "11. E. Imports" %}</b></td>
+                                     </tr>
+                                      <tr class="success">
+                                        <td colspan="2"><b>{% trans "11. E.1 Phytosanitary measures" %}</b></td>
+                                     </tr>
+                                     {% elif f.name == 'm_67' %} 
+                                     <tr class="success">
+                                        <td colspan="2"><b>{% trans "12. E.2 Import procedures" %}</b></td>
+                                     </tr>  {% elif f.name == 'm_75' %} 
+                                     <tr class="success">
+                                        <td colspan="2"><b>{% trans "13. E. 3 Transit" %}</b></td>
+                                     </tr>
+                                      {% elif f.name == 'm_76' %} 
+                                     <tr class="success">
+                                        <td colspan="2"><b>{% trans "14. E.4 Passenger, mail, aircraft, ships" %}</b></td>
+                                     </tr> {% elif f.name == 'm_79' %} 
+                                     <tr class="success">
+                                        <td colspan="2"><b>{% trans "15. F. Exports" %}</b></td>
+                                     </tr> {% elif f.name == 'm_87' %} 
+                                     <tr class="success">
+                                        <td colspan="2"><b>{% trans "16. G. Pest free areas, places and sites, areas of low pest prevalence" %}</b></td>
+                                     </tr> {% elif f.name == 'm_89' %} 
+                                     <tr class="success">
+                                        <td colspan="2"><b>{% trans "17. H. Pest surveillance" %}</b></td>
+                                     </tr>
+                                     
+                                    
+                                     {% elif f.name == 'm_92' %} 
+                                     <tr class="success">
+                                        <td colspan="2"><b>{% trans "18. I. Pest control" %}</b></td>
+                                     </tr>
+                                     {% elif f.name == 'm_96' %} 
+                                     <tr class="success">
+                                        <td colspan="2"><b>{% trans "19. J. Pest eradication" %}</b></td>
+                                     </tr>
+                                     {% elif f.name == 'm_102' %} 
+                                     <tr class="success">
+                                        <td colspan="2"><b>{% trans "20. K. Funding" %}</b></td>
+                                     </tr>
+                                      {% elif f.name == 'm_107' %} 
+                                     <tr class="success">
+                                        <td colspan="2"><b>{% trans "21. L. Offences and penalties" %}</b></td>
+                                     </tr> {% elif f.name == 'm_118' %} 
+                                     <tr class="success">
+                                        <td colspan="2"><b>{% trans "22. M. Miscellaneous" %}</b></td>
+                                     </tr> <tr class="success">
+                                        <td colspan="2"><b>{% trans "22. M.1 Authorities to assist and cooperate" %}</b></td>
+                                     </tr> {% elif f.name == 'm_119' %} 
+                                     <tr class="success">
+                                        <td colspan="2"><b>{% trans "22. M.2 Power to make regulations" %}</b></td>
+                                     </tr> {% elif f.name == 'm_121' %} 
+                                     <tr class="success">
+                                        <td colspan="2"><b>{% trans "22. M.3 Power to make registers" %}</b></td>
+                                     </tr>
+                                     
+                                    
+                                     
+                                    {% endif %}
+                                  
+                                    {% endif %}
+                                    {% endfor%}
+                                    <tr class="success">
+                                       <td colspan="2"><b>{% trans "Section III - Weaknesses" %}</b></td>
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                             <div class="control-group">
+                                                <label>{% trans "1. Please list a maximum of five of the most critical weaknesses of the phytosanitary legislation in order of priority (1 = Highest)" %}</label>
+                                           <div class="controls">
+                                            {% for form in form123 %}
+                                            <div class="panel panel-default">
+                                                <div class="panel-body">
+                                                    {% for ff in form %}
+                                                    {%if not ff.label == 'Module2' and not ff.label == 'Delete' and not ff.label == 'Id'%}
+                                                   {{ff.label}}     {% if ff.value == None %}
+                                                                <input type="text" disabled="true" value="">
+                                                                {% else %}
+                                                                      <input type="text" disabled="true" value="{{ff.value}}">
+                                                                {% endif %}
+                                                         <br>   {% else %}{{ff.as_hidden}}{% endif %}
+                                                    {% endfor %}
+                                                </div></div>
+                                            {% endfor %}   </div>
+                                            </div>
+                                       <div class="pcecomment">
+                                            <b>{% trans "Comment:" %}</b><br>  
+                                              {% for fff in form %}{%if fff.name == 'c_m_123'%}{{fff.value}}{%endif%}{%endfor%}
+                                            </div>  </td>
+                                        <td></td>
+                                    </tr>
+                                     
+                                </tbody>        
+                            </table>
+                               <div class="form-actions">
+                           {% nevercache %}
+            {% include "pce/goto_pa_block.html" %}
+            {% endnevercache %}      <a class="btn btn-large btn-info" href="javascript:window.print();">{% trans "PRINT" %}</a>
+                                         
+{% if id != ''%}            
+    <a class="btn btn-large btn-info" href="/pce/{{ user.get_profile.country.name|slugify }}/{{sessionid}}/module{{module}}/pdf/{{id}}">{% trans "Export as PDF" %}</a>
+{% else%}            
+    <a class="btn btn-large btn-info" href="/pce/{{ user.get_profile.country.name|slugify }}/{{sessionid}}/module{{module}}/pdf_empty/">{% trans "Export as PDF" %}</a>
+  {% endif %}  </div>    
+                            </fieldset>
+                      
+                        </div>
+
+                    </div>      
+                    </div>
+
+</div> {% else %}{% nevercache %}
+            {% include "pce/permission_block.html" %}
+            {% endnevercache %}
+
+{% endif %}
+{% endblock %}
+

@@ -1,0 +1,349 @@
+{% extends "pce/basepce.html" %}
+{% load pages_tags translate_tags mezzanine_tags i18n future staticfiles accounts_tags %}
+
+{% block meta_title %}{% trans "Logical Framework" %} - {{ user.get_profile.country.name}} {% endblock %}
+
+{% block body_class %}wide{% endblock %}
+
+{% block breadcrumb_menu %}
+<li>
+    <a href="/pce/{{ user.get_profile.country.name }}/sessions">{% trans "PCE Home" %}</a>
+    <span class="divider">/</span>
+</li>
+<li>
+    <a href="/pce/{{ user.get_profile.country.name|slugify }}/session/dashboard/{{sessionid}}">  {% trans "PCE Dashboard for" %} {{ user.get_profile.country.name }}</a>
+    <span class="divider">/</span>
+<li>
+<li class="active">{% trans "Logical Framework for Module " %}{{module}}</li>
+{% endblock %}
+
+
+{% block local_nav %}
+{% endblock local_nav %}
+
+{% block pageinfo %}
+{% endblock pageinfo %}
+
+{% block main %}
+{% if can_edit %}
+<div class="row-fluid">
+    <div class="span8">
+   
+   <h4>{% trans "Logical Framework" %}</h4>
+       {% include "pce/tools_panel.html" %} 
+
+        
+    </div>
+    {% include "pce/userdetails_panel.html" %} 
+
+    <div class="row-fluid">
+        <div class="span12">
+            <div class="panel panel-info">
+                <div  class="alert alert-success" role="alert">
+                    <h3 class="panel-title"> {% trans "Logical Framework - Module" %} {{module}}</h3>
+                </div>
+                <div class="panel-body">
+
+                    <form class="customform" method="POST" action="" enctype="multipart/form-data">
+                        {% csrf_token %}
+                        <fieldset>
+                            {% if form.non_field_errors or form.errors %}
+                            <div class="alert alert-error">{% trans "Please correct the errors below." %}
+                                <ul>
+                                    {% for error in form.non_field_errors %}
+                                    <li>{{ error }}</li>
+                                    {% endfor %}
+                                    {% for error in form.errors %}
+                                    <li>{{ error }}</li>
+                                    {% endfor %}
+                                </ul>
+                            </div>
+                            {% endif %}
+                            <table class="table">
+                               
+                                  
+                                    <tr class="success">
+                                        <td>{% trans "Overall Objective" %}</td>
+                                        <td>{% trans "Key Indicator" %}</td>
+                                        <td>{% trans "Means of Verification" %}</td>
+                                        <td>{% trans "Assumptions" %}</td>
+                                    </tr>
+                                     <tr>
+                                        {% for f in form %}
+                                        {% if f.name == 'overobjective' or f.name == 'keyindicator0' or f.name == 'verification0' or f.name == 'assumptions0' %}
+                                        <td>{{f}}</td>
+                                        {% endif %}         
+                                        {% endfor %} 
+                                    </tr>
+                                    
+                               <tr class="success">
+                                        <td>{% trans "Objective" %}</td>
+                                        <td>{% trans "Key Indicator" %}</td>
+                                        <td>{% trans "Means of Verification" %}</td>
+                                        <td>{% trans "Assumptions" %}</td>
+                                    </tr>
+                                    <tr>
+                                        {% for f in form %}
+                                        {% if f.name == 'objective' or f.name == 'keyindicator' or f.name == 'verification' or f.name == 'assumptions' %}
+                                        <td>{{f}}</td>
+                                        {% endif %}         
+                                        {% endfor %} 
+                                    </tr>
+                                    {{ form1.management_form }}
+                                    {{ form1.non_form_errors }}
+                                    {{ form2.management_form }}
+                                    {{ form2.non_form_errors }}
+                                    {{ form3.management_form }}
+                                    {{ form3.non_form_errors }}
+                                    {{ form4.management_form }}
+                                    {{ form4.non_form_errors }}
+                                    {{ form5.management_form }}
+                                    {{ form5.non_form_errors }}
+                        
+                                    <tr>
+                                        <td colspan="8"  style="background:#ffc; ">{% trans "Weakness" %} 1: {{weakeness.w1}}</td>
+                                    </tr>
+                                    <tr class="success">
+                                        <td colspan="1" >{% trans "Output" %}  1</td>
+                                        <td colspan="1" >{% trans "Key Indicator" %}</td>
+                                        <td colspan="1" >{% trans "Means of Verification" %}</td>
+                                        <td colspan="1" >{% trans "Assumptions" %}</td>
+                                          <!--td colspan="3">&#160;</td-->
+                                    </tr>
+                                     <tr> 
+                                        {% for f in form %}
+                                        {% if f.name == 'output1' or f.name == 'keyindicator1' or f.name == 'verification1' or f.name == 'assumptions1' %}
+                                        <td colspan="1" >{{f}}</td>
+                                        {% endif %}         
+                                        {% endfor %} 
+                                          <!--td colspan="3">&#160;</td-->
+                                    </tr>
+                                    <tr class="success">
+                                        <td colspan="1" >{% trans "Activity 1" %}</td>
+                                        <!--td style="background:#A4A4A4; ">{% trans "Target" %}</td>
+                                        <td style="background:#A4A4A4; ">{% trans "Source of verification" %}</td>
+                                        <td style="background:#A4A4A4; ">{% trans "External factors and conditions to be addressed" %}</td-->
+                                        <td style="background:#BDBDBD; ">{% trans "Estimated cost" %}</td>
+                                        <td style="background:#BDBDBD; ">{% trans "Identify a Responsible person" %}</td>
+                                        <td style="background:#BDBDBD; ">{% trans "Specify a deadline" %}</td>
+                                      </tr>
+		
+
+                                    {% for form in form1 %}   
+                                    <tr class="inline {{ form1.prefix }}"> 
+                                        {% for f in form %}
+                                        {% if not f.name == 'logicalframework' and not f.label == 'Id'%}
+                                             <td> {{f }}</td> 
+                                        {% else %}
+                                             {{f.as_hidden}}
+                                        {% endif %}    
+                                        {% endfor %}
+                                        {% if form1.can_delete %}
+                                        <td> {{ form.DELETE }} </td>
+                                        {% endif %}
+                                    </tr> 
+                                    {% endfor %}
+                                  
+                                    
+                                     <tr>
+                                        <td colspan="8"  style="background:#ffc; ">{% trans "Weakness" %} 2: {{weakeness.w2}}</td>
+                                    </tr>
+                                    <tr class="success">
+                                        <td colspan="1" >{% trans "Output" %}  2</td>
+                                        <td colspan="1" >{% trans "Key Indicator" %}</td>
+                                        <td colspan="1" >{% trans "Means of Verification" %}</td>
+                                        <td colspan="1" >{% trans "Assumptions" %}</td>
+                                          <!--td colspan="3">&#160;</td-->
+                                    </tr>
+                                     <tr> 
+                                        {% for f in form %}
+                                        {% if f.name == 'output2' or f.name == 'keyindicator2' or f.name == 'verification2' or f.name == 'assumptions2' %}
+                                        <td colspan="1" >{{f}}</td>
+                                        {% endif %}         
+                                        {% endfor %} 
+                                          <!--td colspan="3">&#160;</td-->
+                                    </tr>
+                                    <tr class="success">
+                                        <td colspan="1" >{% trans "Activity 2" %}</td>
+                                        <!--td style="background:#A4A4A4; ">{% trans "Target" %}</td>
+                                        <td style="background:#A4A4A4; ">{% trans "Source of verification" %}</td>
+                                        <td style="background:#A4A4A4; ">{% trans "External factors and conditions to be addressed" %}</td-->
+                                        <td style="background:#BDBDBD; ">{% trans "Estimated cost" %}</td>
+                                        <td style="background:#BDBDBD; ">{% trans "Identify a Responsible person" %}</td>
+                                        <td style="background:#BDBDBD; ">{% trans "Specify a deadline" %}</td>
+                                      </tr>
+		
+
+                                    {% for form in form2 %}   
+                                    <tr class="inline {{ form2.prefix }}"> 
+                                        {% for f in form %}
+                                        {% if not f.name == 'logicalframework' and not f.label == 'Id'%}
+                                             <td> {{f }}</td> 
+                                        {% else %}
+                                             {{f.as_hidden}}
+                                        {% endif %}    
+                                        {% endfor %}
+                                        {% if form2.can_delete %}
+                                        <td> {{ form.DELETE }} </td>
+                                        {% endif %}
+                                    </tr> 
+                                    {% endfor %}
+                                    
+                                    
+                                     <tr>
+                                        <td colspan="8"  style="background:#ffc; ">{% trans "Weakness" %} 3: {{weakeness.w3}}</td>
+                                    </tr>
+                                    <tr class="success">
+                                        <td colspan="1" >{% trans "Output" %}  3</td>
+                                        <td colspan="1" >{% trans "Key Indicator" %}</td>
+                                        <td colspan="1" >{% trans "Means of Verification" %}</td>
+                                        <td colspan="1" >{% trans "Assumptions" %}</td>
+                                          <!--td colspan="3">&#160;</td-->
+                                    </tr>
+                                     <tr> 
+                                        {% for f in form %}
+                                        {% if f.name == 'output3' or f.name == 'keyindicator3' or f.name == 'verification3' or f.name == 'assumptions3' %}
+                                        <td colspan="1" >{{f}}</td>
+                                        {% endif %}         
+                                        {% endfor %} 
+                                          <!--td colspan="3">&#160;</td-->
+                                    </tr>
+                                    <tr class="success">
+                                        <td colspan="1" >{% trans "Activity 3" %}</td>
+                                        <!--td style="background:#A4A4A4; ">{% trans "Target" %}</td>
+                                        <td style="background:#A4A4A4; ">{% trans "Source of verification" %}</td>
+                                        <td style="background:#A4A4A4; ">{% trans "External factors and conditions to be addressed" %}</td-->
+                                        <td style="background:#BDBDBD; ">{% trans "Estimated cost" %}</td>
+                                        <td style="background:#BDBDBD; ">{% trans "Identify a Responsible person" %}</td>
+                                        <td style="background:#BDBDBD; ">{% trans "Specify a deadline" %}</td>
+                                      </tr>
+		
+
+                                    {% for form in form3 %}   
+                                    <tr class="inline {{ form3.prefix }}"> 
+                                        {% for f in form %}
+                                        {% if not f.name == 'logicalframework' and not f.label == 'Id'%}
+                                             <td> {{f }}</td> 
+                                        {% else %}
+                                             {{f.as_hidden}}
+                                        {% endif %}    
+                                        {% endfor %}
+                                        {% if form4.can_delete %}
+                                        <td> {{ form.DELETE }} </td>
+                                        {% endif %}
+                                    </tr> 
+                                    {% endfor %}
+                                    
+                                    
+                                     <tr>
+                                        <td colspan="8"  style="background:#ffc; ">{% trans "Weakness" %} 4: {{weakeness.w4}}</td>
+                                    </tr>
+                                    <tr class="success">
+                                        <td colspan="1" >{% trans "Output" %}  4</td>
+                                        <td colspan="1" >{% trans "Key Indicator" %}</td>
+                                        <td colspan="1" >{% trans "Means of Verification" %}</td>
+                                        <td colspan="1" >{% trans "Assumptions" %}</td>
+                                          <!--td colspan="3">&#160;</td-->
+                                    </tr>
+                                     <tr> 
+                                        {% for f in form %}
+                                        {% if f.name == 'output4' or f.name == 'keyindicator4' or f.name == 'verification4' or f.name == 'assumptions4' %}
+                                        <td colspan="1" >{{f}}</td>
+                                        {% endif %}         
+                                        {% endfor %} 
+                                          <!--td colspan="3">&#160;</td-->
+                                    </tr>
+                                    <tr class="success">
+                                        <td colspan="1" >{% trans "Activity 4" %}</td>
+                                        <!--td style="background:#A4A4A4; ">{% trans "Target" %}</td>
+                                        <td style="background:#A4A4A4; ">{% trans "Source of verification" %}</td>
+                                        <td style="background:#A4A4A4; ">{% trans "External factors and conditions to be addressed" %}</td-->
+                                        <td style="background:#BDBDBD; ">{% trans "Estimated cost" %}</td>
+                                        <td style="background:#BDBDBD; ">{% trans "Identify a Responsible person" %}</td>
+                                        <td style="background:#BDBDBD; ">{% trans "Specify a deadline" %}</td>
+                                      </tr>
+		
+
+                                    {% for form in form4 %}   
+                                    <tr class="inline {{ form4.prefix }}"> 
+                                        {% for f in form %}
+                                        {% if not f.name == 'logicalframework' and not f.label == 'Id'%}
+                                             <td> {{f }}</td> 
+                                        {% else %}
+                                             {{f.as_hidden}}
+                                        {% endif %}    
+                                        {% endfor %}
+                                        {% if form4.can_delete %}
+                                        <td> {{ form.DELETE }} </td>
+                                        {% endif %}
+                                    </tr> 
+                                    {% endfor %}
+                                    
+                                <tr>
+                                        <td colspan="8"  style="background:#ffc; ">{% trans "Weakness" %} 5: {{weakeness.w5}}</td>
+                                    </tr>
+                                    <tr class="success">
+                                        <td colspan="1" >{% trans "Output" %}  5</td>
+                                        <td colspan="1" >{% trans "Key Indicator" %}</td>
+                                        <td colspan="1" >{% trans "Means of Verification" %}</td>
+                                        <td colspan="1" >{% trans "Assumptions" %}</td>
+                                          <!--td colspan="3">&#160;</td-->
+                                    </tr>
+                                     <tr> 
+                                        {% for f in form %}
+                                        {% if f.name == 'output5' or f.name == 'keyindicator5' or f.name == 'verification5' or f.name == 'assumptions5' %}
+                                        <td colspan="1" >{{f}}</td>
+                                        {% endif %}         
+                                        {% endfor %} 
+                                          <!--td colspan="3">&#160;</td-->
+                                    </tr>
+                                    <tr class="success">
+                                        <td colspan="1" >{% trans "Activity 5" %}</td>
+                                        <!--td style="background:#A4A4A4; ">{% trans "Target" %}</td>
+                                        <td style="background:#A4A4A4; ">{% trans "Source of verification" %}</td>
+                                        <td style="background:#A4A4A4; ">{% trans "External factors and conditions to be addressed" %}</td-->
+                                        <td style="background:#BDBDBD; ">{% trans "Estimated cost" %}</td>
+                                        <td style="background:#BDBDBD; ">{% trans "Identify a Responsible person" %}</td>
+                                        <td style="background:#BDBDBD; ">{% trans "Specify a deadline" %}</td>
+                                      </tr>
+		
+
+                                    {% for form in form5 %}   
+                                    <tr class="inline {{ form5.prefix }}"> 
+                                        {% for f in form %}
+                                        {% if not f.name == 'logicalframework' and not f.label == 'Id'%}
+                                             <td> {{f }}</td> 
+                                        {% else %}
+                                             {{f.as_hidden}}
+                                        {% endif %}    
+                                        {% endfor %}
+                                        {% if form5.can_delete %}
+                                        <td> {{ form.DELETE }} </td>
+                                        {% endif %}
+                                    </tr> 
+                                    {% endfor %}
+                                    
+                            </table>
+
+
+
+
+
+                            <div class="form-actions">
+                                <a class="btn btn-small btn-info" href="javascript:history.go(-1)">{% trans "Close" %}</a>
+                                <button type="submit" class="btn btn-info btn-large" tabindex="7" value="save">{% trans "Save" %}</button>
+                            </div>
+                        </fieldset>
+                    </form>
+                </div>
+
+            </div>      
+        </div>
+
+    </div>
+    {% else %} {% nevercache %}
+            {% include "pce/permission_block.html" %}
+            {% endnevercache %}
+    {% endif %}
+    {% endblock %}
+

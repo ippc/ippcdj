@@ -1,0 +1,455 @@
+{% extends 'pce/basepcepdf.html' %}
+{% load module_extras %}
+{% load pages_tags translate_tags mezzanine_tags i18n future staticfiles accounts_tags %}
+
+{% block content %}
+<div id="content">
+{% if can_see %}
+    <h5 style="background:#dff0d8;">{% trans "Module 9 - Pest eradication capacity" %}</h5>
+    {% include "pce/userdetails_panel.html" %} </th>  
+<br><br>           
+<p style="background:#faf2cc;">{% trans "Pest eradication is a core activity and an essential component of the NPPO capacity to improve the phytosanitary conditions of the country and through its execution it may be possible to establish or re-establish the status of an area as absent: pest eradicated. ISPM 9 describes the components of a pest eradication programme which can lead to the establishment or re-establishment of pest absence in an area. A programme for pest eradication may be developed by a National Plant Protection Organization (NPPO) as: - an emergency measure to prevent establishment and/or spread of a pest following its recent entry (re-establish a pest free area), or - a measure to eliminate an established pest (establish a pest free area). After a preliminary investigation that includes the consideration of data collected at the site(s) of detection or occurrence, the extent of the infestation, information on the biology and potential economic impact of the pest, current technology and available resources for eradication, a cost-benefit analysis of the pest eradication programme should be undertaken. Whenever possible, it is also useful to gather information concerning the geographical origin of the pest, and pathways for its reintroduction. Pest risk analysis (PRA) provides a scientific basis for informed decision-making (see <a href='https://www.ippc.int/en/publications/592/'>ISPM No.2</a> : Guidelines for pest risk analysis). From these studies, one or more options should be made available to decision-makers. However, in an emergency situation, the benefits of speed of action in preventing spread may outweigh the benefits normally achieved through a more structured approach. The eradication process involves three main activities: surveillance, containment, and treatment and/or control measures. When an eradication programme is completed, the absence of the pest must be verified. The verification procedure should use criteria established at the beginning of the programme and should be supported by adequate documentation of programme activities and results. The verification stage is integral to the programme, and should involve independent analysis if trading partners require this reassurance. Successful programmes result in a declaration of eradication by the NPPO. When unsuccessful, all aspects of the programme should be reviewed, including the biology of the pest to determine if new information is available, and the cost-benefit of the programme.<br>Guiding questions for the capacity assessment of NPPO's Pest Eradication program<br>Keep the following questions in mind while working through this module:<br>1. What is the existing situation and performance of NPPO's pest eradication activities? <br>2. What is the desired future situation of NPPO's pest activities? <br>3. What are the major gaps in the current capacity of NPPO's for pest eradication? <br>4. What are the capacity building needs and requirements to improve the performance of the NPPO's pest eradication programs? " %}</p>
+
+                            
+            <table class="table">
+
+                   <tr class="success">
+                         <td colspan="2" style="background:#EBEBEB;"><b>{% trans "Current situation assessment" %}</b></td>
+                    </tr>
+              <tr class="success">
+                         <td colspan="2" style="background:#EBEBEB;"><b>{% trans "A. Mission and strategy" %}</b></td>
+                    </tr>
+                     <tr class="success">
+                    <td width="70%" style="background:#BDBDBD;">{% trans "No. Question" %}</td>
+                    <td width="30%" style="background:#BDBDBD;">{% trans "Tip" %}</td>
+                </tr>
+                                <tbody>  <tr>
+                                        <td>
+                                           <div class="control-group">
+                                           <label>{% trans "1. Does the mandate of pest eradication address the following questions:" %}</label>
+                                           <div class="controls">
+                                           <div class="panel panel-default">
+                                            <div class="panel-body">
+                                                <table>
+                                                   
+                                                    <tbody>
+                                                    {% for form in form1 %}
+                                                       
+                                                        {% for ff in form %}
+                                                        {%if not ff.label == 'Module9' and not ff.label == 'Delete' and not ff.label == 'Id'%}
+                                                        <tr>   <td width="80%">{{ff.label}}</td>
+                                                         <td> <input readonly="true" type="radio" {% if ff.value == True%}checked{%endif%}> {% if ff.value == True %}<u><b>{%endif%}{% trans "Yes" %}{% if ff.value == True %} </b></u> <b> &#10003;</b>{%endif%} 
+                                                                  <input readonly="true" type="radio" {% if ff.value == False%}checked{%endif%}>  {% if ff.value == False %}<u><b>{%endif%}{% trans "No" %}{% if ff.value == False %} </b></u> <b> &#10003;</b>{%endif%} 
+                                                       </td>
+                                                         {% else %}{{ff.as_hidden}}
+                                                        {% endif %}   </tr>  {% endfor %}
+                                                       
+                                                    </tbody> 
+                                                       {% endfor %} 
+                                                </table>  
+                                            </div>  
+                                            </div>
+                                          </div>  </div>
+                                       <div class="pcecomment">
+                                            <b>{% trans "Comment:" %}</b><br>  
+                                              {% for fff in form %}{%if fff.name == 'c_m_1'%}{{fff.value}}{%endif%}{%endfor%}
+                                            </div> </td>
+                                        <td></td>
+                                    </tr>
+                                    {% for f in form %}
+                                  {% if not f.is_hidden and not f.name == 'c_m_1' and not f.name == 'c_m_2' and not f.name == 'c_m_3' and not f.name == 'c_m_4' and not f.name == 'c_m_5' and not f.name == 'c_m_6' and not f.name == 'c_m_7' and not f.name == 'c_m_8' and not f.name == 'c_m_9' and not f.name == 'c_m_10' and not f.name == 'c_m_11' and not f.name == 'c_m_12' and not f.name == 'c_m_13' and not f.name == 'c_m_14' and not f.name == 'c_m_15' and not f.name == 'c_m_16' and not f.name == 'c_m_17' and not f.name == 'c_m_18' and not f.name == 'c_m_19' and not f.name == 'c_m_20' and not f.name == 'c_m_21' and not f.name == 'c_m_22' and not f.name == 'c_m_23' and not f.name == 'c_m_24' and not f.name == 'c_m_25' and not f.name == 'c_m_26' and not f.name == 'c_m_27' and not f.name == 'c_m_28' and not f.name == 'c_m_29' and not f.name == 'c_m_30' and not f.name == 'c_m_31' and not f.name == 'c_m_32' and not f.name == 'c_m_33' and not f.name == 'c_m_34' and not f.name == 'c_m_35' and not f.name == 'c_m_36' and not f.name == 'c_m_37' and not f.name == 'c_m_38' and not f.name == 'c_m_39' and not f.name == 'c_m_40' and not f.name == 'c_m_41' and not f.name == 'c_m_42' and not f.name == 'c_m_43' and not f.name == 'c_m_44' and not f.name == 'c_m_45' and not f.name == 'c_m_46' and not f.name == 'c_m_47' %}
+                                    <tr>
+                                        <td>
+                                            <div class="control-group">
+                                                <label>{{f.label|safe}}</label>
+                                                <div class="controls">
+                                                    {%if f.name == 'm_2' or f.name == 'm_4' or f.name == 'm_3' or f.name == 'm_5' or f.name == 'm_6' or f.name == 'm_7' or f.name == 'm_8' or f.name == 'm_9' or f.name == 'm_11' or f.name == 'm_12' or f.name == 'm_13' or f.name == 'm_14' or f.name == 'm_15' or f.name == 'm_16' or f.name == 'm_17' or f.name == 'm_18' or f.name == 'm_19' or f.name == 'm_20' or f.name == 'm_22' or f.name == 'm_23' or f.name == 'm_26' or f.name == 'm_27' or f.name == 'm_28' or f.name == 'm_29' or f.name == 'm_30' or f.name == 'm_32' or f.name == 'm_33' or f.name == 'm_34' or f.name == 'm_41' %}
+                                                    <ul>
+                                                <li>
+                                                    <label for="id_{{f.name}}_1" class="control-label">
+                                                        <input  readonly="true" id="id_{{f.name}}_1" name ="{{f.name}}" type="radio" value="True" {% if f.value == True %}checked{%endif%}> {% if f.value == True %}<u><b>{%endif%}{% trans "Yes" %}{% if f.value == True %} </b></u> <b> &#10003;</b>{%endif%} </label>
+                                                </li>
+                                                <li> 
+                                                    <label for="id_{{f.name}}_2" class="control-label">
+                                                        <input  readonly="true" id="id_{{f.name}}_2" name ="{{f.name}}" type="radio" value="False" {% if f.value == False %}checked{%endif%} > {% if f.value == False %}<u><b>{%endif%}{% trans "No" %}{% if f.value == False %} </b></u> <b> &#10003;</b>{%endif%} </label>
+
+
+            
+        
+      
+                                </ul>                                                    
+       
+
+                                                      
+{%elif f.name == 'm_36'%}
+                        {% for key, val in WEAK %}
+                        {% ifequal key f.value %}
+                         <b><u>{{val}}</u>  &#10003;</b>    
+                        {%else%}
+                        {{val}}   
+                        {% endifequal %}<br>
+                        {% endfor %}     
+                        
+                        {%elif f.name == 'm_37'%}
+                        {% for key, val in INSUFF1 %}
+                        {% ifequal key f.value %}
+                         <b><u>{{val}}</u>  &#10003;</b>    
+                        {%else%}
+                        {{val}}   
+                        {% endifequal %}<br>
+                        {% endfor %}     
+                        
+                        
+                        {%elif f.name == 'm_38'%}
+                        {% for key, val in INSUFF4 %}
+                        {% ifequal key f.value %}
+                         <b><u>{{val}}</u>  &#10003;</b>    
+                        {%else%}
+                        {{val}}   
+                        {% endifequal %}<br>
+                        {% endfor %}     
+                        
+                        {%elif f.name == 'm_39'%}
+                        {% for key, val in PERC2 %}
+                        {% ifequal key f.value %}
+                         <b><u>{{val}}</u>  &#10003;</b>    
+                        {%else%}
+                        {{val}}   
+                        {% endifequal %}<br>
+                        {% endfor %}     
+                        
+                        {%elif f.name == 'm_40'%}
+                        {% for key, val in TRAIN %}
+                        {% ifequal key f.value %}
+                         <b><u>{{val}}</u>  &#10003;</b>    
+                        {%else%}
+                        {{val}}   
+                        {% endifequal %}<br>
+                        {% endfor %}     
+                     
+     
+                        {%elif f.name == 'm_42'%}
+                        {% for key, val in SUFF1 %}
+                        {% ifequal key f.value %}
+                         <b><u>{{val}}</u>  &#10003;</b>    
+                        {%else%}
+                        {{val}}   
+                        {% endifequal %}<br>
+                        {% endfor %}     
+                        
+                        {%elif f.name == 'm_43' or  f.name == 'm_46'%}
+                        {% for key, val in WEAK5 %}
+                        {% ifequal key f.value %}
+                         <b><u>{{val}}</u>  &#10003;</b>    
+                        {%else%}
+                        {{val}}   
+                        {% endifequal %}<br>
+                        {% endfor %}     
+                        
+                        {%elif f.name == 'm_44'%}
+                        {% for key, val in NOTATALL3 %}
+                        {% ifequal key f.value %}
+                         <b><u>{{val}}</u>  &#10003;</b>    
+                        {%else%}
+                        {{val}}   
+                        {% endifequal %}<br>
+                        {% endfor %}     
+                        
+                        {%elif f.name == 'm_45'%}
+                        {% for key, val in NOTATALL2 %}
+                        {% ifequal key f.value %}
+                         <b><u>{{val}}</u>  &#10003;</b>    
+                        {%else%}
+                        {{val}}   
+                        {% endifequal %}<br>
+                        {% endfor %}     
+                                                    
+                                                    
+
+
+                                                    {%else%}
+                                                    {{f}}
+                                                      {% endif %}
+                                                </div>
+                                            </div>
+                                                 <div class="pcecomment">
+                                            <b>{% trans "Comment:" %}</b><br>  
+                                        
+{%if f.name == 'm_1' %}{% for fff in form %}{%if fff.name == 'c_m_1'%}{{fff.value}}{%endif%}{%endfor%}{%endif%}
+{%if f.name == 'm_2' %}{% for fff in form %}{%if fff.name == 'c_m_2'%}{{fff.value}}{%endif%}{%endfor%}{%endif%}
+{%if f.name == 'm_3' %}{% for fff in form %}{%if fff.name == 'c_m_3'%}{{fff.value}}{%endif%}{%endfor%}{%endif%}
+{%if f.name == 'm_4' %}{% for fff in form %}{%if fff.name == 'c_m_4'%}{{fff.value}}{%endif%}{%endfor%}{%endif%}
+{%if f.name == 'm_5' %}{% for fff in form %}{%if fff.name == 'c_m_5'%}{{fff.value}}{%endif%}{%endfor%}{%endif%}
+{%if f.name == 'm_6' %}{% for fff in form %}{%if fff.name == 'c_m_6'%}{{fff.value}}{%endif%}{%endfor%}{%endif%}
+{%if f.name == 'm_7' %}{% for fff in form %}{%if fff.name == 'c_m_7'%}{{fff.value}}{%endif%}{%endfor%}{%endif%}
+{%if f.name == 'm_8' %}{% for fff in form %}{%if fff.name == 'c_m_8'%}{{fff.value}}{%endif%}{%endfor%}{%endif%}
+{%if f.name == 'm_9' %}{% for fff in form %}{%if fff.name == 'c_m_9'%}{{fff.value}}{%endif%}{%endfor%}{%endif%}
+{%if f.name == 'm_10' %}{% for fff in form %}{%if fff.name == 'c_m_10'%}{{fff.value}}{%endif%}{%endfor%}{%endif%}
+{%if f.name == 'm_11' %}{% for fff in form %}{%if fff.name == 'c_m_11'%}{{fff.value}}{%endif%}{%endfor%}{%endif%}
+{%if f.name == 'm_12' %}{% for fff in form %}{%if fff.name == 'c_m_12'%}{{fff.value}}{%endif%}{%endfor%}{%endif%}
+{%if f.name == 'm_13' %}{% for fff in form %}{%if fff.name == 'c_m_13'%}{{fff.value}}{%endif%}{%endfor%}{%endif%}
+{%if f.name == 'm_14' %}{% for fff in form %}{%if fff.name == 'c_m_14'%}{{fff.value}}{%endif%}{%endfor%}{%endif%}
+{%if f.name == 'm_15' %}{% for fff in form %}{%if fff.name == 'c_m_15'%}{{fff.value}}{%endif%}{%endfor%}{%endif%}
+{%if f.name == 'm_16' %}{% for fff in form %}{%if fff.name == 'c_m_16'%}{{fff.value}}{%endif%}{%endfor%}{%endif%}
+{%if f.name == 'm_17' %}{% for fff in form %}{%if fff.name == 'c_m_17'%}{{fff.value}}{%endif%}{%endfor%}{%endif%}
+{%if f.name == 'm_18' %}{% for fff in form %}{%if fff.name == 'c_m_18'%}{{fff.value}}{%endif%}{%endfor%}{%endif%}
+{%if f.name == 'm_19' %}{% for fff in form %}{%if fff.name == 'c_m_19'%}{{fff.value}}{%endif%}{%endfor%}{%endif%}
+{%if f.name == 'm_20' %}{% for fff in form %}{%if fff.name == 'c_m_20'%}{{fff.value}}{%endif%}{%endfor%}{%endif%}
+{%if f.name == 'm_21' %}{% for fff in form %}{%if fff.name == 'c_m_21'%}{{fff.value}}{%endif%}{%endfor%}{%endif%}
+{%if f.name == 'm_22' %}{% for fff in form %}{%if fff.name == 'c_m_22'%}{{fff.value}}{%endif%}{%endfor%}{%endif%}
+{%if f.name == 'm_23' %}{% for fff in form %}{%if fff.name == 'c_m_23'%}{{fff.value}}{%endif%}{%endfor%}{%endif%}
+{%if f.name == 'm_24' %}{% for fff in form %}{%if fff.name == 'c_m_24'%}{{fff.value}}{%endif%}{%endfor%}{%endif%}
+{%if f.name == 'm_25' %}{% for fff in form %}{%if fff.name == 'c_m_25'%}{{fff.value}}{%endif%}{%endfor%}{%endif%}
+{%if f.name == 'm_26' %}{% for fff in form %}{%if fff.name == 'c_m_26'%}{{fff.value}}{%endif%}{%endfor%}{%endif%}
+{%if f.name == 'm_27' %}{% for fff in form %}{%if fff.name == 'c_m_27'%}{{fff.value}}{%endif%}{%endfor%}{%endif%}
+{%if f.name == 'm_28' %}{% for fff in form %}{%if fff.name == 'c_m_28'%}{{fff.value}}{%endif%}{%endfor%}{%endif%}
+{%if f.name == 'm_29' %}{% for fff in form %}{%if fff.name == 'c_m_29'%}{{fff.value}}{%endif%}{%endfor%}{%endif%}
+{%if f.name == 'm_30' %}{% for fff in form %}{%if fff.name == 'c_m_30'%}{{fff.value}}{%endif%}{%endfor%}{%endif%}
+{%if f.name == 'm_31' %}{% for fff in form %}{%if fff.name == 'c_m_31'%}{{fff.value}}{%endif%}{%endfor%}{%endif%}
+{%if f.name == 'm_32' %}{% for fff in form %}{%if fff.name == 'c_m_32'%}{{fff.value}}{%endif%}{%endfor%}{%endif%}
+{%if f.name == 'm_33' %}{% for fff in form %}{%if fff.name == 'c_m_33'%}{{fff.value}}{%endif%}{%endfor%}{%endif%}
+{%if f.name == 'm_34' %}{% for fff in form %}{%if fff.name == 'c_m_34'%}{{fff.value}}{%endif%}{%endfor%}{%endif%}
+{%if f.name == 'm_35' %}{% for fff in form %}{%if fff.name == 'c_m_35'%}{{fff.value}}{%endif%}{%endfor%}{%endif%}
+{%if f.name == 'm_36' %}{% for fff in form %}{%if fff.name == 'c_m_36'%}{{fff.value}}{%endif%}{%endfor%}{%endif%}
+{%if f.name == 'm_37' %}{% for fff in form %}{%if fff.name == 'c_m_37'%}{{fff.value}}{%endif%}{%endfor%}{%endif%}
+{%if f.name == 'm_38' %}{% for fff in form %}{%if fff.name == 'c_m_38'%}{{fff.value}}{%endif%}{%endfor%}{%endif%}
+{%if f.name == 'm_39' %}{% for fff in form %}{%if fff.name == 'c_m_39'%}{{fff.value}}{%endif%}{%endfor%}{%endif%}
+{%if f.name == 'm_40' %}{% for fff in form %}{%if fff.name == 'c_m_40'%}{{fff.value}}{%endif%}{%endfor%}{%endif%}
+{%if f.name == 'm_41' %}{% for fff in form %}{%if fff.name == 'c_m_41'%}{{fff.value}}{%endif%}{%endfor%}{%endif%}
+{%if f.name == 'm_42' %}{% for fff in form %}{%if fff.name == 'c_m_42'%}{{fff.value}}{%endif%}{%endfor%}{%endif%}
+{%if f.name == 'm_43' %}{% for fff in form %}{%if fff.name == 'c_m_43'%}{{fff.value}}{%endif%}{%endfor%}{%endif%}
+{%if f.name == 'm_44' %}{% for fff in form %}{%if fff.name == 'c_m_44'%}{{fff.value}}{%endif%}{%endfor%}{%endif%}
+{%if f.name == 'm_45' %}{% for fff in form %}{%if fff.name == 'c_m_45'%}{{fff.value}}{%endif%}{%endfor%}{%endif%}
+{%if f.name == 'm_46' %}{% for fff in form %}{%if fff.name == 'c_m_46'%}{{fff.value}}{%endif%}{%endfor%}{%endif%}
+{%if f.name == 'm_47' %}{% for fff in form %}{%if fff.name == 'c_m_47'%}{{fff.value}}{%endif%}{%endfor%}{%endif%}
+      </div> </td>
+                                        <td>{{f.help_text|safe}}</td>
+                                    </tr>
+                                        {% if f.name == 'm_4' %} 
+                                     <tr>
+                                        <td>
+                                           <div class="control-group">
+                                           <label>{% trans "5. Are the objectives of the pest eradication program SMART?" %}</label>
+                                           <div class="controls">
+                                           <div class="panel panel-default">
+                                            <div class="panel-body">
+                                                <table>
+                                                   
+                                                    <tbody>
+                                                    {% for form in form5 %}
+                                                       
+                                                        {% for ff in form %}
+                                                        {%if not ff.label == 'Module9' and not ff.label == 'Delete' and not ff.label == 'Id'%}
+                                                        <tr>  <td> {{ff.label}}</td>
+                                                       <td> <input readonly="true" type="radio" {% if ff.value == True%}checked{%endif%}> {% if ff.value == True %}<u><b>{%endif%}{% trans "Yes" %}{% if ff.value == True %} </b></u> <b> &#10003;</b>{%endif%} 
+                                                                  <input readonly="true" type="radio" {% if ff.value == False%}checked{%endif%}>  {% if ff.value == False %}<u><b>{%endif%}{% trans "No" %}{% if ff.value == False %} </b></u> <b> &#10003;</b>{%endif%} 
+                                                       </td>
+                                                        
+                                                         {% else %}{{ff.as_hidden}}
+                                                        {% endif %}   </tr>  {% endfor %}
+                                                       
+                                                    </tbody> 
+                                                       {% endfor %} 
+                                                </table>  
+                                            </div>  
+                                            </div>
+                                          </div>  </div>
+                                        <div class="pcecomment">
+                                            <b>{% trans "Comment:" %}</b><br>  
+                                              {% for fff in form %}{%if fff.name == 'c_m_5'%}{{fff.value}}{%endif%}{%endfor%}
+                                            </div></td>
+                                        <td></td>
+                                    </tr>
+                                     {% elif f.name == 'm_10' %} 
+                                     <tr class="success">
+                                        <td colspan="2" style="background:#EBEBEB;"><b>{% trans "B.  Enabling legislation" %}</b></td>
+                                     </tr>
+                                      {% elif f.name == 'm_13' %} 
+                                     <tr class="success">
+                                        <td colspan="2" style="background:#EBEBEB;"><b>{% trans "C.  Organizational structure, competences and culture" %}</b></td>
+                                     </tr>     
+                                       {% elif f.name == 'm_21' %} 
+                                     <tr class="success">
+                                        <td colspan="2" style="background:#EBEBEB;"><b>{% trans "D. Documented procedures" %}</b></td>
+                                     </tr>     
+                                         {% elif f.name == 'm_30' %} 
+                                     <tr>
+                                        <td>
+                                           <div class="control-group">
+                                           <label>{% trans "31. Does the eradication plan specify the measures for:" %}</label>
+                                           <div class="controls">
+                                           <div class="panel panel-default">
+                                            <div class="panel-body">
+                                                <table>
+                                                   
+                                                    <tbody>
+                                                    {% for form in form31 %}
+                                                       
+                                                        {% for ff in form %}
+                                                        {%if not ff.label == 'Module9' and not ff.label == 'Delete' and not ff.label == 'Id'%}
+                                                        <tr>  <td> {{ff.label}}</td>
+                                                        <td> <input readonly="true" type="radio" {% if ff.value == True%}checked{%endif%}> {% if ff.value == True %}<u><b>{%endif%}{% trans "Yes" %}{% if ff.value == True %} </b></u> <b> &#10003;</b>{%endif%} 
+                                                                  <input readonly="true" type="radio" {% if ff.value == False%}checked{%endif%}>  {% if ff.value == False %}<u><b>{%endif%}{% trans "No" %}{% if ff.value == False %} </b></u> <b> &#10003;</b>{%endif%} 
+                                                       </td>
+                                                        
+                                                         {% else %}{{ff.as_hidden}}
+                                                        {% endif %}   </tr>  {% endfor %}
+                                                       
+                                                    </tbody> 
+                                                       {% endfor %} 
+                                                </table>  
+                                            </div>  
+                                            </div>
+                                          </div>  </div>
+                                       <div class="pcecomment">
+                                            <b>{% trans "Comment:" %}</b><br>  
+                                              {% for fff in form %}{%if fff.name == 'c_m_31'%}{{fff.value}}{%endif%}{%endfor%}
+                                            </div> </td>
+                                        <td></td>
+                                    </tr> 
+                                       {% elif f.name == 'm_32' %} 
+                                     <tr class="success">
+                                        <td colspan="2" style="background:#EBEBEB;"><b>{% trans "E. Staffing" %}</b></td>
+                                     </tr>     
+                                       {% elif f.name == 'm_34' %} 
+                                         <tr>
+                                        <td>
+                                           <div class="control-group">
+                                           <label>{% trans "35. Use the matrix to assess the human resources of the pest surveillance activities" %}</label>
+                                          </td></td><td> </tr> 
+                                         </table>
+
+ <table>
+                                                   
+                                                          <thead>
+                                                    <tr>
+                                                            <th colspan="7"><center>{% trans "PEST ERADICATION - HUMAN RESOURCES" %}</center></th>					
+                                                        </tr>
+                                                        <tr>
+                                                            <th colspan="5"><center>{% trans "Current" %}</center></th>					
+                                                            <th colspan="2"><center>{% trans "Required" %}</center></th>					
+                                                        </tr>
+                                                         <tr>
+                                                             <th colspan="1">&#160;</th>
+                                                             <th colspan="2">{% trans "Field and support Staff" %}</th>					
+                                                             <th colspan="2">{% trans "Eradication managers" %}</th>
+                                                              <th colspan="2">&#160;</th>
+                                                        </tr>
+                                                       <tr>
+                                                             <th colspan="1" style="width:100px">&#160;</th>
+                                                             <th colspan="1" style="width:100px">{% trans "No. of Staff" %}</th>					
+                                                             <th colspan="1" style="width:100px">{% trans "Average years of experience" %}</th>
+                                                             <th colspan="1" style="width:100px">{% trans "No. of Staff" %}</th>					
+                                                               <th colspan="1" style="width:100px">{% trans "Average years of experience" %}</th>
+                                                           <th colspan="1" style="width:100px">{% trans "Field/support Staff" %}</th>  
+                                                             <th colspan="1" style="width:100px">{% trans "Managers" %}</th>
+                                                        </tr>
+                                                    
+                                                    </thead>
+                                               
+                                                    
+                            
+                                               
+                                                    {% for form in form35 %}
+                                                       {%if  forloop.counter == 1 %}
+                                                          <tr> <td style="width:50px">{% trans "Doctoral equivalent" %}</td>
+                                                       {%elif  forloop.counter == 2 %}
+                                                       <tr><td style="width:50px">{% trans "Master equivalent" %}</td>
+                                                      {%elif  forloop.counter == 3   %}
+                                                       <tr><td style="width:50px">{% trans "Bachelor equivalent" %}</td>
+                                                      {%elif  forloop.counter == 4  %}
+                                                       <tr><td style="width:50px">{% trans "Lower than bachelor level" %}</td>
+                                                      
+                                                          
+                                                           {% endif %}
+                                                        {% for ff in form %}
+                                                        {%if not ff.label == 'Module9' and not ff.label == 'Delete' and not ff.label == 'Id'%}
+                                            
+                                                         <td>  {% if ff.value == None or ff.value == 0 %}
+                                                                   <input type="text" disabled="true" value="" class="zzz">
+                                                              {% else %}
+                                                              {% if  ff.label == 'Nstaff' or  ff.label == 'Nstafflab' %}
+                                                                        <input type="text" disabled="true" value="{{ff.value}}" class="zzz"/>
+                                                              {% elif  ff.label == 'Support' or  ff.label == 'Managers' %}
+                                                                    {% for key1,value1 in BOOL_CHOICESM_M %}
+                                                                       {%if   ff.value  == key1 %}
+                                                                            <input type="text" disabled="true" value="{{value1}}" class="zzz"/>
+                                                                      {% endif %}
+                                                                    {% endfor %} 
+                                                               {%else%}
+                                                                    {% for key1,value1 in VAL_AV %}
+                                                                         {%if   ff.value  == key1 %}
+                                                                            <input type="text" disabled="true" value="{{value1}}" class="zzz"/>
+                                                                          {% endif %}
+                                                                    {% endfor %}  
+                                                                {% endif %} {% endif %}</td>
+                                                         {% else %}{{ff.as_hidden}}
+                                                        {% endif %}    {% endfor %}
+                                                       </tr> 
+                                                
+                                                       {% endfor %} 
+                                                </table>  
+                                          <table>
+    <tr class="success">
+        <td width="70%"> <div class="pcecomment">
+                <b>{% trans "Comment:" %}</b><br>  
+                {% for fff in form %}{%if fff.name == 'c_m_35'%}{{fff.value}}{%endif%}{%endfor%}
+            </div> </td>
+        <td width="30%"></td>
+    </tr>  
+                                      
+                                     
+                                     {% elif f.name == 'm_41' %} 
+                                     <tr class="success">
+                                        <td colspan="2" style="background:#EBEBEB;"><b>{% trans "F. Equipment" %}</b></td>
+                                     </tr>
+                                    {% elif f.name == 'm_42' %} 
+                                     <tr class="success">
+                                        <td colspan="2" style="background:#EBEBEB;"><b>{% trans "Section III - Performance assessment" %}</b></td>
+                                     </tr>
+                                  
+                                    {% endif %}
+                                  
+                                    {% endif %}
+                                    {% endfor%}
+                                    <tr class="success">
+                                       <td colspan="2" style="background:#EBEBEB;"><b>{% trans "Section IV - Weaknesses" %}</b></td>
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                             <div class="control-group">
+                                                <label>{% trans "1. Please identify a maximum of five of the most critical weaknesses affecting the performance of the NPPOs pest eradication service in order of priority (1=Highest)" %}</label>
+                                           <div class="controls">
+                                               {{ form47.management_form }}
+                                            {{ form47.non_form_errors }}
+                                            {% for form in form47 %}
+                                            <div class="panel panel-default">
+                                                <div class="panel-body">
+                                                    {% for ff in form %}
+                                                    {%if not ff.label == 'Module9' and not ff.label == 'Delete' and not ff.label == 'Id'%}
+                                                    <b>{{ff.label}}:</b> {% if ff.value != None %}
+                                                              
+                                                                     {{ff.value}}
+                                                                {% endif %}<br>   
+                                                    {% endif %}
+                                                    {% endfor %}
+                                                </div></div>
+                                            {% endfor %}   </div>
+                                            </div>
+                                       <div class="pcecomment">
+                                            <b>{% trans "Comment:" %}</b><br>  
+                                              {% for fff in form %}{%if fff.name == 'c_m_47'%}{{fff.value}}{%endif%}{%endfor%}
+                                            </div> </td>
+                                        <td></td>
+                                    </tr>
+                                            
+                                </tbody>        
+                            </table>
+           {% else %}
+            {% nevercache %}
+            {% include "pce/permission_block.html" %}
+            {% endnevercache %}
+  {% endif %}
+        </div>
+
+{% endblock %}

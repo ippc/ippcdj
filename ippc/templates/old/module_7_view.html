@@ -1,0 +1,1004 @@
+{% extends "pce/basepce.html" %}
+{% load pages_tags translate_tags mezzanine_tags i18n future staticfiles accounts_tags %}
+
+{% block meta_title %}{% trans "Module 7 - Pest diagnostic capacity" %} - {{ user.get_profile.country.name}} {% endblock %}
+
+{% block body_class %}wide{% endblock %}
+
+{% block breadcrumb_menu %}
+<li>
+    <a href="/pce/{{ user.get_profile.country.name }}/sessions">{% trans "PCE Home" %}</a>
+    <span class="divider">/</span>
+</li>
+<li>
+    <a href="/pce/{{ user.get_profile.country.name|slugify }}/session/dashboard/{{sessionid}}">  {% trans "PCE Dashboard for" %} {{ user.get_profile.country.name }}</a>
+    <span class="divider">/</span>
+<li>
+<li class="active">{% trans "Module 7 - Pest diagnostic capacity" %}</li>
+{% endblock %}
+
+{% block local_nav %}
+{% endblock local_nav %}
+
+{% block pageinfo %}
+{% endblock pageinfo %}
+
+{% block main %}
+<h1><span class="normal">{% trans "Module 7 - Pest diagnostic capacity" %}</span></h1>
+{% if can_see %}
+   
+<p><a href="/pce/{{ user.get_profile.country.name|slugify }}/session/{{sessionid}}/modules"><< {% trans "Back to Module List" %}</a></p>
+
+
+<div class="row-fluid">
+   <div class="span8">
+     {% include "pce/tools_panel.html" %} 
+    </div>
+    {% include "pce/userdetails_panel.html" %} 
+     
+    <div class="row-fluid">
+        <div class="span12">
+            <div class="panel panel-info">
+                <div  class="alert alert-success" role="alert">
+                    <h3 class="panel-title"> {% trans "Pest diagnostic capacity" %}</h3>
+                      {% if can_edit  and id != ''%}  
+                        <span  class="pull-right">  
+                          <a  class="btn btn-info" href="/pce/{{ user.get_profile.country.name|slugify }}/{{sessionid}}/module7/edit/{{id}}">Edit Module</a>
+                        </span>
+                        {%endif%}
+                </div>
+                <div class="panel-body">
+                   <p class="alert alert-warning">{% trans "Pest diagnostic capacity is an essential component of a NPPO capacity. Laboratories are responsible for analyzing samples or specimens to detect, identify or quantify plant pests. They also provide support for the enforcement of the phytosanitary legislation. The scientific information produced by pest diagnostic laboratories also supports policy and decision making processes related to export and import procedures, as well as pest surveillance and monitoring programs designed to the early pest outbreak detection or the establishment of pest free areas or low pest prevalence areas.<br>Guiding questions for the capacity assessment of NPPO's Pest Diagnostic laboratory Keep the following questions in mind while working through this module: 1. What is the existing situation and performance of NPPO's pest diagnostic laboratories? 2. What is the desired future situation of NPPO's pest diagnostic laboratories? 3. What are the major gaps in the current capacity of NPPO's for pest diagnostic? 4. What are the capacity building needs and requirements to improve the performance of the NPPO's pest diagnostic laboratories?" %}</p>
+                        <fieldset>
+                          
+                            <table class="table">
+                               
+                                     <tr class="success">
+                                         <td colspan="2"><b>{% trans "Current situation assessment" %}</b></td>
+                                    </tr> <tr class="success">
+                                         <td colspan="2"><b>{% trans "A. Mission and strategy" %}</b></td>
+                                    </tr>
+                                    <tr class="success">
+                                        <th>{% trans "No. Question" %}</th>
+                                        <th>{% trans "Tip" %}</th>
+                                    </tr>
+                                <tbody>
+                                    {% for f in form %}
+                              {% if not f.is_hidden and not f.name == 'c_m_1' and not f.name == 'c_m_2' and not f.name == 'c_m_3' and not f.name == 'c_m_4' and not f.name == 'c_m_5' and not f.name == 'c_m_6' and not f.name == 'c_m_7' and not f.name == 'c_m_8' and not f.name == 'c_m_9' and not f.name == 'c_m_10' and not f.name == 'c_m_11' and not f.name == 'c_m_12' and not f.name == 'c_m_13' and not f.name == 'c_m_14' and not f.name == 'c_m_15' and not f.name == 'c_m_16' and not f.name == 'c_m_17' and not f.name == 'c_m_18' and not f.name == 'c_m_19' and not f.name == 'c_m_20' and not f.name == 'c_m_21' and not f.name == 'c_m_22' and not f.name == 'c_m_23' and not f.name == 'c_m_24' and not f.name == 'c_m_25' and not f.name == 'c_m_26' and not f.name == 'c_m_27' and not f.name == 'c_m_28' and not f.name == 'c_m_29' and not f.name == 'c_m_30' and not f.name == 'c_m_31' and not f.name == 'c_m_32' and not f.name == 'c_m_33' and not f.name == 'c_m_34' and not f.name == 'c_m_35' and not f.name == 'c_m_36' and not f.name == 'c_m_37' and not f.name == 'c_m_38' and not f.name == 'c_m_39' and not f.name == 'c_m_40' and not f.name == 'c_m_41' and not f.name == 'c_m_42' and not f.name == 'c_m_43' and not f.name == 'c_m_44' and not f.name == 'c_m_45' and not f.name == 'c_m_46' and not f.name == 'c_m_47' and not f.name == 'c_m_48' and not f.name == 'c_m_49' and not f.name == 'c_m_50' and not f.name == 'c_m_51' and not f.name == 'c_m_52' and not f.name == 'c_m_53' and not f.name == 'c_m_54' and not f.name == 'c_m_55' and not f.name == 'c_m_56' and not f.name == 'c_m_57' and not f.name == 'c_m_58' and not f.name == 'c_m_59' and not f.name == 'c_m_60' and not f.name == 'c_m_61' and not f.name == 'c_m_62' and not f.name == 'c_m_63' and not f.name == 'c_m_64' and not f.name == 'c_m_65' and not f.name == 'c_m_66' and not f.name == 'c_m_67' and not f.name == 'c_m_68' and not f.name == 'c_m_69' %}
+                                           <tr>
+                                        <td>
+                                            <div class="control-group">
+                                                <label>{{f.label|safe}}</label>
+                                                <div class="controls">
+                                                      {%if f.name == 'm_1' or f.name == 'm_2' or f.name == 'm_3' or f.name == 'm_4' or f.name == 'm_5' or f.name == 'm_7' or f.name == 'm_9' or f.name == 'm_10' or f.name == 'm_13' or f.name == 'm_15' or f.name == 'm_16' or f.name == 'm_17' or f.name == 'm_18' or f.name == 'm_19' or f.name == 'm_20' or f.name == 'm_21' or f.name == 'm_28' or f.name == 'm_29' or f.name == 'm_31' or f.name == 'm_32' or f.name == 'm_33' or f.name == 'm_34' or f.name == 'm_35' or f.name == 'm_36' or f.name == 'm_47' or f.name == 'm_48' or f.name == 'm_50' or f.name == 'm_51' or f.name == 'm_52' or f.name == 'm_54' or f.name == 'm_55' or f.name == 'm_56' or f.name == 'm_57' or f.name == 'm_58' or f.name == 'm_59' or f.name == 'm_60' or f.name == 'm_62' or f.name == 'm_64' %}
+                                                    <ul>
+                                                    <li>
+                                                        <label for="id_{{f.name}}_1" class="control-label">
+                                                        <input readonly="true" id="id_{{f.name}}_1" name ="{{f.name}}" type="radio" value="True" {% if f.value == True %}checked{%endif%}> {% trans "Yes" %}</label>
+                                                    </li>
+                                                    <li> 
+                                                       <label for="id_{{f.name}}_2" class="control-label">
+                                                       <input readonly="true" id="id_{{f.name}}_2" name ="{{f.name}}" type="radio" value="False" {% if f.value == False %}checked{%endif%}> {% trans "No" %}</label>
+                                                    </li>
+                                                    </ul>                                                   
+                                                    {%else%}
+                                                    {{f}}
+                                                      {% endif %}
+                                                </div>
+                                            </div>
+                                              <div class="pcecomment">
+                                            <b>{% trans "Comment:" %}</b><br>  
+                                        
+{%if f.name == 'm_1' %}{% for fff in form %}{%if fff.name == 'c_m_1'%}{{fff.value}}{%endif%}{%endfor%}{%endif%}
+{%if f.name == 'm_2' %}{% for fff in form %}{%if fff.name == 'c_m_2'%}{{fff.value}}{%endif%}{%endfor%}{%endif%}
+{%if f.name == 'm_3' %}{% for fff in form %}{%if fff.name == 'c_m_3'%}{{fff.value}}{%endif%}{%endfor%}{%endif%}
+{%if f.name == 'm_4' %}{% for fff in form %}{%if fff.name == 'c_m_4'%}{{fff.value}}{%endif%}{%endfor%}{%endif%}
+{%if f.name == 'm_5' %}{% for fff in form %}{%if fff.name == 'c_m_5'%}{{fff.value}}{%endif%}{%endfor%}{%endif%}
+{%if f.name == 'm_6' %}{% for fff in form %}{%if fff.name == 'c_m_6'%}{{fff.value}}{%endif%}{%endfor%}{%endif%}
+{%if f.name == 'm_7' %}{% for fff in form %}{%if fff.name == 'c_m_7'%}{{fff.value}}{%endif%}{%endfor%}{%endif%}
+{%if f.name == 'm_8' %}{% for fff in form %}{%if fff.name == 'c_m_8'%}{{fff.value}}{%endif%}{%endfor%}{%endif%}
+{%if f.name == 'm_9' %}{% for fff in form %}{%if fff.name == 'c_m_9'%}{{fff.value}}{%endif%}{%endfor%}{%endif%}
+{%if f.name == 'm_10' %}{% for fff in form %}{%if fff.name == 'c_m_10'%}{{fff.value}}{%endif%}{%endfor%}{%endif%}
+{%if f.name == 'm_11' %}{% for fff in form %}{%if fff.name == 'c_m_11'%}{{fff.value}}{%endif%}{%endfor%}{%endif%}
+{%if f.name == 'm_12' %}{% for fff in form %}{%if fff.name == 'c_m_12'%}{{fff.value}}{%endif%}{%endfor%}{%endif%}
+{%if f.name == 'm_13' %}{% for fff in form %}{%if fff.name == 'c_m_13'%}{{fff.value}}{%endif%}{%endfor%}{%endif%}
+{%if f.name == 'm_14' %}{% for fff in form %}{%if fff.name == 'c_m_14'%}{{fff.value}}{%endif%}{%endfor%}{%endif%}
+{%if f.name == 'm_15' %}{% for fff in form %}{%if fff.name == 'c_m_15'%}{{fff.value}}{%endif%}{%endfor%}{%endif%}
+{%if f.name == 'm_16' %}{% for fff in form %}{%if fff.name == 'c_m_16'%}{{fff.value}}{%endif%}{%endfor%}{%endif%}
+{%if f.name == 'm_17' %}{% for fff in form %}{%if fff.name == 'c_m_17'%}{{fff.value}}{%endif%}{%endfor%}{%endif%}
+{%if f.name == 'm_18' %}{% for fff in form %}{%if fff.name == 'c_m_18'%}{{fff.value}}{%endif%}{%endfor%}{%endif%}
+{%if f.name == 'm_19' %}{% for fff in form %}{%if fff.name == 'c_m_19'%}{{fff.value}}{%endif%}{%endfor%}{%endif%}
+{%if f.name == 'm_20' %}{% for fff in form %}{%if fff.name == 'c_m_20'%}{{fff.value}}{%endif%}{%endfor%}{%endif%}
+{%if f.name == 'm_21' %}{% for fff in form %}{%if fff.name == 'c_m_21'%}{{fff.value}}{%endif%}{%endfor%}{%endif%}
+{%if f.name == 'm_22' %}{% for fff in form %}{%if fff.name == 'c_m_22'%}{{fff.value}}{%endif%}{%endfor%}{%endif%}
+{%if f.name == 'm_23' %}{% for fff in form %}{%if fff.name == 'c_m_23'%}{{fff.value}}{%endif%}{%endfor%}{%endif%}
+{%if f.name == 'm_24' %}{% for fff in form %}{%if fff.name == 'c_m_24'%}{{fff.value}}{%endif%}{%endfor%}{%endif%}
+{%if f.name == 'm_25' %}{% for fff in form %}{%if fff.name == 'c_m_25'%}{{fff.value}}{%endif%}{%endfor%}{%endif%}
+{%if f.name == 'm_26' %}{% for fff in form %}{%if fff.name == 'c_m_26'%}{{fff.value}}{%endif%}{%endfor%}{%endif%}
+{%if f.name == 'm_27' %}{% for fff in form %}{%if fff.name == 'c_m_27'%}{{fff.value}}{%endif%}{%endfor%}{%endif%}
+{%if f.name == 'm_28' %}{% for fff in form %}{%if fff.name == 'c_m_28'%}{{fff.value}}{%endif%}{%endfor%}{%endif%}
+{%if f.name == 'm_29' %}{% for fff in form %}{%if fff.name == 'c_m_29'%}{{fff.value}}{%endif%}{%endfor%}{%endif%}
+{%if f.name == 'm_30' %}{% for fff in form %}{%if fff.name == 'c_m_30'%}{{fff.value}}{%endif%}{%endfor%}{%endif%}
+{%if f.name == 'm_31' %}{% for fff in form %}{%if fff.name == 'c_m_31'%}{{fff.value}}{%endif%}{%endfor%}{%endif%}
+{%if f.name == 'm_32' %}{% for fff in form %}{%if fff.name == 'c_m_32'%}{{fff.value}}{%endif%}{%endfor%}{%endif%}
+{%if f.name == 'm_33' %}{% for fff in form %}{%if fff.name == 'c_m_33'%}{{fff.value}}{%endif%}{%endfor%}{%endif%}
+{%if f.name == 'm_34' %}{% for fff in form %}{%if fff.name == 'c_m_34'%}{{fff.value}}{%endif%}{%endfor%}{%endif%}
+{%if f.name == 'm_35' %}{% for fff in form %}{%if fff.name == 'c_m_35'%}{{fff.value}}{%endif%}{%endfor%}{%endif%}
+{%if f.name == 'm_36' %}{% for fff in form %}{%if fff.name == 'c_m_36'%}{{fff.value}}{%endif%}{%endfor%}{%endif%}
+{%if f.name == 'm_37' %}{% for fff in form %}{%if fff.name == 'c_m_37'%}{{fff.value}}{%endif%}{%endfor%}{%endif%}
+{%if f.name == 'm_38' %}{% for fff in form %}{%if fff.name == 'c_m_38'%}{{fff.value}}{%endif%}{%endfor%}{%endif%}
+{%if f.name == 'm_39' %}{% for fff in form %}{%if fff.name == 'c_m_39'%}{{fff.value}}{%endif%}{%endfor%}{%endif%}
+{%if f.name == 'm_40' %}{% for fff in form %}{%if fff.name == 'c_m_40'%}{{fff.value}}{%endif%}{%endfor%}{%endif%}
+{%if f.name == 'm_41' %}{% for fff in form %}{%if fff.name == 'c_m_41'%}{{fff.value}}{%endif%}{%endfor%}{%endif%}
+{%if f.name == 'm_42' %}{% for fff in form %}{%if fff.name == 'c_m_42'%}{{fff.value}}{%endif%}{%endfor%}{%endif%}
+{%if f.name == 'm_43' %}{% for fff in form %}{%if fff.name == 'c_m_43'%}{{fff.value}}{%endif%}{%endfor%}{%endif%}
+{%if f.name == 'm_44' %}{% for fff in form %}{%if fff.name == 'c_m_44'%}{{fff.value}}{%endif%}{%endfor%}{%endif%}
+{%if f.name == 'm_45' %}{% for fff in form %}{%if fff.name == 'c_m_45'%}{{fff.value}}{%endif%}{%endfor%}{%endif%}
+{%if f.name == 'm_46' %}{% for fff in form %}{%if fff.name == 'c_m_46'%}{{fff.value}}{%endif%}{%endfor%}{%endif%}
+{%if f.name == 'm_47' %}{% for fff in form %}{%if fff.name == 'c_m_47'%}{{fff.value}}{%endif%}{%endfor%}{%endif%}
+{%if f.name == 'm_48' %}{% for fff in form %}{%if fff.name == 'c_m_48'%}{{fff.value}}{%endif%}{%endfor%}{%endif%}
+{%if f.name == 'm_49' %}{% for fff in form %}{%if fff.name == 'c_m_49'%}{{fff.value}}{%endif%}{%endfor%}{%endif%}
+{%if f.name == 'm_50' %}{% for fff in form %}{%if fff.name == 'c_m_50'%}{{fff.value}}{%endif%}{%endfor%}{%endif%}
+{%if f.name == 'm_51' %}{% for fff in form %}{%if fff.name == 'c_m_51'%}{{fff.value}}{%endif%}{%endfor%}{%endif%}
+{%if f.name == 'm_52' %}{% for fff in form %}{%if fff.name == 'c_m_52'%}{{fff.value}}{%endif%}{%endfor%}{%endif%}
+{%if f.name == 'm_53' %}{% for fff in form %}{%if fff.name == 'c_m_53'%}{{fff.value}}{%endif%}{%endfor%}{%endif%}
+{%if f.name == 'm_54' %}{% for fff in form %}{%if fff.name == 'c_m_54'%}{{fff.value}}{%endif%}{%endfor%}{%endif%}
+{%if f.name == 'm_55' %}{% for fff in form %}{%if fff.name == 'c_m_55'%}{{fff.value}}{%endif%}{%endfor%}{%endif%}
+{%if f.name == 'm_56' %}{% for fff in form %}{%if fff.name == 'c_m_56'%}{{fff.value}}{%endif%}{%endfor%}{%endif%}
+{%if f.name == 'm_57' %}{% for fff in form %}{%if fff.name == 'c_m_57'%}{{fff.value}}{%endif%}{%endfor%}{%endif%}
+{%if f.name == 'm_58' %}{% for fff in form %}{%if fff.name == 'c_m_58'%}{{fff.value}}{%endif%}{%endfor%}{%endif%}
+{%if f.name == 'm_59' %}{% for fff in form %}{%if fff.name == 'c_m_59'%}{{fff.value}}{%endif%}{%endfor%}{%endif%}
+{%if f.name == 'm_60' %}{% for fff in form %}{%if fff.name == 'c_m_60'%}{{fff.value}}{%endif%}{%endfor%}{%endif%}
+{%if f.name == 'm_61' %}{% for fff in form %}{%if fff.name == 'c_m_61'%}{{fff.value}}{%endif%}{%endfor%}{%endif%}
+{%if f.name == 'm_62' %}{% for fff in form %}{%if fff.name == 'c_m_62'%}{{fff.value}}{%endif%}{%endfor%}{%endif%}
+{%if f.name == 'm_63' %}{% for fff in form %}{%if fff.name == 'c_m_63'%}{{fff.value}}{%endif%}{%endfor%}{%endif%}
+{%if f.name == 'm_64' %}{% for fff in form %}{%if fff.name == 'c_m_64'%}{{fff.value}}{%endif%}{%endfor%}{%endif%}
+{%if f.name == 'm_65' %}{% for fff in form %}{%if fff.name == 'c_m_65'%}{{fff.value}}{%endif%}{%endfor%}{%endif%}
+{%if f.name == 'm_66' %}{% for fff in form %}{%if fff.name == 'c_m_66'%}{{fff.value}}{%endif%}{%endfor%}{%endif%}
+{%if f.name == 'm_67' %}{% for fff in form %}{%if fff.name == 'c_m_67'%}{{fff.value}}{%endif%}{%endfor%}{%endif%}
+{%if f.name == 'm_68' %}{% for fff in form %}{%if fff.name == 'c_m_68'%}{{fff.value}}{%endif%}{%endfor%}{%endif%}
+{%if f.name == 'm_69' %}{% for fff in form %}{%if fff.name == 'c_m_69'%}{{fff.value}}{%endif%}{%endfor%}{%endif%}
+             </div>
+                                         
+                        </td>
+                                        <td>{{f.help_text|safe}}</td>
+                                    </tr>
+                                         {% if f.name == 'm_6' %} 
+                                     <tr class="success">
+                                        <td colspan="2"><b>{% trans "B. Organizational structure, competences and culture" %}</b></td>
+                                     </tr>
+                                      {% elif f.name == 'm_11' %} 
+                                     <tr class="success">
+                                        <td colspan="2"><b>{% trans "C. Financial management" %}</b></td>
+                                     </tr>
+                                      {% elif f.name == 'm_13' %} 
+                                     
+                                      <tr>
+                                        <td>
+                                           <div class="control-group">
+                                           <label>14. What proportion of the total laboratory annual budget is allocated to the following categories:</label>
+                                           <div class="controls">
+                                            <div class="panel panel-default">
+                                            <div class="panel-body">
+                                                <table>
+                                                   
+                                                    <tbody>
+                                                    {% for form in form14 %}
+                                                       
+                                                        {% for ff in form %}
+                                                        {%if not ff.label == 'Module7' and not ff.label == 'Delete' and not ff.label == 'Id'%}
+                                                        <tr>  <td> {{ff.label}}</td>
+                                                         <td>  {% if ff.value == None %}
+                                                                <input type="text" disabled="true" value="">
+                                                                {% else %}
+                                                                      <input type="text" disabled="true" value="{{ff.value}}">
+                                                                {% endif %}</td>
+                                                         {% else %}{{ff.as_hidden}}
+                                                        {% endif %}   </tr>  {% endfor %}
+                                                       
+                                                    </tbody> 
+                                                       {% endfor %} 
+                                                </table>  
+                                            </div>  
+                                            </div>
+                                          </div>  </div>
+                                       <div class="pcecomment">
+                                            <b>{% trans "Comment:" %}</b><br>  
+                                              {% for fff in form %}{%if fff.name == 'c_m_14'%}{{fff.value}}{%endif%}{%endfor%}
+                                            </div>  </td>
+                                        <td></td>
+                                    </tr>
+                                     
+                                     
+                                      {% elif f.name == 'm_15' %} 
+                                     <tr class="success">
+                                        <td colspan="2"><b>{% trans "D. Quality control and assurance" %}</b></td>
+                                     </tr>
+                                     {% elif f.name == 'm_22' %} 
+                                     <tr class="success">
+                                        <td colspan="2"><b>{% trans "E. Staffing" %}</b></td>
+                                        </tr>
+                                           <tr>
+                                        <td>
+                                           <div class="control-group">
+                                           <label>{% trans "23. Pest diagnostic laboratory current human resources" %}</label>
+                                           <div class="controls">
+                                            <div class="panel panel-default">
+                                            <div class="panel-body">
+                                                <table>
+                                   <thead>
+                                                                    <tr>
+                                                                        <th colspan="7"><center>{% trans "PEST DIAGNOSTIC - HUMAN RESOURCES" %}</center></th>					
+                                                                     </tr>
+                                                                    <tr>
+                                                                        <th colspan="5"><center>{% trans "Current" %}</center></th>					
+                                                                        <th colspan="2"><center>{% trans "Required" %}</center></th>					
+                                                                    </tr>
+                                                                    <tr>
+                                                                        <th>&#160;</th>
+                                                                        <th colspan="2">{% trans "PEST DIAGNOSTIC AND SUPPORT STAFF" %}</th>					
+                                                                        <th colspan="2">{% trans "LABORATORY MANAGERS" %}</th>
+                                                                        <th colspan="2">&#160;</th>
+                                                                    </tr>
+                                                                    <tr>
+                                                                        <th style="width:50px">&#160;</th>
+                                                                        <th style="width:50px">{% trans "No. of Staff" %}</th>					
+                                                                        <th style="width:50px">{% trans "Average years of experience" %}</th>
+                                                                        <th style="width:50px">{% trans "No. of Staff" %}</th>					
+                                                                        <th style="width:50px">{% trans "Average years of experience" %}</th>
+                                                                        <th style="width:50px">{% trans "Diagnostic /support" %}</th>  
+                                                                        <th style="width:50px">{% trans "Managers" %}</th>
+                                                                    </tr>
+                                                                </thead>
+                                                    
+                                               
+                                               
+                                                             {% for form in form23 %}
+                                                               {%if  forloop.counter == 1 %}
+                                                                   <tr>  <td style="width:50px"><b>{% trans "Mycology" %}</b></td></tr>
+                                                                <tr><td style="width:50px">{% trans "Doctoral equivalent" %}</td>
+                                                                    {%elif  forloop.counter == 2 or forloop.counter == 6  or forloop.counter == 10  or forloop.counter == 14  or forloop.counter == 18  or forloop.counter == 22 or forloop.counter == 26 or forloop.counter == 30 or forloop.counter == 34 or forloop.counter == 38 or forloop.counter == 42 or forloop.counter == 46 or forloop.counter == 50         %}
+                                                                <tr><td style="width:50px">{% trans "Master equivalent" %}</td>
+                                                                    {%elif  forloop.counter == 3 or forloop.counter == 7  or forloop.counter == 11  or forloop.counter == 15  or forloop.counter == 19  or forloop.counter == 23 or forloop.counter == 27 or forloop.counter == 31 or forloop.counter == 35 or forloop.counter == 39 or forloop.counter == 43 or forloop.counter == 47 or forloop.counter == 51         %}
+                                                                <tr><td style="width:50px">{% trans "Bachelor equivalent" %}</td>
+                                                                    {%elif  forloop.counter == 4 or forloop.counter == 8  or forloop.counter == 12  or forloop.counter == 16  or forloop.counter == 20  or forloop.counter == 24 or forloop.counter == 28 or forloop.counter == 32 or forloop.counter == 36 or forloop.counter == 40 or forloop.counter == 44 or forloop.counter == 48 or forloop.counter == 52         %}
+                                                                <tr><td style="width:50px">{% trans "Lower than bachelor level" %}</td>
+
+                                                                    {%elif  forloop.counter == 5 %}
+                                                                    <td><b>{% trans "Virology" %}</b></td></tr>
+                                                                <tr><td>{% trans "Doctoral equivalent" %}</td>
+                                                                    {%elif  forloop.counter == 9 %}
+                                                                    <td>{% trans "<b>{% trans "Nematology" %}</b></td></tr>
+                                                                <tr><td>{% trans "Doctoral equivalent" %}</td>
+                                                                    {%elif  forloop.counter == 13 %}
+                                                                    <td>{% trans "<b>{% trans "Weed science" %}</b></td></tr>
+                                                                <tr><td>{% trans "Doctoral equivalent" %}</td>
+                                                                    {%elif  forloop.counter == 17 %}
+                                                                    <td>{% trans "<b>{% trans "Entomology" %}</b></td></tr>
+                                                                <tr><td>{% trans "Doctoral equivalent" %}</td>
+                                                                    {%elif  forloop.counter == 21 %}
+                                                                    <td>{% trans "<b>{% trans "LMOs" %}</b></td></tr>
+                                                                <tr><td>{% trans "Doctoral equivalent" %}</td>
+                                                                    {%elif  forloop.counter == 25 %}
+                                                                    <td>{% trans "<b>{% trans "BCAs" %}</b></td></tr>
+                                                                <tr><td>{% trans "Doctoral equivalent" %}</td>
+                                                                    {%elif  forloop.counter == 29 %}
+                                                                    <td>{% trans "<b>{% trans "Plants For Planting" %}</b></td></tr>
+                                                                <tr><td>{% trans "Doctoral equivalent" %}</td>
+                                                                    {%elif  forloop.counter == 33 %}
+                                                                    <td>{% trans "<b>{% trans "Treatments" %}</b></td></tr>
+                                                                <tr><td>{% trans "Doctoral equivalent" %}</td>
+                                                                    {%elif  forloop.counter == 37 %}
+                                                                    <td>{% trans "<b>{% trans "Economist" %}</b></td></tr>
+                                                                <tr><td>{% trans "Doctoral equivalent" %}</td>
+                                                                    {%elif  forloop.counter == 41 %}
+                                                                    <td>{% trans "<b>{% trans "Staticians" %}</b></td></tr>
+                                                                <tr><td>{% trans "Doctoral equivalent" %}</td>
+                                                                    {%elif  forloop.counter == 45 %}
+                                                                    <td>{% trans "<b>{% trans "Crop specialists" %}</b></td></tr>
+                                                                <tr><td>{% trans "Doctoral equivalent" %}</td>
+                                                                    {%elif  forloop.counter == 49 %}
+                                                                    <td>{% trans "<b>{% trans "Technical support and administrative staff" %}</b></td></tr>
+                                                                <tr><td>{% trans "Doctoral equivalent" %}</td>
+                                                          
+                                                           {% endif %}
+                                                        {% for ff in form %}
+                                                        {%if not ff.label == 'Module7' and not ff.label == 'Delete' and not ff.label == 'Id'%}
+                                            
+                                                         <td>{% if ff.value == None or ff.value == 0 %}
+                                                                   <input type="text" disabled="true" value="" class="zzz">
+                                                              {% else %}
+                                                              {% if  ff.label == 'Nstaff' or  ff.label == 'Nstafflab' %}
+                                                                        <input type="text" disabled="true" value="{{ff.value}}" class="zzz"/>
+                                                              {% elif  ff.label == 'Support' or  ff.label == 'Managers' %}
+                                                                    {% for key1,value1 in BOOL_CHOICESM_M %}
+                                                                       {%if   ff.value  == key1 %}
+                                                                            <input type="text" disabled="true" value="{{value1}}" class="zzz"/>
+                                                                      {% endif %}
+                                                                    {% endfor %} 
+                                                               {%else%}
+                                                                    {% for key1,value1 in VAL_AV %}
+                                                                         {%if   ff.value  == key1 %}
+                                                                            <input type="text" disabled="true" value="{{value1}}" class="zzz"/>
+                                                                          {% endif %}
+                                                                    {% endfor %}  
+                                                                {% endif %} {% endif %}</td>
+                                                         {% else %}{{ff.as_hidden}}
+                                                        {% endif %}    {% endfor %}
+                                                       </tr> 
+                                                
+                                                       {% endfor %} 
+                                                </table>  
+                                            </div>  
+                                            </div>
+                                          </div>  </div>
+                                        <div class="pcecomment">
+                                            <b>{% trans "Comment:" %}</b><br>  
+                                              {% for fff in form %}{%if fff.name == 'c_m_23'%}{{fff.value}}{%endif%}{%endfor%}
+                                            </div> </td>
+                                        <td></td>
+                             
+                                     </tr> {% elif f.name == 'm_28' %} 
+                                     <tr class="success">
+                                        <td colspan="2"><b>{% trans "F. Sample management" %}</b></td>
+                                     </tr> {% elif f.name == 'm_32' %} 
+                                     <tr class="success">
+                                        <td colspan="2"><b>{% trans "G. Reporting and Information Management" %}</b></td>
+                                     </tr> {% elif f.name == 'm_35' %} 
+                                     <tr class="success">
+                                        <td colspan="2"><b>{% trans "H. Diagnostic methods and protocols" %}</b></td>
+                                     </tr>{% elif f.name == 'm_36' %} 
+                                     <tr class="success">
+                                        <td colspan="2"><b>{% trans "I. Equipment and infrastructure" %}</b></td>
+                                     </tr>
+                                    
+                                           <tr>
+                                        <td>
+                                           <div class="control-group">
+                                           <label>{% trans "36. Fill in the matrix and use it as a guide of requirements of entomological equipment in the NPPO's laboratories" %}</label>
+                                           <div class="controls">
+                                          <div class="panel panel-default">
+                                            <div class="panel-body">
+                                                <table>
+                                                  <thead>
+                                                                    <tr>
+                                                                        <th colspan="4">{% trans "Entomology Equipment" %}</th>					
+                                                                    </tr>
+                                                                    <tr>
+                                                                        <th style="width:50px">&#160;</th>
+                                                                        <th style="width:50px">{% trans "No. Available" %}</th>					
+                                                                        <th style="width:50px">{% trans "Quality (age, working condition, etc.)" %}</th>
+                                                                        <th style="width:50px">{% trans "Required Yes/No" %}</th>
+                                                                    </tr>
+                                                                </thead>
+
+
+                                                                {% for form in form37 %}
+                                                                <tr>{%if  forloop.counter == 1 %}
+                                                                <tr><td style="width:50px">{% trans "Compound microscope" %}</td>
+                                                                    {%elif  forloop.counter == 2%}
+                                                                <tr><td style="width:50px">{% trans "Cold light source" %}</td>
+                                                                    {%elif  forloop.counter == 3%}
+                                                                <tr><td style="width:50px">{% trans "Binocular stereo zoom (dissecting) microscope" %}</td>
+                                                                    {%elif  forloop.counter == 4%}
+                                                                <tr><td style="width:50px">{% trans "Illluminated magnifier" %}</td>
+                                                                    {%elif  forloop.counter == 5%}
+                                                                <tr><td style="width:50px">{% trans "Insect rearing chamber(s)" %}</td>
+                                                                    {%elif  forloop.counter == 6%}
+                                                                <tr><td style="width:50px">{% trans "X-ray equipment" %}</td>
+                                                                    {%elif  forloop.counter == 7%}
+                                                                <tr><td style="width:50px">{% trans "Computers" %}</td>
+                                                                    {%elif  forloop.counter == 8%}
+                                                                <tr><td style="width:50px">{% trans "Micropipettes" %}</td>
+                                                                    {%elif  forloop.counter == 9%}
+                                                                <tr><td style="width:50px">{% trans "Hot plates" %}</td>
+                                                                    {%elif  forloop.counter == 10%}
+                                                                <tr><td style="width:50px">{% trans "Top loading balance" %}</td>
+                                                                    {%elif  forloop.counter == 11%}
+                                                                <tr><td style="width:50px">{% trans "Magnetic stirrer" %}</td>
+                                                                    {%elif  forloop.counter == 12%}
+                                                                <tr><td style="width:50px">{% trans "Analytical balnce" %}</td>
+                                                                    {%elif  forloop.counter == 13%}
+                                                                <tr><td style="width:50px">{% trans "Blender" %}</td>
+                                                                    {%elif  forloop.counter == 14%}
+                                                                <tr><td style="width:50px">{% trans "Laboratory glassware" %}</td>
+                                                                    {%elif  forloop.counter == 15%}
+                                                                <tr><td style="width:50px">{% trans "Refrigerator" %}</td>
+                                                                    {%elif  forloop.counter == 16%}
+                                                                <tr><td style="width:50px">{% trans "Curation equipment" %}</td>
+                                                                    {%elif  forloop.counter == 17%}
+                                                                <tr><td style="width:50px">{% trans "Autoclave" %}</td>
+                                                                    {%elif  forloop.counter == 18%}
+                                                                <tr><td style="width:50px">{% trans "Laboratory chemicals" %}</td>
+                                                                    {%elif  forloop.counter == 19%}
+                                                                <tr><td style="width:50px">{% trans "-20 degrees C freezer" %}</td>
+
+
+                                                          
+                                                           {% endif %}
+                                                        {% for ff in form %}
+                                                        {%if not ff.label == 'Module7' and not ff.label == 'Delete' and not ff.label == 'Id'%}
+                                            
+                                                         <td> {% if ff.value == None or ff.value == 0 %}
+                                                                <input type="text" disabled="true" value="" class="zzz">
+                                                             {% else %}
+                                                                 {% if  ff.label == 'Required' %}
+                                                                    {% for key1,value1 in BOOL_CHOICESM_M %}
+                                                                       {%if   ff.value  == key1 %}
+                                                                            <input type="text" disabled="true" value="{{value1}}" class="zzz"/>
+                                                                      {% endif %}
+                                                                    {% endfor %} 
+                                                               {%else%}
+                                                                             <input type="text" disabled="true" value="{{ff.value}}" class="zzz"/>
+                                                                         
+                                                                {% endif %} {% endif %}
+                                                                
+                                                         
+                                                         
+                                                         
+                                                         
+                                                         
+                                                         </td>
+                                                         {% else %}{{ff.as_hidden}}
+                                                        {% endif %}    {% endfor %}
+                                                       </tr> 
+                                                
+                                                       {% endfor %} 
+                                                </table>  
+                                            </div>  
+                                            </div>
+                                          </div>  </div>
+                                        </td>
+                                       <div class="pcecomment">
+                                            <b>{% trans "Comment:" %}</b><br>  
+                                              {% for fff in form %}{%if fff.name == 'c_m_37'%}{{fff.value}}{%endif%}{%endfor%}
+                                            </div>  <td></td>
+                             
+                                     </tr>  </tr>{% elif f.name == 'm_38' %} 
+                                    
+                                           <tr>
+                                        <td>
+                                           <div class="control-group">
+                                           <label>{% trans "37. Fill in the matrix and use it as a guide of requirements of virology equipment in the NPPO's laboratories." %}</label>
+                                           <div class="controls">
+                                             <div class="panel panel-default">
+                                            <div class="panel-body">
+                                                <table>
+                                                     <thead>
+                                                                    <tr>
+                                                                        <th colspan="4">{% trans "Virology equipment" %}</th>					
+                                                                    </tr>
+                                                                    <tr>
+                                                                        <th style="width:50px">&#160;</th>
+                                                                        <th style="width:50px">{% trans "No. Available" %}</th>					
+                                                                        <th style="width:50px">{% trans "Quality (age, working condition, etc.)" %}</th>
+                                                                        <th style="width:50px">{% trans "Required Yes/No" %}</th>
+                                                                    </tr>
+                                                                </thead>
+
+
+                                                                {% for form in form39 %}
+                                                                <tr>{%if  forloop.counter == 1 %}
+                                                                <tr><td style="width:50px">{% trans "Micropipettes" %}</td>
+                                                                    {%elif  forloop.counter == 2%}
+                                                                <tr><td style="width:50px">{% trans "pH meter" %}</td>
+                                                                    {%elif  forloop.counter == 3%}
+                                                                <tr><td style="width:50px">{% trans "Binocular stereo zoom (dissecting) microscope" %}</td>
+                                                                    {%elif  forloop.counter == 4%}
+                                                                <tr><td style="width:50px">{% trans "Fume Hood" %}</td>
+                                                                    {%elif  forloop.counter == 5%}
+                                                                <tr><td style="width:50px">{% trans "Top loading balance" %}</td>
+                                                                    {%elif  forloop.counter == 6%}
+                                                                <tr><td style="width:50px">{% trans "Analytical balance" %}</td>
+                                                                    {%elif  forloop.counter == 7%}
+                                                                <tr><td style="width:50px">{% trans "Computers" %}</td>
+                                                                    {%elif  forloop.counter == 8%}
+                                                                <tr><td style="width:50px">{% trans "Hot plates" %}</td>
+                                                                    {%elif  forloop.counter == 9%}
+                                                                <tr><td style="width:50px">{% trans "Magnetic stirrer" %}</td>
+                                                                    {%elif  forloop.counter == 10%}
+                                                                <tr><td style="width:50px">{% trans "Blender" %}</td>
+                                                                    {%elif  forloop.counter == 11%}
+                                                                <tr><td style="width:50px">{% trans "High-speed refrigerated centrifuge" %}</td>
+                                                                    {%elif  forloop.counter == 12%}
+                                                                <tr><td style="width:50px">{% trans "Rotary shaker" %}</td>
+                                                                    {%elif  forloop.counter == 13%}
+                                                                <tr><td style="width:50px">{% trans "Spectrophotometer" %}</td>
+                                                                    {%elif  forloop.counter == 14%}
+                                                                <tr><td style="width:50px">{% trans "Lyophilizer" %}</td>
+                                                                    {%elif  forloop.counter == 15%}
+                                                                <tr><td style="width:50px">{% trans "Illuminated magnifier" %}</td>
+                                                                    {%elif  forloop.counter == 16%}
+                                                                <tr><td style="width:50px">{% trans "Laboratory chemicals" %}</td>
+                                                                    {%elif  forloop.counter == 17%}
+                                                                <tr><td style="width:50px">{% trans "Micro-centrifuge" %}</td>
+                                                                    {%elif  forloop.counter == 18%}
+                                                                <tr><td style="width:50px">{% trans "Autoclave" %}</td>
+                                                                    {%elif  forloop.counter == 19%}
+                                                                <tr><td style="width:50px">{% trans "Water purification system" %}</td>
+                                                                    {%elif  forloop.counter == 20%}
+                                                                <tr><td style="width:50px">{% trans "-20 degrees C freezer" %}</td>
+                                                                    {%elif  forloop.counter == 21%}
+                                                                <tr><td style="width:50px">{% trans "Refrigerator" %}</td>
+                                                                    {%elif  forloop.counter == 22%}
+                                                                <tr><td style="width:50px">{% trans "Microwave oven" %}</td>
+                                                                    {%elif  forloop.counter == 23%}
+                                                                <tr><td style="width:50px">{% trans "Temperature incubators" %}</td>
+                                                                    {%elif  forloop.counter == 24%}
+                                                                <tr><td style="width:50px">{% trans "Specialist chemicals" %}</td>
+                                                                    {%elif  forloop.counter == 25%}
+                                                                <tr><td style="width:50px">{% trans "Cold light source" %}</td>
+                                                                    {%elif  forloop.counter == 26%}
+                                                                <tr><td style="width:50px">{% trans "Laboratory glassware" %}</td>
+                                                                    {%elif  forloop.counter == 27%}
+                                                                <tr><td style="width:50px">{% trans "Electrophoresis equipment" %}</td>
+                                                                    {%elif  forloop.counter == 28%}
+                                                                <tr><td style="width:50px">{% trans "ELISA equipment" %}</td>
+                                                                    {%elif  forloop.counter == 29%}
+                                                                <tr><td style="width:50px">{% trans "Ultra Microtome" %}</td>
+                                                                    {%elif  forloop.counter == 30%}
+                                                                <tr><td style="width:50px">{% trans "Ultra Centrifuge" %}</td>
+                                                                    {%elif  forloop.counter == 31%}
+                                                                <tr><td style="width:50px">{% trans "PCR machine" %}</td>
+                                                                    {%elif  forloop.counter == 32%}
+                                                                <tr><td style="width:50px">{% trans "Ultra Low-temperature freezer (-80 degrees C)" %}</td>
+                                                                    {%elif  forloop.counter == 33%}
+                                                                <tr><td style="width:50px">{% trans "Electron Microscope" %}</td>
+                                                                    {%elif  forloop.counter == 34%}
+                                                                <tr><td style="width:50px">{% trans "Hybridization oven" %}</td>
+                                                                    {%elif  forloop.counter == 35%}
+                                                                <tr><td style="width:50px">{% trans "Ultraviolet crosslinker" %}</td>
+                                                                    {%elif  forloop.counter == 36%}
+                                                                <tr><td style="width:50px">{% trans "High speed vacuum freeze drier" %}</td>
+                                                                    {%elif  forloop.counter == 37%}
+                                                                <tr><td style="width:50px">{% trans "Ultraviolet viewer with Polaraoid camera" %}</td>
+
+
+                                                           {% endif %}
+                                                        {% for ff in form %}
+                                                        {%if not ff.label == 'Module7' and not ff.label == 'Delete' and not ff.label == 'Id'%}
+                                            
+                                                         <td> {% if ff.value == None or ff.value == 0 %}
+                                                                <input type="text" disabled="true" value="" class="zzz">
+                                                             {% else %}
+                                                                 {% if  ff.label == 'Required' %}
+                                                                    {% for key1,value1 in BOOL_CHOICESM_M %}
+                                                                       {%if   ff.value  == key1 %}
+                                                                            <input type="text" disabled="true" value="{{value1}}" class="zzz"/>
+                                                                      {% endif %}
+                                                                    {% endfor %} 
+                                                               {%else%}
+                                                                             <input type="text" disabled="true" value="{{ff.value}}" class="zzz"/>
+                                                                         
+                                                                {% endif %} {% endif %}
+                                                                
+                                                         
+                                                         
+                                                         </td>
+                                                         {% else %}{{ff.as_hidden}}
+                                                        {% endif %}    {% endfor %}
+                                                       </tr> 
+                                                
+                                                       {% endfor %} 
+                                                </table>  
+                                            </div>  
+                                            </div>
+                                          </div>  </div>
+                                        <div class="pcecomment">
+                                            <b>{% trans "Comment:" %}</b><br>  
+                                              {% for fff in form %}{%if fff.name == 'c_m_39'%}{{fff.value}}{%endif%}{%endfor%}
+                                            </div> </td>
+                                        <td></td>
+                             
+                                     </tr>
+                                     {% elif f.name == 'm_40' %} 
+                                    
+                                           <tr>
+                                        <td>
+                                           <div class="control-group">
+                                           <label>{% trans "38. Fill in the matrix and use it as a guide of requirements of mycology and bacteriology equipment in the NPPO's laboratories" %}</label>
+                                           <div class="controls">
+                                           <div class="panel panel-default">
+                                            <div class="panel-body">
+                                                <table>
+                                                    <thead>
+                                                                    <tr>
+                                                                        <th colspan="4">{% trans "Mycology and bacteriology equipment" %}</th>					
+                                                                    </tr>
+                                                                    <tr>
+                                                                        <th style="width:50px">&#160;</th>
+                                                                        <th style="width:50px">{% trans "No. Available" %}</th>					
+                                                                        <th style="width:50px">{% trans "Quality (age, working condition, etc.)" %}</th>
+                                                                        <th style="width:50px">{% trans "Required Yes/No" %}</th>
+                                                                    </tr>
+                                                                </thead>
+
+
+                                                                {% for form in form41 %}
+                                                                <tr>{%if  forloop.counter == 1 %}
+                                                                <tr><td style="width:50px">{% trans "Illuminated magnifier" %}</td>
+                                                                    {%elif  forloop.counter == 2%}
+                                                                <tr><td style="width:50px">{% trans "ELISA equipment" %}</td>
+                                                                    {%elif  forloop.counter == 3%}
+                                                                <tr><td style="width:50px">{% trans "Lyophilizer" %}</td>
+                                                                    {%elif  forloop.counter == 4%}
+                                                                <tr><td style="width:50px">{% trans "BOD incubator" %}</td>
+                                                                    {%elif  forloop.counter == 5%}
+                                                                <tr><td style="width:50px">{% trans "Spectrophotometer" %}</td>
+                                                                    {%elif  forloop.counter == 6%}
+                                                                <tr><td style="width:50px">{% trans "Laminar flow cabinet" %}</td>
+                                                                    {%elif  forloop.counter == 7%}
+                                                                <tr><td style="width:50px">{% trans "pH meter" %}</td>
+                                                                    {%elif  forloop.counter == 8%}
+                                                                <tr><td style="width:50px">{% trans "Rotary shaker" %}</td>
+                                                                    {%elif  forloop.counter == 9%}
+                                                                <tr><td style="width:50px">{% trans "High speed centrifuge" %}</td>
+                                                                    {%elif  forloop.counter == 10%}
+                                                                <tr><td style="width:50px">{% trans "Autoclave" %}</td>
+                                                                    {%elif  forloop.counter == 11%}
+                                                                <tr><td style="width:50px">{% trans "Microwave oven" %}</td>
+                                                                    {%elif  forloop.counter == 12%}
+                                                                <tr><td style="width:50px">{% trans "Dissection equipment" %}</td>
+                                                                    {%elif  forloop.counter == 13%}
+                                                                <tr><td style="width:50px">{% trans "Bacterial cell counter" %}</td>
+                                                                    {%elif  forloop.counter == 14%}
+                                                                <tr><td style="width:50px">{% trans "Near-UV lights (black-lights)" %}</td>
+                                                                    {%elif  forloop.counter == 15%}
+                                                                <tr><td style="width:50px">{% trans "Computers" %}</td>
+                                                                    {%elif  forloop.counter == 16%}
+                                                                <tr><td style="width:50px">{% trans "Hot plates" %}</td>
+                                                                    {%elif  forloop.counter == 17%}
+                                                                <tr><td style="width:50px">{% trans "Magnetic stirrer" %}</td>
+                                                                    {%elif  forloop.counter == 18%}
+                                                                <tr><td style="width:50px">{% trans "Micro-centrifuge" %}</td>
+                                                                    {%elif  forloop.counter == 19%}
+                                                                <tr><td style="width:50px">{% trans "Fume Hood" %}</td>
+                                                                    {%elif  forloop.counter == 20%}
+                                                                <tr><td style="width:50px">{% trans "Analytical balance" %}</td>
+                                                                    {%elif  forloop.counter == 21%}
+                                                                <tr><td style="width:50px">{% trans "Top loading balance" %}</td>
+                                                                    {%elif  forloop.counter == 22%}
+                                                                <tr><td style="width:50px">{% trans "Micropipettes" %}</td>
+                                                                    {%elif  forloop.counter == 23%}
+                                                                <tr><td style="width:50px">{% trans "Laboratory glassware" %}</td>
+                                                                    {%elif  forloop.counter == 24%}
+                                                                <tr><td style="width:50px">{% trans "Temperature incubators" %}</td>
+                                                                    {%elif  forloop.counter == 25%}
+                                                                <tr><td style="width:50px">{% trans "Refrigerator" %}</td>
+                                                                    {%elif  forloop.counter == 26%}
+                                                                <tr><td style="width:50px">{% trans "-20 degrees C freezer" %}</td>
+                                                                    {%elif  forloop.counter == 27%}
+                                                                <tr><td style="width:50px">{% trans "Binocular stereo zoom (dissecting) microscope" %}</td>
+                                                                    {%elif  forloop.counter == 28%}
+                                                                <tr><td style="width:50px">{% trans "Blender" %}</td>
+                                                                    {%elif  forloop.counter == 29%}
+                                                                <tr><td style="width:50px">{% trans "Electrophoresis equipment" %}</td>
+                                                                    {%elif  forloop.counter == 30%}
+                                                                <tr><td style="width:50px">{% trans "Cold light source" %}</td>
+                                                                    {%elif  forloop.counter == 31%}
+                                                                <tr><td style="width:50px">{% trans "Fluorescence microscope" %}</td>
+                                                                    {%elif  forloop.counter == 32%}
+                                                                <tr><td style="width:50px">{% trans "Water purification system" %}</td>
+                                                                    {%elif  forloop.counter == 33%}
+                                                                <tr><td style="width:50px">{% trans "Culture collection" %}</td>
+                                                                    {%elif  forloop.counter == 34%}
+                                                                <tr><td style="width:50px">{% trans "Laboratory chemicals" %}</td>
+
+                                                           {% endif %}
+                                                        {% for ff in form %}
+                                                        {%if not ff.label == 'Module7' and not ff.label == 'Delete' and not ff.label == 'Id'%}
+                                            
+                                                         <td>  {% if ff.value == None or ff.value == 0 %}
+                                                                <input type="text" disabled="true" value="" class="zzz">
+                                                             {% else %}
+                                                                 {% if  ff.label == 'Required' %}
+                                                                    {% for key1,value1 in BOOL_CHOICESM_M %}
+                                                                       {%if   ff.value  == key1 %}
+                                                                            <input type="text" disabled="true" value="{{value1}}" class="zzz"/>
+                                                                      {% endif %}
+                                                                    {% endfor %} 
+                                                               {%else%}
+                                                                             <input type="text" disabled="true" value="{{ff.value}}" class="zzz"/>
+                                                                         
+                                                                {% endif %} {% endif %}
+                                                                
+                                                         
+                                                         
+                                                         </td>
+                                                         {% else %}{{ff.as_hidden}}
+                                                        {% endif %}    {% endfor %}
+                                                       </tr> 
+                                                
+                                                       {% endfor %} 
+                                                </table>  
+                                            </div>  
+                                            </div>
+                                          </div>  </div>
+                                       <div class="pcecomment">
+                                            <b>{% trans "Comment:" %}</b><br>  
+                                              {% for fff in form %}{%if fff.name == 'c_m_41'%}{{fff.value}}{%endif%}{%endfor%}
+                                            </div>  </td>
+                                        <td></td>
+                             
+                                     </tr>
+                                     {% elif f.name == 'm_42' %} 
+                                    
+                                           <tr>
+                                        <td>
+                                           <div class="control-group">
+                                           <label>{% trans "39. Fill in the matrix and use it as a guide of requirements of weed science equipment in the NPPO's laboratories" %}</label>
+                                           <div class="controls">
+                                            <div class="panel panel-default">
+                                            <div class="panel-body">
+                                                <table>
+                                                      <thead>
+                                                                    <tr>
+                                                                        <th colspan="4">{% trans "Weed Science Equipment" %}</th>					
+                                                                    </tr>
+                                                                    <tr>
+                                                                        <th style="width:50px">&#160;</th>
+                                                                        <th style="width:50px">{% trans "No. Available" %}</th>					
+                                                                        <th style="width:50px">{% trans "Quality (age, working condition, etc.)" %}</th>
+                                                                        <th style="width:50px">{% trans "Required Yes/No" %}</th>
+                                                                    </tr>
+                                                                </thead>
+
+
+                                                                {% for form in form43 %}
+                                                                <tr>{%if  forloop.counter == 1 %}
+                                                                <tr><td style="width:50px">{% trans "Autoclave" %}</td>
+                                                                    {%elif  forloop.counter == 2%}
+                                                                <tr><td style="width:50px">{% trans "Seed sampling equipment" %}</td>
+                                                                    {%elif  forloop.counter == 3%}
+                                                                <tr><td style="width:50px">{% trans "Herbarium facilities" %}</td>
+                                                                    {%elif  forloop.counter == 4%}
+                                                                <tr><td style="width:50px">{% trans "Centrifuge" %}</td>
+                                                                    {%elif  forloop.counter == 5%}
+                                                                <tr><td style="width:50px">{% trans "Laboratory glassware" %}</td>
+                                                                    {%elif  forloop.counter == 6%}
+                                                                <tr><td style="width:50px">{% trans "Illuminating magnifier" %}</td>
+                                                                    {%elif  forloop.counter == 7%}
+                                                                <tr><td style="width:50px">{% trans "Hot plates" %}</td>
+                                                                    {%elif  forloop.counter == 8%}
+                                                                <tr><td style="width:50px">{% trans "-20 degrees C freezer" %}</td>
+                                                                    {%elif  forloop.counter == 9%}
+                                                                <tr><td style="width:50px">{% trans "Laboratory chemicals" %}</td>
+                                                                    {%elif  forloop.counter == 10%}
+                                                                <tr><td style="width:50px">{% trans "Water bath" %}</td>
+                                                                    {%elif  forloop.counter == 11%}
+                                                                <tr><td style="width:50px">{% trans "Compound microscope" %}</td>
+                                                                    {%elif  forloop.counter == 12%}
+                                                                <tr><td style="width:50px">{% trans "Dissecting microscope" %}</td>
+                                                                    {%elif  forloop.counter == 13%}
+                                                                <tr><td style="width:50px">{% trans "Magnetic stirrer" %}</td>
+                                                                    {%elif  forloop.counter == 14%}
+                                                                <tr><td style="width:50px">{% trans "Microwave oven" %}</td>
+                                                                    {%elif  forloop.counter == 15%}
+                                                                <tr><td style="width:50px">{% trans "Dissection kits" %}</td>
+                                                                    {%elif  forloop.counter == 16%}
+                                                                <tr><td style="width:50px">{% trans "Cold light source" %}</td>
+                                                                    {%elif  forloop.counter == 17%}
+                                                                <tr><td style="width:50px">{% trans "Refrigerator" %}</td>
+
+                                                          
+                                                           {% endif %}
+                                                        {% for ff in form %}
+                                                        {%if not ff.label == 'Module7' and not ff.label == 'Delete' and not ff.label == 'Id'%}
+                                            
+                                                         <td> {% if ff.value == None or ff.value == 0 %}
+                                                                <input type="text" disabled="true" value="" class="zzz">
+                                                             {% else %}
+                                                                 {% if  ff.label == 'Required' %}
+                                                                    {% for key1,value1 in BOOL_CHOICESM_M %}
+                                                                       {%if   ff.value  == key1 %}
+                                                                            <input type="text" disabled="true" value="{{value1}}" class="zzz"/>
+                                                                      {% endif %}
+                                                                    {% endfor %} 
+                                                               {%else%}
+                                                                             <input type="text" disabled="true" value="{{ff.value}}" class="zzz"/>
+                                                                         
+                                                                {% endif %} {% endif %}
+                                                                
+                                                         
+                                                         
+                                                         </td>
+                                                         {% else %}{{ff.as_hidden}}
+                                                        {% endif %}    {% endfor %}
+                                                       </tr> 
+                                                
+                                                       {% endfor %} 
+                                                </table>  
+                                            </div>  
+                                            </div>
+                                          </div>  </div>
+                                       <div class="pcecomment">
+                                            <b>{% trans "Comment:" %}</b><br>  
+                                              {% for fff in form %}{%if fff.name == 'c_m_43'%}{{fff.value}}{%endif%}{%endfor%}
+                                            </div>  </td>
+                                        <td></td>
+                             
+                                     </tr>
+                                     {% elif f.name == 'm_44' %} 
+                                    
+                                           <tr>
+                                        <td>
+                                           <div class="control-group">
+                                           <label>{% trans "40. Fill in the matrix and use it as a guide of requirements of nematology equipment in the NPPO's laboratories" %}</label>
+                                           <div class="controls">
+                                              <div class="panel panel-default">
+                                            <div class="panel-body">
+                                                <table>
+                                                       <thead>
+                                                                    <tr>
+                                                                        <th colspan="4">{% trans "Nematology Equipment" %}</th>					
+                                                                    </tr>
+                                                                    <tr>
+                                                                        <th style="width:50px">&#160;</th>
+                                                                        <th style="width:50px">{% trans "No. Available" %}</th>					
+                                                                        <th style="width:50px">{% trans "Quality (age, working condition, etc.)" %}</th>
+                                                                        <th style="width:50px">{% trans "Required Yes/No" %}</th>
+                                                                    </tr>
+                                                                </thead>
+
+
+                                                                {% for form in form45 %}
+                                                                <tr>{%if  forloop.counter == 1 %}
+                                                                <tr>" %}</td>{% trans "Trays" %}</td>
+                                                                    {%elif  forloop.counter == 2%}
+                                                                <tr><td style="width:50px">{% trans "Laboratory glassware" %}</td>
+                                                                    {%elif  forloop.counter == 3%}
+                                                                <tr><td style="width:50px">{% trans "Magnetic stirrer" %}</td>
+                                                                    {%elif  forloop.counter == 4%}
+                                                                <tr><td style="width:50px">{% trans "Hot plates" %}</td>
+                                                                    {%elif  forloop.counter == 5%}
+                                                                <tr><td style="width:50px">{% trans "Micropipettes" %}</td>
+                                                                    {%elif  forloop.counter == 6%}
+                                                                <tr><td style="width:50px">{% trans "Laboratory chemicals" %}</td>
+                                                                    {%elif  forloop.counter == 7%}
+                                                                <tr><td style="width:50px">{% trans "Culture collection" %}</td>
+                                                                    {%elif  forloop.counter == 8%}
+                                                                <tr><td style="width:50px">{% trans "Autoclave" %}</td>
+                                                                    {%elif  forloop.counter == 9%}
+                                                                <tr><td style="width:50px">{% trans "Blender" %}</td>
+                                                                    {%elif  forloop.counter == 10%}
+                                                                <tr><td style="width:50px">{% trans "Soil corers" %}</td>
+                                                                    {%elif  forloop.counter == 11%}
+                                                                <tr><td style="width:50px">{% trans "Refrigerator" %}</td>
+                                                                    {%elif  forloop.counter == 12%}
+                                                                <tr><td style="width:50px">{% trans "Dissection kits" %}</td>
+                                                                    {%elif  forloop.counter == 13%}
+                                                                <tr><td style="width:50px">{% trans "-20 degree freezer" %}</td>
+                                                                    {%elif  forloop.counter == 14%}
+                                                                <tr><td style="width:50px">{% trans "Compound microscope" %}</td>
+                                                                    {%elif  forloop.counter == 15%}
+                                                                <tr><td style="width:50px">{% trans "Dissecting microscope" %}</td>
+                                                                    {%elif  forloop.counter == 16%}
+                                                                <tr><td style="width:50px">{% trans "Centrifuge" %}</td>
+                                                                    {%elif  forloop.counter == 17%}
+                                                                <tr><td style="width:50px">{% trans "Temperature incubators" %}</td>
+                                                                    {%elif  forloop.counter == 18%}
+                                                                <tr><td style="width:50px">{% trans "Water bath" %}</td>
+                                                                    {%elif  forloop.counter == 19%}
+                                                                <tr><td style="width:50px">{% trans "Nematode sieving apparatus" %}</td>
+                                                                    {%elif  forloop.counter == 20%}
+                                                                <tr><td style="width:50px">{% trans "Illuminated magnifier" %}</td>
+                                                                    {%elif  forloop.counter == 21%}
+                                                                <tr><td style="width:50px">{% trans "Nematode counting dishes" %}</td>
+                                                                    {%elif  forloop.counter == 22%}
+                                                                <tr><td style="width:50px">{% trans "Mist extraction apparatus" %}</td>
+                                                                    {%elif  forloop.counter == 23%}
+                                                                <tr><td style="width:50px">{% trans "Spades" %}</td>
+                                                                    {%elif  forloop.counter == 24%}
+                                                                <tr><td style="width:50px">{% trans "Microwave oven" %}</td>
+                                                                    {%elif  forloop.counter == 25%}
+                                                                <tr><td style="width:50px">{% trans "Nematode extraction funnels" %}</td>
+                                                                    {%elif  forloop.counter == 26%}
+                                                                <tr><td style="width:50px">{% trans "Cold light source" %}</td>
+
+
+                                                     
+                                                           {% endif %}
+                                                        {% for ff in form %}
+                                                        {%if not ff.label == 'Module7' and not ff.label == 'Delete' and not ff.label == 'Id'%}
+                                            
+                                                         <td> {% if ff.value == None or ff.value == 0 %}
+                                                                <input type="text" disabled="true" value="" class="zzz">
+                                                             {% else %}
+                                                                 {% if  ff.label == 'Required' %}
+                                                                    {% for key1,value1 in BOOL_CHOICESM_M %}
+                                                                       {%if   ff.value  == key1 %}
+                                                                            <input type="text" disabled="true" value="{{value1}}" class="zzz"/>
+                                                                      {% endif %}
+                                                                    {% endfor %} 
+                                                               {%else%}
+                                                                             <input type="text" disabled="true" value="{{ff.value}}" class="zzz"/>
+                                                                         
+                                                                {% endif %} {% endif %}
+                                                                
+                                                         
+                                                         
+                                                         </td>
+                                                         {% else %}{{ff.as_hidden}}
+                                                        {% endif %}    {% endfor %}
+                                                       </tr> 
+                                                
+                                                       {% endfor %} 
+                                                </table>  
+                                            </div>  
+                                            </div>
+                                          </div>  </div>
+                                       <div class="pcecomment">
+                                            <b>{% trans "Comment:" %}</b><br>  
+                                              {% for fff in form %}{%if fff.name == 'c_m_45'%}{{fff.value}}{%endif%}{%endfor%}
+                                            </div>  </td>
+                                        <td></td>
+                             
+                                     </tr>
+                                     {% elif f.name == 'm_57' %} 
+                                     <tr class="success">
+                                        <td colspan="2"><b>{% trans "J. Phytosanitary emergency response capacity" %}</b></td>
+                                     </tr>{% elif f.name == 'm_60' %} 
+                                     <tr class="success">
+                                        <td colspan="2"><b>{% trans "Section III - NPPO pest diagnostic perfomance" %}</b></td>
+                                     </tr>
+                                    {% endif %}
+                                  
+                                    {% endif %}
+                                    {% endfor%}
+                                    <tr class="success">
+                                       <td colspan="2"><b>{% trans "Section IV - Main weaknesses" %}</b></td>
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                             <div class="control-group">
+                                                <label>{% trans "1. Please identify a maximum of five of the main weaknesses of the NPPO's pest diagnostic capacity(in priority order 1 = HIGHEST)." %}</label>
+                                           <div class="controls"> 
+                                               
+                                            {% for form in form69 %}
+                                            <div class="panel panel-default">
+                                                <div class="panel-body">
+                                                    {% for ff in form %}
+                                                    {%if not ff.label == 'Module7' and not ff.label == 'Delete' and not ff.label == 'Id'%}
+                                                    {{ff.label}}  {% if ff.value == None %}
+                                                                <input type="text" disabled="true" value="" class="zzz">
+                                                                {% else %}
+                                                                      <input type="text" disabled="true" value="{{ff.value}}" class="zzz">
+                                                                {% endif %}<br>   {% else %}{{ff.as_hidden}}
+                                                    {% endif %}
+                                                    {% endfor %}
+                                                </div></div>
+                                            {% endfor %}   </div>
+                                            </div>
+                                       <div class="pcecomment">
+                                            <b>{% trans "Comment:" %}</b><br>  
+                                              {% for fff in form %}{%if fff.name == 'c_m_69'%}{{fff.value}}{%endif%}{%endfor%}
+                                            </div>  </td>
+                                        <td></td>
+                                    </tr>
+                            
+                                </tbody>        
+                            </table>
+                                <div class="form-actions">
+                             {% nevercache %}
+            {% include "pce/goto_pa_block.html" %}
+            {% endnevercache %}    <a class="btn btn-large btn-info" href="javascript:window.print();">{% trans "PRINT" %}</a>
+                             
+{% if id != ''%}            
+    <a class="btn btn-large btn-info" href="/pce/{{ user.get_profile.country.name|slugify }}/{{sessionid}}/module{{module}}/pdf/{{id}}">{% trans "Export as PDF" %}</a>
+{% else%}            
+    <a class="btn btn-large btn-info" href="/pce/{{ user.get_profile.country.name|slugify }}/{{sessionid}}/module{{module}}/pdf_empty/">{% trans "Export as PDF" %}</a>
+  {% endif %}       </div>        
+                             </fieldset>
+                       
+                        </div>
+
+                    </div>      
+                    </div>
+
+</div> {% else %}{% nevercache %}
+            {% include "pce/permission_block.html" %}
+            {% endnevercache %}
+
+{% endif %}
+{% endblock %}
+

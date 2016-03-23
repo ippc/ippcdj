@@ -1,0 +1,110 @@
+{% extends 'pce/basepcepdf.html' %}
+{% load module_extras %}
+{% load pages_tags translate_tags mezzanine_tags i18n future staticfiles accounts_tags %}
+
+{% block content %}
+<div id="content">
+
+    <h5> {% trans "Stakeholders - Module" %} {{module}}</h5>
+
+    {% include "pce/userdetails_panel.html" %} </th>  
+
+<br><br>
+<table class="table">
+    <thead>
+        <tr class="success">
+            <th>{% trans "First Name" %}</th>
+            <th>{% trans "Last Name" %}</th>
+            <th>{% trans "Email" %}</th>
+            <th>{% trans "Organisation/division" %}</th>
+            <th>{% trans "Metadata" %}</th>
+        </tr>
+    </thead>
+    <tbody>
+{% if latest %}
+
+        {% for object in latest %}
+        <tr> 
+            <td>{{object.firstname}}</td>
+            <td>{{object.lastname}}</td>
+            <td>{{object.email}}</td>
+            <td>{{object.organisation}}</td>
+            <td><b>{% trans "Role" %}:</b>
+                {% if object.role != None and object.role != 0%}
+                {% for key, val in roles %}
+                {% ifequal key object.role %}
+                {{val}}    
+                {% endifequal %}
+                {% endfor %}  
+                {% endif %} 
+                <br>
+                <b>{% trans "Interest" %}:</b>
+                {% if object.interest != None and object.interest != 0%}
+                {% for key, val in interests %}
+                {% ifequal key object.interest %}
+                {{val}}    
+                {% endifequal %}
+                {% endfor %}  
+                {% endif %} <br>
+                <b>{% trans "Influence" %}:</b>
+                {% if object.influence != None and object.influence != 0%}
+                {% for key, val in influences %}
+                {% ifequal key object.influence %}
+                {{val}}    
+                {% endifequal %}
+                {% endfor %}
+                {% endif %} <br>
+                <b>{% trans "Level" %}:</b>
+                {% if object.level != None and object.level != 0%}
+                {% for key, val in levels %}
+                {% ifequal key object.level %}
+                {{val}}    
+                {% endifequal %}
+                {% endfor %}
+                {% endif %} </td> 
+        </tr>  
+        {% endfor %}  
+    
+{% else %}
+
+    {% for i in loop_times %}
+        <tr> 
+            <td><input type="text"/></td>
+            <td><input type="text"/></td>
+            <td><input type="text"/></td>
+            <td><input type="text"/></td>
+            <td><b>{% trans "Role" %}:</b>
+                <ul>
+                {% for key, val in roles %}
+                {% if key != 0 %}
+               <li>{{val}}</li> 
+                {% endif %}
+                {% endfor %}  
+                </ul>
+                <b>{% trans "Interest" %}:</b>
+                <ul> {% for  key,val in interests %}
+               {% if key != 0 %}  <li>{{val}}</li> 
+                {% endif %} 
+                {% endfor %}  
+                </ul>
+                <b>{% trans "Influence" %}:</b>
+                <ul> {% for  key,val in influences %}
+               {% if key != 0 %}  <li>{{val}}</li> 
+                {% endif %}
+                {% endfor %}  
+               </ul>
+                <b>{% trans "Level" %}:</b>
+                <ul> {% for  key,val in levels %}
+                {% if key != 0 %} <li>{{val}}</li>  
+                {% endif %}
+                {% endfor %} </ul>  
+                 </td> 
+        </tr>  
+        {% endfor %}  
+
+{% endif %}
+
+    </tbody>
+</table> 
+</div>
+{% endblock %}

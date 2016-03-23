@@ -1,0 +1,299 @@
+{% extends "pce/basepce.html" %}
+{% load pages_tags translate_tags mezzanine_tags i18n future staticfiles accounts_tags %}
+
+{% block meta_title %}{% trans "Module 3  -  Environmental forces assessment" %} - {{ user.get_profile.country.name}} {% endblock %}
+
+{% block body_class %}wide{% endblock %}
+
+{% block breadcrumb_menu %}
+<li>
+    <a href="/pce/{{ user.get_profile.country.name }}/sessions">{% trans "PCE Home" %}</a>
+    <span class="divider">/</span>
+</li>
+<li>
+    <a href="/pce/{{ user.get_profile.country.name|slugify }}/session/dashboard/{{sessionid}}">  {% trans "PCE Dashboard for" %} {{ user.get_profile.country.name }}</a>
+    <span class="divider">/</span>
+<li>
+<li class="active">{% trans "Module 1  - Country Profile" %}</li>
+{% endblock %}
+
+{% block local_nav %}
+{% endblock local_nav %}
+
+{% block pageinfo %}
+{% endblock pageinfo %}
+
+{% block main %}
+<script type="text/javascript">
+window.onload = function () {
+    checkRules();
+}
+function checkRules()
+{
+    document.getElementById('id_m_6').disabled=document.getElementById('id_m_5_2').checked;
+    document.getElementById('id_m_7').disabled=document.getElementById('id_m_5_2').checked;
+    if (document.getElementById('id_m_5_2').checked){
+       document.getElementById('id_m_6').value=""
+       document.getElementById('id_m_7').value=""
+    }
+    document.getElementById('id_m_30').disabled=document.getElementById('id_m_29_2').checked;
+    if (document.getElementById('id_m_29_2').checked){
+       document.getElementById('id_m_30').value=""
+       
+    }
+    
+}
+</script>
+
+<h1><span class="normal">{% trans "Module 3  -  Environmental forces assessment" %}</span></h1>
+{% if can_edit %}
+   
+<p><a href="/pce/{{ user.get_profile.country.name|slugify }}/session/{{sessionid}}/modules"><< {% trans "Back to Module List" %}</a></p>
+
+
+<div class="row-fluid">
+    <div class="span8">
+     {% include "pce/tools_panel.html" %} 
+    </div>
+    {% include "pce/userdetails_panel.html" %} 
+     
+    <div class="row-fluid">
+        <div class="span12">
+            <div class="panel panel-info">
+                <div  class="alert alert-success" role="alert">
+                    <h3 class="panel-title"> {% trans "Environmental forces assessment" %}</h3>
+                </div>
+                <div class="panel-body">
+                    <p class="alert alert-warning">{% trans "The NPPO's external environment can have both facilitating and inhibiting influences on its internal operations and organizational performance. Those influences shape how the organization defines itself and how it establishes its goals, vision and objectives. Administrative/legal, technological, political, economic, social and cultural context, the demands and needs of external clients and stakeholders, and the relations with other pertinent institutions are all key aspects of the environment that impact the operations of the NPPO." %}</p>
+                    <form class="customform" method="POST" action="" enctype="multipart/form-data">
+                        {% csrf_token %}
+                        <fieldset>{{form.errors}}
+                            {% if form.non_field_errors or form.errors %}
+                            <div class="alert alert-error">{% trans "Please correct the errors below." %}
+                                <ul>
+                                    {% for error in form.non_field_errors %}
+                                    <li>{{ error }}</li>
+                                    {% endfor %}
+                                    {% for error in form.errors %}
+                                    <li>{{ error }}</li>
+                                    {% endfor %}
+                                </ul>
+                            </div>
+                            {% endif %}
+                            {#% fields_for form %#}
+                            <table class="table">
+                               
+                                     <tr class="success">
+                                         <td colspan="2"><b>{% trans "A.	The policy and legal framework environment" %}</b></td>
+                                    </tr>
+                                    <tr class="success">
+                                        <th>{% trans "No. Question" %}</th>
+                                        <th>{% trans "Tip" %}</th>
+                                    </tr>
+                               
+                                <tbody>
+                                    {% for f in form %}
+                                    {% if not f.is_hidden and not f.name == 'c_m_1' and not f.name == 'c_m_2' and not f.name == 'c_m_3' and not f.name == 'c_m_4' and not f.name == 'c_m_5' and not f.name == 'c_m_6' and not f.name == 'c_m_7' and not f.name == 'c_m_8' and not f.name == 'c_m_9' and not f.name == 'c_m_10' and not f.name == 'c_m_11' and not f.name == 'c_m_12' and not f.name == 'c_m_13' and not f.name == 'c_m_14' and not f.name == 'c_m_15' and not f.name == 'c_m_16' and not f.name == 'c_m_17' and not f.name == 'c_m_18' and not f.name == 'c_m_19' and not f.name == 'c_m_20' and not f.name == 'c_m_21' and not f.name == 'c_m_22' and not f.name == 'c_m_23' and not f.name == 'c_m_24' and not f.name == 'c_m_25' and not f.name == 'c_m_26' and not f.name == 'c_m_27' and not f.name == 'c_m_28' and not f.name == 'c_m_29' and not f.name == 'c_m_30' and not f.name == 'c_m_31' and not f.name == 'c_m_32' and not f.name == 'c_m_33' %}
+                                    <tr>
+                                        <td>
+                                            <div class="control-group">
+                                                <label>{{f.label|safe}}</label>
+                                                <div class="controls">
+                                                       {%if f.name == 'm_4' or f.name == 'm_5' or f.name == 'm_21' or f.name == 'm_25' or f.name == 'm_26' or f.name == 'm_27' or f.name == 'm_28' or f.name == 'm_29' %}
+                                                    <ul>
+                                                    <li>
+                                                        <label for="id_{{f.name}}_1" class="control-label">
+                                                        <input id="id_{{f.name}}_1" name ="{{f.name}}" type="radio" value="True" {% if f.value == True %}checked{%endif%} onclick="checkRules();"> {% trans "Yes" %}</label>
+                                                    </li>
+                                                    <li> 
+                                                       <label for="id_{{f.name}}_2" class="control-label">
+                                                       <input id="id_{{f.name}}_2" name ="{{f.name}}" type="radio" value="False" {% if f.value == False %}checked{%endif%} onclick="checkRules();"> {% trans "No" %}</label>
+                                                    </li>
+                                                    </ul>                                                   
+                                                    {%else%}
+                                                    {{f}}
+                                                      {% endif %}
+                                                </div>
+                                            </div>
+                                              <a href="#{{f.name}}" onclick="javascript:toggle_visibility('c_{{f.name}}');">{% trans "add comment" %}</a>
+                                            <div id="c_{{f.name}}" style="display:none;">       
+
+{%if f.name == 'm_1' %}{% for fff in form %}{%if fff.name == 'c_m_1'%}<textarea class="zzz"  id="id_c_{{f.name}}" name="c_{{f.name}}">{{fff.value}}</textarea>{%endif%}{%endfor%}{%endif%}
+{%if f.name == 'm_2' %}{% for fff in form %}{%if fff.name == 'c_m_2'%}<textarea class="zzz"  id="id_c_{{f.name}}" name="c_{{f.name}}">{{fff.value}}</textarea>{%endif%}{%endfor%}{%endif%}
+{%if f.name == 'm_3' %}{% for fff in form %}{%if fff.name == 'c_m_3'%}<textarea class="zzz"  id="id_c_{{f.name}}" name="c_{{f.name}}">{{fff.value}}</textarea>{%endif%}{%endfor%}{%endif%}
+{%if f.name == 'm_4' %}{% for fff in form %}{%if fff.name == 'c_m_4'%}<textarea class="zzz"  id="id_c_{{f.name}}" name="c_{{f.name}}">{{fff.value}}</textarea>{%endif%}{%endfor%}{%endif%}
+{%if f.name == 'm_5' %}{% for fff in form %}{%if fff.name == 'c_m_5'%}<textarea class="zzz"  id="id_c_{{f.name}}" name="c_{{f.name}}">{{fff.value}}</textarea>{%endif%}{%endfor%}{%endif%}
+{%if f.name == 'm_6' %}{% for fff in form %}{%if fff.name == 'c_m_6'%}<textarea class="zzz"  id="id_c_{{f.name}}" name="c_{{f.name}}">{{fff.value}}</textarea>{%endif%}{%endfor%}{%endif%}
+{%if f.name == 'm_7' %}{% for fff in form %}{%if fff.name == 'c_m_7'%}<textarea class="zzz"  id="id_c_{{f.name}}" name="c_{{f.name}}">{{fff.value}}</textarea>{%endif%}{%endfor%}{%endif%}
+{%if f.name == 'm_8' %}{% for fff in form %}{%if fff.name == 'c_m_8'%}<textarea class="zzz"  id="id_c_{{f.name}}" name="c_{{f.name}}">{{fff.value}}</textarea>{%endif%}{%endfor%}{%endif%}
+{%if f.name == 'm_9' %}{% for fff in form %}{%if fff.name == 'c_m_9'%}<textarea class="zzz"  id="id_c_{{f.name}}" name="c_{{f.name}}">{{fff.value}}</textarea>{%endif%}{%endfor%}{%endif%}
+{%if f.name == 'm_10' %}{% for fff in form %}{%if fff.name == 'c_m_10'%}<textarea class="zzz"  id="id_c_{{f.name}}" name="c_{{f.name}}">{{fff.value}}</textarea>{%endif%}{%endfor%}{%endif%}
+{%if f.name == 'm_11' %}{% for fff in form %}{%if fff.name == 'c_m_11'%}<textarea class="zzz"  id="id_c_{{f.name}}" name="c_{{f.name}}">{{fff.value}}</textarea>{%endif%}{%endfor%}{%endif%}
+{%if f.name == 'm_12' %}{% for fff in form %}{%if fff.name == 'c_m_12'%}<textarea class="zzz"  id="id_c_{{f.name}}" name="c_{{f.name}}">{{fff.value}}</textarea>{%endif%}{%endfor%}{%endif%}
+{%if f.name == 'm_13' %}{% for fff in form %}{%if fff.name == 'c_m_13'%}<textarea class="zzz"  id="id_c_{{f.name}}" name="c_{{f.name}}">{{fff.value}}</textarea>{%endif%}{%endfor%}{%endif%}
+{%if f.name == 'm_14' %}{% for fff in form %}{%if fff.name == 'c_m_14'%}<textarea class="zzz"  id="id_c_{{f.name}}" name="c_{{f.name}}">{{fff.value}}</textarea>{%endif%}{%endfor%}{%endif%}
+{%if f.name == 'm_15' %}{% for fff in form %}{%if fff.name == 'c_m_15'%}<textarea class="zzz"  id="id_c_{{f.name}}" name="c_{{f.name}}">{{fff.value}}</textarea>{%endif%}{%endfor%}{%endif%}
+{%if f.name == 'm_16' %}{% for fff in form %}{%if fff.name == 'c_m_16'%}<textarea class="zzz"  id="id_c_{{f.name}}" name="c_{{f.name}}">{{fff.value}}</textarea>{%endif%}{%endfor%}{%endif%}
+{%if f.name == 'm_17' %}{% for fff in form %}{%if fff.name == 'c_m_17'%}<textarea class="zzz"  id="id_c_{{f.name}}" name="c_{{f.name}}">{{fff.value}}</textarea>{%endif%}{%endfor%}{%endif%}
+{%if f.name == 'm_18' %}{% for fff in form %}{%if fff.name == 'c_m_18'%}<textarea class="zzz"  id="id_c_{{f.name}}" name="c_{{f.name}}">{{fff.value}}</textarea>{%endif%}{%endfor%}{%endif%}
+{%if f.name == 'm_19' %}{% for fff in form %}{%if fff.name == 'c_m_19'%}<textarea class="zzz"  id="id_c_{{f.name}}" name="c_{{f.name}}">{{fff.value}}</textarea>{%endif%}{%endfor%}{%endif%}
+{%if f.name == 'm_20' %}{% for fff in form %}{%if fff.name == 'c_m_20'%}<textarea class="zzz"  id="id_c_{{f.name}}" name="c_{{f.name}}">{{fff.value}}</textarea>{%endif%}{%endfor%}{%endif%}
+{%if f.name == 'm_21' %}{% for fff in form %}{%if fff.name == 'c_m_21'%}<textarea class="zzz"  id="id_c_{{f.name}}" name="c_{{f.name}}">{{fff.value}}</textarea>{%endif%}{%endfor%}{%endif%}
+{%if f.name == 'm_22' %}{% for fff in form %}{%if fff.name == 'c_m_22'%}<textarea class="zzz"  id="id_c_{{f.name}}" name="c_{{f.name}}">{{fff.value}}</textarea>{%endif%}{%endfor%}{%endif%}
+{%if f.name == 'm_23' %}{% for fff in form %}{%if fff.name == 'c_m_23'%}<textarea class="zzz"  id="id_c_{{f.name}}" name="c_{{f.name}}">{{fff.value}}</textarea>{%endif%}{%endfor%}{%endif%}
+{%if f.name == 'm_24' %}{% for fff in form %}{%if fff.name == 'c_m_24'%}<textarea class="zzz"  id="id_c_{{f.name}}" name="c_{{f.name}}">{{fff.value}}</textarea>{%endif%}{%endfor%}{%endif%}
+{%if f.name == 'm_25' %}{% for fff in form %}{%if fff.name == 'c_m_25'%}<textarea class="zzz"  id="id_c_{{f.name}}" name="c_{{f.name}}">{{fff.value}}</textarea>{%endif%}{%endfor%}{%endif%}
+{%if f.name == 'm_26' %}{% for fff in form %}{%if fff.name == 'c_m_26'%}<textarea class="zzz"  id="id_c_{{f.name}}" name="c_{{f.name}}">{{fff.value}}</textarea>{%endif%}{%endfor%}{%endif%}
+{%if f.name == 'm_27' %}{% for fff in form %}{%if fff.name == 'c_m_27'%}<textarea class="zzz"  id="id_c_{{f.name}}" name="c_{{f.name}}">{{fff.value}}</textarea>{%endif%}{%endfor%}{%endif%}
+{%if f.name == 'm_28' %}{% for fff in form %}{%if fff.name == 'c_m_28'%}<textarea class="zzz"  id="id_c_{{f.name}}" name="c_{{f.name}}">{{fff.value}}</textarea>{%endif%}{%endfor%}{%endif%}
+{%if f.name == 'm_29' %}{% for fff in form %}{%if fff.name == 'c_m_29'%}<textarea class="zzz"  id="id_c_{{f.name}}" name="c_{{f.name}}">{{fff.value}}</textarea>{%endif%}{%endfor%}{%endif%}
+{%if f.name == 'm_30' %}{% for fff in form %}{%if fff.name == 'c_m_30'%}<textarea class="zzz"  id="id_c_{{f.name}}" name="c_{{f.name}}">{{fff.value}}</textarea>{%endif%}{%endfor%}{%endif%}
+{%if f.name == 'm_31' %}{% for fff in form %}{%if fff.name == 'c_m_31'%}<textarea class="zzz"  id="id_c_{{f.name}}" name="c_{{f.name}}">{{fff.value}}</textarea>{%endif%}{%endfor%}{%endif%}
+{%if f.name == 'm_32' %}{% for fff in form %}{%if fff.name == 'c_m_32'%}<textarea class="zzz"  id="id_c_{{f.name}}" name="c_{{f.name}}">{{fff.value}}</textarea>{%endif%}{%endfor%}{%endif%}
+{%if f.name == 'm_33' %}{% for fff in form %}{%if fff.name == 'c_m_33'%}<textarea class="zzz"  id="id_c_{{f.name}}" name="c_{{f.name}}">{{fff.value}}</textarea>{%endif%}{%endfor%}{%endif%}
+                   </div>                   
+                            
+                                        </td>
+                                        <td>{{f.help_text|safe}}</td>
+                                    </tr>
+                                    <!--                   -->
+                                     {% if f.name == 'm_13' %} 
+                                     <tr class="success">
+                                        <td colspan="2"><b>{% trans "B. Infrastructural environment<br>Both the types and the level of infrastructure available in the country has a big impact on the NPPO 's capacity to execute its mandate. Institutions are dependent on the state of national infrastructure, e.g. power, water, transport and communications." %}</b></td>
+                                     </tr>
+                                     {% elif f.name == 'm_14' %} 
+                                     <tr class="success">
+                                         <td colspan="2"><b>{% trans "C. Political/economic environment<br>This section explores the relationship between national strategy or development plans and the NPPO. It explores the specific dimensions of the political context and the extent to which government supports and contributes resources to the institution; the extent to which the political system is stable, the extent to which the political context of the institution gives due regard to the legal context and the extent to which the economic environment impacts on the NPPOs performance." %}</b></td>
+                                     </tr>
+                                     {% elif f.name == 'm_16' %} 
+                                     <tr class="success">
+                                         <td colspan="2"><b>{% trans "D. Social and cultural environment<br>Social and cultural environment comprised of local, national, and often regional dimensions have a profound influence on the impact and outcomes of the NPPO 's work." %}</b></td>
+                                    </tr> 
+                                    {% elif f.name == 'm_20' %} 
+                                    <tr class="success">
+                                         <td colspan="2"><b>{% trans "E. Stakeholder environment<br>Although NPPOs tend to be driven by their mission and the process of achieving it, all organizations are dependent for their survival on various groups of stakeholders. The stakeholder environment consists of those people and organizations external to the NPPO who are directly concerned with the organization and its performance" %}</b></td>
+                                    </tr>
+                                    {% elif f.name == 'm_24' %} 
+                                    <tr class="success">
+                                        <td colspan="2"><b>{% trans "F. International environment" %}</b></td>
+                                    </tr>
+                                    {% elif f.name == 'm_30' %} 
+                                    <tr class="success">
+                                         <td colspan="2"><b>{% trans "G. Structural phytosanitary risk factors" %}</b></td>
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                           <div class="control-group">
+                                           <label>{% trans "28. Indicate the importance of the following pathways in terms of potential for entry of regulated pests into the country:" %}</label>
+                                           <div class="controls">
+                                            {{ form31.management_form }}
+                                            {{ form31.non_form_errors }}
+                                            <div class="panel panel-default">
+                                            <div class="panel-body">
+                                                <table>
+                                                    <thead>
+                                                        <th>&#160;</th>					
+                                                        <th>{% trans "Very low" %}</th>
+                                                        <th>{% trans "Low" %}</th>
+                                                        <th>{% trans "Medium" %}</th>
+                                                        <th>{% trans "High" %}</th>
+                                                        <th>{% trans "Very high" %}</th>
+                                                    </thead>
+                                                    <tbody>
+                                                    {% for form in form31 %}
+                                                       <tr> {%if  forloop.counter == 1 %}
+                                                           <td>{% trans "Natural spread" %}</td>
+                                                            {%elif  forloop.counter == 2 %}
+                                                           <td>{% trans "Research samples" %}</td>
+                                                            {%elif  forloop.counter == 3 %}
+                                                           <td>{% trans "Plants for planting" %}</td>
+                                                            {%elif  forloop.counter == 4 %}
+                                                           <td>{% trans "Plant products" %}</td>
+                                                            {%elif  forloop.counter == 5 %}
+                                                           <td>{% trans "Packing material" %}</td>
+                                                            {%elif  forloop.counter == 6 %}
+                                                           <td>{% trans "Containers" %}</td>
+                                                            {%elif  forloop.counter == 7 %}
+                                                           <td>{% trans "Passenger effects including Luggage" %}</td>
+                                                            {%elif  forloop.counter == 8 %}
+                                                           <td>{% trans "Vehicles (including equipment for agricultural purposes)" %}</td>
+                                                            {%elif  forloop.counter == 9 %}
+                                                           <td>{% trans "Aircraft and vessel garbage" %}</td>
+                                                            {%elif  forloop.counter == 10 %}
+                                                           <td>{% trans "Mail (including courier)" %}</td>
+                                                           
+                                                           {% endif %}
+                                                        {% for ff in form %}
+                                                        {%if not ff.label == 'Module3' and not ff.label == 'Delete' and not ff.label == 'Id'%}
+                                            
+                                                         <td> {{ff}}</td>
+                                                         {% else %}{{ff.as_hidden}}
+                                                        {% endif %}    {% endfor %}
+                                                       </tr> 
+                                                    </tbody> 
+                                                       {% endfor %} 
+                                                </table>  
+                                            </div>  
+                                            </div>
+                                          </div>  </div>
+                                             <a href="#id_28" onclick="javascript:toggle_visibility('c_m_28');">{% trans "add comment" %}</a>
+                                            <div id="c_m_28" style="display:none;">
+                                            {% for fff in form %}{%if fff.name == 'c_m_28'%}<textarea class="zzz"  id="id_c_m_28" name="c_m_28">{{fff.value}}</textarea>{%endif%}{%endfor%}
+                                            </div>
+                                        </td>
+                                        <td></td>
+                                    </tr>
+                                    {% endif %}
+                                    <!---------------------------->
+                                    {% endif %}
+                                    {% endfor%}
+                                    <tr class="success">
+                                       <td colspan="2"><b>{% trans "Section H - Weaknesses" %}</b></td>
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                             <div class="control-group">
+                                                <label>{% trans "1. Please list a maximum of five of the most critical weaknesses of the phytosanitary legislation in order of priority (1 = Highest)" %}</label>
+                                           <div class="controls"> {{ form33.management_form }}
+                                            {{ form33.non_form_errors }}
+                                            {% for form in form33 %}
+                                            <div class="panel panel-default">
+                                                <div class="panel-body">
+                                                    {% for ff in form %}
+                                                    {%if not ff.label == 'Module3' and not ff.label == 'Delete' and not ff.label == 'Id'%}
+                                                    {{ff.label}} {{ff}}<br>   {% else %}{{ff.as_hidden}}
+                                                    {% endif %}
+                                                    {% endfor %}
+                                                </div></div>
+                                            {% endfor %}   </div>
+                                            </div>
+                                              <a href="#id_33" onclick="javascript:toggle_visibility('c_m_33');">{% trans "add comment" %}</a>
+                                            <div id="c_m_33" style="display:none;">
+                                            {% for fff in form %}{%if fff.name == 'c_m_33'%}<textarea class="zzz"  id="id_c_m_33" name="c_m_33">{{fff.value}}</textarea>{%endif%}{%endfor%}
+                                            </div>
+                                        </td>
+                                        <td></td>
+                                    </tr>
+                                       </tbody>        
+                            </table>
+                            <div class="form-actions">
+                                <a class="btn btn-small btn-info" href="javascript:history.go(-1)">{% trans "Close" %}</a>
+                                <button type="submit" class="btn btn-info btn-large" tabindex="7" value="save">{% trans "Save" %}</button>
+                               {% nevercache %}
+            {% include "pce/goto_pa_block.html" %}
+            {% endnevercache %}          <span class="pull-right">     <a class="btn btn-large btn-info" href="javascript:window.print();" >{% trans "PRINT" %}</a></span> 
+                  </div>
+                            </fieldset>
+                        </form>
+                        </div>
+
+                    </div>      
+                    </div>
+
+</div> {% else %}{% nevercache %}
+            {% include "pce/permission_block.html" %}
+            {% endnevercache %}
+
+{% endif %}
+{% endblock %}
+
