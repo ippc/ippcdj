@@ -69,7 +69,7 @@
        <th>{% trans "Report files" %}</th>
        <th>{% trans "Publication Date" %}</th>
        <th>{% trans "Last Updated" %}</th>
-       <th>{% trans "To verify" %}</th>
+
        <th>&#160;</th>
      </tr>
      
@@ -92,15 +92,7 @@
      </td>
       <td>{{ object.publication_date|date:"d M Y" }}</td>
       <td>{{ object.modify_date|date:"d M Y" }}</td>
-      <td>
-          {% if object.to_verify %}
-             <p style="color:red"><b>{% trans "to be verified" %}</b></p>
-          {% else %}
-                {% if  object.verified_date != '' %}
-                  <p style="color:green"> <b>{% trans "verified on " %}{{object.verified_date|date:"d M Y"}}</p>
-                {% endif %}
-          {% endif %}
-      </td>
+     
       <td>
         {% if user.is_superuser %} 
             <a class="small pull-right" href="/admin/ippc/reportingobligation/{{ object.id }}"><i class="icon-edit"></i> Edit as Admin</a><br>

@@ -97,22 +97,6 @@
   </dd>
   {% endif %}
   
-{% if reportingobligation.to_verify %}
- <dt>&#160;</dt>   
- <dd> 
-    <p style="color:red"><b>{% trans "data to be verified" %}</b>
-    {% if perms.ippc.change_reportingobligation and request.user.get_profile.country.name == page.title %}
-        <a class="btn btn-small btn-info" href="{% url 'reporting-obligation-validate' reportingobligation.country.name|slugify reportingobligation.id %}"><i class="icon-edit icon-white"></i> {% trans "click here to VALIDATE" %}</a>
-    {% endif %}
-    </p>
-</dd>
-{% endif %}
-{% if reportingobligation.to_verify == 0 and reportingobligation.verified_date != '' %}
-<dt>&#160;</dt>   
-<dd> 
-    <p style="color:green"> <b>{% trans "data verified on " %}{{reportingobligation.verified_date}}</b></p>
- </dd>
-{% endif %}
 
 {% if reportingobligation.publication_date %}
   <dt>{% trans "Publication Date" %}</dt>
