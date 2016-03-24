@@ -110,7 +110,7 @@ def add_toStakeholders(user,modulenum,pceversionid,fname,lname,email):
 
     stake_f.save()
     
-def check_and_addUser(firstname,lastname,email,grp,num,country):    
+def check_and_addUser(firstname,lastname,email,grp,num,country,user_country_slug):    
     if grp == 'PCE Editor ':
         grp_name=grp+str(num)
     else: 
@@ -142,16 +142,43 @@ def check_and_addUser(firstname,lastname,email,grp,num,country):
         
         user_email = []
         user_email.append(email)
-      
-          
-        msg='Please go to reset your password to set a password.'
-        subject='A PCE account has been created for you.'  
+        msg=''
+        subject='' 
+        if grp == 'PCE Editor ':
+            subject='A PCE Editor account has been created for you.'  
+            msg='A PCE account as Editor for '+user_country_slug+' has been created for you. Please go here https://www.ippc.int/en/account/password/reset/?next=/en/account/update/ to reset your password.<br> You can start using PCE at https://wwww.ippc.int/pce .<br><br>'
+            if num == 1:
+                msg=msg+'You are an editor of:<br>Module1: Country Profile<br>Module3: Environmental Forces Modules'
+            if num == 2:
+                msg=msg+'Module2 :National Phytosanitary Legislation Module'
+            if num == 3:
+                msg=msg+"You are an editor of:<br>Module 4: NPPO's mission and strategy<br>Module 5: NPPO's Structure and Processes<br>Module 6: NPPO's Resources"
+            if num == 4:
+                msg=msg+'You are an editor of:<br>Module 7: Pest Diagnostic Capacity Module'
+            if num == 5:
+                msg=msg+'You are an editor of:<br>Module 8: Pest Surveillance and Reporting Module'
+            if num == 6:
+                msg=msg+'You are an editor of:<br>Module 9: Pest Eradication Module'
+            if num == 7:
+                msg=msg+'You are an editor of:<br>Module 10: PHYTOSANITARY IMPORT REGULATORY SYSTEM<br>Module 11: PEST RISK ANALYSIS'
+            if num == 8:
+                msg=msg+'You are an editor of:<br>Module 12: Market Access PEST FREE AREAS, PLACES AND SITES, LOW PEST PREVALENCE AREAS<br>Module 13: EXPORT CERTIFICATION, RE-EXPORT, TRANSIT'
+        else:
+            subject='A PCE Facilitator account has been created for you.'  
+            msg='<p>A <b>PCE account</b> as Facilitator for <b>'+user_country_slug+'</b> has been created for you. <br>Please go here https://www.ippc.int/en/account/password/reset/?next=/en/account/update/ to reset your password.<br>After setting your password, you will be able to log in at PCE at https://wwww.ippc.int/pce <br><br>Thanks'
+            
+       
         message = mail.EmailMessage(subject,msg,'ippc@fao.org', user_email, ['paola.sentinelli@fao.org'])
         message.content_subtype = "html"
         sent =0
         try:
             sent =message.send()
         except:
+            msg1='Please go to reset your password to set a password.'
+            subject1='ERROR creating a A PCE account has been created for: '+user_email  
+            message1 = mail.EmailMessage(subject1,msg1,'ippc@fao.org', ['paola.sentinelli@fao.org'], ['paola.sentinelli@fao.org'])
+            message1.content_subtype = "html"
+            message1.send()
             print('ERROR sending')
                         
 def canEdit(sessionid,country,user,module):
@@ -2792,15 +2819,13 @@ def pceversion_create(request, country):
             new_pceversion.version_number=pceumber
             new_pceversion.author_id = author.id
             form.save()
-            
+           
             g1=Group.objects.get(name='PCE Facilitator')
-            print(request.POST['is_facilitated'])
-            if request.POST['is_facilitated']==True:
-                print('aaaaaaaaaaaaaaaaaaaaaaaaaaaa')
+            if request.POST['is_facilitated'] == 'True':
                 firstname_facilitator=request.POST['firstname_facilitator']
                 lastname_facilitator=request.POST['lastname_facilitator']
                 email_facilitator=request.POST['email_facilitator']
-                check_and_addUser(firstname_facilitator,lastname_facilitator,email_facilitator,'PCE Facilitator',0,country)
+                check_and_addUser(firstname_facilitator,lastname_facilitator,email_facilitator,'PCE Facilitator',0,country,user_country_slug)
                 for i in range(1,14):
                     add_toStakeholders(request.user,str(i),new_pceversion.id,firstname_facilitator,lastname_facilitator,email_facilitator)
 
@@ -2966,7 +2991,7 @@ def pceversion_edit_step3(request, country, id=None ):
                 lastname=request.POST['ed'+str(i)+'_lastname']
                 email=request.POST['ed'+str(i)+'_email']
                 if email!='':
-                    check_and_addUser(firstname,lastname,email,'PCE Editor ',i,pceversion.country)
+                    check_and_addUser(firstname,lastname,email,'PCE Editor ',i,pceversion.country,user_country_slug)
                     if i==1:
                         add_toStakeholders(request.user,1,pceversion.id,firstname,lastname,email)
                         add_toStakeholders(request.user,3,pceversion.id,firstname,lastname,email)
