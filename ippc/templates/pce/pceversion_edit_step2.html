@@ -79,32 +79,32 @@ function check(theform)
                         {% include "pce/pceversion_form.html" %}
                         <input id="checks" class="btn btn-info btn-mini"  onClick="javascript:this.value = check(this.form);" value="Check All" type="button"/>
 
-                        <div class="panel panel-default">
-                            <div class="panel-heading">
-                                <h4 class="panel-title"> {% trans "SYSTEM LEVEL" %}</h4>
-                            </div>
-                            <div class="panel-body">
-                                <input type="checkbox" name="full_1" id="full_1" value="1"  />{% trans "COUNTRY PROFILE" %} <br>
-                                <input type="checkbox" name="full_2" id="full_2" value="2"  />{% trans "National phytosanitary legislation" %} <br>
-                                <input type="checkbox" name="full_3" id="full_3" value="3"  />{% trans "Environmental forces assessment" %} <br> 
-                            </div>
-                        </div>				
-                        <div class="panel panel-default">
-                            <div class="panel-heading">
-                                <h4 class="panel-title"> {% trans "ORGANIZATION LEVEL" %}</h4>
-                            </div>
-                            <div class="panel-body">
-                                <input type="checkbox" name="full_4" id="full_4" value="4"  />{% trans "NPPO's mission and strategy" %} <br>
-                                <input type="checkbox" name="full_5" id="full_5" value="5"  />{% trans "NPPO's structure and processes" %} <br>
-                                <input type="checkbox" name="full_6" id="full_6" value="6"  />{% trans "NPPO's Resources" %} <br>
+                                <div class="panel panel-default">
+                                    <div class="panel-heading">
+                                        <h4 class="panel-title"> {% trans "SYSTEM LEVEL" %}</h4>
+                                    </div>
+                                    <div class="panel-body">
+                                        <input type="checkbox" name="full_1" id="full_1" value="1"  />{% trans "COUNTRY PROFILE" %} <br>
+                                        <input type="checkbox" name="full_2" id="full_2" value="2"  />{% trans "National phytosanitary legislation" %} <br>
+                                        <input type="checkbox" name="full_3" id="full_3" value="3"  />{% trans "Environmental forces assessment" %} <br> 
+                                    </div>
+                                </div>				
+                                <div class="panel panel-default">
+                                    <div class="panel-heading">
+                                        <h4 class="panel-title"> {% trans "ORGANIZATION LEVEL" %}</h4>
+                                    </div>
+                                    <div class="panel-body">
+                                        <input type="checkbox" name="full_4" id="full_4" value="4"  />{% trans "NPPO's mission and strategy" %} <br>
+                                        <input type="checkbox" name="full_5" id="full_5" value="5"  />{% trans "NPPO's structure and processes" %} <br>
+                                        <input type="checkbox" name="full_6" id="full_6" value="6"  />{% trans "NPPO's Resources" %} <br>
 
-                            </div>
-                        </div>	
-                        <div class="panel panel-default">
-                            <div class="panel-heading">
-                                <h4 class="panel-title"> {% trans "CORE ACTIVITIES" %}</h4>
-                            </div>
-                            <div class="panel-body">
+                                    </div>
+                                </div>	
+                                 <div class="panel panel-default">
+                                    <div class="panel-heading">
+                                        <h4 class="panel-title"> {% trans "CORE ACTIVITIES" %}</h4>
+                                    </div>
+                                    <div class="panel-body">
                                
                                         <input type="checkbox" name="full_7"  id="full_7" value="7"  />{% trans "Pest diagnostic capacity" %}<br>
                                         <input type="checkbox" name="full_8" id="full_8"  value="8"  />{% trans "NPPO pest surveillance and pest reporting capacity" %}<br>
@@ -118,8 +118,7 @@ function check(theform)
                                         <input type="checkbox" name="full_13"  id="full_13" value="13"  />{% trans "Export certification, re-export, transit" %}<br>
                                     </div>
                                 </div>	
-                            </div>
-                        </div>	         
+                                   
                          <div class="form-actions">
                             <button type="submit" class="btn btn-info btn-large" tabindex="7">{% trans "Save and Go to next step" %}</button> or <a href="javascript:history.go(-1)">{% trans "Cancel" %}</a>
                         </div>
