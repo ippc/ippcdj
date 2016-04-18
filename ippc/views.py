@@ -982,6 +982,11 @@ class PublicationLibraryView(ListView):
         
         
         queryset = DraftProtocol.objects.all()
+        dps=[]
+        for dp in queryset:
+            if (timezone.now() < dp.closing_date):
+               dps.append(dp)
+        queryset= dps  
         user = self.request.user  
        
         if user.groups.filter(name='IPPC Secretariat'):
@@ -5306,7 +5311,7 @@ def poll_create(request):
            
             c_form.instance = new_poll
             c_form.save()
-            # send_pollnotification_message(new_poll.id)
+            send_pollnotification_message(id)
             
             info(request, _("Successfully created Poll."))
             return redirect("detail", pk=new_poll.id)
@@ -5337,7 +5342,7 @@ def poll_edit(request, id=None, template_name='polls/poll_edit.html'):
             form.save()
             c_form.instance = poll
             c_form.save()
-            send_pollnotification_message(id)
+            
 
             return redirect("detail", pk=id)
     else:
