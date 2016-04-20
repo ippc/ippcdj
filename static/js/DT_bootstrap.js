@@ -166,4 +166,10 @@ if ( $.fn.DataTable.TableTools ) {
   			           "sLengthMenu": ''
   			         }
   			       } );
+                                  $('#memberstable').dataTable( {
+                                                                  "sPaginationType": "bootstrap",
+  			         "oLanguage": {
+  			           "sLengthMenu": ''
+  			         }
+  			       } );
   			     } );
