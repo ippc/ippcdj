@@ -10138,52 +10138,52 @@ def generate_report(request, country,sessionid=None):
             
          
             VAL_IMP = (
-                (0, _("--- Please select ---")),
-                (1, _("Not known")),
-                (2, _("0 to $100,000")),
-                (3, _("$100,000 to $500,000")),
-                (4, _("$500,000 to $1M")),
-                (5, _("$1M to $10M")),
-                (6, _("$10M to $25M")),
-                (7, _("$25M to $50M")),
-                (8, _("$50M to $100M")),
-                (9, _("Greater than $100M ")),
+                (0, ("--- Please select ---")),
+                (1, ("Not known")),
+                (2, ("0 to $100,000")),
+                (3, ("$100,000 to $500,000")),
+                (4, ("$500,000 to $1M")),
+                (5, ("$1M to $10M")),
+                (6, ("$10M to $25M")),
+                (7, ("$25M to $50M")),
+                (8, ("$50M to $100M")),
+                (9, ("Greater than $100M ")),
             )
 
             VAL_EXP = (
-                (0, _("--- Please select ---")),
-                (1, _("Unknown")),
-                (2, _("0 to $100,000")),
-                (3, _("$100,000 to $500,000")),
-                (4, _("$500,000 to $1M")),
-                (5, _("$1M to $10M")),
-                (6, _("$10M to $50M")),
-                (7, _("$25M to $50M")),
-                (8, _("greater than $50M")),
+                (0, ("--- Please select ---")),
+                (1, ("Unknown")),
+                (2, ("0 to $100,000")),
+                (3, ("$100,000 to $500,000")),
+                (4, ("$500,000 to $1M")),
+                (5, ("$1M to $10M")),
+                (6, ("$10M to $50M")),
+                (7, ("$25M to $50M")),
+                (8, ("greater than $50M")),
             )
 
       
             VAL_PERCENT = (
-                (0, _("--- Please select ---")),
-                (1, _("0")),
-                (2, _("10")),
-                (3, _("20")),
-                (4, _("30")),
-                (5, _("40")),
-                (6, _("50")),
-                (7, _("60")),
-                (8, _("70")),
-                (9, _("80")),
-                (10, _("90")),
-                (11, _("100")),
+                (0, ("--- Please select ---")),
+                (1, ("0")),
+                (2, ("10")),
+                (3, ("20")),
+                (4, ("30")),
+                (5, ("40")),
+                (6, ("50")),
+                (7, ("60")),
+                (8, ("70")),
+                (9, ("80")),
+                (10, ("90")),
+                (11, ("100")),
             )
 
             NUM_BILATERAL = (
-                (0, _("--- Please select ---")),
-                (1, _("1-3")),
-                (2, _("4-6")),
-                (3, _("7-10")),
-                (4, _("greater than 10")),
+                (0, ("--- Please select ---")),
+                (1, ("1-3")),
+                (2, ("4-6")),
+                (3, ("7-10")),
+                (4, ("greater than 10")),
             )  
             #  ---- Cover Letter ----
             document.add_heading('Phytosanitary Capacity Evaluation (PCE) - REPORT', 0)
@@ -10195,13 +10195,13 @@ def generate_report(request, country,sessionid=None):
             p.add_run('1. Introduction:').bold = True
            
             REGIONS_LABELS = (
-            (1, _("Africa")),
-            (2, _("Asia")),
-            (3, _("Europe")),
-            (4, _("Latin America and Caribbean")),
-            (5, _("Near East")),
-            (6, _("North America")),
-            (7, _("South West Pacific")),
+            (1, ("Africa")),
+            (2, ("Asia")),
+            (3, ("Europe")),
+            (4, ("Latin America and Caribbean")),
+            (5, ("Near East")),
+            (6, ("North America")),
+            (7, ("South West Pacific")),
             )
             document.add_paragraph()
             countryname=str(user.get_profile().country)
@@ -10747,16 +10747,16 @@ def generate_report(request, country,sessionid=None):
             document.add_paragraph("")
           
             VAL_AV = (
-                (0, _(" ")),
-                (1, _("0-5")),
-                (2, _("5-10")),
-                (3, _("10-20")),
-                (4, _(">20")),
+                (0, (" ")),
+                (1, ("0-5")),
+                (2, ("5-10")),
+                (3, ("10-20")),
+                (4, (">20")),
              )
             BOOL_CHOICESM_M = (
-                (0, _(" ")),
-                (1, _("Yes")),
-                (2, _("No")),
+                (0, (" ")),
+                (1, ("Yes")),
+                (2, ("No")),
             )  
          
             p=document.add_paragraph("")
