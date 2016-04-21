@@ -27,6 +27,14 @@
   
   
 </div>
+<div class="panel">
+  <h3>{% trans "IYPH Resources" %}</h3>
+    <ul class="unstyled recent-posts">
+        <li><a href="https://www.ippc.int/static/media/uploads/iyph_steering_comm_tors_2016-04-18.docx">IYPH Steering Committee Terms of Reference</a></li>
+  </ul>
+</div>
+
+
 {% if user.is_superuser  or perms.iyph.add_iyphpost  %} 
     <div class="pull-right">
         <a class="btn btn-small btn-info" href="/admin/iyph/iyphpost/add/">{% trans "Add new item" %}</a><br>
