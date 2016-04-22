@@ -3079,7 +3079,7 @@ class Module7(Displayable, models.Model):
     m_62 = models.NullBooleanField(_("2. Is there a set of good indicators for measuring the effectiveness of the pest diagnostic service?"), choices=BOOL_CHOICES,blank=True, null=True, help_text=_(" "),)
     m_63 = models.IntegerField(_("3. With what efficacy are the pest diagnostic service's resources utilized?"),choices=WEAK, default=None,help_text=_(" "),)
     m_64 = models.NullBooleanField(_("4. Is there a set of good indicators to measure the efficacy of the pest diagnostic service?"), choices=BOOL_CHOICES,blank=True, null=True, help_text=_(" "),)
-    m_65 = models.IntegerField(_("5. With what efficacy are the pest diagnostic servie's resources utilized?"),choices=WEAK, default=None,help_text=_(" "),)
+    m_65 = models.IntegerField(_("5. With what efficacy are the pest diagnostic service's resources utilized?"),choices=WEAK, default=None,help_text=_(" "),)
     m_66 = models.IntegerField(_("6. Has the pest diagnostic service kept its relevance over time?"),choices=WEAK1, default=None,help_text=_(" "),)
     m_67= models.TextField(_("7. What indicators could be used to measure the status or the pest diagnostic service's relevance?"), blank=True, null=True,help_text=_(" "),)
     m_68 = models.IntegerField(_("8. How well is the NPPO's pest diagnostic service performing?"),choices=WEAK2, default=None,help_text=_(" "),)
@@ -3719,7 +3719,7 @@ class Module10(Displayable, models.Model):
     m_56 = models.IntegerField(_("53. Assess the availability of adequate computers and tailored software in the NPPO's import regulatory system"),choices=INSUFF6, default=None,help_text=_(" "),)
     m_57 = models.IntegerField(_("1. How effective is the import regulatory system in consideration of the NPPO's mission"),choices=EFF, default=None,help_text=_(" "),)
     m_58 = models.IntegerField(_("2. With what efficacy are the import regulatory system's resources utilized?"),choices=EFF, default=None,help_text=_(" "),)
-    m_59 = models.IntegerField(_("3. With what efficacy are the import regulatory system's resources utilized?"),choices=CAPACITY, default=None,help_text=_(" "),)
+    m_59 = models.IntegerField(_("3. Has the import regulatory system kept its relevance over time?"),choices=CAPACITY, default=None,help_text=_(" "),)
     m_60 = models.IntegerField(_("4. How well is the NPPO's import regulatory system performing?"),choices=BAD, default=None,help_text=_(" "),)
    #61
     #m_comment = models.TextField(_("Comment"), blank=True, null=True,help_text='Please put your comments here.')
