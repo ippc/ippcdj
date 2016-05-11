@@ -1,10 +1,13 @@
 {% load i18n %}
 {% block main %}
 {% trans "An IPPC account has been created for you." %}
-{% trans "Please use the link below to activate it, then set your password in your profile page." %}
-http://{{ request.get_host }}{{ verify_url }}account/update/
+{% trans "Please use the link below to set your password." %}
+http://{{ request.get_host }}/en/account/password/reset/?next=/en/account/update/
+
+{% trans "Insert your email address, click on 'Password Reset' button and follow instructions to create your password." %}
 
 {% trans "After setting your password, you will be able to log in at https://www.ippc.int." %}
+
 
 {% trans "Information Exchange (IPPC) team" %}
 
