@@ -72,7 +72,7 @@ VALIDATED =4
 MODULES_STATUS_CHOICES = (
     (OPEN, _("open") ), 
     (SENT, _("sent to validator")),
-    (VALIDATED, _("validates")),
+    (VALIDATED, _("validated")),
 )
 BOOL_CHOICES_0 = None
 BOOL_CHOICES_1 = True
@@ -112,7 +112,7 @@ class PceVersion(Orderable):
     projet_date_completation = models.DateTimeField(_("Projected Date of Completion"),  blank=False, null=True, editable=True)
     name_authority = models.CharField(_("Name of authority requesting implementation of PCE"), blank=False, null=True, max_length=250)
     designation = models.CharField(_("Designation"), blank=False, null=True, max_length=250)
-    file_designation = models.FileField(max_length=255,blank=True, help_text='10 MB maximum file size.', verbose_name='Upload scanned copy', upload_to='files/pceversion/%Y/%m/%d/', validators=[validate_file_extension])
+    file_designation = models.FileField(max_length=255,blank=True, help_text=_("10 MB maximum file size."), verbose_name=_("Upload scanned copy"), upload_to='files/pceversion/%Y/%m/%d/', validators=[validate_file_extension])
     name_pcemanager = models.CharField(_("Name of PCE Manager/ Validator "), blank=False, null=True, max_length=250)
     title_pcemanager = models.CharField(_("PCE Manager/ Validator Work Title   "), blank=False, null=True, max_length=250)
     email_pcemanager = models.CharField(_("PCE Manager/ Validator Email  "), blank=False, null=True, max_length=250)
@@ -1667,7 +1667,7 @@ INSUFF8=(
 (INSUFF8_2, _("Insufficient")),
 (INSUFF8_3, _("Intermediate")),
 (INSUFF8_4, _("Not enough")),
-(INSUFF8_5, _("Very sufficien")),
+(INSUFF8_5, _("Very sufficient")),
 )
 PROGRAMMED_0=0
 PROGRAMMED_1=1
@@ -1977,10 +1977,10 @@ class Module1(Displayable, models.Model):
     modify_date = models.DateTimeField(_("Modified date"), blank=True, null=True, editable=False)
     country = models.ForeignKey(CountryPage,related_name="mod1_country",help_text=_("Enter the official name of the Country if not already assigned."),)
     region = models.IntegerField(_("2. Region"), choices=REGIONS, default=None,help_text=_("FAO has 7 regions defined. Use the FAO country grouping,i.e. Africa, Asia, Latin America and the Caribbean, Europe, Near East, North America and Southwest Pacific. "),)
-    m_3 = models.TextField(_("3. Population and year of estimate"), blank=True, null=True,help_text='Include the Month and Year e.g. (July 2008 est.) ')
-    m_4 = models.TextField(_("4. Total Land Area - sq. km."), blank=True, null=True,help_text='Please convert units to sq. km.')
-    m_5= models.TextField(_("5. Total Arable Land - sq. km."), blank=True, null=True,help_text='Includes Agriculural land and Arable and permanent crop land' )
-    m_6= models.TextField(_("6. Total Natural Vegetation - sq. Km"), blank=True, null=True,help_text='This includes forest and other areas ')
+    m_3 = models.TextField(_("3. Population and year of estimate"), blank=True, null=True,help_text=_("Include the Month and Year e.g. (July 2008 est.) "))
+    m_4 = models.TextField(_("4. Total Land Area - sq. km."), blank=True, null=True,help_text=_("Please convert units to sq. km."))
+    m_5= models.TextField(_("5. Total Arable Land - sq. km."), blank=True, null=True,help_text=_("Includes Agriculural land and Arable and permanent crop land") )
+    m_6= models.TextField(_("6. Total Natural Vegetation - sq. Km"), blank=True, null=True,help_text=_("This includes forest and other areas "))
     #m_7
     #m_8
     m_9 = models.IntegerField(_("9. Total Value of imports of plant and plant products (includes Forestry)in US Dollars"), choices=VAL_IMP, default=None,help_text=_("Enter most recent data "),)
@@ -1988,12 +1988,12 @@ class Module1(Displayable, models.Model):
     #m_11
     m_12 = models.IntegerField(_("12. Total Value of Exports of plant and plant products (includes Forestry) in US Dollars"), choices=VAL_EXP, default=None,help_text=_("Enter most recent data "),)
     m_13 = models.IntegerField(_("13. Approximately what percentage of total exports (includes Forestry) are re-export consignments i.e. products that originated from another country?"), choices=VAL_PERCENT, default=None,help_text=_("Enter most recent data or best estimate"),)
-    m_14 = models.TextField(_("14. World Bank Economic Classification (GNI - Gross National Income per capita)"), blank=True, null=True,help_text='Visit the website of the worldbank for this kind of information (<a href="http://www.worldbank.org">www.worldbank.org</a>) . ')
-    m_15 = models.TextField(_("15. Latest GDP in US Dollars (World Bank)"), blank=True, null=True,help_text='include year GDP was recorded e.g. 8,526 (2008) ')
+    m_14 = models.TextField(_("14. World Bank Economic Classification (GNI - Gross National Income per capita)"), blank=True, null=True,help_text=_("Visit the website of the worldbank for this kind of information (<a href=''http://www.worldbank.org'>www.worldbank.org</a>) . "))
+    m_15 = models.TextField(_("15. Latest GDP in US Dollars (World Bank)"), blank=True, null=True,help_text=_("include year GDP was recorded e.g. 8,526 (2008)") )
     m_16 = models.IntegerField(_("16. Percentage contribution of Agriculture (including Forestry) to GDP"), choices=VAL_PERCENT, default=None,help_text=_("Please round up the value "),)
-    m_17 = models.IntegerField(_("17. What percentage of GDP contributed by agriculture can be attributed to the value of plant and plant products (including Forestry)"), choices=VAL_PERCENT, default=None,help_text=_("Enter most reecent data "),)
+    m_17 = models.IntegerField(_("17. What percentage of GDP contributed by agriculture can be attributed to the value of plant and plant products (including Forestry)"), choices=VAL_PERCENT, default=None,help_text=_("Enter most recent data "),)
     m_18 = models.IntegerField(_("18. List the agricultural labor force (including Forestry) as a percent of total labor force."), choices=VAL_PERCENT, default=None,help_text=_("Please round up the value "),)
-    m_19 = models.IntegerField(_("19. What percentage of the agricultural labour force is directly employed in the production of plant and plant products (including Forestry)?"), choices=VAL_PERCENT, default=None,help_text=_("Enter most reecent data "),)
+    m_19 = models.IntegerField(_("19. What percentage of the agricultural labour force is directly employed in the production of plant and plant products (including Forestry)?"), choices=VAL_PERCENT, default=None,help_text=_("Enter most recent data "),)
     #m_20
     #m_21
     m_22 = models.ManyToManyField(Membership1,verbose_name=_("22. Membership / Signatory to:"),related_name='Membership_+', blank=True, null=True,help_text=_("Select all that apply."))
@@ -2068,7 +2068,7 @@ class Module1MajorCrops(models.Model):
     germplasm = models.BooleanField(verbose_name=_("Germplasm"), default=None) 
     consumption = models.BooleanField(verbose_name=_("Consumption"), default=None) 
     wooden = models.BooleanField(verbose_name=_("Wooden and Cane Products"), default=None) 
-    industrial = models.BooleanField(verbose_name=_("ndustrial Products"), default=None) 
+    industrial = models.BooleanField(verbose_name=_("Industrial Products"), default=None) 
     other = models.BooleanField(verbose_name=_("Other Uses"), default=None) 
    
     def __unicode__(self):
@@ -2694,7 +2694,7 @@ class Module4(Displayable, models.Model):
     m_17 = models.IntegerField(_("17. Does the NPPO provide the possibility for career advancement?"), choices=DEGREE, default=None,help_text=_(" "),)
     m_18 = models.NullBooleanField(_("18. Has the NPPO a strategy to execute core phytosanitary activities that includes the use of third parties in some NPPO's functions while maintaining the overall NPPO responsibility?"), choices=BOOL_CHOICES,blank=True, null=True, help_text=_("Use of third parties include sub-contracting some services to the private or governmental entities, approval or accreditation mechanisms, complete privatization  <br> <br> <br><i>If answer is <b>No</b> go to question <b>19.</b></i> "),)
     m_19 = models.NullBooleanField(_("18.1. Has the NPPO legal authority and clear rules and regulations in place for this purpose?"), choices=BOOL_CHOICES,blank=True, null=True, help_text=_(" "),)
-    m_20 = models.NullBooleanField(_("19. Has the NPPO a strategy for the application of a cost recovery model?"), choices=BOOL_CHOICES,blank=True, null=True, help_text=_("With dwindling financial resources in national budgets a number of plant protection/health services worldwide have explored and begun to apply cost recovery models to ensure that the programmes they implemnt are relevant and respond to the needs of their stakeholders. The fees charged however are based on the actual or real costs of the services provided. Cost recovery models adopted by NPPOs tend to be supplemented from the national budget to varying degrees depending on the services being charged. Few if any have 100% cost recovery programmes. Annex C 2F of the WTO-SPS agreement is generally adhered to when considering implementation of a cost recovery fee structure.  <br> <br> <br><i>If answer is <b>No</b> go to question <b>23.</b></i> "),)
+    m_20 = models.NullBooleanField(_("19. Has the NPPO a strategy for the application of a cost recovery model?"), choices=BOOL_CHOICES,blank=True, null=True, help_text=_("With dwindling financial resources in national budgets a number of plant protection/health services worldwide have explored and begun to apply cost recovery models to ensure that the programmes they implemnt are relevant and respond to the needs of their stakeholders. The fees charged however are based on the actual or real costs of the services provided. Cost recovery models adopted by NPPOs tend to be supplemented from the national budget to varying degrees depending on the services being charged. Few if any have 100 percent cost recovery programmes. Annex C 2F of the WTO-SPS agreement is generally adhered to when considering implementation of a cost recovery fee structure.  <br> <br> <br><i>If answer is <b>No</b> go to question <b>23.</b></i> "),)
     m_21 = models.NullBooleanField(_("20. Does the legal system allow the NPPO to apply, collect and keep fees for particular services?"), choices=BOOL_CHOICES,blank=True, null=True, help_text=_(" "),)
     m_22 = models.NullBooleanField(_("21. Do all the stakeholders have the ability to pay fees?"), choices=BOOL_CHOICES,blank=True, null=True, help_text=_(" "),)
     m_23 = models.NullBooleanField(_("22. Do the fees differ for different stakeholders according to their ability to pay?"), choices=BOOL_CHOICES,blank=True, null=True, help_text=_(" "),)
@@ -3008,8 +3008,8 @@ class Module7(Displayable, models.Model):
     # publish_date - provided by mezzanine.core.models.displayable
     
     class Meta:
-        verbose_name = _("Module 7 - NPPO's structure and processes")
-        verbose_name_plural = _("Module 7 - NPPO's structure and processes")
+        verbose_name = _("Module 7 - Pest diagnostic capacity")
+        verbose_name_plural = _("Module 7 - Pest diagnostic capacity")
   
     session = models.ForeignKey(PceVersion)
     

@@ -2378,31 +2378,31 @@ class ModuleListView(ListView):
                             m_ids[y] =''
                             m_status[y] =''
                         if y == 1:
-                            m_names[y]="COUNTRY PROFILE"
+                            m_names[y]=_("COUNTRY PROFILE")
                         elif y == 2:
-                            m_names[y]="National phytosanitary legislation"
+                            m_names[y]=_("National phytosanitary legislation")
                         elif y == 3:
-                            m_names[y]="Environmental forces assessment"
+                            m_names[y]=_("Environmental forces assessment")
                         elif y == 4:
-                            m_names[y]="NPPO's mission and strategy"
+                            m_names[y]=_("NPPO's mission and strategy")
                         elif y == 5:
-                            m_names[y]="NPPO's structure and processes"
+                            m_names[y]=_("NPPO's structure and processes")
                         elif y == 6:
-                            m_names[y]="NPPO's Resources"
+                            m_names[y]=_("NPPO's Resources")
                         elif y == 7:
-                            m_names[y]="Pest diagnostic capacity"
+                            m_names[y]=_("Pest diagnostic capacity")
                         elif y == 8:
-                            m_names[y]="NPPO pest surveillance and pest reporting capacity"
+                            m_names[y]=_("NPPO pest surveillance and pest reporting capacity")
                         elif y == 9:
-                            m_names[y]="Pest eradication capacity"
+                            m_names[y]=_("Pest eradication capacity")
                         elif y == 10:
-                            m_names[y]="Phytosanitary import regulatory system"
+                            m_names[y]=_("Phytosanitary import regulatory system")
                         elif y == 11:
-                            m_names[y]="Pest risk analysis"
+                            m_names[y]=_("Pest risk analysis")
                         elif y == 12:
-                            m_names[y]="Pest free areas, places and sites, low pest prevalence areas"
+                            m_names[y]=_("Pest free areas, places and sites, low pest prevalence areas")
                         elif y ==  13:
-                            m_names[y]="Export certification, re-export, transit"    
+                            m_names[y]=_("Export certification, re-export, transit")    
                         
                           
                         #stakeholders
@@ -8221,7 +8221,7 @@ class Module12ListPDFView(PDFTemplateView):
         (2, _("Insufficient")),
         (3, _("Intermediate")),
         (4, _("Not enough")),
-        (5, _("Very sufficien")),
+        (5, _("Very sufficient")),
         )
  
         PERC3=(
@@ -10021,31 +10021,31 @@ def generate_report(request, country,sessionid=None):
                 if i!='':
                     y=int(i)
                     if y == 1:
-                        m_names[y]="COUNTRY PROFILE"
+                        m_names[y]=_("COUNTRY PROFILE")
                     elif y == 2:
-                        m_names[y]="National phytosanitary legislation"
+                        m_names[y]=_("National phytosanitary legislation")
                     elif y == 3:
-                        m_names[y]="Environmental forces assessment"
+                        m_names[y]=_("Environmental forces assessment")
                     elif y == 4:
-                        m_names[y]="NPPO's mission and strategy"
+                        m_names[y]=_("NPPO's mission and strategy")
                     elif y == 5:
-                        m_names[y]="NPPO's structure and processes"
+                        m_names[y]=_("NPPO's structure and processes")
                     elif y == 6:
-                        m_names[y]="NPPO's Resources"
+                        m_names[y]=_("NPPO's Resources")
                     elif y == 7:
-                        m_names[y]="Pest diagnostic capacity"
+                        m_names[y]=_("Pest diagnostic capacity")
                     elif y == 8:
-                        m_names[y]="NPPO pest surveillance and pest reporting capacity"
+                        m_names[y]=_("NPPO pest surveillance and pest reporting capacity")
                     elif y == 9:
-                        m_names[y]="Pest eradication capacity"
+                        m_names[y]=_("Pest eradication capacity")
                     elif y == 10:
-                        m_names[y]="Phytosanitary import regulatory system"
+                        m_names[y]=_("Phytosanitary import regulatory system")
                     elif y == 11:
-                        m_names[y]="Pest risk analysis"
+                        m_names[y]=_("Pest risk analysis")
                     elif y == 12:
-                        m_names[y]="Pest free areas, places and sites, low pest prevalence areas"
+                        m_names[y]=_("Pest free areas, places and sites, low pest prevalence areas")
                     elif y ==  13:
-                        m_names[y]="Export certification, re-export, transit"    
+                        m_names[y]=_("Export certification, re-export, transit")    
                     try:
                         if y==1:
                             module1 = get_object_or_404(Module1, session_id=sessionid)
