@@ -2,14 +2,14 @@ from calendar import month_name
 
 from django.http import Http404
 from django.shortcuts import get_object_or_404
-
+from mezzanine.pages.models import Page, RichTextPage, Link
 from iyph.models import IyphPost, IyphCategory,Chronology
 from iyph.feeds import PostsRSS, PostsAtom
 from mezzanine.conf import settings
 from mezzanine.generic.models import Keyword
 from mezzanine.utils.views import render, paginate
 from mezzanine.utils.models import get_user_model
-from django.views.generic import ListView,DetailView
+from django.views.generic import ListView,DetailView,TemplateView
 User = get_user_model()
 
 
@@ -130,3 +130,22 @@ class ChronologyDetailView(DetailView):
         context = super(ChronologyDetailView, self).get_context_data(**kwargs)
         p = get_object_or_404(Chronology, slug=self.kwargs['slug'])
         return context
+    
+
+
+class Page1View(TemplateView):
+    """ 
+    Individual PageView  
+    """
+    template_name = 'iyphpages/richtextpage.html'
+    
+    def get_context_data(self, **kwargs): # http://stackoverflow.com/a/15515220
+        context = super(TemplateView, self).get_context_data(**kwargs)
+        page = get_object_or_404(RichTextPage, page_ptr_id=1065)
+        context['content']  =page.content
+            
+
+        return context
+    
+     
+        
