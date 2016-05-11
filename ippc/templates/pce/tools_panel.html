@@ -13,16 +13,16 @@
             <ul>
                 <li>
                    {%if is_st_filled %}
-                    <a href="/pce/{{ user.get_profile.country.name|slugify }}/{{sessionid}}/{{module}}/stakeholders/view/{{st_id}}"><span class="label label-success">{% trans "Stakeholders" %}</span></a><span class="icon-ok"> </span>
+                    <a href="/{{ LANGUAGE_CODE }}/pce/{{ user.get_profile.country.name|slugify }}/{{sessionid}}/{{module}}/stakeholders/view/{{st_id}}"><span class="label label-success">{% trans "Stakeholders" %}</span></a><span class="icon-ok"> </span>
                     {% else%}
                         {% trans "Stakeholders" %}
                     {% endif%}
                 </li>{% if module == '1' or module == 1 %}&#160;{% else%}
                 <li>{%if is_pa_filled %}
-                       <a href="/pce/{{ user.get_profile.country.name|slugify }}/{{sessionid}}/{{module}}/problemanalysis/{{pa_id}}"><span class="label label-success">{% trans "Problem Analysis" %}</span></a><span class="icon-ok"> </span>
+                       <a href="/{{ LANGUAGE_CODE }}/pce/{{ user.get_profile.country.name|slugify }}/{{sessionid}}/{{module}}/problemanalysis/{{pa_id}}"><span class="label label-success">{% trans "Problem Analysis" %}</span></a><span class="icon-ok"> </span>
                     {% else%}
                     {%if is_st_filled and m_percentage == 100 %}
-                    <a href="/pce/{{ user.get_profile.country.name|slugify }}/{{sessionid}}/{{module}}/problemanalysis/view">{% trans "Problem Analysis" %}</a>
+                    <a href="/{{ LANGUAGE_CODE }}/pce/{{ user.get_profile.country.name|slugify }}/{{sessionid}}/{{module}}/problemanalysis/view">{% trans "Problem Analysis" %}</a>
 
                     {% else%}
 
@@ -31,10 +31,10 @@
                     {% endif%}    
                 </li>
                 <li>{%if is_sa_filled %}
-                    <a href="/pce/{{ user.get_profile.country.name|slugify }}/{{sessionid}}/{{module}}/swotanalysis/{{sa_id}}"><span class="label label-success">{% trans "Swot Analysis" %}</span></a><span class="icon-ok"> </span>
+                    <a href="/{{ LANGUAGE_CODE }}/pce/{{ user.get_profile.country.name|slugify }}/{{sessionid}}/{{module}}/swotanalysis/{{sa_id}}"><span class="label label-success">{% trans "Swot Analysis" %}</span></a><span class="icon-ok"> </span>
                     {% else%}
                     {%if is_pa_filled %}
-                    <a href="/pce/{{ user.get_profile.country.name|slugify }}/{{sessionid}}/{{module}}/swotanalysis/view">{% trans "Swot Analysis" %}</a>
+                    <a href="/{{ LANGUAGE_CODE }}/pce/{{ user.get_profile.country.name|slugify }}/{{sessionid}}/{{module}}/swotanalysis/view">{% trans "Swot Analysis" %}</a>
 
 
                     {% else%}
@@ -42,10 +42,10 @@
                     {% trans "Swot Analysis" %}
                     {% endif%}{% endif%}</li>
                 <li>{%if is_lf_filled %}
-                    <a href="/pce/{{ user.get_profile.country.name|slugify }}/{{sessionid}}/{{module}}/logicalframework/{{lf_id}}"><span class="label label-success">{% trans "Logical Framework" %}</span></a><span class="icon-ok"> </span>
+                    <a href="/{{ LANGUAGE_CODE }}/pce/{{ user.get_profile.country.name|slugify }}/{{sessionid}}/{{module}}/logicalframework/{{lf_id}}"><span class="label label-success">{% trans "Logical Framework" %}</span></a><span class="icon-ok"> </span>
                     {% else%}
                     {%if is_sa_filled %}
-                    <a href="/pce/{{ user.get_profile.country.name|slugify }}/{{sessionid}}/{{module}}/logicalframework/view">{% trans "Logical Framework" %}</a>
+                    <a href="/{{ LANGUAGE_CODE }}/pce/{{ user.get_profile.country.name|slugify }}/{{sessionid}}/{{module}}/logicalframework/view">{% trans "Logical Framework" %}</a>
 
 
                     {% else%}

@@ -9,7 +9,7 @@
 
 {% block breadcrumb_menu %}
 <li>
-    <a href="/pce/{{ user.get_profile.country.name }}/sessions">{% trans "PCE Home" %}</a>
+    <a href="/{{ LANGUAGE_CODE }}/pce/{{ user.get_profile.country.name }}/sessions">{% trans "PCE Home" %}</a>
     <span class="divider">/</span>
 </li>
 <li class="active">
@@ -89,7 +89,7 @@
                             <div class="panel panel-default">
                                 <div class="panel-heading">
                                     <h6 class="panel-title"> {% trans "Group 3: NPPO modules" %}</h6>
-                                    <em>This group contains the following modules:" %}<br>
+                                    <em>{% trans "This group contains the following modules:" %}<br>
                                         - {% trans "NPPO's mission and strategy" %}<br>
                                         - {% trans "NPPO's Structure and Processes" %}<br>
                                         - {% trans "NPPO's Resources" %}</em>

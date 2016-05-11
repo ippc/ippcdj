@@ -1,6 +1,6 @@
 {% load i18n mezzanine_tags translate_tags  pages_tags   future staticfiles accounts_tags %}
 
-   <a href="/pce/training_material/">{% trans "Training materials"%}</a>
+   <a href="/{{ LANGUAGE_CODE }}/pce/training_material/">{% trans "Training materials"%}</a>
   
 {% if request.user.is_authenticated %}
   {% if user.is_authenticated and user.is_staff %}

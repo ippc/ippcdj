@@ -96,7 +96,7 @@ function checkRules()
             <div class="panel-body">
                 <b>1. </b><span class="label label-success">{% trans "Basic Information" %}</span><br>
                 <b>2. </b>{% trans "Q & A Modules" %}<br>
-                <b>3.</b>{% trans "User Groups" %}<br>
+                <b>3. </b>{% trans "User Groups" %}<br>
             </div>
         </div>
     </div>
@@ -104,7 +104,7 @@ function checkRules()
 </div>
 {% else %}
     {% if can_see %}
-        <p class="alert alert-warning">{% trans "The latest session is still open, you can only" %} <a href="/pce/{{ user.get_profile.country.name|slugify }}/session/create_step1/{{version_id}}/">{% trans "re-configure!" %}</a></p>
+        <p class="alert alert-warning">{% trans "The latest session is still open, you can only" %} <a href="/{{ LANGUAGE_CODE }}/pce/{{ user.get_profile.country.name|slugify }}/session/create_step1/{{version_id}}/">{% trans "re-configure!" %}</a></p>
     {% else %}
       <p class="alert alert-warning">{% trans "No permissions to see this page." %}</p>
     {% endif %}

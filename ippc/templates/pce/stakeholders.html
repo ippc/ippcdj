@@ -7,11 +7,11 @@
 
     {% block breadcrumb_menu %}
         <li>
-            <a href="/pce/{{ user.get_profile.country.name }}/sessions">{% trans "PCE Home" %}</a>
+            <a href="/{{ LANGUAGE_CODE }}/pce/{{ user.get_profile.country.name }}/sessions">{% trans "PCE Home" %}</a>
             <span class="divider">/</span>
         </li>
         <li>
-            <a href="/pce/{{ user.get_profile.country.name|slugify }}/session/dashboard/{{sessionid}}">  {% trans "PCE Dashboard for" %} {{ user.get_profile.country.name }}</a>
+            <a href="/{{ LANGUAGE_CODE }}/pce/{{ user.get_profile.country.name|slugify }}/session/dashboard/{{sessionid}}">  {% trans "PCE Dashboard for" %} {{ user.get_profile.country.name }}</a>
             <span class="divider">/</span>
         <li>
         <li class="active">{% trans "Stakeholders for Module " %}{{module}}</li>
@@ -52,7 +52,7 @@
                     <h5 class="panel-title"> {% trans "Stakeholders - Module" %} {{module}}
                      {% if context == 'View' and can_edit  and id != ''%}  
                      <span  class="pull-right"> 
-                         <a  class="btn btn-info" href="/pce/{{ user.get_profile.country.name|slugify }}/{{sessionid}}/{{module}}/stakeholders/edit/{{stakeid}}">{% trans "Edit table" %}</a>
+                         <a  class="btn btn-info" href="/{{ LANGUAGE_CODE }}/pce/{{ user.get_profile.country.name|slugify }}/{{sessionid}}/{{module}}/stakeholders/edit/{{stakeid}}">{% trans "Edit table" %}</a>
                      </span>
                      {% endif %}</h5>
                 </div>
@@ -86,7 +86,7 @@
                                     <tr class="inline {{ form2.prefix }}"> 
                                         {{ form.id }} 
                                         {% for f in form %}
-                                        {% if not f.label == 'Stakeholder' and not f.label == 'Id' and not f.label == 'Delete'%}
+                                        {% if not f.label == 'Stakeholder' and not f.label == 'Id' and not f.label == 'Delete' and not f.label == 'Удалить' %}
                                             {% if f.label == 'Role'%}
                                                 </td><td>
                                                 <b>{{f.label}}:{{f}}<br>
@@ -220,22 +220,22 @@
                                     {% if is_st_filled %} 
                                     {% if moduleid != ''  %}           
                                        {% if  can_edit %}
-                                            <a  class="btn btn-info" href="/pce/{{ user.get_profile.country.name|slugify }}/{{sessionid}}/{{modulename}}/edit/{{moduleid}}"><- {% trans "back to Module" %} {{module}}</a></span></h3>
+                                            <a  class="btn btn-info" href="/{{ LANGUAGE_CODE }}/pce/{{ user.get_profile.country.name|slugify }}/{{sessionid}}/{{modulename}}/edit/{{moduleid}}"><- {% trans "back to Module" %} {{module}}</a></span></h3>
                                        {% else %}           
-                                        <a  class="btn btn-info" href="/pce/{{ user.get_profile.country.name|slugify }}/{{sessionid}}/{{modulename}}/view/{{moduleid}}"><- {% trans "back to Module" %} {{module}}</a></span></h3>
+                                        <a  class="btn btn-info" href="/{{ LANGUAGE_CODE }}/pce/{{ user.get_profile.country.name|slugify }}/{{sessionid}}/{{modulename}}/view/{{moduleid}}"><- {% trans "back to Module" %} {{module}}</a></span></h3>
                                         {% endif %} 
                                     {% else  %}           
                                         {% if  can_edit %}
-                                        <a  class="btn btn-info" href="/pce/{{ user.get_profile.country.name|slugify }}/{{sessionid}}/{{modulename}}/edit/"><- {% trans "back to Module" %} {{module}}</a></span></h3>
+                                        <a  class="btn btn-info" href="/{{ LANGUAGE_CODE }}/pce/{{ user.get_profile.country.name|slugify }}/{{sessionid}}/{{modulename}}/edit/"><- {% trans "back to Module" %} {{module}}</a></span></h3>
                                         {% else %}           
-                                        <a  class="btn btn-info" href="/pce/{{ user.get_profile.country.name|slugify }}/{{sessionid}}/{{modulename}}/empty/"><- {% trans "back to Module" %} {{module}}</a></span></h3>
+                                        <a  class="btn btn-info" href="/{{ LANGUAGE_CODE }}/pce/{{ user.get_profile.country.name|slugify }}/{{sessionid}}/{{modulename}}/empty/"><- {% trans "back to Module" %} {{module}}</a></span></h3>
                                         {% endif %} 
                                     {% endif %} 
                                     {% endif %}      
                                     &#160;&#160;&#160;
                                     <a class="btn btn-large btn-info" href="javascript:window.print();">{% trans "PRINT" %}</a>
                                    &#160;&#160;&#160;
-                                    <a class="btn btn-large btn-info" href="/pce/{{ user.get_profile.country.name|slugify }}/{{sessionid}}/{{module}}/stakeholders/pdf/{{st_id}}" target="_blank">{% trans "Export as PDF" %}</a>
+                                    <a class="btn btn-large btn-info" href="/{{ LANGUAGE_CODE }}/pce/{{ user.get_profile.country.name|slugify }}/{{sessionid}}/{{module}}/stakeholders/pdf/{{st_id}}" target="_blank">{% trans "Export as PDF" %}</a>
                         {% endif %}   
 
 

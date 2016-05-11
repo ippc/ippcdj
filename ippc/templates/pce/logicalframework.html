@@ -7,11 +7,11 @@
 
 {% block breadcrumb_menu %}
 <li>
-    <a href="/pce/{{ user.get_profile.country.name }}/sessions">{% trans "PCE Home" %}</a>
+    <a href="/{{ LANGUAGE_CODE }}/pce/{{ user.get_profile.country.name }}/sessions">{% trans "PCE Home" %}</a>
     <span class="divider">/</span>
 </li>
 <li>
-    <a href="/pce/{{ user.get_profile.country.name|slugify }}/session/dashboard/{{sessionid}}">  {% trans "PCE Dashboard for" %} {{ user.get_profile.country.name }}</a>
+    <a href="/{{ LANGUAGE_CODE }}/pce/{{ user.get_profile.country.name|slugify }}/session/dashboard/{{sessionid}}">  {% trans "PCE Dashboard for" %} {{ user.get_profile.country.name }}</a>
     <span class="divider">/</span>
 <li>
 <li class="active">{% trans "Logical Framework for Module " %}{{module}}</li>
@@ -50,7 +50,7 @@
                     
                          {% if context == 'View' and can_edit  and id != ''%}  
                     <span  class="pull-right">  
-                   <a  class="btn btn-info" href="/pce/{{ user.get_profile.country.name|slugify }}/{{sessionid}}/{{module}}/logicalframework/edit/{{lf_id}}">{% trans "Edit table" %}</a>
+                   <a  class="btn btn-info" href="/{{ LANGUAGE_CODE }}/pce/{{ user.get_profile.country.name|slugify }}/{{sessionid}}/{{module}}/logicalframework/edit/{{lf_id}}">{% trans "Edit table" %}</a>
                    </span>
                    {% endif%}
                     </h3>
@@ -389,7 +389,7 @@
 
                             </tr>    
                                <tr class="success">
-                                <td style="background:#eee; ">Activity</td>
+                                <td style="background:#eee; ">{% trans "Activity" %}</td>
                                 <td style="background:#eee; ">{% trans "Estimated cost" %}</td>
                                 <td style="background:#eee; ">{% trans "Responsable person" %}</td>
                                 <td style="background:#eee; ">{% trans "Deadline" %}</td>
@@ -424,7 +424,7 @@
 
                             </tr>    
                                <tr class="success">
-                                <td style="background:#eee; ">Activity</td>
+                                <td style="background:#eee; ">{% trans "Activity" %}</td>
                                 <td style="background:#eee; ">{% trans "Estimated cost" %}</td>
                                 <td style="background:#eee; ">{% trans "Responsable person" %}</td>
                                 <td style="background:#eee; ">{% trans "Deadline" %}</td>
@@ -461,7 +461,7 @@
 
                             </tr>    
                                <tr class="success">
-                                <td style="background:#eee; ">Activity</td>
+                                <td style="background:#eee; ">{% trans "Activity" %}</td>
                                 <td style="background:#eee; ">{% trans "Estimated cost" %}</td>
                                 <td style="background:#eee; ">{% trans "Responsable person" %}</td>
                                 <td style="background:#eee; ">{% trans "Deadline" %}</td>
@@ -499,7 +499,7 @@
 
                             </tr>    
                                <tr class="success">
-                                <td style="background:#eee; ">Activity</td>
+                                <td style="background:#eee; ">{% trans "Activity" %}</td>
                                 <td style="background:#eee; ">{% trans "Estimated cost" %}</td>
                                 <td style="background:#eee; ">{% trans "Responsable person" %}</td>
                                 <td style="background:#eee; ">{% trans "Deadline" %}</td>
@@ -537,7 +537,7 @@
 
                             </tr>    
                                <tr class="success">
-                                <td style="background:#eee; ">Activity</td>
+                                <td style="background:#eee; ">{% trans "Activity" %}</td>
                                 <td style="background:#eee; ">{% trans "Estimated cost" %}</td>
                                 <td style="background:#eee; ">{% trans "Responsable person" %}</td>
                                 <td style="background:#eee; ">{% trans "Deadline" %}</td>
@@ -561,9 +561,9 @@
         {% endif%} 
               {% if context == 'View' %} 
                  
-           <a  class="btn btn-info" href="/pce/{{ user.get_profile.country.name|slugify }}/{{sessionid}}/{{modulename}}/view/{{moduleid}}"><- {% trans "back to Module" %} {{module}}</a></span></h3>
+           <a  class="btn btn-info" href="/{{ LANGUAGE_CODE }}/pce/{{ user.get_profile.country.name|slugify }}/{{sessionid}}/{{modulename}}/view/{{moduleid}}"><- {% trans "back to Module" %} {{module}}</a></span></h3>
         &#160;&#160;&#160;<a class="btn  btn-info" href="javascript:window.print();">{% trans "PRINT" %}</a>
-        &#160;&#160;&#160;    <a  class="btn btn-info" href="/pce/{{ user.get_profile.country.name|slugify }}/{{sessionid}}/{{module}}/logicalframework/pdf/{{lf_id}}" target="_blank">{% trans "Export as PDF" %}</a>
+        &#160;&#160;&#160;    <a  class="btn btn-info" href="/{{ LANGUAGE_CODE }}/pce/{{ user.get_profile.country.name|slugify }}/{{sessionid}}/{{module}}/logicalframework/pdf/{{lf_id}}" target="_blank">{% trans "Export as PDF" %}</a>
               {% endif %} 
        {% endif %}
          

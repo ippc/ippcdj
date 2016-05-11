@@ -7,11 +7,11 @@
 
 {% block breadcrumb_menu %}
 <li>
-    <a href="/pce/{{ user.get_profile.country.name }}/sessions">{% trans "PCE Home" %}</a>
+    <a href="/{{ LANGUAGE_CODE }}/pce/{{ user.get_profile.country.name }}/sessions">{% trans "PCE Home" %}</a>
     <span class="divider">/</span>
 </li>
 <li>
-    <a href="/pce/{{ user.get_profile.country.name|slugify }}/session/dashboard/{{sessionid}}">  {% trans "PCE Dashboard for" %} {{ user.get_profile.country.name }}</a>
+    <a href="/{{ LANGUAGE_CODE }}/pce/{{ user.get_profile.country.name|slugify }}/session/dashboard/{{sessionid}}">  {% trans "PCE Dashboard for" %} {{ user.get_profile.country.name }}</a>
     <span class="divider">/</span>
 <li>
 <li class="active">{% trans "Module 9 - Pest eradication capacity" %}</li>
@@ -72,7 +72,7 @@ function checkRules()
 <h1><span class="normal">{% trans "Module 9 - Pest eradication capacity" %}</span></h1>
 {% if can_edit and context == 'Edit' or can_see and context == 'View' or can_see and context == 'Pdf' %}
     {% if context == 'View' or context == 'Edit'%}
-   <p><a href="/pce/{{ user.get_profile.country.name|slugify }}/session/{{sessionid}}/modules"><< {% trans "Back to Module List" %}</a></p>
+   <p><a href="/{{ LANGUAGE_CODE }}/pce/{{ user.get_profile.country.name|slugify }}/session/{{sessionid}}/modules"><< {% trans "Back to Module List" %}</a></p>
 
     <div class="row-fluid">
         <div class="span8">
@@ -89,7 +89,7 @@ function checkRules()
                     <h3 class="panel-title"> {% trans "Pest eradication capacity" %}</h3>
                        {% if context == 'View' and can_edit  and id != ''%}  
                         <span  class="pull-right">
-                            <a  class="btn btn-info" href="/pce/{{ user.get_profile.country.name|slugify }}/{{sessionid}}/module9/edit/{{id}}">Edit Module</a>
+                            <a  class="btn btn-info" href="/{{ LANGUAGE_CODE }}/pce/{{ user.get_profile.country.name|slugify }}/{{sessionid}}/module9/edit/{{id}}">Edit Module</a>
                         </span>
                         {%endif%} 
                 </div>
@@ -142,7 +142,7 @@ function checkRules()
                                                     {% for form in form1 %}
                                                        
                                                         {% for ff in form %}
-                                                        {%if not ff.label == 'Module9' and not ff.label == 'Delete' and not ff.label == 'Id'%}
+                                                        {%if not ff.label == 'Module9' and not ff.label == 'Delete'  and not ff.label == 'Удалить' and not ff.label == 'Id'%}
                                                         <tr>
                                                          <td width="80%">{{ff.label}}</td>
                                                          <td> {%if ff.name == 'c1' or ff.name == 'c2' or ff.name == 'c3' or ff.name == 'c4' %}
@@ -367,7 +367,7 @@ function checkRules()
                                                     {% for form in form5 %}
                                                        
                                                         {% for ff in form %}
-                                                        {%if not ff.label == 'Module9' and not ff.label == 'Delete' and not ff.label == 'Id'%}
+                                                        {%if not ff.label == 'Module9' and not ff.label == 'Delete'  and not ff.label == 'Удалить' and not ff.label == 'Id'%}
                                                         <tr>  <td> {{ff.label}}</td>
                                                          <td>
                                                                  {%if ff.name == 'c1' or ff.name == 'c2' or ff.name == 'c3' or ff.name == 'c4' or ff.name == 'c5' %}
@@ -432,7 +432,7 @@ function checkRules()
                                                     {% for form in form31 %}
                                                        
                                                         {% for ff in form %}
-                                                        {%if not ff.label == 'Module9' and not ff.label == 'Delete' and not ff.label == 'Id'%}
+                                                        {%if not ff.label == 'Module9' and not ff.label == 'Delete'  and not ff.label == 'Удалить' and not ff.label == 'Id'%}
                                                         <tr>  <td> {{ff.label}}</td>
                                                          <td>   {%if ff.name == 'c1' or ff.name == 'c2' or ff.name == 'c3' or ff.name == 'c4' or ff.name == 'c5' %}
                                                     <ul>
@@ -529,7 +529,7 @@ function checkRules()
                                                         <tr><td>{% trans "Lower than bachelor level" %}</td>
                                                       {% endif %}
                                                         {% for ff in form %}
-                                                          {%if not ff.label == 'Module9' and not ff.label == 'Delete' and not ff.label == 'Id'%}
+                                                          {%if not ff.label == 'Module9' and not ff.label == 'Delete'  and not ff.label == 'Удалить' and not ff.label == 'Id'%}
                                                             {% if context == 'Edit' %}  
                                                                     <td> {{ff}}</td>
                                                             {% elif context == 'View' %}  
@@ -631,7 +631,7 @@ function checkRules()
                                             <div class="panel panel-default">
                                                 <div class="panel-body">
                                                     {% for ff in form %}
-                                                    {%if not ff.label == 'Module9' and not ff.label == 'Delete' and not ff.label == 'Id'%}
+                                                    {%if not ff.label == 'Module9' and not ff.label == 'Delete'  and not ff.label == 'Удалить' and not ff.label == 'Id'%}
                                                     {{ff.label}}  {% if context == 'Edit' %}
                                                             {{ff}} 
                                                         {% else %} 

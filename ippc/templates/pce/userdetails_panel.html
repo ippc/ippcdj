@@ -15,7 +15,7 @@
                 <br>
                 <b>{% trans "Country" %}:</b> {{ user.get_profile.country.name }}<br>
                 <b>{% trans "Current PCE Session" %}:</b> {{version_number}}<br>
-                <b>{% trans "Closed PCE Session" %}:</b> <a href="/pce/{{ user.get_profile.country.name|slugify}}/sessions">{% trans "other sessions ->" %}</a>
+                <b>{% trans "Closed PCE Session" %}:</b> <a href="/{{ LANGUAGE_CODE }}/pce/{{ user.get_profile.country.name|slugify}}/sessions">{% trans "other sessions ->" %}</a>
                 <br>
                 <b>{% trans "Actual Overall Progress" %}:</b> {{tot_percentage}}% {% trans "Complete" %}<br>
             </div>

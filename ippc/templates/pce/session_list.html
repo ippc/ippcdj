@@ -8,7 +8,7 @@
 
 {% block breadcrumb_menu %}
 <li>
-    <a href="/pce/{{ user.get_profile.country.name }}/sessions">{% trans "PCE Home" %}</a>
+    <a href="/{{ LANGUAGE_CODE }}/pce/{{ user.get_profile.country.name }}/sessions">{% trans "PCE Home" %}</a>
     <span class="divider">/</span>
 </li>
 <li class="active">
@@ -52,7 +52,7 @@
                 <p>{% trans " Click on a PCE Session title below to continue your work" %}
                     {% if  can_edit %}
                     {% if latest_closed  or empty %}
-                    or  <a  class="btn btn-info" href="/pce/{{ user.get_profile.country.name|slugify }}/session/create_step1">{% trans "Start new session" %}</a>.</p>
+                    or  <a  class="btn btn-info" href="/{{ LANGUAGE_CODE }}/pce/{{ user.get_profile.country.name|slugify }}/session/create_step1">{% trans "Start new session" %}</a>.</p>
                 {% endif %}
                 {% else %}
                 .</p>
@@ -80,7 +80,7 @@
                 {% for object in latest %}
                 <tr class="warning">
                     <td>{{ user.get_profile.country.name }}</th>			
-                    <td> <a href="/pce/{{ user.get_profile.country.name|slugify}}/session/dashboard/{{object.id}}/">{{ object.version_number}}</td>
+                    <td> <a href="/{{ LANGUAGE_CODE }}/pce/{{ user.get_profile.country.name|slugify}}/session/dashboard/{{object.id}}/">{{ object.version_number}}</td>
                         
                     <td>{% if object.status == 1 %}
                         {% trans "open" %}

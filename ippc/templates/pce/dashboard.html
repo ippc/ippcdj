@@ -10,7 +10,7 @@
 
 {% block breadcrumb_menu %}
 <li>
-    <a href="/pce/{{ user.get_profile.country.name }}/sessions">{% trans "PCE Home" %}</a>
+    <a href="/{{ LANGUAGE_CODE }}//pce/{{ user.get_profile.country.name }}/sessions">{% trans "PCE Home" %}</a>
     <span class="divider">/</span>
 </li>
 <li class="active">
@@ -32,7 +32,7 @@
         <h4>{{ user.get_profile.country.name }}</h4>
         <div class="panel panel-default">
             <div class="panel-heading">
-                <h3 class="panel-title">{% trans "Overall progress in this Session of the PCE" %}<span  class="pull-right">    <a  class="btn btn-mini btn-info" href="/pce/{{ user.get_profile.country.name|slugify }}/session/{{sessionid}}/modules">{% trans "Go to Module List" %}</a></span></h3>
+                <h3 class="panel-title">{% trans "Overall progress in this Session of the PCE" %}<span  class="pull-right">    <a  class="btn btn-mini btn-info" href="/{{ LANGUAGE_CODE }}/pce/{{ user.get_profile.country.name|slugify }}/session/{{sessionid}}/modules">{% trans "Go to Module List" %}</a></span></h3>
             </div>
             <div class="panel-body">
                 <div class="progress">
@@ -46,19 +46,19 @@
          <span  class="pull-left"> 
          {% if can_close %}
             {%if sessionstatus == 1 %}
-                <a class="btn btn-small btn-info" href="/pce/{{ user.get_profile.country.name|slugify }}/session/create_step1/{{sessionid}}">{% trans "Re-Configure this session" %}</a>
+                <a class="btn btn-small btn-info" href="/{{ LANGUAGE_CODE }}/pce/{{ user.get_profile.country.name|slugify }}/session/create_step1/{{sessionid}}">{% trans "Re-Configure this session" %}</a>
                 <br>
-                <a  class="btn btn-small btn-info" href="/pce/{{ user.get_profile.country.name|slugify }}/closesession/{{sessionid}}">{% trans "Cancel this session" %}</a>
+                <a  class="btn btn-small btn-info" href="/{{ LANGUAGE_CODE }}/pce/{{ user.get_profile.country.name|slugify }}/closesession/{{sessionid}}">{% trans "Cancel this session" %}</a>
                {%if tot_percentage == '100.00' %}
                 <br>
                 <br>
-                <a  class="btn btn-small btn-info" href="/pce/{{ user.get_profile.country.name|slugify }}/completesession/{{sessionid}}">{% trans "CLOSE this session and set as COMPLETED" %}</a>
+                <a  class="btn btn-small btn-info" href="/{{ LANGUAGE_CODE }}/pce/{{ user.get_profile.country.name|slugify }}/completesession/{{sessionid}}">{% trans "CLOSE this session and set as COMPLETED" %}</a>
                
                 {% endif %} 
             {% endif %} 
              {%if tot_percentage == '100.00' %}
                  <br>
-            <a  class="btn btn-small btn-info" href="/pce/{{ user.get_profile.country.name|slugify }}/report/{{sessionid}}">{% trans "Generate Report" %}</a>
+            <a  class="btn btn-small btn-info" href="/{{ LANGUAGE_CODE }}/pce/{{ user.get_profile.country.name|slugify }}/report/{{sessionid}}">{% trans "Generate Report" %}</a>
         {% endif %}  {% endif %} 
         <br>
         <br> 
@@ -96,9 +96,9 @@
                                    {% if key == i %}
                                        {% if key in filled_stakeh_array %}
                                             {% if value != '' %}
-                                                <td><a href="/pce/{{ user.get_profile.country.name|slugify }}/{{sessionid}}/module{{key}}/edit/{{value}}"><span class="label label-success">&#160;&#160;&#160;{{key}}&#160;&#160;&#160;</span></a></td>
+                                                <td><a href="/{{ LANGUAGE_CODE }}/pce/{{ user.get_profile.country.name|slugify }}/{{sessionid}}/module{{key}}/edit/{{value}}"><span class="label label-success">&#160;&#160;&#160;{{key}}&#160;&#160;&#160;</span></a></td>
                                               {% else %}
-                                                <td><a href="/pce/{{ user.get_profile.country.name|slugify }}/{{sessionid}}/module{{key}}/edit"><span class="label label-success">&#160;&#160;&#160;{{key}}&#160;&#160;&#160;</span></a></td>
+                                                <td><a href="/{{ LANGUAGE_CODE }}/pce/{{ user.get_profile.country.name|slugify }}/{{sessionid}}/module{{key}}/edit"><span class="label label-success">&#160;&#160;&#160;{{key}}&#160;&#160;&#160;</span></a></td>
                                             {% endif %}
                                           {% else %}
                                             <td><span class="label label-success">&#160;&#160;&#160;{{key}}&#160;&#160;&#160;</span></td>
@@ -118,9 +118,9 @@
                                 {% for key,value in stake_ids.items %}
                                    {% if key == i %}
                                         {% if value != '' %}
-                                          <td><a href="/pce/{{ user.get_profile.country.name|slugify }}/{{sessionid}}/{{key}}/stakeholders/view/{{value}}">{% trans "View" %}</a></td>
+                                          <td><a href="/{{ LANGUAGE_CODE }}/pce/{{ user.get_profile.country.name|slugify }}/{{sessionid}}/{{key}}/stakeholders/view/{{value}}">{% trans "View" %}</a></td>
                                         {% else %}
-                                          <td><a href="/pce/{{ user.get_profile.country.name|slugify }}/{{sessionid}}/{{key}}/stakeholders/view">{% trans "View" %}</a></td>
+                                          <td><a href="/{{ LANGUAGE_CODE }}/pce/{{ user.get_profile.country.name|slugify }}/{{sessionid}}/{{key}}/stakeholders/view">{% trans "View" %}</a></td>
                                         {% endif %} 
                                     {% else %}
                                       
@@ -143,9 +143,9 @@
                                    {% if key == i %}
                                        {% if key in filled_stakeh_array %}
                                             {% if value != '' %}
-                                                <td><a href="/pce/{{ user.get_profile.country.name|slugify }}/{{sessionid}}/module{{key}}/view/{{value}}">{% trans "View" %}</a></td>
+                                                <td><a href="/{{ LANGUAGE_CODE }}/pce/{{ user.get_profile.country.name|slugify }}/{{sessionid}}/module{{key}}/view/{{value}}">{% trans "View" %}</a></td>
                                               {% else %}
-                                                <td><a href="/pce/{{ user.get_profile.country.name|slugify }}/{{sessionid}}/module{{key}}/empty">{% trans "View" %}</a></td>
+                                                <td><a href="/{{ LANGUAGE_CODE }}/pce/{{ user.get_profile.country.name|slugify }}/{{sessionid}}/module{{key}}/empty">{% trans "View" %}</a></td>
                                             {% endif %}
                                           {% else %}
                                             <td>{% trans "View" %}</td>
@@ -168,9 +168,9 @@
                                        {% if key == i and key != 1 %}
                                             {%if key in filled_stakeh_array and key in filled_m_array %}
                                                 {% if value != '' %}
-                                                   <a href="/pce/{{ user.get_profile.country.name|slugify }}/{{sessionid}}/{{key}}/problemanalysis/{{value}}">{% trans "View" %}</a>
+                                                   <a href="/{{ LANGUAGE_CODE }}/pce/{{ user.get_profile.country.name|slugify }}/{{sessionid}}/{{key}}/problemanalysis/{{value}}">{% trans "View" %}</a>
                                                 {% else %}
-                                                   <a href="/pce/{{ user.get_profile.country.name|slugify }}/{{sessionid}}/{{key}}/problemanalysis/view">{% trans "View" %}</a>
+                                                   <a href="/{{ LANGUAGE_CODE }}/pce/{{ user.get_profile.country.name|slugify }}/{{sessionid}}/{{key}}/problemanalysis/view">{% trans "View" %}</a>
                                                 {% endif %}
                                             {%else%}
                                                  View
@@ -194,9 +194,9 @@
                                        {% if key == i  and key != 1 %}
                                             {%if key in filled_stakeh_array and key in filled_pa_array and key in filled_m_array %}
                                                 {% if value != '' %}
-                                  <a href="/pce/{{ user.get_profile.country.name|slugify }}/{{sessionid}}/{{key}}/swotanalysis/{{value}}">{% trans "View" %}</a>
+                                  <a href="/{{ LANGUAGE_CODE }}/pce/{{ user.get_profile.country.name|slugify }}/{{sessionid}}/{{key}}/swotanalysis/{{value}}">{% trans "View" %}</a>
                                 {% else %}
-                                  <a href="/pce/{{ user.get_profile.country.name|slugify }}/{{sessionid}}/{{key}}/swotanalysis/view">{% trans "View" %}</a>
+                                  <a href="/{{ LANGUAGE_CODE }}/pce/{{ user.get_profile.country.name|slugify }}/{{sessionid}}/{{key}}/swotanalysis/view">{% trans "View" %}</a>
                                 {% endif %}
                                             {%else%}
                                                  View
@@ -219,9 +219,9 @@
                                        {% if key == i   and key != 1  %}
                                              {%if key in filled_stakeh_array and key in filled_pa_array and key in filled_sa_array and key in filled_m_array %}
                                                     {% if value != '' %}
-                                  <a href="/pce/{{ user.get_profile.country.name|slugify }}/{{sessionid}}/{{key}}/logicalframework/{{value}}">{% trans "View" %}</a> 
+                                  <a href="/{{ LANGUAGE_CODE }}/pce/{{ user.get_profile.country.name|slugify }}/{{sessionid}}/{{key}}/logicalframework/{{value}}">{% trans "View" %}</a> 
                                 {% else %}
-                                   <a href="/pce/{{ user.get_profile.country.name|slugify }}/{{sessionid}}/{{key}}/logicalframework/view">{% trans "View" %}</a> 
+                                   <a href="/{{ LANGUAGE_CODE }}/pce/{{ user.get_profile.country.name|slugify }}/{{sessionid}}/{{key}}/logicalframework/view">{% trans "View" %}</a> 
                                 {% endif %}
                                             {%else%}
                                                  View
@@ -257,7 +257,7 @@
                                                   {% if can_validate %}
                                                     {% for key2,value2 in m_ids.items %}
                                                         {% if key2 == key %}
-                                                            <a class="label label-warning" href="/pce/{{ user.get_profile.country.name|slugify }}/{{sessionid}}/module{{key}}/unvalidate/{{value2}}"><small>{% trans "unvalidate" %}</small></a>
+                                                            <a class="label label-warning" href="/{{ LANGUAGE_CODE }}/pce/{{ user.get_profile.country.name|slugify }}/{{sessionid}}/module{{key}}/unvalidate/{{value2}}"><small>{% trans "unvalidate" %}</small></a>
                                                         {% endif %}  
                                                     {% endfor %} 
                                             
@@ -271,7 +271,7 @@
                                                     {% endif %} 
                                                     {% for key2,value2 in m_ids.items %}
                                                         {% if key2 == key %}
-                                                            <a class="btn btn-small btn-info" href="/pce/{{ user.get_profile.country.name|slugify }}/{{sessionid}}/module{{key}}/validate/{{value2}}">{% trans "Validate" %}</a>
+                                                            <a class="btn btn-small btn-info" href="/{{ LANGUAGE_CODE }}/pce/{{ user.get_profile.country.name|slugify }}/{{sessionid}}/module{{key}}/validate/{{value2}}">{% trans "Validate" %}</a>
                                                         {% endif %}  
                                                     {% endfor %} 
                                                 {% elif can_sendtovalidator %}
@@ -280,7 +280,7 @@
                                                     {%else%}    
                                                         {% for key2,value2 in m_ids.items %}
                                                             {% if key2 == key %}
-                                                            <a class="btn btn-small btn-info" href="/pce/{{ user.get_profile.country.name|slugify }}/{{sessionid}}/module{{key}}/send/{{value2}}">{% trans "Send to Validator" %}</a>
+                                                            <a class="btn btn-small btn-info" href="/{{ LANGUAGE_CODE }}/pce/{{ user.get_profile.country.name|slugify }}/{{sessionid}}/module{{key}}/send/{{value2}}">{% trans "Send to Validator" %}</a>
                                                             {% endif %}  
                                                         {% endfor %}   
                                                     {% endif %} 

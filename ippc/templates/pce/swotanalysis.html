@@ -7,11 +7,11 @@
 
 {% block breadcrumb_menu %}
 <li>
-    <a href="/pce/{{ user.get_profile.country.name }}/sessions">{% trans "PCE Home" %}</a>
+    <a href="/{{ LANGUAGE_CODE }}/pce/{{ user.get_profile.country.name }}/sessions">{% trans "PCE Home" %}</a>
     <span class="divider">/</span>
 </li>
 <li>
-    <a href="/pce/{{ user.get_profile.country.name|slugify }}/session/dashboard/{{sessionid}}">  {% trans "PCE Dashboard for" %} {{ user.get_profile.country.name }}</a>
+    <a href="/{{ LANGUAGE_CODE }}/pce/{{ user.get_profile.country.name|slugify }}/session/dashboard/{{sessionid}}">  {% trans "PCE Dashboard for" %} {{ user.get_profile.country.name }}</a>
     <span class="divider">/</span>
 <li>
 <li class="active">{% trans "Swot Analysis for Module " %}{{module}}</li>
@@ -49,7 +49,7 @@
                         <h3 class="panel-title"> {% trans "Swot Analysis - Module" %} {{module}}
                          {% if context == 'View' and can_edit  and id != ''%}  
                         <span  class="pull-right">  
-                            <a  class="btn btn-info" href="/pce/{{ user.get_profile.country.name|slugify }}/{{sessionid}}/{{module}}/swotanalysis/edit/{{sa_id}}">Edit table</a>
+                            <a  class="btn btn-info" href="/{{ LANGUAGE_CODE }}/pce/{{ user.get_profile.country.name|slugify }}/{{sessionid}}/{{module}}/swotanalysis/edit/{{sa_id}}">Edit table</a>
                         </span>
                         {% endif %}  </h3>
                        
@@ -106,7 +106,7 @@
                                         <tr class="inline {{ form1.prefix }}"> 
                                             {% for f in form %}
                                             {% if not f.label == 'Swotanalysis' and not f.label == 'Id'%}
-                                            {% if f.label == 'Strengths'%}
+                                            {% if f.label == 'Strengths' or f.label == 'Сильные стороны'  %}
                                             <td>{{f}} </td>
                                             <td style="background:#ffc; "> <b>{% trans "Weakness" %} 1:</b>{{weakeness.w1}} </td>
                                             {%else%}
@@ -125,7 +125,7 @@
                                         <tr class="inline {{ form2.prefix }}"> 
                                             {% for f in form %}
                                             {% if not f.label == 'Swotanalysis' and not f.label == 'Id'%}
-                                            {% if f.label == 'Strengths'%}
+                                            {% if f.label == 'Strengths' or f.label == 'Сильные стороны'%}
                                             <td>{{f}} </td>
                                             <td style="background:#ffc; "> <b>{% trans "Weakness" %} 2:</b>{{weakeness.w2}} </td>
                                             {%else%}
@@ -144,7 +144,7 @@
                                         <tr class="inline {{ form3.prefix }}"> 
                                             {% for f in form %}
                                             {% if not f.label == 'Swotanalysis' and not f.label == 'Id'%}
-                                            {% if f.label == 'Strengths'%}
+                                            {% if f.label == 'Strengths' or f.label == 'Сильные стороны'%}
                                             <td>{{f}} </td>
                                             <td style="background:#ffc; "> <b>{% trans "Weakness" %} 3:</b>{{weakeness.w3}} </td>
                                             {%else%}
@@ -163,7 +163,7 @@
                                         <tr class="inline {{ form4.prefix }}"> 
                                             {% for f in form %}
                                             {% if not f.label == 'Swotanalysis' and not f.label == 'Id'%}
-                                            {% if f.label == 'Strengths'%}
+                                            {% if f.label == 'Strengths' or f.label == 'Сильные стороны'%}
                                             <td>{{f}} </td>
                                             <td style="background:#ffc; "> <b>{% trans "Weakness" %} 4:</b>{{weakeness.w4}} </td>
                                             {%else%}
@@ -182,7 +182,7 @@
                                         <tr class="inline {{ form5.prefix }}"> 
                                             {% for f in form %}
                                             {% if not f.label == 'Swotanalysis' and not f.label == 'Id'%}
-                                            {% if f.label == 'Strengths'%}
+                                            {% if f.label == 'Strengths' or f.label == 'Сильные стороны'%}
                                             <td>{{f}} </td>
                                             <td style="background:#ffc; "> <b>{% trans "Weakness" %} 5:</b>{{weakeness.w5}} </td>
                                             {%else%}
@@ -443,11 +443,11 @@
                             </tbody>
                         </table>   
                         {% endif %} {% if context == 'View'%}
-                        <span  class="pull-left"><a  class="btn btn-info" href="/pce/{{ user.get_profile.country.name|slugify }}/{{sessionid}}/{{modulename}}/view/{{moduleid}}"><- {% trans "back to Module" %} {{module}}</a></span>
+                        <span  class="pull-left"><a  class="btn btn-info" href="/{{ LANGUAGE_CODE }}/pce/{{ user.get_profile.country.name|slugify }}/{{sessionid}}/{{modulename}}/view/{{moduleid}}"><- {% trans "back to Module" %} {{module}}</a></span>
                         &#160;&#160;&#160;<a class="btn  btn-info" href="javascript:window.print();">{% trans "PRINT" %}</a>  
                         {% if lf_id != ''%}  
-                        &#160;&#160;&#160;<a  class="btn btn-info" href="/pce/{{ user.get_profile.country.name|slugify }}/{{sessionid}}/{{module}}/swotanalysis/pdf/{{sa_id}}" target="_blank">{% trans "Export as PDF" %}</a>
-                        <span  class="pull-right"><a class="btn btn-info" href="/pce/{{ user.get_profile.country.name|slugify }}/{{sessionid}}/{{module}}/logicalframework/{{lf_id}}">{% trans "Go to Logical Framework for Module" %} {{module}} -></a></span>
+                        &#160;&#160;&#160;<a  class="btn btn-info" href="/{{ LANGUAGE_CODE }}/pce/{{ user.get_profile.country.name|slugify }}/{{sessionid}}/{{module}}/swotanalysis/pdf/{{sa_id}}" target="_blank">{% trans "Export as PDF" %}</a>
+                        <span  class="pull-right"><a class="btn btn-info" href="/{{ LANGUAGE_CODE }}/pce/{{ user.get_profile.country.name|slugify }}/{{sessionid}}/{{module}}/logicalframework/{{lf_id}}">{% trans "Go to Logical Framework for Module" %} {{module}} -></a></span>
 
                         {% endif%}
                         {% endif%}

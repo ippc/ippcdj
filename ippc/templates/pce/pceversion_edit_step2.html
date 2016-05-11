@@ -9,7 +9,7 @@
 
 {% block breadcrumb_menu %}
 <li>
-    <a href="/pce/{{ user.get_profile.country.name }}/sessions">{% trans "PCE Home" %}</a>
+    <a href="/{{ LANGUAGE_CODE }}/pce/{{ user.get_profile.country.name }}/sessions">{% trans "PCE Home" %}</a>
     <span class="divider">/</span>
 </li>
 <li class="active">
@@ -140,7 +140,7 @@ function check(theform)
             <div class="panel-body">
                 <b>1. </b>{% trans "Basic Information" %}<span class="icon-ok"> </span><br>
                 <b>2. </b><span class="label label-success">{% trans "Q & A Modules" %}</span><br>
-                <b>3.</b>{% trans "User Groups" %}<br>
+                <b>3. </b>{% trans "User Groups" %}<br>
             </div>
         </div>
     </div>

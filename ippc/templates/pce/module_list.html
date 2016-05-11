@@ -11,11 +11,11 @@
 {% block breadcrumb_menu %}
 
 <li>
-    <a href="/pce/{{ user.get_profile.country.name }}/sessions">{% trans "PCE Home" %}</a>
+    <a href="/{{ LANGUAGE_CODE }}/pce/{{ user.get_profile.country.name }}/sessions">{% trans "PCE Home" %}</a>
     <span class="divider">/</span>
 </li>
 <li>
-    <a href="/pce/{{ user.get_profile.country.name|slugify }}/session/dashboard/{{session_id}}">  {% trans "Dashboard" %} {{ user.get_profile.country.name }}</a>
+    <a href="/{{ LANGUAGE_CODE }}/pce/{{ user.get_profile.country.name|slugify }}/session/dashboard/{{session_id}}">  {% trans "Dashboard" %} {{ user.get_profile.country.name }}</a>
     <span class="divider">/</span>
 <li>
     {% trans "Modules List" %}
@@ -39,7 +39,7 @@
         <div class="panel panel-default">
             <div class="panel-body">
                 <p>{% trans "Please click on 'Edit' under the module titles to work on one module, once a module is complete links to some planning tools will become active beneath the completed module title. Other tools are always available." %}</p>
-                <p><a href="/pce/{{ user.get_profile.country.name|slugify }}/session/dashboard/{{session_id}}"><< {% trans "Back to" %} {{ user.get_profile.country.name }} {% trans " Dashboard" %}</a></p>
+                <p><a href="/{{ LANGUAGE_CODE }}/pce/{{ user.get_profile.country.name|slugify }}/session/dashboard/{{session_id}}"><< {% trans "Back to" %} {{ user.get_profile.country.name }} {% trans " Dashboard" %}</a></p>
             </div>
         </div>
     </div> 
@@ -87,21 +87,21 @@
                                               {% endif %}
                                           {% endfor %}
                                         {% if value != '' %}
-                                               <br><a href="/pce/{{ user.get_profile.country.name|slugify }}/{{sessionid}}/module{{key}}/edit/{{value}}">
-                                                 EDIT   
+                                               <br><a href="/{{ LANGUAGE_CODE }}/pce/{{ user.get_profile.country.name|slugify }}/{{sessionid}}/module{{key}}/edit/{{value}}">
+                                                 {% trans "EDIT" %}  
                                                </a>
-                                               <br><a href="/pce/{{ user.get_profile.country.name|slugify }}/{{sessionid}}/module{{key}}/view/{{value}}">
-                                                 VIEW   
+                                               <br><a href="/{{ LANGUAGE_CODE }}/pce/{{ user.get_profile.country.name|slugify }}/{{sessionid}}/module{{key}}/view/{{value}}">
+                                                   {% trans "VIEW" %} 
                                                </a>
-                                               <br><a href="/pce/{{ user.get_profile.country.name|slugify }}/{{sessionid}}/module{{key}}/empty">
-                                                 VIEW   empty
+                                               <br><a href="/{{ LANGUAGE_CODE }}/pce/{{ user.get_profile.country.name|slugify }}/{{sessionid}}/module{{key}}/empty">
+                                                    {% trans "VIEW empty" %}    
                                                </a>
                                         {% else %}
-                                                <br><a href="/pce/{{ user.get_profile.country.name|slugify }}/{{sessionid}}/module{{key}}/edit">
-                                                 EDIT 
+                                                <br><a href="/{{ LANGUAGE_CODE }}/pce/{{ user.get_profile.country.name|slugify }}/{{sessionid}}/module{{key}}/edit">
+                                               {% trans "EDIT" %} 
                                                 </a>
-                                        <br><a href="/pce/{{ user.get_profile.country.name|slugify }}/{{sessionid}}/module{{key}}/empty">
-                                                 VIEW   empty
+                                        <br><a href="/{{ LANGUAGE_CODE }}/pce/{{ user.get_profile.country.name|slugify }}/{{sessionid}}/module{{key}}/empty">
+                                                 {% trans "VIEW empty" %}  
                                                </a>
                                         {% endif %}
                                     {% else %}
@@ -121,9 +121,9 @@
                                     {% for key,value in stake_ids.items %}
                                     {% if key in chosen_modules and key == i%}
                                         {% if value != '' %}
-                                         <a href="/pce/{{ user.get_profile.country.name|slugify }}/{{sessionid}}/{{key}}/stakeholders/view/{{value}}">{% trans "Stakeholders" %}</a>
+                                         <a href="/{{ LANGUAGE_CODE }}/pce/{{ user.get_profile.country.name|slugify }}/{{sessionid}}/{{key}}/stakeholders/view/{{value}}">{% trans "Stakeholders" %}</a>
                                         {% else %}
-                                          <a href="/pce/{{ user.get_profile.country.name|slugify }}/{{sessionid}}/{{key}}/stakeholders/view">{% trans "Stakeholders" %}</a>
+                                          <a href="/{{ LANGUAGE_CODE }}/pce/{{ user.get_profile.country.name|slugify }}/{{sessionid}}/{{key}}/stakeholders/view">{% trans "Stakeholders" %}</a>
                                         {% endif %}      
                                     {% endif %}      
 
@@ -137,9 +137,9 @@
                                         {% if key in filled_stakeh_array and key in filled_m_array and key != 1 and key in chosen_modules %} 
                                              
                                             {% if value != '' %}
-                                                <a href="/pce/{{ user.get_profile.country.name|slugify }}/{{sessionid}}/{{key}}/problemanalysis/{{value}}">{% trans "Problem Analysis" %}</a>
+                                                <a href="/{{ LANGUAGE_CODE }}/pce/{{ user.get_profile.country.name|slugify }}/{{sessionid}}/{{key}}/problemanalysis/{{value}}">{% trans "Problem Analysis" %}</a>
                                             {% else %}
-                                                <a href="/pce/{{ user.get_profile.country.name|slugify }}/{{sessionid}}/{{key}}/problemanalysis/view">{% trans "Problem Analysis" %}</a>
+                                                <a href="/{{ LANGUAGE_CODE }}/pce/{{ user.get_profile.country.name|slugify }}/{{sessionid}}/{{key}}/problemanalysis/view">{% trans "Problem Analysis" %}</a>
                                             {% endif %}
                                          {% else %}        
                                              {% trans "Problem Analysis" %}
@@ -155,9 +155,9 @@
 
                                         {% if key in filled_stakeh_array  and key != 1 and key in chosen_modules and key in filled_pa_array and key in filled_m_array %}
                                            {% if value != '' %}
-                                                <a href="/pce/{{ user.get_profile.country.name|slugify }}/{{sessionid}}/{{key}}/swotanalysis/{{value}}">{% trans "Swot Analysis" %}</a>
+                                                <a href="/{{ LANGUAGE_CODE }}/pce/{{ user.get_profile.country.name|slugify }}/{{sessionid}}/{{key}}/swotanalysis/{{value}}">{% trans "Swot Analysis" %}</a>
                                             {% else %}
-                                                <a href="/pce/{{ user.get_profile.country.name|slugify }}/{{sessionid}}/{{key}}/swotanalysis/view">{% trans "Swot Analysis" %}</a>
+                                                <a href="/{{ LANGUAGE_CODE }}/pce/{{ user.get_profile.country.name|slugify }}/{{sessionid}}/{{key}}/swotanalysis/view">{% trans "Swot Analysis" %}</a>
                                             {% endif %}
                                         {% else %}
                                             {% trans "Swot Analysis" %}
@@ -175,9 +175,9 @@
                                                  {% if key in filled_stakeh_array and key in chosen_modules  and key != 1 and key in filled_pa_array and key in filled_sa_array and key in filled_m_array %}
 
                                             {% if value != '' %}
-                                            <a href="/pce/{{ user.get_profile.country.name|slugify }}/{{sessionid}}/{{key}}/logicalframework/{{value}}">{% trans "Logical Framework" %}</a>
+                                            <a href="/{{ LANGUAGE_CODE }}/pce/{{ user.get_profile.country.name|slugify }}/{{sessionid}}/{{key}}/logicalframework/{{value}}">{% trans "Logical Framework" %}</a>
                                             {% else %}
-                                            <a href="/pce/{{ user.get_profile.country.name|slugify }}/{{sessionid}}/{{key}}/logicalframework/view">{% trans "Logical Framework" %}</a>
+                                            <a href="/{{ LANGUAGE_CODE }}/pce/{{ user.get_profile.country.name|slugify }}/{{sessionid}}/{{key}}/logicalframework/view">{% trans "Logical Framework" %}</a>
                                         {% endif %}      
                                          {% else %}
                                             {% trans "Logical Framework" %}
@@ -212,7 +212,7 @@
                                              <span class="label label-warning">VALIDATED</span>
                                                    {% for key2,value2 in m_ids.items %}
                                                   {% if key2 == key %}
-                                                            <a class="btn btn-small btn-warning" href="/pce/{{ user.get_profile.country.name|slugify }}/{{sessionid}}/module{{key}}/unvalidate/{{value2}}">{% trans "Unvalidate" %}</a>
+                                                            <a class="btn btn-small btn-warning" href="/{{ LANGUAGE_CODE }}/pce/{{ user.get_profile.country.name|slugify }}/{{sessionid}}/module{{key}}/unvalidate/{{value2}}">{% trans "Unvalidate" %}</a>
                                                         {% endif %}  
                                                     {% endfor %}     
                                              
@@ -225,7 +225,7 @@
                                                        {% endif %} 
                                                      {% for key2,value2 in m_ids.items %}
                                                         {% if key2 == key %}
-                                                            <a class="btn btn-small btn-info" href="/pce/{{ user.get_profile.country.name|slugify }}/{{sessionid}}/module{{key}}/validate/{{value2}}">{% trans "Validate" %}</a>
+                                                            <a class="btn btn-small btn-info" href="/{{ LANGUAGE_CODE }}/pce/{{ user.get_profile.country.name|slugify }}/{{sessionid}}/module{{key}}/validate/{{value2}}">{% trans "Validate" %}</a>
                                                         {% endif %}  
                                                     {% endfor %} 
                                                    
@@ -235,7 +235,7 @@
                                                     {%else%}   
                                                      {% for key2,value2 in m_ids.items %}
                                                         {% if key2 == key %}
-                                                            <a class="btn btn-small btn-info" href="/pce/{{ user.get_profile.country.name|slugify }}/{{sessionid}}/module{{key}}/send/{{value2}}">{% trans "Send to Validator" %}</a>
+                                                            <a class="btn btn-small btn-info" href="/{{ LANGUAGE_CODE }}/pce/{{ user.get_profile.country.name|slugify }}/{{sessionid}}/module{{key}}/send/{{value2}}">{% trans "Send to Validator" %}</a>
                                                         {% endif %}  
                                                     {% endfor %} 
                                                      

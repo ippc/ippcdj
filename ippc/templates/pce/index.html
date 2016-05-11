@@ -81,7 +81,7 @@ which.style.display="block"
                 <a href="{% url "profile_update" %}">{{ request.user|username_or:"email"|capfirst }}</a>!
             {% endif %}
         
-            <a href="/pce/{{ user.get_profile.country.name|slugify}}/sessions"
+            <a href="/{{ LANGUAGE_CODE }}/pce/{{ user.get_profile.country.name|slugify}}/sessions"
                 class="btn btn-small btn-success btn-account">{% trans "Go to " %}{{ user.get_profile.country.name}}{% trans " Dashboard " %} </a>
             <br> <br>
             <a href="{% url "logout" %}?next={{ request.path }}"

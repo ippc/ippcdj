@@ -7,11 +7,11 @@
 
 {% block breadcrumb_menu %}
 <li>
-    <a href="/pce/{{ user.get_profile.country.name }}/sessions">{% trans "PCE Home" %}</a>
+    <a href="/{{ LANGUAGE_CODE }}/pce/{{ user.get_profile.country.name }}/sessions">{% trans "PCE Home" %}</a>
     <span class="divider">/</span>
 </li>
 <li>
-    <a href="/pce/{{ user.get_profile.country.name|slugify }}/session/dashboard/{{sessionid}}">  {% trans "PCE Dashboard for" %} {{ user.get_profile.country.name }}</a>
+    <a href="/{{ LANGUAGE_CODE }}/pce/{{ user.get_profile.country.name|slugify }}/session/dashboard/{{sessionid}}">  {% trans "PCE Dashboard for" %} {{ user.get_profile.country.name }}</a>
     <span class="divider">/</span>
 <li>
 <li class="active">{% trans "Module 5 - NPPO's structure and processes" %}</li>
@@ -30,7 +30,7 @@
 <h1><span class="normal">{% trans "Module 5 - NPPO's structure and processes" %}</span></h1>
 {% if can_edit and context == 'Edit' or can_see and context == 'View' or can_see and context == 'Pdf' %}
   {% if context == 'View' or context == 'Edit'%}
-            <p><a href="/pce/{{ user.get_profile.country.name|slugify }}/session/{{sessionid}}/modules"><< {% trans "Back to Module List" %}</a></p>
+            <p><a href="/{{ LANGUAGE_CODE }}/pce/{{ user.get_profile.country.name|slugify }}/session/{{sessionid}}/modules"><< {% trans "Back to Module List" %}</a></p>
  
             <div class="row-fluid">
                <div class="span8">
@@ -47,7 +47,7 @@
                     <h3 class="panel-title"> {% trans "NPPO's structure and processes" %}</h3>
                       {% if context == 'View' and can_edit  and id != ''%}  
                         <span  class="pull-right">
-                          <a  class="btn btn-info" href="/pce/{{ user.get_profile.country.name|slugify }}/{{sessionid}}/module5/edit/{{id}}">Edit Module</a>
+                          <a  class="btn btn-info" href="/{{ LANGUAGE_CODE }}/pce/{{ user.get_profile.country.name|slugify }}/{{sessionid}}/module5/edit/{{id}}">Edit Module</a>
                         </span>
                     {%endif%} 
                     
@@ -255,7 +255,7 @@
                                             <div class="panel panel-default">
                                                 <div class="panel-body">
                                                     {% for ff in form %}
-                                                    {%if not ff.label == 'Module5' and not ff.label == 'Delete' and not ff.label == 'Id'%}
+                                                    {%if not ff.label == 'Module5' and not ff.label == 'Delete'  and not ff.label == 'Удалить' and not ff.label == 'Id'%}
                                                     {{ff.label}}  {% if context == 'Edit' %}
                                                             {{ff}} 
                                                         {% else %} 
