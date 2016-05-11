@@ -2610,7 +2610,7 @@ def draftprotocol_comment_create(request, id=None):
           
             form.save()
             
-            emailto_all=['adriana.moreira@fao.org','yosra.chabaane@fao.org','IPPC-DP@fao.org']
+            emailto_all=['Martin.Farren@fao.org','IPPC-DP@fao.org']
             subject='IPPC new comment on ECDP: '+str(draftprotocol.title)
             text=''
             text=str(request.user)+' has commented on: '+str(draftprotocol.title)  +'<br><hr><br>'+str(new_draftprotocolComment.comment)
