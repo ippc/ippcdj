@@ -3295,9 +3295,9 @@ class Module8(Displayable, models.Model):
     #m_3 =
     m_4 = models.NullBooleanField(_("4. Does the pest surveillance programme or service have a strategic and operational plan?"), choices=BOOL_CHOICES,blank=True, null=True, help_text=_(" "),)
     m_5 = models.NullBooleanField(_("5. Does the pest surveillance programme or service have procedures to review its performance?"), choices=BOOL_CHOICES,blank=True, null=True, help_text=_(" "),)
-    m_6 = models.NullBooleanField(_("6. Is there a set of good indicators for measure the effectiveness of the pest eradication program?"), choices=BOOL_CHOICES,blank=True, null=True, help_text=_(" "),)
-    m_7 = models.NullBooleanField(_("7. Is there a set of good indicators to measure the efficacy of the pest eradication program?"), choices=BOOL_CHOICES,blank=True, null=True, help_text=_(" "),)
-    m_8= models.TextField(_("8. What indicators could be used to measure the status of the pest eradication program's relevance to the NPPO's mission?"), blank=True, null=True,help_text=_(" "),)
+    m_6 = models.NullBooleanField(_("6. Is there a set of good indicators for measure the effectiveness of the pest surveillance program?"), choices=BOOL_CHOICES,blank=True, null=True, help_text=_(" "),)
+    m_7 = models.NullBooleanField(_("7. Is there a set of good indicators to measure the efficacy of the pest surveillance program?"), choices=BOOL_CHOICES,blank=True, null=True, help_text=_(" "),)
+    m_8= models.TextField(_("8. What indicators could be used to measure the status of the pest surveillance program's relevance to the NPPO's mission?"), blank=True, null=True,help_text=_(" "),)
     m_9= models.TextField(_("9. Which organizations carryout pest surveillance in the country?"), blank=True, null=True,help_text=_(" "),)
     m_10 = models.NullBooleanField(_("10. Are the NPPO's pest surveillance functions centralized under a national manager?"), choices=BOOL_CHOICES,blank=True, null=True, help_text=_(" "),)
     m_11 = models.NullBooleanField(_("11. Does the NPPO have formal linkages with external sources (non-NPPO) of information on pest surveillance?"), choices=BOOL_CHOICES,blank=True, null=True, help_text=_(" "),)
