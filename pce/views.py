@@ -4825,21 +4825,21 @@ class Module4ListPDFView(PDFTemplateView):
         )
        
         DEGREE = (
-        (DEGREE_0, _("--- Please select ---")),
-        (DEGREE_1,_("Not at all")),
-        (DEGREE_2,_("To a small degree")),
-        (DEGREE_3,_("To a medium degree")),
-        (DEGREE_4,_("To a large degree")),
-        (DEGREE_5,_("Completely")),
+        (0, _("--- Please select ---")),
+        (1,_("Not at all")),
+        (2,_("To a small degree")),
+        (3,_("To a medium degree")),
+        (4,_("To a large degree")),
+        (5,_("Completely")),
         )
        
         TERM = (
-                (TERM_0, _("--- Please select ---")),
-                (TERM_1,_("Never")),
-                (TERM_2,_("Rarely")),
-                (TERM_3,_("Sometimes, no fixed term ")),
-                (TERM_4,_("Accordingly with an established term ")),
-                (TERM_5,_("Annually")),
+                (0, _("--- Please select ---")),
+                (1,_("Never")),
+                (2,_("Rarely")),
+                (3,_("Sometimes, no fixed term ")),
+                (4,_("Accordingly with an established term ")),
+                (5,_("Annually")),
         )
         context['STATEMENT'] =STATEMENT
         context['MODERATE'] =MODERATE
