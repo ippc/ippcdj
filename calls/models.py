@@ -10,7 +10,7 @@ from mezzanine.utils.models import AdminThumbMixin, upload_to
 
 class CallsPost(Displayable, Ownable, RichText, AdminThumbMixin):
     """
-    A Calls post.
+    A Calls post. 
     """
 
     categories = models.ManyToManyField("CallsCategory",
