@@ -100,35 +100,37 @@ function checkRules()
                 </div>
                 <div class="panel-body">
                     <p class="alert alert-warning"   {%if context == 'Pdf' %}style="background:#faf2cc;"{%endif%}>{% trans "NPPO's resources may be a strength (sufficient) or a weakness (insufficient).They consist of financial (both operating and capital), Human resources (number and skills), Information resources, Infrastructure, and communications technologies required for the efficient and effective functioning of the NPPO. Alternative sources of founding should strength the NPPO capacity.<br>Guiding questions for the capacity needs assessment of NPPO's resources<br>Keep in mind the following questions while working through this module:<br>1. What is the existing situation of NPPO's resources?<br>2. What is the desired future situation of NPPO's resources?<br>3. What are the major gaps in the current capacity of NPPO's resources? <br>4. What are the capacity building needs and requirements to create an effective system for NPPO's resources?" %}</p>
-                    {% if context == 'Edit' %}   <form class="customform" method="POST" action="" enctype="multipart/form-data">
-                        {% csrf_token %} {%endif%}
+                    {% if context == 'Edit' %}   
+                        <form class="customform" method="POST" action="" enctype="multipart/form-data">
+                        {% csrf_token %} 
+                    {%endif%}
                         <fieldset>
-                           {% if context == 'Edit' %}       {% if form.non_field_errors or form.errors %}
-                            <div class="alert alert-error">{% trans "Please correct the errors below." %}
-                                <ul>
-                                    {% for error in form.non_field_errors %}
-                                    <li>{{ error }}</li>
-                                    {% endfor %}
-                                    {% for error in form.errors %}
-                                    <li>{{ error }}</li>
-                                    {% endfor %}
-                                </ul>
-                            </div> {%endif%}
-                            {% endif %}
+                           {% if context == 'Edit' %}       
+                                {% if form.non_field_errors or form.errors %}
+                                 <div class="alert alert-error">{% trans "Please correct the errors below." %}
+                                     <ul>
+                                         {% for error in form.non_field_errors %}
+                                         <li>{{ error }}</li>
+                                         {% endfor %}
+                                         {% for error in form.errors %}
+                                         <li>{{ error }}</li>
+                                         {% endfor %}
+                                     </ul>
+                                 </div> 
+                                {%endif%}
+                           {% endif %}
                             <table class="table">
-                              
-                                     <tr class="success">
-                                           <td colspan="2" {%if context == 'Pdf' %}width="70%" style="background:#BDBDBD;"{%endif%}><b>{% trans "A. Financial resources" %}</b></td>
-                                    </tr>
-                                   <tr class="success">
+                                <tr class="success">
+                                        <td colspan="2" {%if context == 'Pdf' %}width="70%" style="background:#BDBDBD;"{%endif%}><b>{% trans "A. Financial resources" %}</b></td>
+                                </tr>
+                                <tr class="success">
                                         <td {%if context == 'Pdf' %}width="70%" style="background:#BDBDBD;"{%endif%}><b>{% trans "No. Question" %}</b></td>
                                         <td {%if context == 'Pdf' %}width="30%" style="background:#BDBDBD;"{%endif%}><b>{% trans "Tip" %}</b></td>
-                              
-                                    </tr>
+                                </tr>
                                 <tbody>
-                                    {% for f in form %}
+                                {% for f in form %}
                                {% if not f.is_hidden and not f.name == 'c_m_1' and not f.name == 'c_m_2' and not f.name == 'c_m_3' and not f.name == 'c_m_4' and not f.name == 'c_m_5' and not f.name == 'c_m_6' and not f.name == 'c_m_7' and not f.name == 'c_m_8' and not f.name == 'c_m_9' and not f.name == 'c_m_10' and not f.name == 'c_m_11' and not f.name == 'c_m_12' and not f.name == 'c_m_13' and not f.name == 'c_m_14' and not f.name == 'c_m_15' and not f.name == 'c_m_16' and not f.name == 'c_m_17' and not f.name == 'c_m_18' and not f.name == 'c_m_19' and not f.name == 'c_m_20' and not f.name == 'c_m_21' and not f.name == 'c_m_22' and not f.name == 'c_m_23' and not f.name == 'c_m_24' and not f.name == 'c_m_25' and not f.name == 'c_m_26' and not f.name == 'c_m_27' and not f.name == 'c_m_28' and not f.name == 'c_m_29' and not f.name == 'c_m_30' and not f.name == 'c_m_31' and not f.name == 'c_m_32' and not f.name == 'c_m_33' and not f.name == 'c_m_34' and not f.name == 'c_m_35' and not f.name == 'c_m_36' and not f.name == 'c_m_37' %}
-                                         <tr>
+                                <tr>
                                         <td>
                                             <div class="control-group">
                                                 <label>{{f.label|safe}}</label>
@@ -149,9 +151,9 @@ function checkRules()
                                                     
                                                     </ul>                                                   
                                                    {%else%}
-                                                     {% if context == 'View' or  context == 'Edit' %}
+                                                     {% if  context == 'Edit' %}
                                                     {{f}}
-                                                    {%else%}
+                                                    {% elif context == 'View' %}
                                                     
                            
                             
