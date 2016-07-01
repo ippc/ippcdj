@@ -34,7 +34,7 @@ callspost_list_filter = deepcopy(DisplayableAdmin.list_filter) + ("categories",)
 #class CallsPostAdmin(DisplayableAdmin, OwnableAdmin):
 class CallsPostAdmin(DisplayableAdmin):
     """
-    Admin class for calls posts.
+    Admin class for calls posts. 
     """
 
     fieldsets = callspost_fieldsets
