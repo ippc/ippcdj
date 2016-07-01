@@ -5638,28 +5638,24 @@ class Module6ListPDFView(PDFTemplateView):
         if  can_see:  
             module= 6
             module6=None
-            form   = Module5FormView()
-            form25 = Module5WeaknessesFormSet()
+            form   = Module6FormView()
+            form37 = Module6WeaknessesFormSet()
             if id!='':
-                module6=None
-                form   = Module6FormView()
-                form37 = Module6WeaknessesFormSet()
-                if id!='':
-                    module6 = get_object_or_404(Module6,  id=self.kwargs['id'])
-                    form   = Module6FormView(instance=module6)
-                    form37 = Module6WeaknessesFormSet(instance=module6)
+                module6 = get_object_or_404(Module6,  id=self.kwargs['id'])
+                form   = Module6FormView(instance=module6)
+                form37 = Module6WeaknessesFormSet(instance=module6)
 
-                context['form']=form
-                context['form37']=form37
-                context['module6']=module6
+            context['form']=form
+            context['form37']=form37
+            context['module6']=module6
 
-                context['module']=module
-         
-                context['version_number'] = session.version_number
-                context['sessionstatus'] = session.status
-                context['tot_percentage'] = get_tot_percentage(self.kwargs['sessionid'])
-                context['m_percentage'] = get_percentage_module_filled(6,self.kwargs['sessionid'])
-         
+            context['module']=module
+
+            context['version_number'] = session.version_number
+            context['sessionstatus'] = session.status
+            context['tot_percentage'] = get_tot_percentage(self.kwargs['sessionid'])
+            context['m_percentage'] = get_percentage_module_filled(6,self.kwargs['sessionid'])
+
         context['can_see'] = can_see
         
         return context
