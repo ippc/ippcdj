@@ -15,7 +15,7 @@ class TransNewsPostAdmin(StackedDynamicInlineAdmin):
 newspost_fieldsets = deepcopy(DisplayableAdmin.fieldsets)
 newspost_fieldsets[0][1]["fields"].insert(1, "categories")
 newspost_fieldsets[0][1]["fields"].extend(["content"])
-newspost_list_display = ["title", "user", "status", "admin_link"]
+newspost_list_display = ["title", "user","publish_date", "status", "admin_link"]
 if settings.NEWS_USE_FEATURED_IMAGE:
     newspost_fieldsets[0][1]["fields"].insert(-2, "featured_image")
     newspost_list_display.insert(0, "admin_thumb")
