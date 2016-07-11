@@ -1,182 +1,411 @@
 {% extends "base.html" %}
 {% load i18n mezzanine_tags translate_tags %}
+{% load ippc_tags news_tags calls_tags %}
+{% load scheduletags i18n %}
 
 {% block meta_title %}{% trans "IPPC" %}{% endblock %}
 {# {% block title %}{% trans "Welcome to IPPC" %}{% endblock %} #}
 
+{% block body_class %}homepage{% endblock %}
+
 {% block breadcrumb_menu %}
-<li class="active">{% trans "Home: Plant Protection News" %}</li>
 {# <li class="pull-right">{% include "countries/country_selector.html" %}</li> #}
 {% endblock %}
 
+
 {% block main %}
+   <script type="text/javascript">//<![CDATA[ 
+                            $(window).load(function() {
+                               // $('.carousel').carousel({
+                            $('#myCarousel, #myCarousel1').carousel({                         
+                                 interval: 6000
+                                })
+                            });//]]>  
+                            
+                            
+                        </script>
+{# main content ====================== #}
+        <div class="span9 homecontent pull-right">
+            {# get_latest news.NewsPost 10 as latest_news #}
+            {% news_recent_posts limit=100 category="ippcnews" as recent_posts_ippcnews %}     
+            {% news_recent_posts limit=100 category="briefnews" as recent_posts_brief %}  
 
-
-
-<!--div class="row-fluid" style="margin:0; font-weight:bold; padding:3px 5px; background:#FCC; color:#000; width:99% !important; display:block; text-align:left;">IMPORTANT NOTICE: due to FAO systems maintenance, the website will be unavailable on Saturday 8 Aug between 8:00 and 13:30 (Rome time). </div-->
-{% load ippc_tags %}
-{% get_latest news.NewsPost 10 as latest_news %}
-
-   
- <!-- or NEWS in BLOCKS ================== -->
-  
-  <div class="row-fluid">
-    {% for entry in latest_news|slice:":8" %}
-         
-    <div class="span6">
-      <div class="panel">
-        
-        {% if entry.featured_image %} {# settings.NEWS_USE_FEATURED_IMAGE and #}
-          <p>
-            <a href="{{ entry.get_absolute_url }}">
-              <img src="{{ MEDIA_URL }}{% thumbnail entry.featured_image 360 200 %}">
-            </a>
-          </p>
-        {% endif %}
-        
-        <h5>
-          <a class="dark" href="{{ entry.get_absolute_url }}">
-              {% with entry|get_object_translation as translated_page %}
-                  {{ translated_page.title|safe}}
-              {% endwith %}
-          </a><br>
-          <small>{{ entry.publish_date|date:"D, d M Y, H:i" }}.</small>
-        </h5>
-         {% with entry|get_object_translation as translated_page %}
-                  {{ translated_page.content|richtext_filter|safe|truncatewords_html:40}}
-              {% endwith %}
-          <p><small><a href="{{ entry.get_absolute_url }}">{% trans "Continue reading…" %}</a></small></p>
-      
-{# if the the forloop counter is divisible by 2, close the row-fluid <div> tag and open a new one #}
-      </div>
-    </div>
-  {% if forloop.counter|divisibleby:2 %}
-  </div>
-	
-  <div class="row-fluid">
-  {% endif %}
-
-  {% endfor %}
-  </div>
-  <div class="row-fluid">
-    <p><a href="/news/">{% trans "See All News" %} »</a></p>
-  </div>
-    
-    
-<!--div class="row-fluid">
-  
-    <div class="span6">
- <div class="panel">
-  <h4>{% trans "Information For…" %}</h4>
-  <ul>
-    <li>Donors</li>
-    <li>Partnerships</li>
-    <li>Civil Society</li>
-    <li>Private Sector</li>
-    <li>Youth</li>
-    <li>Media</li>
-  </ul>
-</div>
-      </div>    
-     </div-->
-    
-{% endblock %}
-
-{% block local_nav %}
-<div class="panel">
-  <h4><a href="{% url 'page' 'who-we-are' %}">{% trans "About" %}</a></h4>
-  <p>{% blocktrans %}The International Plant Protection Convention (IPPC) is an <a title='See the convention text' href='/{{ LANGUAGE_CODE }}/core-activities/governance/convention-text/'>international agreement</a> on plant health to which <a href='http://www.fao.org/fileadmin/user_upload/legal/docs/004s-e.pdf'>182 contracting parties</a> currently adhere.  It aims to protect cultivated and wild plants by preventing the introduction and spread of pests.  The <a href='/{{ LANGUAGE_CODE }}/about/secretariat'>Secretariat</a> of the IPPC is provided by the <a href='http://fao.org'>Food and Agriculture Organization of the United Nations</a>. See our <a href='/{{ LANGUAGE_CODE }}/media-kit'>Media Kit</a>.{% endblocktrans %}</p>
-</div>
-  <!-- BEGIN =NOTIFICATIONS SLIDESHOW ================== --> 
-<!--div class="panel">
-  <h4><a href="{% url 'page' 'who-we-are' %}">{% trans "Notifications" %}</a></h4>
-
-    <script type="text/javascript">//<![CDATA[ 
-    $(window).load(function(){
-        $('.carousel').carousel({
-            interval: 2500
-        })
-     });//]]>  
-    </script>
-    <p>  
-        <div id="myCarousel" class="carousel slide vertical">
-    
-           <div class="carousel-inner">{% get_latest calls.CallsPost 10 as latest_calls %}
-                {% for entry1 in latest_calls|slice:":8" %}
-                {% if forloop.first %}
-                <div class="item active">
-                {% else %}
-                <div class="item">
-                {% endif %}
+            <!-- or NEWS in BLOCKS ================== -->
+            <div class="row-fluid">
+                <div class="span6">
+                    <div class="homepage-ippcnews-box">  {# panel  #}
+                        <h4><a href="/news/category/ippcnews/">{% trans "IPPC News" %}</a> <small><a class="small quiet pull-right" href="/news/category/ippcnews/">{% trans "see all" %} »</a></small></h4>
+                     
                     
-                    <h5>
-                      <a class="dark" href="{{ entry1.get_absolute_url }}">{{ entry1.title }}</a><br>
-                      <small>{{ entry1.publish_date|timesince }} {% trans "ago" %}.</small>
-                    </h5>
-                    {{ entry1.content|richtext_filter|safe|truncatewords_html:30 }} 
-                    <p><small><a href="{{ entry1.get_absolute_url }}">{% trans "Continue reading…" %}</a></small></p>
-                </div>                    
-                {% endfor %}                    
+                        <div id="myCarousel" class="carousel slide vertical" data-ride="carousel">
+                            <ol class="carousel-indicators">
+                                <li data-target="#myCarousel" data-slide-to="0" class="active"><b>1</b></li>
+                                <li data-target="#myCarousel" data-slide-to="1"><b>2</b></li>
+                                <li data-target="#myCarousel" data-slide-to="2"><b>3</b></li>
+                                <li data-target="#myCarousel" data-slide-to="3"><b>4</b></li>
+                                <li data-target="#myCarousel" data-slide-to="4"><b>5</b></li>
+                            </ol>
+
+                            <!-- Wrapper for slides -->
+                            <div class="carousel-inner" role="listbox">
+                                {% if recent_posts_ippcnews %}
+
+                                {% for entry in recent_posts_ippcnews|slice:":5" %}
+                                {% if forloop.first %}
+                                <div class="item active">
+                                    {% else %}
+                                    <div class="item">
+                                        {% endif %}
+                                        {% if entry.featured_image %} 
+                                        <a href="{{ entry.get_absolute_url }}">
+                                            <!--img src="{{ MEDIA_URL }}{{entry.featured_image}}" style="width:400px;height:220px;"-->
+                                            <img src="{{ MEDIA_URL }}{# thumbnail entry.featured_image 400 220 #}" >
+                                        </a>
+                                        <div style="position: relative; bottom: 0; left: 0.5em; width: 400px; font-weight: bold; color: #fff;">
+                                            <center><h6>
+
+                                                    {% with entry|get_object_translation as translated_page %}
+                                                    {{ translated_page.title|safe}}
+                                                    {% endwith %}
+                                                </h6></center>
+                                            </a>
+                                        </div>
+
+
+                                        {% endif %}
+                                    </div> 
+                                    {% endfor %}  
+                                    {% endif %}
+                                </div>   
+                            </div>
+                        </div>   
+
+                    </div>
+                    <div class="span6">
+                        <div class="panel homepage-briefnews-box">
+                            <h4><a href="/news/category/briefnews/">{% trans "Brief News" %}</a> <small><a class="small quiet pull-right" href="/news/category/briefnews/">{% trans "see all" %} »</a></small></h4>
+                            {% if recent_posts_brief %}
+                            <dl class="dl-horizontal">
+                                {% for entry in recent_posts_brief|slice:":10" %}
+                                <dt><small>{{ entry.publish_date|date:"d-m-Y" }}</small></dt>
+                                    <dd>
+                                      <a  href="{{ entry.get_absolute_url }}">
+                                        {% with entry|get_object_translation as translated_page %}
+                                        {{ translated_page.title|safe}}
+                                        {% endwith %}
+                                      </a>
+                                </dd><!--small>{{ entry.publish_date|date:"D, d M Y, H:i" }}.</small-->
+                                {% endfor %}   
+                            </dl>
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>   
+
+                <div class="row-fluid">
+                    <div class="span12">
+                        <div class="panel homepage-activities-box">
+                            <h4><a href="{% url 'page' 'core-activities' %}">{% trans "Activities" %}</a></h4>
+                                <div class="row-fluid">
+                                <div class="span4" >       
+                                    <h6><a href="/{{ LANGUAGE_CODE }}/core-activities/governance/">{% blocktrans %}Governance &amp; Strategies{% endblocktrans %}</a></h6>
+                                    <ul class="unstyled">
+                                        <li><a href="/{{ LANGUAGE_CODE }}/core-activities/governance/cpm/">{% blocktrans %}CPM{% endblocktrans %}</a></li>
+                                        <li><a href="/{{ LANGUAGE_CODE }}/core-activities/governance/bureau/">{% blocktrans %}Bureau{% endblocktrans %}</a> - <a href="/{{ LANGUAGE_CODE }}/core-activities/governance/bureau/ippc-financial-committee-fc/">{% blocktrans %}FC{% endblocktrans %}</a> - <a href="/{{ LANGUAGE_CODE }}/core-activities/governance/strategic-planning-group/">{% blocktrans %}SPG{% endblocktrans %}</a></li>
+                                        <li><a href="/{{ LANGUAGE_CODE }}/core-activities/standards-and-implementation/standards-setting/standards-committee/">{% blocktrans %}SC - Standards Committee{% endblocktrans %}</a></li>
+                                        <li><a href="/{{ LANGUAGE_CODE }}/core-activities/standards-and-implementation/capacity-development/capacity-development-committee">{% blocktrans %}CDC - Capacity Development{% endblocktrans %}</a></li>
+                                        <li><a href="/{{ LANGUAGE_CODE }}/core-activities/dispute-avoidance-dispute-settlement/subsidiary-body-dispute-settlement/">{% blocktrans %}SBDS - Dispute Settlement{% endblocktrans %}</a></li>
+                                    </ul>
+                                </div>
+                                <div class="span4">       
+                                    <h6><a href="/{{ LANGUAGE_CODE }}/core-activities/standards-and-implementation/">{% blocktrans %}Standards &amp; Implementation{% endblocktrans %}</a></h6>
+                                    <ul class="unstyled">
+                                        <li><a href="/{{ LANGUAGE_CODE }}/core-activities/standards-and-implementation/standards-setting/">{% blocktrans %}Standards Setting{% endblocktrans %}</a></li>
+                                        <li><a href="/{{ LANGUAGE_CODE }}/core-activities/standards-and-implementation/capacity-development/">{% blocktrans %}Capacity Development{% endblocktrans %}</a></li>
+                                        <li><a href="/{{ LANGUAGE_CODE }}/irss/">{% blocktrans %}Implementation{% endblocktrans %}</a></li>
+                                        <li><a href="/{{ LANGUAGE_CODE }}/core-activities/integration-and-support/dispute-settlement/">{% blocktrans %}Dispute Avoidance{% endblocktrans %}</a></li>
+                                        <li><a href="/{{ LANGUAGE_CODE }}/ephyto">{% trans "ePhyto" %}</a></li>
+                                    </ul>
+                                </div><div class="span4">     
+                                    <h6><a href="/{{ LANGUAGE_CODE }}/core-activities/integration-and-support/">{% blocktrans %}Integration &amp; Support{% endblocktrans %}</a></h6>
+                                    <ul class="unstyled">   
+					<li><a href="/{{ LANGUAGE_CODE }}/core-activities/integration-and-support/information-exchange/nro/">{% blocktrans %}NRO - National Reporting Obligations{% endblocktrans %}</a></li>   
+                                        <li><a href="/{{ LANGUAGE_CODE }}/core-activities/integration-and-support/communication-advocacy/">{% blocktrans %}Communication &amp; Advocacy{% endblocktrans %}</a></li>
+                                        <li><a href="/{{ LANGUAGE_CODE }}/core-activities/integration-and-support/planning-budget/">{% blocktrans %}Planning &amp; Budget{% endblocktrans %}</a></li>
+                                        <li><a href="/core-activities/governance/resource-mobilisation/">{% blocktrans %}Resources Mobilization{% endblocktrans %}</a></li>
+                                        <li><a href="/{{ LANGUAGE_CODE }}/core-activities/integration-and-support/international-cooperation/">{% blocktrans %}International Cooperation{% endblocktrans %}</a></li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>      
+                    </div>
+                 </div>
+
+                    <div class="row-fluid">    
+                        <div class="span8"> 
+                            <h4>Themes</h4>     
+                        </div>      
+                    </div>
+                    <div class="row-fluid">    
+                        <div class="span8"> 
+                            <div class="row-fluid">
+                                <div class="span6">
+                                    <a href="/themes/food-security/">
+                                        <div class="panel" style="position: relative; background: url(/static/img/rsz_rice1.png); width: 220px; height: 70px;"> <!--rsz_1rsz_2dscn9492.jpg -->
+                                             
+                                           <h3 class="fancyh3">{% trans "Food<br>Security" %}</h3>    </div>
+                                        
+                                    </a>
+                                </div> 
+                                <div class="span6">
+                                    <a href="/themes/trade-facilitation/"> 
+                                        <div class="panel"  style="position: relative; background: url(/static/img/certification-dcn.jpg); width: 220px; height: 70px;"><!-- rsz_2ispm15-certification-dcn.jpg -->
+                                                <h3 class="fancyh3">{% trans "Trade<br>Facilitation" %}</h3>
+                                        </div>
+                                    </a>
+                                </div> 
+                            </div> 
+                            <div class="row-fluid">
+                                <div class="span6">
+                                    <a href="/themes/environment-protection/">    
+                                        <div class="panel" style="position: relative; background: url(/static/img/aqua.jpg); width: 220px; height: 70px;"><!-- rsz_1020 -->
+                                                <h3 class="fancyh3">{% trans "Environment<br>Protection" %}</h3>
+                                        </div>
+                                    </a> 
+                                </div> 
+                                <div class="span6">
+                                    <a href="/themes/capacity-development/">   
+                                        <div class="panel" style="position: relative; background: url(/static/img/rsz_dsc_1656.jpg); width: 220px; height: 70px;"><!--rsz_rice_field24701_6958-fao-->
+
+                                                <h3 class="fancyh3">{% trans "Capacity<br>Development" %}</h3>
+
+                                        </div>
+                                    </a>
+                                </div> 
+                            </div> 
+                        </div>
+                        <div class="span4">
+                            <a href="/iyph">    
+                                <div class="panel" style="position: relative; background: url(/static/img/rsz_1iyph_new.jpg); width: 260px; height: 160px;"> <!-- rsz_1dcn_9794.jpg -->
+
+                                        <h3 class="fancyh3" style="position:absolute; top:10px; left:10px;">{% trans "IYPH 2020" %}</h3>
+
+                                </div>  
+                            </a>
+                        </div> 
+                    </div>    
+
+                    <div class="row-fluid">
+                        <div class="panel homepage-information-box">
+                            <h4>{% trans "Information" %}</h4>
+                            <div class="row-fluid">
+                                <div class="span3">
+                                    <h6><a href="/{{ LANGUAGE_CODE }}/information/strategic-planning/"><b>{% trans "Strategic Planning" %}</b></a></h6>
+                                    <ul class="unstyled">
+                                        <li><a href="/{{ LANGUAGE_CODE }}/publications/1015/">{% trans "IPPC Strategies" %}</a></li>
+                                        <li><a href="http://www.fao.org/docrep/x3551e/x3551e00.HTM">{% trans "FAO Strategies" %}</a></li>
+                                        <li><a href="https://sustainabledevelopment.un.org/?menu=1300">{% trans "UN Strategies" %}</a></li>
+                                    </ul>
+                                </div> 
+                                <div class="span3">
+                                    <h6><a href="/{{ LANGUAGE_CODE }}/information/standards/">{% trans "Standards" %}</a></h6>
+                                    <ul class="unstyled">
+                                        <li><a href="/{{ LANGUAGE_CODE }}/core-activities/standards-and-implementation/standards-setting/ispms">{% blocktrans %}Adopted Standards{% endblocktrans %}</a></li>
+                                    
+                                        <li><a href="/{{ LANGUAGE_CODE }}/core-activities/standards-and-implementation/standards-setting/approved-specifications/">{% trans "Approved Specifications" %}</a></li>
+                                        <li><a href="https://www.ippc.int/en/publications/81596/">{% trans "Manual for Standard Setting" %}</a></li>
+                                    </ul>
+                                </div> 
+                                <div class="span3">
+                                    <!--div class="panel" style="background-color:#ffffff;"-->
+                                    <h6><b>{% trans "Recommendations" %}</b></h6>
+                                    <ul class="unstyled">
+                                        <li><a href="/{{ LANGUAGE_CODE }}/core-activities/governance/cpm/cpm-recommendations/">{% trans "CPM Recommendations" %}</a></li>
+                                        <li><a href="/{{ LANGUAGE_CODE }}/information/cpm-recommendations/recommendations-procedure">{% trans "Recommendations<br>Procedure" %}</a> </li>
+                                    </ul>
+                                </div> 
+                                <div class="span3">
+                                    <h6><a href="/{{ LANGUAGE_CODE }}/information/projects/"><b>{% trans "IPPC Projects" %}</b></a></h6>
+                                    <ul class="unstyled">
+                                        <li><a href="/{{ LANGUAGE_CODE }}/irss">{% trans "IRSS" %}</a></li>
+                                        <li><a href="/{{ LANGUAGE_CODE }}/ephyto">{% trans "ePhyto" %}</a></li>
+                                        <li><a href="http://www.standardsfacility.org/PG-401">{% trans "PCE Facilitators Training" %}</a></li>
+                                    </ul>
+                                </div>  
+                            </div>  
+                        </div>
+                    </div>
+
+                 <div class="row-fluid">
+                    <div class="panel homepage-resources-box">
+                        <h4>{% trans "Resources" %}</h4>
+                        <div class="row-fluid">
+                            <div class="span4">
+                                <h6><a href="/{{ LANGUAGE_CODE }}/resources/statistics/"><b>{% trans "Statistics" %}</b></a></h6>
+                                <ul  class="unstyled"> <li><a href="/{{ LANGUAGE_CODE }}/nro-reports-and-statistics/">{% trans "NRO's statistics" %}</a></li>
+                               <li><a href="/{{ LANGUAGE_CODE }}/resources/statistics/users-statistics/">{% trans "Users statistics" %}</a></li>
+                                </ul>
+                            </div> 
+                            <div class="span4">
+                                <h6><a href="/{{ LANGUAGE_CODE }}/resources/library/"><b>{% trans "Library" %}</b></a></h6>
+                                <ul class="unstyled">  <li><a href="/{{ LANGUAGE_CODE }}/resources/library/publications">{% trans "Publications" %} </a></li>
+                                    <li><a href="/{{ LANGUAGE_CODE }}/resources/library/presentations/">{% trans "Presentations" %} </a></li>
+                                </ul>   
+                            </div> 
+                            <div class="span4">
+                                <h6><a href="/{{ LANGUAGE_CODE }}/resources/media/"><b>{% trans "Media" %}</b></a></h6>
+                                <ul class="unstyled">  <li><a href="/{{ LANGUAGE_CODE }}/resources/media/photos">{% trans "Photos" %}</a></li>
+                                    <li><a href="/{{ LANGUAGE_CODE }}/resources/media/videos">{% trans "Videos" %}</a></li>
+                                </ul>
+                            </div> 
+                        </div>  
+                    </div>  
+                </div>
             </div>
+{# sidebar ========= #}
+
+{# get_latest calls.CallsPost 10 as latest_calls #}
+<div class="row-fluid">
+    <div class="span3 homesidebar">
+        <div class="panel homepage-about-box">
+            <h4><a href="{% url 'page' 'who-we-are' %}">{% trans "About Us" %}</a></h4>
+            <a href="/{{ LANGUAGE_CODE }}/core-activities/governance/convention-text/">{% trans "The Convention" %}</a><br>
+            <a href="/{{ LANGUAGE_CODE }}/about/secretariat/">{% trans "IPPC Secretariat" %}</a><br>
+            <a href="/{{ LANGUAGE_CODE }}/contact/">{% trans "Contact us" %}</a>
+
         </div>
-    </p>
-</div-->
-<div class="panel">
-	<h4><a href='/iyph' title=''>{% blocktrans %}Support IYPH{% endblocktrans %}</a></h4>
-	<p>{% blocktrans %}IPPC contracting parties have agreed to promote the IYPH for 2020. Please support this initiative and follow the progress by visting this page often.{% endblocktrans %}</p>
-</div>
+        <div class="panel homepage-announcements-box"> 
+            <h4><a href="/{{ LANGUAGE_CODE }}/news/category/announcements/">{% trans "Announcements" %}</a> <small><a class="small quiet" href="/{{ LANGUAGE_CODE }}/news/category/announcements/"  class="pull-right">{% trans "see all" %} »</a></small></h4>
+                <ul class="unstyled">
+                  {% news_recent_posts limit=10 category="announcements" as recent_announcements %}  
+                  {% for entry in recent_announcements|slice:":3" %}
+                      <li>
+                        <b><small>{{ entry.publish_date|date:"d-m-Y" }}</small></b>
+                        <br>
+                        <a  href="{{ entry.get_absolute_url }}">
+                              {% with entry|get_object_translation as translated_page %}
+                              {{ translated_page.title|safe}}
+                              {% endwith %}
+                        </a>
+                      </li>
+                {% endfor %} 
+              </ul>
+        </div> 
 
-<div class="panel">
-	<h4><a href='http://us10.campaign-archive1.com/home/?u=fc3d4d92d71f2fa693910c666&id=bf810c0be2' title='See prior editions.'>{% blocktrans %}Newsletter{% endblocktrans %}</a></h4>
-	<p>{% blocktrans %}The IPPC Secretariat is keen both to keep people informed and to enable readers to share items of interest. A newsletter is sent out once a month, with occasional special editions. <a class='btn btn-small btn-success' href='http://ippc.us10.list-manage.com/subscribe?u=fc3d4d92d71f2fa693910c666&id=bf810c0be2'>Subscribe to the newsletter</a>, <a href='http://us10.campaign-archive1.com/home/?u=fc3d4d92d71f2fa693910c666&id=bf810c0be2'>see prior editions</a> and <a href='mailto:jeremy.cherfas@fao.org' title='Open your email client.'>send content suggestions</a>.{% endblocktrans %}</p>
-</div>
+        <div class="panel homepage-callsdeadlines-box"> 
+            <h4><a href="/{{ LANGUAGE_CODE }}/calls/">{% trans "Calls &amp; Deadlines" %}</a> <small><a class="small quiet" href="/{{ LANGUAGE_CODE }}/calls/category/deadline/">{% trans "see all" %} »</a></small></h4>
+            {% calls_recent_posts limit=10 category="deadline" as recent_deadlines %}  
+
+                
+                <div id="myCarousel1" class="carousel vertical" data-ride="carousel">
+                    <div class="carousel-inner">
+                    {% for entry1 in recent_deadlines|slice:":2" %}
+                        {% if forloop.first %}
+                          <div class="active item">
+                        {% else %}
+                          <div class="item">
+                        {% endif %}
+                            <ul class="unstyled">
+                                <li>
+                                    <b><small>{{ entry1.deadline_date|date:"d-m-Y" }}</small></b>
+                                    <br> 
+                                    <a href="{{ entry1.get_absolute_url }}">
+                                        {% with entry1|get_object_translation as translated_page %}
+                                          {{ translated_page.title|safe}}
+                                        {% endwith %}
+                                    </a>
+                                </li>
+                            </ul>
+                        </div> {# end .item #}                    
+                        {% endfor %}                    
+                    </div> {# end .item .active #}
+                </div> {# end .carousel-inner #}
+            </div> {# end .panel #}
+            <div class="panel homepage-resourcestools-box">
+                <h4>{% trans "Resources &amp; Tools" %}</h4>
+                <ul class="unstyled">
+                    <li>   <a href="http://www.Phytosanitary.info/">{% trans "Phyto Resources website" %}</a></li>    
+                    <li>   <a href="https://www.ippc.int/pce/">{% trans "Phytosanitary Capacity Evaluation (PCE)" %}</a></li>    
+                    <li>  <a href="/{{ LANGUAGE_CODE }}/ocs/">{% trans "Online Comment System (OCS)" %}</a></li>    
+                </ul>
+            </div>
+            <script type="text/javascript" charset="utf-8">
+                $(function() {
+                    $('#selectrppos').change(function() {
+                        window.location.href = $(this).val() + '';
+                    });
+                    $('#selecttec').change(function() {
+                        window.location.href = $(this).val() + '';
+                    });
+                    $('#trade').change(function() {
+                        window.location.href = $(this).val() + '';
+                    });
+                    $('#environment').change(function() {
+                        window.location.href = $(this).val() + '';
+                    });
+                    $('#stakeholders').change(function() {
+                        window.location.href = $(this).val() + '';
+                    });
+                });
+            </script> 
+           
+            <div class="panel">
+                <h4>{% trans "Links" %}</h4>
+                <form action="">
+                    <select data-placeholder="RPPOs" tabindex="3" class="chosen-select" id="selectrppos">
+                        <option value="">{% trans "RPPOs" %}</option>
+                        <option value="http://www.apppc.org">{% trans "Asia and Pacific Plant Protection Commission (APPPC)" %}</option>
+                        <option value="http://www.comunidadandina.org">{% trans "Comunidad Andina (CA)" %}</option>
+                        <option value="http://www.cosave.org">{% trans "Comite de Sanidad Vegetal del Cono Sur (COSAVE)" %}</option>
+                        <option value="http://www.eppo.int">{% trans "European and Mediterranean Plant Protection Organization (EPPO)" %}</option>
+                        <option value="http://www.au-iapsc.org/">{% trans "Inter-African Phytosanitary Council (IAPSC)" %}</option>>
+                        <option value="http://www.neppo.org/">{% trans "Near East Plant Protection Organization (NEPPO)" %}</option>
+                        <option value="http://www.nappo.org/">{% trans "North American Plant Protection Organization (NAPPO)" %}</option>
+                        <option value="http://www.oirsa.org/portal/index.html">{% trans "Organismo Internacional Regional de Sanidad Agropecuaria (OIRSA)" %}</option>
+                        <option value="http://www.spc.int/lrd/plantprotectionorganisation-/pppo">{% trans "Pacific Plant Protection Organization (PPPO)" %}</option>
+                    </select>                 
+                </form> 
+                <form action="">
+                    <select data-placeholder="Technical" tabindex="3" class="chosen-select" id="selecttec">
+                        <option value="">{% trans "Technical" %}</option>
+                        <option value="http://www.fao.org">{% trans "FAO" %}</option>    
+                        <option value="https://www.iaea.org/">{% trans "IAEA" %}</option>    
+
+                    </select>                 
+                </form>   
 
 
-<div class="panel">
-  <h4><a href="{% url 'page' 'core-activities' %}">{% trans "Core Activities" %}</a></h4>
- <p>
-  <ul>
-    <li><a href="/{{ LANGUAGE_CODE }}/core-activities/governance/">{% blocktrans %}Governance{% endblocktrans %}</a></li>
-    <li><a href="/{{ LANGUAGE_CODE }}/core-activities/governance/cpm/">{% blocktrans %}Commission (CPM){% endblocktrans %}</a></li>
-    <li><a href="/{{ LANGUAGE_CODE }}/core-activities/standards-setting">{% blocktrans %}Standard setting{% endblocktrans %}</a></li>
-    <li><a href="/{{ LANGUAGE_CODE }}/core-activities/standards-setting/member-consultation-draft-ispms" style="color:#c00;">{% blocktrans %}Member consultation on draft ISPMs{% endblocktrans %}</a></li>
-    <li><a href="/{{ LANGUAGE_CODE }}/core-activities/standards-setting/draft-ispms/notification-period-dps" style="color:#c00;">{% blocktrans %}Notification period for DPs{% endblocktrans %}</a></li>
-    <!--li><a href="/{{ LANGUAGE_CODE }}/core-activities/standards-setting/member-consultation-draft-ispms" style="color:#c00;">{% blocktrans %}Member consultation on draft DPs{% endblocktrans %}</a></li-->
-    <li><a href="/{{ LANGUAGE_CODE }}/core-activities/standards-setting/substantial-concerns-commenting-period-sccp-draft-ispms" style="color:#c00;">{% blocktrans %}Substantial Concerns Commenting Period (SCCP) on draft ISPMs{% endblocktrans %}</a></li>
-    <li><a href="/{{ LANGUAGE_CODE }}/core-activities/standards-setting/ispms">{% blocktrans %}Adopted Standards{% endblocktrans %}</a></li>
-    <li><a href="/{{ LANGUAGE_CODE }}/core-activities/information-exchange/nro/" style="color:#c00;">{% blocktrans %}National Reporting Obligations{% endblocktrans %}</a></li>
-    <li><a href="/{{ LANGUAGE_CODE }}/core-activities/capacity-development">{% blocktrans %}Capacity development{% endblocktrans %}</a></li>
-    <li><a href="/{{ LANGUAGE_CODE }}/core-activities/dispute-settlement">{% blocktrans %}Dispute settlement{% endblocktrans %}</a></li>
-    <!--li><a href="/{{ LANGUAGE_CODE }}/core-activities/ephyto">{% blocktrans %}ePhyto{% endblocktrans %}</a></li-->
-     </ul>
-    </p>
-</div>
 
-<div class="panel">
-  <h4><a href="{% url 'page' 'countries' %}">{% trans "Countries" %}</a></h4>
-	{% include "countries/country_selector.html" %}
-  <ul>
-      <li><a href="/{{ LANGUAGE_CODE }}/countries/all/list-countries/">{% blocktrans %}Complete List of Countries{% endblocktrans %}</a></li>
-      <li><a href="/{{ LANGUAGE_CODE }}/countries/all/contactpoints">{% blocktrans %}List of Contact Points{% endblocktrans %}</a></li>
-      <li> <a href="/{{ LANGUAGE_CODE }}/countries/all/pestreport">{% blocktrans %}Pest Reports{% endblocktrans %}</a></li>
-      <li><a href="/{{ LANGUAGE_CODE }}/countries/all/legislation">{% blocktrans %}Legislation {% endblocktrans %}</a></li>
-      <li><a href="/{{ LANGUAGE_CODE }}/countries/all/regulatedpests">{% blocktrans %}List of regulated pests {% endblocktrans %}</a></li>
-  </ul>
-</div>
+                <form action="">
+                    <select data-placeholder="Trade" tabindex="3" class="chosen-select" id="trade">
+                        <option value="">{% trans "Trade" %}</option>
+                        <option value="https://www.wto.org/">{% trans "WTO" %}</option>
+                        <option value="http://www.oie.int/">{% trans "OIE" %}</option>
+                        <option value="http://www.codexalimentarius.org/">{% trans "Codex" %}</option>
+                    </select>                 
+                </form>
+                <form action="">
+                    <select data-placeholder="Environment" tabindex="3" class="chosen-select" id="environment">
+                        <option value="">{% trans "Environment" %}</option>
+                        <option value="http://www.planttreaty.org/">{% trans "The International Treaty on Plant Genetic Resources for Food and Agriculture" %}</option>
+                        <option value="http://www.cbd.int/">{% trans "CBD" %}</option>
+                    </select>                 
+                </form>
+                <form action="">
+                    <select data-placeholder="Stakeholders" tabindex="3" class="chosen-select" id="stakeholders">
+                        <option value="">{% trans "Stakeholders" %}</option>
+                        <option value="http://www.unog.ch/80256EE600585943/(httpPages)/04FBBDD6315AC720C1257180004B1B2F?OpenDocument">{% trans "BWC" %}</option>
+                        <option value="http://www.iica.int/es">{% trans "IICA" %}</option>
+                        <option value="">{% trans "International Advisory Group on Pest Risk Analysis" %}</option>
+                        <option value="">{% trans "International Forestry Quarantine Research Group" %}</option>
+                        <option value="http://www.worldseed.org/isf/home.html">{% trans "International Seed Federation" %}</option>
+                        <option value="http://www.seedtest.org/en/home.html">{% trans "International Seed Testing Association" %}</option>
+                        <option value="">{% trans "Phytosanitary Temperature Treatments Expert Group" %}</option>
+                        <option value="">{% trans "Standard Trade and Development Facility" %}</option>
 
-<div class="panel">
-  <h4><a href="/irss/helpdesk">{% trans "IRSS Helpdesk" %}</a></h4>
-		<ul>
-			<li><a href="/qa/1/answers/">Where can I find the report of the IRSS Survey: Review of the implementation of Guidelines on lists of regulated pests (ISPM19:2003) and Pest reporting (ISPM17:2002)?</a>
-		</li>
-		<li><a href="/qa/2/answers/">Where can I find the latest IRSS Survey: Review of the implementation of Guidelines on lists of regulated pests (ISPM19:2003) and Pest reporting (ISPM17:2002)?</a>
-		</li>
-		<li><a href="/qa/3/answers/">Do you have a simple floor plan for a post entry quarantine facility? If you can share it, please email us at ippc@fao.org with subject line: PEQ facility plan.</a>
-		</li>
-		<li><a href="/qa/4/answers/">What happens if my country is not a member of the Madrid System for the international registration of marks ?</a>
-		</li>
-		<li class="last"><a href="/qa/5/answers/">For those Contracting Parties who have submitted an IRSS questionnaire; how would you define the process of retrieving information and what was your NPPOs experience in conducting this activity?</a>
-		</li>
-	</ul>
-</div>
-{% endblock local_nav %}
+                    </select>                 
+                </form>
+            </div>
+      
+        </div>
+{% endblock %}
