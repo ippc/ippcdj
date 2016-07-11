@@ -19,6 +19,21 @@
 {% endif %}
 {% endblock %}
 
+{% block news_categories %}
+{% news_categories as categories %}
+{% if categories %}
+<div class="panel">
+  <h3>{% trans "Categories" %}</h3>
+  <ul class="unstyled">
+  {% for category in categories %}
+  <li><a href="{% url "news_post_list_category" category.slug %}"
+      >{{ category }}</a> ({{ category.post_count }})</li>
+  {% endfor %}
+  <li><a href="/calls/">{% trans "Calls & Deadlines" %}</a> </li>
+  </ul>
+</div>
+{% endif %}
+{% endblock %}
 {% block news_months %}
 {% news_months as months %}
 {% if months %}
@@ -37,20 +52,6 @@
 {% endif %}
 {% endblock %}
 
-{% block news_categories %}
-{% news_categories as categories %}
-{% if categories %}
-<div class="panel">
-  <h3>{% trans "Categories" %}</h3>
-  <ul class="unstyled">
-  {% for category in categories %}
-  <li><a href="{% url "news_post_list_category" category.slug %}"
-      >{{ category }}</a> ({{ category.post_count }})</li>
-  {% endfor %}
-  </ul>
-</div>
-{% endif %}
-{% endblock %}
 
 {% block news_keywords %}
 {% keywords_for news.newspost as tags %}
