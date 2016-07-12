@@ -19,7 +19,17 @@
     <li class="dropdown{% if page.is_current_or_ascendant %} active{% endif %}"
         id="dropdown-menu-{{ page.html_id }}">
         <a href="{{ page.get_absolute_url }}">
-            {{ page.title }}
+            
+              {% load translate_tags %}
+                {% with page.richtextpage|get_object_translation as translated_page %}
+                    {{ translated_page.title|safe }}
+                {% endwith %}
+
+                {# =todo: get Link pages to display text. #}
+                {% if not page.richtextpage %}
+                  {% trans page.title %} 
+                {% endif %}
+            
             {% if page.has_children_in_menu %}<span class="caret"></span>{% endif %}
         </a>
         {% if page.has_children_in_menu %}{% page_menu page %}{% endif %}
@@ -36,7 +46,15 @@
     {% if page.in_menu %}
     <li{% if page.is_current_or_ascendant %} class="active"{% endif %}
         id="dropdown-menu-{{ page.html_id }}">
-        <a href="{{ page.get_absolute_url }}">{{ page.title }}</a>
+        <a href="{{ page.get_absolute_url }}">   {% load translate_tags %}
+                {% with page.richtextpage|get_object_translation as translated_page %}
+                    {{ translated_page.title|safe }}
+                {% endwith %}
+
+                {# =todo: get Link pages to display text. #}
+                {% if not page.richtextpage %}
+                  {% trans page.title %} 
+                {% endif %}</a>
     </li>
     {% endif %}
     {% endfor %}
@@ -72,13 +90,13 @@
 
 
                 {% load translate_tags %}
-                {% with page.richtextpage|get_object_translation as translated_page %}
+                {% with page.publicationlibrary|get_object_translation as translated_page %}
                     {{ translated_page.title|safe }}
                 {% endwith %}
 
                 {# =todo: get Link pages to display text. #}
                 {% if not page.richtextpage %}
-                  {% trans page.title %} {# &#8599; <i class="icon-share-alt"></i>   #}
+                  {% trans page.title %}{# &#8599; <i class="icon-share-alt"></i>   #}
                 {% endif %}
                 
             {% if page.has_children %}<span class="caret"></span>{% endif %}
