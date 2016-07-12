@@ -58,8 +58,8 @@
                                         {% endif %}
                                         {% if entry.featured_image %} 
                                         <a href="{{ entry.get_absolute_url }}">
-                                            <img src="{{ MEDIA_URL }}{{entry.featured_image}}" style="width:400px;height:220px;">
-                                            <!--img src="{{ MEDIA_URL }}{# thumbnail entry.featured_image 400 220 #}" -->
+                                            <!--img src="{{ MEDIA_URL }}{{entry.featured_image}}" style="width:400px;height:220px;"-->
+                                            <img src="{{ MEDIA_URL }}{% thumbnail entry.featured_image 400 220 %}">
                                         </a>
                                         <div style="position: relative; bottom: 0; left: 0.5em; width: 400px; font-weight: bold; color: #fff;">
                                             <center><h6>
