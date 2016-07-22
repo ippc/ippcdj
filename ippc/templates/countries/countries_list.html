@@ -24,7 +24,7 @@
   <span class="divider">/</span>
 </li-->
 {%if region_name == 'NPPOs' %}
-<li class="active">{% trans "List of NPPOs" %} 
+<li class="active">{% trans "List of NPPOs of IPPC Contracting parties" %} 
 </li>
 {% else %}
 <li class="active">{% trans "Countries List" %} 
@@ -42,7 +42,7 @@
 {% block main %}
 <h1>
 {%if region_name == 'NPPOs' %}
-    {% trans "List of NPPOs" %} 
+    {% trans "List of NPPOs of IPPC Contracting parties" %} 
 {% else %}
   {% trans "List of Countries" %}
       {% if region_name %}
@@ -52,7 +52,7 @@
   </h1> 
 <div class="span7 middle">
 	<p>There are currently <strong>{{ number_of_cp }}</strong> contracting parties. Visit the <a href="http://www.fao.org/fileadmin/user_upload/legal/docs/004s-e.pdf">FAO Legal</a> website for details.</p>
-	
+	{%if region_name == 'NPPOs' %}{% else %}
 <p>
 	<span class="icn-adoptedbadge">Contracting parties</span> 
 	<br />
@@ -60,7 +60,7 @@
 	<br />
 	<span class="icn-territory">Territory</span>
 </p>
-
+  {% endif %}
 
 
 {% if latest %}
