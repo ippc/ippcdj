@@ -31,7 +31,52 @@
 <h1>
   <small class="normal">{% trans "Reminder system list of email messages sent:" %}</small>
 </h1> 
-    {% if latest %}
+<p>Automatic reminders will be send out to the email accounts of all Official Contact Points with the following frequency:
+   <table border="1"> 
+     <thead>
+        <tr>
+          <th>{% trans "NRO category" %}</th>
+          <th>{% trans "Frequency" %}</th>
+          <th>{% trans "Month" %}</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+        <td>Contact Point (contact details)</td><td>Every 3 months</td><td>January,April,July,October</td>
+        </tr>  
+        <tr>
+        <td>Pest reporting  &  Emergency action</td><td>Every 6 months</td><td>February, August</td>
+        </tr>  
+        <tr>
+        <td>Description of the NPPO<br>
+Entry Points<br>
+List of Regulated Pests<br>
+Legislation: Phytosanitary Requirements/Restrictions/Prohibitions</td><td>Every 12 months</td><td>November</td>
+        </tr> 
+            <tr>
+        <td>Information about FILEs or URLs</td><td>Every 3 months</td><td>March,June,September,December</td>
+        </tr> 
+              <tr>
+        <td>Information about IPP Country Editors</td><td>Every 12 months</td><td>May</td>
+        </tr> 
+      </tbody>
+      
+</table> 
+
+
+	
+
+	
+
+
+
+</p>
+
+
+
+  
+
+{% if latest %}
     <table class="table table-condensed table-striped" id="publications">
       <thead>
         <tr>
