@@ -37,9 +37,18 @@
 
 {% block main %}
 
+ 
 <p class="pull-right">
   <a href="javascript:history.go(-1)">{% trans "« Go back" %}</a>
- </p>
+  {% if perms.ippc.add_eventreporting and request.user.get_profile.country.name == page.title %}
+ <br>
+  <small>    <a class="btn btn-small btn-info" href="{% url 'event-reporting-create' page.title|slugify current_type %}">+ {% trans "Add new" %}</a>
+ </small>
+  <br>
+  {% else %}
+  {% endif %}
+</p>
+
 
 {% if latest %}
 {% for key, val in event_types %}
@@ -71,7 +80,8 @@
         <th>{% trans "Report files" %}</th>
         <th>{% trans "Publication Date" %}</th>
         <th>{% trans "Last Updated" %}</th>
-      
+             {% if user.is_superuser  or perms.ippc.change_reportingobligation and request.user.get_profile.country.name == page.title %}
+   <th>{% trans "Last confirmed" %}</th>  {% endif %}
         <th>&#160;</th>
    </tr>
     {% for object in latest %}<br>
@@ -87,8 +97,17 @@
      </td>
      <td>{{ object.publish_date|date:"d M Y" }}</td>
       <td>{{ object.modify_date|date:"d M Y" }}</td>
- 
-        {% if user.is_superuser %} 
+                {% if user.is_superuser  or perms.ippc.change_reportingobligation and request.user.get_profile.country.name == page.title %}
+ <td>
+          {% if object.to_verify %}
+          <p style="color:red"><b><a  style="color: red;" href="{% url 'event-reporting-detail' object.country.country_slug object.publish_date|date:'Y' object.publish_date|date:'m'  object.slug %}">{% trans "data to confirm" %}</a></b></p>
+          {% else %}
+            {% if  object.verified_date != ''  and   object.verified_date != None and object.verified_date != NULL %}
+               <p style="color:green"> <small>{% trans "data revised on " %}<br>{{object.verified_date|date:"d M Y"}}</small></p>
+            {% endif %}
+          {% endif %}
+      </td>  {% endif %}
+        <td> {% if user.is_superuser %} 
             <a class="small pull-right" href="/admin/ippc/eventreporting/{{ object.id }}"><i class="icon-edit"></i> Edit as Admin</a><br>
         {% endif %}
 

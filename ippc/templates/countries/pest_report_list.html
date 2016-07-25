@@ -70,8 +70,9 @@
       <th>{% trans "Title" %}</th>
       <th>{% trans "Publication Date" %}</th>
       <th>{% trans "Last Updated" %}</th>
-       
-        <th>&#160;</th>
+      {% if user.is_superuser  or perms.ippc.change_reportingobligation and request.user.get_profile.country.name == page.title %}
+   <th>{% trans "Last confirmed" %}</th>  {% endif %}
+      <th>&#160;</th>
     </tr>
   </thead>
   <tbody>
@@ -82,7 +83,16 @@
       <td><a href="{% url 'pest-report-detail' object.country.country_slug object.publish_date|date:'Y' object.publish_date|date:'m'  object.slug %}">{{ object.title }}</a></td>
       <td>{{ object.publish_date|date:"d M Y" }}</td>
       <td>{{ object.modify_date|date:"d M Y" }}</td>
-     
+     {% if user.is_superuser  or perms.ippc.change_reportingobligation and request.user.get_profile.country.name == page.title %}
+   <td>
+          {% if object.to_verify %}
+             <p style="color:red"><b><a  style="color: red;"  href="{% url 'pest-report-detail' object.country.country_slug object.publish_date|date:'Y' object.publish_date|date:'m'  object.slug %}">{% trans "data to confirm" %}</a></b></p>
+          {% else %}
+            {% if  object.verified_date != ''  and   object.verified_date != None and object.verified_date != NULL %}
+               <p style="color:green"> <small>{% trans "data revised on " %}<br>{{object.verified_date|date:"d M Y"}}</small></p>
+            {% endif %}
+          {% endif %}
+      </td>  {% endif %}
       <td>
 
         {% if user.is_superuser %} 

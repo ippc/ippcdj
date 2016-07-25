@@ -75,8 +75,13 @@
    <table class="table table-condensed table-striped">
    <thead>
       <tr>
-          <th colspan="2">{% trans "National Reporting Obligations" %}</th>
-      </tr>
+          <th colspan="2">{% trans "National Reporting Obligations" %} 
+               
+ {% if user.is_superuser  or perms.ippc.change_reportingobligation and request.user.get_profile.country.name == page.title %}
+  
+
+              {% if ro_to_verify_1 == 'verify'%} <p style="color:red"> <b> Some of the data reported in your country page need your attention.<br>Click on the links below to check.</b>   {% endif %}  </th>
+     {% endif %}    </tr>
       </thead>
      <tbody>
    

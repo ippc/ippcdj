@@ -35,6 +35,18 @@
         <a class="btn btn-small btn-info" href="/admin/ippc/eventreporting/{{ eventreporting.id }}">Edit as Admin</a><br>
     {% endif %}
         
+    
+       {% if eventreporting.to_verify %}
+            {% if user.is_superuser or perms.ippc.change_eventreporting and request.user.get_profile.country.name == page.title %}
+              <p><b style="color:red">{% trans "Confirm data or edit to update." %}</b> </p>
+            {% endif %}    
+            {% if  perms.ippc.change_eventreporting and request.user.get_profile.country.name == page.title %}
+           <p>  <a class="btn btn-small btn-info" href="{% url 'event-reporting-validate' eventreporting.country.name|slugify eventreporting.id %}"><i class="icon-edit icon-white"></i> {% trans "CONFIRM" %}</a>
+             </p>
+          {% endif %}
+    
+      {% endif %}
+      
     {% if perms.ippc.change_eventreporting and request.user.get_profile.country.name == page.title %}
         <a class="btn btn-small btn-info" href="{% url 'event-reporting-edit' eventreporting.country.name|slugify eventreporting.id %}"><i class="icon-edit icon-white"></i> Edit</a>
       
@@ -84,6 +96,26 @@
   
 
 
+
+ 
+ {% if user.is_superuser  or perms.ippc.change_reportingobligation and request.user.get_profile.country.name == page.title %}
+  
+
+
+
+
+
+{% if eventreporting.to_verify == 0 %}
+{% if  eventreporting.verified_date != ''  and   eventreporting.verified_date != None and eventreporting.verified_date != NULL %}
+<dt>&#160;</dt>   
+<dd> 
+    <p style="color:green"> <b>{% trans "data revised on " %}{{report.verified_date}}</b></p>
+ </dd>
+{% endif %}
+{% endif %}
+
+
+  {% endif %}
 
 
 

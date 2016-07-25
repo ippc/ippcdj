@@ -37,12 +37,21 @@
 
 {% block main %}
 
+ 
 <p class="pull-right">
   <a href="javascript:history.go(-1)">{% trans "« Go back" %}</a>
- </p>
+  {% if perms.ippc.add_reportingobligation and request.user.get_profile.country.name == page.title %}
+ <br>
+  <small>    <a class="btn btn-small btn-info" href="{% url 'reporting-obligation-create' page.title|slugify current_type %}">+ {% trans "Add new" %}</a>
+ </small>
+  <br>
+  {% else %}
+  {% endif %}
+</p>
 
 
-{% if latest %}
+
+{% if latest %}  
 {% for key, val in basic_types %}
 {% ifequal key current_type %}
 
@@ -50,26 +59,19 @@
   <small class="normal">{{val}}{% trans "  from" %}</small>
   {{ page.title }}
 </h1> 
- 
+
 
 <table class="table table-condensed table-striped" id="publications">
   <tbody>
-     {% if perms.ippc.add_reportingobligation and request.user.get_profile.country.name == page.title %}
-         <tr>
-       <td colspan="3">
-           <small  class="pull-right">
-               <a class="btn btn-small btn-info" href="{% url 'reporting-obligation-create' page.title|slugify key %}">+ {% trans "Add new" %}</a>
-    </small>
-       
-       </td>
-   </tr>
-    {% endif %}
+ 
      <tr>
        <th>{% trans "Title" %}</th>
        <th>{% trans "Report files" %}</th>
        <th>{% trans "Publication Date" %}</th>
        <th>{% trans "Last Updated" %}</th>
-
+       {% if user.is_superuser  or perms.ippc.change_reportingobligation and request.user.get_profile.country.name == page.title %}
+            <th>{% trans "Last confirmed" %}</th>
+        {% endif %}
        <th>&#160;</th>
      </tr>
      
@@ -92,7 +94,18 @@
      </td>
       <td>{{ object.publication_date|date:"d M Y" }}</td>
       <td>{{ object.modify_date|date:"d M Y" }}</td>
-     
+       {% if user.is_superuser  or perms.ippc.change_reportingobligation and request.user.get_profile.country.name == page.title %}
+       
+       <td>
+          {% if object.to_verify %}
+          <p style="color:red"><b><a style="color: red;" href="{% url 'reporting-obligation-detail' object.country.country_slug object.publish_date|date:'Y' object.publish_date|date:'m'  object.slug %}">{% trans "data to confirm" %}</a></b></p>
+          {% else %}
+            {% if  object.verified_date != ''  and   object.verified_date != None and object.verified_date != NULL %}
+               <p style="color:green"> <small>{% trans "data revised on " %}<br>{{object.verified_date|date:"d M Y"}}</small></p>
+            {% endif %}
+          {% endif %}
+      </td>
+          {% endif %}
       <td>
         {% if user.is_superuser %} 
             <a class="small pull-right" href="/admin/ippc/reportingobligation/{{ object.id }}"><i class="icon-edit"></i> Edit as Admin</a><br>
