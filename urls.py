@@ -34,9 +34,14 @@ email_send,EmailUtilityMessageDetailView,EmailUtilityMessageListView,ReminderMes
 DraftProtocolDetailView,  draftprotocol_create, draftprotocol_edit,draftprotocol_compilecomments,\
 draftprotocol_comment_create,draftprotocol_comment_edit,PublicationLibraryView,commenta,contactPointExtractor,\
 CountryRegionsPercentageListView,CountryStatsreportsListView,CountryStatsTotalreportsListView,CountryRegionsUsersListView,CountryTotalUsersListView,CountryRegionsUsersNeverLoggedListView,\
-QuestionListView, QuestionDetailView, QuestionAnswersView,question_create,question_edit,\
-answer_create,answer_edit  ,vote_answer_up ,vote_answer_down,reporting_trough_eppo,reminder_to_cn
-#,reporting_obligation_validate,event_reporting_validate,pest_report_validate
+vote_answer_up ,vote_answer_down,reporting_trough_eppo,reminder_to_cn,\
+reporting_obligation_validate,event_reporting_validate,pest_report_validate,\
+QuestionListView, QuestionDetailView, QuestionAnswersView,question_create,question_edit,answer_edit  ,question_create,answer_create
+    
+#FAQsListView, faqcategory_edit,faqcategory_create,faq_edit,faq_create,FAQsItemDetailView,FAQsCategoryDetailView,\
+#QAQuestionListView, QAQuestionDetailView, QAQuestionAnswersView,question_create,answer_create
+#ContactUsEmailMessageListView,   ContactUsEmailMessageDetailView , contactus_email_send,\
+
 #reporting_obligation_translate,
 from schedule.periods import Year, Month, Week, Day
 from mezzanine.core.views import direct_to_template
@@ -74,7 +79,8 @@ urlpatterns = patterns("",
 (r'^google10111c8a3426cf77\.html$', lambda r:HttpResponse("google-site-verification: google10111c8a3426cf77.html", mimetype="text/plain")),
 (r'^robots\.txt$', lambda r: HttpResponse("User-agent:*\nDisallow: ", mimetype="text/plain")),
     url(r'^sitemap\.xml$', 'django.contrib.sitemaps.views.sitemap', {'sitemaps': sitemaps}),
-
+  
+  
    #---------IRSS:--------------------------#    
     #url("devirss.ippc.int/$', direct_to_template, {"template": "irss/index.html"}, name="irss"),
     url(r'^irss/$', direct_to_template, {"template": "irss/index.html"}, name="irss"),
@@ -89,7 +95,16 @@ urlpatterns = patterns("",
   
   
 
-    url(r'^qa/$',QuestionListView.as_view(), name='index'),
+#    url(r'^qa/$',QAQuestionListView.as_view(), name='index'),
+#    url(r'^qa/(?P<pk>\d+)/$', QAQuestionDetailView.as_view(), name='detail'),
+#    url(r'^qa/create/$',view=question_create,name='question-create'),
+#    url(r'^qa/(?P<pk>\d+)/answers/$', QAQuestionAnswersView.as_view(), name='answers'),
+#    url(r'^qa/(?P<question_id>\d+)/answer/create/$', answer_create, name='answer-create'),
+#    url(r'^qa/(?P<question_id>\d+)/answer/(?P<id>\d+)/voteup/$', vote_answer_up, name='vote-up'),
+#    url(r'^qa/(?P<question_id>\d+)/answer/(?P<id>\d+)/votedown/$', vote_answer_down, name='vote-down'),
+    
+    
+     url(r'^qa/$',QuestionListView.as_view(), name='index'),
     url(r'^qa/(?P<pk>\d+)/$', QuestionDetailView.as_view(), name='detail'),
     url(r'^qa/create/$',view=question_create,name='question-create'),
     url(r'^qa/edit/(?P<id>\d+)/$', view=question_edit, name='question-edit'),
@@ -100,6 +115,8 @@ urlpatterns = patterns("",
     
     url(r'^qa/(?P<question_id>\d+)/answer/(?P<id>\d+)/voteup/$', vote_answer_up, name='vote-up'),
     url(r'^qa/(?P<question_id>\d+)/answer/(?P<id>\d+)/votedown/$', vote_answer_down, name='vote-down'),
+    
+    
    #---------EPPO REPORTING------------------------------------
     url(r'^epporeporting/', reporting_trough_eppo, name='reporting_trough_eppo'),
 
@@ -108,7 +125,16 @@ urlpatterns = patterns("",
     url(r'^reminder/', reminder_to_cn, name='reminder_to_cn'),
     url(r'^remindermessages/all/$',view=ReminderMessageListView.as_view(), name='remindermessages-list'),
     url(r'^remindermessages/(?P<pk>\d+)/$',ReminderMessageDetailView.as_view(), name='remindermessages-detail'),
-   #----------------------------------
+   #----------------- FAQs DB-------------
+# NEW  url(r'^faq/$',FAQsListView.as_view(), name='faqlist'),
+#   url(r'^faq/category/(?P<pk>\d+)/$', FAQsCategoryDetailView.as_view(), name='faqcategory-detail'),
+#   url(r'^faq/category_create/$',view=faqcategory_create,name='faqcategory-create'),
+#   url(r'^faq/category_edit/(?P<id>\d+)/$', view=faqcategory_edit, name='faqcategory-edit'),
+#   url(r'^faq/(?P<pk>\d+)/$', FAQsItemDetailView.as_view(), name='faq-detail'),
+#   url(r'^faq/create/$',view=faq_create,name='faq-create'),
+#   url(r'^faq/edit/(?P<id>\d+)/$', view=faq_edit, name='faq-edit'),
+
+   #--------------------------------------
     url(r'^forum/', include('forum.urls')),
     url(r'^calls/', include('calls.urls')),
     url(r'^news/', include('news.urls')),
@@ -238,10 +264,13 @@ urlpatterns = patterns("",
     url(r'^emailutility/send/$',
         view=email_send,
         name='email-send'),
+     #------- CONTACT US EMAIL--------------------------------------#
+#NEW    url(r'^contactusemail/all/$', view=ContactUsEmailMessageListView.as_view(),  name='contactus-email-list'),
+#    url(r'^contactusemail/(?P<pk>\d+)/$',ContactUsEmailMessageDetailView.as_view(), name='contactus-email-detail'),
+#    url(r'^contactusemail/send/$',  view=contactus_email_send,    name='contactus-email-send'),    
     #--------------------------------------#
    url(r'^countries/(?P<country>[\w-]+)/relatedinformations/$',
-        view=CountryRelatedView.as_view(),
-        name='related-info'), 
+        view=CountryRelatedView.as_view(),        name='related-info'), 
      #--------------------------------------#    
     url(r'^countries/(?P<country>[\w-]+)/pestreports/$',
         view=PestReportListView.as_view(),
@@ -269,9 +298,9 @@ urlpatterns = patterns("",
     url(r'^countries/(?P<country>[\w-]+)/pestreports/edit/(?P<id>\d+)/$',
         view=pest_report_edit,
         name='pest-report-edit'),
-#    url(r'^countries/(?P<country>[\w-]+)/pestreports/validate/(?P<id>\d+)/$',
-#        view=pest_report_validate,
-#        name='pest-report-validate'),
+    url(r'^countries/(?P<country>[\w-]+)/pestreports/validate/(?P<id>\d+)/$',
+        view=pest_report_validate,
+        name='pest-report-validate'),
 #        
         
     # publication list
@@ -327,9 +356,9 @@ urlpatterns = patterns("",
     url(r'^countries/(?P<country>[\w-]+)/reportingobligation/edit/(?P<id>\d+)/$',
         view=reporting_obligation_edit,
         name='reporting-obligation-edit'),
-#    url(r'^countries/(?P<country>[\w-]+)/reportingobligation/validate/(?P<id>\d+)/$',
-#        view=reporting_obligation_validate,
-#        name='reporting-obligation-validate'),
+    url(r'^countries/(?P<country>[\w-]+)/reportingobligation/validate/(?P<id>\d+)/$',
+        view=reporting_obligation_validate,
+        name='reporting-obligation-validate'),
 #    url(r'^countries/(?P<country>[\w-]+)/reportingobligation/translate/(?P<lang>[\w-]+)/(?P<id>\d+)/$',
 #        view=reporting_obligation_translate,
 #        name='reporting-obligation-translate'),    
@@ -360,9 +389,9 @@ urlpatterns = patterns("",
     url(r'^countries/(?P<country>[\w-]+)/eventreporting/edit/(?P<id>\d+)/$',
         view=event_reporting_edit,
         name='event-reporting-edit'),
-#    url(r'^countries/(?P<country>[\w-]+)/eventreporting/validate/(?P<id>\d+)/$',
-#        view=event_reporting_validate,
-#        name='event-reporting-validate'),
+    url(r'^countries/(?P<country>[\w-]+)/eventreporting/validate/(?P<id>\d+)/$',
+        view=event_reporting_validate,
+        name='event-reporting-validate'),
 #        
 
     # event reporting list
