@@ -13,8 +13,9 @@
 
 {% if user.is_superuser %} 
     
-     <tr><td><i class="icon-user"></i> Create new account</td><td><a  class="btn btn-small btn-info" href="/account/signup/"><i class="icon-edit icon-white"></i> Create new account</a> </td><td>  </td></tr>
-     <tr><td><i class="icon-pencil"></i> Support ticket {# <small><span class="label label-warning">Note</span> the ticket system is currently using a different user/password system from www.ippc.int and is only accessible from within the FAO network.</small> #}</td><td> <a  class="btn btn-small btn-info" href="http://it.ippc.int/post/" title="Note the ticket system is currently using a different user/password system from www.ippc.int and is only accessible from within the FAO network."><i class="icon-edit icon-white"></i> Create new request</a> </td><td><a href="http://it.ippc.int/about/">Read more about the wishlist</a></td></tr>
+   <tr><td><i class="icon-user"></i> Create new account</td><td><a  class="btn btn-small btn-info" href="/account/signup/"><i class="icon-edit icon-white"></i> Create new account</a> </td><td>  </td></tr>
+   <tr><td><i class="icon-envelope"></i></i> NROs Reminder system</td><td> </td><td><i class="icon-list"></i><a href="/remindermessages/all/"> See list of sent messages</a></td></tr>
+   <tr><td><i class="icon-pencil"></i> Support ticket {# <small><span class="label label-warning">Note</span> the ticket system is currently using a different user/password system from www.ippc.int and is only accessible from within the FAO network.</small> #}</td><td> <a  class="btn btn-small btn-info" href="http://it.ippc.int/post/" title="Note the ticket system is currently using a different user/password system from www.ippc.int and is only accessible from within the FAO network."><i class="icon-edit icon-white"></i> Create new request</a> </td><td><a href="http://it.ippc.int/about/">Read more about the wishlist</a></td></tr>
    <tr><td><i class="icon-envelope"></i> Email utility</td><td> <a  class="btn btn-small btn-info" href="/emailutility/send/"><i class="icon-edit icon-white"></i> Create new message</a></td><td><a href="/emailutility/all/"> See list of sent messages</a></li></tr>
    <tr><td><i class="icon-file"></i> News item</td><td> <a  class="btn btn-small btn-info" href="/admin/news/newspost/add/"><i class="icon-edit icon-white"></i> Add new</a></td><td></td></tr>
    <tr><td><i class="icon-file"></i> Call item</td><td> <a  class="btn btn-small btn-info" href="/admin/calls/callspost/add/"><i class="icon-edit icon-white"></i> Add new</a></td><td></td></tr>
@@ -23,7 +24,9 @@
    <tr><td><i class="icon-comment"></i> Forums</td><td> <a  class="btn btn-small btn-info" href="/admin/forum/forumpost/add/"><i class="icon-edit icon-white"></i> Add new</a></td><td></td></tr>
    <tr><td><i class="icon-file"></i> Add public page</td><td> <a  class="btn btn-small btn-info" href="/admin/pages/page/"><i class="icon-edit icon-white"></i> Add new</a></td><td></td></tr>
    <tr><td><i class="icon-file"></i> Add restricted page</td><td> <a  class="btn btn-small btn-info" href="/admin/pages/page/"><i class="icon-edit icon-white"></i> Add new</a></td><td></td></tr>
-</table>
+   <!--tr><td><i class="icon-file"></i> FAQs category</td><td><a  class="btn btn-small btn-info" href="/faq/category_create/"><i class="icon-edit icon-white"></i>Add new</a><a href="/poll/"></td><td> </td></tr>
+   <tr><td><i class="icon-file"></i> FAQs item</td><td><a  class="btn btn-small btn-info" href="/faq/create/"><i class="icon-edit icon-white"></i>Add new</a><a href="/poll/"></td><td> </td></tr-->
+  </table>
 
 {% else %}
 {% for group in request.user.groups.all %}
@@ -38,6 +41,8 @@
    <tr><td><i class="icon-comment"></i> Forums</td><td> <a  class="btn btn-small btn-info" href="/admin/forum/forumpost/add/"><i class="icon-edit icon-white"></i> Add new</a></td><td></td></tr>
    <tr><td><i class="icon-file"></i> Add public page</td><td> <a  class="btn btn-small btn-info" href="/admin/pages/page/"><i class="icon-edit icon-white"></i> Add new</a></td><td></td></tr>
    <tr><td><i class="icon-file"></i> Add restricted page</td><td> <a  class="btn btn-small btn-info" href="/admin/pages/page/"><i class="icon-edit icon-white"></i> Add new</a></td><td></td></tr>
+   <!--tr><td><i class="icon-check"></i> FAQs category</td><td><a  class="btn btn-small btn-info" href="/faq/category_create/"><i class="icon-edit icon-white"></i>Add new</a><a href="/poll/"></td><td> </td></tr>
+   <tr><td><i class="icon-check"></i> FAQs item</td><td><a  class="btn btn-small btn-info" href="/faq/create/"><i class="icon-edit icon-white"></i>Add new</a><a href="/poll/"></td><td> </td></tr-->
 
     {% endif %}
 {% endfor %}
