@@ -15,14 +15,17 @@ PestFreeAreaFile, PestFreeAreaUrl, WebsiteUrl,PestReportUrl,PestReportFile,CnPub
 CountryNews,CountryNewsFile,CountryNewsUrl,CommodityKeyword,PreferredLanguages,  \
 PartnersWebsite,PartnersWebsiteUrl,\
 PartnersNews,PartnersNewsFile,PartnersNewsUrl, \
-EppoCode,IssueKeyword, CommodityKeyword,IssueKeywordsRelate,CommodityKeywordsRelate, ContactType, \
-IppcUserProfile,Question,Answer#,TransReportingObligation
+EppoCode,IssueKeyword, CommodityKeyword,IssueKeywordsRelate,CommodityKeywordsRelate, ContactType, IppcUserProfile,\
+Question,Answer
+#QAQuestion,QAAnswer,FAQsCategory,FAQsItem
+#,TransReportingObligation,Question,Answer,\
 
 from django.forms.models import inlineformset_factory
 from django.forms.formsets import formset_factory
-from django.contrib.auth.models import User
+from django.contrib.auth.models import User,Group
 from django import forms
-
+from django.core import mail
+from django.core.mail import send_mail
 from models import TransRichTextPage, TransLinkPage
 from django_markdown.admin import MarkdownModelAdmin
 
@@ -57,6 +60,109 @@ class QuestionAdmin(admin.ModelAdmin):
     list_filter = ['pub_date','question_title']
 	
 admin.site.register(Question, QuestionAdmin)
+
+
+
+
+###NEW
+#class MyQAQuestionAdminForm(forms.ModelForm):
+#    class Meta:
+#        model = QAQuestion
+#        widgets = {          'description':MarkdownWidget() 
+##         # models.TextField: {'widget': },
+#}
+#class QAQuestionAdmin(admin.ModelAdmin):
+#    form = MyQAQuestionAdminForm
+#    fieldsets = [
+#        (None,{'fields': ['description'], 'classes': ['Textarea']}),
+#        ('Open', {'fields': ['questionopen'], 'classes': ['nocollapse']}),
+#        
+#        ('publish_date', {'fields': ['publish_date'], 'classes': ['nocollapse']}),
+#        ('Author', {'fields': ['user'], 'classes': ['nocollapse']}),
+#        ('Status', {'fields': ['status'], 'classes': ['nocollapse']}),
+#        
+#    ]
+#    
+#    list_display = ('description', 'publish_date','status')
+#    search_fields = ['description']
+#    list_filter = ['publish_date','description','status']
+#
+#    def save_form(self, request, form, change):
+#        """
+        #Super class ordering is important here - user must get saved first.
+        #"""
+#        admin.ModelAdmin.save_form(self, request, form, change)
+#        # Answer published
+#        if request.POST['status'] == '2':  
+#       
+#            emailto_all = []
+#            request.POST['user']  
+#            user_obj=User.objects.get(id= request.POST['user'])
+#            emailto_all.append(str(user_obj.email))
+#            print('>>>>>>>>>>>>>>>>>>')
+#            print(emailto_all)
+#
+#            subject='Q&A Notification your answer has been published'    
+#
+#            textmessage='<html><body><p>Dear IPPC user,<br><br>your question has been published.<br><br>You can view it at the following url: <a href="http://127.0.0.1:8000/en/qa/'+str(request.POST['question'])+'/answers/">http://127.0.0.1:8000/en/qa/'+str(request.POST['question'])+'/answers/</a><br><br>International Plant Protection Convention team </p></body></html>'
+#
+#            notifificationmessage = mail.EmailMessage(subject,textmessage,'ippc@fao.org',  emailto_all, ['paola.sentinelli@fao.org'])
+#            notifificationmessage.content_subtype = "html"  
+#            sent =notifificationmessage.send()
+#            return admin.ModelAdmin.save_form(self, request, form, change)
+#    
+#admin.site.register(QAQuestion, QAQuestionAdmin)
+##
+#   
+#class MyQAAnswerAdminForm(forms.ModelForm):
+#    class Meta:
+#        model = QAAnswer
+#        widgets = {          'description':MarkdownWidget() 
+##         # models.TextField: {'widget': },
+#}
+#class QAAnswerAdmin(admin.ModelAdmin):
+#    form = MyQAAnswerAdminForm
+#    fieldsets = [
+#        (None,{'fields': ['description'], 'classes': ['Textarea']}),
+#        ('question', {'fields': ['question'], 'classes': ['nocollapse']}),
+#        
+#        ('publish_date', {'fields': ['publish_date'], 'classes': ['nocollapse']}),
+#        ('Author', {'fields': ['user'], 'classes': ['nocollapse']}),
+#        ('Status', {'fields': ['status'], 'classes': ['nocollapse']}),
+#        ('Best answer', {'fields': ['bestanswer'], 'classes': ['nocollapse']}),
+#       
+#    ]
+#    
+#    list_display = ('description', 'publish_date','status')
+#    search_fields = ['description']
+#    list_filter = ['publish_date','description','status']
+#
+#    def save_form(self, request, form, change):
+#        """
+        #Super class ordering is important here - user must get saved first.
+        #"""
+#        admin.ModelAdmin.save_form(self, request, form, change)
+#        # Answer published
+#        if request.POST['status'] == '2':  
+#       
+#            emailto_all = []
+#            request.POST['user']  
+#            user_obj=User.objects.get(id= request.POST['user'])
+#            emailto_all.append(str(user_obj.email))
+#            print('>>>>>>>>>>>>>>>>>>')
+#            print(emailto_all)
+#
+#            subject='Q&A Notification your answer has been published'    
+#
+#            textmessage='<html><body><p>Dear IPPC user,<br><br>your question has been published.<br><br>You can view it at the following url: <a href="http://127.0.0.1:8000/en/qa/'+str(request.POST['question'])+'/answers/">http://127.0.0.1:8000/en/qa/'+str(request.POST['question'])+'/answers/</a><br><br>International Plant Protection Convention team </p></body></html>'
+#
+#            notifificationmessage = mail.EmailMessage(subject,textmessage,'ippc@fao.org',  emailto_all, ['paola.sentinelli@fao.org'])
+#            notifificationmessage.content_subtype = "html"  
+#            sent =notifificationmessage.send()
+#            return admin.ModelAdmin.save_form(self, request, form, change)
+#    
+#admin.site.register(QAAnswer, QAAnswerAdmin)
+##
 
 class MyIssueKeywordsRelateAdminForm(forms.ModelForm):
     class Meta:
@@ -492,9 +598,36 @@ class  PartnersNewsAdmin(admin.ModelAdmin):
     list_display = ('title', 'publication_date', 'modify_date',   'partners')
     list_filter = ('title', 'publication_date', 'modify_date',  'partners')
     search_fields = ('title', 'short_description')
-    prepopulated_fields = { 'slug': ['title'] }
+   
 admin.site.register( PartnersNews,  PartnersNewsAdmin)
 
+#NEW
+#class MyFAQsCategoryAdminForm(forms.ModelForm):
+#    class Meta:
+#        model = FAQsCategory
+#
+#class FAQsCategoryAdmin(admin.ModelAdmin):
+#    form = MyFAQsCategoryAdminForm
+#    save_on_top = True
+#    list_display = ('id','title','faqcat_oder')
+#    #list_filter = ('faqcategory_title')
+#   # search_fields = ('faqcategory_title')
+#    prepopulated_fields = { 'slug': ['title'] } 	
+#admin.site.register(FAQsCategory, FAQsCategoryAdmin)
+#
+#class MyFAQsItemAdminForm(forms.ModelForm):
+#    class Meta:
+#        model = FAQsItem
+#
+#class FAQsItemAdmin(admin.ModelAdmin):
+#    form = MyFAQsItemAdminForm
+#    save_on_top = True
+#    list_display = ('title', 'faqcategory', 'faq_description',   'publish_date')
+#    list_filter = ('title', 'faqcategory', 'faq_description',  'publish_date')
+#    search_fields = ('title', 'faqcategory')
+#    prepopulated_fields = { 'slug': ['title'] }
+#	
+#admin.site.register(FAQsItem, FAQsItemAdmin)
 
 # Translatable user-content  -----------------
 if "mezzanine.pages" in settings.INSTALLED_APPS:

@@ -19,7 +19,10 @@ PartnersPublication,PartnersPublicationFile,PartnersPublicationUrl,\
 PartnersNews,PartnersNewsFile,PartnersNewsUrl, \
 CountryNews,CountryNewsFile,CountryNewsUrl, EmailUtilityMessage, EmailUtilityMessageFile,\
 DraftProtocol,DraftProtocolFile,DraftProtocolComments,NotificationMessageRelate,Poll,  Poll_Choice,\
-Question,Answer#,TransReportingObligation
+Question,Answer
+#FAQsCategory,FAQsItem,\
+#QAQuestion,QAAnswer,ContactUsEmailMessage,\
+#,TransReportingObligation
 
 
 
@@ -47,8 +50,33 @@ class AnswerForm(forms.ModelForm):
         fields = [
                 'answertext',
                 'bestanswer',
-                 ]
-                 
+            ]
+
+
+#NEW
+#class QAQuestionForm(forms.ModelForm):
+#    class Meta:
+#        model =  QAQuestion
+#        fields = [
+#                'title',
+#                'description',
+#                
+#                 ]
+##        widgets = {
+##            'publish_date': AdminDateWidget(),
+##        }
+#        exclude = ( 'slug',  'modify_date','publish_date','status',         'questionopen', )
+#     
+#class QAAnswerForm(forms.ModelForm):
+#    class Meta:
+#        model =  QAAnswer
+#        fields = [
+#                'answertext',
+#              
+#                 ]
+#        exclude = ('status', 'slug',  'modify_date','publish_date' ,  'bestanswer',)                          
+#        
+        
 class PestReportForm(forms.ModelForm):
 
     # country = forms.ChoiceField(widget=forms.Select(), initial='country')
@@ -478,8 +506,41 @@ class EmailUtilityMessageForm(forms.ModelForm):
         exclude = ( 'date','sent', 'groups',)       #,'notsentto'
 EmailUtilityMessageFileFormSet = inlineformset_factory(EmailUtilityMessage,  EmailUtilityMessageFile,extra=1)
 
-
-
+##NEW
+#class ContactUsEmailMessageForm(forms.ModelForm):
+#
+#    class Meta:
+#        model = ContactUsEmailMessage
+#        fields = [
+#           'emailfrom',
+#           'contact_us_type',
+#           'subject', 
+#           'messagebody',
+#           ]
+#           
+#    exclude = ( 'date','sent', )
+#   
+#class FAQsCategoryForm(forms.ModelForm):
+#    class Meta:
+#        model =  FAQsCategory
+#        fields = [
+#                'title',
+#                'faqcat_oder',
+#                  ]
+#        exclude = ('author', 'slug', 'publish_date',  'modify_date')
+#  
+#class FAQsItemForm(forms.ModelForm):
+#    class Meta:
+#        model =  FAQsItem  
+#   
+#        fields = [
+#                'title',
+#                'faqcategory',
+#                'faq_description',
+#                'faq_anchor'
+#                 ]
+#  
+#        exclude = ( 'modify_date', )      
 
 class NotificationMessageRelateForm(forms.ModelForm):
     class Meta:
