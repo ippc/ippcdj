@@ -27,7 +27,12 @@
 
                 {# =todo: get Link pages to display text. #}
                 {% if not page.richtextpage %}
-                  {% trans page.title %} 
+                    {% with page.link|get_object_translation as translated_page %}
+                        {{ translated_page.title|safe }} 
+                        {% endwith %}
+                {% with page.publicationlibrary|get_object_translation as translated_page %}
+                        {{ translated_page.title|safe }} 
+                        {% endwith %}
                 {% endif %}
             
             {% if page.has_children_in_menu %}<span class="caret"></span>{% endif %}
@@ -46,14 +51,21 @@
     {% if page.in_menu %}
     <li{% if page.is_current_or_ascendant %} class="active"{% endif %}
         id="dropdown-menu-{{ page.html_id }}">
-        <a href="{{ page.get_absolute_url }}">   {% load translate_tags %}
+        <a href="{{ page.get_absolute_url }}">  
+            {% load translate_tags %}
                 {% with page.richtextpage|get_object_translation as translated_page %}
-                    {{ translated_page.title|safe }}
+                    {{ translated_page.title|safe }} 
                 {% endwith %}
 
                 {# =todo: get Link pages to display text. #}
                 {% if not page.richtextpage %}
-                  {% trans page.title %} 
+                       
+                  {% with page.link|get_object_translation as translated_page %}
+                        {{ translated_page.title|safe }} 
+                        {% endwith %}
+                {% with page.publicationlibrary|get_object_translation as translated_page %}
+                        {{ translated_page.title|safe }} 
+                        {% endwith %}
                 {% endif %}</a>
     </li>
     {% endif %}
@@ -90,7 +102,7 @@
 
 
                 {% load translate_tags %}
-                {% with page.publicationlibrary|get_object_translation as translated_page %}
+                {% with page.richtextpage|get_object_translation as translated_page %}
                     {{ translated_page.title|safe }}
                 {% endwith %}
 
@@ -121,13 +133,15 @@
               {% endif %}
           id="dropdown-menu-{{ page.html_id }}">
           <a href="{{ page.get_absolute_url }}">
-              {% with page.richtextpage|get_object_translation as translated_page %}
-              {% if translated_page.title %}
-                  {{ translated_page.title|safe }}
-                  {% else %}
-                  {{ page.title }}
-              {% endif %}
-              {% endwith %}
+              {% load translate_tags %}
+                {% with page.richtextpage|get_object_translation as translated_page %}
+                    {{ translated_page.title|safe }}
+                {% endwith %}
+
+                {# =todo: get Link pages to display text. #}
+                {% if not page.richtextpage %}
+                  {% trans page.title %}{# &#8599; <i class="icon-share-alt"></i>   #}
+                {% endif %}
           </a>
           {% if page.has_children %}{% page_menu page %}{% endif %}
       </li>
