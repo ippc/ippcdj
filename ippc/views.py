@@ -12,11 +12,11 @@ from django.contrib.auth.models import User,Group
 from .models import ReminderMessage,ContactType,PublicationLibrary,Publication,EppoCode,EmailUtilityMessage, EmailUtilityMessageFile, Poll_Choice, Poll,PollVotes, IppcUserProfile,\
 CountryPage,PartnersPage, PestStatus, PestReport, IS_PUBLIC, IS_HIDDEN, Publication,PestReportFile,PestReportUrl,\
 PublicationFile,PublicationUrl,ReportingObligation_File,ReportingObligationUrl, EventreportingFile,EventreportingUrl,    ImplementationISPMFile,ImplementationISPMUrl, PestFreeAreaFile,PestFreeAreaUrl,\
-DraftProtocol,DraftProtocolComments,NotificationMessageRelate,CommentFile,AnswerVotes,Question, Answer,\
+DraftProtocol,DraftProtocolComments,NotificationMessageRelate,CommentFile,AnswerVotes,\
 ReportingObligation, BASIC_REP_TYPE_CHOICES, EventReporting, EVT_REP_TYPE_CHOICES,Website,CnPublication,PartnersPublication,PartnersNews, PartnersWebsite,CountryNews, \
-PestFreeArea,ImplementationISPM,REGIONS, IssueKeywordsRelate,CommodityKeywordsRelate,EventreportingFile,ReportingObligation_File
-#ContactUsEmailMessage,FAQsItem,FAQsCategory,QAQuestion, QAAnswer,
-#TransReportingObligation
+PestFreeArea,ImplementationISPM,REGIONS, IssueKeywordsRelate,CommodityKeywordsRelate,EventreportingFile,ReportingObligation_File,Question, Answer
+#ContactUsEmailMessage,FAQsItem,FAQsCategory,QAQuestion, QAAnswer
+#TransReportingObligation,,Question, Answer
 from mezzanine.core.models import Displayable, CONTENT_STATUS_DRAFT, CONTENT_STATUS_PUBLISHED
 from .forms import PestReportForm,PublicationUrlFormSet,PublicationForm, PublicationFileFormSet, ReportingObligationForm, EventReportingForm, PestFreeAreaForm,\
 ImplementationISPMForm,IssueKeywordsRelateForm,CommodityKeywordsRelateForm,EventreportingFileFormSet,ReportingoblicationFileFormSet,\
@@ -29,9 +29,9 @@ PartnersNewsUrlFormSet,PartnersNewsForm, PartnersNewsFileFormSet,PartnersWebsite
 EmailUtilityMessageForm,EmailUtilityMessageFileFormSet,\
 CountryNewsUrlFormSet,CountryNewsForm, CountryNewsFileFormSet,NotificationMessageRelateForm,\
 DraftProtocolForm,  DraftProtocolFileFormSet,DraftProtocolCommentsForm,IppcUserProfileForm,Question, Answer,QuestionForm, AnswerForm
-#QAQuestionForm, QAAnswerForm,\
-#ContactUsEmailMessageForm,FAQsItemForm,FAQsCategoryForm
-##TransReportingObligationForm , UserForm
+#ContactUsEmailMessageForm,FAQsItemForm,FAQsCategoryForm,QAQuestionForm, QAAnswerForm
+##TransReportingObligationForm , UserForm,Question, Answer,QuestionForm, AnswerForm
+
 
 from django.views.generic import ListView, MonthArchiveView, YearArchiveView, DetailView, TemplateView, CreateView
 from django.core.urlresolvers import reverse
@@ -506,12 +506,10 @@ import datetime as dt
 import urllib2
 import socket
 def reminder_getlink(cn,type,obj):
-    #return "https://www.ippc.int/countries/"+cn+"/"+type+"/"+str(obj.publish_date.strftime("%Y"))+'/'+str(obj.publish_date.strftime("%m"))+'/'+obj.slug+'/'
-    return "http://test.ippc.int/countries/"+cn+"/"+type+"/"+str(obj.publish_date.strftime("%Y"))+'/'+str(obj.publish_date.strftime("%m"))+'/'+obj.slug+'/'
+    return "https://www.ippc.int/countries/"+cn+"/"+type+"/"+str(obj.publish_date.strftime("%Y"))+'/'+str(obj.publish_date.strftime("%m"))+'/'+obj.slug+'/'
+    
 def reminder_getemptylink(cn,type,rep):
-    ##return "https://www.ippc.int/countries/"+cn+"/"+type+"/"+rep
-    #return "https://www.ippc.int/countries/"+cn#+"/"+type+"/"+rep
-    return "http://test.ippc.int/countries/"+cn+"/"+type+"/"+rep
+    return "https://www.ippc.int/countries/"+cn+"/"+type+"/"+rep
          
 def reminder_to_cn(request):
     # OCP 3 months: 90 days
@@ -621,7 +619,7 @@ def reminder_to_cn(request):
                         textmessage = textmessage +reportingobligation_to_notify +'</table>'
                   
        
-                        textmessage=textmessage+'<br>The following resources are available to assist you:<br><ol><li> The manual on editing on the IPP [<a href="http://test.ippc.int/en/publications/80405/">Guide to the IPP</a>]</li><li> <a href="http://test.ippc.int/en/faq/">FAQs</a> including forgotten password.</li></ol><br>Should you require any assistance, please contact IPPC Secretariat at <a href="mailto:IPPC-IT@fao.org">IPPC-IT@fao.org</a>.<br><br>Best regards<br><br>IPPC Secretariat'
+                        textmessage=textmessage+'<br>The following resources are available to assist you:<br><ol><li> The manual on editing on the IPP [<a href="https://www.ippc.int/en/publications/80405/">Guide to the IPP</a>]</li><li> <a href="https://www.ippc.int/en/faq/">FAQs</a> including forgotten password.</li></ol><br>Should you require any assistance, please contact IPPC Secretariat at <a href="mailto:IPPC-IT@fao.org">IPPC-IT@fao.org</a>.<br><br>Best regards<br><br>IPPC Secretariat'
                         remider_message= ReminderMessage()
                         remider_message.pk = None
                         remider_message.emailfrom = "ippc@fao.org"
@@ -655,7 +653,7 @@ def reminder_to_cn(request):
                     if editors_text !='':
                         textmessage+='<p>Dear Sir/Madam,<br><br>This is a routine reminder sent every 12 months in an attempt to ensure that the IPP editors remain accurate and active.<br><br>The IPPC team would like to ask you to <b>check the Contact details</b> of your <b>IPP editors</b>:<br><br>'
                         textmessage+= '<ul>'+editors_text+'</ul>'
-                        textmessage+= '<br><br>In case any detail has changed please kindly inform us [<a href="mailto:IPPC-IT@fao.org">IPPC-IT@fao.org</a>]. <br><br>In case you would like to nominate a new editor provide us with a completed form. You can find the form <a href="http://test.ippc.int/en/publications/ipp-editor-nomination-request-nppos/">here</a>. <br><br><br>Best regards<br><br>IPPC Secretariat'
+                        textmessage+= '<br><br>In case any detail has changed please kindly inform us [<a href="mailto:IPPC-IT@fao.org">IPPC-IT@fao.org</a>]. <br><br>In case you would like to nominate a new editor provide us with a completed form. You can find the form <a href="https://www.ippc.int/en/publications/ipp-editor-nomination-request-nppos/">here</a>. <br><br><br>Best regards<br><br>IPPC Secretariat'
                         remider_message= ReminderMessage()
                         remider_message.pk = None
                         remider_message.emailfrom = "ippc@fao.org"
@@ -681,7 +679,7 @@ def reminder_to_cn(request):
                    
                     cps=IppcUserProfile.objects.filter(contact_type='1' , country=cn.id)|IppcUserProfile.objects.filter(contact_type='2' , country=cn.id)|IppcUserProfile.objects.filter(contact_type='3' , country=cn.id)|IppcUserProfile.objects.filter(contact_type='4' , country=cn.id)
                     if cps.count() >0:
-                        textmessage ='<p>Dear Sir/Madam,<br><br><br>This is a routine reminder sent every 3 months in an attempt to ensure IPPC Contact Points remain more accurate and active.<br><br>The IPPC team kindly requests you to <b>check your national IPPC Contact Point details</b> specified on the <b><a href="http://test.ippc.int/countries/'+country_slug+'">IPP Country page</a></b>:<br><br><br>'
+                        textmessage ='<p>Dear Sir/Madam,<br><br><br>This is a routine reminder sent every 3 months in an attempt to ensure IPPC Contact Points remain more accurate and active.<br><br>The IPPC team kindly requests you to <b>check your national IPPC Contact Point details</b> specified on the <b><a href="https://www.ippc.int/countries/'+country_slug+'">IPP Country page</a></b>:<br><br><br>'
                         textmessage+='<b>'
                         if cps[0].gender!='' and  cps[0].gender!=None:
                             textmessage+= str(dict(GENDER_CHOICES)[cps[0].gender]) 
@@ -696,9 +694,9 @@ def reminder_to_cn(request):
                         if cps[0].website!='' :
                          textmessage+= '<br><b>Website:</b> '+ cps[0].website+ '<br>'
                         
-                        textmessage+='<br><br>You can edit your profile yourself <a href="http://test.ippc.int/en/accounts/login/">after login into the IPP</a> (you can change all contact details except your name and job title). Please find the "Guide to the IPP" <a href="http://test.ippc.int/en/publications/80405/">here</a> for guidance on editing and uploading your national information on the IPP.<br>If you need assistance please contact the IPPC Secretariat at <a href="mailto:IPPC-IT@fao.org">IPPC-IT@fao.org</a>. '
-                        textmessage+='<br><br>In case you cannot remember your password, please go to the FAQs: <a href="http://test.ippc.int/en/faq/#LostPassword">lost password</a>.'
-                        textmessage+='<br><br>In case the IPPC contact point person has changed, please get <a href="http://test.ippc.int/en/publications/23/">the relevant form</a> duly completed and sign appropriately, and then return it to the IPPC Secretariat at <a href="mailto:ippc@fao.org">ippc@fao.org</a>.<br><br>Best regards<br><br>IPPC Secretariat'
+                        textmessage+='<br><br>You can edit your profile yourself <a href="https://www.ippc.int/en/accounts/login/">after login into the IPP</a> (you can change all contact details except your name and job title). Please find the "Guide to the IPP" <a href="https://www.ippc.int/en/publications/80405/">here</a> for guidance on editing and uploading your national information on the IPP.<br>If you need assistance please contact the IPPC Secretariat at <a href="mailto:IPPC-IT@fao.org">IPPC-IT@fao.org</a>. '
+                        textmessage+='<br><br>In case you cannot remember your password, please go to the FAQs: <a href="https://www.ippc.int/en/faq/#LostPassword">lost password</a>.'
+                        textmessage+='<br><br>In case the IPPC contact point person has changed, please get <a href="https://www.ippc.int/en/publications/23/">the relevant form</a> duly completed and sign appropriately, and then return it to the IPPC Secretariat at <a href="mailto:ippc@fao.org">ippc@fao.org</a>.<br><br>Best regards<br><br>IPPC Secretariat'
                     
                         remider_message= ReminderMessage()
                         remider_message.pk = None
@@ -766,13 +764,13 @@ def reminder_to_cn(request):
                         
                     textmessage=''
                     if evr_to_notify!='' or pests_to_notify!='':
-                        textmessage ='<table bgcolor="#FFFFFF" cellspacing="2" cellpadding="2" valign="top" width="100%" border=1  style="border: 1px solid #10501F;><tr><td width="100%" bgcolor="#FFFFFF" colspan=2>Dear Sir/Madam,<br><br>This is an automatic reminder sent every 6 months for National Reporting Obligations: pest reporting and emergency action.<br><br>Some of the pest reports uploaded by your country in the <a href="https://www.ippc.int/countries/'+country_slug+'"><b>International Phytosanitary Portal</b></a> has got a "Draft" or "Preliminary" status and have not been updated for the last 6 months or more. Please update draft reports or finalize them if necessary. If required please also upload new reports if they are available.  <br><br> Some of emergency action reports have not been updated by your country in the <a href="https://www.ippc.int/countries/'+country_slug+'"><b>International Phytosanitary Portal</b></a> for the last 6 months or more. Please check this information by following links in the table below and update when needed.<br><br>In the table below, you can also find folders which have never had any information uploaded so far. If that information is available, please upload it as soon as possible.<br><br><u><a href="http://test.ippc.int/en/accounts/login/">You will need to log in to the IPP to confirm and/or update the reports.</a></u><br><br></td></tr>'
+                        textmessage ='<table bgcolor="#FFFFFF" cellspacing="2" cellpadding="2" valign="top" width="100%" border=1  style="border: 1px solid #10501F;><tr><td width="100%" bgcolor="#FFFFFF" colspan=2>Dear Sir/Madam,<br><br>This is an automatic reminder sent every 6 months for National Reporting Obligations: pest reporting and emergency action.<br><br>Some of the pest reports uploaded by your country in the <a href="https://www.ippc.int/countries/'+country_slug+'"><b>International Phytosanitary Portal</b></a> has got a "Draft" or "Preliminary" status and have not been updated for the last 6 months or more. Please update draft reports or finalize them if necessary. If required please also upload new reports if they are available.  <br><br> Some of emergency action reports have not been updated by your country in the <a href="https://www.ippc.int/countries/'+country_slug+'"><b>International Phytosanitary Portal</b></a> for the last 6 months or more. Please check this information by following links in the table below and update when needed.<br><br>In the table below, you can also find folders which have never had any information uploaded so far. If that information is available, please upload it as soon as possible.<br><br><u><a href="https://www.ippc.int/en/accounts/login/">You will need to log in to the IPP to confirm and/or update the reports.</a></u><br><br></td></tr>'
                         textmessage =textmessage +pests_to_notify
                         textmessage =textmessage +evr_to_notify
                         textmessage =textmessage +'</table>' 
                   
                     if textmessage!='':
-                        textmessage=textmessage+'<br>The following resources are available to assist you:<br><ol><li> The manual on editing on the IPP [<a href="http://test.ippc.int/en/publications/80405/">Guide to the IPP</a>]</li><li> <a href="http://test.ippc.int/en/faq/#LostPassword">FAQs</a> including forgotten password </li></ol><br>Should you require any assistance, please contact contact the IPPC Secretariat at <a href="mailto:IPPC-IT@fao.org">IPPC-IT@fao.org</a>.<br><br>Best regards<br><br>IPPC Secretariat'
+                        textmessage=textmessage+'<br>The following resources are available to assist you:<br><ol><li> The manual on editing on the IPP [<a href="https://www.ippc.int/en/publications/80405/">Guide to the IPP</a>]</li><li> <a href="https://www.ippc.int/en/faq/#LostPassword">FAQs</a> including forgotten password </li></ol><br>Should you require any assistance, please contact contact the IPPC Secretariat at <a href="mailto:IPPC-IT@fao.org">IPPC-IT@fao.org</a>.<br><br>Best regards<br><br>IPPC Secretariat'
                    
                         remider_message= ReminderMessage()
                         remider_message.pk = None
@@ -809,7 +807,7 @@ def reminder_to_cn(request):
                        reportingobligations_urls= ReportingObligationUrl.objects.filter(reportingobligation_id=r.id)
                        for f in reportingobligations_files:
                           link=''
-                          link='http://test.ippc.int/static/media/'+str(f.file)
+                          link='https://www.ippc.int/static/media/'+str(f.file)
                           try:
                              urllib2.urlopen(link)
 #                             req = urllib2.Request(link)
@@ -838,7 +836,7 @@ def reminder_to_cn(request):
                        ev_urls= EventreportingUrl.objects.filter(eventreporting_id=e.id)
                        for f in ev_files:
                           link=''
-                          link='http://test.ippc.int/static/media/'+str(f.file)
+                          link='https://www.ippc.int/static/media/'+str(f.file)
                           try:
                              urllib2.urlopen(link)
 #                             req = urllib2.Request(link)
@@ -867,7 +865,7 @@ def reminder_to_cn(request):
                        p_urls=PestReportUrl.objects.filter(pestreport_id=p.id)
                        for f in ev_files:
                           link=''
-                          link='http://test.ippc.int/static/media/'+str(f.file)
+                          link='https://www.ippc.int/static/media/'+str(f.file)
                           try:
                              urllib2.urlopen(link)
 #                             req = urllib2.Request(link)
@@ -892,12 +890,12 @@ def reminder_to_cn(request):
 
                     if r_links!='':
                         textmessage=''
-                        textmessage ='<p>Dear Sir/Madam,<br><br>This is an automatic reminder sent every 3 months for National Reporting Obligations that some of the uploaded information by your country in the <a href="http://test.ippc.int">International Phytosanitary Portal</a> have Files that are no longer valid and URLs or links that might need your attention.<br><br>Please check if these files or links still work by following the links in the table below and update if required.<br><br><u><a href="http://test.ippc.int/en/accounts/login/">You will need to log into the IPP to do this action.</a> </u>'
+                        textmessage ='<p>Dear Sir/Madam,<br><br>This is an automatic reminder sent every 3 months for National Reporting Obligations that some of the uploaded information by your country in the <a href="https://www.ippc.int">International Phytosanitary Portal</a> have Files that are no longer valid and URLs or links that might need your attention.<br><br>Please check if these files or links still work by following the links in the table below and update if required.<br><br><u><a href="https://www.ippc.int/en/accounts/login/">You will need to log into the IPP to do this action.</a> </u>'
                         
                         textmessage =textmessage+'<table bgcolor="#FFFFFF" cellspacing="2" cellpadding="2" valign="top" width="100%" border=1  style="border: 1px solid #10501F;"><tr><td><strong>Report title</strong></td><td><strong>LINKS/FILES</strong></td></tr>'
                         textmessage=textmessage+ r_links
                         textmessage=textmessage+'</table>'
-                        textmessage=textmessage+'<br>The following resources are available to assist you:<br><ol><li> The manual on editing on the IPP [<a href="http://test.ippc.int/en/publications/80405/">Guide to the IPP</a>]</li><li> <a href="http://test.ippc.int/en/faq/#LostPassword">FAQs</a> including forgotten password </li></ol><br>Should you require any assistance, please contact [<a href="mailto:IPPC-IT@fao.org">IPPC-IT@fao.org</a>]<br><br>Best regards<br><br>IPPC Secretariat'
+                        textmessage=textmessage+'<br>The following resources are available to assist you:<br><ol><li> The manual on editing on the IPP [<a href="https://www.ippc.int/en/publications/80405/">Guide to the IPP</a>]</li><li> <a href="https://www.ippc.int/en/faq/#LostPassword">FAQs</a> including forgotten password </li></ol><br>Should you require any assistance, please contact [<a href="mailto:IPPC-IT@fao.org">IPPC-IT@fao.org</a>]<br><br>Best regards<br><br>IPPC Secretariat'
                   
                          #textmessages.append(textmessage)
 #
@@ -5733,69 +5731,69 @@ def email_send(request):
 #      emailfrom=request.user.email
 #    if request.method == "POST" :
 #        if form.is_valid() and request.POST['captcha'] ==  request.POST['result_element'] :
-#            emails_a=''
+#             emails_a=''
 #       
-#            if request.POST['contact_us_type'] == 1:
+#             if request.POST['contact_us_type'] == 1:
 #                emails_a='ippc@fao.org'
-#            elif request.POST['contact_us_type']== 2:
+#             elif request.POST['contact_us_type']== 2:
 #                emails_a='Orlando.sosa@fao.org'
-#            elif request.POST['contact_us_type']== 3:
-#                emails_a='Dorota.buzon@fao.org'
-#            elif request.POST['contact_us_type']== 4:
-#                emails_a='dave.nowell@fao.org'
-#            elif request.POST['contact_us_type']== 5:
-#                emails_a='Orlando.sosa@fao.org'
-#            elif request.POST['contact_us_type']== 6:
-#                emails_a='Shane.Sela@fao.org'
-#            elif request.POST['contact_us_type']== 7:
-#                emails_a='IPPC-OCS@fao.org'
-#            elif request.POST['contact_us_type']== 8:
-#                emails_a='Craig.Fedchock@fao.org'
-#            elif request.POST['contact_us_type']== 9:
-#                emails_a='brent.larson@fao.org'
-#            elif request.POST['contact_us_type']== 10:
-#                emails_a='IPPC-IT@fao.org'
-#            elif request.POST['contact_us_type']== 11:
-#                emails_a='IPPC-IYPH@fao.org'
-#    
-#            new_contactusemailmessage = form.save(commit=False)
-#            new_contactusemailmessage.date=timezone.now()
-#            form.save()
-#            sent = 0
-#            messages=[]
-#                      
-#            message = mail.EmailMessage(request.POST['subject'],request.POST['messagebody'],request.POST['emailfrom'],
-#            [emails_a], ['paola.sentinelli@fao.org'])#emailto_all for PROD, in TEST all to paola#
-#            message.content_subtype = "html"
-#            messages.append(message)
-#            connection = mail.get_connection()
-#            connection.open()
-#            sent=connection.send_messages(messages)
-#            connection.close()
-#
-#            #update status SENT/NOT SENT mail message in db
-#            new_contactusemailmessage.sent=sent
-#            form.save()
-#           
-#            info(request, _("Email sent."))
-#            return redirect("contactus-email-detail",new_contactusemailmessage.id)
+#             elif request.POST['contact_us_type']== 3:
+#                 emails_a='Dorota.buzon@fao.org'
+#             elif request.POST['contact_us_type']== 4:
+#                 emails_a='dave.nowell@fao.org'
+#             elif request.POST['contact_us_type']== 5:
+#                 emails_a='Orlando.sosa@fao.org'
+#             elif request.POST['contact_us_type']== 6:
+#                 emails_a='Shane.Sela@fao.org'
+#             elif request.POST['contact_us_type']== 7:
+#                 emails_a='IPPC-OCS@fao.org'
+#             elif request.POST['contact_us_type']== 8:
+#                 emails_a='Craig.Fedchock@fao.org'
+#             elif request.POST['contact_us_type']== 9:
+#                 emails_a='brent.larson@fao.org'
+#             elif request.POST['contact_us_type']== 10:
+#                 emails_a='IPPC-IT@fao.org'
+#             elif request.POST['contact_us_type']== 11:
+#                 emails_a='IPPC-IYPH@fao.org'
+#     
+#             new_contactusemailmessage = form.save(commit=False)
+#             new_contactusemailmessage.date=timezone.now()
+#             form.save()
+#             sent = 0
+#             messages=[]
+#                       
+#             message = mail.EmailMessage(request.POST['subject'],request.POST['messagebody'],request.POST['emailfrom'],
+#             [emails_a], ['paola.sentinelli@fao.org'])#emailto_all for PROD, in TEST all to paola#
+#             message.content_subtype = "html"
+#             messages.append(message)
+#             connection = mail.get_connection()
+#             connection.open()
+#             sent=connection.send_messages(messages)
+#             connection.close()
+##
+#             #update status SENT/NOT SENT mail message in db
+#             new_contactusemailmessage.sent=sent
+#             form.save()
+#            
+#             info(request, _("Email sent."))
+#             return redirect("contactus-email-detail",new_contactusemailmessage.id)
 #        else:
-#            error_captcha=''
-#            if not(request.POST['captcha'] == request.POST['result_element'] ) :
-#                  error_captcha='error'
-#                 
-#            return render_to_response('emailcontact_us/emailcontact_us_send.html', {'form': form,'x_element': request.POST['x_element'],'y_element': request.POST['y_element'],'result_element': request.POST['result_element'] ,'error_captcha':error_captcha},
-#            context_instance=RequestContext(request))
+#             error_captcha=''
+#             if not(request.POST['captcha'] == request.POST['result_element'] ) :
+#                   error_captcha='error'
+#                  
+#             return render_to_response('emailcontact_us/emailcontact_us_send.html', {'form': form,'x_element': request.POST['x_element'],'y_element': request.POST['y_element'],'result_element': request.POST['result_element'] ,'error_captcha':error_captcha},
+#             context_instance=RequestContext(request))
 #    else:
-#        x_element=random.randint(1,10)   
-#        y_element=random.randint(1,10)
-#        result_element=x_element+y_element
-#    
-#        form = ContactUsEmailMessageForm(instance=ContactUsEmailMessage(emailfrom=emailfrom))
-#
-#      
+#         x_element=random.randint(1,10)   
+#         y_element=random.randint(1,10)
+#         result_element=x_element+y_element
+#     
+#         form = ContactUsEmailMessageForm(instance=ContactUsEmailMessage(emailfrom=emailfrom))
+##
+#       
 #    return render_to_response('emailcontact_us/emailcontact_us_send.html', {'form': form  ,'x_element':x_element,'y_element':y_element,'result_element':result_element},
-#        context_instance=RequestContext(request))
+#         context_instance=RequestContext(request))
 #
 #   
 class AdvancesSearchCNListView(ListView):
@@ -6044,6 +6042,7 @@ def draftprotocol_compilecomments(request,id=None):
 
        return response	
 
+
 class QuestionListView(ListView):
     template_name = 'question/index.html'
     context_object_name = 'latest_question_list'
@@ -6277,14 +6276,6 @@ def vote_answer_down(request,question_id,id=None,):
         v.save()
         return redirect("answers", pk=q.id)
 
- 
-# 
-# 
-# 
-# 
-# 
-# 
-# 
 # 
 #class QAQuestionListView(ListView):
 #    template_name = 'question/index.html'
@@ -6292,7 +6283,7 @@ def vote_answer_down(request,question_id,id=None,):
 #    def get_queryset(self):
 #        """Return the last five published questions."""
 #        return QAQuestion.objects.order_by('-pub_date').all
-#
+##
 #    def get_context_data(self, **kwargs):
 #        context = super(QAQuestionListView, self).get_context_data(**kwargs)
 #        arrayquestions=[]
@@ -6315,9 +6306,6 @@ def vote_answer_down(request,question_id,id=None,):
 #       
 #        context['questions']= arrayquestions
 #        return context
-#
-#
-#
 #
 #class QAQuestionDetailView(DetailView):
 #    model = QAQuestion
@@ -6361,25 +6349,25 @@ def vote_answer_down(request,question_id,id=None,):
 #        context['answers']= arrayanswers
 #        return context
 #
-#def send_qa_notification_message(type,qid,id):
+#def send_qa_notification_message(type,id):
 #    """ send_qa_notification_message """
 #    #send notification to QA moderator
 #    subject=''
 #    textmessage=''
-#    question = get_object_or_404(QAQuestion,  pk=qid)
-#      
+#    question = get_object_or_404(QAQuestion,  pk=id)
 #    if type == 'QAQuestion':
 #        subject='Q & A:  new question: '+question.title
-#        textmessage='<p>Dear Q&A moderator,<br><br>a new question has been posted in the Q&A forum and it is draft mode and requires your action: '+question.title+'<br><br>You can view it at the following url: <a href="http://127.0.0.1:8000/en/qa/'+str(qid)+'/answers/">http://127.0.0.1:8000/en/qa/'+str(id)+'/answers/</a><br><br>International Plant Protection Convention team </p>'
+#        textmessage='<p>Dear Q&A moderator,<br><br>a new question has been posted in the Q&A forum and it is draft mode and requires your action: '+question.title+'<br><br>You can view it at the following url: <a href="http://127.0.0.1:8000/en/qa/'+str(id)+'/answers/">http://127.0.0.1:8000/en/qa/'+str(id)+'/answers/</a><br><br>International Plant Protection Convention team </p>'
 #    else:    
 #        answer = get_object_or_404(QAAnswer,  pk=id)
+#        qid=answer.question
 #        subject='Q & A:  new answer to "'+question.title+'"'
 #        print(subject)
 #        textmessage='<p>Dear Q&A moderator,<br><br>a new answer has been posted in the Q&A forum and it is draft mode and requires your action: '+question.title+'<br><br>You can view it at the following url: <a href="http://127.0.0.1:8000/en/qa/'+str(qid)+'/answers/">http://127.0.0.1:8000/en/qa/'+str(qid)+'/answers/</a><br><br>International Plant Protection Convention team </p>'
 #        print(textmessage)
 #     
 #    emailto_all = ['']
-#    for g in Group.objects.filter(id=31):### mettere ID GROUP moderator QA
+#    for g in Group.objects.filter(id=31):## mettere ID GROUP moderator QA
 #        users = g.user_set.all()
 #        for u in users:
 #           user_obj=User.objects.get(username=u)
@@ -6395,7 +6383,7 @@ def vote_answer_down(request,question_id,id=None,):
 #        
 #      
 #@login_required
-##@permission_required(None, login_url="/accounts/login/")
+###@permission_required(None, login_url="/accounts/login/")
 #def question_create(request):
 #    """ Create question """
 #    user = request.user
@@ -6410,7 +6398,7 @@ def vote_answer_down(request,question_id,id=None,):
 #            new_question.status = 1
 #            form.save()
 #            info(request, _("Successfully created Question."))
-#            send_qa_notification_message('QAQuestion',id,id)
+#            send_qa_notification_message('QAQuestion',new_question.id)
 #            return redirect("answers", pk=new_question.id)
 #         else:
 #             return render_to_response('question/question_create.html', {'form': form,},
@@ -6422,10 +6410,9 @@ def vote_answer_down(request,question_id,id=None,):
 #    return render_to_response('question/question_create.html', {'form': form,},
 #        context_instance=RequestContext(request))
 #
-#
 #        
 #@login_required
-##@permission_required('ippc.add_qaanswer', login_url="/accounts/login/")
+###@permission_required('ippc.add_qaanswer', login_url="/accounts/login/")
 #def answer_create(request, question_id):
 #    """ Create answer """
 #    q = get_object_or_404(QAQuestion, pk=question_id)
@@ -6443,7 +6430,7 @@ def vote_answer_down(request,question_id,id=None,):
 #            new_answer.question_id = q.id
 #            form.save()
 #            info(request, _("Successfully added Answer."))
-#            send_qa_notification_message('QAAnswer',question_id,q.id)
+#            send_qa_notification_message('QAAnswer',q.id)
 #            return redirect("answers", pk=q.id)
 #         else:
 #            return render_to_response('question/answer_create.html', {'form': form,"question":q,},
@@ -6454,7 +6441,7 @@ def vote_answer_down(request,question_id,id=None,):
 #    
 #    return render_to_response('question/answer_create.html', {'form': form,"question":q,},
 #        context_instance=RequestContext(request))
-
+#
 #def vote_answer_up(request,question_id,id=None,):
 #    answer = get_object_or_404(QAAnswer, pk=id)
 #    q = get_object_or_404(QAQuestion, pk=question_id)
@@ -6470,14 +6457,14 @@ def vote_answer_down(request,question_id,id=None,):
 #    try:
 #        up = 1
 #    except (KeyError):
-#        # Redisplay the poll voting form.
+#        #Redisplay the poll voting form.
 #        return render(request, 'question/answers.html', {
 #            'question': q,
 #            'answers':answers,
 #            'error_message': "You didn't select a rate.",
 #        })
 #    else:
-#       # selected_choice.votes += 1
+#        selected_choice.votes += 1
 #        #selected_choice.save()
 #        
 #        v = AnswerVotes(user=request.user, answer=answer,up='1')
@@ -6497,20 +6484,20 @@ def vote_answer_down(request,question_id,id=None,):
 #    try:
 #        down = -1
 #    except (KeyError):
-#        # Redisplay the poll voting form.
+#         #Redisplay the poll voting form.
 #        return render(request, 'question/answers.html', {
 #            'question': q,
 #            'answers':answers,
 #            'error_message': "You didn't select a rate.",
 #        })
 #    else:
-#       # selected_choice.votes += 1
+#        selected_choice.votes += 1
 #        #selected_choice.save()
 #        
 #        v = AnswerVotes(user=request.user, answer=answer,up='-1')
 #        v.save()
 #        return redirect("answers", pk=q.id)
-
+#
 #class FAQsListView(ListView):
 #    template_name = 'faq/faqlist.html'
 #    context_object_name = 'latest_faq_list'
@@ -6553,15 +6540,13 @@ def vote_answer_down(request,question_id,id=None,):
 #    template_name = 'faq/faq_detail.html'
 #    queryset = FAQsItem.objects.filter()
 #
-#
-#
 #@login_required
 #@permission_required('ippc.add_faqcategory', login_url="/accounts/login/")
 #def faqcategory_create(request):
 #    """ faqcategory create  """
 #    user = request.user
 #    author = user
-#
+##
 #    form = FAQsCategoryForm(request.POST)
 #    if request.method == "POST":
 #         if form.is_valid():
@@ -6589,7 +6574,7 @@ def vote_answer_down(request,question_id,id=None,):
 #        faqcategory = FAQsCategory()
 #      
 #    if request.POST:
-#
+##
 #        form =FAQsCategoryForm(request.POST, instance=faqcategory)
 #        if form.is_valid():
 #            form.save()
@@ -6647,4 +6632,4 @@ def vote_answer_down(request,question_id,id=None,):
 #    return render_to_response(template_name, {
 #        'form': form, "faq": faq, 
 #    }, context_instance=RequestContext(request))
-    
+#    
