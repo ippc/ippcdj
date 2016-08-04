@@ -2031,7 +2031,7 @@ def get_percentage_module_filled(num_mod,version):
                 i=i+1
         percent=(i*100/tot_num_fields)    
     if num_mod == 13:
-        tot_num_fields=66
+        tot_num_fields=65#66
         i=0
         modules = Module13.objects.filter(session_id=version).count()
         if modules>0:
@@ -2186,8 +2186,8 @@ def get_percentage_module_filled(num_mod,version):
                      i=i+1
             if module.m_61==True or module.m_61==False:
                     i=i+1
-            if module.m_62>0:
-                    i=i+1
+            #if module.m_62>0:
+            #        i=i+1
             if module.m_63>0:
                     i=i+1
             if module.m_64!='':
@@ -2902,12 +2902,15 @@ def pceversion_edit_step2(request, country, id=None ):
         pceversion = get_object_or_404(PceVersion, country=country, pk=id)
         version_number = pceversion.version_number
         version_id=pceversion.id
+       
     else: 
         version_number = 1
-    
-    if request.method == "POST":
-        form = PceVersionForm2(request.POST, request.FILES,instance=pceversion)
         
+        
+    if request.method == "POST":
+            
+        form = PceVersionForm2(request.POST, request.FILES,instance=pceversion)
+        print(form)
         if form.is_valid():
             modules=''
             for u in request.POST:
@@ -2946,7 +2949,8 @@ def pceversion_edit_step2(request, country, id=None ):
             
             return redirect("pceversion-edit-3", country=user_country_slug, id=pceversion.id)
         else:
-             return render_to_response('pce/pceversion_edit_step2.html', {'form': form,'pceversion':pceversion,'can_edit':can_edit,'can_see':can_see,'version_number':version_number,'version_id':version_id},
+            
+            return render_to_response('pce/pceversion_edit_step2.html', {'form': form,'pceversion':pceversion,'can_edit':can_edit,'can_see':can_see,'version_number':version_number,'version_id':version_id},
              context_instance=RequestContext(request))
        
     else:
