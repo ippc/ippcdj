@@ -58,7 +58,7 @@
                     {%endif%} 
                 </div>
                 <div class="panel-body">
-                    <p class="alert alert-warning" {%if context == 'Pdf' %}style="background:#faf2cc;"{%endif%}>{% trans "Develop a profile of the country's economic and phytosanitary activity and to establish its relative importance in the nation's economy." %}</p>
+                    <p class="alert alert-warning" {%if context == 'Pdf' %}style="background:#faf2cc;"{%endif%}>{% trans "Develop a profile of the country's economic and phytosanitary activity to establish its relative importance in the nation's economy." %}</p>
                      {% if context == 'Edit' %}  
                         <form class="customform" method="POST" action="" enctype="multipart/form-data">
                         {% csrf_token %}
@@ -283,7 +283,7 @@
                                         <tr>
                                         <td>
                                            <div class="control-group">
-                                           <label id="id_m_8">{% trans "8. List 10 major Imports of plant and plant products." %}</label>
+                                           <label id="id_m_8">{% trans "8. List 10 major imports of plant and plant products." %}</label>
                                            <div class="controls">
                                             {{ form8.management_form }}
                                             {{ form8.non_form_errors }}
@@ -411,7 +411,7 @@
                                     <tr>
                                         <td>
                                            <div class="control-group">
-                                           <label id="id_m_20">{% trans "20. List up to 10 major trading partners in Plants and Plant Products : Imports" %}</label>
+                                           <label id="id_m_20">{% trans "20. List up to 10 major trading partners in plants and plant products: Imports" %}</label>
                                                <div class="controls">
                                             {{ form20.management_form }}
                                             {{ form20.non_form_errors }}
@@ -453,7 +453,7 @@
                                      <tr>
                                         <td>
                                            <div class="control-group">
-                                           <label id="id_m_21">{% trans "21. List up to 10 major trading partners in Plants and Plant Products : Exports" %}</label>
+                                           <label id="id_m_21">{% trans "21. List up to 10 major trading partners in plants and plant products: Exports" %}</label>
                                            <div class="controls">
                                             {{ form21.management_form }}
                                             {{ form21.non_form_errors }}

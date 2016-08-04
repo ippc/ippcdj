@@ -92,7 +92,7 @@ function checkRules()
                     {%endif%} 
                 </div>
                 <div class="panel-body">
-                    <p class="alert alert-warning" {%if context == 'Pdf' %}style="background:#faf2cc;"{%endif%}>{% trans "Guiding questions for a phytosanitary capacity needs assessment on phytosanitary legislation keep the following questions in mind while working through this module:<br>1. What is the existing legal and regulatory framework for phytosanitary activities in the country?<br>2. What benefits should an improved legal and regulatory framework for phytosanitary activities provide in the medium term?<br>3. What are the major gaps in the current national framework of Phytosanitary Law/Act, regulations and standards?<br>4. What are the requirements to create coherent and up-to-date phytosanitary legislation that protects plant health and support international safe trade of plants, plant products and other regulated articles? See the document <a href='http://www.fao.org/fileadmin/user_upload/legal/docs/lpo63.pdf'>FAO Legal Paper 63 (2007)</a> on line by Jessica Vapnek and Danielle Manzella" %}</p>
+                    <p class="alert alert-warning" {%if context == 'Pdf' %}style="background:#faf2cc;"{%endif%}>{% trans "Guiding questions for a phytosanitary capacity needs assessment on phytosanitary legislation.<br>Keep the following questions in mind while working through this module:<br>1. What is the existing legal and regulatory framework for phytosanitary activities in the country?<br>2. What benefits should an improved legal and regulatory framework for phytosanitary activities provide in the medium term?<br>3. What are the major gaps in the current national framework of Phytosanitary Law/Act, regulations and standards?<br>4. What are the requirements to create coherent and up-to-date phytosanitary legislation that protects plant health and support international safe trade of plants, plant products and other regulated articles? See the document <a href='http://www.fao.org/fileadmin/user_upload/legal/docs/lpo63.pdf'>FAO Legal Paper 63 (2007)</a> on line by Jessica Vapnek and Danielle Manzella" %}</p>
                     {% if context == 'Edit' %}  
                         <form class="customform" method="POST" action="" enctype="multipart/form-data">
                         {% csrf_token %}
@@ -412,7 +412,7 @@ function checkRules()
                                     </tr>
                                     {% elif f.name == 'm_76' %} 
                                     <tr class="success">
-                                        <td colspan="2"><b>{% trans "14. E.4 Passenger, mail, aircraft, ships" %}</b></td>
+                                        <td colspan="2"><b>{% trans "14. E.4 Passengers, mail, aircraft, ships" %}</b></td>
                                     </tr> {% elif f.name == 'm_79' %} 
                                     <tr class="success">
                                         <td colspan="2"><b>{% trans "15. F. Exports" %}</b></td>
