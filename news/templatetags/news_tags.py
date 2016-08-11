@@ -28,6 +28,30 @@ def news_months(*args):
         month_dicts[i]["post_count"] = date_dicts.count(date_dict)
     return month_dicts
 
+@register.as_tag
+def news_months_for_category(category=None):
+    """
+    Put a list of dates for news posts into the template context for each category.
+    """
+    title_or_slug = lambda s: Q(title=s) | Q(slug=s)
+    
+    dates = NewsPost.objects.published().values_list("publish_date", flat=True)
+    
+    if category is not None:
+        try:
+            category = NewsCategory.objects.get(title_or_slug(category))
+            dates = dates.filter(categories=category)
+        except NewsCategory.DoesNotExist:
+            return []
+    
+    date_dicts = [{"date": datetime(d.year, d.month, 1)} for d in dates]
+    month_dicts = []
+    for date_dict in date_dicts:
+        if date_dict not in month_dicts:
+            month_dicts.append(date_dict)
+    for i, date_dict in enumerate(month_dicts):
+        month_dicts[i]["post_count"] = date_dicts.count(date_dict)
+    return month_dicts
 
 @register.as_tag
 def news_categories(*args):
