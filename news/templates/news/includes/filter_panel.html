@@ -35,9 +35,9 @@
 {% endif %}
 {% endblock %}
 {% block news_months %}
-{% news_months as months %}
-{% if months %}
-<div class="panel">
+{# news_months as months #}
+{# if months #}
+<!--div class="panel">
   <h3>{% trans "Archive" %}</h3>
   {% for month in months %}
       {% ifchanged month.date.year %}
@@ -48,9 +48,29 @@
           >{{ month.date|date:"F" }}</a> ({{ month.post_count }})</li>
   {% endfor %}
   </ul>
+</div-->
+{# endif #}    
+         
+{% news_months_for_category category=category  as months_for_category  %}
+{% if months_for_category %}
+<div class="panel">
+  <h3>{% trans "Archives" %}</h3>
+  {% for month in months_for_category %}
+      {% ifchanged month.date.year %}
+          {% if not forloop.first %}</ul>{% endif %}
+          <h6>{{ month.date.year }}</h6><ul class="unstyled">
+      {% endifchanged %}
+      <li><a href="{% url "news_post_list_month" year=month.date.year month=month.date.month %}"
+          >{{ month.date|date:"F" }}</a> ({{ month.post_count }})</li>
+  {% endfor %}
+  </ul>
 </div>
 {% endif %}
+
+
+
 {% endblock %}
+
 
 
 {% block news_keywords %}
