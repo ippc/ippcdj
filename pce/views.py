@@ -289,8 +289,8 @@ def canEdit(sessionid,country,user,module):
            is_module_editable=1
     else:       
                is_module_editable=1
-    
-    if  chosen_mod and is_module_editable and (user.groups.filter(name='Admin') or (lower(slugify(user.get_profile().country))==lower(country)  and (user.groups.filter(name='PCE Manager/Validator') or (is_edin_session and is_in_group)))):
+    print('+++++++++'+str(lower(slugify(user.get_profile().country))==lower(slugify(country))))
+    if  chosen_mod and is_module_editable and (user.groups.filter(name='Admin') or (lower(slugify(user.get_profile().country))==lower(slugify(country))  and (user.groups.filter(name='PCE Manager/Validator') or (is_edin_session and is_in_group)))):
         can_edit=1
         
     return can_edit
@@ -306,7 +306,10 @@ def canSee(sessionid,country,user,module):
         session = get_object_or_404(PceVersion, id=sessionid)
     else:
         chosen_mod=1 
-        
+    print('-------------paola--------------')
+   
+    
+    
     if session!=None:
         if user.email == session.email_facilitator:
             is_fain_session=1
@@ -362,7 +365,7 @@ def canSee(sessionid,country,user,module):
     print(is_in_group)
     print(is_edin_session)
     
-    if  chosen_mod and (user.groups.filter(name='Admin') or (lower(slugify(user.get_profile().country))==lower(country)  and (user.groups.filter(name='PCE Manager/Validator')or ((user.groups.filter(name='PCE Facilitator') and is_fain_session) or (is_in_group and is_edin_session) )))):
+    if  chosen_mod and (user.groups.filter(name='Admin') or (lower(slugify(user.get_profile().country))==lower(slugify(country))  and (user.groups.filter(name='PCE Manager/Validator') or ((user.groups.filter(name='PCE Facilitator') and is_fain_session) or (is_in_group and is_edin_session) )))):
         can_see=1
       
     return can_see
@@ -9069,6 +9072,8 @@ def stakeholders_create(request, country,sessionid=None,module=None):
     country=user.get_profile().country
     user_country_slug = lower(slugify(country))
     pceversion = get_object_or_404(PceVersion,  pk=sessionid)
+    print("-------------ppppp-------------------------------")
+    print(pceversion)
     
     percentage_module=get_percentage_module_filled(int(module),sessionid)
   
@@ -9078,13 +9083,19 @@ def stakeholders_create(request, country,sessionid=None,module=None):
     is_lf_filled=(  is_logicalframework_filled(sessionid,module)>0)
 
     stakeholders_count = Stakeholders.objects.filter(session=sessionid,module=module).count()
+    print('sessionid'+str(sessionid))
+    print('module1'+str(module))
+    
 
     can_edit=0
     if stakeholders_count>0:
         can_edit=0
+        print('qui')
     else: 
+        print('qui 1')
         if pceversion.status==1 and canEdit(sessionid,pceversion.country,user,str(module)):
             can_edit=1
+            print('qui 1 edit')
             
     if request.method == "POST":
         form = StakeholdersForm(request.POST, request.FILES)
