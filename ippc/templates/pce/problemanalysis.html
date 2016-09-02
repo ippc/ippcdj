@@ -48,7 +48,7 @@
                     <h3 class="panel-title"> {% trans "Problem Analysis - Module" %} {{module}}
                     {% if context == 'View' and can_edit  and id != ''%}  
                         <span  class="pull-right">  
-                            <a  class="btn btn-info" href="/{{ LANGUAGE_CODE }}/pce/{{ user.get_profile.country.name|slugify }}/{{sessionid}}/{{module}}/problemanalysis/edit/{{pa_id}}">Edit table</a>
+                            <a  class="btn btn-info" href="/{{ LANGUAGE_CODE }}/pce/{{ user.get_profile.country.name|slugify }}/{{sessionid}}/{{module}}/problemanalysis/edit/{{pa_id}}">{% trans "Edit table" %}</a>
                         </span>
                     {% endif %}    
                    </h3>
