@@ -304,7 +304,7 @@ function checkRules()
                                             <div class="panel panel-default">
                                                 <div class="panel-body">
                                                     {% for ff in form %}
-                                                    {%if not ff.label == 'Module4' and not ff.label == 'Delete' and not ff.label == 'Id'%}
+                                                    {%if not ff.label == 'Module4' and not ff.label == 'Delete'  and not ff.label == 'Supprimer' and not ff.label == 'Id'%}
                                                          {{ff.label}}     {% if context == 'Edit' %}
                                                             {{ff}} 
                                                         {% else %} 

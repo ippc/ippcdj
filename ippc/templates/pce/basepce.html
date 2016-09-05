@@ -216,11 +216,11 @@
                     <div class="nav-collapse collapse">
                         <ul class="nav nav-collapse pull-left" style="clear:both;">
                             <li class="dropdown">
-                                <a href="/{{ LANGUAGE_CODE }}//pce">{% trans "About PCE" %}</a>
+                                <a href="/{{ LANGUAGE_CODE }}/pce">{% trans "About PCE" %}</a>
                             </li>
                             {% if request.user.is_authenticated %}
                                 <li class="dropdown">
-                                    <a href="/{{ LANGUAGE_CODE }}//pce/{{ user.get_profile.country.name|slugify}}/sessions">{% trans "PCE Home" %}</a>
+                                    <a href="/{{ LANGUAGE_CODE }}/pce/{{ user.get_profile.country.name|slugify}}/sessions">{% trans "PCE Home" %}</a>
                                 </li>     
 
                             {% endif%}
