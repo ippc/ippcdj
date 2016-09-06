@@ -69,6 +69,7 @@ from mezzanine.generic import views as myview
 from mezzanine.generic import models
 from t_eppo.models import Names
 from easy_pdf.views import PDFTemplateView
+from django.utils.translation import ugettext
 
 import os
 import shutil
@@ -2103,6 +2104,8 @@ def get_percentage_module_filled(num_mod,version):
                     i=i+1
             if module.m_21!='':
                     i=i+1
+                    
+                    
             if Module13Grid22.objects.filter(module13=module.id).count()>0:
                 m13g22=Module13Grid22.objects.filter(module13=module.id)[0]
                 if (m13g22.c1== True or m13g22.c1== False) and (m13g22.c2== True or m13g22.c2== False) and (m13g22.c3== True or m13g22.c3== False):
@@ -2125,6 +2128,8 @@ def get_percentage_module_filled(num_mod,version):
                     i=i+1  
             if module.m_30==True or module.m_30==False:
                     i=i+1
+  
+          
             if Module13Grid31.objects.filter(module13=module.id).count()>0:
                 m13g31=Module13Grid31.objects.filter(module13=module.id)[0]
                 if (m13g31.c1== True or m13g31.c1== False) and (m13g31.c2== True or m13g31.c2== False) and (m13g31.c3== True or m13g31.c3== False) and (m13g31.c4== True or m13g31.c4== False) and (m13g31.c5== True or m13g31.c5== False):
@@ -2147,7 +2152,7 @@ def get_percentage_module_filled(num_mod,version):
                     i=i+1
             if module.m_40==True or module.m_40==False:
                     i=i+1
-            if module.m_41!='':
+            if module.m_41==True or module.m_41==False:
                     i=i+1
             if module.m_42>0:
                     i=i+1
@@ -2195,11 +2200,12 @@ def get_percentage_module_filled(num_mod,version):
                     i=i+1
             if module.m_64!='':
                     i=i+1
+            if module.m_65>0:
+                    i=i+1
             if Module13Weaknesses.objects.filter(module13=module.id).count()>0:
                 i=i+1
                                             
                 
-   
         percent=(i*100/tot_num_fields)
           
     return percent
@@ -10149,76 +10155,139 @@ def generate_report(request, country,sessionid=None):
             
          
             VAL_IMP = (
-                (0, ("--- Please select ---")),
-                (1, ("Not known")),
-                (2, ("0 to $100,000")),
-                (3, ("$100,000 to $500,000")),
-                (4, ("$500,000 to $1M")),
-                (5, ("$1M to $10M")),
-                (6, ("$10M to $25M")),
-                (7, ("$25M to $50M")),
-                (8, ("$50M to $100M")),
-                (9, ("Greater than $100M ")),
+                (0, _("--- Please select ---")),
+                (1, _("Not known")),
+                (2, _("0 to $100,000")),
+                (3, _("$100,000 to $500,000")),
+                (4, _("$500,000 to $1M")),
+                (5, _("$1M to $10M")),
+                (6, _("$10M to $25M")),
+                (7, _("$25M to $50M")),
+                (8, _("$50M to $100M")),
+                (9, _("Greater than $100M ")),
             )
 
             VAL_EXP = (
-                (0, ("--- Please select ---")),
-                (1, ("Unknown")),
-                (2, ("0 to $100,000")),
-                (3, ("$100,000 to $500,000")),
-                (4, ("$500,000 to $1M")),
-                (5, ("$1M to $10M")),
-                (6, ("$10M to $50M")),
-                (7, ("$25M to $50M")),
-                (8, ("greater than $50M")),
+                (0, _("--- Please select ---")),
+                (1, _("Unknown")),
+                (2, _("0 to $100,000")),
+                (3, _("$100,000 to $500,000")),
+                (4, _("$500,000 to $1M")),
+                (5, _("$1M to $10M")),
+                (6, _("$10M to $50M")),
+                (7, _("$25M to $50M")),
+                (8, _("greater than $50M")),
             )
 
       
             VAL_PERCENT = (
-                (0, ("--- Please select ---")),
-                (1, ("0")),
-                (2, ("10")),
-                (3, ("20")),
-                (4, ("30")),
-                (5, ("40")),
-                (6, ("50")),
-                (7, ("60")),
-                (8, ("70")),
-                (9, ("80")),
-                (10, ("90")),
-                (11, ("100")),
+                (0, _("--- Please select ---")),
+                (1, _("0")),
+                (2, _("10")),
+                (3, _("20")),
+                (4, _("30")),
+                (5, _("40")),
+                (6, _("50")),
+                (7, _("60")),
+                (8, _("70")),
+                (9, _("80")),
+                (10, _("90")),
+                (11, _("100")),
             )
 
             NUM_BILATERAL = (
-                (0, ("--- Please select ---")),
-                (1, ("1-3")),
-                (2, ("4-6")),
-                (3, ("7-10")),
-                (4, ("greater than 10")),
+                (0, _("--- Please select ---")),
+                (1, _("1-3")),
+                (2, _("4-6")),
+                (3, _("7-10")),
+                (4, _("greater than 10")),
             )  
             #  ---- Cover Letter ----
-            document.add_heading('Phytosanitary Capacity Evaluation (PCE) - REPORT', 0)
+            document.add_heading(_("Phytosanitary Capacity Evaluation (PCE) - REPORT"), 0)
             document.add_paragraph()
             document.add_paragraph()
             document.add_paragraph()
             document.add_paragraph()
             p= document.add_paragraph("")
-            p.add_run('1. Introduction:').bold = True
+            p.add_run(_("1. Introduction:")).bold = True
            
             REGIONS_LABELS = (
-            (1, ("Africa")),
-            (2, ("Asia")),
-            (3, ("Europe")),
-            (4, ("Latin America and Caribbean")),
-            (5, ("Near East")),
-            (6, ("North America")),
-            (7, ("South West Pacific")),
+            (1, _("Africa")),
+            (2, _("Asia")),
+            (3, _("Europe")),
+            (4, _("Latin America and Caribbean")),
+            (5, _("Near East")),
+            (6, _("North America")),
+            (7, _("South West Pacific")),
             )
             document.add_paragraph()
+            
             countryname=str(user.get_profile().country)
-            regionname=str(dict(REGIONS_LABELS)[module1.region])
+            regionname=str(ugettext(dict(REGIONS_LABELS)[module1.region]))
+            str_m_3=str(ugettext(module1.m_3))
+            str_m_4=str(ugettext(module1.m_4))
+            str_m_5=str(ugettext(module1.m_5))
+            str_m_6=str(ugettext(module1.m_6))
+            str_m1m7=str(ugettext(m1m7))
+            str_m1m8=str(ugettext(m1m8))
+            str_m_9=ugettext(dict(VAL_IMP)[module1.m_9])
+            str_m1m20=str(ugettext(m1m20))
+            str_m1m11=str(ugettext(m1m11))
+            str_m_12=ugettext(dict(VAL_EXP)[module1.m_12])
+            str_m1m21=str(ugettext(m1m21))
+            str_m_13=ugettext(dict(VAL_PERCENT)[module1.m_13])
+            str_m_14=str(ugettext(module1.m_14))
+            str_m_15=str(ugettext(module1.m_15))
+            str_m_16=ugettext(dict(VAL_PERCENT)[module1.m_16])
+            str_m_17=ugettext(dict(VAL_PERCENT)[module1.m_17])
+            str_m_18=ugettext(dict(VAL_PERCENT)[module1.m_18])
+            str_m_19=ugettext(dict(VAL_PERCENT)[module1.m_19])
+            str_m1m22=str(ugettext(m1m22))
+            str_m1m23=str(ugettext(m1m23))
+            str_m_24=ugettext(dict(NUM_BILATERAL)[module1.m_24])
+            str_m_25=ugettext(dict(NUM_BILATERAL)[module1.m_25])
+            str_m1m26=str(m1m26)
+
+
+            str_1=_(" is a country situated in ")+""
+            str_2 =_(".  It has population of about ")+""
+            str_3 =_(". Total land area is ")+""
+            str_4 =_(" sq.km. with a total arable land area of ")+""
+            str_5 =_(" sq.km. Total natural vegetation occupies ")+""
+            str_6 =_(" sq.km.\n\nThe major crops grown in the country are: ")+""
+            str_7 =_(".\n\nTen major imports of plant and plant products are: ")+""
+            str_8 =_(". Total value of imports of plant and plant products (including forestry products) amounted to ")+""
+            #str_9 =_(" in ")+""
+            str_9 =""
+            str_10 =_("'s  major trading partners in plants and plant products imports are ")+""
+            str_11 =_(".\n\nTen major exports of plant and plant products are: ")+""
+            str_12 =_(". Total value of exports of plant and plant products (including forestry products) amounted to ")+""
+            #str_13 =_(" in ")+""
+            str_13 =""
+            str_14 =_("'s major trading partners in plants and plant products exports are ")+""
+            str_15 =_(". ")+""
+            str_16 =_(" % of total exports (includes Forestry) are re-export consignments.\n\nThe Gross National Income (GNI) per capita is estimated at ")+""
+            str_17 =_(" US $; latest GDP in US $ (World Bank) is ")+""
+            str_18 =_(". Percentage contribution of agriculture (including forestry) to GDP is about ")+""
+            str_19 =_(" %; with about ")+""
+            str_20 =_(" % for plants and plant products (including forestry). The agricultural labour force (including forestry) as a percentage of total labour force is ")+""
+            str_21 =_(" %. ")+""
+            str_22 =_(" % of the agricultural labour force is directly employed in the production of plant and plant products (including forestry).\n\n")+""
+            str_23 =_("  has membership of or is signatory to, the following organizations/ conventions: ")+""
+            str_24 =_(". It is a member of the following Regional economic integration/ co-operation organizations: ")+""
+            str_25 =_(". Currently there are ")+""
+            str_26 =_(" bilateral phytosanitary arrangements in operation and ")+""
+            str_27 =_("  more negotiations are in progress.\n\nDuring the last few years, major aid programs that have significantly contributed to phytosanitary capacity development or strengthening in the country include : ")+""
+
+
            
-            p=document.add_paragraph(""+countryname+" is a country situated in "+regionname+".  It has population of about "+str(module1.m_3)+". Total land area is "+str(module1.m_4)+" sq.km. with a total arable land area of "+str(module1.m_5)+" sq.km. Total natural vegetation occupies "+str(module1.m_6)+" sq.km.\n\nThe major crops grown in the country are: "+str(m1m7)+".\n\nTen major imports of plant and plant products are: "+str(m1m8)+". Total value of imports of plant and plant products (including forestry products) amounted to "+str(dict(VAL_IMP)[module1.m_9])+" in "+countryname+"'s  major trading partners in plants and plant products imports are "+str(m1m20)+".\n\nTen major exports of plant and plant products are: "+str(m1m11)+". Total value of exports of plant and plant products (including forestry products) amounted to "+str(dict(VAL_EXP)[module1.m_12])+" in "+countryname+"''s major trading partners in plants and plant products exports are "+str(m1m21)+". "+str(dict(VAL_PERCENT)[module1.m_13])+" % of total exports (includes Forestry) are re-export consignments.\n\nThe Gross National Income (GNI) per capita is estimated at "+str(module1.m_14)+" US $; latest GDP in US $ (World Bank) is "+str(module1.m_15)+". Percentage contribution of agriculture (including forestry) to GDP is about "+str(dict(VAL_PERCENT)[module1.m_16])+" %; with about "+str(dict(VAL_PERCENT)[module1.m_17])+" % for plants and plant products (including forestry). The agricultural labour force (including forestry) as a percentage of total labour force is "+str(dict(VAL_PERCENT)[module1.m_18])+" %. "+str(dict(VAL_PERCENT)[module1.m_19])+" % of the agricultural labour force is directly employed in the production of plant and plant products (including forestry).\n\n"+countryname+"  has membership of or is signatory to, the following organizations/ conventions: "+str(m1m22)+". It is a member of the following Regional economic integration/ co-operation organizations: "+str(m1m23)+". Currently there are "+str(dict(NUM_BILATERAL)[module1.m_24])+" bilateral phytosanitary arrangements in operation and "+str(dict(NUM_BILATERAL)[module1.m_25])+"  more negotiations are in progress.\n\nDuring the last few years, major aid programs that have significantly contributed to phytosanitary capacity development or strengthening in the country include : "+str(m1m26)+". ")
+            #p=document.add_paragraph(""+countryname+_(" is a country situated in ")+regionname+_(".  It has population of about ")+str(ugettext(module1.m_3))+_(". Total land area is ")+str(ugettext(module1.m_4))+_(" sq.km. with a total arable land area of ")+str(ugettext(module1.m_5))+_(" sq.km. Total natural vegetation occupies ")+str(ugettext(module1.m_6))+_(" sq.km.\n\nThe major crops grown in the country are: ")+str(ugettext(m1m7))+_(".\n\nTen major imports of plant and plant products are: ")+str(ugettext(m1m8))+_(". Total value of imports of plant and plant products (including forestry products) amounted to ")+str(ugettext(dict(VAL_IMP)[module1.m_9]))+_(" in ")+countryname+_("'s  major trading partners in plants and plant products imports are ")+str(ugettext(m1m20))+_(".\n\nTen major exports of plant and plant products are: ")+str(ugettext(m1m11))+_(". Total value of exports of plant and plant products (including forestry products) amounted to ")+str(ugettext(dict(VAL_EXP)[module1.m_12]))+_(" in ")+countryname+_("''s major trading partners in plants and plant products exports are ")+str(ugettext(m1m21))+_(". ")+str(ugettext(dict(VAL_PERCENT)[module1.m_13]))+_(" % of total exports (includes Forestry) are re-export consignments.\n\nThe Gross National Income (GNI) per capita is estimated at ")+str(ugettext(module1.m_14))+_(" US $; latest GDP in US $ (World Bank) is ")+str(ugettext(module1.m_15))+_(". Percentage contribution of agriculture (including forestry) to GDP is about ")+str(ugettext(dict(VAL_PERCENT)[module1.m_16]))+_(" %; with about ")+str(ugettext(dict(VAL_PERCENT)[module1.m_17]))+_(" % for plants and plant products (including forestry). The agricultural labour force (including forestry) as a percentage of total labour force is ")+str(ugettext(dict(VAL_PERCENT)[module1.m_18]))+_(" %. ")+str(ugettext(dict(VAL_PERCENT)[module1.m_19]))+_(" % of the agricultural labour force is directly employed in the production of plant and plant products (including forestry).\n\n")+countryname+_("  has membership of or is signatory to, the following organizations/ conventions: ")+str(ugettext(m1m22))+_(". It is a member of the following Regional economic integration/ co-operation organizations: ")+str(ugettext(m1m23))+_(". Currently there are ")+str(ugettext(dict(NUM_BILATERAL)[module1.m_24]))+_(" bilateral phytosanitary arrangements in operation and ")+str(ugettext(dict(NUM_BILATERAL)[module1.m_25]))+_("  more negotiations are in progress.\n\nDuring the last few years, major aid programs that have significantly contributed to phytosanitary capacity development or strengthening in the country include : ")+str(ugettext(m1m26))+". ")
+           
+             
+             
+            #p=document.add_paragraph(""+countryname+str(_(" is a country situated in "))+regionname+_(".  It has population of about ")+str_m_3+_(". Total land area is ")+str_m_4+_(" sq.km. with a total arable land area of ")+str_m_5+_(" sq.km. Total natural vegetation occupies ")+str_m_6+_(" sq.km.\n\nThe major crops grown in the country are: ")+str_m1m7+_(".\n\nTen major imports of plant and plant products are: ")+str_m1m8+_(". Total value of imports of plant and plant products (including forestry products) amounted to ")+str_m_9+_(" in ")+countryname+_("'s  major trading partners in plants and plant products imports are ")+str_m1m20+_(".\n\nTen major exports of plant and plant products are: ")+str_m1m11+_(". Total value of exports of plant and plant products (including forestry products) amounted to ")+str_m_12+_(" in ")+countryname+_("''s major trading partners in plants and plant products exports are ")+str_m1m21+_(". ")+str_m_13+_(" % of total exports (includes Forestry) are re-export consignments.\n\nThe Gross National Income (GNI) per capita is estimated at ")+str_m_14+_(" US $; latest GDP in US $ (World Bank) is ")+str_m_15+_(". Percentage contribution of agriculture (including forestry) to GDP is about ")+str_m_16+_(" %; with about ")+str_m_17+_(" % for plants and plant products (including forestry). The agricultural labour force (including forestry) as a percentage of total labour force is ")+str_m_18+_(" %. ")+str_m_19+_(" % of the agricultural labour force is directly employed in the production of plant and plant products (including forestry).\n\n")+countryname+_("  has membership of or is signatory to, the following organizations/ conventions: ")+str_m1m22+_(". It is a member of the following Regional economic integration/ co-operation organizations: ")+str_m1m23+_(". Currently there are ")+str_m_24+_(" bilateral phytosanitary arrangements in operation and ")+str_m_25+_("  more negotiations are in progress.\n\nDuring the last few years, major aid programs that have significantly contributed to phytosanitary capacity development or strengthening in the country include : ")+str_m1m26)
+            p=document.add_paragraph(countryname+str_1+regionname+str_2+str_m_3+str_3+str_m_4+str_4+str_m_5+str_5+str_m_6+str_6+str_m1m7+str_7+str_m1m8+str_8+str_m_9+str_9+countryname+str_10+str_m1m20+str_11+str_m1m11+str_12+str_m_12+str_13+countryname+str_14+str_m1m21+str_15+str_m_13+str_16+str_m_14+str_17+str_m_15+str_18+str_m_16+str_19+str_m_17+str_20+str_m_18+str_21+str_m_19+str_22+countryname+str_23+str_m1m22+str_24+str_m1m23+str_25+str_m_24+str_26+str_m_25+str_27+str_m1m26)
+            document.add_paragraph()
             document.add_paragraph()
             document.add_paragraph()
             document.add_paragraph()
@@ -10228,142 +10297,142 @@ def generate_report(request, country,sessionid=None):
 #
 #
             p=document.add_paragraph("")
-            p.add_run('2. Summary of Findings/Recommendations:').bold = True
+            p.add_run(_("2. Summary of Findings/Recommendations:")).bold = True
             
             p=document.add_paragraph("")
-            p.add_run('2.1. Key issues or points identified:.').bold = True
+            p.add_run(_("2.1. Key issues or points identified:.")).bold = True
             table = document.add_table(rows=1, cols=1)
             table.style = document.styles['Table Grid']
             
             document.add_paragraph()
             p=document.add_paragraph("")
-            p.add_run('2.2. Identified Weakness:').bold = True
+            p.add_run(_("2.2. Identified Weakness:")).bold = True
             
             if '2' in items or '3' in items:
                 p=document.add_paragraph("")
-                p.add_run('Legislation and policy:').bold = True
+                p.add_run(_("Legislation and policy:")).bold = True
                 document.add_paragraph()
                 table = document.add_table(rows=1, cols=2)
                 table.style = document.styles['Table Grid']
                 hdr_cells = table.rows[0].cells
-                hdr_cells[0].text = 'Module'
-                hdr_cells[1].text = 'Weakness/Priority (highest priority 1)'
+                hdr_cells[0].text = _("Module")
+                hdr_cells[1].text = _("Weakness/Priority (highest priority 1)")
                 
             for h in range(2,4):
                 i=str(h)
                 
                 if i == '2':
                     row_cells = table.add_row().cells
-                    row_cells[0].text = str('Module 2 -' + m_names[2])
+                    row_cells[0].text = _("Module")+' 2 -' + ugettext(m_names[2])
                     row_cells[1].text = str( '1. '+w2.w1+'\n'+'2. '+w2.w2+'\n'+'3. '+w2.w3+'\n'+'4. '+w2.w4+'\n'+'5. '+w2.w5)
                 if i == '3':
                     row_cells = table.add_row().cells
-                    row_cells[0].text = str('Module 3 -' + m_names[3])
+                    row_cells[0].text = _("Module")+' 3 -' + ugettext(m_names[3])
                     row_cells[1].text = str( '1. '+w3.w1+'\n'+'2. '+w3.w2+'\n'+'3. '+w3.w3+'\n'+'4. '+w3.w4+'\n'+'5. '+w3.w5)
 #
             if '4' in items or '5' in items or '6' in items:
                 document.add_paragraph()
                 p=document.add_paragraph("")
-                p.add_run('NPPO operations:').bold = True
+                p.add_run(_("NPPO operations:")).bold = True
                 document.add_paragraph()
                 table = document.add_table(rows=1, cols=2)
                 table.style = document.styles['Table Grid']
                 hdr_cells = table.rows[0].cells
-                hdr_cells[0].text = 'Module'
-                hdr_cells[1].text = 'Weakness/Priority (highest priority 1)'
+                hdr_cells[0].text = _("Module")
+                hdr_cells[1].text = _("Weakness/Priority (highest priority 1)")
                 
             for h in range(4,7):
                 i=str(h)
                 if  i == '4':
                     row_cells = table.add_row().cells
-                    row_cells[0].text = str( 'Module 4 -' +m_names[4])
+                    row_cells[0].text = _("Module")+' 4 -' +ugettext(m_names[4])
                     row_cells[1].text = str( '1. '+w4.w1+'\n'+'2. '+w4.w2+'\n'+'3. '+w4.w3+'\n'+'4. '+w4.w4+'\n'+'5. '+w4.w5)
                 if i == '5' :
                     row_cells = table.add_row().cells
-                    row_cells[0].text = str('Module 5 -' + m_names[5])
+                    row_cells[0].text = _("Module")+' 5 -' + ugettext(m_names[5])
                     row_cells[1].text = str( '1. '+w5.w1+'\n'+'2. '+w5.w2+'\n'+'3. '+w5.w3+'\n'+'4. '+w5.w4+'\n'+'5. '+w5.w5)
                 if  i == '6' :
                     row_cells = table.add_row().cells
-                    row_cells[0].text = str('Module 6 -' + m_names[6])
+                    row_cells[0].text = _("Module")+' 6 -' + ugettext(m_names[6])
                     row_cells[1].text = str( '1. '+w6.w1+'\n'+'2. '+w6.w2+'\n'+'3. '+w6.w3+'\n'+'4. '+w6.w4+'\n'+'5. '+w6.w5)
        
            
             if '7' in items or '8' in items or '9' in items or '10' in items or '11' in items or '12' in items or '13' in items:
                 document.add_paragraph()
                 p=document.add_paragraph("")
-                p.add_run('Technical:').bold = True
+                p.add_run(_("Technical:")).bold = True
                 document.add_paragraph()
                 table = document.add_table(rows=1, cols=2)
                 table.style = document.styles['Table Grid']
                 hdr_cells = table.rows[0].cells
-                hdr_cells[0].text = 'Module'
-                hdr_cells[1].text = 'Weakness/Priority (highest priority 1)'
+                hdr_cells[0].text = _("Module")
+                hdr_cells[1].text = _("Weakness/Priority (highest priority 1)")
                 
             for h in range(7,14):
                 i=str(h)
                 if i == '7':
                     row_cells = table.add_row().cells
-                    row_cells[0].text = str( 'Module 7 -' +m_names[7])
+                    row_cells[0].text = _("Module")+' 7 -' +ugettext(m_names[7])
                     row_cells[1].text = str( '1. '+w7.w1+'\n'+'2. '+w7.w2+'\n'+'3. '+w7.w3+'\n'+'4. '+w7.w4+'\n'+'5. '+w7.w5)
                 if i == '8':
                     row_cells = table.add_row().cells
-                    row_cells[0].text = str( 'Module 8 -' +m_names[8])
+                    row_cells[0].text = _("Module")+' 8 -' +ugettext(m_names[8])
                     row_cells[1].text = str( '1. '+w8.w1+'\n'+'2. '+w8.w2+'\n'+'3. '+w8.w3+'\n'+'4. '+w8.w4+'\n'+'5. '+w8.w5)
                 if i == '9':
                     row_cells = table.add_row().cells
-                    row_cells[0].text = str('Module 9 -' + m_names[9])
+                    row_cells[0].text = _("Module")+' 9 -' + ugettext(m_names[9])
                     row_cells[1].text = str( '1. '+w9.w1+'\n'+'2. '+w9.w2+'\n'+'3. '+w9.w3+'\n'+'4. '+w9.w4+'\n'+'5. '+w9.w5)
                 if i == '10':
                     row_cells = table.add_row().cells
-                    row_cells[0].text = str( 'Module 10 -' +m_names[10])
+                    row_cells[0].text = _("Module")+' 10 -' +ugettext(m_names[10])
                     row_cells[1].text = str( '1. '+w10.w1+'\n'+'2. '+w10.w2+'\n'+'3. '+w10.w3+'\n'+'4. '+w10.w4+'\n'+'5. '+w10.w5)
                 if i == '11':
                     row_cells = table.add_row().cells
-                    row_cells[0].text = str( 'Module 11 -' +m_names[11])
+                    row_cells[0].text = _("Module")+' 11 -' +ugettext(m_names[11])
                     row_cells[1].text = str( '1. '+w11.w1+'\n'+'2. '+w11.w2+'\n'+'3. '+w11.w3+'\n'+'4. '+w11.w4+'\n'+'5. '+w11.w5)
                 if i == '12':
                     row_cells = table.add_row().cells
-                    row_cells[0].text = str( 'Module 12 -' +m_names[12])
+                    row_cells[0].text = _("Module")+' 12 -' +ugettext(m_names[12])
                     row_cells[1].text = str( '1. '+w12.w1+'\n'+'2. '+w12.w2+'\n'+'3. '+w12.w3+'\n'+'4. '+w12.w4+'\n'+'5. '+w12.w5)
                 if i == '13':
                     row_cells = table.add_row().cells
-                    row_cells[0].text = str( 'Module 13 -' +m_names[13])
+                    row_cells[0].text = _("Module")+' 13 -' +ugettext(m_names[13])
                     row_cells[1].text = str( '1. '+w13.w1+'\n'+'2. '+w13.w2+'\n'+'3. '+w13.w3+'\n'+'4. '+w13.w4+'\n'+'5. '+w13.w5)
                
         
             document.add_paragraph()
             p=document.add_paragraph("")
-            p.add_run('3. Methodology:').bold = True
+            p.add_run(_("3. Methodology:")).bold = True
             table = document.add_table(rows=1, cols=1)
             table.style = document.styles['Table Grid']
             
             document.add_paragraph()
-            p=document.add_paragraph("Information on the stakeholders involved in the PCE application is available in the Annex 2. ")
+            p=document.add_paragraph(_("Information on the stakeholders involved in the PCE application is available in the Annex 2. "))
             
             document.add_paragraph()
             p=document.add_paragraph("")
-            p.add_run('4. Findings:').bold = True
+            p.add_run(_("4. Findings:")).bold = True
             document.add_paragraph()
             p=document.add_paragraph("")
-            p.add_run('4.1 Introduction:').bold = True
+            p.add_run(_("4.1 Introduction:")).bold = True
             document.add_paragraph()
-            document.add_paragraph("The 'New Revised Text' (IPPC, 1997) sets out clear obligations for the NPPO to address plant protection issues and/or broaden its scope of operations and establish systems to address IPPC requirements and responsibilities.\n\nThe objectives of an NPPO within the context of national development plans may be translated into three broad areas of responsibility:\n\t\t- to protect plant resources (including cultivated, wild and aquatic plants)  through implementation of appropriate phytosanitary measures\n\t\t- to support national food security and a healthy environment through effective pest exclusion procedures\n\t\t- to facilitate market access and safe international trade in agricultural commodities by establishing effective phytosanitary certification systems and procedures.\n\nTo fulfil all of these objectives an NPPO needs sustainable financing, planning for long-term staffing arrangements, having contingency plans in place for changes in political contexts and planning for natural disasters, among other areas, to ensure the organization remains sustainable and adaptable over the long term. At the same time, a well-organized, fully functional an NPPO should have appropriate national, regional and international networks.")
+            document.add_paragraph(_("The 'New Revised Text' (IPPC, 1997) sets out clear obligations for the NPPO to address plant protection issues and/or broaden its scope of operations and establish systems to address IPPC requirements and responsibilities.\n\nThe objectives of an NPPO within the context of national development plans may be translated into three broad areas of responsibility:\n\t\t- to protect plant resources (including cultivated, wild and aquatic plants)  through implementation of appropriate phytosanitary measures\n\t\t- to support national food security and a healthy environment through effective pest exclusion procedures\n\t\t- to facilitate market access and safe international trade in agricultural commodities by establishing effective phytosanitary certification systems and procedures.\n\nTo fulfil all of these objectives an NPPO needs sustainable financing, planning for long-term staffing arrangements, having contingency plans in place for changes in political contexts and planning for natural disasters, among other areas, to ensure the organization remains sustainable and adaptable over the long term. At the same time, a well-organized, fully functional an NPPO should have appropriate national, regional and international networks."))
             document.add_paragraph()
             p=document.add_paragraph("")
-            p.add_run('4.2 Causes hindering improvement of the NPPO').bold = True
+            p.add_run(_("4.2 Causes hindering improvement of the NPPO")).bold = True
          
-            document.add_paragraph("There are several causes which are hindering the normal activity and improvement of the NPPO which can be separated into primary and secondary ones.\n\nThe principal primary causes are:\n\n\n\nThe secondary ones are : \n\n\n\n")
+            document.add_paragraph(_("There are several causes which are hindering the normal activity and improvement of the NPPO which can be separated into primary and secondary ones.\n\nThe principal primary causes are:\n\n\n\nThe secondary ones are : \n\n\n\n"))
             document.add_paragraph()
             p=document.add_paragraph("")
-            p.add_run('4.3 Impacts:').bold = True
+            p.add_run(_("4.3 Impacts:")).bold = True
          
-            document.add_paragraph("The factors mentioned above generate some undesirable consequences for the NPPO, which are also classified into primary and secondary ones.\n\nPrimary consequences are :\n\n\n\n\nSecondary consequences are:\n\n\n\n\n")
+            document.add_paragraph(_("The factors mentioned above generate some undesirable consequences for the NPPO, which are also classified into primary and secondary ones.\n\nPrimary consequences are :\n\n\n\n\nSecondary consequences are:\n\n\n\n\n"))
             document.add_paragraph()
             document.add_paragraph()
             p=document.add_paragraph("")
-            p.add_run('4.4 SWOT Analysis :').bold = True
+            p.add_run(_("4.4 SWOT Analysis :")).bold = True
          
-            document.add_paragraph("SWOT (Strength, Weakness, Opportunities and Threats) -  under this section relevant internal strengths, as well as external opportunities and threats can be found. Opportunities and strength can enable the recovery of each of the weakness.")
+            document.add_paragraph(_("SWOT (Strength, Weakness, Opportunities and Threats) -  under this section relevant internal strengths, as well as external opportunities and threats can be found. Opportunities and strength can enable the recovery of each of the weakness."))
             document.add_paragraph()
             
             for i in range(1,14) :
@@ -10372,7 +10441,7 @@ def generate_report(request, country,sessionid=None):
                     table = document.add_table(rows=1, cols=2)
                     table.style = document.styles['Table Grid']
                     hdr_cells = table.rows[0].cells
-                    hdr_cells[0].text = 'Module '+str(i)+' - '+m_names[int(i)]
+                    hdr_cells[0].text = _("Module ")+str(i)+' - '+ugettext(m_names[int(i)])
                     
                     swotanalysis = SwotAnalysis.objects.filter(session_id=sessionid,module=int(i)).count()
                     if swotanalysis>0:
@@ -10488,36 +10557,36 @@ def generate_report(request, country,sessionid=None):
                         if int(i) == 13:
                             w=w13
                         row_cells = table.add_row().cells
-                        row_cells[0].text = str('Strength\n\n'+str(sa1_all_s)+'\n'+str(sa2_all_s)+'\n'+str(sa3_all_s)+'\n'+str(sa4_all_s)+'\n'+str(sa5_all_s))
-                        row_cells[1].text = str('Weakness\n\n1. '+w.w1+'\n'+'2. '+w.w2+'\n'+'3. '+w.w3+'\n'+'4. '+w.w4+'\n'+'5. '+w.w5)
+                        row_cells[0].text = _("Strength")+str('\n\n'+str(sa1_all_s)+'\n'+str(sa2_all_s)+'\n'+str(sa3_all_s)+'\n'+str(sa4_all_s)+'\n'+str(sa5_all_s))
+                        row_cells[1].text = _("Weakness")+str('\n\n1. '+w.w1+'\n'+'2. '+w.w2+'\n'+'3. '+w.w3+'\n'+'4. '+w.w4+'\n'+'5. '+w.w5)
                         row_cells = table.add_row().cells
-                        row_cells[0].text = str('Opportunities\n\n'+sa1_all_o+'\n'+sa2_all_o+'\n'+sa3_all_o+'\n'+sa4_all_o+'\n'+sa5_all_o)
-                        row_cells[1].text = str('Threats\n\n'+sa1_all_t+'\n'+sa2_all_t+'\n'+sa3_all_t+'\n'+sa4_all_t+'\n'+sa5_all_t)  
+                        row_cells[0].text = _("Opportunities")+str('\n\n'+sa1_all_o+'\n'+sa2_all_o+'\n'+sa3_all_o+'\n'+sa4_all_o+'\n'+sa5_all_o)
+                        row_cells[1].text = _("Threats")+str('\n\n'+sa1_all_t+'\n'+sa2_all_t+'\n'+sa3_all_t+'\n'+sa4_all_t+'\n'+sa5_all_t)  
 #
           
             document.add_page_break()
             document.add_paragraph()
             p=document.add_paragraph("")
-            p.add_run('5. Recommendations:').bold = True
+            p.add_run(_("5. Recommendations:")).bold = True
             document.add_paragraph()
             p=document.add_paragraph("")
-            p.add_run('5.1 Programme overview :').bold = True
-            document.add_paragraph("The programme overview table constitutes the development strategy for the NPPO during the .... year period 20...- 20...\nIt summarizes the following criteria:\n- Development focus area (i.e. the different modules)\n- Overall objective/Goal of the whole plan\n- Specific objective/purpose related to the overall objectives/goal for each module\n- Outputs expected to result from each activity\nAn estimate of the funds required to realize the activities of the programme is ....\n\nA log frame matrix and indicative work plan for each module can be seen in Annex 1")
+            p.add_run(_("5.1 Programme overview :")).bold = True
+            document.add_paragraph(_("The programme overview table constitutes the development strategy for the NPPO during the .... year period 20...- 20...\nIt summarizes the following criteria:\n- Development focus area (i.e. the different modules)\n- Overall objective/Goal of the whole plan\n- Specific objective/purpose related to the overall objectives/goal for each module\n- Outputs expected to result from each activity\nAn estimate of the funds required to realize the activities of the programme is ....\n\nA log frame matrix and indicative work plan for each module can be seen in Annex 1"))
             p=document.add_paragraph("")
-            p.add_run('Programme overview :').bold = True
+            p.add_run(_("Programme overview :")).bold = True
           
             table = document.add_table(rows=1, cols=5)
             table.style = document.styles['Table Grid']
             hdr_cells = table.rows[0].cells
-            hdr_cells[0].text ='Development Focus Area '
-            hdr_cells[1].text = 'Overall objectives/Goal'
-            hdr_cells[2].text = 'Specific objectives/Purpose'
-            hdr_cells[3].text = 'Outputs'
-            hdr_cells[4].text = 'Indicative Cost USD'
+            hdr_cells[0].text =_("Development Focus Area")
+            hdr_cells[1].text = _("Overall objectives/Goal")
+            hdr_cells[2].text = _("Specific objectives/Purpose")
+            hdr_cells[3].text = _("Outputs")
+            hdr_cells[4].text = _("Indicative Cost USD")
             for i in range(1,14) :
                 if  i>1 and  str(i) in items:
                     row_cells = table.add_row().cells
-                    row_cells[0].text='Module '+str(i)+' - '+m_names[int(i)]
+                    row_cells[0].text=_("Module ")+str(i)+' - '+ugettext(m_names[int(i)])
                     logicalframework = LogicalFramework.objects.filter(session_id=sessionid,module=int(i)).count()
                     count1=0
                     if logicalframework>0:
@@ -10551,25 +10620,25 @@ def generate_report(request, country,sessionid=None):
                         
             document.add_paragraph()
             p=document.add_paragraph("")
-            p.add_run('5.2 Priority Actions:').bold = True
+            p.add_run(_("5.2 Priority Actions:")).bold = True
             document.add_paragraph()
             table = document.add_table(rows=1, cols=2)
             table.style = document.styles['Table Grid']
             hdr_cells = table.rows[0].cells
-            hdr_cells[0].text ='Module'
-            hdr_cells[1].text = 'Priority Activities'
+            hdr_cells[0].text =_("Module")
+            hdr_cells[1].text = _("Priority Activities")
             
             for i in range(1,14) :
                 if  i>1 and  str(i) in items:
                     row_cells = table.add_row().cells
-                    row_cells[0].text='Module '+str(i)+' - '+m_names[int(i)]
+                    row_cells[0].text=_("Module ")+str(i)+' - '+ugettext(m_names[int(i)])
                     row_cells[1].text=''
            
             document.add_paragraph()
             p=document.add_paragraph("")
-            p.add_run('Annex 1 - Strategic framework').bold = True
+            p.add_run(_("Annex 1 - Strategic framework")).bold = True
             document.add_paragraph()
-            document.add_paragraph("Strategic framework consists of Logical frameworks and associated work plans for each applied module ")
+            document.add_paragraph(_("Strategic framework consists of Logical frameworks and associated work plans for each applied module "))
             document.add_paragraph()
             for i in range(1,14) :
                 if  i>1 and  str(i) in items:
@@ -10580,10 +10649,10 @@ def generate_report(request, country,sessionid=None):
                     table = document.add_table(rows=1, cols=4)
                     table.style = document.styles['Table Grid']
                     hdr_cells = table.rows[0].cells
-                    hdr_cells[0].text ='Overall Objective'
-                    hdr_cells[1].text = 'Key indicators'
-                    hdr_cells[2].text = 'Means of Verification'
-                    hdr_cells[3].text = 'Assumptions/Risk'
+                    hdr_cells[0].text = _("Overall Objective")
+                    hdr_cells[1].text = _("Key indicators")
+                    hdr_cells[2].text = _("Means of Verification")
+                    hdr_cells[3].text = _("Assumptions/Risk")
                     logicalframework = LogicalFramework.objects.filter(session_id=sessionid,module=int(i)).count()
                     if logicalframework>0:
                         lf = get_object_or_404(LogicalFramework, session_id=sessionid,module=int(i))
@@ -10597,10 +10666,10 @@ def generate_report(request, country,sessionid=None):
                     table = document.add_table(rows=1, cols=4)
                     table.style = document.styles['Table Grid']
                     hdr_cells = table.rows[0].cells
-                    hdr_cells[0].text ='Immediate Objective (purpose)'
-                    hdr_cells[1].text = 'Key indicators'
-                    hdr_cells[2].text = 'Means of Verification'
-                    hdr_cells[3].text = 'Assumptions/Risk'
+                    hdr_cells[0].text = _("Immediate Objective (purpose)")
+                    hdr_cells[1].text = _("Key indicators")
+                    hdr_cells[2].text = _("Means of Verification")
+                    hdr_cells[3].text = _("Assumptions/Risk")
                     logicalframework = LogicalFramework.objects.filter(session_id=sessionid,module=int(i)).count()
                     if logicalframework>0:
                         lf = get_object_or_404(LogicalFramework, session_id=sessionid,module=int(i))
@@ -10615,10 +10684,10 @@ def generate_report(request, country,sessionid=None):
                     table = document.add_table(rows=1, cols=4)
                     table.style = document.styles['Table Grid']
                     hdr_cells = table.rows[0].cells
-                    hdr_cells[0].text ='Outputs'
-                    hdr_cells[1].text = 'Key indicators'
-                    hdr_cells[2].text = 'Means of Verification'
-                    hdr_cells[3].text = 'Assumptions/Risk'
+                    hdr_cells[0].text =_("Outputs")
+                    hdr_cells[1].text = _("Key indicators")
+                    hdr_cells[2].text = _("Means of Verification")
+                    hdr_cells[3].text = _("Assumptions/Risk")
                     logicalframework = LogicalFramework.objects.filter(session_id=sessionid,module=int(i)).count()
                     if logicalframework>0:
                         lf = get_object_or_404(LogicalFramework, session_id=sessionid,module=int(i))
@@ -10653,10 +10722,10 @@ def generate_report(request, country,sessionid=None):
                     table = document.add_table(rows=1, cols=4)
                     table.style = document.styles['Table Grid']
                     hdr_cells = table.rows[0].cells
-                    hdr_cells[0].text ='Activities'
-                    hdr_cells[1].text = 'Estimated costs'
-                    hdr_cells[2].text = 'Desponsible Person'
-                    hdr_cells[3].text = 'deadline'
+                    hdr_cells[0].text =_("Activities") 
+                    hdr_cells[1].text = _("Estimated costs") 
+                    hdr_cells[2].text = _("Desponsible Person") 
+                    hdr_cells[3].text = _("deadline") 
                     #hdr_cells[4].text = 'Target'
                     #hdr_cells[5].text = 'Source'
                     #hdr_cells[6].text = 'External factors'
@@ -10727,18 +10796,18 @@ def generate_report(request, country,sessionid=None):
             document.add_paragraph("")
           
             p=document.add_paragraph("")
-            p.add_run("Annex 2:").bold = True
+            p.add_run(_("Annex 2:")).bold = True
             p=document.add_paragraph("")
-            p.add_run("List of stakeholders:").bold = True
+            p.add_run(_("List of stakeholders:")).bold = True
          
        
             
             table = document.add_table(rows=1, cols=3)
             table.style = document.styles['Table Grid']
             hdr_cells = table.rows[0].cells
-            hdr_cells[0].text = 'Name'
-            hdr_cells[1].text = 'Organization/Division'
-            hdr_cells[2].text = 'Email'
+            hdr_cells[0].text = _("Name")
+            hdr_cells[1].text = _("Organization/Division")
+            hdr_cells[2].text = _("Email")
             
             stakeholders = Stakeholders.objects.filter(session_id=sessionid)
             print(stakeholders) 
@@ -10766,20 +10835,20 @@ def generate_report(request, country,sessionid=None):
              )
             BOOL_CHOICESM_M = (
                 (0, (" ")),
-                (1, ("Yes")),
-                (2, ("No")),
+                (1, _("Yes")),
+                (2, _("No")),
             )  
          
             p=document.add_paragraph("")
-            p.add_run("Annex 3:").bold = True
+            p.add_run(_("Annex 3:")).bold = True
             p=document.add_paragraph("")
-            p.add_run("Human Resources").bold = True
+            p.add_run(_("Human Resources")).bold = True
             p=document.add_paragraph("")
             
             
-            p.add_run("Module 7 - "+str(m_names[7])).bold = True
+            p.add_run(_("Module")+" 7 - "+ugettext(m_names[7])).bold = True
             p=document.add_paragraph("")
-            p.add_run("Pest diagnostic laboratory current human resources").bold = True
+            p.add_run(_("Pest diagnostic laboratory current human resources")).bold = True
             
             table = document.add_table(rows=1, cols=7)
             table.style = document.styles['Table Grid']
@@ -10796,8 +10865,8 @@ def generate_report(request, country,sessionid=None):
            
             hdr_cells[1].merge(hdr_cells[4])
             hdr_cells[5].merge(hdr_cells[6])
-            hdr_cells[1].text = 'Current'
-            hdr_cells[5].text = 'Required'
+            hdr_cells[1].text = _("Current")
+            hdr_cells[5].text = _("Required")
             row_cells = table.add_row().cells
             row_cells[0].text = ''
             row_cells[2].text = ''
@@ -10807,17 +10876,17 @@ def generate_report(request, country,sessionid=None):
             row_cells[1].merge(row_cells[2])
             row_cells[3].merge(row_cells[4])
             row_cells[5].merge(row_cells[6])
-            row_cells[1].text = 'PEST DIAGNOSTIC AND SUPPORT STAFF'
-            row_cells[3].text = 'LABORATORY MANAGERS'
+            row_cells[1].text = _("PEST DIAGNOSTIC AND SUPPORT STAFF")
+            row_cells[3].text = _("LABORATORY MANAGERS")
           
             row_cells = table.add_row().cells
             row_cells[0].text = ''
-            row_cells[1].text = 'No. of Staff'
-            row_cells[2].text = 'Average years of experience'
-            row_cells[3].text = 'No. of Staff'
-            row_cells[4].text = 'Average years of experience'
-            row_cells[5].text = 'Diagnostic /support'
-            row_cells[6].text = 'Managers'
+            row_cells[1].text = _("No. of Staff")
+            row_cells[2].text = _("Average years of experience")
+            row_cells[3].text = _("No. of Staff")
+            row_cells[4].text = _("Average years of experience")
+            row_cells[5].text = _("Diagnostic /support")
+            row_cells[6].text = _("Managers")
           
             mod7 = get_object_or_404(Module7, session_id=sessionid)
             q23 = Module7Matrix23.objects.filter(module7=mod7.id)
@@ -10827,39 +10896,39 @@ def generate_report(request, country,sessionid=None):
             for qq in q23:
                   
                if bb == 0:
-                    tt='Mycology'
+                    tt=_("Mycology")
                if bb == 4:
-                    tt='Virology'
+                    tt=_("Virology")
                if bb == 8:
-                    tt='Nematology'
+                    tt=_("Nematology")
                if bb == 12:
-                    tt='Weed science'
+                    tt=_("Weed science")
                if bb == 16:
-                    tt='Entomology'
+                    tt=_("Entomology")
                if bb == 20:
-                    tt='LMOs'
+                    tt=_("LMOs")
                if bb == 24:
-                    tt='BCAs'
+                    tt=_("BCAs")
                if bb == 28:
-                    tt='Plants For Planting'
+                    tt=_("Plants For Planting")
                if bb == 32:
-                    tt='Treatments'
+                    tt=_("Treatments")
                if bb == 36:
-                    tt='Economist'
+                    tt=_("Economist")
                if bb == 40:
-                    tt='Staticians'
+                    tt=_("Staticians")
                if bb == 44:
-                    tt='Crop specialists'
+                    tt=_("Crop specialists")
                if bb == 48:
-                    tt='Technical support and administrative staff'
+                    tt=_("Technical support and administrative staff")
                if bb == 0 or  bb == 4 or  bb == 8 or  bb == 12 or  bb == 16 or  bb == 20 or  bb == 24 or  bb == 28 or  bb == 32 or  bb == 36 or  bb == 40 or  bb == 44 or  bb == 48:
-                   aa='Doctoral equivalent'
+                   aa=_("Doctoral equivalent")
                if bb == 1 or  bb == 5 or  bb == 9 or  bb == 13 or  bb == 17 or  bb == 21 or  bb == 25 or  bb == 29 or  bb == 33 or  bb == 37 or  bb == 41 or  bb == 45 or  bb == 49:
-                   aa='Master equivalent'
+                   aa=_("Master equivalent")
                if bb == 2 or  bb == 6 or  bb == 10 or  bb == 13 or  bb == 18 or  bb == 22 or  bb == 26 or  bb == 30 or  bb == 34 or  bb == 38 or  bb == 42 or  bb == 46 or  bb == 50:
-                   aa='Bachelor equivalent'
+                   aa=_("Bachelor equivalent")
                if bb == 3 or  bb == 7 or  bb == 11 or  bb == 15 or  bb == 19 or  bb == 23 or  bb == 27 or  bb == 31 or  bb == 35 or  bb == 39 or  bb == 43 or  bb == 47 or  bb == 51:
-                   aa='Lower than bachelor level'
+                   aa=_("Lower than bachelor level")
                 
                if bb == 0 or  bb == 4 or  bb == 8 or  bb == 12 or  bb == 16 or  bb == 20 or  bb == 24 or  bb == 28 or  bb == 32 or  bb == 36 or  bb == 40 or  bb == 44 or  bb == 48:
                     row_cells = table.add_row().cells
@@ -10887,9 +10956,9 @@ def generate_report(request, country,sessionid=None):
             p=document.add_paragraph("")
             p=document.add_paragraph("")
             p=document.add_paragraph("")
-            p.add_run("Module 8 - "+str(m_names[8])).bold = True
+            p.add_run(_("Module ")+" 8 - "+ugettext(m_names[8])).bold = True
             p=document.add_paragraph("")
-            p.add_run("The human resources of the pest surveillance activities").bold = True
+            p.add_run(_("The human resources of the pest surveillance activities")).bold = True
          
        
             
@@ -10907,8 +10976,8 @@ def generate_report(request, country,sessionid=None):
            
             hdr_cells[1].merge(hdr_cells[4])
             hdr_cells[5].merge(hdr_cells[6])
-            hdr_cells[1].text = 'Current'
-            hdr_cells[5].text = 'Required'
+            hdr_cells[1].text = _("Current")
+            hdr_cells[5].text = _("Required")
           
             
             
@@ -10923,17 +10992,17 @@ def generate_report(request, country,sessionid=None):
             row_cells[1].merge(row_cells[2])
             row_cells[3].merge(row_cells[4])
             row_cells[5].merge(row_cells[6])
-            row_cells[1].text = 'PEST SURVEILLANCE AND SUPPORT STAFF'
-            row_cells[3].text = 'SURVEILLANCE MANAGERS'
+            row_cells[1].text = _("PEST SURVEILLANCE AND SUPPORT STAFF")
+            row_cells[3].text = _("SURVEILLANCE MANAGERS")
           
             row_cells = table.add_row().cells
             row_cells[0].text = ''
-            row_cells[1].text = 'No. of Staff'
-            row_cells[2].text = 'Average years of experience'
-            row_cells[3].text = 'No. of Staff'
-            row_cells[4].text = 'Average years of experience'
-            row_cells[5].text = 'Surveillance/support'
-            row_cells[6].text = 'Managers'
+            row_cells[1].text = _("No. of Staff")
+            row_cells[2].text = _("Average years of experience")
+            row_cells[3].text = _("No. of Staff")
+            row_cells[4].text = _("Average years of experience")
+            row_cells[5].text = _("Surveillance/support")
+            row_cells[6].text = _("Managers")
           
             mod8 = get_object_or_404(Module8, session_id=sessionid)
             q29 = Module8Matrix30.objects.filter(module8=mod8.id)
@@ -10943,21 +11012,21 @@ def generate_report(request, country,sessionid=None):
             for qq in q29:
                   
                if bb == 0:
-                    tt='General surveillance'
+                    tt=_("General surveillance")
                if bb == 4:
-                    tt='Specific surveillance'
+                    tt=_("Specific surveillance")
 
                if bb == 8:
-                    tt='Total'
+                    tt=_("Total")
               
                if bb == 0 or  bb == 4 or  bb == 8:
-                   aa='Doctoral equivalent'
+                   aa=_("Doctoral equivalent")
                if bb == 1 or  bb == 5 or  bb == 9: 
-                   aa='Master equivalent'
+                   aa=_("Master equivalent")
                if bb == 2 or  bb == 6 or  bb == 10:
-                   aa='Bachelor equivalent'
+                   aa=_("Bachelor equivalent")
                if bb == 3 or  bb == 7 or  bb == 11:
-                   aa='Lower than bachelor level'
+                   aa=_("Lower than bachelor level")
                 
                if bb == 0 or  bb == 4 or  bb == 8:
                     row_cells = table.add_row().cells
@@ -10985,9 +11054,9 @@ def generate_report(request, country,sessionid=None):
             p=document.add_paragraph("")
             p=document.add_paragraph("")
             p=document.add_paragraph("")
-            p.add_run("Module 9 - "+str(m_names[9])).bold = True
+            p.add_run(_("Module ")+" 9 - "+ugettext(m_names[9])).bold = True
             p=document.add_paragraph("")
-            p.add_run("The human resources involved in eradication programmes").bold = True
+            p.add_run(_("The human resources involved in eradication programmes")).bold = True
          
        
             
@@ -11005,8 +11074,8 @@ def generate_report(request, country,sessionid=None):
            
             hdr_cells[1].merge(hdr_cells[4])
             hdr_cells[5].merge(hdr_cells[6])
-            hdr_cells[1].text = 'Current'
-            hdr_cells[5].text = 'Required'
+            hdr_cells[1].text = _("Current")
+            hdr_cells[5].text = _("Required")
           
             
             
@@ -11021,17 +11090,17 @@ def generate_report(request, country,sessionid=None):
             row_cells[1].merge(row_cells[2])
             row_cells[3].merge(row_cells[4])
             row_cells[5].merge(row_cells[6])
-            row_cells[1].text = 'Field and support Staff'
-            row_cells[3].text = 'Eradication managers'
+            row_cells[1].text = _("Field and support Staff")
+            row_cells[3].text = _("Eradication managers")
           
             row_cells = table.add_row().cells
-            row_cells[0].text = ''
-            row_cells[1].text = 'No. of Staff'
-            row_cells[2].text = 'Average years of experience'
-            row_cells[3].text = 'No. of Staff'
-            row_cells[4].text = 'Average years of experience'
-            row_cells[5].text = 'Field/support Stafft'
-            row_cells[6].text = 'Managers'
+            row_cells[0].text =''
+            row_cells[1].text = _("No. of Staff")
+            row_cells[2].text = _("Average years of experience")
+            row_cells[3].text = _("No. of Staff")
+            row_cells[4].text = _("Average years of experience")
+            row_cells[5].text = _("Field/support Stafft")
+            row_cells[6].text = _("Managers")
           
             mod9 = get_object_or_404(Module9, session_id=sessionid)
             q35 = Module9Matrix35.objects.filter(module9=mod9.id)
@@ -11041,13 +11110,13 @@ def generate_report(request, country,sessionid=None):
             for qq in q35:
               
                if bb == 0 :
-                   aa='Doctoral equivalent'
+                   aa=_("Doctoral equivalent")
                if bb == 1 : 
-                   aa='Master equivalent'
+                   aa=_("Master equivalent")
                if bb == 2:
-                   aa='Bachelor equivalent'
+                   aa=_("Bachelor equivalent")
                if bb == 3:
-                   aa='Lower than bachelor level'
+                   aa=_("Lower than bachelor level")
                 
               
                row_cells = table.add_row().cells
@@ -11065,9 +11134,9 @@ def generate_report(request, country,sessionid=None):
             p=document.add_paragraph("")
             p=document.add_paragraph("")
             p=document.add_paragraph("")
-            p.add_run("Module 10 - "+str(m_names[10])).bold = True
+            p.add_run(_("Module ")+" 10 - "+ugettext(m_names[10])).bold = True
             p=document.add_paragraph("")
-            p.add_run("The import regulatory system human resour").bold = True
+            p.add_run(_("The import regulatory system human resour")).bold = True
          
        
             
@@ -11087,8 +11156,8 @@ def generate_report(request, country,sessionid=None):
            
             hdr_cells[1].merge(hdr_cells[5])
             hdr_cells[6].merge(hdr_cells[8])
-            hdr_cells[1].text = 'Current'
-            hdr_cells[6].text = 'Required'
+            hdr_cells[1].text = _("Current")
+            hdr_cells[6].text = _("Required")
           
             
             
@@ -11108,20 +11177,20 @@ def generate_report(request, country,sessionid=None):
             row_cells[3].merge(row_cells[4])
             #row_cells[5].merge(row_cells[6])
             row_cells[6].merge(row_cells[8])
-            row_cells[1].text = 'TECHNICAL'
-            row_cells[3].text = 'IMPORT MANAGERS'
-            row_cells[5 ].text = 'SUPPORT STAFF'
+            row_cells[1].text = _("TECHNICAL")
+            row_cells[3].text = _("IMPORT MANAGERS")
+            row_cells[5 ].text = _("SUPPORT STAFF")
           
             row_cells = table.add_row().cells
             row_cells[0].text = ''
-            row_cells[1].text = 'No. of Staff'
-            row_cells[2].text = 'Average years of experience'
-            row_cells[3].text = 'No. of Staff'
-            row_cells[4].text = 'Average years of experience'
-            row_cells[5].text = 'No. of Staff'
-            row_cells[6].text = 'Technical'
-            row_cells[7].text = 'Managers'
-            row_cells[8].text = 'Support'
+            row_cells[1].text = _("No. of Staff")
+            row_cells[2].text = _("Average years of experience")
+            row_cells[3].text = _("No. of Staff")
+            row_cells[4].text = _("Average years of experience")
+            row_cells[5].text = _("No. of Staff")
+            row_cells[6].text = _("Technical")
+            row_cells[7].text = _("Managers")
+            row_cells[8].text = _("Support")
           
             mod10 = get_object_or_404(Module10, session_id=sessionid)
             q47 = Module10Matrix_47.objects.filter(module10=mod10.id)
@@ -11131,13 +11200,13 @@ def generate_report(request, country,sessionid=None):
             for qq in q47:
               
                if bb == 0 :
-                   aa='Doctoral equivalent'
+                   aa=_("Doctoral equivalent")
                if bb == 1 : 
-                   aa='Master equivalent'
+                   aa=_("Master equivalent")
                if bb == 2:
-                   aa='Bachelor equivalent'
+                   aa=_("Bachelor equivalent")
                if bb == 3:
-                   aa='Lower than bachelor level'
+                   aa=_("Lower than bachelor level")
     
                row_cells = table.add_row().cells
                row_cells[0].text = aa
@@ -11155,9 +11224,9 @@ def generate_report(request, country,sessionid=None):
             p=document.add_paragraph("")
             p=document.add_paragraph("")
             p=document.add_paragraph("")
-            p.add_run("Module 11 - "+str(m_names[11])).bold = True
+            p.add_run(_("Module ")+" 11 - "+ugettext(m_names[11])).bold = True
             p=document.add_paragraph("")
-            p.add_run("The human resources of the NPPO PRA programme").bold = True
+            p.add_run(_("The human resources of the NPPO PRA programme")).bold = True
             
             table = document.add_table(rows=1, cols=5)
             table.style = document.styles['Table Grid']
@@ -11172,8 +11241,8 @@ def generate_report(request, country,sessionid=None):
            
            
             hdr_cells[1].merge(hdr_cells[3])
-            hdr_cells[1].text = 'Current'
-            hdr_cells[4].text = 'Required'
+            hdr_cells[1].text = _("Current")
+            hdr_cells[4].text = _("Required")
             row_cells = table.add_row().cells
             row_cells[0].text = ''
             row_cells[1].text = ''
@@ -11182,15 +11251,15 @@ def generate_report(request, country,sessionid=None):
             row_cells[4].text = ''
            
             row_cells[1].merge(row_cells[2])
-            row_cells[1].text = 'Full Time Staff'
-            row_cells[3].text = 'Ad hoc Staff'
+            row_cells[1].text = _("Full Time Staff")
+            row_cells[3].text = _("Ad hoc Staff")
           
             row_cells = table.add_row().cells
             row_cells[0].text = ''
-            row_cells[1].text = 'No. of Staff'
-            row_cells[2].text = 'Average years of experience'
-            row_cells[3].text = 'No. of Staff'
-            row_cells[4].text = 'Required'
+            row_cells[1].text = _("No. of Staff")
+            row_cells[2].text = _("Average years of experience")
+            row_cells[3].text = _("No. of Staff")
+            row_cells[4].text = _("Required")
           
             mod11 = get_object_or_404(Module11, session_id=sessionid)
             q42 = Module11Matrix42.objects.filter(module11=mod11.id)
@@ -11200,39 +11269,39 @@ def generate_report(request, country,sessionid=None):
             for qq in q42:
                   
                if bb == 0:
-                    tt='Mycology'
+                    tt=_("Mycology")
                if bb == 4:
-                    tt='Virology'
+                    tt=_("Virology")
                if bb == 8:
-                    tt='Nematology'
+                    tt=_("Nematology")
                if bb == 12:
-                    tt='Weed science'
+                    tt=_("Weed science")
                if bb == 16:
-                    tt='Entomology'
+                    tt=_("Entomology")
                if bb == 20:
-                    tt='LMOs'
+                    tt=_("LMOs")
                if bb == 24:
-                    tt='BCAs'
+                    tt=_("BCAs")
                if bb == 28:
-                    tt='Plants For Planting'
+                    tt=_("Plants For Planting")
                if bb == 32:
-                    tt='Treatments'
+                    tt=_("Treatments")
                if bb == 36:
-                    tt='Economist'
+                    tt=_("Economist")
                if bb == 40:
-                    tt='Staticians'
+                    tt=_("Staticians")
                if bb == 44:
-                    tt='Crop specialists'
+                    tt=_("Crop specialists")
                if bb == 48:
-                    tt='Technical support and administrative staff'
+                    tt=_("Technical support and administrative staff")
                if bb == 0 or  bb == 4 or  bb == 8 or  bb == 12 or  bb == 16 or  bb == 20 or  bb == 24 or  bb == 28 or  bb == 32 or  bb == 36 or  bb == 40 or  bb == 44 or  bb == 48:
-                   aa='Doctoral equivalent'
+                   aa=_("Doctoral equivalent")
                if bb == 1 or  bb == 5 or  bb == 9 or  bb == 13 or  bb == 17 or  bb == 21 or  bb == 25 or  bb == 29 or  bb == 33 or  bb == 37 or  bb == 41 or  bb == 45 or  bb == 49:
-                   aa='Master equivalent'
+                   aa=_("Master equivalent")
                if bb == 2 or  bb == 6 or  bb == 10 or  bb == 13 or  bb == 18 or  bb == 22 or  bb == 26 or  bb == 30 or  bb == 34 or  bb == 38 or  bb == 42 or  bb == 46 or  bb == 50:
-                   aa='Bachelor equivalent'
+                   aa=_("Bachelor equivalent")
                if bb == 3 or  bb == 7 or  bb == 11 or  bb == 15 or  bb == 19 or  bb == 23 or  bb == 27 or  bb == 31 or  bb == 35 or  bb == 39 or  bb == 43 or  bb == 47 or  bb == 51:
-                   aa='Lower than bachelor level'
+                   aa=_("Lower than bachelor level")
                 
                if bb == 0 or  bb == 4 or  bb == 8 or  bb == 12 or  bb == 16 or  bb == 20 or  bb == 24 or  bb == 28 or  bb == 32 or  bb == 36 or  bb == 40 or  bb == 44 or  bb == 48:
                     row_cells = table.add_row().cells
@@ -11257,9 +11326,9 @@ def generate_report(request, country,sessionid=None):
             p=document.add_paragraph("")
             p=document.add_paragraph("")
             p=document.add_paragraph("")
-            p.add_run("Module 12 - "+str(m_names[12])).bold = True
+            p.add_run(_("Module ")+" 12 - "+ugettext(m_names[12])).bold = True
             p=document.add_paragraph("")
-            p.add_run("PFA/ALPP/PFPP/PFPS - human resources").bold = True
+            p.add_run(_("PFA/ALPP/PFPP/PFPS - human resources")).bold = True
          
        
             
@@ -11277,8 +11346,8 @@ def generate_report(request, country,sessionid=None):
            
             hdr_cells[1].merge(hdr_cells[4])
             hdr_cells[5].merge(hdr_cells[6])
-            hdr_cells[1].text = 'Current'
-            hdr_cells[5].text = 'Required'
+            hdr_cells[1].text = _("Current")
+            hdr_cells[5].text = _("Required")
           
             
             
@@ -11293,17 +11362,17 @@ def generate_report(request, country,sessionid=None):
             row_cells[1].merge(row_cells[2])
             row_cells[3].merge(row_cells[4])
             row_cells[5].merge(row_cells[6])
-            row_cells[1].text = 'Field and support Staff'
-            row_cells[3].text = 'Eradication managers'
+            row_cells[1].text = _("Field and support Staff")
+            row_cells[3].text = _("Eradication managers")
           
             row_cells = table.add_row().cells
             row_cells[0].text = ''
-            row_cells[1].text = 'No. of Staff'
-            row_cells[2].text = 'Average years of experience'
-            row_cells[3].text = 'No. of Staff'
-            row_cells[4].text = 'Average years of experience'
-            row_cells[5].text = 'Field/support Staff'
-            row_cells[6].text = 'Support'
+            row_cells[1].text = _("No. of Staff")
+            row_cells[2].text = _("Average years of experience")
+            row_cells[3].text = _("No. of Staff")
+            row_cells[4].text = _("Average years of experience")
+            row_cells[5].text = _("Field/support Staff")
+            row_cells[6].text = _("Support")
           
             mod12 = get_object_or_404(Module12, session_id=sessionid)
             q22 = Module12Matrix22.objects.filter(module12=mod12.id)
@@ -11313,13 +11382,13 @@ def generate_report(request, country,sessionid=None):
             for qq in q22:
                   
                if bb == 0 or  bb == 4 or  bb == 8:
-                   aa='Doctoral equivalent'
+                   aa=_("Doctoral equivalent")
                if bb == 1 or  bb == 5 or  bb == 9: 
-                   aa='Master equivalent'
+                   aa=_("Master equivalent")
                if bb == 2 or  bb == 6 or  bb == 10:
-                   aa='Bachelor equivalent'
+                   aa=_("Bachelor equivalent")
                if bb == 3 or  bb == 7 or  bb == 11:
-                   aa='Lower than bachelor level'
+                   aa=_("Lower than bachelor level")
                 
                   
                row_cells = table.add_row().cells
@@ -11338,9 +11407,9 @@ def generate_report(request, country,sessionid=None):
             p=document.add_paragraph("")
             p=document.add_paragraph("")
             p=document.add_paragraph("")
-            p.add_run("Module 13 - "+str(m_names[13])).bold = True
+            p.add_run( _("Module ")+" 13 - "+ugettext(m_names[13])).bold = True
             p=document.add_paragraph("")
-            p.add_run("The human resources in the NPPO export certification program").bold = True
+            p.add_run( _("The human resources in the NPPO export certification program")).bold = True
          
        
             
@@ -11358,8 +11427,8 @@ def generate_report(request, country,sessionid=None):
            
             hdr_cells[1].merge(hdr_cells[4])
             hdr_cells[5].merge(hdr_cells[6])
-            hdr_cells[1].text = 'Current'
-            hdr_cells[5].text = 'Required'
+            hdr_cells[1].text =  _("Current")
+            hdr_cells[5].text =  _("Required")
           
             
             
@@ -11374,17 +11443,17 @@ def generate_report(request, country,sessionid=None):
             row_cells[1].merge(row_cells[2])
             row_cells[3].merge(row_cells[4])
             row_cells[5].merge(row_cells[6])
-            row_cells[1].text = 'Inspector and support Staff'
-            row_cells[3].text = 'Export managers'
+            row_cells[1].text = _("Inspector and support Staff")
+            row_cells[3].text = _("Export managers")
           
             row_cells = table.add_row().cells
             row_cells[0].text = ''
-            row_cells[1].text = 'No. of Staff'
-            row_cells[2].text = 'Average years of experience'
-            row_cells[3].text = 'No. of Staff'
-            row_cells[4].text = 'Average years of experience'
-            row_cells[5].text = 'Inspector/support Staff'
-            row_cells[6].text = 'Export managers'
+            row_cells[1].text = _("No. of Staff")
+            row_cells[2].text = _("Average years of experience")
+            row_cells[3].text = _("No. of Staff")
+            row_cells[4].text = _("Average years of experience")
+            row_cells[5].text = _("Inspector/support Staff")
+            row_cells[6].text = _("Export managers")
           
             mod13 = get_object_or_404(Module13, session_id=sessionid)
             q47 = Module13Matrix47.objects.filter(module13=mod13.id)
@@ -11393,13 +11462,13 @@ def generate_report(request, country,sessionid=None):
             bb=0
             for qq in q47:
                if bb == 0 or  bb == 4 or  bb == 8:
-                   aa='Doctoral equivalent'
+                   aa=_("Doctoral equivalent")
                if bb == 1 or  bb == 5 or  bb == 9: 
-                   aa='Master equivalent'
+                   aa=_("Master equivalent")
                if bb == 2 or  bb == 6 or  bb == 10:
-                   aa='Bachelor equivalent'
+                   aa=_("Bachelor equivalent")
                if bb == 3 or  bb == 7 or  bb == 11:
-                   aa='Lower than bachelor level'
+                   aa=_("Lower than bachelor level")
                 
                if bb == 0 or  bb == 4 or  bb == 8:
                     row_cells = table.add_row().cells
