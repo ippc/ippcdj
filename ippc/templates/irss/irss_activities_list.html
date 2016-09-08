@@ -135,7 +135,7 @@
              </center> 
                 <table class="table table-condensed" id="publications">
                 {% for object in latest %}
-                {% if object.activitytype == 3 or  object.activitytype == 4 %}
+                {% if object.activitytype == 3 %}
                    <tr>  
                       <td> <a   href="{% url 'irss-activity-detail' object.id %}">{{ object.title }}</a></td>
                       <td> 
@@ -191,7 +191,7 @@
               
            </center>     <table class="table table-condensed" id="publications">
                 {% for object in latest %}
-                {% if object.activitytype == 6 %}
+                {% if object.activitytype == 5 %}
                    <tr>  
                       <td> <a   href="{% url 'irss-activity-detail' object.id %}">{{ object.title }}</a></td>
                       <td> 
