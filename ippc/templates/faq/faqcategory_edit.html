@@ -1,0 +1,42 @@
+{% extends "base.html" %}
+{% load pages_tags translate_tags mezzanine_tags i18n future staticfiles accounts_tags %}
+
+{% block meta_title %}{% trans "FAQs Category" %} {% endblock %}
+
+{% block body_class %}wide{% endblock %}
+
+{% block breadcrumb_menu %}
+<li>
+  <a href="/poll/">{% trans "FAQs Category" %}</a>
+  <span class="divider">/</span>
+</li>
+<li class="active">{% trans "Editing" %} {{ faqcategory.title }}</li>
+{% endblock %}
+
+{% block local_nav %}
+{% endblock local_nav %}
+
+{% block pageinfo %}
+{% endblock pageinfo %}
+
+{% block main %}
+
+
+<p class="pull-right">
+  <a href="javascript:history.go(-1)">{% trans "« Cancel and go back" %}</a>
+</p>
+
+<h1><small class="normal">{% trans "Editing" %}</small> {{ faqcategory.title }} <br><small class="normal">{% trans "Last updated on" %} {{faqcategory.modify_date}}</small></h1>
+<form enctype="multipart/form-data" class="customform" method="POST" action="{% url 'faqcategory-edit' faqcategory.id %}">
+    {% csrf_token %}
+    <fieldset>
+        {% include "faq/faqcategory_form.html" %}
+        <div class="form-actions">
+            <button type="submit" class="btn btn-info btn-large">{% trans "Update Category" %}</button> {% trans "or" %} <a href="javascript:history.go(-1)">{% trans "Cancel" %}</a>
+        </div>
+    </fieldset>
+</form>
+
+
+{% endblock %}
+

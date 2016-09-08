@@ -1,0 +1,96 @@
+{% extends "base.html" %}
+
+{% load pages_tags mezzanine_tags i18n future staticfiles accounts_tags translate_tags %}
+
+{% block meta_title %}{% trans "Frequently Asked Questions" %}{% endblock %}
+
+{% block breadcrumb_menu %}
+<li class="active">{% trans "Frequently Asked Questions" %}</li>
+{% endblock %}
+
+
+{% block main %}
+
+
+<div class="span8 middle">
+    <style type="text/css" media="screen">
+        h2 {margin:1em 0 0;}
+        h3 {font-size:1.3em; line-height:1.5em;}
+        h3 a {font-weight:normal;}
+        .darkheadings a {color:#000; text-decoration:none; font-weight:bold; font-style:italic;}
+    </style>
+    <script type="text/javascript">
+        // SHOW/HIDE/TOGGLE script
+        $(document).ready(function () {
+            $("div.answer").hide();
+            $("h3").click(function () {
+                $(this).next().toggle("fast");
+                $(this).toggleClass("darkheadings");
+            });
+
+            $(function () {
+                if (location.hash != "") {
+                    // $(location.hash + ":hidden").toggle('fast').prev("h3").toggleClass('darkheadings');
+                    $(location.hash).next("div").toggle("fast").prev("h3").toggleClass("darkheadings");
+                }
+            });
+         $("a.hideall").click(function () {
+                $("div.answer").hide("fast");
+                $("h3").removeClass("darkheadings");
+            });
+            $("a.showall").click(function () {
+                $("div.answer").show("fast");
+                $("h3").addClass("darkheadings");
+            });
+
+        });
+    </script>
+    <h1>{% trans "Frequently Asked Questions" %}</h1>
+    <p>{% trans "If you have a query about the IPPC please check to see if the answer is here by clicking on the questions below. If you can't find an answer to your question, please <a href='/contact/'>contact us</a>" %}</p>
+
+    <p class="warning" id="exportissues">
+        {% trans "Please note that questions regarding <strong>import, export and phytosanitary certificate issues</strong> need to be addressed by NPPO contact points. Only they are able to respond to information requests and communicate on phytosanitary issues on behalf of their country. <a href='/countries/contactpoints/'>Here is a list of official contact information for NPPOs</a>. Thank you!" %}
+    </p>
+    <p class="alert alert-warning">{% trans "Please note that whenever you see a message such as <i>'An error has occurred'</i>, the IT Team is automatically notified by email and is working on fixing it as soon as possible." %}</p>
+
+    {% if array_faqcategories %}
+        {% for cat in array_faqcategories %}
+            <h2 id="{{cat.1}}">{{cat.1}}</h2>
+            {% for faq in cat %}
+                {%if  forloop.counter > 2 %}
+                    {% for f in  faq %}
+                    <h3 id="{{f.faq_anchor}}"><a href="#{{f.faq_anchor}}">{{f.title}}</a></h3>
+                        <div class="answer">
+                            {{ f.faq_description|richtext_filter|safe }}
+                        </div> 
+                    {% endfor %}
+                {% endif %}
+            {% endfor %}
+        {% endfor %}
+
+
+    {% else %}
+        <p>No FAQs are available.</p>
+    {% endif %}
+    
+ </div>
+ <div class="span4 middle">
+    <div class="well localnav">
+        <p class="floatright showhideanswers" style="margin-right:3em;">
+            <a class="showall" href="#">Show all answers</a><br>
+            <a class="hideall" href="#">Hide all answers</a>
+        </p> 
+    </div>
+       {% if user.is_superuser %} 
+     
+        
+    <div class="well localnav">
+        <p class="floatright showhideanswers" style="margin-right:3em;">
+        <a class="btn btn-small btn-info" href="/admin/ippc/faqscategory/{{ faq.id }}">Edit FAQs categories as Admin</a><br>
+       <a class="btn btn-small btn-info" href="/admin/ippc/faqsitem/{{ faq.id }}">Edit FAQs items as Admin</a><br>
+    
+        </p> 
+    </div> {% endif %}
+</div>
+{% endblock %}
+   

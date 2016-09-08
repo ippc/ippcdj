@@ -1,0 +1,67 @@
+{% extends "base.html" %}
+{% load pages_tags mezzanine_tags i18n future staticfiles %}
+
+{% block meta_title %}{% trans "FAQs Item" %}{% endblock %}
+
+{% block breadcrumb_menu %}
+<li><a href="/{{ LANGUAGE_CODE }}/">{% trans "Home" %}</a><span class="divider">/</span></li>
+<li><a href="/faqnew/">FAQs</a><span class="divider">/</span></li>
+<li class="active">{% trans "FAQs Item" %}: {{ faq.title}}
+</li>
+{% endblock %}
+
+
+
+
+{% block main %}
+
+<div class="span8 middle">
+<h1>{% trans "FAQs Item" %}</h1>
+
+ 
+<dl class="dl-horizontal">
+
+  <dt>{% trans "FAQ title" %}</dt>
+  <dd>
+    <ul class="unstyled nomargin">
+      <li> {{ faq.title }}</li>
+    </ul>
+  </dd>
+<dt>{% trans "FAQ description" %}</dt>
+  <dd>
+    <ul class="unstyled nomargin">
+      <li> {{ faq.faq_description|richtext_filter|safe }}</li>
+    </ul>
+  </dd>
+  
+  <dt>{% trans "FAQ anchor " %}</dt>
+  <dd>
+    <ul class="unstyled nomargin">
+      <li> {{ faq.faq_anchor|richtext_filter|safe  }}</li>
+    </ul>
+  </dd>
+  <dt>{% trans "Publication date" %}</dt>
+  <dd>
+    <ul class="unstyled nomargin">
+      <li> {{ faq.publish_date|date:"d M Y"  }}</li>
+    </ul>
+  </dd>
+
+  
+ </div>
+ <div class="span4 middle">
+  <div class="well localnav">
+    <p><a href="/faqnew}">« {% trans "Go Back" %}</a></p>
+    <p>
+    {% if user.is_superuser %} 
+        <a class="btn btn-small btn-info" href="/admin/ippc/faqsitem/{{ faq.id }}">Edit as Admin</a><br>
+    {% endif %}
+        
+    {% if perms.ippc.change_faqsitem  %}
+        <a class="btn btn-small btn-info" href="/faq/edit/{{faq.id}}"><i class="icon-edit icon-white"></i> Edit</a>
+    {% endif %}
+    
+    </p>
+ </div>
+</div>
+{% endblock %}

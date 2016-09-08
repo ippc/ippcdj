@@ -1,0 +1,64 @@
+{% extends "base.html" %}
+{% load pages_tags mezzanine_tags i18n future staticfiles %}
+
+{% block meta_title %}{% trans "FAQ Category" %}{% endblock %}
+
+
+
+
+{% block breadcrumb_menu %}
+<li><a href="/{{ LANGUAGE_CODE }}/">{% trans "Home" %}</a><span class="divider">/</span></li>
+<li><a href="/faqnew/">FAQs</a><span class="divider">/</span></li>
+<li class="active">{% trans "FAQ Category" %}: {{ faqcategory.title}}
+</li>
+{% endblock %}
+
+
+
+
+{% block main %}
+
+<div class="span8 middle">
+<h1>FAQ Category</h1>
+ 
+<dl class="dl-horizontal">
+
+  <dt>{% trans "Category" %}</dt>
+  <dd>
+    <ul class="unstyled nomargin">
+      <li> {{ faqcategory.title }}</li>
+    </ul>
+  </dd>
+<dt>{% trans "Order" %}</dt>
+  <dd>
+    <ul class="unstyled nomargin">
+      <li> {{ faqcategory.faqcat_oder }}</li>
+    </ul>
+  </dd>
+  <dt>{% trans "Publication date" %}</dt>
+  <dd>
+    <ul class="unstyled nomargin">
+      <li> {{ faqcategory.publish_date|date:"d M Y"  }}</li>
+    </ul>
+  </dd>
+
+</dl>
+ </div>
+
+<div class="span4 middle">
+<div class="well localnav">
+    <p><a href="/faqnew}">« {% trans "Go Back" %}</a></p>
+    <p>
+    {% if user.is_superuser %} 
+        <a class="btn btn-small btn-info" href="/admin/ippc/faqscategory/{{ faqcategory.id }}">Edit as Admin</a><br>
+    {% endif %}
+        
+    {% if perms.ippc.change_faqscategory  %}
+        <a class="btn btn-small btn-info" href="/faq/category_edit/{{faqcategory.id}}"><i class="icon-edit icon-white"></i> Edit</a>
+    {% endif %}
+    
+    </p>
+ </div>
+ </div>
+
+{% endblock %}
