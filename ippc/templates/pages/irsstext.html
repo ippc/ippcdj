@@ -1,0 +1,70 @@
+{% load mezzanine_tags staticfiles i18n %}
+
+{% if  page.id == 459 %} 
+<script type="text/javascript">
+    function toggle_visibility(id) {
+       
+       var e = document.getElementById(id);
+       
+       if(e.style.display == 'block')
+          e.style.display = 'none';
+       else
+          e.style.display = 'block';
+    }
+
+function hideshow(which){
+if (!document.getElementById)
+return
+if (which.style.display=="block")
+which.style.display="none"
+else
+which.style.display="block"
+}
+
+</script>
+
+<h5><a onclick="javascript:toggle_visibility('morediv');">Read more</a></h5>
+<div id="morediv" style="display:none;">
+<p>This objective is achieved through work under the two main components of the IRSS:</p>
+<ol><li>Implementation review system - monitors of the fulfilment of reporting requirements and other obligations under the IPPC as well as the implementation of standards.</li>
+<li>Implementation support system - consists of an active "standard implementation support programme" in the form of a help desk available to all contracting parties.</li>
+</ol>
+<p>The outputs of the above activities are summarized in the triennial Implementation Review Response report. From this report, action plans are developed, for input into the proposed work programme for consideration by the Commission on Phytosanitary Measures (CPM). The recommended action plans are a key input into the strategic and technical assistance planning of the CPM. </p>
+</div>
+<h5><a href="javascript:hideshow(document.getElementById('adiv1'))">Background</a></h5>
+<div id="adiv1" style="display: none">
+<p>The IRSS concept emanated from a CPM 2 (2007) proposal to the IPPC Subsidiary Body on Dispute Settlement (SBDS) for the establishment of a possible compliance mechanism. This concept was rejected because a compliance (enforcement) process was believed to be contrary to the general philosophy of the CPM and Food and Agriculture Organization of the United Nations (FAO) and is not specified in the IPPC. The concept was therefore redefined and a modified project for the development of an implementation review and support system was adopted by CPM 3 (2008). </p>
+<p>Advantages of the IRSS were expected to include:</p>
+<ul>
+<li>an improved ability to monitor, encourage and support the harmonized implementation of the IPPC and its ISPMs by contracting parties;</li>
+<li>the provision of feedback into the IPPC standard setting process as it related to implementation issues and improvement of quality and relevance of new and revised standards;</li>
+<li>identification and addressing emerging, and potential implementation problems before they become phytosanitary trade disputes, through an assistance-based and non-confrontational process; and</li>
+<li>establishing baseline information and annually updated data that could be used for the review of the state of plant protection in the world.</li>
+</ul>
+</div>
+<h5><a href="javascript:hideshow(document.getElementById('adiv2'))">Activities</a></h5>
+<div id="adiv2" style="display: none">
+<p>The IRSS builds on existing, or planned processes already approved by the CPM, while being consistent with the project objective of facilitating and promoting the implementation of the IPPC and ISPMs, and contributing to the objectives of the IPPC Strategic Framework.</p>
+<p>The IRSS is a mechanism to:</p>
+<ul>
+<li>provide key strategic and analytical support to various IPPC Secretariat Units and the implementation pilot work plan activities; </li>
+<li>conduct case studies on emerging issues related to thematic areas such as food security, climate change, trade facilitation, among others; </li>
+<li>define the future implementation priorities through a prioritization methodology to be tested during the implementation pilot project on surveillance; </li>
+<li>provide support and assistance to contracting parties seeking help in implementation of the Convention and ISPMs, through management of the IRSS Help desk.</li></ul>
+</div>
+<p>
+
+    <div class="span5">
+        <p><a href="/irss/activities/"><img alt="" src="/static/img/irss/activities.jpg" style="padding:0.5em 0 0;" /></a></p>
+        <h2><a href="/irss/activities/">Activities</a><br /></h2>
+        <p>Surveys, workshops, detailed studies and other information-gathering efforts are critical to tracking progress towards strong implementation of <a href="http://www.ippc.int/standards">ISPMs</a>.    </p>
+    </div>
+<div class="span5">
+    <p><a href="/irss/helpdesk/"><img alt="" src="/static/img/irss/helpdesk.jpg" style="padding:0.5em 0 0;" /></a></p>
+    <h2><a href="/irss/helpdesk/">Helpdesk</a></h2>
+    <p>The helpdesk provides an interactive <a href="/qa/">Question and Answer (Q&amp;A) Forum</a>, a list of <!--a href="/irss/helpdesk-faq/"--><a href="/faq/">Frequently Asked Questions (FAQs)</a> and links to <a href="http://www.phytosanitary.info">Phytosanitary Resources</a>.</p>
+</div>
+
+
+ </p>
+{% endif %}
