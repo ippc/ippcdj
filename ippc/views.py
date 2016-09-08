@@ -6436,7 +6436,7 @@ def send_qa_notification_message(type,id):
         answer = get_object_or_404(QAAnswer,  pk=id)
         qid=answer.question.id
         subject='IRSS - Q&A Forum automatic notification: new answer has been posted'
-        textmessage_moderator='<p>Dear Q&A moderator,<br><br>a new answer has been posted in the Q&A forum in draft mode and requires your action.<br><br>You can view it at the following url: <a href="https://www.ippc.int/en/qa/'+str(qid)+'/answers/">https://www.ippc.int/en/qa/'+str(qid)+'/answers/</a><br><br>International Plant Protection Convention team </p>'
+        textmessage_moderator='<p>Dear Q&A moderator,<br><br>A new answer has been posted in the Q&A forum in draft mode and requires your action.<br><br>You can view it at the following url: <a href="https://www.ippc.int/en/qa/'+str(qid)+'/answers/">https://www.ippc.int/en/qa/'+str(qid)+'/answers/</a><br><br>International Plant Protection Convention team </p>'
      
     emailto_moderator = ['']
     for g in Group.objects.filter(id=68):## mettere ID GROUP moderator QA
