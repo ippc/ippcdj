@@ -34,7 +34,7 @@
                  <!--strong><small>{% trans "Answer Count:"%}</small></strong> {{ answers|length }}<br-->
                  {% endif %}
         {% if question.status == 2  and question.questionopen == 1 and question.questiondiscard == 2%}
-           {% if request.user.is_authenticated %} <a class="btn btn-info btn-large" href="/qa/{{question.id}}/answer/create/">POST AN ANSWER</a>{% else %} <b><a href="/accounts/login/">Login</a> or <a>Register</a> to POST AN ANSWER</b>{% endif%}
+           {% if request.user.is_authenticated %} <a class="btn btn-info btn-large" href="/qa/{{question.id}}/answer/create/">POST AN ANSWER</a>{% else %} <b><a href="/accounts/login/">Login</a> or <a href="/accounts/autoregister/">Register</a> to POST AN ANSWER</b>{% endif%}
    {% endif %}
            
         </div>
