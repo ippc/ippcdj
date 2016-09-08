@@ -1,0 +1,40 @@
+{% extends "base.html" %}
+{% load pages_tags translate_tags mezzanine_tags i18n future staticfiles accounts_tags %}
+
+{% block meta_title %}{% trans "New IRSS Activity" %}{% endblock %}
+
+{% block body_class %}wide{% endblock %}
+
+{% block breadcrumb_menu %}
+<li><a href="/{{ LANGUAGE_CODE }}/">{% trans "Home" %}</a><span class="divider">/</span></li>
+<li><a href="/core-activities/implementation-review-and-support-system/">{% trans "IRSS" %}</a><span class="divider">/</span></li>
+<li><a href="/irss/activities/">{% trans "Activities" %}</a><span class="divider">/</span></li>
+<li class="active">{% trans "Create new" %}</li>
+{% endblock breadcrumb_menu %}
+
+{% block local_nav %}
+{% endblock local_nav %}
+
+{% block pageinfo %}
+{% endblock pageinfo %}
+
+{% block main %}
+
+<p class="pull-right">
+  <a href="javascript:history.go(-1)">{% trans "« Cancel and go back" %}</a>
+</p>
+
+<h1><span class="normal">{% trans "Create New IRSS Activity" %}</span></h1>
+
+<form class="customform" method="POST" action="" enctype="multipart/form-data">
+    {% csrf_token %}
+    <fieldset>
+       {% include "irss/irss_activities_form.html" %}
+         <div class="form-actions">
+            <button type="submit" class="btn btn-info btn-large" tabindex="7">{% trans "Submit" %}</button> or <a href="javascript:history.go(-1)">{% trans "Cancel" %}</a>
+        </div>
+      
+    </fieldset>
+</form>
+
+{% endblock %}

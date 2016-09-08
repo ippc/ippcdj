@@ -1,0 +1,219 @@
+{% extends "base.html" %}
+{% load pages_tags mezzanine_tags i18n future staticfiles accounts_tags %}
+
+{% block meta_title %}
+  {% trans "IRSS Activities" %}
+{% endblock %}
+
+{% block body_class %}wide{% endblock %}
+
+
+{% block breadcrumb_menu %}
+<li><a href="/{{ LANGUAGE_CODE }}/">{% trans "Home" %}</a><span class="divider">/</span></li>
+<li><a href="/core-activities/implementation-review-and-support-system/">{% trans "IRSS" %}</a><span class="divider">/</span></li>
+<li class="active">{% trans "Activities" %}</li>
+{% endblock %}
+
+
+{% block local_nav %}
+{% endblock local_nav %}
+
+{% block pageinfo %}
+{% endblock pageinfo %}
+
+{% block main %}
+   <script type="text/javascript">//<![CDATA[ 
+        $(window).load(function() {
+
+        $('#myCarousel, #myCarousel1').carousel({                         
+             interval: 6000
+            })
+        });//]]>  
+    </script>
+<p class="pull-right">
+  
+  {% if perms.ippc.add_irssactivity %}
+  <br>
+         <small><a class="btn btn-small btn-info" href="{% url 'irss-activity-create' %}">+ {% trans "Add new IRSS Activity" %}</a></small>
+  <br>
+  {% else %}
+  {% endif %}
+</p>
+
+<h1>
+  {% trans "Activities" %}</h1> 
+    <p>{% trans "The IRSS undertakes activities that evaluate and identify contracting parties' plant protection challenges and best practices. These activities generate national, regional and global information about implementation of the Convention, international standards for phytosanitary measures (ISPMs) and emerging issues in plant health. Below, you can find IRSS activity information, including reports on studies, surveys, workshops and symposiums. These activities feed into the Triennial Implementation Review Report which summarizes the situation of the implementation of the Convention and its standards by contracting parties. "%}</p>
+
+
+{% if latest %}
+
+<div class="row">
+    <div class="span4">
+    </div>  
+      <div class="span4">
+     <div id="myCarousel" class="carousel slide vertical" data-ride="carousel">
+         <h3>{% trans "Latest activities" %}</h3> 
+        <ol class="carousel-indicators">
+            <li data-target="#myCarousel" data-slide-to="0" class="active"><b>1</b></li>
+            <li data-target="#myCarousel" data-slide-to="1"><b>2</b></li>
+            <li data-target="#myCarousel" data-slide-to="2"><b>3</b></li>
+        </ol>
+
+                            <!-- Wrapper for slides -->
+                            <div class="carousel-inner" role="listbox">
+                               
+                                {% for entry in latest|slice:":3" %}
+                                {% if forloop.first %}
+                                <div class="item active">
+                                    {% else %}
+                                    <div class="item">
+                                        {% endif %}
+                                        {% if entry.image %} 
+                                        <a href="">
+                                            <!--img src="{{ MEDIA_URL }}{{entry.featured_image}}" style="width:400px;height:220px;"-->
+                                            <!--img src="{{ MEDIA_URL }}{ thumbnail entry.image 400 220 }"-->
+                                            <img src="{{ MEDIA_URL }}{{entry.image}}">
+                                            
+                                        </a>
+                                        <div style="position: relative; bottom: 0; left: 0.5em; width: 400px; font-weight: bold; color: #000;">
+                                            <center><h6>
+
+                                                    {{ entry.title}}
+                                                    
+                                                </h6></center>
+                                            </a>
+                                        </div>
+
+
+                                        {% endif %}
+                                    </div> 
+                                    {% endfor %}  
+                                
+                                </div>   
+                            </div>
+                        </div>   
+
+    </div>  
+
+ <div class="span4">
+    </div>  
+
+</div>  
+
+
+
+<div class="row">
+    <div class="span6">
+        <div class="panel panel-default">
+            <center><h3 class="panel-title">{% trans "IRSS Studies" %} </h3>
+            <img src="/static/img/irssstudy.png" alt="" width="200px" /><p></p></center>
+                 <table class="table table-condensed" id="publications">
+                {% for object in latest %}
+                {% if object.activitytype == 2 %}
+                   <tr>  
+                      <td> <a   href="{% url 'irss-activity-detail' object.id %}">{{ object.title }}</a></td>
+                      <td> 
+                          {% if user.is_superuser%}   
+                           
+                            <a class="small pull-right" href="/admin/ippc/irssactivity/{{ object.id }}"><i class="icon-edit"></i>{% trans "Edit as Admin" %}</a>&#160;
+                            {% endif %}
+                           {% if  perms.ippc.change_irssactivity %}  &#160;<a class="small pull-right" href="{% url 'irss-activity-edit'  object.id %}"><i class="icon-edit"></i>{% trans "Edit" %} </a>&#160;
+                          
+                        {% endif %}
+                      </td>
+                   </tr>
+                   {% endif %}
+                {% endfor %}    
+                </table>
+	</div>
+    </div>
+
+     <div class="span6">
+        <div class="panel panel-default">
+           <center> <h3 class="panel-title">{% trans "Workshops & Symposiums" %} </h3>
+            <img src="/static/img/irsssymp.png" alt="" width="200px" /><p></p>
+             </center> 
+                <table class="table table-condensed" id="publications">
+                {% for object in latest %}
+                {% if object.activitytype == 3 or  object.activitytype == 4 %}
+                   <tr>  
+                      <td> <a   href="{% url 'irss-activity-detail' object.id %}">{{ object.title }}</a></td>
+                      <td> 
+                          {% if user.is_superuser%}   
+                           
+                            <a class="small pull-right" href="/admin/ippc/irssactivity/{{ object.id }}"><i class="icon-edit"></i> {% trans "Edit as Admin" %}</a>&#160;
+                            {% endif %}
+                           {% if  perms.ippc.change_irssactivity %}  &#160;<a class="small pull-right" href="{% url 'irss-activity-edit'  object.id %}"><i class="icon-edit"></i> {% trans "Edit" %}</a>&#160;
+                          
+                        {% endif %}
+                      </td>
+                   </tr>
+                   {% endif %}
+                {% endfor %}    
+                </table>
+	</div>
+    </div>
+</div>
+
+
+
+
+<div class="row">
+    <div class="span6">
+        <div class="panel panel-default">
+          <center>  <h3 class="panel-title">{% trans "Surveys" %}</h3>
+            <img src="/static/img/irsssurvey.png" alt="" width="200px" /><p></p>
+           </center>      <table class="table table-condensed" id="publications">
+                {% for object in latest %}
+                {% if object.activitytype == 5 %}
+                   <tr>  
+                      <td> <a   href="{% url 'irss-activity-detail' object.id %}">{{ object.title }}</a></td>
+                      <td> 
+                          {% if user.is_superuser%}   
+                           
+                            <a class="small pull-right" href="/admin/ippc/irssactivity/{{ object.id }}"><i class="icon-edit"></i> {% trans "Edit as Admin" %}</a>&#160;
+                            {% endif %}
+                           {% if  perms.ippc.change_irssactivity %}  &#160;<a class="small pull-right" href="{% url 'irss-activity-edit'  object.id %}"><i class="icon-edit"></i> {% trans "Edit" %}</a>&#160;
+                          
+                        {% endif %}
+                      </td>
+                   </tr>
+                   {% endif %}
+                {% endfor %}    
+                </table>
+	</div>
+    </div>
+
+     <div class="span6">
+        <div class="panel panel-default">
+          <center>  <h3 class="panel-title">{% trans "Other" %}</h3>
+            <img src="/static/img/irssother.png" alt="" width="200px" /><p></p>
+              
+           </center>     <table class="table table-condensed" id="publications">
+                {% for object in latest %}
+                {% if object.activitytype == 6 %}
+                   <tr>  
+                      <td> <a   href="{% url 'irss-activity-detail' object.id %}">{{ object.title }}</a></td>
+                      <td> 
+                          {% if user.is_superuser%}   
+                           
+                            <a class="small pull-right" href="/admin/ippc/irssactivity/{{ object.id }}"><i class="icon-edit"></i> Edit as Admin</a>&#160;
+                            {% endif %}
+                           {% if  perms.ippc.change_irssactivity %}  &#160;<a class="small pull-right" href="{% url 'irss-activity-edit'  object.id %}"><i class="icon-edit"></i> {% trans "Edit" %}</a>&#160;
+                          
+                        {% endif %}
+                      </td>
+                   </tr>
+                   {% endif %}
+                {% endfor %}    
+                </table>
+	</div>
+    </div>
+</div>
+
+{% else %}
+<p>{% trans "No Activities available." %}</p>
+{% endif %}
+
+{% endblock %}
+

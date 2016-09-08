@@ -1,0 +1,78 @@
+{% extends "base.html" %}
+{% load pages_tags mezzanine_tags i18n future staticfiles accounts_tags %}
+
+{% block meta_title %}{% trans "Latest Publications" %}{% endblock %}
+
+{% block breadcrumb_menu %}
+
+
+<li><a href="/{{ LANGUAGE_CODE }}/">{% trans "Home" %}</a><span class="divider">/</span></li>
+<li><a href="/core-activities/implementation-review-and-support-system/">{% trans "IRSS" %}</a><span class="divider">/</span></li>
+<li><a href="/irss/activities/">{% trans "Activities" %}</a><span class="divider">/</span></li>
+<li class="active">{{ irssactivity.title }}</li>
+{% endblock breadcrumb_menu %}
+
+{% block mainspansize %}12{% endblock mainspansize %}
+
+
+
+
+{% block main %}
+<div class="span8 middle">
+    
+<h1>{{ irssactivity.title }}</h1> 
+<dl class="dl-horizontal">
+{% if irssactivity.activitytype %}
+  <dt>{% trans "Type of activity:" %}</dt>
+  <dd>
+    <ul class="unstyled nomargin">
+      <li>{{ irssactivity.irssctivity_type_verbose }}</li>
+    </ul>
+  </dd>
+  {% endif %}
+   {% if irssactivity.description %}
+  <dt>{% trans "Description of activity:" %}</dt>
+  <dd>{{ irssactivity.description|richtext_filter|safe }}</dd>
+  {% endif %}
+  
+  {% if irssactivity.authoreditor %}
+  <dt>{% trans "Author/Editor details:" %}</dt>
+  <dd>{{ irssactivity.authoreditor }}</dd>
+  {% endif %}
+  
+
+ 
+  
+     
+  <dt>{% trans "Document Files:" %}</dt>
+   {% for f in irssactivity.irssactivityfile_set.all %} 
+    
+  <dd><a href="{{MEDIA_URL}}{{f.file.name}}">{{ f.description }}</a></dd>
+{% endfor %}
+
+
+
+</dl>
+
+ </div>
+ <div class="span4 middle">
+     <div class="well localnav">
+  <p><a href="/irss/activities/">« {% trans "Back to" %} {% trans "IRSS Activities" %}</a></p>
+    {% if user.is_superuser %} 
+        <a class="btn btn-small btn-info" href="/admin/ippc/irssactivity/{{ irssactivity.id }}">Edit as Admin</a><br>
+    {% endif %}
+        
+    {% if perms.ippc.change_irssactivity %}
+        <a class="btn btn-small btn-info" href="/irss/activities/edit/{{ irssactivity.id }}"><i class="icon-edit icon-white"></i> Edit</a>
+    {% endif %}
+    <p> {% if irssactivity.image %}
+  <img style="margin:0 0 20px 10px;" src="{{ MEDIA_URL }}{{irssactivity.image}}">{#{ thumbnail irssactivity.image 250 250 }#}
+  {% endif %}
+        
+</p>
+</div>
+</div>
+
+
+{% endblock %}
+

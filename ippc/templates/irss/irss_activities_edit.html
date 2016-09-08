@@ -1,0 +1,44 @@
+{% extends "base.html" %}
+{% load pages_tags translate_tags mezzanine_tags i18n future staticfiles accounts_tags %}
+
+{% block meta_title %}{% trans "Edit Publication" %} - {{ cnpublication.country}} {% endblock %}
+
+
+{% block body_class %}wide{% endblock %}
+
+
+{% block breadcrumb_menu %}
+<li><a href="/{{ LANGUAGE_CODE }}/">{% trans "Home" %}</a><span class="divider">/</span></li>
+<li><a href="/core-activities/implementation-review-and-support-system/">{% trans "IRSS" %}</a><span class="divider">/</span></li>
+<li><a href="/irss/activities/">{% trans "Activities" %}</a><span class="divider">/</span></li>
+<li class="active">{% trans "Editing" %} {{ irssactivity.title }}</li>
+{% endblock %}
+
+{% block local_nav %}
+{% endblock local_nav %}
+
+{% block pageinfo %}
+{% endblock pageinfo %}
+
+{% block main %}
+
+<p class="pull-right">
+  <a href="javascript:history.go(-1)">{% trans "« Cancel and go back" %}</a>
+</p>
+
+
+<h1><small class="normal">{% trans "Editing" %}</small> {{ irssactivity.title }} <br><small class="normal">{% trans "Last updated on" %} {{irssactivity.modify_date}}</small></h1>
+
+<form enctype="multipart/form-data" class="customform" method="POST">
+    {% csrf_token %}
+    <fieldset>
+        {% include "irss/irss_activities_form.html" %}
+     <div class="form-actions">
+            <button type="submit" class="btn btn-info btn-large">{% trans "Update IRSS Activity" %}</button> {% trans "or" %} <a href="javascript:history.go(-1)">{% trans "Cancel" %}</a>
+        </div>
+    </fieldset>
+</form>
+
+
+{% endblock %}
+
