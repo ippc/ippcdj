@@ -36,12 +36,12 @@ draftprotocol_comment_create,draftprotocol_comment_edit,PublicationLibraryView,c
 CountryRegionsPercentageListView,CountryStatsreportsListView,CountryStatsTotalreportsListView,CountryRegionsUsersListView,CountryTotalUsersListView,CountryRegionsUsersNeverLoggedListView,\
 vote_answer_up ,vote_answer_down,reporting_trough_eppo,reminder_to_cn,\
 reporting_obligation_validate,event_reporting_validate,pest_report_validate,\
-QuestionListView, QuestionDetailView, QuestionAnswersView,question_create,question_edit,answer_edit  ,question_create,answer_create
-    
-#FAQsListView, faqcategory_edit,faqcategory_create,faq_edit,faq_create,FAQsItemDetailView,FAQsCategoryDetailView,\
-#QAQuestionListView, QAQuestionDetailView, QAQuestionAnswersView,question_create,answer_create
-#ContactUsEmailMessageListView,   ContactUsEmailMessageDetailView , contactus_email_send,\
+QAQuestionListView, QAQuestionDetailView, QAQuestionAnswersView,question_create,answer_create,\
+FAQsListView, faqcategory_edit,faqcategory_create,faq_edit,faq_create,FAQsItemDetailView,FAQsCategoryDetailView,\
+ContactUsEmailMessageListView,   ContactUsEmailMessageDetailView , contactus_email_send,UserAutoRegistrationListView,auto_register,auto_register_approve,auto_register_delete,\
+IRSSActivityListView,IRSSActivityDetailView,irss_activity_create,irss_activity_edit   
 
+#QuestionListView, QuestionDetailView, QuestionAnswersView,question_create,question_edit,answer_edit      
 #reporting_obligation_translate,
 from schedule.periods import Year, Month, Week, Day
 from mezzanine.core.views import direct_to_template
@@ -82,57 +82,66 @@ urlpatterns = patterns("",
   
   
    #---------IRSS:--------------------------#    
+    
     #url("devirss.ippc.int/$', direct_to_template, {"template": "irss/index.html"}, name="irss"),
-    url(r'^irss/$', direct_to_template, {"template": "irss/index.html"}, name="irss"),
-    url(r'^irss/activities/$', direct_to_template, {"template": "irss/irss_activities.html"}, name="irss activities"),
-    url(r'^irss/about/$', direct_to_template, {"template": "irss/irss_about.html"}, name="irssabout"),
-    url(r'^irss/country-profiles/$', direct_to_template, {"template": "irss/irss_countries.html"}, name="irsscn"),
+    #url(r'^irss/$', direct_to_template, {"template": "irss/index.html"}, name="irss"),
+   # url(r'^irss/activities_old/$', direct_to_template, {"template": "irss/irss_activities.html"}, name="irss activities"),
+    #url(r'^irss/about/$', direct_to_template, {"template": "irss/irss_about.html"}, name="irssabout"),
+    #url(r'^irss/country-profiles/$', direct_to_template, {"template": "irss/irss_countries.html"}, name="irsscn"),
     url(r'^irss/helpdesk/$', direct_to_template, {"template": "irss/irss_helpdeskhome.html"}, name="irsshd"),
-    url(r'^irss/helpdesk-1/$', direct_to_template, {"template": "irss/irss_helpdeskhome.html"}, name="irsshelpdesk"),
-    url(r'^irss/helpdesk-faq/$', direct_to_template, {"template": "irss/irss_helpdeskfaq.html"}, name="irssfaq"),
-	
-	#----------Q&A:------------------------------#    
-  
-  
-
-#    url(r'^qa/$',QAQuestionListView.as_view(), name='index'),
-#    url(r'^qa/(?P<pk>\d+)/$', QAQuestionDetailView.as_view(), name='detail'),
-#    url(r'^qa/create/$',view=question_create,name='question-create'),
-#    url(r'^qa/(?P<pk>\d+)/answers/$', QAQuestionAnswersView.as_view(), name='answers'),
-#    url(r'^qa/(?P<question_id>\d+)/answer/create/$', answer_create, name='answer-create'),
-#    url(r'^qa/(?P<question_id>\d+)/answer/(?P<id>\d+)/voteup/$', vote_answer_up, name='vote-up'),
-#    url(r'^qa/(?P<question_id>\d+)/answer/(?P<id>\d+)/votedown/$', vote_answer_down, name='vote-down'),
+    #url(r'^irss/helpdesk-1/$', direct_to_template, {"template": "irss/irss_helpdeskhome.html"}, name="irsshelpdesk"),
+    #url(r'^irss/helpdesk-faq/$', direct_to_template, {"template": "irss/irss_helpdeskfaq.html"}, name="irssfaq"),
     
-    
-     url(r'^qa/$',QuestionListView.as_view(), name='index'),
-    url(r'^qa/(?P<pk>\d+)/$', QuestionDetailView.as_view(), name='detail'),
+    #----------IRSS new activities:------------------------------#    
+  
+    url(r'^irss/activities/$',  view=IRSSActivityListView.as_view(), name='irss-activities-list'),
+    url(r'^irss/activities/(?P<pk>\d+)/$',view=IRSSActivityDetailView.as_view(), name="irss-activity-detail"),
+    url(r'^irss/activities/create/$', view=irss_activity_create, name='irss-activity-create'),
+    url(r'^irss/activities/edit/(?P<id>\d+)/$', view=irss_activity_edit, name='irss-activity-edit'),
+        
+     #----------IRSS Q&A:------------------------------#    
+  
+    url(r'^qa/$',QAQuestionListView.as_view(), name='index'),
+    url(r'^qa/(?P<pk>\d+)/$', QAQuestionDetailView.as_view(), name='detail'),
     url(r'^qa/create/$',view=question_create,name='question-create'),
-    url(r'^qa/edit/(?P<id>\d+)/$', view=question_edit, name='question-edit'),
-
-    url(r'^qa/(?P<pk>\d+)/answers/$', QuestionAnswersView.as_view(), name='answers'),
+    url(r'^qa/(?P<pk>\d+)/answers/$', QAQuestionAnswersView.as_view(), name='answers'),
     url(r'^qa/(?P<question_id>\d+)/answer/create/$', answer_create, name='answer-create'),
-    url(r'^qa/(?P<question_id>\d+)/answer/(?P<id>\d+)/edit/$', answer_edit, name='answer-edit'),
-    
     url(r'^qa/(?P<question_id>\d+)/answer/(?P<id>\d+)/voteup/$', vote_answer_up, name='vote-up'),
     url(r'^qa/(?P<question_id>\d+)/answer/(?P<id>\d+)/votedown/$', vote_answer_down, name='vote-down'),
     
     
+#     url(r'^qa/$',QuestionListView.as_view(), name='index'),
+#    url(r'^qa/(?P<pk>\d+)/$', QuestionDetailView.as_view(), name='detail'),
+#    url(r'^qa/create/$',view=question_create,name='question-create'),
+#    url(r'^qa/edit/(?P<id>\d+)/$', view=question_edit, name='question-edit'),
+#    url(r'^qa/(?P<pk>\d+)/answers/$', QuestionAnswersView.as_view(), name='answers'),
+#    url(r'^qa/(?P<question_id>\d+)/answer/create/$', answer_create, name='answer-create'),
+#    url(r'^qa/(?P<question_id>\d+)/answer/(?P<id>\d+)/edit/$', answer_edit, name='answer-edit'),
+#    url(r'^qa/(?P<question_id>\d+)/answer/(?P<id>\d+)/voteup/$', vote_answer_up, name='vote-up'),
+#    url(r'^qa/(?P<question_id>\d+)/answer/(?P<id>\d+)/votedown/$', vote_answer_down, name='vote-down'),
+    
+    #---------AUTO-REGISTER-USER ------------------------------#    
+    url(r'^accounts/pendingapproval/$',UserAutoRegistrationListView.as_view(), name='index'),
+    url(r'^accounts/autoregister/$',view=auto_register,name='auto-register'),
+    url(r'^accounts/autoregister/approve/(?P<id>\d+)/$',view=auto_register_approve,name='auto-register-approve'),
+    url(r'^accounts/autoregister/delete/(?P<id>\d+)/$',view=auto_register_delete,name='auto-register-delete'),
+   
    #---------EPPO REPORTING------------------------------------
     url(r'^epporeporting/', reporting_trough_eppo, name='reporting_trough_eppo'),
 
    #----------------------------------
    #--------- Reminder system ------------------------------------
-    url(r'^reminder/', reminder_to_cn, name='reminder_to_cn'),
+    url(r'^reminder/(?P<id>\d+)/$', reminder_to_cn, name='reminder_to_cn'),
     url(r'^remindermessages/all/$',view=ReminderMessageListView.as_view(), name='remindermessages-list'),
     url(r'^remindermessages/(?P<pk>\d+)/$',ReminderMessageDetailView.as_view(), name='remindermessages-detail'),
    #----------------- FAQs DB-------------
-# NEW  url(r'^faq/$',FAQsListView.as_view(), name='faqlist'),
-#   url(r'^faq/category/(?P<pk>\d+)/$', FAQsCategoryDetailView.as_view(), name='faqcategory-detail'),
-#   url(r'^faq/category_create/$',view=faqcategory_create,name='faqcategory-create'),
-#   url(r'^faq/category_edit/(?P<id>\d+)/$', view=faqcategory_edit, name='faqcategory-edit'),
-#   url(r'^faq/(?P<pk>\d+)/$', FAQsItemDetailView.as_view(), name='faq-detail'),
-#   url(r'^faq/create/$',view=faq_create,name='faq-create'),
-#   url(r'^faq/edit/(?P<id>\d+)/$', view=faq_edit, name='faq-edit'),
+   url(r'^faq/$',FAQsListView.as_view(), name='faqlist'),
+   url(r'^faq/category/(?P<pk>\d+)/$', FAQsCategoryDetailView.as_view(), name='faqcategory-detail'),
+   url(r'^faq/category_create/$',view=faqcategory_create,name='faqcategory-create'),
+   url(r'^faq/category_edit/(?P<id>\d+)/$', view=faqcategory_edit, name='faqcategory-edit'),
+   url(r'^faq/(?P<pk>\d+)/$', FAQsItemDetailView.as_view(), name='faq-detail'),
+   url(r'^faq/create/$',view=faq_create,name='faq-create'),
+   url(r'^faq/edit/(?P<id>\d+)/$', view=faq_edit, name='faq-edit'),
 
    #--------------------------------------
     url(r'^forum/', include('forum.urls')),
@@ -154,7 +163,7 @@ urlpatterns = patterns("",
     #     success_url="/thankyou/",
     # )),
     url("^sitemap/$", direct_to_template, {"template": "sitemap.html"}, name="sitemap"),
-    url("^contact/$", direct_to_template, {"template": "contact.html"}, name="contact"),
+    #url("^contact/$", direct_to_template, {"template": "contact.html"}, name="contact"),
     url("^thankyou/$", direct_to_template, {"template": "thankyou.html"}, name="thankyou"),
     # url("^feeds/$", direct_to_template, {"template": "feeds.html"}, name="feeds"),
     # url("^legal/$", direct_to_template, {"template": "legal.html"}, name="legal"),
@@ -265,12 +274,14 @@ urlpatterns = patterns("",
         view=email_send,
         name='email-send'),
      #------- CONTACT US EMAIL--------------------------------------#
-#NEW    url(r'^contactusemail/all/$', view=ContactUsEmailMessageListView.as_view(),  name='contactus-email-list'),
-#    url(r'^contactusemail/(?P<pk>\d+)/$',ContactUsEmailMessageDetailView.as_view(), name='contactus-email-detail'),
-#    url(r'^contactusemail/send/$',  view=contactus_email_send,    name='contactus-email-send'),    
-    #--------------------------------------#
+    url(r'^contactusemail/all/$', view=ContactUsEmailMessageListView.as_view(),  name='contactus-email-list'),
+    url(r'^contactusemail/(?P<pk>\d+)/$',ContactUsEmailMessageDetailView.as_view(), name='contactus-email-detail'),
+    url(r'^contact/$',  view=contactus_email_send,    name='contactus-email-send'),    
+#   url(r'^contactusemail/send/$',  view=contactus_email_send,    name='contactus-email-send'),    
+# --------------------------------------#
    url(r'^countries/(?P<country>[\w-]+)/relatedinformations/$',
-        view=CountryRelatedView.as_view(),        name='related-info'), 
+        view=CountryRelatedView.as_view(),
+        name='related-info'), 
      #--------------------------------------#    
     url(r'^countries/(?P<country>[\w-]+)/pestreports/$',
         view=PestReportListView.as_view(),
