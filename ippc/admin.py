@@ -134,10 +134,10 @@ class QAAnswerAdmin(admin.ModelAdmin):
                 notifificationmessage.content_subtype = "html"  
                 sent =notifificationmessage.send()
                 
+                question = get_object_or_404(QAQuestion,  pk=request.POST['question'])
                 emailto_all2 = []
                 user_obj2=User.objects.get(id= question.user.id)
                 emailto_all2.append(str(user_obj2.email))
-                question = get_object_or_404(QAQuestion,  pk=request.POST['question'])
                
                 subject2='IRSS - Q&A Forum automatic notification: an answer to your question has been published.'    
                 textmessage2='<html><body><p>Dear IPPC user,<br><br>An answer to your question has been published after being reviewed.<br><br>You can view it at the following url: <a href="https://www.ippc.int/en/qa/'+str(request.POST['question'])+'/answers/">https://www.ippc.int/en/qa/'+str(request.POST['question'])+'/answers/</a><br><br>International Plant Protection Convention team </p></body></html>'
