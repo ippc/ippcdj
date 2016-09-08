@@ -1941,6 +1941,7 @@ class IRSSActivity(Displayable, models.Model):
     
     activitytype = models.IntegerField(_("Type of activity"), choices=IRSS_ACT_TYPE_CHOICES, default=IRSS_ACT_TYPE_1)
     authoreditor = models.CharField(_("Author/Editor"),max_length=200)
+    short_description = models.TextField(_("Description"),  blank=True, null=True)
     modify_date = models.DateTimeField(_("Modified date"), blank=True, null=True, editable=False)
     image = models.ImageField(_("Image of document"), upload_to="irss/images/%Y/%m/", blank=True)
   

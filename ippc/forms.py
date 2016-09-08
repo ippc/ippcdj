@@ -571,11 +571,12 @@ class IRSSActivityForm(forms.ModelForm):
         fields = [
            'title', 
            'activitytype',
-           'description',
+           
+           'short_description',
            'authoreditor',
            'image',
            ]
-        exclude = ('author', 'slug', 'publish_date',  'modify_date')
+        exclude = ('author', 'slug', 'publish_date',  'modify_date','description',)
         widgets = {
             'country': forms.HiddenInput(),   
             'publication_date': AdminDateWidget(),
