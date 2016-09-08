@@ -5822,7 +5822,7 @@ def contactus_email_send(request):
              sent = 0
              messages=[]
              subject=subj1+': '+str(request.POST['subject'])
-             message= mail.EmailMessage(request.POST['subject'],request.POST['messagebody'],request.POST['emailfrom'],[emails_a], ['paola.sentinelli@fao.org'])#emailto_all for PROD, in TEST all to paola#
+             message= mail.EmailMessage(subject,request.POST['messagebody'],request.POST['emailfrom'],[emails_a], ['paola.sentinelli@fao.org'])#emailto_all for PROD, in TEST all to paola#
              message.content_subtype = "html"
              messages.append(message)
              connection = mail.get_connection()
