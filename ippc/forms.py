@@ -19,10 +19,9 @@ PartnersPublication,PartnersPublicationFile,PartnersPublicationUrl,\
 PartnersNews,PartnersNewsFile,PartnersNewsUrl, \
 CountryNews,CountryNewsFile,CountryNewsUrl, EmailUtilityMessage, EmailUtilityMessageFile,\
 DraftProtocol,DraftProtocolFile,DraftProtocolComments,NotificationMessageRelate,Poll,  Poll_Choice,\
-Question,Answer
-#FAQsCategory,FAQsItem,\
-#QAQuestion,QAAnswer,ContactUsEmailMessage,\
-#,TransReportingObligation
+FAQsCategory,FAQsItem,\
+QAQuestion,QAAnswer,ContactUsEmailMessage,UserAutoRegistration,IRSSActivityFile,IRSSActivity
+#,TransReportingObligation,Question,Answer
 
 
 
@@ -32,50 +31,61 @@ from django.forms.models import inlineformset_factory
 from django.forms.formsets import formset_factory
 from django.contrib.admin.widgets import AdminDateWidget 
 
-class QuestionForm(forms.ModelForm):
-    class Meta:
-        model =  Question
-        fields = [
-                'question_title',
-                'description',
-                'pub_date',
-              
-                       ]
-        widgets = {
-            'pub_date': AdminDateWidget(),
-        }  
-class AnswerForm(forms.ModelForm):
-    class Meta:
-        model =  Answer
-        fields = [
-                'answertext',
-                'bestanswer',
-            ]
+#class QuestionForm(forms.ModelForm):
+#    class Meta:
+#        model =  Question
+#        fields = [
+#                'question_title',
+#                'description',
+#                'pub_date',
+#              
+#                       ]
+#        widgets = {
+#            'pub_date': AdminDateWidget(),
+#        }  
+#class AnswerForm(forms.ModelForm):
+#    class Meta:
+#        model =  Answer
+#        fields = [
+#                'answertext',
+#                'bestanswer',
+#            ]
 
 
 #NEW
-#class QAQuestionForm(forms.ModelForm):
-#    class Meta:
-#        model =  QAQuestion
-#        fields = [
-#                'title',
-#                'description',
-#                
-#                 ]
-##        widgets = {
-##            'publish_date': AdminDateWidget(),
-##        }
-#        exclude = ( 'slug',  'modify_date','publish_date','status',         'questionopen', )
-#     
-#class QAAnswerForm(forms.ModelForm):
-#    class Meta:
-#        model =  QAAnswer
-#        fields = [
-#                'answertext',
-#              
-#                 ]
-#        exclude = ('status', 'slug',  'modify_date','publish_date' ,  'bestanswer',)                          
-#        
+
+class UserAutoRegistrationForm(forms.ModelForm):
+    class Meta:
+        model =  UserAutoRegistration
+        fields = [
+                'firstname',
+                'lastname',
+                'email',
+                'organisation',
+                'country',
+        ]
+        exclude = ( 'status', 'publish_date')
+
+        
+class QAQuestionForm(forms.ModelForm):
+    class Meta:
+        model =  QAQuestion
+        fields = [
+                'title',
+                'description',
+                
+                 ]
+
+        exclude = ( 'slug',  'modify_date','publish_date','status',         'questionopen', )
+     
+class QAAnswerForm(forms.ModelForm):
+    class Meta:
+        model =  QAAnswer
+        fields = [
+                'answertext',
+              
+                 ]
+        exclude = ('status', 'slug',  'modify_date','publish_date' ,  'bestanswer',)                               
         
 class PestReportForm(forms.ModelForm):
 
@@ -507,40 +517,40 @@ class EmailUtilityMessageForm(forms.ModelForm):
 EmailUtilityMessageFileFormSet = inlineformset_factory(EmailUtilityMessage,  EmailUtilityMessageFile,extra=1)
 
 ##NEW
-#class ContactUsEmailMessageForm(forms.ModelForm):
-#
-#    class Meta:
-#        model = ContactUsEmailMessage
-#        fields = [
-#           'emailfrom',
-#           'contact_us_type',
-#           'subject', 
-#           'messagebody',
-#           ]
-#           
-#    exclude = ( 'date','sent', )
-#   
-#class FAQsCategoryForm(forms.ModelForm):
-#    class Meta:
-#        model =  FAQsCategory
-#        fields = [
-#                'title',
-#                'faqcat_oder',
-#                  ]
-#        exclude = ('author', 'slug', 'publish_date',  'modify_date')
-#  
-#class FAQsItemForm(forms.ModelForm):
-#    class Meta:
-#        model =  FAQsItem  
-#   
-#        fields = [
-#                'title',
-#                'faqcategory',
-#                'faq_description',
-#                'faq_anchor'
-#                 ]
-#  
-#        exclude = ( 'modify_date', )      
+class ContactUsEmailMessageForm(forms.ModelForm):
+
+    class Meta:
+        model = ContactUsEmailMessage
+        fields = [
+           'emailfrom',
+           'contact_us_type',
+           'subject', 
+           'messagebody',
+           ]
+           
+    exclude = ( 'date','sent', )
+   
+class FAQsCategoryForm(forms.ModelForm):
+    class Meta:
+        model =  FAQsCategory
+        fields = [
+                'title',
+                'faqcat_oder',
+                  ]
+        exclude = ('author', 'slug', 'publish_date',  'modify_date')
+  
+class FAQsItemForm(forms.ModelForm):
+    class Meta:
+        model =  FAQsItem  
+   
+        fields = [
+                'title',
+                'faqcategory',
+                'faq_description',
+                'faq_anchor'
+                 ]
+  
+        exclude = ( 'modify_date', )      
 
 class NotificationMessageRelateForm(forms.ModelForm):
     class Meta:
@@ -551,4 +561,25 @@ class NotificationMessageRelateForm(forms.ModelForm):
            'partners', 
            'notifysecretariat',
            ]
+           
+           
+class IRSSActivityForm(forms.ModelForm):
+
+    
+    class Meta:
+        model = IRSSActivity
+        fields = [
+           'title', 
+           'activitytype',
+           'description',
+           'authoreditor',
+           'image',
+           ]
+        exclude = ('author', 'slug', 'publish_date',  'modify_date')
+        widgets = {
+            'country': forms.HiddenInput(),   
+            'publication_date': AdminDateWidget(),
+        }
+IRSSActivityFileFormSet = inlineformset_factory(IRSSActivity,  IRSSActivityFile,extra=1)
+      
       
