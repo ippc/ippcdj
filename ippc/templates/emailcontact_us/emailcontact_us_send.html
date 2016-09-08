@@ -1,0 +1,69 @@
+{% extends "base.html" %}
+{% load pages_tags translate_tags mezzanine_tags i18n future staticfiles accounts_tags %}
+
+{% block meta_title %}{% trans "Contact us message" %} {% endblock %}
+
+{% block body_class %}wide{% endblock %}
+
+{% block breadcrumb_menu %}
+<li>
+  <a href="/">{% trans "Home" %}</a><span class="divider">/</span></li>
+  <li class="active">Contact us</li>
+
+{% endblock %}
+
+{% block local_nav %}
+{% endblock local_nav %}
+
+{% block pageinfo %}
+{% endblock pageinfo %}
+
+{% block main %}
+
+<p class="pull-right">
+  <a href="javascript:history.go(-1)">{% trans "« Cancel and go back" %}</a>
+</p>
+
+<h1><span class="normal">{% trans "Contact IPPC" %}</span> </h1>
+
+
+
+<div class="alert alert-info">
+    <h3 class="title">General information</h3> 
+    <div>
+        <p>The Secretariat of the International Plant Protection Convention is located at the headquarters of the Food and Agriculture Organization (FAO) of the United Nations in Rome, Italy.</p>
+        <p><b>Address:</b>International Plant Protection Convention Secretariat,<br>Food and Agriculture Organization of the United Nations,<br>AGDI, Viale delle Terme di Caracalla,<br>00153 Rome, Italy </p>
+    </div>
+</div>
+
+
+<p class="alert alert-warning">We will respond as soon as possible. Please check the <a href="/faq">FAQ</a> before emailing.</p> 
+
+<form class="customform" method="POST" action="" enctype="multipart/form-data">
+  {% csrf_token %}
+  <fieldset>
+        {% include "emailcontact_us/emailcontact_us_sendform.html" %}
+        <div class="alert alert-warning">
+           {% trans "This question is for testing whether you are a human visitor and<br>to prevent automated spam submissions." %}<br>
+            {% if error_captcha == 'error'%}
+                <div class="alert alert-error">
+            {% else %} 
+                <div class="alert alert-info">
+            {% endif %} 
+                 <b>{% trans "Math question" %}:</b>
+                 <span style="font-size: 24px; color: green;">{{x_element}} + {{y_element}} = </span>
+                 <input id="id_captcha" style="width: 20px" name="captcha" type="text" value=""/> 
+                 {% if error_captcha == 'error'%}{% trans " The answer you entered for the CAPTCHA was not correct!" %} {%endif%}
+                 <input name="result_element" type="hidden" value="{{result_element}}"/>
+                 <input name="x_element" type="hidden" value="{{x_element}}"/>
+                 <input name="y_element" type="hidden" value="{{y_element}}"/>
+	        </div> 
+        </div>			
+        <div class="form-actions">
+            <button type="submit" class="btn btn-info btn-large" tabindex="7">{% trans "Send" %}</button> or <a href="javascript:history.go(-1)">{% trans "Cancel" %}</a>
+        </div>
+    </fieldset>
+</form>
+
+
+{% endblock %}

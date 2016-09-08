@@ -1,0 +1,54 @@
+{% extends "base.html" %}
+{% load pages_tags mezzanine_tags i18n future staticfiles accounts_tags %}
+
+{% block meta_title %}{% trans "Email" %}{% endblock %}
+
+{% block breadcrumb_menu %}
+<li><a href="/{{ LANGUAGE_CODE }}/">{% trans "Home" %}</a><span class="divider">/</span></li>
+
+<li><a href="/contact/">Contact us</a><span class="divider">/</span></li>
+<li class="active">Message: {{ emailmessage.subject }}</li>
+{% endblock %}
+
+{% block local_nav %}
+
+{% endblock local_nav %}
+
+{% block pageinfo %}
+
+{% endblock pageinfo %}
+
+{% block main %}
+<h1>{{ emailmessage.subject }}</h1> 
+<dl class="dl-horizontal">
+<dt>{% trans "Sent date" %}</dt>
+<dd>{{ sometime }}  {{emailmessage.date|date:"d-m-Y"}} at {{emailmessage.date|date:"H:m:s"}} CET</dd>
+
+<dt>{% trans "Sent status" %}</dt>
+<dd>{% if emailmessage.sent %}
+<i class="icon-envelope"></i> <i class="icon-ok"></i> 
+{% else %}
+<i class="icon-envelope"></i> <i class="icon-exclamation-sign"> </i> not sent
+{% endif %}
+
+</dd>
+   
+<dt>{% trans "From" %}</dt>
+<dd>{{ emailmessage.emailfrom }}</dd>
+
+<dt>{% trans "Aerea of Interest" %}</dt>
+<dd>{{ emailmessage.contact_us_type_verbose }}</dd>
+
+<dt>{% trans "Subject" %}</dt>
+<dd>{{ emailmessage.subject }}</dd>
+
+<dt>{% trans "Message" %}</dt>
+<dd>{{ emailmessage.messagebody|richtext_filter|safe }} </dd>
+
+ 
+ 
+    
+</dl>
+
+{% endblock %}
+
