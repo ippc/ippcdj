@@ -6425,7 +6425,7 @@ def send_qa_notification_message(type,id):
         textmessage_moderator='<p>Dear Q&A moderator,<br><br>a new answer has been posted in the Q&A forum in draft mode and requires your action.<br><br>You can view it at the following url: <a href="http://test.ippc.int/en/qa/'+str(qid)+'/answers/">http://test.ippc.int/en/qa/'+str(qid)+'/answers/</a><br><br>International Plant Protection Convention team </p>'
      
     emailto_moderator = ['']
-    for g in Group.objects.filter(id=65):## mettere ID GROUP moderator QA
+    for g in Group.objects.filter(id=68):## mettere ID GROUP moderator QA
             users = g.user_set.all()
             for u in users:
                user_obj=User.objects.get(username=u)
