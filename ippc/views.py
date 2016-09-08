@@ -5780,35 +5780,48 @@ def contactus_email_send(request):
     if request.method == "POST" :
         if form.is_valid() and request.POST['captcha'] ==  request.POST['result_element'] :
              emails_a=''
-       
+             subj1='Contact IPPC: '
              if request.POST['contact_us_type'] == 1:
                 emails_a='ippc@fao.org'
+                subj1='Contact IPPC: General enquiries - '
              elif request.POST['contact_us_type']== 2:
                 emails_a='Orlando.sosa@fao.org'
+                subj1='Contact IPPC: Implementation / Capacity Development - '
              elif request.POST['contact_us_type']== 3:
                  emails_a='Dorota.buzon@fao.org'
+                 subj1='Contact IPPC: Registration of ISPM 15 symbol - '
              elif request.POST['contact_us_type']== 4:
                  emails_a='Dorota.buzon@fao.org'
+                 subj1='Contact IPPC: National Reporting Obligations (NROs) - '
              elif request.POST['contact_us_type']== 5:
                  emails_a='dave.nowell@fao.org'
+                 subj1='Contact IPPC: News / Communications - '
              elif request.POST['contact_us_type']== 6:
                  emails_a='Shane.Sela@fao.org'
+                 subj1='Contact IPPC: ePhyto - '
              elif request.POST['contact_us_type']== 7:
                  emails_a='IPPC-OCS@fao.org'
+                 subj1='Contact IPPC: Online Comment System (OCS) -'
              elif request.POST['contact_us_type']== 8:
                  emails_a='Craig.Fedchock@fao.org'
+                 subj1='Contact IPPC: Resource Mobilization -'
              elif request.POST['contact_us_type']== 9:
                  emails_a='brent.larson@fao.org'
+                 subj1='Contact IPPC: Standard Setting - '
              elif request.POST['contact_us_type']== 10:
                  emails_a='IPPC-IT@fao.org'
+                 subj1='Contact IPPC: Technical assistance (IT/bugs) - '
              elif request.POST['contact_us_type']== 11:
+                 subj1='Contact IPPC: International Year of Plant Health (IYPH) -'
                  emails_a='IPPC-IYPH@fao.org'
+     
      
              new_contactusemailmessage = form.save(commit=False)
              new_contactusemailmessage.date=timezone.now()
              form.save()
              sent = 0
              messages=[]
+             subject=subj1+': '+str(request.POST['subject'])
              message= mail.EmailMessage(request.POST['subject'],request.POST['messagebody'],request.POST['emailfrom'],[emails_a], ['paola.sentinelli@fao.org'])#emailto_all for PROD, in TEST all to paola#
              message.content_subtype = "html"
              messages.append(message)
