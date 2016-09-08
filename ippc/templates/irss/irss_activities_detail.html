@@ -30,9 +30,9 @@
     </ul>
   </dd>
   {% endif %}
-   {% if irssactivity.description %}
+   {% if irssactivity.short_description %}
   <dt>{% trans "Description of activity:" %}</dt>
-  <dd>{{ irssactivity.description|richtext_filter|safe }}</dd>
+  <dd>{{ irssactivity.short_description|richtext_filter|safe }}</dd>
   {% endif %}
   
   {% if irssactivity.authoreditor %}
