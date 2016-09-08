@@ -71,7 +71,7 @@ class QAQuestionAdmin(admin.ModelAdmin):
                 user_obj=User.objects.get(id= request.POST['user'])
                 emailto_all.append(str(user_obj.email))
                 subject='IRSS - Q&A Forum automatic notification: your question has been published.'    
-                textmessage='<html><body><p>Dear IPPC user,<br><br>Your question has been reviewed and now has been published.<br><br>You can view it at the following url: <a href="http://test.ippc.int/en/qa/">http://test.ippc.int/en/qa/</a><br><br>International Plant Protection Convention team </p></body></html>'
+                textmessage='<html><body><p>Dear IPPC user,<br><br>Your question has been reviewed and now has been published.<br><br>You can view it at the following url: <a href="https://www.ippc.int/en/qa/">https://www.ippc.int/en/qa/</a><br><br>International Plant Protection Convention team </p></body></html>'
                 notifificationmessage = mail.EmailMessage(subject,textmessage,'ippc@fao.org',  emailto_all, ['paola.sentinelli@fao.org'])
                 notifificationmessage.content_subtype = "html"  
                 sent =notifificationmessage.send()
@@ -129,7 +129,7 @@ class QAAnswerAdmin(admin.ModelAdmin):
                 user_obj=User.objects.get(id= request.POST['user'])
                 emailto_all.append(str(user_obj.email))
                 subject='IRSS - Q&A Forum automatic notification: your answer has been published.'    
-                textmessage='<html><body><p>Dear IPPC user,<br><br>Your answer has been reviewed and now has been published.<br><br>You can view it at the following url: <a href="http://test.ippc.int/en/qa/'+str(request.POST['question'])+'/answers/">http://test.ippc.int/en/qa/'+str(request.POST['question'])+'/answers/</a><br><br>International Plant Protection Convention team </p></body></html>'
+                textmessage='<html><body><p>Dear IPPC user,<br><br>Your answer has been reviewed and now has been published.<br><br>You can view it at the following url: <a href="https://www.ippc.int/en/qa/'+str(request.POST['question'])+'/answers/">https://www.ippc.int/en/qa/'+str(request.POST['question'])+'/answers/</a><br><br>International Plant Protection Convention team </p></body></html>'
                 notifificationmessage = mail.EmailMessage(subject,textmessage,'ippc@fao.org',  emailto_all, ['paola.sentinelli@fao.org'])
                 notifificationmessage.content_subtype = "html"  
                 sent =notifificationmessage.send()
@@ -140,7 +140,7 @@ class QAAnswerAdmin(admin.ModelAdmin):
                 question = get_object_or_404(QAQuestion,  pk=request.POST['question'])
                
                 subject2='IRSS - Q&A Forum automatic notification: an answer to your question has been published.'    
-                textmessage2='<html><body><p>Dear IPPC user,<br><br>An answer to your question has been published after being reviewed.<br><br>You can view it at the following url: <a href="http://test.ippc.int/en/qa/'+str(request.POST['question'])+'/answers/">http://test.ippc.int/en/qa/'+str(request.POST['question'])+'/answers/</a><br><br>International Plant Protection Convention team </p></body></html>'
+                textmessage2='<html><body><p>Dear IPPC user,<br><br>An answer to your question has been published after being reviewed.<br><br>You can view it at the following url: <a href="https://www.ippc.int/en/qa/'+str(request.POST['question'])+'/answers/">https://www.ippc.int/en/qa/'+str(request.POST['question'])+'/answers/</a><br><br>International Plant Protection Convention team </p></body></html>'
                 notifificationmessage2 = mail.EmailMessage(subject2,textmessage2,'ippc@fao.org',  emailto_all2, ['paola.sentinelli@fao.org'])
                 notifificationmessage2.content_subtype = "html"  
                 sent =notifificationmessage2.send()
@@ -153,7 +153,7 @@ class QAAnswerAdmin(admin.ModelAdmin):
                 
                 subject='IRSS - Q&A Forum automatic notification: your answer has been rejected.'    
                 
-                textmessage='<html><body><p>Dear IPPC user,<br><br>Your answer to the <a href="http://test.ippc.int/en/qa/'+str(request.POST['question'])+'/answers/">question</a> has been reviewed and has been rejected.<br><br>International Plant Protection Convention team </p></body></html>'
+                textmessage='<html><body><p>Dear IPPC user,<br><br>Your answer to the <a href="https://www.ippc.int/en/qa/'+str(request.POST['question'])+'/answers/">question</a> has been reviewed and has been rejected.<br><br>International Plant Protection Convention team </p></body></html>'
 
                 notifificationmessage = mail.EmailMessage(subject,textmessage,'ippc@fao.org',  emailto_all, ['paola.sentinelli@fao.org'])
                 notifificationmessage.content_subtype = "html"  
@@ -250,7 +250,7 @@ countrypages_extra_fieldsets = ((None, {"fields": ("name", "country_slug", "iso"
 def response_change(self, request, obj):
     print('ccccccccccccccccccccccccc')
     if not '_continue' in request.POST:
-        return HttpResponseRedirect("http://test.ippc.int/en/core-activities/governance/")
+        return HttpResponseRedirect("https://www.ippc.int/en/core-activities/governance/")
     else:
         return super(PublicationLibraryPageAdmin, self).response_change(request, obj)
 
