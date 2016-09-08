@@ -4,13 +4,21 @@
 {% block meta_title %}{% trans "Q & A Forum" %}{% endblock %}
 
 {% block breadcrumb_menu %}
-<li><a href="/{{ LANGUAGE_CODE }}/">{% trans "Home" %}</a><span class="divider">/</span></li>
-<li><a href="/core-activities/implementation-review-and-support-system/">{% trans "IRSS" %}</a><span class="divider">/</span></li>
-<li class="active">{% trans "QA Forum" %}</li>
+	<li>
+	  <a href="/{{ LANGUAGE_CODE }}/">{% trans "Home" %}</a>
+	  <span class="divider">/</span>
+	</li>
+	<li>
+		<a href="/core-activities/implementation-review-and-support-system/">{% trans "IRSS" %}</a>
+		<span class="divider">/</span>
+	</li>
+	</li>
+	<li class="active">
+		{% trans "QA Forum" %}
+	</li>
 {% endblock breadcrumb_menu %}
 
-
-{% block mainspansize %}12{% endblock mainspansize %}
+		{% block mainspansize %}12{% endblock mainspansize %}
     {% block main %}
     <script type="text/javascript">
         function toggle_visibility(id, id1) {
@@ -29,19 +37,11 @@
     </script>
 
     <h2 class="block-title">Question and Answer Forum</h2>
-	<p class="pull-right"> 
-            {% if request.user.is_authenticated %}
-                <a class="btn btn-primary btn-large btn-custom" href="/qa/create">Ask a Question</a>
-            {% else %} 
-                <b><a href="/accounts/login/">Login</a> or <a href="/accounts/autoregister/">Register</a> to ask a question</b>
-            {% endif%}
-        </p>
-        
+		<p class="pull-right"><a class="btn btn-primary btn-large btn-custom" href="/qa/create">Ask a Question</a></p>
     <ul class="nav nav-pills">
         <li><a onclick="javascript:toggle_visibility('questions', 'etiquette');" style="cursor:pointer;">All Questions</a></li>
         <li><a onclick="javascript:toggle_visibility('etiquette', 'questions');" style="cursor:pointer;">Forum Etiquette</a></li>
     </ul>
-    
         <div id="etiquette" style="display:none;">
             <p><strong>1. Quality of posts</strong></p>
             <p>All questions and answers posted are moderated by the IPPC Secretariat Team. We intend to maintain strong relevance and a high quality of posts to ensure that the discussions are useful to you as a Contracting Party of the IPPC.</p>
@@ -62,40 +62,17 @@
                         <th>Post date</th>
                         <th>Answers</th>
                         <th>Resolved</th>
-                        {% if user.is_superuser or perms.ippc.change_publication  %}
-                               <th>Open</th>
-                               <th>Question status</th>
-                        {% endif %}
-                    </tr>  
-                </thead>  
-                <tbody>
+                    </tr>  </thead>  <tbody>
                     {% for question in questions %}
-                    {% if question.2 == 2 and question.6 == 1 and question.7 == 2%}
+
+
                     <tr>
                         <td><a href="/qa/{{question.0}}/answers">{{ question.1 }}</a></td>
-                        <td>{{question.5}} </td>
-                        <td>{{question.3}}  </td>
-                        <td>{{question.4}}</td>
-                         {% if user.is_superuser or perms.ippc.change_publication  %}
-                         <td> <span style="color: green;">OPEN </span></td>
-                         <td> <span style="color: green;">PUBLISHED</span> </td>
-                        {% endif %}
+                        <td>{{question.4}} </td>
+                        <td>{{question.2}}  </td>
+                        <td>{{question.3}}</td>
                     </tr> 
-                    {% else %}
-                      {% if user.is_superuser or perms.ippc.change_publication  %}
-  
-                      <tr>
-                        <td><a href="/qa/{{question.0}}/answers">{{ question.1 }}</a></td>
-                        <td>{{question.5}} </td>
-                        <td>{{question.3}}  </td>
-                        <td>{{question.4}}</td>
-                        {% if user.is_superuser or perms.ippc.change_publication  %}
-                                <td>{% if question.6 == 0 %}<span style="color: red;"> CLOSED</span> {% else %} <span style="color: green;">OPEN</span> {% endif %}</td>
-                                <td>{% if question.7 == 1 %}<span style="color: red;"> To revise</span> {% elif question.7 == 3 %}<span style="color: red;"> REJECTED</span> {% else %} <span style="color: green;">PUBLISHED</span> {% endif %}</td>
-                        {% endif %}
-                        </tr> 
-                       {% endif %}
-                    {% endif %}
+
                     {% endfor %}
 
 

@@ -1,0 +1,84 @@
+{% load pages_tags mezzanine_tags i18n future staticfiles %}
+{% if question.status == 2  and question.questionopen == 1 and question.questiondiscard == 2%}
+<div>
+  {% else  %}             
+<div class="alert alert-error">
+  {% endif  %}             
+    <h1>{{ question.title }}</h1>
+
+    {% if user.is_superuser or perms.ippc.change_publication  %}
+       <p><b>Question Status:</b>
+       {% if question.questiondiscard == 1 %}
+            <span style="color: red;">TO REVISE</span> 
+       {% elif question.questiondiscard == 3 %}
+            <span style="color: red;">REJECTED</span> 
+       {% else %}
+       <span style="color: green;">PUBLISHED</span> 
+       {% endif %}
+            
+       
+       </p>
+       <p><b>OPEN: </b>{{ question.questionopen }}</p>
+    {% endif  %}
+
+    {% if error_message %}
+           <div class="alert alert-error">
+               <p><strong>{{ error_message }}</strong></p>
+           </div>
+    {% endif %}
+
+    <p><b>{% trans "Publication date" %}: </b> {{ question.publish_date|date:"d M Y" }}</p>
+  
+    {% if question.description %}
+       <p><b>{% trans "BACKGROUND INFORMATION" %} </b><br>
+          {{ question.description |richtext_filter|safe }}</p>
+    {% endif %}
+   </div>
+    
+ 
+  
+  {% if answers %} 
+   <hr>
+    <h2>Answers:</h2>
+        {% for answer in  answers%}
+        
+         {% if answer.4 == 2 and answer.6 == 2 %} 
+            {{answer.0 |richtext_filter|safe }}
+            <br> 
+            {{answer.2}} % 
+            {% if request.user.is_authenticated %}
+                <a href="/qa/{{question.id}}/answer/{{answer.1}}/voteup"><i class="icon-large icon-thumbs-up">&#160;&#160;</i></a>&#160;&#160;
+                <a href="/qa/{{question.id}}/answer/{{answer.1}}/votedown" ><i class="large icon-thumbs-down">&#160;&#160;</i></a>  {{answer.3}} %
+            {% else %}
+                <i class="icon-large icon-thumbs-up">&#160;&#160;</i>&#160;
+                <i class="large icon-thumbs-down">&#160;&#160;</i>  {{answer.3}} %
+           {% endif %}
+
+           {% if user.is_superuser or perms.ippc.change_publication%} 
+                <a class="small pull-right" href="/admin/ippc/qaanswer/{{answer.1}}"><i class="icon-edit"></i> Edit answer as Admin</a>
+           {% endif %}
+           <hr>
+        {% else %}
+               {% if user.is_superuser or perms.ippc.change_publication%} 
+                {% if answer.4 == 1 and answer.6 == 1 %} 
+    
+                   <div class="alert alert-error"><p>TO REVISE</p>  <br>
+                       {{answer.0 |richtext_filter|safe }}
+                    <br> 
+                        {{answer.2}} %  <a href="/qa/{{question.id}}/answer/{{answer.1}}/voteup"><i class="icon-large icon-thumbs-up">&#160;&#160;</i></a>&#160;&#160;
+                            <a href="/qa/{{question.id}}/answer/{{answer.1}}/votedown" ><i class="large icon-thumbs-down">&#160;&#160;</i></a>  {{answer.3}} %
+                         <a class="small pull-right" href="/admin/ippc/qaanswer/{{answer.1}}"><i class="icon-edit"></i> Edit answer as Admin</a>
+                        <hr>
+                     </div> 
+                {% endif %}
+                {% endif %}
+         {% endif %}
+         
+        {% endfor %}
+    
+    {% else %}
+    
+        <p>{% trans "No answers yet."%}</p>
+    {% endif %}
+
+            

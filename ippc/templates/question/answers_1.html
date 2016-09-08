@@ -1,0 +1,75 @@
+{% extends "base.html" %}
+{% load pages_tags mezzanine_tags i18n future staticfiles %}
+
+{% block meta_title %}{% trans "Question" %}{% endblock %}
+
+{% block breadcrumb_menu %}
+	<li>
+	  <a href="/{{ LANGUAGE_CODE }}/">{% trans "Home" %}</a>
+	  <span class="divider">/</span>
+	</li>
+	<li>
+		<a href="/core-activities/implementation-review-and-support-system/">{% trans "IRSS" %}</a>
+		<span class="divider">/</span>
+	</li>
+	<li>
+		<a href="/qa/">{% trans "QA Forum" %}</a>
+		<span class="divider">/</span>
+	</li>
+	</li>
+	<li class="active">
+		{% trans "Answers" %}
+	</li>
+{% endblock %}
+{% block mainspansize %}12{% endblock mainspansize %}
+{% block main %}
+
+<div class="container-fluid">
+    <div class="row-fluid">
+
+        <div class="span8">
+
+            <p><b>{{ question.question_title }}</b></p>
+
+            {% if error_message %}<div class="alert alert-error"><p><strong>{{ error_message }}</strong></p></div>{% endif %}
+            <i>{% trans "Publication date" %}: <b>{{ question.pub_date|date:"d M Y" }}</b></i><br><br>
+            {% if question.description %}
+            <strong>{% trans "BACKGROUND INFORMATION" %}</strong><br>
+            {{ question.description |richtext_filter|safe }}<br><br>
+            {% endif %}
+						<hr>
+            <h2>Answers:</h2>
+            {% if answers %} 
+            {% for answer in  answers%}
+            {{answer.0 |richtext_filter|safe }}
+                {% if user.is_superuser or perms.irss.change_answer %}
+                <a class="small pull-right" href="/qa/{{question.id}}/answer/{{answer.1}}/edit/"><i class="icon-edit"></i> Edit</a>
+                {% endif %}
+                <br> 
+              {{answer.2}} %  <a href="/qa/{{question.id}}/answer/{{answer.1}}/voteup"><i class="icon-large icon-thumbs-up">&#160;&#160;</i></a>&#160;&#160;
+                <a href="/qa/{{question.id}}/answer/{{answer.1}}/votedown" ><i class="large icon-thumbs-down">&#160;&#160;</i></a>  {{answer.3}} %
+            <hr/>
+            {% endfor %}
+            {% else %}
+            <p>{% trans "No answers yet."%}</p>
+            {% endif %}
+
+        </div>
+        <div class="span4">
+            {% if user.is_superuser %} 
+            <a class="small" href="/admin/ippc/question/{{ question.id }}"><i class="icon-edit"></i> Edit question as Admin</a><br>
+            {% endif %}
+            {% if perms.irss.change_question %}
+            <a class="small" href="/qa/edit/{{ question.id }}"><i class="icon-edit"></i> Edit question</a><br><br>
+            {% endif %}
+            <strong><small>{% trans "Answer Count:"%}</small></strong> {{ answers|length }}<br>
+            <a class="btn btn-info btn-large" href="/qa/{{question.id}}/answer/create/">POST AN ANSWER</a>
+        </div>
+    </div></div>
+{% endblock %}
+
+
+
+
+
+

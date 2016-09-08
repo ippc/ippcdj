@@ -11,7 +11,7 @@
 	  <span class="divider">/</span>
 	</li>
 	<li>
-		<a href="/irss/">{% trans "IRSS" %}</a>
+		<a href="/core-activities/implementation-review-and-support-system/">{% trans "IRSS" %}</a>
 		<span class="divider">/</span>
 	</li>
 	<li>
@@ -20,7 +20,7 @@
 	</li>
 	</li>
 	<li class="active">
-		<b>{% trans "Answer to" %}:</b> {{ question.question_title }}
+		<b>{% trans "Answer to" %}:</b> {{ question.title }}
 	</li>
 {% endblock %}
 
@@ -36,7 +36,7 @@
 <p class="pull-right">
   <a href="javascript:history.go(-1)">{% trans "« Cancel and go back" %}</a>
 </p>
-<p><span class="normal">{% trans "Answer to Question" %}</span>: <b>{{question.question_title}}</b> </p>
+<p><span class="normal">{% trans "Answer to Question" %}</span>: <b>{{question.title}}</b> </p>
 
 <form class="customform" method="POST" action="" enctype="multipart/form-data">
     {% csrf_token %}

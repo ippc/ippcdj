@@ -1,7 +1,7 @@
 {% extends "base.html" %}
 {% load pages_tags translate_tags mezzanine_tags i18n future staticfiles accounts_tags %}
 
-{% block meta_title %}{% trans "New Question" %} {% endblock %}
+{% block meta_title %}{% trans "Question" %} {% endblock %}
 
 {% block body_class %}wide{% endblock %}
 
@@ -20,9 +20,9 @@
 	</li>
 	</li>
 	<li class="active">
-		{% trans "Create New" %}
+            <b>{% trans "Editing question" %}:</b> {{ question.question_title }}
 	</li>
-{% endblock breadcrumb_menu %}
+{% endblock %}
 
 {% block local_nav %}
 {% endblock local_nav %}
@@ -33,20 +33,22 @@
 {% block mainspansize %}12{% endblock mainspansize %}
 {% block main %}
 
+
 <p class="pull-right">
   <a href="javascript:history.go(-1)">{% trans "« Cancel and go back" %}</a>
 </p>
 
-<h1><span class="normal">{% trans "Create New Question" %}</span> </h1>
-
-<form class="customform" method="POST" action="" enctype="multipart/form-data">
+<p><small class="normal">{% trans "Editing" %}</small> <b>{{ question.title }}</b></p>
+<form enctype="multipart/form-data" class="customform" method="POST" action="{% url 'question-edit' question.id %}">
     {% csrf_token %}
     <fieldset>
         {% include "question/question_form.html" %}
         <div class="form-actions">
-            <button type="submit" class="btn btn-info btn-large" tabindex="7">{% trans "Submit" %}</button> or <a href="javascript:history.go(-1)">{% trans "Cancel" %}</a>
+            <button type="submit" class="btn btn-info btn-large">{% trans "Update Question" %}</button> {% trans "or" %} <a href="javascript:history.go(-1)">{% trans "Cancel" %}</a>
         </div>
     </fieldset>
 </form>
 
+
 {% endblock %}
+
