@@ -14,9 +14,9 @@ CountryPage,PartnersPage, PestStatus, PestReport, IS_PUBLIC, IS_HIDDEN, Publicat
 PublicationFile,PublicationUrl,ReportingObligation_File,ReportingObligationUrl, EventreportingFile,EventreportingUrl,    ImplementationISPMFile,ImplementationISPMUrl, PestFreeAreaFile,PestFreeAreaUrl,\
 DraftProtocol,DraftProtocolComments,NotificationMessageRelate,CommentFile,AnswerVotes,\
 ReportingObligation, BASIC_REP_TYPE_CHOICES, EventReporting, EVT_REP_TYPE_CHOICES,Website,CnPublication,PartnersPublication,PartnersNews, PartnersWebsite,CountryNews, \
-PestFreeArea,ImplementationISPM,REGIONS, IssueKeywordsRelate,CommodityKeywordsRelate,EventreportingFile,ReportingObligation_File,Question, Answer
-#ContactUsEmailMessage,FAQsItem,FAQsCategory,QAQuestion, QAAnswer
-#TransReportingObligation,,Question, Answer
+PestFreeArea,ImplementationISPM,REGIONS, IssueKeywordsRelate,CommodityKeywordsRelate,EventreportingFile,ReportingObligation_File,\
+ContactUsEmailMessage,FAQsItem,FAQsCategory,QAQuestion, QAAnswer,UserAutoRegistration,IRSSActivity,IRSSActivityFile,IRSS_ACT_TYPE_CHOICES,TransFAQsCategory,TransFAQsItem
+#TransReportingObligation,
 from mezzanine.core.models import Displayable, CONTENT_STATUS_DRAFT, CONTENT_STATUS_PUBLISHED
 from .forms import PestReportForm,PublicationUrlFormSet,PublicationForm, PublicationFileFormSet, ReportingObligationForm, EventReportingForm, PestFreeAreaForm,\
 ImplementationISPMForm,IssueKeywordsRelateForm,CommodityKeywordsRelateForm,EventreportingFileFormSet,ReportingoblicationFileFormSet,\
@@ -28,9 +28,9 @@ PollForm,Poll_ChoiceFormSet,\
 PartnersNewsUrlFormSet,PartnersNewsForm, PartnersNewsFileFormSet,PartnersWebsiteUrlFormSet,PartnersWebsiteForm,\
 EmailUtilityMessageForm,EmailUtilityMessageFileFormSet,\
 CountryNewsUrlFormSet,CountryNewsForm, CountryNewsFileFormSet,NotificationMessageRelateForm,\
-DraftProtocolForm,  DraftProtocolFileFormSet,DraftProtocolCommentsForm,IppcUserProfileForm,Question, Answer,QuestionForm, AnswerForm
-#ContactUsEmailMessageForm,FAQsItemForm,FAQsCategoryForm,QAQuestionForm, QAAnswerForm
-##TransReportingObligationForm , UserForm,Question, Answer,QuestionForm, AnswerForm
+DraftProtocolForm,  DraftProtocolFileFormSet,DraftProtocolCommentsForm,IppcUserProfileForm,\
+ContactUsEmailMessageForm,FAQsItemForm,FAQsCategoryForm,QAQuestionForm, QAAnswerForm,UserAutoRegistrationForm,IRSSActivityForm,IRSSActivityFileFormSet
+##TransReportingObligationForm , UserForm,
 
 
 from django.views.generic import ListView, MonthArchiveView, YearArchiveView, DetailView, TemplateView, CreateView
@@ -60,7 +60,7 @@ import shutil
 
 import zipfile
 import StringIO
-from settings import PROJECT_ROOT, MEDIA_ROOT,DATABASES
+from settings import PROJECT_ROOT, MEDIA_ROOT,DATABASES,ALLOWED_HOSTS
 from django.core.files.storage import default_storage
 
 import getpass, imaplib, email
@@ -245,9 +245,9 @@ def reporting_trough_eppo(request):
                         notifificationmessageeppo.content_subtype = "html"
                         sent =notifificationmessageeppo.send()
                         if eppoPublisheremail:
-                            notifificationmessageCp = mail.EmailMessage(subject,msgtoCP,'ippc@fao.org', ['paola.sentinelli@fao.org'], ['paola.sentinelli@fao.org'])
-                            notifificationmessageCp.content_subtype = "html"
-                            sent =notifificationmessageCp.send()
+                                notifificationmessageCp = mail.EmailMessage(subject,msgtoCP,'ippc@fao.org', ['paola.sentinelli@fao.org'], ['paola.sentinelli@fao.org'])
+                                notifificationmessageCp.content_subtype = "html"
+                                sent =notifificationmessageCp.send()
                     else:
                         #move xml processed in 'eppo_done' dir & create LOG
                         os.rename(os.path.join(eppo_tmp_dir, file_name),os.path.join(eppo_done_dir, timezone.now().strftime('%Y%m%d%H%M%S')+'_'+file_name))
@@ -511,7 +511,7 @@ def reminder_getlink(cn,type,obj):
 def reminder_getemptylink(cn,type,rep):
     return "https://www.ippc.int/countries/"+cn+"/"+type+"/"+rep
          
-def reminder_to_cn(request):
+def reminder_to_cn(request,id=None):
     # OCP 3 months: 90 days
     # reporting obligation 12 months
     # Pestreports and Emergency Actions 6 months
@@ -561,6 +561,47 @@ def reminder_to_cn(request):
     reminder_log_report.write("List of sent reminder to NPPOs:\n\n")
     
   
+    id_range_min=0
+    id_range_max=0
+    
+    id_range_min1=4
+    id_range_min2=41
+    id_range_min3=77
+    id_range_min4=117
+    id_range_min5=153
+    id_range_min6=189
+    id_range_min7=228
+    
+    id_range_max1=40
+    id_range_max2=76
+    id_range_max3=116
+    id_range_max4=152
+    id_range_max5=187
+    id_range_max6=226
+    id_range_max7=1002
+    
+    
+    if id == '1':
+        id_range_min=id_range_min1
+        id_range_max=id_range_max1
+    elif id == '2':
+        id_range_min=id_range_min2
+        id_range_max=id_range_max2
+    elif id == '3':
+            id_range_min=id_range_min3
+            id_range_max=id_range_max3
+    elif id == '4':
+            id_range_min=id_range_min4
+            id_range_max=id_range_max4
+    elif id == '5':
+            id_range_min=id_range_min5
+            id_range_max=id_range_max5
+    elif id == '6':
+            id_range_min=id_range_min6
+            id_range_max=id_range_max6
+    elif id == '7':
+            id_range_min=id_range_min7
+            id_range_max=id_range_max7
     aa=''
     if timezone.now().day == date_day:
         db = MySQLdb.connect(DATABASES["default"]["HOST"],DATABASES["default"]["USER"],DATABASES["default"]["PASSWORD"],DATABASES["default"]["NAME"])
@@ -568,9 +609,9 @@ def reminder_to_cn(request):
                 
      
         countriesList=CountryPage.objects.filter().exclude(id='-1')
-        for cn in countriesList:
-            if cn.send_reminder:
-                aa+=lower(slugify(cn)) +'<br>'
+        for cn in countriesList :
+	    if cn.send_reminder and cn.id >=id_range_min and cn.id <=id_range_max :          
+		aa+=lower(slugify(cn)) +'<br>'
                 country_slug = lower(slugify(cn))   
                 reminder_log_report.write("["+ timezone.now().strftime('%Y%m%d%H%M%S')+"] "+country_slug+" \n\n")
                 
@@ -630,7 +671,7 @@ def reminder_to_cn(request):
    
                         messages=[]
                         message = mail.EmailMessage(remider_message.subject,remider_message.messagebody,remider_message.emailfrom,
-                        emailstest, ['paola.sentinelli@fao.org'])
+                        emails, ['paola.sentinelli@fao.org'])
                         message.content_subtype = "html"
                         messages.append(message)
                             
@@ -661,7 +702,7 @@ def reminder_to_cn(request):
                         remider_message.subject = "IPPC NRO reminder for "+str(cn)+": IPP editors "
                         remider_message.messagebody = textmessage
                         remider_message.date = timezone.now()
-#
+
                         messages=[]
                         message = mail.EmailMessage(remider_message.subject,remider_message.messagebody,remider_message.emailfrom,
                         emails, ['paola.sentinelli@fao.org'])
@@ -671,7 +712,7 @@ def reminder_to_cn(request):
                         connection.open()
                         sent=connection.send_messages(messages)
                         connection.close()
-                        remider_message.sent = True
+			remider_message.sent = True
                         remider_message.save()  
                 #every 3 months  CPs                          
                 if timezone.now().month in date3month :
@@ -785,13 +826,15 @@ def reminder_to_cn(request):
                         emails, ['paola.sentinelli@fao.org'])
                         message.content_subtype = "html"
                         messages.append(message)
-                        connection = mail.get_connection()
+                        
+			connection = mail.get_connection()
                         connection.open()
                         sent=connection.send_messages(messages)
                         connection.close()
     
                         remider_message.sent = True
                         remider_message.save()        
+
                  #every 3 months       LINKS                    
                 if timezone.now().month in date3monthFiles :
                     links_to_notify=''
@@ -926,6 +969,9 @@ def reminder_to_cn(request):
     response = render(request, "countries/reminder_system.html", context)
     return response
 
+
+
+
 class ReminderMessageListView(ListView):
     """    ReminderMessage List view """
     context_object_name = 'latest'
@@ -986,7 +1032,7 @@ def commenta(request, template="generic/comments.html"):
         if request.FILES:
             commentfile = CommentFile(comment=comment, file=request.FILES['id_commentfile'])
             commentfile.save()
-        sent =notifificationmessage.send()
+            sent =notifificationmessage.send()
         
         response = redirect(myview.add_cache_bypass(comment.get_absolute_url()))
         # Store commenter's details in a cookie for 90 days.
@@ -2712,7 +2758,6 @@ def draftprotocol_comment_create(request, id=None):
             text=str(request.user)+' has commented on: '+str(draftprotocol.title)  +'<br><hr><br>'+str(new_draftprotocolComment.comment)
             notifificationmessage = mail.EmailMessage(subject,text,'ippc@fao.org', emailto_all, ['paola.sentinelli@fao.org'])
             notifificationmessage.content_subtype = "html"
-    
             sent =notifificationmessage.send()
             
             info(request, _("Successfully added Comment."))
@@ -5658,8 +5703,9 @@ def email_send(request):
             for emails_arr in emailto_all_split:
                 messages=[]
                 for emails_a in emails_arr:
-                    message = mail.EmailMessage(request.POST['subject'],request.POST['messagebody'],request.POST['emailfrom'],
-                    [emails_a], ['paola.sentinelli@fao.org'])#emailto_all for PROD, in TEST all to paola#
+                    emails_to=emails_a
+                    
+                    message = mail.EmailMessage(request.POST['subject'],request.POST['messagebody'],request.POST['emailfrom'],[emails_to], ['paola.sentinelli@fao.org'])#emailto_all for PROD, in TEST all to paola#
                     #print('===*******SENDING**********===')
                     #print (emails_arr)
                     #print('====******************************===')
@@ -5670,8 +5716,10 @@ def email_send(request):
                         message.attach_file(pf) 
                     message.content_subtype = "html"
                     messages.append(message)
+                    
+                    
                     #timeout, so changed to send_messages
-                    #sent =message.send()
+                    sent =message.send()
                 # Manually open the connection
                 #sends a list of EmailMessage objects. If the connection is not open, this call will implicitly open the connection, and close the connection afterwards. If the connection is already open, it will be left open after mail has been sent.
                 connection = mail.get_connection()
@@ -5699,101 +5747,99 @@ def email_send(request):
 
    
 #
-#class ContactUsEmailMessageListView(ListView):
-#    """    ContactUsEmailMessageListView List view """
-#    context_object_name = 'latest'
-#    model = ContactUsEmailMessage
-#    date_field = 'date'
-#    template_name = 'emailcontact_us/emailcontact_us_list.html'
-#    queryset = ContactUsEmailMessage.objects.all().order_by('-date', 'subject')
-#   
-#       
-#class ContactUsEmailMessageDetailView(DetailView):
-#    """ ContactUsEmailMessage detail page """
-#    model = ContactUsEmailMessage
-#    context_object_name = 'emailmessage'
-#    template_name = 'emailcontact_us/emailcontact_us_detail.html'
-#    queryset = ContactUsEmailMessage.objects.filter()
+class ContactUsEmailMessageListView(ListView):
+    """    ContactUsEmailMessageListView List view """
+    context_object_name = 'latest'
+    model = ContactUsEmailMessage
+    date_field = 'date'
+    template_name = 'emailcontact_us/emailcontact_us_list.html'
+    queryset = ContactUsEmailMessage.objects.all().order_by('-date', 'subject')
+   
+       
+class ContactUsEmailMessageDetailView(DetailView):
+    """ ContactUsEmailMessage detail page """
+    model = ContactUsEmailMessage
+    context_object_name = 'emailmessage'
+    template_name = 'emailcontact_us/emailcontact_us_detail.html'
+    queryset = ContactUsEmailMessage.objects.filter()
+
+
+import random
+
+#@login_required
+#@permission_required('ippc.add_contactusemailmessage', login_url="/accounts/login/")
+def contactus_email_send(request):
+    """ Create contactus email to send """
+    form = ContactUsEmailMessageForm(request.POST)
+    emailfrom =''
+    print(request.user)
+    if request.user.is_anonymous():
+      emailfrom=''
+    else:
+      emailfrom=request.user.email
+    if request.method == "POST" :
+        if form.is_valid() and request.POST['captcha'] ==  request.POST['result_element'] :
+             emails_a=''
+       
+             if request.POST['contact_us_type'] == 1:
+                emails_a='ippc@fao.org'
+             elif request.POST['contact_us_type']== 2:
+                emails_a='Orlando.sosa@fao.org'
+             elif request.POST['contact_us_type']== 3:
+                 emails_a='Dorota.buzon@fao.org'
+             elif request.POST['contact_us_type']== 4:
+                 emails_a='Dorota.buzon@fao.org'
+             elif request.POST['contact_us_type']== 5:
+                 emails_a='dave.nowell@fao.org'
+             elif request.POST['contact_us_type']== 6:
+                 emails_a='Shane.Sela@fao.org'
+             elif request.POST['contact_us_type']== 7:
+                 emails_a='IPPC-OCS@fao.org'
+             elif request.POST['contact_us_type']== 8:
+                 emails_a='Craig.Fedchock@fao.org'
+             elif request.POST['contact_us_type']== 9:
+                 emails_a='brent.larson@fao.org'
+             elif request.POST['contact_us_type']== 10:
+                 emails_a='IPPC-IT@fao.org'
+             elif request.POST['contact_us_type']== 11:
+                 emails_a='IPPC-IYPH@fao.org'
+     
+             new_contactusemailmessage = form.save(commit=False)
+             new_contactusemailmessage.date=timezone.now()
+             form.save()
+             sent = 0
+             messages=[]
+             message= mail.EmailMessage(request.POST['subject'],request.POST['messagebody'],request.POST['emailfrom'],[emails_a], ['paola.sentinelli@fao.org'])#emailto_all for PROD, in TEST all to paola#
+             message.content_subtype = "html"
+             messages.append(message)
+             connection = mail.get_connection()
+             connection.open()
+             sent=connection.send_messages(messages)
+             connection.close()
 #
+             #update status SENT/NOT SENT mail message in db
+             new_contactusemailmessage.sent=sent
+             form.save()
+            
+             info(request, _("Email sent."))
+             return redirect("contactus-email-detail",new_contactusemailmessage.id)
+        else:
+             error_captcha=''
+             if not(request.POST['captcha'] == request.POST['result_element'] ) :
+                   error_captcha='error'
+                  
+             return render_to_response('emailcontact_us/emailcontact_us_send.html', {'form': form,'x_element': request.POST['x_element'],'y_element': request.POST['y_element'],'result_element': request.POST['result_element'] ,'error_captcha':error_captcha},
+             context_instance=RequestContext(request))
+    else:
+         x_element=random.randint(1,10)   
+         y_element=random.randint(1,10)
+         result_element=x_element+y_element
+     
+         form = ContactUsEmailMessageForm(instance=ContactUsEmailMessage(emailfrom=emailfrom))
 #
-#import random
-#
-##@login_required
-##@permission_required('ippc.add_contactusemailmessage', login_url="/accounts/login/")
-#def contactus_email_send(request):
-#    """ Create contactus email to send """
-#    form = ContactUsEmailMessageForm(request.POST)
-#    emailfrom =''
-#    print(request.user)
-#    if request.user.is_anonymous():
-#      emailfrom=''
-#    else:
-#      emailfrom=request.user.email
-#    if request.method == "POST" :
-#        if form.is_valid() and request.POST['captcha'] ==  request.POST['result_element'] :
-#             emails_a=''
-#       
-#             if request.POST['contact_us_type'] == 1:
-#                emails_a='ippc@fao.org'
-#             elif request.POST['contact_us_type']== 2:
-#                emails_a='Orlando.sosa@fao.org'
-#             elif request.POST['contact_us_type']== 3:
-#                 emails_a='Dorota.buzon@fao.org'
-#             elif request.POST['contact_us_type']== 4:
-#                 emails_a='dave.nowell@fao.org'
-#             elif request.POST['contact_us_type']== 5:
-#                 emails_a='Orlando.sosa@fao.org'
-#             elif request.POST['contact_us_type']== 6:
-#                 emails_a='Shane.Sela@fao.org'
-#             elif request.POST['contact_us_type']== 7:
-#                 emails_a='IPPC-OCS@fao.org'
-#             elif request.POST['contact_us_type']== 8:
-#                 emails_a='Craig.Fedchock@fao.org'
-#             elif request.POST['contact_us_type']== 9:
-#                 emails_a='brent.larson@fao.org'
-#             elif request.POST['contact_us_type']== 10:
-#                 emails_a='IPPC-IT@fao.org'
-#             elif request.POST['contact_us_type']== 11:
-#                 emails_a='IPPC-IYPH@fao.org'
-#     
-#             new_contactusemailmessage = form.save(commit=False)
-#             new_contactusemailmessage.date=timezone.now()
-#             form.save()
-#             sent = 0
-#             messages=[]
-#                       
-#             message = mail.EmailMessage(request.POST['subject'],request.POST['messagebody'],request.POST['emailfrom'],
-#             [emails_a], ['paola.sentinelli@fao.org'])#emailto_all for PROD, in TEST all to paola#
-#             message.content_subtype = "html"
-#             messages.append(message)
-#             connection = mail.get_connection()
-#             connection.open()
-#             sent=connection.send_messages(messages)
-#             connection.close()
-##
-#             #update status SENT/NOT SENT mail message in db
-#             new_contactusemailmessage.sent=sent
-#             form.save()
-#            
-#             info(request, _("Email sent."))
-#             return redirect("contactus-email-detail",new_contactusemailmessage.id)
-#        else:
-#             error_captcha=''
-#             if not(request.POST['captcha'] == request.POST['result_element'] ) :
-#                   error_captcha='error'
-#                  
-#             return render_to_response('emailcontact_us/emailcontact_us_send.html', {'form': form,'x_element': request.POST['x_element'],'y_element': request.POST['y_element'],'result_element': request.POST['result_element'] ,'error_captcha':error_captcha},
-#             context_instance=RequestContext(request))
-#    else:
-#         x_element=random.randint(1,10)   
-#         y_element=random.randint(1,10)
-#         result_element=x_element+y_element
-#     
-#         form = ContactUsEmailMessageForm(instance=ContactUsEmailMessage(emailfrom=emailfrom))
-##
-#       
-#    return render_to_response('emailcontact_us/emailcontact_us_send.html', {'form': form  ,'x_element':x_element,'y_element':y_element,'result_element':result_element},
-#         context_instance=RequestContext(request))
+       
+    return render_to_response('emailcontact_us/emailcontact_us_send.html', {'form': form  ,'x_element':x_element,'y_element':y_element,'result_element':result_element},
+         context_instance=RequestContext(request))
 #
 #   
 class AdvancesSearchCNListView(ListView):
@@ -6042,287 +6088,53 @@ def draftprotocol_compilecomments(request,id=None):
 
        return response	
 
-
-class QuestionListView(ListView):
-    template_name = 'question/index.html'
-    context_object_name = 'latest_question_list'
-    def get_queryset(self):
-        """Return the last five published questions."""
-        return Question.objects.order_by('-pub_date').all
-
-    def get_context_data(self, **kwargs):
-        context = super(QuestionListView, self).get_context_data(**kwargs)
-        arrayquestions=[]
-        questions=Question.objects.all()
-        
-        for q in questions:
-            array_q=[]
-            answers=Answer.objects.filter(question_id=q.id).count()
-            answersbest=Answer.objects.filter(question_id=q.id,bestanswer='1').count()
-           
-            array_q.append(q.id)
-            array_q.append(q.question_title)
-            array_q.append(answers)
-            array_q.append(answersbest)
-            array_q.append(q.pub_date)
-            arrayquestions.append(array_q)
-       
-        context['questions']= arrayquestions
-        return context
-
-
-
-
-class QuestionDetailView(DetailView):
-    model = Question
-    template_name = 'question/detail.html'
-    def get_queryset(self):
-        """Return the last five published question."""
-        return Question.objects.filter(pub_date__lte=timezone.now())
-        
-
-class QuestionAnswersView(DetailView):
-    model = Question
-    template_name = 'question/answers.html'
-    
-    def get_context_data(self, **kwargs):
-        context = super(QuestionAnswersView, self).get_context_data(**kwargs)
-        q_id=self.kwargs['pk']
-        answers=Answer.objects.filter(question_id=q_id)
-        
-        arrayanswers=[]
-        for a in answers:
-            array_a=[]
-            answervote=AnswerVotes.objects.filter(answer=a).count()
-            answervoteup=AnswerVotes.objects.filter(answer=a,up='1').count()
-            answervotedown=AnswerVotes.objects.filter(answer=a,up='-1').count()
-            upval=0
-            downval=0
-            if answervoteup >0:
-                upval=answervoteup/answervote*100
-            if answervotedown >0:
-                downval=answervotedown/answervote*100
-            
-            array_a.append(a.answertext)
-            array_a.append(a.id)
-            array_a.append(upval)
-            array_a.append(downval)
-            arrayanswers.append(array_a)
-       
-        context['answers']= arrayanswers
-        return context
-
-
-@login_required
-@permission_required('ippc.add_question', login_url="/accounts/login/")
-def question_create(request):
-    """ Create question """
-    user = request.user
-    author = user
-
-    form = QuestionForm(request.POST)
-    if request.method == "POST":
-         if form.is_valid():
-            new_question = form.save(commit=False)
-            new_question.user = request.user
-            new_question.user_id = author.id
-            form.save()
-            info(request, _("Successfully created Question."))
-            return redirect("answers", pk=new_question.id)
-         else:
-             return render_to_response('question/question_create.html', {'form': form,},
-             context_instance=RequestContext(request))
-       
-    else:
-        form = QuestionForm( instance=Question())
-    
-    return render_to_response('question/question_create.html', {'form': form,},
-        context_instance=RequestContext(request))
-
-@login_required
-@permission_required('ippc.change_question', login_url="/accounts/login/")
-def question_edit(request, id=None, template_name='question/question_edit.html'):
-    """ Edit question """
-    if id:
-        question = get_object_or_404(Question,  pk=id)
-    else:
-        question = Question()
-      
-    if request.POST:
-
-        form =QuestionForm(request.POST, instance=question)
-        if form.is_valid():
-            form.save()
-          
-            return redirect("answers", pk=id)
-    else:
-        form = QuestionForm(instance=question)
-      
-        
-    return render_to_response(template_name, {
-        'form': form, "question": question
-    }, context_instance=RequestContext(request))
-    
-        
-@login_required
-@permission_required('ippc.add_answer', login_url="/accounts/login/")
-def answer_create(request, question_id):
-    """ Create answer """
-    q = get_object_or_404(Question, pk=question_id)
-    
-    user = request.user
-    author = user
-
-    form =AnswerForm(request.POST)
-    if request.method == "POST":
-         if form.is_valid():
-            new_answer = form.save(commit=False)
-            new_answer.user = request.user
-            new_answer.user_id = author.id
-            new_answer.question_id = q.id
-            form.save()
-            info(request, _("Successfully added Answer."))
-            return redirect("answers", pk=q.id)
-         else:
-            return render_to_response('question/answer_create.html', {'form': form,"question":q,},
-            context_instance=RequestContext(request))
-       
-    else:
-        form = AnswerForm( instance=Question())
-    
-    return render_to_response('question/answer_create.html', {'form': form,"question":q,},
-        context_instance=RequestContext(request))
-    
-@login_required
-@permission_required('ippc.change_answer', login_url="/accounts/login/")
-#def answer_edit(request, id=None , question_id ,template_name='question/answer_edit.html'):
-def answer_edit(request, question_id,id=None,template_name='question/answer_edit.html'):
-    """ edit answer """
-    print(question_id)
-    q = get_object_or_404(Question, pk=question_id)
-    """ Edit question """
-    if id:
-        answer = get_object_or_404(Answer,  pk=id)
-    else:
-        answer = Answer()
-      
-    if request.POST:
-        form =AnswerForm(request.POST, instance=answer)
-        if form.is_valid():
-            form.save()
-            return redirect("answers", pk=question_id)
-    else:
-        form = AnswerForm(instance=answer)
-      
-        
-    return render_to_response(template_name, {
-        'form': form, "answer": answer,"question":q,
-    }, context_instance=RequestContext(request))
-    
-        
-def vote_answer_up(request,question_id,id=None,):
-    answer = get_object_or_404(Answer, pk=id)
-    q = get_object_or_404(Question, pk=question_id)
-    answers=Answer.objects.filter(question_id=question_id)
-        
-    if AnswerVotes.objects.filter(answer_id=id, user_id=request.user.id).exists():
-        return render(request, 'question/answers.html', {
-        'question': q,
-        'answers':answers,
-        'error_message': "Sorry, but you have already voted."
-        })
-
-    try:
-        up = 1
-    except (KeyError):
-        # Redisplay the poll voting form.
-        return render(request, 'question/answers.html', {
-            'question': q,
-            'answers':answers,
-            'error_message': "You didn't select a rate.",
-        })
-    else:
-       # selected_choice.votes += 1
-        #selected_choice.save()
-        
-        v = AnswerVotes(user=request.user, answer=answer,up='1')
-        v.save()
-        return redirect("answers", pk=q.id)
-
-def vote_answer_down(request,question_id,id=None,):
-    answer = get_object_or_404(Answer, pk=id)
-    q = get_object_or_404(Question, pk=question_id)
-    answers=Answer.objects.filter(question_id=question_id)
-    if AnswerVotes.objects.filter(answer_id=id, user_id=request.user.id).exists():
-        return render(request, 'question/answers.html', {
-        'question': q,
-        'answers':answers,
-        'error_message': "Sorry, but you have already voted."
-        })
-    try:
-        down = -1
-    except (KeyError):
-        # Redisplay the poll voting form.
-        return render(request, 'question/answers.html', {
-            'question': q,
-            'answers':answers,
-            'error_message': "You didn't select a rate.",
-        })
-    else:
-       # selected_choice.votes += 1
-        #selected_choice.save()
-        
-        v = AnswerVotes(user=request.user, answer=answer,up='-1')
-        v.save()
-        return redirect("answers", pk=q.id)
-
-# 
-#class QAQuestionListView(ListView):
+#class QuestionListView(ListView):
 #    template_name = 'question/index.html'
 #    context_object_name = 'latest_question_list'
 #    def get_queryset(self):
 #        """Return the last five published questions."""
-#        return QAQuestion.objects.order_by('-pub_date').all
-##
+#        return Question.objects.order_by('-pub_date').all
+#
 #    def get_context_data(self, **kwargs):
-#        context = super(QAQuestionListView, self).get_context_data(**kwargs)
+#        context = super(QuestionListView, self).get_context_data(**kwargs)
 #        arrayquestions=[]
-#        questions=QAQuestion.objects.all()
+#        questions=Question.objects.all()
 #        
 #        for q in questions:
 #            array_q=[]
-#            answers=QAAnswer.objects.filter(question_id=q.id).count()
-#            answersbest=QAAnswer.objects.filter(question_id=q.id,bestanswer='1').count()
+#            answers=Answer.objects.filter(question_id=q.id).count()
+#            answersbest=Answer.objects.filter(question_id=q.id,bestanswer='1').count()
 #           
 #            array_q.append(q.id)
-#            array_q.append(q.title)
-#            array_q.append(q.status)
+#            array_q.append(q.question_title)
 #            array_q.append(answers)
 #            array_q.append(answersbest)
-#            array_q.append(q.publish_date)
-#            array_q.append(q.questionopen)
-#          
+#            array_q.append(q.pub_date)
 #            arrayquestions.append(array_q)
 #       
 #        context['questions']= arrayquestions
 #        return context
 #
-#class QAQuestionDetailView(DetailView):
-#    model = QAQuestion
+#
+#
+#
+#class QuestionDetailView(DetailView):
+#    model = Question
 #    template_name = 'question/detail.html'
 #    def get_queryset(self):
 #        """Return the last five published question."""
-#        return QAQuestion.objects.filter(pub_date__lte=timezone.now())
+#        return Question.objects.filter(pub_date__lte=timezone.now())
 #        
 #
-#class QAQuestionAnswersView(DetailView):
-#    model = QAQuestion
+#class QuestionAnswersView(DetailView):
+#    model = Question
 #    template_name = 'question/answers.html'
 #    
 #    def get_context_data(self, **kwargs):
-#        context = super(QAQuestionAnswersView, self).get_context_data(**kwargs)
+#        context = super(QuestionAnswersView, self).get_context_data(**kwargs)
 #        q_id=self.kwargs['pk']
-#        answers=QAAnswer.objects.filter(question_id=q_id)
+#        answers=Answer.objects.filter(question_id=q_id)
+#        
 #        arrayanswers=[]
 #        for a in answers:
 #            array_a=[]
@@ -6340,112 +6152,123 @@ def vote_answer_down(request,question_id,id=None,):
 #            array_a.append(a.id)
 #            array_a.append(upval)
 #            array_a.append(downval)
-#            array_a.append(a.status)
-#            array_a.append(a.bestanswer)
-#            
 #            arrayanswers.append(array_a)
 #       
-#        context['question']= get_object_or_404(QAQuestion,  pk=q_id)
 #        context['answers']= arrayanswers
 #        return context
 #
-#def send_qa_notification_message(type,id):
-#    """ send_qa_notification_message """
-#    #send notification to QA moderator
-#    subject=''
-#    textmessage=''
-#    question = get_object_or_404(QAQuestion,  pk=id)
-#    if type == 'QAQuestion':
-#        subject='Q & A:  new question: '+question.title
-#        textmessage='<p>Dear Q&A moderator,<br><br>a new question has been posted in the Q&A forum and it is draft mode and requires your action: '+question.title+'<br><br>You can view it at the following url: <a href="http://127.0.0.1:8000/en/qa/'+str(id)+'/answers/">http://127.0.0.1:8000/en/qa/'+str(id)+'/answers/</a><br><br>International Plant Protection Convention team </p>'
-#    else:    
-#        answer = get_object_or_404(QAAnswer,  pk=id)
-#        qid=answer.question
-#        subject='Q & A:  new answer to "'+question.title+'"'
-#        print(subject)
-#        textmessage='<p>Dear Q&A moderator,<br><br>a new answer has been posted in the Q&A forum and it is draft mode and requires your action: '+question.title+'<br><br>You can view it at the following url: <a href="http://127.0.0.1:8000/en/qa/'+str(qid)+'/answers/">http://127.0.0.1:8000/en/qa/'+str(qid)+'/answers/</a><br><br>International Plant Protection Convention team </p>'
-#        print(textmessage)
-#     
-#    emailto_all = ['']
-#    for g in Group.objects.filter(id=31):## mettere ID GROUP moderator QA
-#        users = g.user_set.all()
-#        for u in users:
-#           user_obj=User.objects.get(username=u)
-#           if str(user_obj.email)!='':
-#               emailto_all.append(str(user_obj.email))
-#    print(emailto_all)       
-#  
-#    message = mail.EmailMessage(subject,textmessage,'ippc@fao.org',
-#      emailto_all, ['paola.sentinelli@fao.org'])
-#    
-#    message.content_subtype = "html"
-#    sent =message.send()
-#        
-#      
+#
 #@login_required
-###@permission_required(None, login_url="/accounts/login/")
+#@permission_required('ippc.add_question', login_url="/accounts/login/")
 #def question_create(request):
 #    """ Create question """
 #    user = request.user
 #    author = user
 #
-#    form = QAQuestionForm(request.POST)
+#    form = QuestionForm(request.POST)
 #    if request.method == "POST":
 #         if form.is_valid():
 #            new_question = form.save(commit=False)
 #            new_question.user = request.user
 #            new_question.user_id = author.id
-#            new_question.status = 1
 #            form.save()
 #            info(request, _("Successfully created Question."))
-#            send_qa_notification_message('QAQuestion',new_question.id)
 #            return redirect("answers", pk=new_question.id)
 #         else:
 #             return render_to_response('question/question_create.html', {'form': form,},
 #             context_instance=RequestContext(request))
 #       
 #    else:
-#        form = QAQuestionForm( instance=QAQuestion())
+#        form = QuestionForm( instance=Question())
 #    
 #    return render_to_response('question/question_create.html', {'form': form,},
 #        context_instance=RequestContext(request))
 #
+#@login_required
+#@permission_required('ippc.change_question', login_url="/accounts/login/")
+#def question_edit(request, id=None, template_name='question/question_edit.html'):
+#    """ Edit question """
+#    if id:
+#        question = get_object_or_404(Question,  pk=id)
+#    else:
+#        question = Question()
+#      
+#    if request.POST:
+#
+#        form =QuestionForm(request.POST, instance=question)
+#        if form.is_valid():
+#            form.save()
+#          
+#            return redirect("answers", pk=id)
+#    else:
+#        form = QuestionForm(instance=question)
+#      
+#        
+#    return render_to_response(template_name, {
+#        'form': form, "question": question
+#    }, context_instance=RequestContext(request))
+#    
 #        
 #@login_required
-###@permission_required('ippc.add_qaanswer', login_url="/accounts/login/")
+#@permission_required('ippc.add_answer', login_url="/accounts/login/")
 #def answer_create(request, question_id):
 #    """ Create answer """
-#    q = get_object_or_404(QAQuestion, pk=question_id)
+#    q = get_object_or_404(Question, pk=question_id)
 #    
 #    user = request.user
 #    author = user
 #
-#    form =QAAnswerForm(request.POST)
+#    form =AnswerForm(request.POST)
 #    if request.method == "POST":
 #         if form.is_valid():
 #            new_answer = form.save(commit=False)
 #            new_answer.user = request.user
 #            new_answer.user_id = author.id
-#            new_answer.status = 1
 #            new_answer.question_id = q.id
 #            form.save()
 #            info(request, _("Successfully added Answer."))
-#            send_qa_notification_message('QAAnswer',q.id)
 #            return redirect("answers", pk=q.id)
 #         else:
 #            return render_to_response('question/answer_create.html', {'form': form,"question":q,},
 #            context_instance=RequestContext(request))
 #       
 #    else:
-#        form = QAAnswerForm( instance=QAQuestion())
+#        form = AnswerForm( instance=Question())
 #    
 #    return render_to_response('question/answer_create.html', {'form': form,"question":q,},
 #        context_instance=RequestContext(request))
-#
+#    
+#@login_required
+#@permission_required('ippc.change_answer', login_url="/accounts/login/")
+##def answer_edit(request, id=None , question_id ,template_name='question/answer_edit.html'):
+#def answer_edit(request, question_id,id=None,template_name='question/answer_edit.html'):
+#    """ edit answer """
+#    print(question_id)
+#    q = get_object_or_404(Question, pk=question_id)
+#    """ Edit question """
+#    if id:
+#        answer = get_object_or_404(Answer,  pk=id)
+#    else:
+#        answer = Answer()
+#      
+#    if request.POST:
+#        form =AnswerForm(request.POST, instance=answer)
+#        if form.is_valid():
+#            form.save()
+#            return redirect("answers", pk=question_id)
+#    else:
+#        form = AnswerForm(instance=answer)
+#      
+#        
+#    return render_to_response(template_name, {
+#        'form': form, "answer": answer,"question":q,
+#    }, context_instance=RequestContext(request))
+#    
+#        
 #def vote_answer_up(request,question_id,id=None,):
-#    answer = get_object_or_404(QAAnswer, pk=id)
-#    q = get_object_or_404(QAQuestion, pk=question_id)
-#    answers=QAAnswer.objects.filter(question_id=question_id)
+#    answer = get_object_or_404(Answer, pk=id)
+#    q = get_object_or_404(Question, pk=question_id)
+#    answers=Answer.objects.filter(question_id=question_id)
 #        
 #    if AnswerVotes.objects.filter(answer_id=id, user_id=request.user.id).exists():
 #        return render(request, 'question/answers.html', {
@@ -6457,14 +6280,14 @@ def vote_answer_down(request,question_id,id=None,):
 #    try:
 #        up = 1
 #    except (KeyError):
-#        #Redisplay the poll voting form.
+#        # Redisplay the poll voting form.
 #        return render(request, 'question/answers.html', {
 #            'question': q,
 #            'answers':answers,
 #            'error_message': "You didn't select a rate.",
 #        })
 #    else:
-#        selected_choice.votes += 1
+#       # selected_choice.votes += 1
 #        #selected_choice.save()
 #        
 #        v = AnswerVotes(user=request.user, answer=answer,up='1')
@@ -6472,9 +6295,9 @@ def vote_answer_down(request,question_id,id=None,):
 #        return redirect("answers", pk=q.id)
 #
 #def vote_answer_down(request,question_id,id=None,):
-#    answer = get_object_or_404(QAAnswer, pk=id)
-#    q = get_object_or_404(QAQuestion, pk=question_id)
-#    answers=QAAnswer.objects.filter(question_id=question_id)
+#    answer = get_object_or_404(Answer, pk=id)
+#    q = get_object_or_404(Question, pk=question_id)
+#    answers=Answer.objects.filter(question_id=question_id)
 #    if AnswerVotes.objects.filter(answer_id=id, user_id=request.user.id).exists():
 #        return render(request, 'question/answers.html', {
 #        'question': q,
@@ -6484,152 +6307,623 @@ def vote_answer_down(request,question_id,id=None,):
 #    try:
 #        down = -1
 #    except (KeyError):
-#         #Redisplay the poll voting form.
+#        # Redisplay the poll voting form.
 #        return render(request, 'question/answers.html', {
 #            'question': q,
 #            'answers':answers,
 #            'error_message': "You didn't select a rate.",
 #        })
 #    else:
-#        selected_choice.votes += 1
+#       # selected_choice.votes += 1
 #        #selected_choice.save()
 #        
 #        v = AnswerVotes(user=request.user, answer=answer,up='-1')
 #        v.save()
 #        return redirect("answers", pk=q.id)
-#
-#class FAQsListView(ListView):
-#    template_name = 'faq/faqlist.html'
-#    context_object_name = 'latest_faq_list'
-#    def get_queryset(self):
-#        """Return the last five published questions."""
-#        return FAQsCategory.objects.order_by('-pub_date').all
-#
-#    def get_context_data(self, **kwargs):
-#        context = super(FAQsListView, self).get_context_data(**kwargs)
-#        array_faqcategories=[]
-#        faqcategories= FAQsCategory.objects.order_by('faqcat_oder').all()
-#
-#        for fc in faqcategories:
-#            print(fc)
-#            array_faqsitems=[]
-#            faqs=FAQsItem.objects.filter(faqcategory_id=fc.id)
-#            array_faqsitems.append(fc.id)
-#            
-#            array_faqsitems.append(fc.title)
-#            array_faqsitems.append(faqs)
-#            
-#            array_faqcategories.append(array_faqsitems)
-#        print    (array_faqcategories)
-#        context['array_faqcategories']= array_faqcategories
-#        return context
-#       
-#class FAQsCategoryDetailView(DetailView):
-#    """ FAQsCategory detail page """
-#    model = FAQsCategory
-#    context_object_name = 'faqcategory'
-#    template_name = 'faq/faqcategory_detail.html'
-#    queryset = FAQsCategory.objects.filter()
-#
+
+ 
 # 
-#   
-#class FAQsItemDetailView(DetailView):
-#    """ FAQsItems detail page """
-#    model = FAQsItem
-#    context_object_name = 'faq'
-#    template_name = 'faq/faq_detail.html'
-#    queryset = FAQsItem.objects.filter()
+# 
+# 
+# 
+# 
+# 
+# 
+# 
+class QAQuestionListView(ListView):
+    template_name = 'question/index.html'
+    context_object_name = 'latest_question_list'
+    def get_queryset(self):
+        """Return the last five published questions."""
+        return QAQuestion.objects.order_by('-pub_date').all
 #
-#@login_required
-#@permission_required('ippc.add_faqcategory', login_url="/accounts/login/")
-#def faqcategory_create(request):
-#    """ faqcategory create  """
-#    user = request.user
-#    author = user
-##
-#    form = FAQsCategoryForm(request.POST)
-#    if request.method == "POST":
-#         if form.is_valid():
-#            new_faqcat = form.save(commit=False)
-#            form.save()
-#            info(request, _("Successfully created FAQs Category."))
-#            return redirect("faqcategory-detail", pk=new_faqcat.id)
-#         else:
-#             return render_to_response('faq/faqcategory_create.html', {'form': form,},
-#             context_instance=RequestContext(request))
-#       
-#    else:
-#        form = FAQsCategoryForm( instance=FAQsCategory())
-#    
-#    return render_to_response('faq/faqcategory_create.html', {'form': form,},
-#        context_instance=RequestContext(request))
+    def get_context_data(self, **kwargs):
+        context = super(QAQuestionListView, self).get_context_data(**kwargs)
+        arrayquestions=[]
+        questions=QAQuestion.objects.all()
+        
+        for q in questions:
+            array_q=[]
+            answers=QAAnswer.objects.filter(question_id=q.id).count()
+            answersbest=QAAnswer.objects.filter(question_id=q.id,bestanswer='1').count()
+            answers_count=QAAnswer.objects.filter(question_id=q.id,status=2,answerdiscard=2).count()
+            print('>>>>>>>>>>'+str(answers_count))
+            array_q.append(q.id)
+            array_q.append(q.title)
+            array_q.append(q.status)
+            array_q.append(answers_count)
+            array_q.append(answersbest)
+            array_q.append(q.publish_date)
+            array_q.append(q.questionopen)
+            array_q.append(q.questiondiscard)
+          
+            arrayquestions.append(array_q)
+       
+        context['questions']= arrayquestions
+        return context
+
+class QAQuestionDetailView(DetailView):
+    model = QAQuestion
+    template_name = 'question/detail.html'
+    def get_queryset(self):
+        """Return the last five published question."""
+        return QAQuestion.objects.filter(pub_date__lte=timezone.now())
+        
+
+class QAQuestionAnswersView(DetailView):
+    model = QAQuestion
+    template_name = 'question/answers.html'
+    
+    def get_context_data(self, **kwargs):
+        context = super(QAQuestionAnswersView, self).get_context_data(**kwargs)
+        q_id=self.kwargs['pk']
+        answers=QAAnswer.objects.filter(question_id=q_id)
+        arrayanswers=[]
+        for a in answers:
+            array_a=[]
+            answervote=AnswerVotes.objects.filter(answer=a).count()
+            answervoteup=AnswerVotes.objects.filter(answer=a,up='1').count()
+            answervotedown=AnswerVotes.objects.filter(answer=a,up='-1').count()
+            upval=0
+            downval=0
+            if answervoteup >0:
+                upval=answervoteup/answervote*100
+            if answervotedown >0:
+                downval=answervotedown/answervote*100
+            
+            array_a.append(a.answertext)
+            array_a.append(a.id)
+            array_a.append(upval)
+            array_a.append(downval)
+            array_a.append(a.status)
+            array_a.append(a.bestanswer)
+            array_a.append(a.answerdiscard)
+            
+            arrayanswers.append(array_a)
+       
+        context['question']= get_object_or_404(QAQuestion,  pk=q_id)
+        context['answers']= arrayanswers
+        return context
+
+
+def send_qa_notification_message(type,id):
+    """ send_qa_notification_message """
+    #send notification to QA moderator
+    subject=''
+    textmessage_moderator=''
+    textmessage_user=''
+    question=None
+    answer =None
+    if type == 'QAQuestion':
+        question = get_object_or_404(QAQuestion,  pk=id)
+        subject='IRSS - Q&A Forum automatic notification: new question has been posted'
+        textmessage_moderator='<p>Dear Q&A moderator,<br><br>A new question has been posted in the Q&A forum in draft mode and requires your action.<br><br>You can view it at the following url: <a href="http://test.ippc.int/en/qa/'+str(id)+'/answers/">http://test.ippc.int/en/qa/'+str(id)+'/answers/</a><br><br>International Plant Protection Convention team </p>'
+    else:    
+        answer = get_object_or_404(QAAnswer,  pk=id)
+        qid=answer.question.id
+        subject='IRSS - Q&A Forum automatic notification: new answer has been posted'
+        textmessage_moderator='<p>Dear Q&A moderator,<br><br>a new answer has been posted in the Q&A forum in draft mode and requires your action.<br><br>You can view it at the following url: <a href="http://test.ippc.int/en/qa/'+str(qid)+'/answers/">http://test.ippc.int/en/qa/'+str(qid)+'/answers/</a><br><br>International Plant Protection Convention team </p>'
+     
+    emailto_moderator = ['']
+    for g in Group.objects.filter(id=65):## mettere ID GROUP moderator QA
+            users = g.user_set.all()
+            for u in users:
+               user_obj=User.objects.get(username=u)
+               if str(user_obj.email)!='':
+                   emailto_moderator.append(str(user_obj.email))
+    message = mail.EmailMessage(subject,textmessage_moderator,'ippc@fao.org', emailto_moderator, ['paola.sentinelli@fao.org'])
+    message.content_subtype = "html"
+    sent =message.send()
+        
+from django.http import HttpResponseRedirect
+
+@login_required
+def question_create(request):
+    """ Create question """
+    user = request.user
+    author = user
+
+    form = QAQuestionForm(request.POST)
+    if request.method == "POST":
+         if form.is_valid():
+            new_question = form.save(commit=False)
+            new_question.user = request.user
+            new_question.user_id = author.id
+            new_question.status = 1
+            form.save()
+            info(request, _("Successfully added Question in the Q&A forum and it in is draft mode. A moderator will revise it. You will be shortly notified with action taken. "))
+            print('dddddddddddddddddddddddd:'+str(new_question.id))
+            send_qa_notification_message('QAQuestion',new_question.id)
+            #return redirect("answers", pk=new_question.id)
+            return HttpResponseRedirect("/qa")
+         else:
+             return render_to_response('question/question_create.html', {'form': form,},
+             context_instance=RequestContext(request))
+       
+    else:
+        form = QAQuestionForm( instance=QAQuestion())
+    
+    return render_to_response('question/question_create.html', {'form': form,},
+        context_instance=RequestContext(request))
+
+        
+@login_required
+def answer_create(request, question_id):
+    """ Create answer """
+    q = get_object_or_404(QAQuestion, pk=question_id)
+    
+    user = request.user
+    author = user
+
+    form =QAAnswerForm(request.POST)
+    if request.method == "POST":
+         if form.is_valid():
+            new_answer = form.save(commit=False)
+            new_answer.user = request.user
+            new_answer.user_id = author.id
+            new_answer.status = 1
+            new_answer.question_id = q.id
+            form.save()
+            print('>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>'+str(new_answer.question_id ))
+            
+            info(request, _("Successfully added Answer in the Q&A forum and it in is draft mode. A moderator will revise it. You will be shortly notified with action taken. "))
+            send_qa_notification_message('QAAnswer',new_answer.id)
+            return redirect("answers", pk=q.id)
+         else:
+            return render_to_response('question/answer_create.html', {'form': form,"question":q,},
+            context_instance=RequestContext(request))
+       
+    else:
+        form = QAAnswerForm( instance=QAQuestion())
+    
+    return render_to_response('question/answer_create.html', {'form': form,"question":q,},
+        context_instance=RequestContext(request))
+
+
+def vote_answer_up(request,question_id,id=None,):
+    answer = get_object_or_404(QAAnswer, pk=id)
+    q = get_object_or_404(QAQuestion, pk=question_id)
+    answers=QAAnswer.objects.filter(question_id=question_id)
+        
+    if AnswerVotes.objects.filter(answer_id=id, user_id=request.user.id).exists():
+        return render(request, 'question/answers.html', {
+        'question': q,
+        'answers':answers,
+        'error_message': "Sorry, but you have already voted."
+        })
+
+    try:
+        up = 1
+    except (KeyError):
+        #Redisplay the poll voting form.
+        return render(request, 'question/answers.html', {
+            'question': q,
+            'answers':answers,
+            'error_message': "You didn't select a rate.",
+        })
+    else:
+        v = AnswerVotes(user=request.user, answer=answer,up='1')
+        v.save()
+        return redirect("answers", pk=q.id)
+
+def vote_answer_down(request,question_id,id=None,):
+    answer = get_object_or_404(QAAnswer, pk=id)
+    q = get_object_or_404(QAQuestion, pk=question_id)
+    answers=QAAnswer.objects.filter(question_id=question_id)
+    if AnswerVotes.objects.filter(answer_id=id, user_id=request.user.id).exists():
+        return render(request, 'question/answers.html', {
+        'question': q,
+        'answers':answers,
+        'error_message': "Sorry, but you have already voted."
+        })
+    try:
+        down = -1
+    except (KeyError):
+        return render(request, 'question/answers.html', {
+            'question': q,
+            'answers':answers,
+            'error_message': "You didn't select a rate.",
+        })
+    else:
+        v = AnswerVotes(user=request.user, answer=answer,up='-1')
+        v.save()
+        return redirect("answers", pk=q.id)
+
+class FAQsListView(ListView):
+    template_name = 'faq/faqlist.html'
+    context_object_name = 'latest_faq_list'
+    def get_queryset(self):
+        """Return the last five published questions."""
+        return FAQsCategory.objects.order_by('-pub_date').all
+
+    def get_context_data(self, **kwargs):
+        context = super(FAQsListView, self).get_context_data(**kwargs)
+        array_faqcategories=[]
+        
+        langsel=self.request.LANGUAGE_CODE
+        print(langsel)
+        faqcategories= FAQsCategory.objects.order_by('faqcat_oder').all()
+
+        for fc in faqcategories:
+            array_faqsitems=[]
+            faqs_array=[]
+            faqs=FAQsItem.objects.filter(faqcategory_id=fc.id)
+           
+            #print(faqs)
+            array_faqsitems.append(fc.id)
+            fc_title=fc.title
+            if  langsel!='en' and langsel!='':
+                faqcategory_tra=TransFAQsCategory.objects.filter(translation_id=fc.id,lang=langsel)
+                if faqcategory_tra:
+                    fc_title=faqcategory_tra[0].title
+                
+                #faqs=TransFAQsItem.objects.filter(faqcategory_id=fc.id)
+                for faq_item in faqs:
+                    faq= TransFAQsItem.objects.filter(translation_id=faq_item.id,lang=langsel)
+                    if faq:
+                       # print(faq_item)
+                       # print(faq)
+                       # print(faq[0].faq_description)
+                        faqs_array.append(faq[0])
+                    else :
+                        faqs_array.append(faq_item)
+            else:
+                faqs_array=faqs        
+            #print(fc_title)
+            array_faqsitems.append(fc_title)
+            array_faqsitems.append(faqs_array)
+            
+            array_faqcategories.append(array_faqsitems)
+        context['array_faqcategories']= array_faqcategories
+        return context
+       
+class FAQsCategoryDetailView(DetailView):
+    """ FAQsCategory detail page """
+    model = FAQsCategory
+    context_object_name = 'faqcategory'
+    template_name = 'faq/faqcategory_detail.html'
+    queryset = FAQsCategory.objects.filter()
+
+ 
+   
+class FAQsItemDetailView(DetailView):
+    """ FAQsItems detail page """
+    model = FAQsItem
+    context_object_name = 'faq'
+    template_name = 'faq/faq_detail.html'
+    queryset = FAQsItem.objects.filter()
+
+@login_required
+@permission_required('ippc.add_faqcategory', login_url="/accounts/login/")
+def faqcategory_create(request):
+    """ faqcategory create  """
+    user = request.user
+    author = user
 #
+    form = FAQsCategoryForm(request.POST)
+    if request.method == "POST":
+         if form.is_valid():
+            new_faqcat = form.save(commit=False)
+            form.save()
+            info(request, _("Successfully created FAQs Category."))
+            return redirect("faqcategory-detail", pk=new_faqcat.id)
+         else:
+             return render_to_response('faq/faqcategory_create.html', {'form': form,},
+             context_instance=RequestContext(request))
+       
+    else:
+        form = FAQsCategoryForm( instance=FAQsCategory())
+    
+    return render_to_response('faq/faqcategory_create.html', {'form': form,},
+        context_instance=RequestContext(request))
+
+@login_required
+@permission_required('ippc.change_faqcategory', login_url="/accounts/login/")
+def faqcategory_edit(request, id=None, template_name='faq/faqcategory_edit.html'):
+    """ Edit faqcategory """
+    if id:
+        faqcategory = get_object_or_404(FAQsCategory,  pk=id)
+    else:
+        faqcategory = FAQsCategory()
+      
+    if request.POST:
+#
+        form =FAQsCategoryForm(request.POST, instance=faqcategory)
+        if form.is_valid():
+            form.save()
+          
+            return redirect("faqcategory-detail", pk=id)
+    else:
+        form = FAQsCategoryForm(instance=faqcategory)
+      
+        
+    return render_to_response(template_name, {
+        'form': form, "faqcategory": faqcategory
+    }, context_instance=RequestContext(request))
+    
+        
+@login_required
+@permission_required('ippc.add_faqitem', login_url="/accounts/login/")
+def faq_create(request):
+    """ Create faq """
+    
+    form =FAQsItemForm(request.POST)
+    if request.method == "POST":
+         if form.is_valid():
+            new_faq = form.save(commit=False)
+            form.save()
+            info(request, _("Successfully added new faq."))
+            return redirect("faq-detail", pk=new_faq.id)
+         else:
+            return render_to_response('faq/faq_create.html', {'form': form,},
+            context_instance=RequestContext(request))
+       
+    else:
+        form = FAQsItemForm( instance=FAQsItem())
+    
+    return render_to_response('faq/faq_create.html', {'form': form,},
+        context_instance=RequestContext(request))
+    
+@login_required
+@permission_required('ippc.change_faqitem', login_url="/accounts/login/")
+def faq_edit(request, id=None,template_name='faq/faq_edit.html'):
+    """ edit faq """
+    if id:
+        faq = get_object_or_404(FAQsItem,  pk=id)
+    else:
+        faq = FAQsItem()
+      
+    if request.POST:
+        form =FAQsItemForm(request.POST, instance=faq)
+        if form.is_valid():
+            form.save()
+            return redirect("faq-detail", pk=id)
+    else:
+        form = FAQsItemForm(instance=faq)
+      
+        
+    return render_to_response(template_name, {
+        'form': form, "faq": faq, 
+    }, context_instance=RequestContext(request))
+
+
+class UserAutoRegistrationListView(ListView):
+    """    UserAutoRegistration List view """
+    context_object_name = 'latest'
+    model = UserAutoRegistration
+    date_field = 'date'
+    template_name = 'accounts_auto/accounts_list.html'
+    queryset = UserAutoRegistration.objects.all().order_by('-publish_date')
+
+from django.http import HttpResponseRedirect
 #@login_required
-#@permission_required('ippc.change_faqcategory', login_url="/accounts/login/")
-#def faqcategory_edit(request, id=None, template_name='faq/faqcategory_edit.html'):
-#    """ Edit faqcategory """
-#    if id:
-#        faqcategory = get_object_or_404(FAQsCategory,  pk=id)
-#    else:
-#        faqcategory = FAQsCategory()
-#      
-#    if request.POST:
-##
-#        form =FAQsCategoryForm(request.POST, instance=faqcategory)
-#        if form.is_valid():
-#            form.save()
-#          
-#            return redirect("faqcategory-detail", pk=id)
-#    else:
-#        form = FAQsCategoryForm(instance=faqcategory)
-#      
-#        
-#    return render_to_response(template_name, {
-#        'form': form, "faqcategory": faqcategory
-#    }, context_instance=RequestContext(request))
-#    
-#        
-#@login_required
-#@permission_required('ippc.add_faqitem', login_url="/accounts/login/")
-#def faq_create(request):
-#    """ Create faq """
-#    
-#    form =FAQsItemForm(request.POST)
-#    if request.method == "POST":
-#         if form.is_valid():
-#            new_faq = form.save(commit=False)
-#            form.save()
-#            info(request, _("Successfully added new faq."))
-#            return redirect("faq-detail", pk=new_faq.id)
-#         else:
-#            return render_to_response('faq/faq_create.html', {'form': form,},
-#            context_instance=RequestContext(request))
-#       
-#    else:
-#        form = FAQsItemForm( instance=FAQsItem())
-#    
-#    return render_to_response('faq/faq_create.html', {'form': form,},
-#        context_instance=RequestContext(request))
-#    
-#@login_required
-#@permission_required('ippc.change_faqitem', login_url="/accounts/login/")
-#def faq_edit(request, id=None,template_name='faq/faq_edit.html'):
-#    """ edit faq """
-#    if id:
-#        faq = get_object_or_404(FAQsItem,  pk=id)
-#    else:
-#        faq = FAQsItem()
-#      
-#    if request.POST:
-#        form =FAQsItemForm(request.POST, instance=faq)
-#        if form.is_valid():
-#            form.save()
-#            return redirect("faq-detail", pk=id)
-#    else:
-#        form = FAQsItemForm(instance=faq)
-#      
-#        
-#    return render_to_response(template_name, {
-#        'form': form, "faq": faq, 
-#    }, context_instance=RequestContext(request))
-#    
+def auto_register(request):
+    """ auto_register """
+    
+    form =UserAutoRegistrationForm(request.POST)
+    if request.method == "POST" :
+         if form.is_valid() and request.POST['captcha'] ==  request.POST['result_element']:
+            new_user = form.save(commit=False)
+            form.save()
+            info(request, _("Successfully registered to IPPC, the IPPC Team will revise your registration."))
+            subject='A new user has self-registered for IPPC access'  
+            msg='<p>A new user has self-registered for IPPC access.<br><br>Please use the link below to view the list of users pending approval:<br><br><a href="https://www.ippc.int/accounts/pendingapproval/">https://www.ippc.int/accounts/pendingapproval/</a>.'
+            message = mail.EmailMessage(subject,msg,'ippc@fao.org', ['ippc-it@fao.org'], ['paola.sentinelli@fao.org'])
+            message.content_subtype = "html"
+            sent =message.send()
+            
+            return HttpResponseRedirect("/")
+         else:
+            error_captcha=''
+            if not(request.POST['captcha'] == request.POST['result_element'] ) :
+                error_captcha='error'
+                  
+            return render_to_response('accounts_auto/autoregister_create.html', {'form': form,'x_element': request.POST['x_element'],'y_element': request.POST['y_element'],'result_element': request.POST['result_element'] ,'error_captcha':error_captcha},
+            context_instance=RequestContext(request))
+    else:
+         x_element=random.randint(1,10)   
+         y_element=random.randint(1,10)
+         result_element=x_element+y_element
+     
+         form = UserAutoRegistrationForm()
+# 
+    return render_to_response('accounts_auto/autoregister_create.html', {'form': form ,'x_element':x_element,'y_element':y_element,'result_element':result_element},
+        context_instance=RequestContext(request))
+     
+    
+@login_required
+@permission_required('ippc.change_userautoregistration', login_url="/accounts/login/")
+def auto_register_approve(request, id=None):
+    """  auto registered User approve  """
+    
+    if id:
+        print('APPROVED')
+        newuser = get_object_or_404(UserAutoRegistration,  pk=id)
+        user_obj=User.objects.filter(email=newuser.email)
+        if user_obj.count()>0:
+            newuser.status=3
+            newuser.save()
+            error(request, _("An user with the same email address is alredy registered in the system."))
+            return HttpResponseRedirect("/accounts/pendingapproval/")
+        else:
+            #create new user
+            user1=User()
+            user1.username=slugify(newuser.firstname+"-"+newuser.lastname).lower()
+            user1.first_name=newuser.firstname
+            user1.last_name=newuser.lastname
+            user1.email=newuser.email
+            user1.save()
+            #set profile
+            userp = get_object_or_404(IppcUserProfile, user_id=user1.id)
+            userp.first_name=newuser.firstname
+            userp.last_name=newuser.lastname
+            userp.country=newuser.country
+            userp.address1=newuser.organisation
+            userp.save()
+              
+            #sendmessage to new user
+            user_email = []
+            user_email.append(newuser.email)
+            subject='Activate your account created for you at https://www.ippc.int'  
+            msg='<p>An IPPC account has been created for you.<br><br>Please use the link below to set your password.<br><br><a href="https://www.ippc.int/en/account/password/reset/?next=/en/account/update/">https://www.ippc.int/en/account/password/reset/?next=/en/account/update/</a><br><br>Insert your email address, click on "Password Reset" button and follow instructions to create your password.<br><br>After setting your password, you will be able to log in at https://www.ippc.int .<br><br><br><br>Information Exchange (IPPC) team<br><br><br>he IPPC is an international treaty to secure action to prevent the spread and introduction of pests of plants and plant products, and to promote appropriate measures for their control. It is governed by the Commission on Phytosanitary Measures (CPM) which adopts International Standards for Phytosanitary Measures (ISPMs). The CPM established the IPP as the forum for national reporting and exchange of more general information among the phytosanitary community. The IPPC Secretariat coordinates the activities of the Convention and is hosted by FAO.'
+           
+            
+                
+            message = mail.EmailMessage(subject,msg,'ippc@fao.org', user_email, ['paola.sentinelli@fao.org'])
+            message.content_subtype = "html"
+            sent =message.send()
+            #delete temporary user
+            newuser.delete()
+           
+            info(request, _("Successfully approved user."))
+            return HttpResponseRedirect("/accounts/pendingapproval/")
+       
+
+@login_required
+@permission_required('ippc.delete_userautoregistration', login_url="/accounts/login/")
+def auto_register_delete(request, id=None):
+    """ auto registered User delete   """
+    if id:
+        print('delete')
+        newuser = get_object_or_404(UserAutoRegistration,  pk=id)
+        newuser.delete()
+     
+        info(request, _("Successfully deleted user."))
+        return HttpResponseRedirect("/accounts/pendingapproval/")
+    
+
+
+            
+class IRSSActivityListView(ListView):
+    """   IRSSActivity """
+    context_object_name = 'latest'
+    model = IRSSActivity
+    date_field = 'publish_date'
+    template_name = 'irss/irss_activities_list.html'
+    queryset = IRSSActivity.objects.all()
+    
+    allow_future = False
+    allow_empty = True
+    paginate_by = 500
+
+    def get_queryset(self):
+        """ only return pest reports from the specific country """
+        # self.country = get_object_or_404(CountryPage, country=self.kwargs['country'])
+        # CountryPage country_slug == country URL parameter keyword argument
+        return IRSSActivity.objects.all()
+    
+    def get_context_data(self, **kwargs): # http://stackoverflow.com/a/15515220
+        context = super(IRSSActivityListView, self).get_context_data(**kwargs)
+        context['activity_types'] =IRSS_ACT_TYPE_CHOICES
+       
+        #context['country'] = self.kwargs['country']
+        return context
+   
+       
+   
+class IRSSActivityDetailView(DetailView):
+    """ IRSSActivity detail page """
+    model = IRSSActivity
+    context_object_name = 'irssactivity'
+    template_name = 'irss/irss_activities_detail.html'
+    queryset = IRSSActivity.objects.filter()
+
+
+
+@login_required
+@permission_required('ippc.add_irssactivity', login_url="/accounts/login/")
+def irss_activity_create(request):
+    """ Create  IRSSActivity """
+    user = request.user
+    author = user
+  
+    form = IRSSActivityForm(request.POST or None, request.FILES)
+    
+         
+    if request.method == "POST":
+        f_form = IRSSActivityFileFormSet(request.POST, request.FILES)
+        
+        if form.is_valid() and f_form.is_valid() :
+            new_irssactivity = form.save(commit=False)
+            new_irssactivity.author = request.user
+            new_irssactivity.author_id = author.id
+            form.save()
+            
+         
+           
+            f_form.instance = new_irssactivity
+            f_form.save()
+           
+            info(request, _("Successfully added IRSS Activity."))
+            return redirect("irss-activity-detail", pk=new_irssactivity.id)
+        else:
+            return render_to_response('irss/irss_activities_create.html', {'form': form,'f_form': f_form,},
+             context_instance=RequestContext(request))
+
+          
+        
+    else:
+        form = IRSSActivityForm(instance=IRSSActivity())
+        f_form = IRSSActivityFileFormSet()
+    
+    return render_to_response('irss/irss_activities_create.html', {'form': form,'f_form': f_form},
+        context_instance=RequestContext(request))
+
+        
+
+@login_required
+@permission_required('ippc.change_irssactivity', login_url="/accounts/login/")
+def irss_activity_edit(request,  id=None, template_name='irss/irss_activities_edit.html'):
+    """ Edit   Country IRSSActivity """
+    user = request.user
+    author = user
+    if id:
+        irssactivity = get_object_or_404(IRSSActivity, pk=id)
+    else:
+        irssactivity = IRSSActivity()
+      
+    if request.POST:
+        form = IRSSActivityForm(request.POST,  request.FILES, instance=irssactivity)
+        
+        f_form = IRSSActivityFileFormSet(request.POST,  request.FILES,instance=irssactivity)
+       
+        if form.is_valid() and f_form.is_valid():
+            form.save()
+          
+    
+            f_form.instance = irssactivity
+            f_form.save()
+            info(request, _("Successfully updated IRSS Activity."))
+            return redirect("irss-activity-detail", pk=irssactivity.id)
+
+    else:
+        form = IRSSActivityForm(instance=irssactivity)
+       
+        f_form = IRSSActivityFileFormSet(instance=irssactivity)
+       
+      
+    return render_to_response(template_name, {
+        'form': form, 'f_form':f_form,"irssactivity": irssactivity
+    }, context_instance=RequestContext(request))            
+            
+    
