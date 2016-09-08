@@ -1711,92 +1711,83 @@ class EmailUtilityMessageFile(models.Model):
     def fileextension(self):
         return os.path.splitext(self.file.name)[1]
 
-#             
-#       
-#class QAQuestion(Displayable, models.Model):
-#    """ Q A Question """
-#    # slug - provided by mezzanine.core.models.slugged (subclassed by displayable)
-#    # title - provided by mezzanine.core.models.slugged (subclassed by displayable)
-#    # status - provided by mezzanine.core.models.displayable
-#    # publish_date - provided by mezzanine.core.models.displayable
-#    modify_date = models.DateTimeField(_("Modified date"), blank=True, null=True, editable=False)
-#    search_fields = ("title", "short_description")
-#    #description = models.TextField("OPTIONAL: Provide more background",blank=True, null=True)
-#    questionopen = models.BooleanField(verbose_name=_("Open"), default=True)
-#    user = models.ForeignKey(User) 
-#    class Meta:
-#        verbose_name_plural = _("QAQuestion")
-#        # abstract = True
+             
+QA_STATUS_1 = 1
+QA_STATUS_2 = 2
+QA_STATUS_3 = 3
+QA_STATUS_CHOICES = (
+    (QA_STATUS_1, _("None")), 
+    (QA_STATUS_2, _("Published")),
+    (QA_STATUS_3, _("Rejected")),
+)
+     
+class QAQuestion(Displayable, models.Model):
+    """ Q A Question """
+    # slug - provided by mezzanine.core.models.slugged (subclassed by displayable)
+    # title - provided by mezzanine.core.models.slugged (subclassed by displayable)
+    # status - provided by mezzanine.core.models.displayable
+    # publish_date - provided by mezzanine.core.models.displayable
+    modify_date = models.DateTimeField(_("Modified date"), blank=True, null=True, editable=False)
+    search_fields = ("title", "short_description")
+    #description = models.TextField("OPTIONAL: Provide more background",blank=True, null=True)
+    questionopen = models.BooleanField(verbose_name=_("Open"), default=True)
+    questiondiscard = models.IntegerField(_("Publish or Reject"), choices=QA_STATUS_CHOICES, default=QA_STATUS_1)
+ 
+    user = models.ForeignKey(User) 
+    class Meta:
+        verbose_name_plural = _("QAQuestion")
+        # abstract = True
 #
-#    def __unicode__(self):
-#        return self.title
-#         
-#    def save(self, *args, **kwargs):
-#        ''' On save, update timestamps '''
-#        if not self.id:
-#            self.publish_date = datetime.today()
-#            self.slug = slugify(self.title)
-#        self.modify_date = datetime.now()
-#        super(QAQuestion, self).save(*args, **kwargs)
-#        
-#        
-#      
-#class QAAnswer(Displayable, models.Model):
-#    """ Q A Answer """
-#    # slug - provided by mezzanine.core.models.slugged (subclassed by displayable)
-#    # title - provided by mezzanine.core.models.slugged (subclassed by displayable)
-#    # status - provided by mezzanine.core.models.displayable
-#    # publish_date - provided by mezzanine.core.models.displayable
-#    modify_date = models.DateTimeField(_("Modified date"), blank=True, null=True, editable=False)
-#    search_fields = ("title", "short_description")
-#    #description = models.TextField("OPTIONAL: Provide more background",blank=True, null=True)
-#    user = models.ForeignKey(User) 
-#    question = models.ForeignKey(QAQuestion)
-#    bestanswer =  models.BooleanField( verbose_name=_("Best answer"),)
-#    answertext= models.TextField("",blank=True, null=True)
-#    
-#    class Meta:
-#        verbose_name_plural = _("QAAnswer")
-#        # abstract = True
-#
-#    def __unicode__(self):
-#        return self.title
-#         
-#    def save(self, *args, **kwargs):
-#        ''' On save, update timestamps '''
-#        if not self.id:
-#            self.publish_date = datetime.today()
-#            self.slug = slugify(self.title)
-#        self.modify_date = datetime.now()
-#        super(QAAnswer, self).save(*args, **kwargs)
-#        
-#               
-class Question(models.Model):
-    question_title = models.CharField(max_length=200)
-    description = models.TextField("OPTIONAL: Provide more background",blank=True, null=True)
-    pub_date = models.DateTimeField('date published')
-    user = models.ForeignKey(User)
-       
-    def __unicode__(self):  # Python 3: def __str__(self):
-        return self.question_title
-    def was_published_recently(self):
-        return self.pub_date >= timezone.now() - datetime.timedelta(days=1)
-    def is_past_due(self):
-        if timezone.now() > self.closing_date:
-            return True
-        else: 
-            return False
-        
-class Answer(models.Model):
-    user = models.ForeignKey(User)
-    question = models.ForeignKey(Question)
-    answertext= models.TextField("",blank=True, null=True)
+    def __unicode__(self):
+        return self.title
+         
+    def save(self, *args, **kwargs):
+        ''' On save, update timestamps '''
+        if not self.id:
+            self.publish_date = datetime.today()
+            self.slug = slugify(self.title)
+        self.modify_date = datetime.now()
+        super(QAQuestion, self).save(*args, **kwargs)
+
+
+
+
+class QAAnswer(Displayable, models.Model):
+    """ Q A Answer """
+    # slug - provided by mezzanine.core.models.slugged (subclassed by displayable)
+    # title - provided by mezzanine.core.models.slugged (subclassed by displayable)
+    # status - provided by mezzanine.core.models.displayable
+    # publish_date - provided by mezzanine.core.models.displayable
+    modify_date = models.DateTimeField(_("Modified date"), blank=True, null=True, editable=False)
+    search_fields = ("title", "short_description")
+    #description = models.TextField("OPTIONAL: Provide more background",blank=True, null=True)
+    user = models.ForeignKey(User) 
+    question = models.ForeignKey(QAQuestion)
     bestanswer =  models.BooleanField( verbose_name=_("Best answer"),)
+    answertext= models.TextField("",blank=True, null=True)
+    answerdiscard = models.IntegerField(_("Publish or Reject"), choices=QA_STATUS_CHOICES, default=QA_STATUS_1)
+ 
     
+    class Meta:
+        verbose_name_plural = _("QAAnswer")
+        # abstract = True
+
+    def __unicode__(self):
+        return self.title
+         
+    def save(self, *args, **kwargs):
+        ''' On save, update timestamps '''
+        if not self.id:
+            self.publish_date = datetime.today()
+            self.slug = slugify(self.title)
+        self.modify_date = datetime.now()
+        super(QAAnswer, self).save(*args, **kwargs)
+        
+               
+ 
 class AnswerVotes(models.Model):
     user = models.ForeignKey(User)
-    #NEW answer = models.ForeignKey(QAAnswer)
-    answer = models.ForeignKey(Answer)
+    answer = models.ForeignKey(QAAnswer)
     up= models.CharField(max_length=50)
 
 class ReminderMessage(models.Model):
@@ -1810,98 +1801,184 @@ class ReminderMessage(models.Model):
     def __unicode__(self):  
          return self.subject 
 
-#
-#CONTACTUS_TYPE_1 = 1
-#CONTACTUS_TYPE_2 = 2
-#CONTACTUS_TYPE_3 = 3
-#CONTACTUS_TYPE_4 = 4
-#CONTACTUS_TYPE_5 = 5
-#CONTACTUS_TYPE_6 = 6
-#CONTACTUS_TYPE_7 = 7
-#CONTACTUS_TYPE_8 = 8
-#CONTACTUS_TYPE_9 = 9
-#CONTACTUS_TYPE_10 = 10
-#CONTACTUS_TYPE_11 = 10
-#CONTACTUS_TYPE_CHOICES = (
-#    (CONTACTUS_TYPE_1, _("General")), 
-#    (CONTACTUS_TYPE_2, _("Implementation / Capacity Development")),
-#    (CONTACTUS_TYPE_3, _("ISPM 15")),
-#    (CONTACTUS_TYPE_4, _("NROs: National Reporting Obligations")),
-#    (CONTACTUS_TYPE_5, _("News / Media")),
-#    (CONTACTUS_TYPE_6, _("ePhyto")),
-#    (CONTACTUS_TYPE_7, _("OCS: Online Comment System")),
-#    (CONTACTUS_TYPE_8, _("Resource Mobilization")),
-#    (CONTACTUS_TYPE_9, _("Standard Setting")),
-#    (CONTACTUS_TYPE_10, _("IT / bugs ")),
-#    (CONTACTUS_TYPE_11, _("International Year of Plant Health (IYPH)")), 
-#)
-#
-#class ContactUsEmailMessage(models.Model):
-#    emailfrom = models.CharField(_("From: "),max_length=200,help_text=_("Specify sender email address."))
-#    contact_us_type = models.IntegerField(_("Aera of Interest"), choices=CONTACTUS_TYPE_CHOICES, default=CONTACTUS_TYPE_1)
-#    subject = models.CharField(_("Subject: "),max_length=200)
-#    messagebody = models.TextField(_("Message: "),max_length=500,blank=True, null=True)
-#    date = models.DateTimeField('date')
-#    sent =  models.BooleanField()
-#    
-#    def __unicode__(self):  
-#         return self.subject 
-#     
-#    def contact_us_type_verbose(self):
-#        return dict(CONTACTUS_TYPE_CHOICES)[self.contact_us_type]
-#
-#
-#class FAQsCategory(Displayable, models.Model):
-#    """ FAQs Category"""
+
+CONTACTUS_TYPE_1 = 1
+CONTACTUS_TYPE_2 = 2
+CONTACTUS_TYPE_3 = 3
+CONTACTUS_TYPE_4 = 4
+CONTACTUS_TYPE_5 = 5
+CONTACTUS_TYPE_6 = 6
+CONTACTUS_TYPE_7 = 7
+CONTACTUS_TYPE_8 = 8
+CONTACTUS_TYPE_9 = 9
+CONTACTUS_TYPE_10 = 10
+CONTACTUS_TYPE_11 = 11
+CONTACTUS_TYPE_CHOICES = (
+    (CONTACTUS_TYPE_1, _("General enquiries")), 
+    (CONTACTUS_TYPE_2, _("Implementation / Capacity Development")),
+    (CONTACTUS_TYPE_3, _("Registration of ISPM 15 symbol")),
+    (CONTACTUS_TYPE_4, _("National Reporting Obligations (NROs)")),
+    (CONTACTUS_TYPE_5, _("News / Communications")),
+    (CONTACTUS_TYPE_6, _("ePhyto")),
+    (CONTACTUS_TYPE_7, _("Online Comment System (OCS)")),
+    (CONTACTUS_TYPE_8, _("Resource Mobilization")),
+    (CONTACTUS_TYPE_9, _("Standard Setting")),
+    (CONTACTUS_TYPE_10, _("Technical assistance (IT/bugs) ")),
+    (CONTACTUS_TYPE_11, _("International Year of Plant Health (IYPH)")), 
+)
+
+class ContactUsEmailMessage(models.Model):
+    emailfrom = models.CharField(_("From: "),max_length=200,help_text=_("Specify sender email address."))
+    contact_us_type = models.IntegerField(_("Aera of Interest"), choices=CONTACTUS_TYPE_CHOICES, default=CONTACTUS_TYPE_1)
+    subject = models.CharField(_("Subject: "),max_length=200)
+    messagebody = models.TextField(_("Message: "),max_length=500,blank=True, null=True)
+    date = models.DateTimeField('date')
+    sent =  models.BooleanField()
+    
+    def __unicode__(self):  
+         return self.subject 
+     
+    def contact_us_type_verbose(self):
+        return dict(CONTACTUS_TYPE_CHOICES)[self.contact_us_type]
+
+
+class FAQsCategory(Displayable, models.Model):
+    """ FAQs Category"""
 #    # slug - provided by mezzanine.core.models.slugged (subclassed by displayable)
 #    # title - provided by mezzanine.core.models.slugged (subclassed by displayable)
 #    # status - provided by mezzanine.core.models.displayable
 #    # publish_date - provided by mezzanine.core.models.displayable
-#    faqcat_oder = models.IntegerField(_("order"),  blank=True, null=True)
-# 
-#    class Meta:
-#        verbose_name_plural = _("FAQsCategory")
-#        
+    faqcat_oder = models.IntegerField(_("order"),  blank=True, null=True)
+ 
+    class Meta:
+        verbose_name_plural = _("FAQsCategory")
+        
 #
-#    def __unicode__(self):
-#        return self.title
-#         
-#    def save(self, *args, **kwargs):
-#        ''' On save, update timestamps '''
-#        if not self.id:
-#            self.publish_date = datetime.today()
-#            self.slug = slugify(self.title)
-#        self.modify_date = datetime.now()
-#        super(FAQsCategory, self).save(*args, **kwargs)
-#        
-#class FAQsItem(Displayable, models.Model):
-#    """ FAQs Item"""
-#    # slug - provided by mezzanine.core.models.slugged (subclassed by displayable)
-#    # title - provided by mezzanine.core.models.slugged (subclassed by displayable)
+    def __unicode__(self):
+        return self.title
+         
+    def save(self, *args, **kwargs):
+        ''' On save, update timestamps '''
+        if not self.id:
+            self.publish_date = datetime.today()
+            self.slug = slugify(self.title)
+        self.modify_date = datetime.now()
+        super(FAQsCategory, self).save(*args, **kwargs)
+        
+class FAQsItem(Displayable, models.Model):
+    """ FAQs Item"""
+     #slug - provided by mezzanine.core.models.slugged (subclassed by displayable)
+    # title - provided by mezzanine.core.models.slugged (subclassed by displayable)
 #    # status - provided by mezzanine.core.models.displayable
 #    # publish_date - provided by mezzanine.core.models.displayable
-#    faqcategory = models.ForeignKey(FAQsCategory, related_name="faqscategory")
-#    faq_description = models.TextField(_("Description"),  blank=True, null=True)
-#    faq_anchor = models.CharField(_("Anchor"),max_length=200)
-#    modify_date = models.DateTimeField(_("Modified date"), blank=True, null=True, editable=False)
-#    search_fields = ("title", "short_description")
-#     
-#    class Meta:
-#        verbose_name_plural = _("FAQsItem")
-#        # abstract = True
+    faqcategory = models.ForeignKey(FAQsCategory, related_name="faqscategory")
+    faq_description = models.TextField(_("Description"),  blank=True, null=True)
+    faq_anchor = models.CharField(_("Anchor"),max_length=200)
+    modify_date = models.DateTimeField(_("Modified date"), blank=True, null=True, editable=False)
+    search_fields = ("title", "short_description")
+     
+    class Meta:
+        verbose_name_plural = _("FAQsItem")
+        #abstract = True
 #
-#    def __unicode__(self):
-#        return self.title
-#         
-#    def save(self, *args, **kwargs):
-#        ''' On save, update timestamps '''
-#        if not self.id:
-#            self.publish_date = datetime.today()
-#            self.slug = slugify(self.title)
-#        self.modify_date = datetime.now()
-#        super(FAQsItem, self).save(*args, **kwargs)
+    def __unicode__(self):
+        return self.title
+         
+    def save(self, *args, **kwargs):
+        ''' On save, update timestamps '''
+        if not self.id:
+            self.publish_date = datetime.today()
+            self.slug = slugify(self.title)
+        self.modify_date = datetime.now()
+        super(FAQsItem, self).save(*args, **kwargs)
+        
+AUTOREGISTER_1 = 1
+AUTOREGISTER_2 = 2
+AUTOREGISTER_3 = 3
+AUTOREGISTER_CHOICES = (
+    (AUTOREGISTER_1, _("Pending approval")), 
+    (AUTOREGISTER_2, _("Approved")),
+    (AUTOREGISTER_3, _("Rejected")),
+)
+class UserAutoRegistration(models.Model):
+    firstname = models.CharField(_("First name"), blank=True, null=True,max_length=250,)
+    lastname = models.CharField(_("Last name"), blank=True, null=True,max_length=250,)
+    email = models.CharField(_("Email"), blank=True, null=True,max_length=250,)
+    organisation = models.CharField(_("Organisation"), blank=True, null=True,max_length=250,)
+    country = models.ForeignKey(CountryPage, blank=True, null=True)
+    status = models.IntegerField(_("Publish or Reject"), choices=AUTOREGISTER_CHOICES, default=AUTOREGISTER_1)
+    publish_date = models.DateTimeField(_("Publish date"), blank=True, null=True, editable=True)
+    def __unicode__(self):  
+        return self.lastname+self.firstname+'.'
+    def name(self):
+        return self.lastname
+    def save(self, *args, **kwargs):
+        ''' On save, update timestamps '''
+        if not self.id:
+            self.publish_date = datetime.today()
+        super(UserAutoRegistration, self).save(*args, **kwargs)
+
+IRSS_ACT_TYPE_1 = 1
+IRSS_ACT_TYPE_2 = 2
+IRSS_ACT_TYPE_3 = 3
+IRSS_ACT_TYPE_4 = 4
+IRSS_ACT_TYPE_5 = 5
+IRSS_ACT_TYPE_6 = 6
+IRSS_ACT_TYPE_CHOICES = (
+    (IRSS_ACT_TYPE_1, _("-- select --")), 
+    (IRSS_ACT_TYPE_2, _("Study")),
+    (IRSS_ACT_TYPE_3, _("Workshop & Symposium")),
+    (IRSS_ACT_TYPE_4, _("Survey")),
+    (IRSS_ACT_TYPE_5, _("Other")),
+)
+    
+class IRSSActivity(Displayable, models.Model):
+    """ IRSS Activity"""
+     #slug - provided by mezzanine.core.models.slugged (subclassed by displayable)
+     # title - provided by mezzanine.core.models.slugged (subclassed by displayable)
+     # status - provided by mezzanine.core.models.displayable
+     # publish_date - provided by mezzanine.core.models.displayable
+    
+    activitytype = models.IntegerField(_("Type of activity"), choices=IRSS_ACT_TYPE_CHOICES, default=IRSS_ACT_TYPE_1)
+    authoreditor = models.CharField(_("Author/Editor"),max_length=200)
+    modify_date = models.DateTimeField(_("Modified date"), blank=True, null=True, editable=False)
+    image = models.ImageField(_("Image of document"), upload_to="irss/images/%Y/%m/", blank=True)
+  
+    search_fields = ("title", "short_description")
+     
+    class Meta:
+        verbose_name_plural = _("IRSSActivitys")
+        #abstract = True
 #
-#      
+    def irssctivity_type_verbose(self):
+        return dict(IRSS_ACT_TYPE_CHOICES)[self.activitytype]
+    
+    def __unicode__(self):
+        return self.title
+         
+    def save(self, *args, **kwargs):
+        ''' On save, update timestamps '''
+        if not self.id:
+            self.publish_date = datetime.today()
+            self.slug = slugify(self.title)
+        self.modify_date = datetime.now()
+        super(IRSSActivity, self).save(*args, **kwargs)
+        
+class IRSSActivityFile(models.Model):
+    irssactivity = models.ForeignKey(IRSSActivity)
+    description = models.CharField(max_length=255)
+    file = models.FileField(max_length=255,blank=True, help_text='10 MB maximum file size.', verbose_name='Upload a file', upload_to='files/irss/%Y/%m/%d/', validators=[validate_file_extension])
+
+    def __unicode__(self):  
+        return self.file.name  
+    def name(self):
+        return self.file.name
+    def filename(self):
+        return os.path.basename(self.file.name) 
+    def fileextension(self):
+        return os.path.splitext(self.file.name)[1]
+    
+    
 class Translatable(models.Model):
     """ Translations of user-generated content - https://gist.github.com/renyi/3596248"""
     lang = models.CharField(max_length=5, choices=settings.LANGUAGES)
@@ -1994,6 +2071,27 @@ class TransPublicationLibraryPage(Translatable, RichText, Slugged):
         verbose_name_plural = _("Translated Publication Libraries")
         ordering = ("lang",)
         #unique_together = ("lang", "translation")
+
+class TransFAQsCategory(Translatable, RichText, Slugged):
+    translation = models.ForeignKey(FAQsCategory, related_name="translation")
+
+    class Meta:
+        verbose_name = _("Translated FAQsCategory")
+        verbose_name_plural = _("Translated FAQsCategorys")
+        ordering = ("lang",)
+       
+
+class TransFAQsItem(Translatable, RichText, Slugged):
+    translation = models.ForeignKey(FAQsItem, related_name="translation")
+    faq_description = models.CharField(max_length=1000, blank=True)
+    faq_anchor= models.CharField(max_length=1000, blank=True)
+    
+    class Meta:
+        verbose_name = _("Translated FAQsItem")
+        verbose_name_plural = _("Translated FAQsItems")
+        ordering = ("lang",)
+        
+
 #
 #class TransReportingObligation(Translatable,   Slugged):
 #    translation = models.ForeignKey(ReportingObligation, related_name="translation")
