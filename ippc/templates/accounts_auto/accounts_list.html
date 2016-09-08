@@ -1,0 +1,78 @@
+{% extends "base.html" %}
+{% load pages_tags mezzanine_tags i18n future staticfiles accounts_tags %}
+
+{% block meta_title %}
+  {% trans "List of accounts pending approval" %}: 
+{% endblock %}
+
+{% block body_class %}wide{% endblock %}
+
+{% block breadcrumb_menu %}
+<li><a href="/{{ LANGUAGE_CODE }}/">{% trans "Home" %}</a><span class="divider">/</span></li>
+<li class="active">{% trans "List of accounts pending approval" %}</li>
+{% endblock %}
+
+{% block local_nav %}
+{% endblock local_nav %}
+
+{% block pageinfo %}
+{% endblock pageinfo %}
+
+{% block main %}
+    {% if user.is_superuser or perms.ippc.change_publication  %}
+          
+<h1>
+  <small class="normal">{% trans "List of accounts pending approval" %}</small>
+</h1>  
+   
+
+{% if latest %}
+<table class="table table-condensed table-striped" id="publications">
+  <thead>
+    <tr>
+        <th>{% trans "First name" %}</th>
+        <th>{% trans "Last name" %}</th>
+        <th>{% trans "Email" %}</th>
+        <th>{% trans "Organisation" %}</th>
+        <th>{% trans "Country" %}</th>
+        <th>{% trans "Status" %}</th>
+        <th>{% trans "registration date" %}</th>
+        <th>{% trans "Action" %}</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for object in latest %}
+    <tr>
+      <td>{{object.firstname }}</td>
+      <td>{{object.lastname }}</a></td>
+      <td>{{object.email }}</a></td>
+      <td>{{object.organisation }}</a></td>
+      <td>{{object.country }}</a></td>
+      <td>
+            
+       {% if object.status == 1 %}
+            <span style="color: red;">Pending approval</span> 
+       {% elif object.status == 2 %}
+            <span style="color: green;">Approved</span> 
+         {% elif object.status == 3 %}
+     <span style="color: red;">Rejected</span> 
+       {% endif %}
+            
+          </a></td>
+      <td>{{object.publish_date|date:"d M Y - H:m"}}</td>
+      <td> 
+          {% if user.is_superuser or perms.ippc.change_userautoregistration  %}
+      
+            <a class="btn btn-small btn-info" href="{% url 'auto-register-approve' object.id %}"><i class="icon-edit icon-white"></i> {% trans "APPROVE" %}</a>
+            <a class="btn btn-small btn-info" href="{% url 'auto-register-delete' object.id %}"><i class="icon-edit icon-white"></i> {% trans "DELETE" %}</a>
+            {% endif %}
+      </td>
+    </tr>
+    {% endfor %}
+  </tbody>
+</table> {% endif %}
+{% else %}
+<p>No permissions to see this page.</p>
+{% endif %}
+
+{% endblock %}
