@@ -165,7 +165,7 @@
             <img src="/static/img/irsssurvey.png" alt="" width="200px" /><p></p>
            </center>      <table class="table table-condensed" id="publications">
                 {% for object in latest %}
-                {% if object.activitytype == 5 %}
+                {% if object.activitytype == 4 %}
                    <tr>  
                       <td> <a   href="{% url 'irss-activity-detail' object.id %}">{{ object.title }}</a></td>
                       <td> 
