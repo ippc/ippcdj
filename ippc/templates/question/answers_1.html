@@ -33,9 +33,9 @@
 
             {% if error_message %}<div class="alert alert-error"><p><strong>{{ error_message }}</strong></p></div>{% endif %}
             <i>{% trans "Publication date" %}: <b>{{ question.pub_date|date:"d M Y" }}</b></i><br><br>
-            {% if question.description %}
+            {% if question.short_description %}
             <strong>{% trans "BACKGROUND INFORMATION" %}</strong><br>
-            {{ question.description |richtext_filter|safe }}<br><br>
+            {{ question.short_description |richtext_filter|safe }}<br><br>
             {% endif %}
 						<hr>
             <h2>Answers:</h2>

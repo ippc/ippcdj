@@ -29,9 +29,9 @@
 
     <p><b>{% trans "Publication date" %}: </b> {{ question.publish_date|date:"d M Y" }}</p>
   
-    {% if question.description %}
+    {% if question.short_description %}
        <p><b>{% trans "BACKGROUND INFORMATION" %} </b><br>
-          {{ question.description |richtext_filter|safe }}</p>
+          {{ question.short_description |richtext_filter|safe }}</p>
     {% endif %}
    </div>
     
