@@ -53,7 +53,7 @@ from datetime import datetime
 from django.contrib.contenttypes.models import ContentType
 from mezzanine.generic import views as myview
 from mezzanine.generic import models
-from t_eppo.models import Names
+from t_eppo.models  import Names
 
 import os
 import shutil
