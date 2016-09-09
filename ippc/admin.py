@@ -42,23 +42,23 @@ class IppcUserProfileAdmin(admin.ModelAdmin):
 class MyQAQuestionAdminForm(forms.ModelForm):
     class Meta:
         model = QAQuestion
-        widgets = {          'description':MarkdownWidget() 
+        widgets = { 'short_description':MarkdownWidget() 
 #         # models.TextField: {'widget': },
 }
 class QAQuestionAdmin(admin.ModelAdmin):
     form = MyQAQuestionAdminForm
     fieldsets = [
         ('Title',{'fields': ['title'], 'classes': ['nocollapse']}),
-        ('Description',{'fields': ['description'], 'classes': ['Textarea']}),
+        ('Description',{'fields': ['short_description'], 'classes': ['Textarea']}),
         ('publish_date', {'fields': ['publish_date'], 'classes': ['nocollapse']}),
         ('Author', {'fields': ['user'], 'classes': ['nocollapse']}),
         ('Open', {'fields': ['questionopen'], 'classes': ['nocollapse']}),
         ('Status', {'fields': ['status'], 'classes': ['nocollapse']}),
         ('Publish or Reject question', {'fields': ['questiondiscard'], 'classes': ['collapse']}),
     ]
-    list_display = ('title','description', 'publish_date','status','questionopen','user','questiondiscard')
-    search_fields = ['description']
-    list_filter = ['publish_date','description','status']
+    list_display = ('title','short_description', 'publish_date','status','questionopen','user','questiondiscard')
+    search_fields = ['short_description']
+    list_filter = ['publish_date','short_description','status']
 
     def save_form(self, request, form, change):
         """
@@ -99,7 +99,7 @@ admin.site.register(QAQuestion, QAQuestionAdmin)
 class MyQAAnswerAdminForm(forms.ModelForm):
     class Meta:
         model = QAAnswer
-        widgets = {          'description':MarkdownWidget() 
+        widgets = {  'description':MarkdownWidget() 
 }
 class QAAnswerAdmin(admin.ModelAdmin):
     form = MyQAAnswerAdminForm

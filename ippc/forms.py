@@ -72,11 +72,10 @@ class QAQuestionForm(forms.ModelForm):
         model =  QAQuestion
         fields = [
                 'title',
-                'description',
-                
+                'short_description',
                  ]
 
-        exclude = ( 'slug',  'modify_date','publish_date','status',         'questionopen', )
+        exclude = ( 'slug',  'modify_date','publish_date','status',      'description',    'questionopen', )
      
 class QAAnswerForm(forms.ModelForm):
     class Meta:

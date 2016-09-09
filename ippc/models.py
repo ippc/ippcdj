@@ -1729,7 +1729,7 @@ class QAQuestion(Displayable, models.Model):
     # publish_date - provided by mezzanine.core.models.displayable
     modify_date = models.DateTimeField(_("Modified date"), blank=True, null=True, editable=False)
     search_fields = ("title", "short_description")
-    #description = models.TextField("OPTIONAL: Provide more background",blank=True, null=True)
+    short_description = models.TextField("Description",blank=True, null=True)
     questionopen = models.BooleanField(verbose_name=_("Open"), default=True)
     questiondiscard = models.IntegerField(_("Publish or Reject"), choices=QA_STATUS_CHOICES, default=QA_STATUS_1)
  
