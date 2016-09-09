@@ -6834,7 +6834,7 @@ class IRSSActivityListView(ListView):
     model = IRSSActivity
     date_field = 'publish_date'
     template_name = 'irss/irss_activities_list.html'
-    queryset = IRSSActivity.objects.all()
+    queryset = IRSSActivity.objects.all().order_by('-modify_date', 'title')
     
     allow_future = False
     allow_empty = True
@@ -6844,7 +6844,7 @@ class IRSSActivityListView(ListView):
         """ only return pest reports from the specific country """
         # self.country = get_object_or_404(CountryPage, country=self.kwargs['country'])
         # CountryPage country_slug == country URL parameter keyword argument
-        return IRSSActivity.objects.all()
+        return IRSSActivity.objects.all().order_by('-modify_date', 'title')
     
     def get_context_data(self, **kwargs): # http://stackoverflow.com/a/15515220
         context = super(IRSSActivityListView, self).get_context_data(**kwargs)
