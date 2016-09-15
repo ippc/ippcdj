@@ -5880,7 +5880,8 @@ class AdvancesSearchCNListView(ListView):
               tot_p+=p
               if p>0:
                   if cn>0:
-                    maparray.append([str('<a href="/'+cn.country_slug+'/pestreports/">'+cn.name)+': '+str(p)+'</a>',str(cn.cn_lat),str(cn.cn_long)])
+                 
+                    maparray.append([str('<a href="/'+cn.country_slug+'/pestreports/">'+cn.name.encode('utf-8'))+': '+str(p)+'</a>',str(cn.cn_lat),str(cn.cn_long)])
                     maparray1+='citymap[\''+str(cn.country_slug)+'\'] = {center: new google.maps.LatLng('+str(cn.cn_lat)+','+str(cn.cn_long)+'), text:\''+str(cn.name)+': '+str(p)+''+'\', html:\''+str('<a href="/countries/'+cn.country_slug+'/pestreports/">'+cn.name)+': '+str(p)+'</a>'+'\',  population:' +str(p)+'};'
               
             context['map']=maparray
