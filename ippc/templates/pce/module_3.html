@@ -422,7 +422,7 @@ function checkRules()
                                                            
                                                            {% endif %}
                                                         {% for ff in form %}
-                                                        {%if not ff.label == 'Module3' and not ff.label == 'Delete'  and not ff.label == 'Удалить' and not ff.label == 'Id' and not ff.label == 'Supprimer'%}
+                                                        {%if not ff.label == 'Module3' and not ff.label == 'Delete'  and not ff.label == 'Удалить' and not ff.label == 'Id' and not ff.label == 'Supprimer'  and not ff.label == 'Eliminar'  %}
                                             
                                                          <td> 
                                                             {% if context == 'Edit' or   context == 'View' %}
@@ -469,7 +469,7 @@ function checkRules()
                                             <div class="panel panel-default">
                                                 <div class="panel-body">
                                                     {% for ff in form %}
-                                                    {%if not ff.label == 'Module3' and not ff.label == 'Delete'  and not ff.label == 'Удалить' and not ff.label == 'Id' and not ff.label == 'Supprimer'%}
+                                                    {%if not ff.label == 'Module3' and not ff.label == 'Delete'  and not ff.label == 'Удалить' and not ff.label == 'Id' and not ff.label == 'Supprimer'  and not ff.label == 'Eliminar'  %}
                                                     {{ff.label}} 
                                                      {% if context == 'Edit' %}
                                                             {{ff}} 

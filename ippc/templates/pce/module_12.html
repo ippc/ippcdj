@@ -293,7 +293,7 @@ function checkRules()
                                                     {% for form in form2 %}
                                                        
                                                         {% for ff in form %}
-                                                        {%if not ff.label == 'Module12' and not ff.label == 'Delete'   and not ff.label == 'Supprimer'  and not ff.label == 'Удалить' and not ff.label == 'Id'%}
+                                                        {%if not ff.label == 'Module12' and not ff.label == 'Delete'   and not ff.label == 'Supprimer'  and not ff.label == 'Eliminar'   and not ff.label == 'Удалить' and not ff.label == 'Id'%}
                                                         <tr>  <td> {{ff.label}}</td>
                                                          <td> {%if ff.name == 'c1' or ff.name == 'c2' or ff.name == 'c3' %}
                                                     <ul>
@@ -342,7 +342,7 @@ function checkRules()
                                                     {% for form in form3 %}
                                                        
                                                         {% for ff in form %}
-                                                        {%if not ff.label == 'Module12' and not ff.label == 'Delete'    and not ff.label == 'Supprimer' and not ff.label == 'Удалить' and not ff.label == 'Id'%}
+                                                        {%if not ff.label == 'Module12' and not ff.label == 'Delete'    and not ff.label == 'Supprimer'  and not ff.label == 'Eliminar'  and not ff.label == 'Удалить' and not ff.label == 'Id'%}
                                                         <tr>  <td> {{ff.label}}</td>
                                                          <td> {%if ff.name == 'c1' or ff.name == 'c2' or ff.name == 'c3' or ff.name == 'c4' or ff.name == 'c5' %}
                                                     <ul>
@@ -457,7 +457,7 @@ function checkRules()
                                                           
                                                            {% endif %}
                                                         {% for ff in form %}
-                                                        {%if not ff.label == 'Module12' and not ff.label == 'Delete'  and not ff.label == 'Supprimer'   and not ff.label == 'Удалить' and not ff.label == 'Id'%}
+                                                        {%if not ff.label == 'Module12' and not ff.label == 'Delete'  and not ff.label == 'Supprimer'  and not ff.label == 'Eliminar'    and not ff.label == 'Удалить' and not ff.label == 'Id'%}
                                             
                                                       {% if context == 'Edit' %}  
                                                                     <td> {{ff}}</td>
@@ -548,7 +548,7 @@ function checkRules()
                                                     {% for form in form29 %}
                                                        
                                                         {% for ff in form %}
-                                                        {%if not ff.label == 'Module12' and not ff.label == 'Delete'   and not ff.label == 'Supprimer'  and not ff.label == 'Удалить' and not ff.label == 'Id'%}
+                                                        {%if not ff.label == 'Module12' and not ff.label == 'Delete'   and not ff.label == 'Supprimer'  and not ff.label == 'Eliminar'   and not ff.label == 'Удалить' and not ff.label == 'Id'%}
                                                         <tr>  <td> {{ff.label}}</td>
                                                          <td> {{ff}}</td>
                                                          {% else %}{{ff.as_hidden}}
@@ -591,7 +591,7 @@ function checkRules()
                                             <div class="panel panel-default">
                                                 <div class="panel-body">
                                                     {% for ff in form %}
-                                                    {%if not ff.label == 'Module12' and not ff.label == 'Delete'   and not ff.label == 'Supprimer'  and not ff.label == 'Удалить' and not ff.label == 'Id'%}
+                                                    {%if not ff.label == 'Module12' and not ff.label == 'Delete'   and not ff.label == 'Supprimer'  and not ff.label == 'Eliminar'   and not ff.label == 'Удалить' and not ff.label == 'Id'%}
                                                     {{ff.label}}   {% if context == 'Edit' %}
                                                             {{ff}} 
                                                         {% else %} 
