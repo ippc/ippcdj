@@ -4606,7 +4606,7 @@ def module3_create(request, country,sessionid=None):
             info(request, _("Successfully saved Module 3."))
             return redirect("module-list",country=user_country_slug,id=pceversion.id,)
         else:
-             return render_to_response('pce/module_3.html', {'context':'Edit','form': form,'form31': form31,'form33': form33,'sessionid':sessionid,'can_edit':can_edit,'m_percentage':m_percentage,'tot_percentage':tot_percentage,'is_st_filled':is_st_filled,'is_pa_filled':is_pa_filled,'is_sa_filled':is_sa_filled,'is_lf_filled':is_lf_filled,'st_id':st_id,'pa_id':pa_id,'sa_id':sa_id,'lf_id':lf_id,'module':3,},
+             return render_to_response('pce/module_3.html', {'context':'Edit',  'M3_1': M3_1.objects.filter(),'M3_10': M3_10.objects.filter(),'M3_17': M3_17.objects.filter(),  'form': form,'form31': form31,'form33': form33,'sessionid':sessionid,'can_edit':can_edit,'m_percentage':m_percentage,'tot_percentage':tot_percentage,'is_st_filled':is_st_filled,'is_pa_filled':is_pa_filled,'is_sa_filled':is_sa_filled,'is_lf_filled':is_lf_filled,'st_id':st_id,'pa_id':pa_id,'sa_id':sa_id,'lf_id':lf_id,'module':3,},
              context_instance=RequestContext(request))
 
     else:
@@ -4614,7 +4614,7 @@ def module3_create(request, country,sessionid=None):
         form31 = Module3GridFormSet()
         form33 = Module3WeaknessesFormSet()
     
-    return render_to_response('pce/module_3.html', {'context':'Edit','form': form,'form31': form31,'form33': form33,'sessionid':sessionid,'can_edit':can_edit,'m_percentage':m_percentage,'tot_percentage':tot_percentage,'is_st_filled':is_st_filled,'is_pa_filled':is_pa_filled,'is_sa_filled':is_sa_filled,'is_lf_filled':is_lf_filled,'st_id':st_id,'pa_id':pa_id,'sa_id':sa_id,'lf_id':lf_id,'module':3,},
+    return render_to_response('pce/module_3.html', {'context':'Edit', 'M3_1': M3_1.objects.filter(),'M3_10': M3_10.objects.filter(),'M3_17': M3_17.objects.filter(),'form': form,'form31': form31,'form33': form33,'sessionid':sessionid,'can_edit':can_edit,'m_percentage':m_percentage,'tot_percentage':tot_percentage,'is_st_filled':is_st_filled,'is_pa_filled':is_pa_filled,'is_sa_filled':is_sa_filled,'is_lf_filled':is_lf_filled,'st_id':st_id,'pa_id':pa_id,'sa_id':sa_id,'lf_id':lf_id,'module':3,},
             context_instance=RequestContext(request))
 
 @login_required
@@ -4683,7 +4683,7 @@ def module3_edit(request, country, id=None,sessionid=None, template_name='pce/mo
         form33 = Module3WeaknessesFormSet(instance=module3)
     
     return render_to_response(template_name, {
-        'context':'Edit','form': form,'form31': form31,'form33': form33,'sessionid':sessionid,'can_edit':can_edit,'m_percentage':m_percentage,'tot_percentage':tot_percentage,'is_st_filled':is_st_filled,'is_pa_filled':is_pa_filled,'is_sa_filled':is_sa_filled,'is_lf_filled':is_lf_filled,'st_id':st_id,'pa_id':pa_id,'sa_id':sa_id,'lf_id':lf_id,'module':3,
+        'context':'Edit','M3_1': M3_1.objects.filter(),'M3_10': M3_10.objects.filter(),'M3_17': M3_17.objects.filter(),'form': form,'form31': form31,'form33': form33,'sessionid':sessionid,'can_edit':can_edit,'m_percentage':m_percentage,'tot_percentage':tot_percentage,'is_st_filled':is_st_filled,'is_pa_filled':is_pa_filled,'is_sa_filled':is_sa_filled,'is_lf_filled':is_lf_filled,'st_id':st_id,'pa_id':pa_id,'sa_id':sa_id,'lf_id':lf_id,'module':3,
     }, context_instance=RequestContext(request))
 
 #MODULE 4
@@ -5316,7 +5316,7 @@ def module5_create(request, country,sessionid=None):
 
             return redirect("module-list",country=user_country_slug,id=pceversion.id,)
         else:
-             return render_to_response('pce/module_5.html', {'context':'Edit','form': form,'form25': form25,'sessionid':sessionid,'can_edit':can_edit,'m_percentage':m_percentage,'tot_percentage':tot_percentage,'is_st_filled':is_st_filled,'is_pa_filled':is_pa_filled,'is_sa_filled':is_sa_filled,'is_lf_filled':is_lf_filled,'st_id':st_id,'pa_id':pa_id,'sa_id':sa_id,'lf_id':lf_id,'module':5,},
+             return render_to_response('pce/module_5.html', {'context':'Edit','M5_3': M5_3.objects.filter(),'form': form,'form25': form25,'sessionid':sessionid,'can_edit':can_edit,'m_percentage':m_percentage,'tot_percentage':tot_percentage,'is_st_filled':is_st_filled,'is_pa_filled':is_pa_filled,'is_sa_filled':is_sa_filled,'is_lf_filled':is_lf_filled,'st_id':st_id,'pa_id':pa_id,'sa_id':sa_id,'lf_id':lf_id,'module':5,},
              context_instance=RequestContext(request))
 
     else:
@@ -5324,7 +5324,7 @@ def module5_create(request, country,sessionid=None):
         form25 = Module5WeaknessesFormSet()
         
 
-    return render_to_response('pce/module_5.html', {'context':'Edit','form': form,'form25': form25,'sessionid':sessionid,'can_edit':can_edit,'m_percentage':m_percentage,'tot_percentage':tot_percentage,'is_st_filled':is_st_filled,'is_pa_filled':is_pa_filled,'is_sa_filled':is_sa_filled,'is_lf_filled':is_lf_filled,'st_id':st_id,'pa_id':pa_id,'sa_id':sa_id,'lf_id':lf_id,'module':5,},
+    return render_to_response('pce/module_5.html', {'context':'Edit','M5_3': M5_3.objects.filter(),'form': form,'form25': form25,'sessionid':sessionid,'can_edit':can_edit,'m_percentage':m_percentage,'tot_percentage':tot_percentage,'is_st_filled':is_st_filled,'is_pa_filled':is_pa_filled,'is_sa_filled':is_sa_filled,'is_lf_filled':is_lf_filled,'st_id':st_id,'pa_id':pa_id,'sa_id':sa_id,'lf_id':lf_id,'module':5,},
             context_instance=RequestContext(request))
 
 @login_required
@@ -5391,7 +5391,7 @@ def module5_edit(request, country, id=None,sessionid=None, template_name='pce/mo
         form25 = Module5WeaknessesFormSet(instance=module5)
       
     return render_to_response(template_name, {
-        'context':'Edit','form': form, 'form25': form25,'sessionid':sessionid,'can_edit':can_edit,'m_percentage':m_percentage,'tot_percentage':tot_percentage,'is_st_filled':is_st_filled,'is_pa_filled':is_pa_filled,'is_sa_filled':is_sa_filled,'is_lf_filled':is_lf_filled,'st_id':st_id,'pa_id':pa_id,'sa_id':sa_id,'lf_id':lf_id,'module':5,'module':5,
+        'context':'Edit','M5_3': M5_3.objects.filter(),'form': form, 'form25': form25,'sessionid':sessionid,'can_edit':can_edit,'m_percentage':m_percentage,'tot_percentage':tot_percentage,'is_st_filled':is_st_filled,'is_pa_filled':is_pa_filled,'is_sa_filled':is_sa_filled,'is_lf_filled':is_lf_filled,'st_id':st_id,'pa_id':pa_id,'sa_id':sa_id,'lf_id':lf_id,'module':5,'module':5,
     }, context_instance=RequestContext(request))
 
 
@@ -6646,7 +6646,7 @@ def module8_create(request, country,sessionid=None):
             return redirect("module-list",country=user_country_slug,id=pceversion.id,)
         else:
             info(request, _("AAAAAAAAAAAAAAAAAA"))
-            return render_to_response('pce/module_8.html', {'context':'Edit','form': form,'form3': form3,'form18': form18,'form30': form30,'form45': form45,'sessionid':sessionid,'can_edit':can_edit,'m_percentage':m_percentage,'tot_percentage':tot_percentage,'is_st_filled':is_st_filled,'is_pa_filled':is_pa_filled,'is_sa_filled':is_sa_filled,'is_lf_filled':is_lf_filled,'st_id':st_id,'pa_id':pa_id,'sa_id':sa_id,'lf_id':lf_id,'module':8,},
+            return render_to_response('pce/module_8.html', {'context':'Edit','M8_17': M8_17.objects.filter(),'form': form,'form3': form3,'form18': form18,'form30': form30,'form45': form45,'sessionid':sessionid,'can_edit':can_edit,'m_percentage':m_percentage,'tot_percentage':tot_percentage,'is_st_filled':is_st_filled,'is_pa_filled':is_pa_filled,'is_sa_filled':is_sa_filled,'is_lf_filled':is_lf_filled,'st_id':st_id,'pa_id':pa_id,'sa_id':sa_id,'lf_id':lf_id,'module':8,},
             context_instance=RequestContext(request))
 
     else:
@@ -6659,7 +6659,7 @@ def module8_create(request, country,sessionid=None):
  
       
 
-    return render_to_response('pce/module_8.html', {'context':'Edit','form': form,'form3': form3,'form18': form18,'form30': form30,'form45': form45,'sessionid':sessionid,'can_edit':can_edit,'m_percentage':m_percentage,'tot_percentage':tot_percentage,'is_st_filled':is_st_filled,'is_pa_filled':is_pa_filled,'is_sa_filled':is_sa_filled,'is_lf_filled':is_lf_filled,'st_id':st_id,'pa_id':pa_id,'sa_id':sa_id,'lf_id':lf_id,'module':8,},
+    return render_to_response('pce/module_8.html', {'context':'Edit','M8_17': M8_17.objects.filter(),'form': form,'form3': form3,'form18': form18,'form30': form30,'form45': form45,'sessionid':sessionid,'can_edit':can_edit,'m_percentage':m_percentage,'tot_percentage':tot_percentage,'is_st_filled':is_st_filled,'is_pa_filled':is_pa_filled,'is_sa_filled':is_sa_filled,'is_lf_filled':is_lf_filled,'st_id':st_id,'pa_id':pa_id,'sa_id':sa_id,'lf_id':lf_id,'module':8,},
             context_instance=RequestContext(request))
 
 @login_required
@@ -6740,7 +6740,7 @@ def module8_edit(request, country, id=None,sessionid=None, template_name='pce/mo
         form45 = Module8WeaknessesFormSet(instance=module8)
      
     return render_to_response(template_name, {
-        'context':'Edit','form': form, 'form3': form3,'form18': form18,'form30': form30,'form45': form45,'sessionid':sessionid,'can_edit':can_edit,'m_percentage':m_percentage,'tot_percentage':tot_percentage,'is_st_filled':is_st_filled,'is_pa_filled':is_pa_filled,'is_sa_filled':is_sa_filled,'is_lf_filled':is_lf_filled,'st_id':st_id,'pa_id':pa_id,'sa_id':sa_id,'lf_id':lf_id,'module':8,
+        'context':'Edit','M8_17': M8_17.objects.filter(),'form': form, 'form3': form3,'form18': form18,'form30': form30,'form45': form45,'sessionid':sessionid,'can_edit':can_edit,'m_percentage':m_percentage,'tot_percentage':tot_percentage,'is_st_filled':is_st_filled,'is_pa_filled':is_pa_filled,'is_sa_filled':is_sa_filled,'is_lf_filled':is_lf_filled,'st_id':st_id,'pa_id':pa_id,'sa_id':sa_id,'lf_id':lf_id,'module':8,
     }, context_instance=RequestContext(request))
 
 #MODULE 9

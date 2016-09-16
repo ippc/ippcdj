@@ -2420,6 +2420,12 @@ class Module2Weaknesses(models.Model):
 class M3_1(models.Model):
     """ M3_1 """
     name = models.CharField(_("name"), max_length=500)
+    name_fr = models.CharField(_("name fr"), max_length=500)
+    name_es = models.CharField(_("name es"), max_length=500)
+    name_ar = models.CharField(_("name ar"), max_length=500)
+    name_ru = models.CharField(_("name ru"), max_length=500)
+    name_zh = models.CharField(_("name zh"), max_length=500)
+    
     def __unicode__(self):
         return self.name
     class Meta:
@@ -2431,6 +2437,11 @@ class M3_1(models.Model):
 class M3_10(models.Model):
     """ M3_10 """
     name = models.CharField(_("name"), max_length=500)
+    name_fr = models.CharField(_("name fr"), max_length=500)
+    name_es = models.CharField(_("name es"), max_length=500)
+    name_ar = models.CharField(_("name ar"), max_length=500)
+    name_ru = models.CharField(_("name ru"), max_length=500)
+    name_zh = models.CharField(_("name zh"), max_length=500)
     def __unicode__(self):
         return self.name
     class Meta:
@@ -2441,6 +2452,11 @@ class M3_10(models.Model):
 class M3_17(models.Model):
     """ M3_1 """
     name = models.CharField(_("name"), max_length=500)
+    name_fr = models.CharField(_("name fr"), max_length=500)
+    name_es = models.CharField(_("name es"), max_length=500)
+    name_ar = models.CharField(_("name ar"), max_length=500)
+    name_ru = models.CharField(_("name ru"), max_length=500)
+    name_zh = models.CharField(_("name zh"), max_length=500)
     def __unicode__(self):
         return self.name
         
@@ -2778,7 +2794,11 @@ class Module4Weaknesses(models.Model):
 class M5_3(models.Model):
     """ M3_1 """
     name = models.CharField(_("name"), max_length=500)
-
+    name_fr = models.CharField(_("name fr"), max_length=500)
+    name_es = models.CharField(_("name es"), max_length=500)
+    name_ar = models.CharField(_("name ar"), max_length=500)
+    name_ru = models.CharField(_("name ru"), max_length=500)
+    name_zh = models.CharField(_("name zh"), max_length=500)
     def __unicode__(self):
         return self.name
         
@@ -3269,7 +3289,11 @@ class Module7Weaknesses(models.Model):
 class M8_17(models.Model):
     """ M8_17 """
     name = models.CharField(_("name"), max_length=500)
-
+    name_fr = models.CharField(_("name fr"), max_length=500)
+    name_es = models.CharField(_("name es"), max_length=500)
+    name_ar = models.CharField(_("name ar"), max_length=500)
+    name_ru = models.CharField(_("name ru"), max_length=500)
+    name_zh = models.CharField(_("name zh"), max_length=500)
     def __unicode__(self):
         return self.name
         
