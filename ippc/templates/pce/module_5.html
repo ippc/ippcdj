@@ -107,7 +107,19 @@
                                                     
                                               {%else%}
                                                      {% if  context == 'Edit' %}
-                                                       {{f}} 
+                                                       {% if f.name == 'm_3' %}
+                                                                    <select multiple="multiple" class="yyy1" id="id_{{f.name}}" name="{{f.name}}" size="6">
+                                                                            {% for o in M5_3 %}
+                                                                                 {% if o.id in f.value %}
+                                                                                    <option selected="selected" value="{{o.id}}">{% if  LANGUAGE_CODE == 'en' %}{{o}}{% elif  LANGUAGE_CODE == 'es'  %}{{o.name_es}}{% elif  LANGUAGE_CODE == 'fr'  %}{{o.name_fr}}{% elif  LANGUAGE_CODE == 'ru'  %}{{o.name_ru}}{% elif  LANGUAGE_CODE == 'ar'  %}{{o.name_ar}}{% elif  LANGUAGE_CODE == 'zh'  %}{{o.name_zh}}{% else  %}{{o}}{%endif%}</option>
+                                                                                 {% else %}
+                                                                                    <option value="{{o.id}}">{% if  LANGUAGE_CODE == 'en' %}{{o}}{% elif  LANGUAGE_CODE == 'es'  %}{{o.name_es}}{% elif  LANGUAGE_CODE == 'fr'  %}{{o.name_fr}}{% elif  LANGUAGE_CODE == 'ru'  %}{{o.name_ru}}{% elif  LANGUAGE_CODE == 'ar'  %}{{o.name_ar}}{% elif  LANGUAGE_CODE == 'zh'  %}{{o.name_zh}}{% else  %}{{o}}{%endif%}</option>
+                                                                                 {% endif %}
+                                                                             {% endfor %} 
+                                                                    </select>
+                                                        {% else %}
+                                                           {{f}}   
+                                                        {% endif %}
                                                     {% elif context == 'View'  %}
                                                       
                                                             {% if f.name == 'm_3' %}
