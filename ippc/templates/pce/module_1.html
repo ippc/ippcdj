@@ -89,7 +89,7 @@
                                     <tr>
                                         <td>
                                             <div class="control-group">
-                                                <label>{% if f.name == 'country'%}1. {% endif %}{{f.label|safe}}</label>
+                                                <label>{% if f.name == 'country'%}1. {% trans "Country" %}{% else %}{{f.label|safe}}{% endif %}</label>
                                                 <div class="controls">
                                                    {%if f.name == 'm_10' %}
                                                     <ul>
@@ -107,73 +107,73 @@
                                                                                              
                                                     {%else%}
                                                     {% if context == 'View' or  context == 'Edit' %}
-                                                    {{f}}
+                                                         {{f}}
                                                     {%else%}
                                                       {% if f.name == 'country'%}
-                                   {{country}}
-                                  {%elif f.name == 'region'%}
-                                      {% for key, val in regions %}
-                                      {% ifequal key f.value %}
-                                       <b><u>{{val}}</u>  &#10003;</b>    
-                                      {%else%}
-                                        {{val}} 
-                                      {% endifequal %}<br>
-                                      {% endfor %}  
-                                {%elif f.name == 'm_9'%}
-                                      {% for key, val in VAL_IMP %}
-                                         {% ifequal key f.value %}
-                                       <b><u>{{val}}</u>  &#10003;</b>    
-                                      {%else%}
-                                        {{val}}   
-                                      {% endifequal %}<br>
-                                      {% endfor %}  
-                                  {%elif f.name == 'm_12'%}
-                                      {% for key, val in VAL_EXP %}
-                                       {% ifequal key f.value %}
-                                       <b><u>{{val}}</u>  &#10003;</b>    
-                                      {%else%}
-                                        {{val}}   
-                                      {% endifequal %}<br>
-                                      {% endfor %}  
-                                    {%elif f.name == 'm_13' or f.name == 'm_16' or f.name == 'm_17' or f.name == 'm_18' or f.name == 'm_19'%}
-                                      {% for key, val in VAL_PERCENT %}
-                                        {% ifequal key f.value %}
-                                       <b><u>{{val}}</u>  &#10003;</b>    
-                                      {%else%}
-                                        {{val}}   
-                                      {% endifequal %}<br>
-                                      {% endfor %}  
-                                       {%elif f.name == 'm_24' or f.name == 'm_25'%}
-                                       {% for key, val in NUM_BILATERAL %}
-                                        {% ifequal key f.value %}
-                                             <b><u>{{val}}</u>  &#10003;</b>    
-                                        {%else%}
-                                          {{val}}    
-                                        {% endifequal %}<br>
-                                      {% endfor %}  
-                                      {%elif f.name == 'm_22' %}
-                                          {% for o in membership1 %}
-                                               {% if o.id in f.value %}
-                                                   <b><u> {{o}}</u> &#10003;</b>
-                                                 {% else %}
-                                                  {{o}}
-                                               {% endif %}
-                                    <br>
+                                                            {{country}}
+                                                           {%elif f.name == 'region'%}
+                                                               {% for key, val in regions %}
+                                                               {% ifequal key f.value %}
+                                                                <b><u>{{val}}</u>  &#10003;</b>    
+                                                               {%else%}
+                                                                 {{val}} 
+                                                               {% endifequal %}<br>
+                                                               {% endfor %}  
+                                                            {%elif f.name == 'm_9'%}
+                                                               {% for key, val in VAL_IMP %}
+                                                                  {% ifequal key f.value %}
+                                                                <b><u>{{val}}</u>  &#10003;</b>    
+                                                               {%else%}
+                                                                 {{val}}   
+                                                               {% endifequal %}<br>
+                                                               {% endfor %}  
+                                                           {%elif f.name == 'm_12'%}
+                                                               {% for key, val in VAL_EXP %}
+                                                                {% ifequal key f.value %}
+                                                                <b><u>{{val}}</u>  &#10003;</b>    
+                                                               {%else%}
+                                                                 {{val}}   
+                                                               {% endifequal %}<br>
+                                                               {% endfor %}  
+                                                             {%elif f.name == 'm_13' or f.name == 'm_16' or f.name == 'm_17' or f.name == 'm_18' or f.name == 'm_19'%}
+                                                               {% for key, val in VAL_PERCENT %}
+                                                                 {% ifequal key f.value %}
+                                                                <b><u>{{val}}</u>  &#10003;</b>    
+                                                               {%else%}
+                                                                 {{val}}   
+                                                               {% endifequal %}<br>
+                                                               {% endfor %}  
+                                                                {%elif f.name == 'm_24' or f.name == 'm_25'%}
+                                                                {% for key, val in NUM_BILATERAL %}
+                                                                 {% ifequal key f.value %}
+                                                                      <b><u>{{val}}</u>  &#10003;</b>    
+                                                                 {%else%}
+                                                                   {{val}}    
+                                                                 {% endifequal %}<br>
+                                                               {% endfor %}  
+                                                               {%elif f.name == 'm_22' %}
+                                                                   {% for o in membership1 %}
+                                                                        {% if o.id in f.value %}
+                                                                            <b><u> {{o}}</u> &#10003;</b>
+                                                                          {% else %}
+                                                                           {{o}}
+                                                                        {% endif %}
+                                                                <br>
 
-                                      {% endfor %} 
-                                       {%elif f.name == 'm_23' %}
-                                          {% for o in membership2 %}
-                                               {% if o.id in f.value %}
-                                                   <b><u> {{o}}</u> &#10003;</b>
-                                                 {% else %}
-                                                  {{o}}
-                                               {% endif %}
-                                    <br>
+                                                                  {% endfor %} 
+                                                                   {%elif f.name == 'm_23' %}
+                                                                      {% for o in membership2 %}
+                                                                           {% if o.id in f.value %}
+                                                                               <b><u> {{o}}</u> &#10003;</b>
+                                                                             {% else %}
+                                                                              {{o}}
+                                                                           {% endif %}
+                                                                <br>
 
-                                      {% endfor %} 
-                                 {%else%}
-                                  {{f}}
-                                    {% endif %}
+                                                                  {% endfor %} 
+                                                            {%else%}
+                                                             {{f}}
+                                                               {% endif %}
                                                      {% endif %}
                                                     {% endif %}
                                                 </div>
