@@ -606,14 +606,17 @@ def reminder_to_cn(request,id=None):
     if timezone.now().day == date_day:
         db = MySQLdb.connect(DATABASES["default"]["HOST"],DATABASES["default"]["USER"],DATABASES["default"]["PASSWORD"],DATABASES["default"]["NAME"])
         cursor = db.cursor()
-                
-     
+        reminder_log_report.write("date_day="+ str(date_day)+" \n\n")
+        reminder_log_report.write("id cron="+ str(id)+" \n\n")
+        reminder_log_report.write("id_range_min="+ str(id_range_min)+", id_range_max="+str(id_range_max)+" \n\n")
+              
         countriesList=CountryPage.objects.filter().exclude(id='-1')
         for cn in countriesList :
-	    if cn.send_reminder and cn.id >=id_range_min and cn.id <=id_range_max :          
+	    reminder_log_report.write("cn="+lower(slugify(cn))+" \n\n")
+            if cn.send_reminder and cn.id >=id_range_min and cn.id <=id_range_max :          
 		aa+=lower(slugify(cn)) +'<br>'
                 country_slug = lower(slugify(cn))   
-                reminder_log_report.write("["+ timezone.now().strftime('%Y%m%d%H%M%S')+"] "+country_slug+" \n\n")
+                reminder_log_report.write("["+ timezone.now().strftime('%Y%m%d%H%M%S')+" - send reminder] "+country_slug+" \n\n")
                 
                 countryo = get_object_or_404(CountryPage, page_ptr_id=cn.id)
                 cp = countryo.contact_point_id
@@ -906,7 +909,7 @@ def reminder_to_cn(request,id=None):
                        url_to_notifyp='' 
                        p_files= PestReportFile.objects.filter(pestreport_id=p.id)
                        p_urls=PestReportUrl.objects.filter(pestreport_id=p.id)
-                       for f in ev_files:
+                       for f in p_files:
                           link=''
                           link='https://www.ippc.int/static/media/'+str(f.file)
                           try:
@@ -916,7 +919,7 @@ def reminder_to_cn(request,id=None):
                           except:
                              print "invalid: ", link
                              links_to_notifyp=links_to_notifyp+link+'<br>'
-                       for u in ev_urls:
+                       for u in p_urls:
                           url=''
                           url=str(u.url_for_more_information)
                           url_to_notifyp=url_to_notifyp+url+'<br>'
@@ -940,8 +943,6 @@ def reminder_to_cn(request,id=None):
                         textmessage=textmessage+'</table>'
                         textmessage=textmessage+'<br>The following resources are available to assist you:<br><ol><li> The manual on editing on the IPP [<a href="https://www.ippc.int/en/publications/80405/">Guide to the IPP</a>]</li><li> <a href="https://www.ippc.int/en/faq/#LostPassword">FAQs</a> including forgotten password </li></ol><br>Should you require any assistance, please contact [<a href="mailto:IPPC-IT@fao.org">IPPC-IT@fao.org</a>]<br><br>Best regards<br><br>IPPC Secretariat'
                   
-                         #textmessages.append(textmessage)
-#
                         remider_message= ReminderMessage()
                         remider_message.pk = None
                         remider_message.emailfrom = "ippc@fao.org"
@@ -949,7 +950,7 @@ def reminder_to_cn(request,id=None):
                         remider_message.subject = "IPPC NOR remider for "+str(cn)+": LINKS and FILES"
                         remider_message.messagebody = textmessage
                         remider_message.date = timezone.now()
-##
+
                         messages=[]
                         message = mail.EmailMessage(remider_message.subject,remider_message.messagebody,remider_message.emailfrom,
                         emails, ['paola.sentinelli@fao.org'])
@@ -987,6 +988,7 @@ class ReminderMessageDetailView(DetailView):
     context_object_name = 'remindermessage'
     template_name = 'emailutility/remindermessage_detail.html'
     queryset = ReminderMessage.objects.filter()
+from django.utils.translation import ugettext
 
 def commenta(request, template="generic/comments.html"):
     """
@@ -1001,7 +1003,9 @@ def commenta(request, template="generic/comments.html"):
     print(obj.categories)
     emailto_all=[]
     #notification to Secretariat of comments
-    for g in obj.groups.all():
+    #for g in obj.groups.all():
+    for g in obj.notification_groups.all():
+    
        group=Group.objects.get(id=g.id)
        users = group.user_set.all()
        for u in users:
@@ -1010,17 +1014,6 @@ def commenta(request, template="generic/comments.html"):
             print(user_email)   
             emailto_all.append(str(user_email))
             print("-----------------------------")
-       #emailto_all.append(str('paola.sentinelli@fao.org'))
-    print(emailto_all)
-    subject='IPPC new comment on: '+str(obj)  
-    #print(request.POST['name'])
-    text=request.POST['name']+' has commented on: '+str(obj) +'<br><hr><br>'+request.POST['comment']
-    
-    
-    #TO FIX with real message
-    #notifificationmessage = mail.EmailMessage(subject,text,'paola.sentinelli@fao.org', emailto_all, ['paola.sentinelli@fao.org'])
-    notifificationmessage = mail.EmailMessage(subject,text,'ippc@fao.org', emailto_all, ['paola.sentinelli@fao.org'])
-    notifificationmessage.content_subtype = "html"
     
     
     form = myview.ThreadedCommentForm(request, obj, post_data)
@@ -1032,7 +1025,12 @@ def commenta(request, template="generic/comments.html"):
         if request.FILES:
             commentfile = CommentFile(comment=comment, file=request.FILES['id_commentfile'])
             commentfile.save()
-            sent =notifificationmessage.send()
+    
+        subject='IPPC new comment on: '+str(obj)  
+        text=request.POST['name']+' has commented on: '+str(obj) +'<br><hr><br>'+str(ugettext(request.POST['comment']))
+        notifificationmessage = mail.EmailMessage(subject,text,'ippc@fao.org', emailto_all, ['paola.sentinelli@fao.org'])
+        notifificationmessage.content_subtype = "html"
+        sent =notifificationmessage.send()
         
         response = redirect(myview.add_cache_bypass(comment.get_absolute_url()))
         # Store commenter's details in a cookie for 90 days.
@@ -5719,7 +5717,7 @@ def email_send(request):
                     
                     
                     #timeout, so changed to send_messages
-                    sent =message.send()
+                    #sent =message.send()
                 # Manually open the connection
                 #sends a list of EmailMessage objects. If the connection is not open, this call will implicitly open the connection, and close the connection afterwards. If the connection is already open, it will be left open after mail has been sent.
                 connection = mail.get_connection()
