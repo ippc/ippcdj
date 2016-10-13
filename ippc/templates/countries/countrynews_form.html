@@ -22,7 +22,7 @@
 
 
    <fieldset>
-                <legend>Files</legend>
+               <legend>{% trans "Files" %}</legend>
                 {{ f_form.management_form }}
                 {{ f_form.non_form_errors }}
                 {% for form in f_form %}
@@ -48,7 +48,7 @@
                 {% endfor %}
             </fieldset> 
    <fieldset>      
- <legend>Websites</legend>
+ <legend>{% trans "Websites" %}</legend>
                 {{ u_form.management_form }}
                 {{ u_form.non_form_errors }}
                 {% for form in u_form %}

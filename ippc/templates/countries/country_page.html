@@ -53,7 +53,7 @@
   {# if there are any editors defined for this country page, only admins can see them here #}
   {% if user.is_superuser or perms.ippc.add_reportingobligation and request.user.get_profile.country.name == page.title or user.is_superuser %}
   {% if page.get_content_model.editors.all  %} {#and user.is_superuser#}
-  <h3>Editors</h3>
+  <h3>{% trans "Editors" %}</h3>
   <table class="table table-condensed table-striped">
     <thead>
       <tr>
@@ -98,7 +98,7 @@
                 <small><a class="btn btn-mini" href="{% url 'pest-report-create' page.title|slugify %}">+ {% trans "Add new" %}</a></small>
               {% else %}
               {% endif %}             
-             <a href="{% url 'pest-report-list' page.title|slugify %}">Official Pest Reports</a> 
+             <a href="{% url 'pest-report-list' page.title|slugify %}">{% trans "Pest Reports" %}</a> 
 
       </td>  
       <td>   

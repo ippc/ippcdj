@@ -78,7 +78,7 @@
 
         {% if perms.ippc.change_implementationispm and request.user.get_profile.country.name == page.title %}
             <a class="small pull-right" href="{% url 'implementationispm-edit' object.country.country_slug object.id %}"><i class="icon-edit"></i> Edit</a>
-            {# <a class="btn" href="{% url 'implementationispm-edit' implementationispm.id %}"><i class="icon-edit"></i> Edit</a> #}
+            {# <a class="btn" href="{% url 'implementationispm-edit' implementationispm.id %}"><i class="icon-edit"></i> {% trans "Edit" %}</a> #}
         {% else %}
         {% endif %}
         </td>

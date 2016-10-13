@@ -112,7 +112,7 @@
         {% endif %}
 
         {% if perms.ippc.change_eventreporting and request.user.get_profile.country.name == page.title %}
-            <a class="small pull-right" href="{% url 'event-reporting-edit' object.country.country_slug object.id %}"><i class="icon-edit"></i> Edit</a>
+            <a class="small pull-right" href="{% url 'event-reporting-edit' object.country.country_slug object.id %}"><i class="icon-edit"></i> {% trans "Edit" %}</a>
             {# <a class="btn" href="{% url 'event-reporting-edit' report.id %}"><i class="icon-edit"></i> Edit</a> #}
         {% else %}
         {% endif %}
