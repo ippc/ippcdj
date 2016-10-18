@@ -245,10 +245,10 @@ class NotificationMessageRelate(models.Model):
         verbose_name=_("Country you want to notify"),
         related_name='notificatiocountries', blank=True, null=True)
     partners = models.ManyToManyField(PartnersPage,
-        verbose_name=_("partners: RPPOs, IOs, Liasons you want to notify"),
+        verbose_name=_("Partners: RPPOs, IOs, Liasons you want to notify"),
         related_name='notificatiopartners', blank=True, null=True)
-    notifysecretariat =  models.BooleanField( verbose_name=_("Notify Secretariat"),help_text='check if you want to notify Secretariat',)
-    notify =  models.BooleanField(help_text='check if you want to send out the notification')
+    notifysecretariat =  models.BooleanField( verbose_name=_("Notify Secretariat"),help_text=_("check if you want to notify Secretariat"),)
+    notify =  models.BooleanField( verbose_name=_("Notify"),help_text=_("check if you want to send out the notification"))
         
 
 def validate_file_extension(value):
@@ -2084,7 +2084,7 @@ class TransFAQsCategory(Translatable, RichText, Slugged):
 
 class TransFAQsItem(Translatable, RichText, Slugged):
     translation = models.ForeignKey(FAQsItem, related_name="translation")
-    faq_description = models.CharField(max_length=1000, blank=True)
+    faq_description = models.TextField(max_length=1000, blank=True)
     faq_anchor= models.CharField(max_length=1000, blank=True)
     
     class Meta:
