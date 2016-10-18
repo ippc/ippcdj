@@ -6,7 +6,7 @@
   {% endif %}
   
   {% if user.is_authenticated and perms.ippc.add_reportingobligation and not user.is_staff %}
-        <a href="/countries/{{ user.get_profile.country.name | slugify }}/" class="btn btn-small btn-warning" title="{% trans 'Go to your country page to upload or update information.' %}"> {% trans "Edit Country Information" %}</a> 
+        <a href="/{{ LANGUAGE_CODE }}/countries/{{ user.get_profile.country.name | slugify }}/" class="btn btn-small btn-warning" title="{% trans 'Go to your country page to upload or update information.' %}"> {% trans "Edit Country Information" %}</a> 
         
   {% endif %}
   
