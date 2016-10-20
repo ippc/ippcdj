@@ -279,6 +279,11 @@ class Publication(Orderable):
         related_name="publications") # related_name=publications...
         # ..is used in publicationlibrary template
     title = models.CharField(_("Title"), blank=True, null=True, max_length=250)
+    title_es = models.CharField(_("Title ES"), blank=True, null=True, max_length=250)
+    title_fr = models.CharField(_("Title FR"), blank=True, null=True, max_length=250)
+    title_ru = models.CharField(_("Title RU"), blank=True, null=True, max_length=250)
+    title_ar = models.CharField(_("Title AR"), blank=True, null=True, max_length=250)
+    title_zh = models.CharField(_("Title ZH"), blank=True, null=True, max_length=250)
     # author = models.ForeignKey(User, related_name="publication_author")
     file_en = models.FileField(_("File - English"), 
             upload_to=upload_to("galleries.GalleryImage.file", "files/publication/en/%Y/%m/"),
@@ -2091,7 +2096,8 @@ class TransFAQsItem(Translatable, RichText, Slugged):
         verbose_name = _("Translated FAQsItem")
         verbose_name_plural = _("Translated FAQsItems")
         ordering = ("lang",)
-        
+
+       
 
 #
 #class TransReportingObligation(Translatable,   Slugged):

@@ -203,10 +203,9 @@ class PublicationUrlInline(admin.TabularInline):
     model = PublicationUrl
     formset = inlineformset_factory(Publication, PublicationUrl,extra=1)
 
-
    
 class PublicationAdmin(admin.ModelAdmin):
-    inlines = [PublicationFileInline,PublicationUrlInline, ]
+    inlines = [PublicationFileInline,PublicationUrlInline]
     save_on_top = True
     list_display = ('title',  'modify_date')
     list_filter = ('title',  'modify_date')

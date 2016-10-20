@@ -304,6 +304,11 @@ class PublicationForm(forms.ModelForm):
         fields = [
            'title', 
            'library', 
+           'title_es', 
+           'title_fr', 
+           'title_ar', 
+           'title_ru', 
+           'title_zh', 
            'file_en',
            'file_es',
            'file_fr',
