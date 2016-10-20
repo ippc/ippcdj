@@ -41,9 +41,41 @@
         {% if publication.status == 2 and publication.is_version == 0 %}
         <tr id="media-file-{{ publication.id }}">
             <td>{{ publication.document_number }}</td>
-            <td><a id="title_{{ publication.id }}" href="{% url 'publication-detail' publication.pk %}">{{ publication.title }}</a>
+            <td><a id="title_{{ publication.id }}" href="{% url 'publication-detail' publication.pk %}">{% if LANGUAGE_CODE != 'en' %}
+        {% if LANGUAGE_CODE == 'es'  and publication.title_es != '' and publication.title_es != None %}
+            {{ publication.title_es }}
+        {% elif LANGUAGE_CODE == 'fr'  and publication.title_fr != '' and publication.title_fr != None%}
+            {{ publication.title_fr }}
+        {% elif LANGUAGE_CODE == 'ru'  and publication.title_ru != '' and publication.title_ru != None%}
+            {{ publication.title_ru }}
+        {% elif LANGUAGE_CODE == 'ar'  and publication.title_ar != '' and publication.title_ar != None%}
+            {{ publication.title_ar }}
+        {% elif LANGUAGE_CODE == 'zh'  and publication.title_zh != '' and publication.title_zh != None%}
+            {{ publication.title_zh }}
+        {% else %}
+            {{ publication.title }}
+        {% endif %}
+     {% else %}
+        {{ publication.title }}
+     {% endif %}</a>
                 <div id="{{ publication.id }}" style="display:none;"><br><br><br>
-                    <a href="{% url 'publication-detail' publication.pk %}">{{ publication.title }}</a>
+                    <a href="{% url 'publication-detail' publication.pk %}">{% if LANGUAGE_CODE != 'en' %}
+        {% if LANGUAGE_CODE == 'es'  and publication.title_es != '' and publication.title_es != None %}
+            {{ publication.title_es }}
+        {% elif LANGUAGE_CODE == 'fr'  and publication.title_fr != '' and publication.title_fr != None%}
+            {{ publication.title_fr }}
+        {% elif LANGUAGE_CODE == 'ru'  and publication.title_ru != '' and publication.title_ru != None%}
+            {{ publication.title_ru }}
+        {% elif LANGUAGE_CODE == 'ar'  and publication.title_ar != '' and publication.title_ar != None%}
+            {{ publication.title_ar }}
+        {% elif LANGUAGE_CODE == 'zh'  and publication.title_zh != '' and publication.title_zh != None%}
+            {{ publication.title_zh }}
+        {% else %}
+            {{ publication.title }}
+        {% endif %}
+     {% else %}
+        {{ publication.title }}
+     {% endif %}</a>
                     {% if publication.file_en %}
                     <a href="{{ MEDIA_URL }}{{ publication.file_en }}">En</a>
                     {% endif %}
@@ -123,7 +155,23 @@
       
         <td>{{ publication.agenda_number }}</td>
       {% endif %}
-      <td><a href="{% url 'publication-detail' publication.pk %}">{{ publication.title }}</a></td>
+      <td><a href="{% url 'publication-detail' publication.pk %}">{% if LANGUAGE_CODE != 'en' %}
+        {% if LANGUAGE_CODE == 'es'  and publication.title_es != '' and publication.title_es != None %}
+            {{ publication.title_es }}
+        {% elif LANGUAGE_CODE == 'fr'  and publication.title_fr != '' and publication.title_fr != None%}
+            {{ publication.title_fr }}
+        {% elif LANGUAGE_CODE == 'ru'  and publication.title_ru != '' and publication.title_ru != None%}
+            {{ publication.title_ru }}
+        {% elif LANGUAGE_CODE == 'ar'  and publication.title_ar != '' and publication.title_ar != None%}
+            {{ publication.title_ar }}
+        {% elif LANGUAGE_CODE == 'zh'  and publication.title_zh != '' and publication.title_zh != None%}
+            {{ publication.title_zh }}
+        {% else %}
+            {{ publication.title }}
+        {% endif %}
+     {% else %}
+        {{ publication.title }}
+     {% endif %}</a></td>
       <td>
         {% if publication.file_en %}
         <a href="{{ MEDIA_URL }}{{ publication.file_en }}">
