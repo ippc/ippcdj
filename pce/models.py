@@ -3613,7 +3613,7 @@ class Module9Grid1(models.Model):
     c1 = models.NullBooleanField(_("What is the purpose of pest eradication?"), choices=BOOL_CHOICES,blank=True, null=True, help_text=_(" "),)
     c2 = models.NullBooleanField(_("What the pest eradication program seeks to accomplish?"), choices=BOOL_CHOICES,blank=True, null=True, help_text=_(" "),)
     c3 = models.NullBooleanField(_("What services are performed in order to accomplish this purpose?"), choices=BOOL_CHOICES,blank=True, null=True, help_text=_(" "),)
-    c4 = models.NullBooleanField(_("What principles (e.g. risk based, science based) and values (e.g. honesty, integrity, technical independence) guide the work of pest eradication program?"), choices=BOOL_CHOICES,blank=True, null=True, help_text=_(" "),)
+    c4 = models.NullBooleanField(_("What principles (e.g. risk based, science based) and values (e.g. honesty, integrity,<br>technical independence) guide the work of pest eradication program?"), choices=BOOL_CHOICES,blank=True, null=True, help_text=_(" "),)
   
     def __unicode__(self):  
         return self.c1
