@@ -220,7 +220,7 @@ function checkRules()
                                                 <div class="controls">
                                                        {%if f.name == 'm_1' or f.name == 'm_4' or f.name == 'm_5' or f.name == 'm_6' or f.name == 'm_7' or f.name == 'm_9' or f.name == 'm_10' or f.name == 'm_11' or f.name == 'm_12' or f.name == 'm_13' or f.name == 'm_14' or f.name == 'm_15' or f.name == 'm_16' or f.name == 'm_17' or f.name == 'm_18' or f.name == 'm_19' or f.name == 'm_20' or f.name == 'm_23' or f.name == 'm_25' or f.name == 'm_26' or f.name == 'm_27' or f.name == 'm_28' or f.name == 'm_30' or f.name == 'm_32' or f.name == 'm_33' or f.name == 'm_34' or f.name == 'm_35' or f.name == 'm_36' or f.name == 'm_37' or f.name == 'm_38' or f.name == 'm_39' or f.name == 'm_40' or f.name == 'm_41' or f.name == 'm_44' or f.name == 'm_45' or f.name == 'm_53' or f.name == 'm_59' or f.name == 'm_61' %}
                                                      <ul>
-                                                            <li>
+                                                         <li>
                                                                 <label for="id_{{f.name}}_1" class="control-label">
                                                                 <input {% if context == 'View' %}readonly="true"{%endif%} id="id_{{f.name}}_1" name ="{{f.name}}" type="radio" value="True" {% if f.value == True %}checked{%endif%} {%if context == 'Edit' %}onclick="checkRules();"{%endif%} > {%if context == 'Pdf' %}{% if f.value == True %}<b><u>{%endif%}{% trans "Yes" %} {% if f.value == True %} </u> &#10003; </b>{%endif%}{%else%}{% trans "Yes" %}{%endif%}</label>
 
@@ -408,12 +408,13 @@ function checkRules()
                                                         {%if not ff.label == 'Module13' and not ff.label == 'Delete'   and not ff.label == 'Supprimer'  and not ff.label == 'Eliminar'   and not ff.label == 'Удалить' and not ff.label == 'Id'%}
                                                         <tr>  <td> {{ff.label}}</td>
                                                          <td> {%if ff.name == 'c1' or ff.name == 'c2' or ff.name == 'c3' or ff.name == 'c4'%}
-                                                    <ul>
-                                                    <li>
+                                                      <ul  style="white-space:nowrap;">
+                                                         <li style="display:inline-block;">
+                                                    
                                                         <label for="id_module13grid2_set-0-{{ff.name}}_1" class="control-label">
                                                         <input id="id_module13grid2_set-0-{{ff.name}}_1" name ="module13grid2_set-0-{{ff.name}}" type="radio" value="True" {% if ff.value == True %}checked{%endif%}> {%if context == 'Pdf' %}{% if ff.value == True %}<b><u>{%endif%}{% trans "Yes" %} {% if ff.value == True %} </u> &#10003; </b>{%endif%}{%else%}{% trans "Yes" %}{%endif%}</label>   
                                                     </li>
-                                                    <li> 
+                                                     <li style="display:inline-block;"> 
                                                        <label for="id_module13grid2_set-0-{{ff.name}}_2" class="control-label">
                                                        <input id="id_module13grid2_set-0-{{ff.name}}_2" name ="module13grid2_set-0-{{ff.name}}" type="radio" value="False" {% if ff.value == False %}checked{%endif%}> {%if context == 'Pdf' %}{% if ff.value == False %}<b><u>{%endif%}{% trans "No" %} {% if ff.value == False %} </u> &#10003; </b>{%endif%}{%else%}{% trans "No" %}{%endif%}</label>
                                                     </li>
