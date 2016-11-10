@@ -121,7 +121,7 @@
 
 {% block news_post_list_post_content %}
      {% with news_post|get_object_translation as translated_page %}
-        {{ translated_page.content|richtext_filter|safe |truncatewords_html:100 }}
+        {{ translated_page.content|richtext_filter|safe |truncatechars:500 }} <!--truncatewords_html:100-->
     {% endwith %}
 {% endblock %}
 
