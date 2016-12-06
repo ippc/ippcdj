@@ -173,7 +173,7 @@
                                                    <a href="/{{ LANGUAGE_CODE }}/pce/{{ user.get_profile.country.name|slugify }}/{{sessionid}}/{{key}}/problemanalysis/view">{% trans "View" %}</a>
                                                 {% endif %}
                                             {%else%}
-                                                 View
+                                                {% trans "View" %}
                                             {% endif %}
                                         {% endif %}
                                     {% endfor %}     
@@ -199,7 +199,7 @@
                                   <a href="/{{ LANGUAGE_CODE }}/pce/{{ user.get_profile.country.name|slugify }}/{{sessionid}}/{{key}}/swotanalysis/view">{% trans "View" %}</a>
                                 {% endif %}
                                             {%else%}
-                                                 View
+                                                {% trans "View" %}
                                             {% endif %}
                                         {% endif %}
                                     {% endfor %}     
@@ -224,7 +224,7 @@
                                    <a href="/{{ LANGUAGE_CODE }}/pce/{{ user.get_profile.country.name|slugify }}/{{sessionid}}/{{key}}/logicalframework/view">{% trans "View" %}</a> 
                                 {% endif %}
                                             {%else%}
-                                                 View
+                                                {% trans "View" %}
                                             {% endif %}
                                         {% endif %}
                                     {% endfor %}     
