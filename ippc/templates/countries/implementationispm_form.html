@@ -27,8 +27,12 @@
                 {{ f_form.non_form_errors }}
                 {% for form in f_form %}
                     {{ form.id }}
-                    <div class="inline {{ f_form.prefix }}">
                        {% if  form.errors %}
+                       <div class="inline {{ f_form.prefix }}"> 
+                            {% else %}   
+                                 <div class="inline {{ f_form.prefix }}"  style="border:1px solid #808080; background: #f2f2f2;  padding:10px">
+               {% endif %}
+                        {% if  form.errors %}
                        <div class="alert alert-error"> 
                        {% endif %}
                            

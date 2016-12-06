@@ -45,8 +45,8 @@
   {% if perms.ippc.add_pestreport and request.user.get_profile.country.name == page.title %}
   <br>
   <small><a class="btn btn-small btn-info" href="{% url 'pest-report-create' page.title|slugify %}">+ {% trans "Add new pest report" %}</a></small>
-  <br>
-  <small><a href="{% url 'pest-report-hidden-list' page.title|slugify %}"><i class="icon-eye-close"></i> {% trans "See hidden pest reports" %}</a></small>
+  <!--br>
+  <small><a href="{% url 'pest-report-hidden-list' page.title|slugify %}"><i class="icon-eye-close"></i> {% trans "See hidden pest reports" %}</a></small-->
   {% else %}
   {% endif %}
 </p>
@@ -65,6 +65,9 @@
 <table class="table table-condensed table-striped" id="publications">
   <thead>
     <tr>
+         {% if user.is_superuser  or perms.ippc.change_reportingobligation and request.user.get_profile.country.name == page.title %}
+   <th>{% trans "Status" %}</th>
+    {% endif %}
       <th>{% trans "Report Number" %}</th>
       <th>{% trans "Identity of Pest" %}</th>
       <th>{% trans "Title" %}</th>
@@ -76,15 +79,19 @@
     </tr>
   </thead>
   <tbody>
-    {% for object in latest %}
-    <tr>
+   {% for object in latest %}
+     {% if object.status == 2 %}
+     <tr>
+       {% if user.is_superuser  or perms.ippc.change_reportingobligation and request.user.get_profile.country.name == page.title %}
+       <td>&#160;</td>
+       {% endif %}    
       <td>{{ object.report_number }}</td>
       <td>{{ object.pest_identity }}</td>
       <td><a href="{% url 'pest-report-detail' object.country.country_slug object.publish_date|date:'Y' object.publish_date|date:'m'  object.slug %}">{{ object.title }}</a></td>
       <td>{{ object.publish_date|date:"d M Y" }}</td>
       <td>{{ object.modify_date|date:"d M Y" }}</td>
      {% if user.is_superuser  or perms.ippc.change_reportingobligation and request.user.get_profile.country.name == page.title %}
-   <td>
+     <td>
           {% if object.to_verify %}
              <p style="color:red"><b><a  style="color: red;"  href="{% url 'pest-report-detail' object.country.country_slug object.publish_date|date:'Y' object.publish_date|date:'m'  object.slug %}">{% trans "data to confirm" %}</a></b></p>
           {% else %}
@@ -94,7 +101,6 @@
           {% endif %}
       </td>  {% endif %}
       <td>
-
         {% if user.is_superuser %} 
             <a class="small pull-right" href="/admin/ippc/pestreport/{{ object.id }}"><i class="icon-edit"></i> Edit as Admin</a><br>
         {% endif %}
@@ -106,7 +112,40 @@
         {% endif %}
         </td>
     </tr>
+ {% elif object.status == 1 %}
+  {% if user.is_superuser  or perms.ippc.change_reportingobligation and request.user.get_profile.country.name == page.title %}
+      
+ <tr>
+           <td> <p style="color:red">DRAFT</p></td>
+      <td>{{ object.report_number }}</td>
+      <td>{{ object.pest_identity }}</td>
+      <td><a href="{% url 'pest-report-detail' object.country.country_slug object.publish_date|date:'Y' object.publish_date|date:'m'  object.slug %}">{{ object.title }}</a></td>
+      <td>{{ object.publish_date|date:"d M Y" }}</td>
+      <td>{{ object.modify_date|date:"d M Y" }}</td>
+     {% if user.is_superuser  or perms.ippc.change_reportingobligation and request.user.get_profile.country.name == page.title %}
+     <td>
+          {% if object.to_verify %}
+             <p style="color:red"><b><a  style="color: red;"  href="{% url 'pest-report-detail' object.country.country_slug object.publish_date|date:'Y' object.publish_date|date:'m'  object.slug %}">{% trans "data to confirm" %}</a></b></p>
+          {% else %}
+            {% if  object.verified_date != ''  and   object.verified_date != None and object.verified_date != NULL %}
+               <p style="color:green"> <small>{% trans "data revised on " %}<br>{{object.verified_date|date:"d M Y"}}</small></p>
+            {% endif %}
+          {% endif %}
+      </td>  {% endif %}
+      <td>
+        {% if user.is_superuser %} 
+            <a class="small pull-right" href="/admin/ippc/pestreport/{{ object.id }}"><i class="icon-edit"></i> Edit as Admin</a><br>
+        {% endif %}
 
+        {% if perms.ippc.change_pestreport and request.user.get_profile.country.name == page.title %}
+            <a class="small pull-right" href="{% url 'pest-report-edit' object.country.country_slug object.id %}"><i class="icon-edit"></i> {% trans "Edit" %}</a>
+            {# <a class="btn" href="{% url 'pest-report-edit' report.id %}"><i class="icon-edit"></i> Edit</a> #}
+        {% else %}
+        {% endif %}
+        </td>
+    </tr>
+    {% endif %}
+ {% endif %}
     {% endfor %}
   </tbody>
 </table>
