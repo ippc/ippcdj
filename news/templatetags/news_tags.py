@@ -53,6 +53,71 @@ def news_months_for_category(category=None):
         month_dicts[i]["post_count"] = date_dicts.count(date_dict)
     return month_dicts
 
+
+from django.utils import timezone
+
+@register.as_tag
+def news_months_for_category1(category=None):
+    """
+    Put a list of dates for news posts into the template context for each category.
+    """
+    title_or_slug = lambda s: Q(title=s) | Q(slug=s)
+    
+    dates = NewsPost.objects.published().values_list("publish_date", flat=True)
+    
+    if category is not None:
+        try:
+            category = NewsCategory.objects.get(title_or_slug(category))
+            dates = dates.filter(categories=category)
+        except NewsCategory.DoesNotExist:
+            return []
+    
+    date_dicts = [{"date": datetime(d.year, d.month, 1)} for d in dates]
+    month_dicts = []
+    for date_dict in date_dicts:
+        if date_dict not in month_dicts:
+            month_dicts.append(date_dict)
+    for i, date_dict in enumerate(month_dicts):
+        month_dicts[i]["post_count"] = date_dicts.count(date_dict)
+        
+
+    
+    
+#    year=0
+#    for i, date_dict in enumerate(month_dicts):
+#        #print('------------------------------- '+str(i))
+#       # print(date_dict["date"].year)
+#        year= month_dicts[i]["date"].year
+#        #print(year)
+#        month_dicts[i]["post_count"] = date_dicts.count(date_dict)
+#        if date_dict["date"].year == year :
+#            #print(year)
+#            #print(date_dict["date"].year)
+#            h=h+int( month_dicts[i]["post_count"])
+#            month_dicts[i]["tot"] = h
+#           
+#            #print(h)
+#        else:
+#            h=0
+    curryear=timezone.now().year+1
+    aaa=[]
+    for g in reversed(range(2012,curryear)):
+        yyy=[]
+        h=0
+        for  i, date_dict in enumerate(month_dicts):
+                year= month_dicts[i]["date"].year
+                if  year == g :
+
+                    h=h+int(month_dicts[i]["post_count"])
+        yyy.append(g)
+        yyy.append(h)
+        aaa.append    (yyy)
+    
+
+       
+    return aaa
+
+
 @register.as_tag
 def news_categories(*args):
     """
