@@ -52,13 +52,22 @@
 {# endif #}    
          
 {% news_months_for_category category=category  as months_for_category  %}
+{% news_months_for_category1 category=category  as months_for_category1  %}
+
+
+
 {% if months_for_category %}
 <div class="panel">
   <h3>{% trans "Archives" %}</h3>
   {% for month in months_for_category %}
       {% ifchanged month.date.year %}
           {% if not forloop.first %}</ul>{% endif %}
-          <h6>{{ month.date.year }}</h6><ul class="unstyled">
+          <h6>{{ month.date.year }}  <small>(<i> {% for aaa in months_for_category1 %}
+       {%if aaa.0 == month.date.year %}
+       {{aaa.1}}
+        {% endif %}
+       
+         {% endfor %}</i>)</small>   </h6><ul class="unstyled">
       {% endifchanged %}
       <li><a href="{% url "news_post_list_month" year=month.date.year month=month.date.month %}"
           >{{ month.date|date:"F" }}</a> ({{ month.post_count }})</li>
