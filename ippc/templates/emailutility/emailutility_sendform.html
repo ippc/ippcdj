@@ -111,7 +111,7 @@ function  checkNotify(theform,group,field){
         <td>
         <div style="display:none" id="view_{{g.1}}">
         {% for  u in g|slice:"2:" %} 
-            <input onchange="javascript:checkNotify(this.form,'user_','checkgroups');" type="checkbox" name="user_{{g.1}}_0" value="{{u.2}}"/>{{u.0}} {{u.1}}<br/>
+            <input onchange="javascript:checkNotify(this.form,'user_','checkgroups');" type="checkbox" name="user_{{g.1}}_0" value="{{u.2}}"/>{{u.0}} {{u.1}} ({{u.2}})<br/>
         {% endfor %}
         </div>
         </td>
