@@ -537,7 +537,7 @@ class ImplementationISPMUrlInline(admin.TabularInline):
     formset = inlineformset_factory(ImplementationISPM, ImplementationISPMUrl,extra=1)    
 
 class ImplementationISPMAdmin(admin.ModelAdmin):
-    inlines = [ImplementationISPMFileInline,ReportingObligationUrlInline ]
+    inlines = [ImplementationISPMFileInline,ImplementationISPMUrlInline ]
     save_on_top = True
     list_display = ('title', 'publication_date', 'modify_date',   'country')
     list_filter = ('title', 'publication_date', 'modify_date',  'country')
