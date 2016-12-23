@@ -1,0 +1,37 @@
+{% extends "base.html" %}
+{% load pages_tags mezzanine_tags i18n future staticfiles %}
+
+{% block meta_title %}{% trans "Automatic Send e-mail system " %}{% endblock %}
+
+
+{% block breadcrumb_menu %}
+<li class="active">{% trans "Automatic Send e-mail system " %}</li>
+{% endblock %}
+
+{% block main %}
+	<h2>{% trans "Automatic Send e-mail system " %}</h2>
+  {% if user.is_superuser %} 
+  <p></p>
+        
+
+<table class="table table-condensed table-striped" id="publications">
+  <thead>
+    <tr>
+      <th>{% trans "aa" %}:{{aa|richtext_filter|safe}}</th>
+     </tr> 
+  </thead>
+  <tbody>
+    {% for object in textmessages %}
+    <tr>
+      <td>{{object|richtext_filter|safe }}</td>
+    </tr>
+
+    {% endfor %}
+  </tbody>
+</table>
+        
+        {%else%}
+        <p>No permissions to see this page.</p>
+      {% endif %}    
+	
+{% endblock %}

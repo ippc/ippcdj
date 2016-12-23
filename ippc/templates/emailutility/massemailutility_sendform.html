@@ -1,0 +1,218 @@
+<script src="//tinymce.cachefly.net/4.2/tinymce.min.js"></script>
+<!--script>
+        tinymce.init({selector:'textarea',theme_advanced_buttons1 : "link,unlink,bold,italic,formatselect,justifyleft,justifycenter,justifyright,bullist,numlist,undo,redo",             theme_advanced_blockformats : "p,h2,h3,blockquote",             theme_advanced_buttons2 : "", theme_advanced_buttons3 : ""    });
+</script-->
+
+<script>
+tinymce.init({selector: "textarea",    theme: "modern",    plugins: [        "advlist autolink lists link image charmap print preview hr anchor pagebreak",        "searchreplace wordcount visualblocks visualchars code fullscreen",        "insertdatetime media nonbreaking save table contextmenu directionality",        "emoticons template paste textcolor colorpicker textpattern imagetools"    ],    toolbar1: "insertfile undo redo | styleselect | bold italic | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | link image",     image_advtab: true,    templates: [        {title: 'Test template 1', content: 'Test 1'},        {title: 'Test template 2', content: 'Test 2'}    ]});
+</script>
+
+{% load pages_tags translate_tags mezzanine_tags ippc_tags i18n future staticfiles accounts_tags %} {# accounts_tags #}
+
+{% if form.non_field_errors or form.errors or  f_form.errors %}
+
+
+
+
+<div class="alert alert-error">{% trans "Please correct the errors below." %}
+<ul>
+{% for error in form.non_field_errors %}
+<li>{{ error }}</li>
+{% endfor %}
+{% for error in form.errors %}
+<li>{{ error }}</li>
+{% endfor %}
+</ul>
+</div>
+{% endif %}
+
+
+
+{% fields_for form %}
+<script type="text/javascript">
+
+function viewMemb(id){
+    section = document.getElementById(id);
+    if (section.style.display=="inline") {
+        section.style.display="none";
+    } else {
+        section.style.display="inline";
+    }
+}
+      	   
+function isChecked(theform,name,group){
+     var elementlength=theform.elements.length;
+     var item="group"+name+"_"+group;;
+     for( i=1;  i  < elementlength ; i++ ) {
+         if(theform.elements[i].name==item ){
+             if (theform.elements[i].checked ==true){
+                 return true;
+             }else{
+                 return false;
+             }
+
+         }
+    }
+    return false;
+}
+
+function  checkmembers(theform,name,nameisck,group,id){
+    var elementlength=theform.elements.length;
+    var prefix=name+"_"+group+"_";
+    
+    var isC=isChecked(theform,nameisck,group);
+    for( i=1;  i  < elementlength ; i++ ) {
+        if(theform.elements[i].type=="checkbox"  ){
+            var temp=theform.elements[i].name.substr(0,prefix.length);
+            if( prefix==temp){
+                theform.elements[i].checked=isC;
+            }
+        }
+    }
+    viewMemb(id);
+  }
+
+function  checkNotify(theform,group,field){
+    var elementlength=theform.elements.length;
+    var prefix=""+group;
+    var formObj = window.document.forms.my_form;
+    var val  ="";
+
+    for( i=1;  i  < elementlength ; i++ ) {
+        if(theform.elements[i].type=="checkbox" && theform.elements[i].checked){
+            var temp=theform.elements[i].name.substr(0,prefix.length);
+            if( prefix==temp){
+                     val=val+ theform.elements[i].value+",";
+             }
+        }
+    }
+    formObj[""+field].value=val;
+}
+
+
+
+</script>
+<h3>Send to users of a group:</h3>
+    <i>Click on the icon <img src="/static/leaflet/images/zoom-in.png"/> to see users in the groups.</i>
+<table cellpadding=6>
+    <tr>
+        <td>
+<strong>Groups:</strong><br />
+<table cellpadding=2>
+    {% for g in emailgroups %}
+        <tr>
+            <td width="5"><img title="Open Group" src="/static/leaflet/images/zoom-in.png" onclick="javascript:viewMemb('view_{{g.1}}');"/></td>
+            <td>  {{g.0}}</td>
+            <td width="5" title="Check all"><input type="checkbox" onClick="javascript:checkmembers(this.form,'user','',{{g.1}},'view_{{g.1}}');void(0);" name="group_{{g.1}}" value="view_{{g.1}}"/></td>
+        </tr>
+        <tr><td/>
+        <td>
+        <div style="display:none" id="view_{{g.1}}">
+        {% for  u in g|slice:"2:" %} 
+            <input onchange="javascript:checkNotify(this.form,'user_','checkgroups');" type="checkbox" name="user_{{g.1}}_0" value="{{u.2}}"/>{{u.0}} {{u.1}} ({{u.2}})<br/>
+        {% endfor %}
+        </div>
+        </td>
+     </tr>
+    {% endfor %}
+
+</table><td>
+        <td valign="top">
+<strong>Contact Points:</strong><br />
+
+<table cellpadding=2>
+{% for g in emailcp2 %}
+        <tr>
+            <td width="5"><img title="Open Group" src="/static/leaflet/images/zoom-in.png" onclick="javascript:viewMemb('viewc1_{{g.1}}');"/></td>
+            <td>  {{g.0}}</td>
+            <td width="5" title="Check all"><input type="checkbox" onClick="javascript:checkmembers(this.form,'usercp1','cp1',{{g.1}},'viewc1_{{g.1}}');void(0);" name="groupcp1_{{g.1}}" value="viewc1_{{g.1}}"/></td>
+        </tr>
+        <tr><td/>
+        <td>
+        <div style="display:none" id="viewc1_{{g.1}}">
+        {% for  u in g|slice:"2:" %} 
+            <input onchange="javascript:checkNotify(this.form,'usercp1_','checkgroups');" type="checkbox" name="usercp1_{{g.1}}_0" value="{{u.2}}"/>{{u.0}} {{u.1}}<br/>
+        {% endfor %}
+        </div>
+        </td>
+     </tr>
+    {% endfor %}
+
+</table><br><br><table cellpadding=2>
+    {% for g in emailcp %}
+        <tr>
+            <td width="5"><img title="Open Group" src="/static/leaflet/images/zoom-in.png" onclick="javascript:viewMemb('viewc_{{g.1}}');"/></td>
+            <td>  {{g.0}}</td>
+            <td width="5" title="Check all"><input type="checkbox" onClick="javascript:checkmembers(this.form,'usercp','cp',{{g.1}},'viewc_{{g.1}}');void(0);" name="groupcp_{{g.1}}" value="viewc_{{g.1}}"/></td>
+        </tr>
+        <tr><td/>
+        <td>
+        <div style="display:none" id="viewc_{{g.1}}">
+        {% for  u in g|slice:"2:" %} 
+            <input onchange="javascript:checkNotify(this.form,'usercp_','checkgroups');" type="checkbox" name="usercp_{{g.1}}_0" value="{{u.2}}"/>{{u.0}} {{u.1}}<br/>
+        {% endfor %}
+        </div>
+        </td>
+     </tr>
+    {% endfor %}
+
+</table><br /><br />
+        <strong>Country editors:</strong><br />
+
+<table cellpadding=2>
+{% for g in emaile2 %}
+        <tr>
+            <td width="5"><img title="Open Group" src="/static/leaflet/images/zoom-in.png" onclick="javascript:viewMemb('viewe1_{{g.1}}');"/></td>
+            <td>  {{g.0}}</td>
+            <td width="5" title="Check all"><input type="checkbox" onClick="javascript:checkmembers(this.form,'usere1','e1',{{g.1}},'viewe1_{{g.1}}');void(0);" name="groupe1_{{g.1}}" value="viewe1_{{g.1}}"/></td>
+        </tr>
+        <tr><td/>
+        <td>
+        <div style="display:none" id="viewe1_{{g.1}}">
+        {% for  u in g|slice:"2:" %} 
+            <input onchange="javascript:checkNotify(this.form,'usere1_','checkgroups');" type="checkbox" name="usere1_{{g.1}}_0" value="{{u.2}}"/>{{u.0}} {{u.1}}<br/>
+        {% endfor %}
+        </div>
+        </td>
+     </tr>
+    {% endfor %}
+
+</table><br>
+        
+        <td>
+    </tr>    
+    
+</table>
+
+
+
+   <fieldset>
+                <legend>Attachments</legend>
+                {{ f_form.management_form }}
+                {{ f_form.non_form_errors }}
+                {% for form in f_form %}
+                    {{ form.id }}
+                    <div class="inline {{ f_form.prefix }}">
+                       {% if  form.errors %}
+                       <div class="alert alert-error"> 
+                       {% endif %}
+                           
+                        {{ form.description.errors }}
+                        {{ form.description.label_tag }}
+                        {{ form.description }}
+                        {{ form.file.errors }}
+                        {{ form.file.label_tag }}
+                        {{ form.file }}
+                         {% if f_form.can_delete %}
+                {{ form.DELETE }}
+            {% endif %}
+                        {% if  f_form.errors %}
+                       </div> 
+                       {% endif %}
+                    </div>
+                {% endfor %}
+            </fieldset>
+   
+   
+
+            
