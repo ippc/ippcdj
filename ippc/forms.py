@@ -17,7 +17,7 @@ CnPublication,CnPublicationFile,CnPublicationUrl,\
 PartnersWebsite,PartnersWebsiteUrl,\
 PartnersPublication,PartnersPublicationFile,PartnersPublicationUrl,\
 PartnersNews,PartnersNewsFile,PartnersNewsUrl, \
-CountryNews,CountryNewsFile,CountryNewsUrl, EmailUtilityMessage, EmailUtilityMessageFile,\
+CountryNews,CountryNewsFile,CountryNewsUrl, EmailUtilityMessage, EmailUtilityMessageFile, MassEmailUtilityMessage, MassEmailUtilityMessageFile,\
 DraftProtocol,DraftProtocolFile,DraftProtocolComments,NotificationMessageRelate,Poll,  Poll_Choice,\
 FAQsCategory,FAQsItem,\
 QAQuestion,QAAnswer,ContactUsEmailMessage,UserAutoRegistration,IRSSActivityFile,IRSSActivity
@@ -517,8 +517,23 @@ class EmailUtilityMessageForm(forms.ModelForm):
            'users',
            ]
        
-        exclude = ( 'date','sent', 'groups',)       #,'notsentto'
+        exclude = ( 'date','sent', 'groups')      
 EmailUtilityMessageFileFormSet = inlineformset_factory(EmailUtilityMessage,  EmailUtilityMessageFile,extra=1)
+
+class MassEmailUtilityMessageForm(forms.ModelForm):
+
+    class Meta:
+        model = MassEmailUtilityMessage
+        fields = [
+           'emailfrom',
+           'subject', 
+           'messagebody',
+           'emailto',
+           'users',
+           ]
+       
+        exclude = ( 'date','sent', 'groups','not_sentto','sentto','author')       
+MassEmailUtilityMessageFileFormSet = inlineformset_factory(MassEmailUtilityMessage,  MassEmailUtilityMessageFile,extra=1)
 
 ##NEW
 class ContactUsEmailMessageForm(forms.ModelForm):
