@@ -4614,6 +4614,7 @@ class Stakeholders(Displayable, models.Model):
         if not self.id:
             self.publish_date = datetime.today()
         self.modify_date = datetime.now()
+        self.slug = datetime.now()
         super(Stakeholders, self).save(*args, **kwargs)
         
    
