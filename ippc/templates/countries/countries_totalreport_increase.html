@@ -1,0 +1,224 @@
+{% extends "base.html" %}
+{% load pages_tags mezzanine_tags i18n future staticfiles accounts_tags %}
+
+{% block meta_title %}
+  {% trans "Countries Stats" %}: 
+  {{ page.title }}
+{% endblock %}
+
+{% block body_class %}wide{% endblock %}
+
+{% block breadcrumb_menu %}
+<li><a href="/{{ LANGUAGE_CODE }}/">{% trans "Home" %}</a><span class="divider">/</span></li>
+<li>
+  <a href="/countries/">Countries</a>
+  <span class="divider">/</span>
+</li>
+<li>
+    <a href="/countries/statistics">Statistics</a>
+    <span class="divider">/</span>
+</li>
+
+<li class="active">{% trans "Summary statistics for Increase of National reporting" %} </li>
+{% endblock %}
+
+{% block local_nav %}
+{% endblock local_nav %}
+
+{% block pageinfo %}
+{% endblock pageinfo %}
+
+{% block main %}
+
+<p class="pull-right">
+  <a href="javascript:history.go(-1)">{% trans "« Go back" %}</a>
+</p>
+    
+    
+    
+<h1>NRO Submission trends for {{curryear}} in comparison to those in {{prevyear}}. <br>
+  </h1> 
+<p></p>
+
+<b>{% trans "Date generated" %}: </b>  {{ dategenerate|date:"d M Y, H:m" }}</p><br>
+
+
+<table class="table table-condensed table-striped">
+    <thead>
+        <tr>
+            <th style="background:#cccccc;">NRO category</th>
+            <th style="background:#cccccc;">reports in {{prevyear}}</th>
+            <th style="background:#cccccc;">reports in {{curryear}}</th>
+            <th style="background:#cccccc;">Actual Increase or <span style="color: red;">Decrease</span></th>
+            <th style="background:#cccccc;">Percentage Increase or <span style="color: red;">Decrease</span></th>
+        </tr> 
+    </thead>
+    <tbody>
+<tr>
+    <td>Description of NPPO </td>
+      {% for object in rep_array.0 %}
+          <td> {{object }} </td>
+     {% endfor %}
+    {% for object in rep_array1.0 %}
+      {%if  forloop.counter == 1 %}
+           
+                <td> {% autoescape off %} {{object }}  {% endautoescape %}  </td>
+          
+      {% else %}
+           <td> {% autoescape off %} {{object }}  {% endautoescape %}  </td>
+      {% endif%}
+    {% endfor %}
+</tr>
+<tr>
+    <td>Pest reports</td>
+      {% for object in pest_array.0 %}
+          <td> {{object }} </td>
+     {% endfor %}
+    {% for object in pest_array1.0%}
+        {%if  forloop.counter == 1 %}
+           
+                <td> {% autoescape off %} {{object }}  {% endautoescape %}  </td>
+          
+      {% else %}
+           <td> {% autoescape off %} {{object }}  {% endautoescape %}  </td>
+      {% endif%}
+    {% endfor %}
+</tr>
+<tr>
+    <td>Emergency action</td>
+       {% for object in ev_array.0 %}
+          <td> {{object }} </td>
+     {% endfor %}
+    {% for object in ev_array1.0 %}
+      {%if  forloop.counter == 1 %}
+           
+                <td> {% autoescape off %} {{object }}  {% endautoescape %}  </td>
+          
+      {% else %}
+           <td> {% autoescape off %} {{object }}  {% endautoescape %}  </td>
+      {% endif%}
+    {% endfor %}
+</tr>
+<tr>
+    <td>List of regulated pests</td>
+        {% for object in rep_array.3 %}
+          <td> {{object }} </td>
+     {% endfor %}
+    {% for object in rep_array1.3 %}
+      {%if  forloop.counter == 1 %}
+           
+                <td> {% autoescape off %} {{object }}  {% endautoescape %}  </td>
+          
+      {% else %}
+           <td> {% autoescape off %} {{object }}  {% endautoescape %}  </td>
+      {% endif%}
+    {% endfor %}
+</tr>
+<tr>
+    <td>Entry points</td>
+     {% for object in rep_array.2 %}
+          <td> {{object }} </td>
+     {% endfor %}
+    {% for object in rep_array1.2 %}
+      {%if  forloop.counter == 1 %}
+           
+                <td> {% autoescape off %} {{object }}  {% endautoescape %}  </td>
+          
+      {% else %}
+           <td> {% autoescape off %} {{object }}  {% endautoescape %}  </td>
+      {% endif%}
+    {% endfor %}
+</tr>
+<tr>
+    <td>Legislation: phytosanitary requirements/ restrictions/ prohibitions</td>
+     {% for object in rep_array.1 %}
+          <td> {{object }} </td>
+     {% endfor %}
+    {% for object in rep_array1.1 %}
+      {%if  forloop.counter == 1 %}
+           
+                <td> {% autoescape off %} {{object }}  {% endautoescape %}  </td>
+          
+      {% else %}
+           <td> {% autoescape off %} {{object }}  {% endautoescape %}  </td>
+      {% endif%}
+    {% endfor %}
+</tr>
+<tr>
+    <td>Non-compliance</td>
+    {% for object in ev_array.1 %}
+          <td> {{object }} </td>
+     {% endfor %}
+     {% for object in ev_array1.1 %}
+      {%if  forloop.counter == 1 %}
+           
+                <td> {% autoescape off %} {{object }}  {% endautoescape %}  </td>
+          
+      {% else %}
+           <td> {% autoescape off %} {{object }}  {% endautoescape %}  </td>
+      {% endif%}
+    {% endfor %}
+</tr>
+<tr>
+    <td>Organizational arrangements of plant protection</td>
+    {% for object in ev_array.2 %}
+          <td> {{object }} </td>
+     {% endfor %} {% for object in ev_array1.2 %}
+       {%if  forloop.counter == 1 %}
+           
+                <td> {% autoescape off %} {{object }}  {% endautoescape %}  </td>
+          
+      {% else %}
+           <td> {% autoescape off %} {{object }}  {% endautoescape %}  </td>
+      {% endif%}
+    {% endfor %}
+</tr>
+<tr>
+    <td>Pest status</td>
+     {% for object in ev_array.3 %}
+          <td> {{object }} </td>
+     {% endfor %}
+     {% for object in ev_array1.3%}
+     {%if  forloop.counter == 1 %}
+           
+                <td> {% autoescape off %} {{object }}  {% endautoescape %}  </td>
+          
+      {% else %}
+           <td> {% autoescape off %} {{object }}  {% endautoescape %}  </td>
+      {% endif%}
+    {% endfor %}
+</tr>
+<tr>
+    <td>Rationale for phytosanitary requirements</td>
+     {% for object in ev_array.4 %}
+          <td> {{object }} </td>
+     {% endfor %}
+      {% for object in ev_array1.4%}
+     {%if  forloop.counter == 1 %}
+           
+                <td> {% autoescape off %} {{object }}  {% endautoescape %}  </td>
+          
+      {% else %}
+           <td> {% autoescape off %} {{object }}  {% endautoescape %}  </td>
+      {% endif%}
+    {% endfor %}
+</tr>
+<tr>
+    <th>Total</th>
+    
+          <th> {{tot1 }} </th>
+    
+          <th> {{tot2 }} </th>
+       <th> &#160; </td>
+          <th> &#160;</th>
+</tr>
+
+
+
+
+</tbody>
+
+</table>
+
+<p><b>*</b> <i>Not possible to calculate the increase.</i><p>
+{% endblock %}

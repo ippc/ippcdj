@@ -1,0 +1,214 @@
+{% extends "base.html" %}
+{% load pages_tags mezzanine_tags i18n future staticfiles accounts_tags %}
+
+{% block meta_title %}
+  {% trans "Countries Stats" %}: 
+  {{ page.title }}
+{% endblock %}
+
+{% block body_class %}wide{% endblock %}
+
+{% block breadcrumb_menu %}
+<li><a href="/{{ LANGUAGE_CODE }}/">{% trans "Home" %}</a><span class="divider">/</span></li>
+<li>
+  <a href="/countries/">Countries</a>
+  <span class="divider">/</span>
+</li>
+<li>
+    <a href="/countries/statistics">Statistics</a>
+    <span class="divider">/</span>
+</li>
+
+<li class="active">{% trans "Summary statistics for National Reporting Obligations: NROs only for  " %} {{prevyear}}   </li>
+{% endblock %}
+
+{% block local_nav %}
+{% endblock local_nav %}
+
+{% block pageinfo %}
+{% endblock pageinfo %}
+
+{% block main %}
+
+<p class="pull-right">
+  <a href="javascript:history.go(-1)">{% trans "« Go back" %}</a>
+</p>
+<script type="text/javascript">
+      window.onload = function () {
+    var chart = new CanvasJS.Chart("chartContainer0",
+    {
+      title:{
+             text: "Total NRO reports in "+{% autoescape off %}{{prevyear}}{% endautoescape %},
+      },
+      animationEnabled: true,
+      legend:{
+        verticalAlign: "center",
+        horizontalAlign: "right",
+        fontSize: 16,
+        fontFamily: "Helvetica"        
+      },
+      theme: "theme2",
+      data: [
+      {        
+       type: "pie",       
+       indexLabelFontFamily: "Garamond",       
+       indexLabelFontSize: 16,
+       startAngle:-20,      
+       showInLegend: true,
+       toolTipContent:"{label}",
+       dataPoints: [
+             {% autoescape off %} 
+                {{datachart0}}
+             {% endautoescape %}  
+         ]
+     }
+     ]
+   });
+   
+    chart.render();
+    /*var chart = new CanvasJS.Chart("chartContainer",
+    {
+      title:{
+        text: "Total NRO reports in "+{% autoescape off %}{{prevyear}}{% endautoescape %},
+        fontSize: 20
+      },
+      animationEnabled: true,
+     
+      legend: {
+        verticalAlign: "bottom",
+        horizontalAlign: "center"
+      },
+      theme: "theme2",
+       axisY: {
+				title: "Number of reports",
+				titleFontSize: 10,
+				labelFontSize: 10,
+			},
+			axisX: {
+				labelFontSize: 14,
+				labelMaxWidth:120,
+				labelWrap: true,
+				interval: 1,
+			},
+                      
+			data: [ 
+			   {% autoescape off %} 
+                                {{datachart}}
+                             {% endautoescape %}  
+			],
+    });
+
+    chart.render();*/
+  }
+    
+	
+</script>
+<script src='{% static "/static/canvasjs/canvasjs.min.js" %}'></script>
+
+
+    
+    
+    
+    
+<h1>
+{% trans "Summary statistics for National Reporting Obligations: NROs only for  " %} {{prevyear}}  
+  </h1> 
+<p>The past year has proved to be a relatively active year for providing and maintaining NROs.</p>
+<br>
+
+<h1>
+  <small class="normal">{% trans "The relative number of reports provided in " %} {{prevyear}}. </small>
+  </h1> 
+<b>Date generated: </b>  {{ dategenerate|date:"d M Y, H:m" }}</p><br>
+
+<table class="table table-condensed table-striped">
+<thead>
+<tr>
+    <th>Type of NRO</th>
+    <th>Relative number of reports provided in {{prevyear}}.</th>
+</tr> 
+
+
+    
+</thead>
+<tbody>
+<tr>
+    <td>Description of NPPO</td>
+    {% for object in rep_array.0 %}
+       <td>{{object }} </td>
+    {% endfor %}
+</tr>
+<tr>
+    <td>Pest reports</td>
+    {% for object in pest_array.0 %}
+       <td>{{object }} </td>
+    {% endfor %}
+</tr>
+<tr>
+    <td>Emergency action</td>
+    {% for object in ev_array.0 %}
+       <td>{{object }} </td>
+    {% endfor %}
+</tr>
+<tr>
+    <td>List of regulated pests</td>
+    {% for object in rep_array.3 %}
+       <td>{{object }} </td>
+    {% endfor %}
+</tr>
+<tr>
+    <td>Entry points</td>
+    {% for object in rep_array.2 %}
+       <td>{{object }} </td>
+    {% endfor %}
+</tr>
+<tr>
+    <td>Legislation: phytosanitary requirements/ restrictions/ prohibitions</td>
+    {% for object in rep_array.1 %}
+       <td>{{object }} </td>
+    {% endfor %}
+</tr>
+<tr>
+    <td>Non-compliance</td>
+    {% for object in ev_array.1 %}
+       <td>{{object }} </td>
+    {% endfor %}
+</tr>
+<tr>
+    <td>Organizational arrangements of plant protection</td>
+    {% for object in ev_array.2 %}
+       <td>{{object }} </td>
+    {% endfor %}
+</tr>
+<tr>
+    <td>Pest status</td>
+    {% for object in ev_array.3 %}
+       <td>{{object }} </td>
+    {% endfor %}
+</tr>
+<tr>
+    <td>Rationale for phytosanitary requirements</td>
+    {% for object in ev_array.4 %}
+       <td>{{object }} </td>
+    {% endfor %}
+</tr>
+
+<tr>
+    <th>Total</th>
+    <th>{{tot_rep_count}}</th>
+</tr>
+
+
+
+
+</tbody>
+
+</table>
+<table class="table table-condensed table-striped">
+<tr><td>	<div id="chartContainer0" style="height: 700px; width: 100%;">
+	</div>
+</td>
+            </tr>
+ </table>
+
+{% endblock %}

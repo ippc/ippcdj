@@ -1,0 +1,676 @@
+{% extends "base.html" %}
+{% load pages_tags mezzanine_tags i18n future staticfiles accounts_tags %}
+
+{% block meta_title %}
+  {% trans "Countries Stats" %}: 
+  {{ page.title }}
+{% endblock %}
+
+{% block body_class %}wide{% endblock %}
+
+{% block breadcrumb_menu %}
+<li><a href="/{{ LANGUAGE_CODE }}/">{% trans "Home" %}</a><span class="divider">/</span></li>
+<li>
+  <a href="/countries/">Countries</a>
+  <span class="divider">/</span>
+</li>
+<li>
+    <a href="/countries/statistics">Statistics</a>
+    <span class="divider">/</span>
+</li>
+
+<li class="active">{% trans "Summary statistics for single National reporting" %} </li>
+{% endblock %}
+
+{% block local_nav %}
+{% endblock local_nav %}
+
+{% block pageinfo %}
+{% endblock pageinfo %}
+
+{% block main %}
+
+<p class="pull-right">
+  <a href="javascript:history.go(-1)">{% trans "« Go back" %}</a>
+</p>
+    
+    
+    
+<h1>
+{% trans "Detailed statistics for each NRO in " %}{{curryear}} <br>
+  </h1> 
+<p>{% trans "The tables below show the detailed breakdown by region of NRO reports made available by countries on the IPP regarding the following National Reporting Obligations" %}:
+<ul><li>{% trans "Description of the NPPO" %};</li>
+<li>{% trans "Pest reports" %};</li>
+<li>{% trans "Emergency action" %};</li>
+<li>{% trans "List of regulated pests" %};</li>
+<li>{% trans "Entry points" %};</li>
+<li>{% trans "Legislation: phytosanitary requirements/restrictions/prohibitions" %};</li>
+<li>{% trans "Non-compliance" %};</li>
+<li>{% trans "Organizational arrangements of plant protection" %};</li>
+<li>{% trans "Pest status" %};</li>
+<li>{% trans "Rationale for phytosanitary requirements" %}.</li></ul>
+</p>
+
+<b>{% trans "Date generated" %}: </b>  {{ dategenerate|date:"d M Y, H:m" }}</p><br>
+
+<hr>
+<h3>NRO "Description of the NPPO": the overall state for {{curryear}}</h3>
+
+            <table class="table table-condensed">
+                <thead>
+                    <tr>
+                        <th colspan="4"  style="background:#cccccc; text-align: center;"><center>Description of the NPPO</center></th>
+                    </tr> 
+                    <tr>
+                        <th style="background:#f2f2f2;">Region</th>
+                        <th style="background:#f2f2f2;">Number of contracting parties</th>
+                        <th style="background:#f2f2f2;">Number of reporting parties</th>
+                        <th style="background:#f2f2f2;">Number of reports</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for object in regionsRepCP.0 %}
+                    <tr>
+                        <th style="background:#f2f2f2;">{{ object.0 }} </th>
+                        <td>{{ object.1 }} </td>
+                        <td>{{ object.2 }}</td>
+                        <td>{{ object.3 }}</td>    
+                    </tr>
+                    {% endfor %}
+                    
+                      <tr>
+                        <th style="background:#f2f2f2;">Total</th>
+                        <th>{{ totNumReg }}  </th>
+                        <th>  {{regionsRepCPTot.0.0}} </th>
+                        <th>  {{regionsRepCPTot.0.1}} </th>
+                      
+                       
+                       
+                    </tr>
+                    
+                </tbody>
+            </table> 
+<h3>NRO "Description of the NPPO": changes in reporting during  {{curryear}}</h3>
+            <table class="table table-condensed">
+                <thead>
+                    <tr>
+                        <th colspan="1"  style="background:#cccccc; text-align: center;"><center>Description of the NPPO</center></th>
+                     <th colspan="2"  style="background:#cccccc; text-align: center;"><center> {{curryear}}</center></th>
+                    </tr> 
+                    <tr>
+                        <th style="background:#f2f2f2;">Region</th>
+                        <th style="background:#f2f2f2;">New reports</th>
+                        <th style="background:#f2f2f2;">Updated reports</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for object in regionsRepCP.0 %}
+                    <tr>
+                        <th style="background:#f2f2f2;">{{ object.0 }} </th>
+                        <td>{{ object.4 }} </td>
+                        <td>{{ object.5 }}</td>    
+                    </tr>
+                    {% endfor %}
+                     <tr>
+                        <th style="background:#f2f2f2;">Total</th>
+                        <th>  {{regionsRepCPTot.0.2}} </th>
+                        <th>  {{regionsRepCPTot.0.3}} </th>
+                    </tr>
+                </tbody>
+            </table> 
+           <hr>
+   <h3>NRO "Pest reports": the overall state for {{curryear}}</h3>
+        
+<table class="table table-condensed table-striped">
+   <thead>
+        <tr>
+            <th colspan="4"  style="background:#cccccc; text-align: center;"><center>Pest reports</center></th>
+        </tr> 
+        <tr>
+            <th style="background:#f2f2f2;">Region</th>
+            <th style="background:#f2f2f2;">Number of contracting parties</th>
+            <th style="background:#f2f2f2;">Number of reporting parties</th>
+            <th style="background:#f2f2f2;">Number of reports</th>
+        </tr>
+    </thead>
+    <tbody>
+        
+            {% for object in regionsPCP.0 %}
+            <tr>
+            <th style="background:#f2f2f2;">{{ object.0 }} </th>
+            <td>{{ object.1 }} </td>
+            <td>{{ object.2 }}</td>
+            <td>{{ object.3 }}</td>    
+        </tr>
+            {% endfor %}
+           <tr>
+                <th style="background:#f2f2f2;">Total</th>
+                <th>{{ totNumReg }}  </th>
+                <th>  {{regionsPCPTot.0.0}} </th>
+                <th>  {{regionsPCPTot.0.1}} </th>
+            </tr>
+    </tbody>
+        
+</table>   <h3>NRO "Pest reports": changes in reporting during  {{curryear}}</h3>
+    <table class="table table-condensed">
+                <thead>
+                    <tr>
+                        <th colspan="1"  style="background:#cccccc; text-align: center;"><center>Pest reports</center></th>
+                     <th colspan="2"  style="background:#cccccc; text-align: center;"><center> {{curryear}}</center></th>
+                    </tr> 
+                    <tr>
+                        <th style="background:#f2f2f2;">Region</th>
+                        <th style="background:#f2f2f2;">New reports</th>
+                        <th style="background:#f2f2f2;">Updated reports</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for object in regionsPCP.0 %}
+                    <tr>
+                        <th style="background:#f2f2f2;">{{ object.0 }} </th>
+                        <td>{{ object.4 }} </td>
+                        <td>{{ object.5 }}</td>    
+                    </tr>
+                    {% endfor %}
+                     <tr>
+                        <th style="background:#f2f2f2;">Total</th>
+                        <th>  {{regionsPCPTot.0.2}} </th>
+                        <th>  {{regionsPCPTot.0.3}} </th>
+                    </tr>
+                </tbody>
+            </table> 
+   <hr>
+     <h3>NRO "Emergency action": the overall state for {{curryear}}</h3>
+<table class="table table-condensed table-striped">
+   <thead>
+        <tr>
+            <th colspan="4"  style="background:#cccccc; text-align: center;"><center>Emergency action</center></th>
+        </tr> 
+        <tr>
+            <th style="background:#f2f2f2;">Region</th>
+            <th style="background:#f2f2f2;">Number of contracting parties</th>
+            <th style="background:#f2f2f2;">Number of reporting parties</th>
+            <th style="background:#f2f2f2;">Number of reports</th>
+        </tr>
+    </thead>
+    <tbody>
+        
+            {% for object in regionsEvCP.0 %}
+            <tr>
+            <th style="background:#f2f2f2;">{{ object.0 }} </th>
+            <td>{{ object.1 }} </td>
+            <td>{{ object.2 }}</td>
+            <td>{{ object.3 }}</td>    
+        </tr>
+            {% endfor %}
+       <tr>
+                <th style="background:#f2f2f2;">Total</th>
+                <th>{{ totNumReg }}  </th>
+                <th>  {{regionsEvCPTot.0.0}} </th>
+                <th>  {{regionsEvCPTot.0.1}} </th>
+            </tr>
+    </tbody>
+        
+</table>  <h3>NRO "Emergency action": changes in reporting during  {{curryear}}</h3> 
+    <table class="table table-condensed">
+                <thead>
+                    <tr>
+                        <th colspan="1"  style="background:#cccccc; text-align: center;"><center>Emergency action</center></th>
+                     <th colspan="2"  style="background:#cccccc; text-align: center;"><center> {{curryear}}</center></th>
+                    </tr> 
+                    <tr>
+                        <th style="background:#f2f2f2;">Region</th>
+                        <th style="background:#f2f2f2;">New reports</th>
+                        <th style="background:#f2f2f2;">Updated reports</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for object in regionsEvCP.0 %}
+                    <tr>
+                        <th style="background:#f2f2f2;">{{ object.0 }} </th>
+                        <td>{{ object.4 }} </td>
+                        <td>{{ object.5 }}</td>    
+                    </tr>
+                    {% endfor %}
+                      <tr>
+                        <th style="background:#f2f2f2;">Total</th>
+                        <th>  {{regionsEvCPTot.0.2}} </th>
+                        <th>  {{regionsEvCPTot.0.3}} </th>
+                    </tr>
+                </tbody>
+            </table> 
+<hr>
+       <h3>NRO "List of regulated pests": the overall state for {{curryear}}</h3>
+<table class="table table-condensed table-striped">
+  <thead>
+        <tr>
+            <th colspan="4"  style="background:#cccccc; text-align: center;"><center>List of regulated pests</center></th>
+        </tr> 
+        <tr>
+            <th style="background:#f2f2f2;">Region</th>
+            <th style="background:#f2f2f2;">Number of contracting parties</th>
+            <th style="background:#f2f2f2;">Number of reporting parties</th>
+            <th style="background:#f2f2f2;">Number of reports</th>
+        </tr>
+    </thead>
+    <tbody>
+        
+            {% for object in regionsRepCP.3 %}
+            <tr>
+            <th style="background:#f2f2f2;">{{ object.0 }} </th>
+            <td>{{ object.1 }} </td>
+            <td>{{ object.2 }}</td>
+            <td>{{ object.3 }}</td>    
+        </tr>
+            {% endfor %}
+        <tr>
+                <th style="background:#f2f2f2;">Total</th>
+                <th>{{ totNumReg }}  </th>
+                <th>  {{regionsRepCPTot.3.0}} </th>
+                <th>  {{regionsRepCPTot.3.1}} </th>
+            </tr>
+    </tbody>
+        
+</table>   <h3>NRO "List of regulated pests": changes in reporting during  {{curryear}}</h3>
+    <table class="table table-condensed">
+                <thead>
+                    <tr>
+                        <th colspan="1"  style="background:#cccccc; text-align: center;"><center>List of regulated pests</center></th>
+                     <th colspan="2"  style="background:#cccccc; text-align: center;"><center> {{curryear}}</center></th>
+                    </tr> 
+                    <tr>
+                        <th style="background:#f2f2f2;">Region</th>
+                        <th style="background:#f2f2f2;">New reports</th>
+                        <th style="background:#f2f2f2;">Updated reports</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for object in regionsRepCP.3 %}
+                    <tr>
+                        <th style="background:#f2f2f2;">{{ object.0 }} </th>
+                        <td>{{ object.4 }} </td>
+                        <td>{{ object.5 }}</td>    
+                    </tr>
+                    {% endfor %}
+                          <tr>
+                        <th style="background:#f2f2f2;">Total</th>
+                        <th>  {{regionsRepCPTot.3.2}} </th>
+                        <th>  {{regionsRepCPTot.3.3}} </th>
+                    </tr>
+                </tbody>
+            </table> 
+
+<hr>
+  <h3>NRO "Entry points": the overall state for {{curryear}}</h3>
+<table class="table table-condensed table-striped">
+  <thead>
+        <tr>
+            <th colspan="4"  style="background:#cccccc; text-align: center;"><center>Entry points</center></th>
+        </tr> 
+        <tr>
+            <th style="background:#f2f2f2;">Region</th>
+            <th style="background:#f2f2f2;">Number of contracting parties</th>
+            <th style="background:#f2f2f2;">Number of reporting parties</th>
+            <th style="background:#f2f2f2;">Number of reports</th>
+        </tr>
+    </thead>
+    <tbody>
+        
+            {% for object in regionsRepCP.2 %}
+            <tr>
+            <th style="background:#f2f2f2;">{{ object.0 }} </th>
+            <td>{{ object.1 }} </td>
+            <td>{{ object.2 }}</td>
+            <td>{{ object.3 }}</td>    
+        </tr>
+            {% endfor %}
+           <tr>
+                <th style="background:#f2f2f2;">Total</th>
+                <th>{{ totNumReg }}  </th>
+                <th>  {{regionsRepCPTot.2.0}} </th>
+                <th>  {{regionsRepCPTot.2.1}} </th>
+            </tr>
+    </tbody>
+        
+</table>   <h3>NRO "Entry points": changes in reporting during  {{curryear}}</h3>
+    <table class="table table-condensed">
+                <thead>
+                    <tr>
+                        <th colspan="1"  style="background:#cccccc; text-align: center;"><center>Entry points</center></th>
+                     <th colspan="2"  style="background:#cccccc; text-align: center;"><center> {{curryear}}</center></th>
+                    </tr> 
+                    <tr>
+                        <th style="background:#f2f2f2;">Region</th>
+                        <th style="background:#f2f2f2;">New reports</th>
+                        <th style="background:#f2f2f2;">Updated reports</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for object in regionsRepCP.2 %}
+                    <tr>
+                        <th style="background:#f2f2f2;">{{ object.0 }} </th>
+                        <td>{{ object.4 }} </td>
+                        <td>{{ object.5 }}</td>    
+                    </tr>
+                    {% endfor %}       <tr>
+                        <th style="background:#f2f2f2;">Total</th>
+                        <th>  {{regionsRepCPTot.2.2}} </th>
+                        <th>  {{regionsRepCPTot.2.3}} </th>
+                    </tr>
+                </tbody>
+            </table> 
+
+<hr>
+  <h3>NRO "Legislation: phytosanitary requirements/ restrictions/ prohibitions": the overall state for {{curryear}}</h3>
+<table class="table table-condensed table-striped">
+    <thead>
+        <tr>
+            <th colspan="4"  style="background:#cccccc; text-align: center;"><center>Legislation: phytosanitary requirements/ restrictions/ prohibitions</center></th>
+        </tr> 
+        <tr>
+            <th style="background:#f2f2f2;">Region</th>
+            <th style="background:#f2f2f2;">Number of contracting parties</th>
+            <th style="background:#f2f2f2;">Number of reporting parties</th>
+            <th style="background:#f2f2f2;">Number of reports</th>
+        </tr>
+    </thead>
+    <tbody>
+        
+            {% for object in regionsRepCP.1 %}
+            <tr>
+            <th style="background:#f2f2f2;">{{ object.0 }} </th>
+            <td>{{ object.1 }} </td>
+            <td>{{ object.2 }}</td>
+            <td>{{ object.3 }}</td>    
+        </tr>
+            {% endfor %}
+           <tr>
+                <th style="background:#f2f2f2;">Total</th>
+                <th>{{ totNumReg }}  </th>
+                <th>  {{regionsRepCPTot.1.0}} </th>
+                <th>  {{regionsRepCPTot.1.1}} </th>
+            </tr>
+    </tbody>
+        
+</table>   <h3>NRO "Legislation: phytosanitary requirements/ restrictions/ prohibitions": changes in reporting during  {{curryear}}</h3>
+    <table class="table table-condensed">
+                <thead>
+                    <tr>
+                        <th colspan="1"  style="background:#cccccc; text-align: center;"><center>Legislation: phytosanitary requirements/ restrictions/ prohibitions</center></th>
+                     <th colspan="2"  style="background:#cccccc; text-align: center;"><center> {{curryear}}</center></th>
+                    </tr> 
+                    <tr>
+                        <th style="background:#f2f2f2;">Region</th>
+                        <th style="background:#f2f2f2;">New reports</th>
+                        <th style="background:#f2f2f2;">Updated reports</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for object in regionsRepCP.1 %}
+                    <tr>
+                        <th style="background:#f2f2f2;">{{ object.0 }} </th>
+                        <td>{{ object.4 }} </td>
+                        <td>{{ object.5 }}</td>    
+                    </tr>
+                    {% endfor %}
+                           <tr>
+                        <th style="background:#f2f2f2;">Total</th>
+                        <th>  {{regionsRepCPTot.1.2}} </th>
+                        <th>  {{regionsRepCPTot.1.3}} </th>
+                    </tr>
+                </tbody>
+            </table> 
+
+
+<hr>
+
+  <h3>NRO "Non-compliance": the overall state for {{curryear}}</h3>
+<table class="table table-condensed table-striped">
+   <thead>
+        <tr>
+            <th colspan="4"  style="background:#cccccc; text-align: center;"><center>Non-compliance</center></th>
+        </tr> 
+        <tr>
+            <th style="background:#f2f2f2;">Region</th>
+            <th style="background:#f2f2f2;">Number of contracting parties</th>
+            <th style="background:#f2f2f2;">Number of reporting parties</th>
+            <th style="background:#f2f2f2;">Number of reports</th>
+        </tr>
+    </thead>
+    <tbody>
+        
+            {% for object in regionsEvCP.1 %}
+            <tr>
+            <th style="background:#f2f2f2;">{{ object.0 }} </th>
+            <td>{{ object.1 }} </td>
+            <td>{{ object.2 }}</td>
+            <td>{{ object.3 }}</td>    
+        </tr>
+            {% endfor %}
+           <tr>
+                <th style="background:#f2f2f2;">Total</th>
+                <th>{{ totNumReg }}  </th>
+                <th>  {{regionsEvCPTot.1.0}} </th>
+                <th>  {{regionsEvCPTot.1.1}} </th>
+            </tr>
+    </tbody>
+        
+</table>  <h3>NRO "Non-compliance": changes in reporting during  {{curryear}}</h3> 
+    <table class="table table-condensed">
+                <thead>
+                    <tr>
+                        <th colspan="1"  style="background:#cccccc; text-align: center;"><center>Non-compliance</center></th>
+                     <th colspan="2"  style="background:#cccccc; text-align: center;"><center> {{curryear}}</center></th>
+                    </tr> 
+                    <tr>
+                        <th style="background:#f2f2f2;">Region</th>
+                        <th style="background:#f2f2f2;">New reports</th>
+                        <th style="background:#f2f2f2;">Updated reports</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for object in regionsEvCP.1 %}
+                    <tr>
+                        <th style="background:#f2f2f2;">{{ object.0 }} </th>
+                        <td>{{ object.4 }} </td>
+                        <td>{{ object.5 }}</td>    
+                    </tr>
+                    {% endfor %}
+                           <tr>
+                        <th style="background:#f2f2f2;">Total</th>
+                        <th>  {{regionsEvCPTot.1.2}} </th>
+                        <th>  {{regionsEvCPTot.1.3}} </th>
+                    </tr>
+                </tbody>
+            </table> 
+
+
+<hr>
+
+
+  <h3>NRO "Organizational arrangements of plant protection": the overall state for {{curryear}}</h3>
+<table class="table table-condensed table-striped">
+    <thead>
+        <tr>
+            <th colspan="4"  style="background:#cccccc; text-align: center;"><center>Organizational arrangements of plant protection</center></th>
+        </tr> 
+        <tr>
+            <th style="background:#f2f2f2;">Region</th>
+            <th style="background:#f2f2f2;">Number of contracting parties</th>
+            <th style="background:#f2f2f2;">Number of reporting parties</th>
+            <th style="background:#f2f2f2;">Number of reports</th>
+        </tr>
+    </thead>
+    <tbody>
+        
+            {% for object in regionsEvCP.2 %}
+            <tr>
+            <th style="background:#f2f2f2;">{{ object.0 }} </th>
+            <td>{{ object.1 }} </td>
+            <td>{{ object.2 }}</td>
+            <td>{{ object.3 }}</td>    
+        </tr>
+            {% endfor %}
+       <tr>
+                <th style="background:#f2f2f2;">Total</th>
+                <th>{{ totNumReg }}  </th>
+                <th>  {{regionsEvCPTot.2.0}} </th>
+                <th>  {{regionsEvCPTot.2.1}} </th>
+            </tr>
+    </tbody>
+        
+</table>  <h3>NRO "Organizational arrangements of plant protection": changes in reporting during  {{curryear}}</h3> 
+    <table class="table table-condensed">
+                <thead>
+                    <tr>
+                        <th colspan="1"  style="background:#cccccc; text-align: center;"><center>Organizational arrangements of plant protection</center></th>
+                     <th colspan="2"  style="background:#cccccc; text-align: center;"><center> {{curryear}}</center></th>
+                    </tr> 
+                    <tr>
+                        <th style="background:#f2f2f2;">Region</th>
+                        <th style="background:#f2f2f2;">New reports</th>
+                        <th style="background:#f2f2f2;">Updated reports</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for object in regionsEvCP.2 %}
+                    <tr>
+                        <th style="background:#f2f2f2;">{{ object.0 }} </th>
+                        <td>{{ object.4 }} </td>
+                        <td>{{ object.5 }}</td>    
+                    </tr>
+                    {% endfor %}
+                      <tr>
+                        <th style="background:#f2f2f2;">Total</th>
+                        <th>  {{regionsEvCPTot.2.2}} </th>
+                        <th>  {{regionsEvCPTot.2.3}} </th>
+                    </tr>
+                </tbody>
+            </table> 
+
+<hr>
+
+
+  <h3>NRO "Pest status": the overall state for {{curryear}}</h3>
+  <table class="table table-condensed table-striped">
+  <thead>
+        <tr>
+            <th colspan="4"  style="background:#cccccc; text-align: center;"><center>Pest status</center></th>
+        </tr> 
+        <tr>
+            <th style="background:#f2f2f2;">Region</th>
+            <th style="background:#f2f2f2;">Number of contracting parties</th>
+            <th style="background:#f2f2f2;">Number of reporting parties</th>
+            <th style="background:#f2f2f2;">Number of reports</th>
+        </tr>
+    </thead>
+    <tbody>
+        
+            {% for object in regionsEvCP.3 %}
+            <tr>
+            <th style="background:#f2f2f2;">{{ object.0 }} </th>
+            <td>{{ object.1 }} </td>
+            <td>{{ object.2 }}</td>
+            <td>{{ object.3 }}</td>    
+        </tr>
+            {% endfor %}
+       <tr>
+                <th style="background:#f2f2f2;">Total</th>
+                <th>{{ totNumReg }}  </th>
+                <th>  {{regionsEvCPTot.3.0}} </th>
+                <th>  {{regionsEvCPTot.3.1}} </th>
+            </tr>
+    </tbody>
+        
+</table>   
+<h3>NRO "Pest status": changes in reporting during  {{curryear}}</h3>
+    <table class="table table-condensed">
+                <thead>
+                    <tr>
+                        <th colspan="1"  style="background:#cccccc; text-align: center;"><center>Pest status</center></th>
+                     <th colspan="2"  style="background:#cccccc; text-align: center;"><center> {{curryear}}</center></th>
+                    </tr> 
+                    <tr>
+                        <th style="background:#f2f2f2;">Region</th>
+                        <th style="background:#f2f2f2;">New reports</th>
+                        <th style="background:#f2f2f2;">Updated reports</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for object in regionsEvCP.3 %}
+                    <tr>
+                        <th style="background:#f2f2f2;">{{ object.0 }} </th>
+                        <td>{{ object.4 }} </td>
+                        <td>{{ object.5 }}</td>    
+                    </tr>
+                    {% endfor %}
+                      <tr>
+                        <th style="background:#f2f2f2;">Total</th>
+                        <th>  {{regionsEvCPTot.3.2}} </th>
+                        <th>  {{regionsEvCPTot.3.3}} </th>
+                    </tr>
+                </tbody>
+            </table> 
+<hr>
+
+  <h3>NRO "Rationale for phytosanitary requirements": the overall state for {{curryear}}</h3>
+<table class="table table-condensed table-striped">
+   <thead>
+        <tr>
+            <th colspan="4"  style="background:#cccccc; text-align: center;"><center>Rationale for phytosanitary requirements</center></th>
+        </tr> 
+        <tr>
+            <th style="background:#f2f2f2;">Region</th>
+            <th style="background:#f2f2f2;">Number of contracting parties</th>
+            <th style="background:#f2f2f2;">Number of reporting parties</th>
+            <th style="background:#f2f2f2;">Number of reports</th>
+        </tr>
+    </thead>
+    <tbody>
+        
+            {% for object in regionsEvCP.4 %}
+            <tr>
+            <th style="background:#f2f2f2;">{{ object.0 }} </th>
+            <td>{{ object.1 }} </td>
+            <td>{{ object.2 }}</td>
+            <td>{{ object.3 }}</td>    
+        </tr>
+            {% endfor %}
+       <tr>
+                <th style="background:#f2f2f2;">Total</th>
+                <th>{{ totNumReg }}  </th>
+                <th>  {{regionsEvCPTot.4.0}} </th>
+                <th>  {{regionsEvCPTot.4.1}} </th>
+            </tr>
+    </tbody>
+        
+</table>  <h3>NRO "Rationale for phytosanitary requirements": changes in reporting during  {{curryear}}</h3>
+    <table class="table table-condensed">
+                <thead>
+                    <tr>
+                        <th colspan="1"  style="background:#cccccc; text-align: center;"><center>Rationale for phytosanitary requirements</center></th>
+                     <th colspan="2"  style="background:#cccccc; text-align: center;"><center> {{curryear}}</center></th>
+                    </tr> 
+                    <tr>
+                        <th style="background:#f2f2f2;">Region</th>
+                        <th style="background:#f2f2f2;">New reports</th>
+                        <th style="background:#f2f2f2;">Updated reports</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for object in regionsEvCP.4 %}
+                    <tr>
+                        <th style="background:#f2f2f2;">{{ object.0 }} </th>
+                        <td>{{ object.4 }} </td>
+                        <td>{{ object.5 }}</td>    
+                    </tr>
+                    {% endfor %}
+                      <tr>
+                        <th style="background:#f2f2f2;">Total</th>
+                        <th>  {{regionsEvCPTot.4.2}} </th>
+                        <th>  {{regionsEvCPTot.4.3}} </th>
+                    </tr>
+                </tbody>
+            </table> 
+{% endblock %}

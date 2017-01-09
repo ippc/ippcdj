@@ -1,0 +1,374 @@
+{% extends "base.html" %}
+{% load pages_tags mezzanine_tags i18n future staticfiles accounts_tags %}
+
+{% block meta_title %}
+  {% trans "Countries Stats" %}: 
+  {{ page.title }}
+{% endblock %}
+
+{% block body_class %}wide{% endblock %}
+
+{% block breadcrumb_menu %}
+<li><a href="/{{ LANGUAGE_CODE }}/">{% trans "Home" %}</a><span class="divider">/</span></li>
+<li>
+  <a href="/countries/">Countries</a>
+  <span class="divider">/</span>
+</li>
+<li>
+    <a href="/countries/statistics">Statistics</a>
+    <span class="divider">/</span>
+</li>
+
+<li class="active">{% trans "Summary statistics for National Reporting Obligations" %} </li>
+{% endblock %}
+
+{% block local_nav %}
+{% endblock local_nav %}
+
+{% block pageinfo %}
+{% endblock pageinfo %}
+
+{% block main %}
+
+<p class="pull-right">
+  <a href="javascript:history.go(-1)">{% trans "« Go back" %}</a>
+</p>
+<script type="text/javascript">
+    
+    
+	window.onload = function () {
+		var chart = new CanvasJS.Chart("chartContainer",
+		{
+			theme: "theme1",
+                        animationEnabled: true,
+			title:{
+				text: "Total of NRO reports",
+				fontSize: 30
+			},
+                        subtitles:[
+                            {
+                                text: "by all contracting parties in each NRO category for the years 2005-"+{% autoescape off %}{{curryear}}{% endautoescape %}+".",
+                                //Uncomment properties below to see how they behave
+                                //fontColor: "red",
+                                fontSize: 20
+                            }
+                        ],
+			toolTip: {
+				shared: true,
+				contentFormatter: function (e) {
+					var content = "<strong>"+e.entries[0].dataPoint.label+"</strong>:<br/>";
+					
+					for (var y= 2005;y <={% autoescape off %}{{curryear}}{% endautoescape %} ;y++) {
+					
+						for (var i = 0; i < e.entries.length; i++) {
+							if (e.entries[i].dataSeries.name == y){
+								content += "<span style='color:"+e.entries[i].dataSeries.color +";'>"+e.entries[i].dataSeries.name + "<span>  :<strong>  " + e.entries[i].dataPoint.y + "</strong>";
+								content += "<br/>";
+							}
+						}
+					}
+					return content;
+				}
+			},
+		
+		        axisY: {
+				title: "Number of reports",
+				titleFontSize: 20,
+				labelFontSize: 20,
+			},
+			axisX: {
+				labelFontSize: 16,
+				labelMaxWidth: 95,
+				labelWrap: true,
+				interval: 0,
+			},
+                      
+			data: [ 
+			   {% autoescape off %} 
+                                {{datachart}}
+                             {% endautoescape %}  
+			],
+                        
+          legend:{
+            cursor:"pointer",
+            fontSize: 20,
+           
+          },
+        });
+
+chart.render();
+
+var chart1 = new CanvasJS.Chart("chartContainer1",
+		{
+			theme: "theme1",
+                        animationEnabled: true,
+			title:{
+				text: "Reporting Year (actual number per annum)",
+				fontSize: 30
+			},
+                        subtitles:[
+                            {
+                                text: "by all countries on the IPP in each NRO category every year (2005-"+{% autoescape off %}{{curryear}}{% endautoescape %}+").",
+                                //Uncomment properties below to see how they behave
+                                //fontColor: "red",
+                                fontSize: 20
+                            }
+                        ],
+			toolTip: {
+				shared: true,
+				contentFormatter: function (e) {
+					var content = "<strong>"+e.entries[0].dataPoint.label+"</strong>:<br/>";
+					
+					for (var y= 2005;y <={% autoescape off %}{{curryear}}{% endautoescape %} ;y++) {
+					
+						for (var i = 0; i < e.entries.length; i++) {
+							if (e.entries[i].dataSeries.name == y){
+								content += "<span style='color:"+e.entries[i].dataSeries.color +";'>"+e.entries[i].dataSeries.name + "<span>  :<strong>  " + e.entries[i].dataPoint.y + "</strong>";
+								content += "<br/>";
+							}
+						}
+					}
+					return content;
+				}
+			},
+		
+		        axisY: {
+				title: "Number of reports",
+				titleFontSize: 20,
+				labelFontSize: 20,
+			},
+			axisX: {
+				labelFontSize: 16,
+				labelMaxWidth: 95,
+				labelWrap: true,
+				interval: 1,
+			},
+                      
+			data: [ 
+			   {% autoescape off %} 
+                                {{datachart1}}
+                             {% endautoescape %}  
+			],
+                        
+          legend:{
+            cursor:"pointer",
+            fontSize: 20,
+           
+          },
+        });
+
+chart1.render();
+}
+</script>
+<script src='{% static "/static/canvasjs/canvasjs.min.js" %}'></script>
+
+
+    
+    
+    
+    
+    
+<h1>
+{% trans "Summary statistics for National Reporting Obligations" %} <br>
+  <small class="normal"> 2005 - {{curryear}} </small>
+  </h1> 
+<p>While contracting parties did start reporting in 2005, the level of reporting was relatively low. However, as more contracting parties were trained in understanding their NROs and how to meeting NROs, so the cumulative number of reports made through the IPP has grown. Overall, the number of NRO reports, both considered as public or bilateral, made available by countries on the IPP has been steadily increasing for the last {{num_years}} years.
+<br>
+
+<h1>
+  <small class="normal">{% trans "The cumulative total of NRO reports made available by all contracting parties through the IPP in each NRO category for the years 2005-" %} {{curryear}}. </small>
+  </h1> 
+<b>Date generated: </b>  {{ dategenerate|date:"d M Y, H:m" }}</p><br>
+
+<table class="table table-condensed table-striped">
+<thead>
+<tr>
+    <th rowspan="2">Type of NRO</th>
+    <th colspan="{{num_years}}">Reporting Year (cumulative totals)</th>
+</tr> 
+<tr>
+   {% for i in num_years_range %}
+       <th>{{i}}</th>
+{% endfor %}
+ 
+</tr> 
+
+    
+</thead>
+<tbody>
+<tr>
+    <td>Description of NPPO</td>
+    {% for object in rep_array.0 %}
+       <td>{{object }} </td>
+    {% endfor %}
+</tr>
+<tr>
+    <td>Pest reports</td>
+    {% for object in pest_array.0 %}
+       <td>{{object }} </td>
+    {% endfor %}
+</tr>
+<tr>
+    <td>Emergency action</td>
+    {% for object in ev_array.0 %}
+       <td>{{object }} </td>
+    {% endfor %}
+</tr>
+<tr>
+    <td>List of regulated pests</td>
+    {% for object in rep_array.3 %}
+       <td>{{object }} </td>
+    {% endfor %}
+</tr>
+<tr>
+    <td>Entry points</td>
+    {% for object in rep_array.2 %}
+       <td>{{object }} </td>
+    {% endfor %}
+</tr>
+<tr>
+    <td>Legislation: phytosanitary requirements/ restrictions/ prohibitions</td>
+    {% for object in rep_array.1 %}
+       <td>{{object }} </td>
+    {% endfor %}
+</tr>
+<tr>
+    <td>Non-compliance</td>
+    {% for object in ev_array.1 %}
+       <td>{{object }} </td>
+    {% endfor %}
+</tr>
+<tr>
+    <td>Organizational arrangements of plant protection</td>
+    {% for object in ev_array.2 %}
+       <td>{{object }} </td>
+    {% endfor %}
+</tr>
+<tr>
+    <td>Pest status</td>
+    {% for object in ev_array.3 %}
+       <td>{{object }} </td>
+    {% endfor %}
+</tr>
+<tr>
+    <td>Rationale for phytosanitary requirements</td>
+    {% for object in ev_array.4 %}
+       <td>{{object }} </td>
+    {% endfor %}
+</tr>
+<tr>
+    <th>Total</th>
+    {% for object in totyearsarray %}
+       <th>{{object }} </th>
+    {% endfor %}
+</tr>
+
+</tbody>
+
+</table>
+<table class="table table-condensed table-striped">
+<tr><td>	<div id="chartContainer" style="height: 700px; width: 100%;">
+	</div>
+</td>
+            </tr>
+ </table>
+
+
+<h1>
+  <small class="normal">{% trans "The number of new NRO reports made available by all countries on the IPP in each NRO category every year (2005-" %} {{curryear}}). </small>
+  </h1> 
+
+<table class="table table-condensed table-striped">
+<thead>
+<tr>
+    <th rowspan="2">Type of NRO</th>
+    <th colspan="{{num_years}}">Reporting Year (actual number per annum)</th>
+</tr> 
+<tr>
+   {% for i in num_years_range %}
+       <th>{{i}}</th>
+{% endfor %}
+ 
+</tr> 
+
+    
+</thead>
+<tbody>
+<tr>
+    <td>Description of NPPO</td>
+    {% for object in rep_array1.0 %}
+       <td>{{object }} </td>
+    {% endfor %}
+</tr>
+<tr>
+    <td>Pest reports</td>
+    {% for object in pest_array1.0 %}
+       <td>{{object }} </td>
+    {% endfor %}
+</tr>
+<tr>
+    <td>Emergency action</td>
+    {% for object in ev_array1.0 %}
+       <td>{{object }} </td>
+    {% endfor %}
+</tr>
+<tr>
+    <td>List of regulated pests</td>
+    {% for object in rep_array1.3 %}
+       <td>{{object }} </td>
+    {% endfor %}
+</tr>
+<tr>
+    <td>Entry points</td>
+    {% for object in rep_array1.2 %}
+       <td>{{object }} </td>
+    {% endfor %}
+</tr>
+<tr>
+    <td>Legislation: phytosanitary requirements/ restrictions/ prohibitions</td>
+    {% for object in rep_array1.1 %}
+       <td>{{object }} </td>
+    {% endfor %}
+</tr>
+<tr>
+    <td>Non-compliance</td>
+    {% for object in ev_array1.1 %}
+       <td>{{object }} </td>
+    {% endfor %}
+</tr>
+<tr>
+    <td>Organizational arrangements of plant protection</td>
+    {% for object in ev_array1.2 %}
+       <td>{{object }} </td>
+    {% endfor %}
+</tr>
+<tr>
+    <td>Pest status</td>
+    {% for object in ev_array1.3 %}
+       <td>{{object }} </td>
+    {% endfor %}
+</tr>
+<tr>
+    <td>Rationale for phytosanitary requirements</td>
+    {% for object in ev_array1.4 %}
+       <td>{{object }} </td>
+    {% endfor %}
+</tr>
+<tr>
+    <th>Total</th>
+    {% for object in totyears1array %}
+       <th>{{object }} </th>
+    {% endfor %}
+</tr>
+</tbody>
+
+</table>
+<table class="table table-condensed table-striped">
+<tr><td>	<div id="chartContainer1" style="height: 700px; width: 100%;">
+	</div>
+</td>
+            </tr>
+ </table>
+
+
+{% endblock %}

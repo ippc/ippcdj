@@ -1,0 +1,144 @@
+{% extends "base.html" %}
+{% load pages_tags mezzanine_tags i18n future staticfiles accounts_tags %}
+
+{% block meta_title %}
+  {% trans "Countries Stats" %}: 
+  {{ page.title }}
+{% endblock %}
+
+{% block body_class %}wide{% endblock %}
+
+{% block breadcrumb_menu %}
+<li><a href="/{{ LANGUAGE_CODE }}/">{% trans "Home" %}</a><span class="divider">/</span></li>
+<li>
+  <a href="/countries/">Countries</a>
+  <span class="divider">/</span>
+</li>
+<li> 
+    <a href="/countries/statistics">Statistics</a>
+    <span class="divider">/</span>
+</li>
+
+<li class="active">{% trans "Changes among IPPC Contact Points over " %}  {{prevyear}}.</li>
+{% endblock %}
+
+{% block local_nav %}
+{% endblock local_nav %}
+
+{% block pageinfo %}
+{% endblock pageinfo %}
+
+{% block main %}
+
+<p class="pull-right">
+  <a href="javascript:history.go(-1)">{% trans "« Go back" %}</a>
+</p>
+    
+   <script type="text/javascript">
+  window.onload = function () {
+    var chart = new CanvasJS.Chart("chartContainer",
+    {
+      theme: "theme2",
+      title:{
+        text: "Changes among IPPC Contact Points over "+{{prevyear}}
+      },
+      animationEnabled: true,
+      axisX: {
+        valueFormatString: "MMM",
+        interval:1,
+        intervalType: "month"
+        
+      },
+      axisY:{
+        includeZero: false
+        
+      },
+      data: [
+      {        
+        type: "line",
+        //lineThickness: 3,        
+        dataPoints: [
+       {% autoescape off %} 
+                {{datachart}}
+             {% endautoescape %}        
+        ]
+      }
+      
+      
+      ]
+    });
+
+chart.render();
+  var chart = new CanvasJS.Chart("chartContainer1",
+    {
+      theme: "theme2",
+      title:{
+        text: "Changes among IPPC Editors over "+{{prevyear}}
+      },
+      animationEnabled: true,
+      axisX: {
+        valueFormatString: "MMM",
+        interval:1,
+        intervalType: "month"
+        
+      },
+      axisY:{
+        includeZero: false
+        
+      },
+      data: [
+      {        
+        type: "line",
+        //lineThickness: 3,        
+        dataPoints: [
+       {% autoescape off %} 
+                {{datachart1}}
+             {% endautoescape %}        
+        ]
+      }
+      
+      
+      ]
+    });
+
+chart.render();
+  }
+  </script>
+  <script src='{% static "/static/canvasjs/canvasjs.min.js" %}'></script>
+<h1> 
+<h1>Changes among IPPC Contact Points over {{prevyear}}. <br>
+  </h1> 
+<p></p>
+
+<b>{% trans "Date generated" %}: </b>  {{ dategenerate|date:"d M Y, H:m" }}</p><br>
+
+
+
+<table class="table table-condensed table-striped">
+
+        <tr>
+           
+    <td><div id="chartContainer" style="height:300px; width: 100%;">
+            </div></td>
+  
+</tr>
+
+
+</table>
+<br>
+<br>
+<h1>Changes among the IPP editors during  {{prevyear}}. <br>
+  </h1> 
+<table class="table table-condensed table-striped">
+
+        <tr>
+           
+    <td><div id="chartContainer1" style="height:300px; width: 100%;">
+            </div></td>
+  
+</tr>
+
+
+</table>
+
+{% endblock %}
