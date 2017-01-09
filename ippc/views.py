@@ -15,7 +15,10 @@ PublicationFile,PublicationUrl,ReportingObligation_File,ReportingObligationUrl, 
 DraftProtocol,DraftProtocolComments,NotificationMessageRelate,CommentFile,AnswerVotes,\
 ReportingObligation, BASIC_REP_TYPE_CHOICES, EventReporting, EVT_REP_TYPE_CHOICES,Website,CnPublication,PartnersPublication,PartnersNews, PartnersWebsite,CountryNews, \
 PestFreeArea,ImplementationISPM,REGIONS, IssueKeywordsRelate,CommodityKeywordsRelate,EventreportingFile,ReportingObligation_File,\
-ContactUsEmailMessage,FAQsItem,FAQsCategory,QAQuestion, QAAnswer,UserAutoRegistration,IRSSActivity,IRSSActivityFile,IRSS_ACT_TYPE_CHOICES,TransFAQsCategory,TransFAQsItem
+ContactUsEmailMessage,FAQsItem,FAQsCategory,QAQuestion, QAAnswer,UserAutoRegistration,IRSSActivity,IRSSActivityFile,IRSS_ACT_TYPE_CHOICES,\
+TransFAQsCategory,TransFAQsItem,MassEmailUtilityMessage,MassEmailUtilityMessageFile,\
+OCPHistory, PartnersContactPointHistory,CnEditorsHistory,PartnersEditorHistory
+         
 #TransReportingObligation,
 from mezzanine.core.models import Displayable, CONTENT_STATUS_DRAFT, CONTENT_STATUS_PUBLISHED
 from .forms import PestReportForm,PublicationUrlFormSet,PublicationForm, PublicationFileFormSet, ReportingObligationForm, EventReportingForm, PestFreeAreaForm,\
@@ -26,11 +29,11 @@ CnPublicationUrlFormSet,CnPublicationForm, CnPublicationFileFormSet,\
 PartnersPublicationUrlFormSet,PartnersPublicationForm, PartnersPublicationFileFormSet,\
 PollForm,Poll_ChoiceFormSet,\
 PartnersNewsUrlFormSet,PartnersNewsForm, PartnersNewsFileFormSet,PartnersWebsiteUrlFormSet,PartnersWebsiteForm,\
-EmailUtilityMessageForm,EmailUtilityMessageFileFormSet,\
+EmailUtilityMessageForm,EmailUtilityMessageFileFormSet,MassEmailUtilityMessageForm,MassEmailUtilityMessageFileFormSet,\
 CountryNewsUrlFormSet,CountryNewsForm, CountryNewsFileFormSet,NotificationMessageRelateForm,\
 DraftProtocolForm,  DraftProtocolFileFormSet,DraftProtocolCommentsForm,IppcUserProfileForm,\
 ContactUsEmailMessageForm,FAQsItemForm,FAQsCategoryForm,QAQuestionForm, QAAnswerForm,UserAutoRegistrationForm,IRSSActivityForm,IRSSActivityFileFormSet
-##TransReportingObligationForm , UserForm,
+##TansReportingObligationForm , UserForm,
 
 
 from django.views.generic import ListView, MonthArchiveView, YearArchiveView, DetailView, TemplateView, CreateView
@@ -1015,7 +1018,10 @@ def commenta(request, template="generic/comments.html"):
             emailto_all.append(str(user_email))
             print("-----------------------------")
     
-    
+    import sys;
+    reload(sys);
+    sys.setdefaultencoding("utf8")
+
     form = myview.ThreadedCommentForm(request, obj, post_data)
     if form.is_valid():
         url = obj.get_absolute_url()
@@ -1300,7 +1306,7 @@ class PestReportListView(ListView):
         # self.country = get_object_or_404(CountryPage, country=self.kwargs['country'])
         self.country = self.kwargs['country']
         # CountryPage country_slug == country URL parameter keyword argument
-        return PestReport.objects.filter(country__country_slug=self.country, status=CONTENT_STATUS_PUBLISHED, is_version=False)
+        return PestReport.objects.filter(country__country_slug=self.country, is_version=False)# status=CONTENT_STATUS_PUBLISHED,
     
     def get_context_data(self, **kwargs): # http://stackoverflow.com/a/15515220
         context = super(PestReportListView, self).get_context_data(**kwargs)
@@ -1576,7 +1582,7 @@ def send_notification_message(newitem,id,content_type,title,url):
 def send_pest_notification_message(newitem,id,content_type,title,url):
     """ send_notification_message """
     #print("send!!!")
-    emailto_all = ['dave.nowell@fao.org','roy@eppo.int',]
+    emailto_all = ['roy@eppo.int',]#'dave.nowell@fao.org',
     
     subject=''
     if newitem==1:
@@ -1774,7 +1780,7 @@ def pest_report_edit(request, country, id=None, template_name='countries/pest_re
             files=PestReportFile.objects.filter(pestreport_id=pest_report.id)
             urls=PestReportUrl.objects.filter(pestreport_id=pest_report.id)
             for f in files:
-                sql = "INSERT INTO ippc_pestreportfile(pestreport_id,description,file) VALUES ("+str(old_pest_report.id)+", '"+str(f.description)+"', '"+str(f)+"')"
+                sql = "INSERT INTO ippc_pestreportfile(pestreport_id,description,file) VALUES ("+str(old_pest_report.id)+", '"+ugettext(f.description)+"', '"+str(f)+"')"
                 print(sql)
                 try:
                     cursor.execute(sql)
@@ -2141,7 +2147,7 @@ def reporting_obligation_edit(request, country, id=None, template_name='countrie
             files=ReportingObligation_File.objects.filter(reportingobligation_id=reporting_obligation.id)
             urls=ReportingObligationUrl.objects.filter(reportingobligation_id=reporting_obligation.id)
             for f in files:
-                sql = "INSERT INTO ippc_reportingobligation_file(reportingobligation_id,description,file) VALUES ("+str(old_reporting_obligation.id)+", '"+str(f.description)+"', '"+str(f)+"')"
+                sql = "INSERT INTO ippc_reportingobligation_file(reportingobligation_id,description,file) VALUES ("+str(old_reporting_obligation.id)+", '"+ugettext(f.description)+"', '"+str(f)+"')"
                 print(sql)
                 try:
                     cursor.execute(sql)
@@ -2486,7 +2492,7 @@ def event_reporting_edit(request, country, id=None, template_name='countries/eve
             files=EventreportingFile.objects.filter(eventreporting_id=event_reporting.id)
             urls=EventreportingUrl.objects.filter(eventreporting_id=event_reporting.id)
             for f in files:
-                sql = "INSERT INTO ippc_eventreportingfile(eventreporting_id,description,file) VALUES ("+str(old_event_reporting.id)+", '"+str(f.description)+"', '"+str(f)+"')"
+                sql = "INSERT INTO ippc_eventreportingfile(eventreporting_id,description,file) VALUES ("+str(old_event_reporting.id)+", '"+ugettext(f.description)+"', '"+str(f)+"')"
                 print(sql)
                 try:
                     cursor.execute(sql)
@@ -3662,7 +3668,7 @@ def pfa_edit(request, country, id=None, template_name='countries/pfa_edit.html')
             files=PestFreeAreaFile.objects.filter(pfa_id=pfa.id)
             urls=PestFreeAreaUrl.objects.filter(pfa_id=pfa.id)
             for f in files:
-                sql = "INSERT INTO ippc_pestfreeareafile(pfa_id,description,file) VALUES ("+str(old_pfa.id)+", '"+str(f.description)+"', '"+str(f)+"')"
+                sql = "INSERT INTO ippc_pestfreeareafile(pfa_id,description,file) VALUES ("+str(old_pfa.id)+", '"+ugettext(f.description)+"', '"+str(f)+"')"
                 print(sql)
                 try:
                     cursor.execute(sql)
@@ -3931,8 +3937,8 @@ def implementationispm_edit(request, country, id=None, template_name='countries/
             files=ImplementationISPMFile.objects.filter(implementationispm_id=implementationispm.id)
             urls=ImplementationISPMUrl.objects.filter(implementationispm_id=implementationispm.id)
             for f in files:
-                sql = "INSERT INTO ippc_implementationispmfile(implementationispm_id,description,file) VALUES ("+str(old_implementationispm.id)+", '"+str(f.description)+"', '"+str(f)+"')"
-                print(sql)
+                sql = "INSERT INTO ippc_implementationispmfile(implementationispm_id,description,file) VALUES ("+str(old_implementationispm.id)+", '"+ugettext(f.description)+"', '"+str(f)+"')"
+                #print(sql)
                 try:
                     cursor.execute(sql)
                     db.commit()
@@ -4409,7 +4415,7 @@ def publication_edit(request, id=None, template_name='pages/publication_edit.htm
             files=PublicationFile.objects.filter(publication_id=publication.id)
             urls=PublicationUrl.objects.filter(publication_id=publication.id)
             for f in files:
-                sql = "INSERT INTO ippc_publicationfile(publication_id,description,file) VALUES ("+str(old_publication.id)+", '"+str(f.description)+"', '"+str(f)+"')"
+                sql = "INSERT INTO ippc_publicationfile(publication_id,description,file) VALUES ("+str(old_publication.id)+", '"+ugettext(f.description)+"', '"+str(f)+"')"
                 print(sql)
                 try:
                     cursor.execute(sql)
@@ -4564,7 +4570,97 @@ class CountryStatsTotalreportsListView(ListView):
         context['datachart2']=datachart2
         context['datachart3']=datachart3
         return context   
-	
+class CountryStatsTotalreports1ListView(ListView):
+    """   Statistics reports  """
+    context_object_name = 'latest'
+    model = CountryPage
+    template_name = 'countries/countries_statstotalreports_1.html'
+    queryset = CountryPage.objects.all().order_by('title')
+   
+    def get_context_data(self, **kwargs): 
+        context = super(CountryStatsTotalreports1ListView, self).get_context_data(**kwargs)
+        context['dategenerate']=timezone.now()
+       
+        tot_rep_count=0
+        prevyear=timezone.now().year -1
+        rep_array=[]
+        ev_array=[]
+        pest_array=[]
+        for i in range(1,6):
+            reporting_array = []
+            eventreporting_array = []
+            rep_count=0
+            evrep_count=0 
+            reps=ReportingObligation.objects.filter(reporting_obligation_type=i,is_version=False)
+            for r in reps:
+                if r.publication_date != None and r.publication_date.year == prevyear :
+                    rep_count=rep_count+1
+                   # print(rep_count)
+            reporting_array.append(rep_count)
+            rep_array.append(reporting_array)
+            evrep=EventReporting.objects.filter(event_rep_type=i,is_version=False)
+            for e in evrep:
+                if e.publication_date != None and e.publication_date.year  == prevyear :
+                    evrep_count=evrep_count+1
+            eventreporting_array.append(evrep_count)
+            ev_array.append(eventreporting_array)
+        
+        pestreporting_array = []
+        pests=PestReport.objects.filter(is_version=False)
+        p_count=0
+        for p in pests:
+            if p.publish_date != None and p.publish_date.year == prevyear :
+                p_count=p_count+1
+        
+        pestreporting_array.append(p_count)
+
+        pest_array.append(pestreporting_array)       
+        datachart=''
+        
+        
+#        datachart += '{type: "column", name: "'+str(prevyear)+'", legendText: "'+str(prevyear)+'",showInLegend: true, dataPoints:['
+#        datachart += '{label: "Description of NPPO", y: '+str(rep_array[0][0])+'},	'
+#        datachart += '{label: "Pest reports", y: '+str(pest_array[0][0])+'},'
+#        datachart += '{label: "Emergency action", y: '+str(ev_array[0][0])+'},'
+#        datachart += '{label: "List of regulated pests", y: '+str(rep_array[3][0])+'},'
+#        datachart += '{label: "Entry points", y:  '+str(rep_array[2][0])+'},'
+#        datachart += '{label: "Legislation: phytosanitary requirements/ restrictions/ prohibitions", y:  '+str(rep_array[1][0])+'},'
+#        datachart += '{label: "Non-compliance", y:  '+str(ev_array[1][0])+'},'
+#        datachart += '{label: "Organizational arrangements of plant protection", y: '+str(ev_array[2][0])+'},'
+#        datachart += '{label: "Pest status", y:'+str(ev_array[3][0])+'},'
+#        datachart += '{label: "Rationale for phytosanitary requirements", y: '+str(ev_array[4][0])+'}]},'
+#        
+        tot_rep_count=rep_array[0][0]+rep_array[1][0]+rep_array[2][0]+rep_array[3][0]+pest_array[0][0]+ev_array[0][0]+ev_array[1][0]+ev_array[2][0]+ev_array[3][0]+ev_array[4][0]
+        
+        print(tot_rep_count)
+        datachart0=''
+        datachart0 += ' {  y: '+str(rep_array[0][0]*100/tot_rep_count)+', legendText:"Description of the NPPO", label: "Description of the NPPO: '+str(rep_array[0][0]*100/tot_rep_count)+'%" },'
+        datachart0 += ' {  y: '+str(pest_array[0][0]*100/tot_rep_count)+', legendText:"Pest report", label: "Pest report: '+str(pest_array[0][0]*100/tot_rep_count)+'%" },'
+        datachart0 += ' {  y: '+str(ev_array[0][0]*100/tot_rep_count)+', legendText:"Emergency actions", label: "Emergency actions: '+str(ev_array[0][0]*100/tot_rep_count)+'%" },'
+        datachart0 += ' {  y: '+str(rep_array[3][0]*100/tot_rep_count)+', legendText:"List of regulated pests", label: "List of regulated pests: '+str(rep_array[3][0]*100/tot_rep_count)+'%" },'
+        datachart0 += ' {  y: '+str(rep_array[2][0]*100/tot_rep_count)+', legendText:"Entry points", label: "Entry points: '+str(rep_array[2][0]*100/tot_rep_count)+'%" },'
+        datachart0 += ' {  y: '+str(rep_array[1][0]*100/tot_rep_count)+', legendText:"Legislation: phytosanitary requirements/ restrictions/ prohibitions", label: "Legislation: phytosanitary requirements/ restrictions/ prohibitions: '+str(rep_array[1][0]*100/tot_rep_count)+'%" },'
+        datachart0 += ' {  y: '+str(ev_array[1][0]*100/tot_rep_count)+', legendText:"Non compliance", label: "Non compliance: '+str(ev_array[1][0]*100/tot_rep_count)+'%" },'
+        datachart0 += ' {  y: '+str(ev_array[2][0]*100/tot_rep_count)+', legendText:"Organizational arrangements of plant protection", label: "Organizational arrangements of plant protection: '+str(ev_array[2][0]*100/tot_rep_count)+'%" },'
+        datachart0 += ' {  y: '+str(ev_array[3][0]*100/tot_rep_count)+', legendText:"Pest status", label: "Pest status: '+str(ev_array[3][0]*100/tot_rep_count)+'%" },'
+        datachart0 += ' {  y: '+str(ev_array[4][0]*100/tot_rep_count)+', legendText:"Rationale for phytosanitary requirements", label: "Rationale for phytosanitary requirements: '+str(ev_array[4][0]*100/tot_rep_count)+'%" },'
+       
+   
+        
+        context['prevyear']=prevyear
+        context['rep_array']=rep_array
+        context['ev_array']=ev_array
+        context['pest_array']=pest_array
+            
+        context['datachart']=datachart
+        context['datachart0']=datachart0
+        context['tot_rep_count']=tot_rep_count
+        
+        
+        return context
+    
+       
+		
 
 class CountryStatsreportsListView(ListView):
     """   Statistics reports  """
@@ -4815,8 +4911,513 @@ class CountryRegionsPercentageListView(ListView):
                         context['region_ev'+str(i)+'ncp']=regionev5ncp
   
         return context
-    
+
 from datetime import date
+
+
+class CountryStatsSingleReportsListView(ListView):
+    """   stat  """
+    context_object_name = 'latest'
+    model = CountryPage
+    template_name = 'countries/countries_singlereport.html'
+    queryset = CountryPage.objects.all().order_by('title')
+   
+    def get_context_data(self, **kwargs): # http://stackoverflow.com/a/15515220
+        context = super(CountryStatsSingleReportsListView, self).get_context_data(**kwargs)
+        context['dategenerate']=timezone.now()
+       
+        curryear=timezone.now().year-1
+        
+        regionsRepCP = []
+        regionsEvCP = []
+        regionsPCP = []
+        totNumReg=countriesperregioncp=CountryPage.objects.filter(cp_ncp_t_type='CP').count()
+        totRepREG=0   
+        for i in range(1,6):
+            region_cp_r = []
+            region_cp_e = []
+            numRepCN=0
+            numEvsCN=0 
+                
+            for k,v in REGIONS:
+                reg = v+''
+                numRepCN=0
+                numEvsCN=0 
+                countriesperregioncp=CountryPage.objects.filter(region=k,cp_ncp_t_type='CP')
+                numCP_rep = []
+                numCP_ev = []
+                numCP_rep.append(reg)
+                numCP_rep.append(countriesperregioncp.count())
+                numCP_ev.append(reg)
+                numCP_ev.append(countriesperregioncp.count())
+                countRep=0
+                countEv=0
+                cNewR=0
+                cUpR=0
+                cNewE=0
+                cUpE=0
+                for c in countriesperregioncp:
+                    
+                    reps=ReportingObligation.objects.filter(country=c.id,reporting_obligation_type=i,is_version=False)
+                    
+                    for r in reps:
+                        if r.publication_date != None and r.publication_date.year == curryear:
+                            cNewR+=1
+                        if r.modify_date != None and r.modify_date.year == curryear:
+                            cUpR+=1
+                    evs=EventReporting.objects.filter(country=c.id,event_rep_type=i,is_version=False)
+                    for e in evs:
+                        if e.publication_date != None and e.publication_date.year == curryear:
+                             cNewE+=1
+                        if e.modify_date != None and e.modify_date.year == curryear:
+                            cUpE+=1
+                    countRep+=reps.count()
+                    countEv+=evs.count()
+                    
+                    if reps.count()>0:
+                        numRepCN+=1
+                    if evs.count()>0:
+                        numEvsCN+=1
+             
+                            
+                numCP_rep.append(numRepCN)
+                numCP_rep.append(countRep)
+                numCP_rep.append(cNewR)
+                numCP_rep.append(cUpR)
+                
+                region_cp_r.append(numCP_rep)
+                numCP_ev.append(numEvsCN)
+                numCP_ev.append(countEv)
+                numCP_ev.append(cNewE)
+                numCP_ev.append(cUpE)
+                region_cp_e.append(numCP_ev)
+            regionsRepCP.append(region_cp_r)
+            regionsEvCP.append(region_cp_e)
+            
+        region_cp_p = []
+        numRepP=0
+        for k,v in REGIONS:
+            reg = v+''
+            numRepP=0
+            countriesperregioncp=CountryPage.objects.filter(region=k,cp_ncp_t_type='CP')
+            numCP_P = []
+            numCP_P.append(reg)
+            numCP_P.append(countriesperregioncp.count())
+            countP=0
+            cNewP=0
+            cUpP=0
+            for c in countriesperregioncp:
+                pests= PestReport.objects.filter(country=c.id,is_version=False)
+                for p in pests:
+                    if e.publish_date != None and e.publish_date.year == curryear:
+                         cNewP+=1
+                    if e.modify_date != None and e.modify_date.year == curryear:
+                        cUpP+=1
+                countP+=pests.count()
+                if pests.count()>0:
+                    numRepP+=1    
+            numCP_P.append(numRepP)
+            numCP_P.append(countP)
+            numCP_P.append(cNewP)
+            numCP_P.append(cUpP)
+            region_cp_p.append(numCP_P)
+        regionsPCP.append(region_cp_p)
+        regionsRepCPTot=[]
+       
+        for i in range(0,4):
+            totarray=[]
+            tot=0
+            tot2=0
+            tot4=0
+            tot5=0
+            for x in  regionsRepCP[i]:
+                tot+= x[2]
+                tot2+= x[3]
+                tot4+= x[4]
+                tot5+= x[5]
+            totarray.append(tot)
+            totarray.append(tot2)
+            totarray.append(tot4)
+            totarray.append(tot5)
+            
+            regionsRepCPTot.append(totarray)  
+        regionsEvCPTot=[]
+        for i in range(0,5):
+            totarray=[]
+            tot=0
+            tot2=0
+            tot4=0
+            tot5=0
+            for x in  regionsEvCP[i]:
+                tot+= x[2]
+                tot2+= x[3]
+                tot4+= x[4]
+                tot5+= x[5]
+            totarray.append(tot)
+            totarray.append(tot2)
+            totarray.append(tot4)
+            totarray.append(tot5)
+            
+            regionsEvCPTot.append(totarray)  
+        regionsPCPTot=[]
+        totarray=[]
+        tot=0
+        tot2=0
+        tot4=0
+        tot5=0
+        for x in  regionsPCP[0]:
+            tot+= x[2]
+            tot2+= x[3]
+            tot4+= x[4]
+            tot5+= x[5]
+        totarray.append(tot)
+        totarray.append(tot2)
+        totarray.append(tot4)
+        totarray.append(tot5)
+
+        regionsPCPTot.append(totarray)      
+
+        context['curryear']=curryear
+        context['regionsRepCP']=regionsRepCP
+        context['regionsEvCP']=regionsEvCP
+        context['regionsPCP']=regionsPCP
+        context['totNumReg']=totNumReg
+        context['regionsRepCPTot']=regionsRepCPTot
+        context['regionsEvCPTot']=regionsEvCPTot
+        context['regionsPCPTot']=regionsPCPTot
+        
+
+ 
+        return context   
+
+
+class CountryStatsTotalReportsIncreaseListView(ListView):
+    """   stat  """
+    context_object_name = 'latest'
+    model = CountryPage
+    template_name = 'countries/countries_totalreport_increase.html'
+    queryset = CountryPage.objects.all().order_by('title')
+   
+    def get_context_data(self, **kwargs): # http://stackoverflow.com/a/15515220
+        context = super(CountryStatsTotalReportsIncreaseListView, self).get_context_data(**kwargs)
+        context['dategenerate']=timezone.now()
+        
+        curryear=timezone.now().year-1
+        prevyear=timezone.now().year-2
+   
+
+        rep_array=[]
+        ev_array=[]
+        pest_array=[]
+        
+             
+        for i in range(1,6):
+            reporting_array = []
+            eventreporting_array = []
+            for y in range(prevyear,curryear +1):
+                rep_count=0
+                evrep_count=0 
+                reps=ReportingObligation.objects.filter(reporting_obligation_type=i,is_version=False)
+                evrep=EventReporting.objects.filter(event_rep_type=i,is_version=False)
+                for r in reps:
+                    if r.publication_date != None and r.publication_date.year == y:
+                        rep_count=rep_count+1
+                for e in evrep:
+                    if e.publication_date != None and e.publication_date.year == y:
+                        evrep_count=evrep_count+1
+                
+            
+                reporting_array.append(rep_count)
+                eventreporting_array.append(evrep_count)
+            ev_array.append(eventreporting_array)
+            rep_array.append(reporting_array)
+            
+      
+        
+        pestreporting_array = []
+        tot_p_count=0
+        for y in range(prevyear,curryear +1):
+            pests=PestReport.objects.filter(is_version=False)
+            p_count=0
+            for p in pests:
+                if p.publish_date != None and p.publish_date.year == y:
+                    p_count=p_count+1
+                  
+            pestreporting_array.append(p_count)
+            tot_p_count+=p_count
+        pest_array.append(pestreporting_array)       
+        
+        numIncrease=0
+        increase=0
+        rep_array1=[]
+        ev_array1=[]
+        pest_array1=[]
+        tot1=0
+        tot2=0
+        for x in rep_array:
+            increaseRep=[]
+            a=float(x[0])
+            b=float(x[1])
+            tot1+=a
+            tot2+=b
+            numIncrease=b-a
+            ok=False
+            if x[0]!=0:
+                increase=((b-a)/a)*100
+                increase= round(increase, 2)
+                ok=True
+            else:
+                ok=False
+                
+            nn=''
+            nn1=''
+          
+                
+            if numIncrease > 0:
+                nn='increase by '+str(abs(numIncrease))+' report'
+                if numIncrease>1:
+                    nn+='s' 
+                if ok:
+                    nn1='+'+str(increase)+' %'
+                else:
+                    nn1='*'    
+                
+            elif numIncrease == 0:
+                nn='N/A'
+                nn1=' '
+                   
+                
+            else:
+                nn='<span style="color: red;">decrease by '+str(abs(numIncrease))+' report'
+                if numIncrease<1:
+                    nn+='s' 
+                nn+='<span>'
+                if ok:
+                    nn1='<span style="color: red;">'+str(increase)+' %<span>'
+                else:
+                    nn1='*' 
+              
+                 
+            increaseRep.append(nn)
+            increaseRep.append(nn1)
+            rep_array1.append(increaseRep)     
+        numIncrease=0
+        increase=0     
+        for x in ev_array:
+            increaseEv=[]
+            
+            a=float(x[0])
+            b=float(x[1])
+            tot1+=a
+            tot2+=b
+            numIncrease=b-a
+            ok=False
+            if x[0]!=0:
+                increase=((b-a)/a)*100
+                increase= round(increase, 2)
+                ok=True
+            else:
+                ok=False
+                
+            nn=''
+            nn1=''
+          
+                
+            if numIncrease > 0:
+                nn='increase by '+str(abs(numIncrease))+' report'
+                if numIncrease>1:
+                    nn+='s' 
+                if ok:
+                    nn1='+'+str(increase)+' %'
+                else:
+                    nn1='*'    
+            elif numIncrease == 0:
+                nn='N/A'
+                nn1=' '    
+            else:
+                nn='<span style="color: red;">decrease by '+str(abs(numIncrease))+' report'
+                if numIncrease<1:
+                    nn+='s' 
+                nn+='<span>'
+                if ok:
+                    nn1='<span style="color: red;">'+str(increase)+' %<span>'
+                else:
+                    nn1='*' 
+              
+                 
+            increaseEv.append(nn)
+            increaseEv.append(nn1)
+            ev_array1.append(increaseEv)
+        
+        numIncrease=0
+        increase=0     
+        for x in pest_array:
+            increaseP=[]
+            a=float(x[0])
+            b=float(x[1])
+            tot1+=a
+            tot2+=b
+            numIncrease=b-a
+            ok=False
+            if x[0]!=0:
+                increase=((b-a)/a)*100
+                increase= round(increase, 2)
+                ok=True
+            else:
+                ok=False
+                
+            nn=''
+            nn1=''
+          
+                
+            if numIncrease > 0:
+                nn='increase by '+str(abs(numIncrease))+' report'
+                if numIncrease>1:
+                    nn+='s' 
+                if ok:
+                    nn1='+'+str(increase)+' %'
+                else:
+                    nn1='*'    
+            elif numIncrease == 0:
+                nn='N/A'
+                nn1=' '    
+            else:
+                nn='<span style="color: red;">decrease by '+str(abs(numIncrease))+' report'
+                if numIncrease<1:
+                    nn+='s' 
+                nn+='<span>'
+                if ok:
+                    nn1='<span style="color: red;">'+str(increase)+' %<span>'
+                else:
+                    nn1='*' 
+              
+            increaseP.append(nn)
+            increaseP.append(nn1)
+           
+            pest_array1.append(increaseP)
+        print('tot1: '+str(tot1))                    
+        context['curryear']=curryear
+        context['prevyear']=prevyear
+        context['tot1']=int(tot1)
+        context['tot2']=int(tot2)
+     
+        context['rep_array']=rep_array
+        context['ev_array']=ev_array
+        context['pest_array']=pest_array
+        print(rep_array1)
+        context['rep_array1']=rep_array1
+        context['ev_array1']=ev_array1
+        context['pest_array1']=pest_array1
+      
+        return context   
+    
+class CountryStatisticsTotalNroByYearListView(ListView):
+    """   stat  """
+    context_object_name = 'latest'
+    model = CountryPage
+    template_name = 'countries/countries_totalnrobyyear.html'
+    queryset = CountryPage.objects.all().order_by('title')
+   
+    def get_context_data(self, **kwargs): # http://stackoverflow.com/a/15515220
+        context = super(CountryStatisticsTotalNroByYearListView, self).get_context_data(**kwargs)
+        context['dategenerate']=timezone.now()
+        
+        curryear=timezone.now().year   
+        num_years=curryear-2005
+
+        rep_array=[]
+        ev_array=[]
+        pest_array=[]
+        rep_array1=[]
+        ev_array1=[]
+        pest_array1=[]
+       
+        for i in range(1,5):
+            reporting_array = []
+            reporting_array1 = []
+            rep_count=0
+            for y in range(2005,curryear +1):
+                reps=ReportingObligation.objects.filter(reporting_obligation_type=i,is_version=False)
+                rep_count1=0
+                for r in reps:
+
+                    if r.publication_date != None and r.publication_date.year == y:
+                        rep_count=rep_count+1
+                        rep_count1=rep_count1+1
+                reporting_array.append(rep_count)
+                reporting_array1.append(rep_count1)
+            rep_array.append(reporting_array)
+            rep_array1.append(reporting_array1)
+        
+        for i in range(1,6):
+            eventreporting_array = []
+            eventreporting_array1 = []
+            evrep_count=0
+            for y in range(2005,curryear +1):
+                evrep=EventReporting.objects.filter(event_rep_type=i,is_version=False)
+                evrep_count1=0 
+                for e in evrep:
+
+                    if e.publication_date != None and e.publication_date.year == y:
+                        evrep_count=evrep_count+1
+                        evrep_count1=evrep_count1+1
+
+                eventreporting_array.append(evrep_count)
+                eventreporting_array1.append(evrep_count1)
+            ev_array.append(eventreporting_array)
+            ev_array1.append(eventreporting_array1)
+        
+     
+        pestreporting_array = []
+        pestreporting_array1 = []
+        p_count=0
+        for y in range(2005,curryear +1):
+            pests=PestReport.objects.filter(is_version=False)
+            p_count1=0
+            for p in pests:
+                if p.publish_date != None and p.publish_date.year == y:
+                    p_count=p_count+1
+                    p_count1=p_count1+1
+            pestreporting_array.append(p_count)
+            pestreporting_array1.append(p_count1)
+            
+        pest_array.append(pestreporting_array)       
+        pest_array1.append(pestreporting_array1)       
+        datachart=''
+        datachart1=''
+        i=0
+        totyearsarray=[]
+        totyears1array=[]
+        for y in range(2005,curryear +1):
+            totyear=rep_array[0][i]+pest_array[0][i]+ev_array[0][i]+rep_array[3][i]+rep_array[2][i]+rep_array[1][i]+ev_array[1][i]+ev_array[2][i]+ev_array[3][i]+ev_array[4][i]
+            totyear1=rep_array1[0][i]+pest_array1[0][i]+ev_array1[0][i]+rep_array1[3][i]+rep_array1[2][i]+rep_array1[1][i]+ev_array1[1][i]+ev_array1[2][i]+ev_array1[3][i]+ev_array1[4][i]
+            datachart += '{type: "column", name: "'+str(y)+'", legendText: "'+str(y)+'",showInLegend: true, dataPoints:[{label: "Description of NPPO", y: '+str(rep_array[0][i])+'},	{label: "Pest reports", y: '+str(pest_array[0][i])+'},	{label: "Emergency action", y: '+str(ev_array[0][i])+'},{label: "List of regulated pests", y: '+str(rep_array[3][i])+'},{label: "Entry points", y:  '+str(rep_array[2][i])+'},{label: "Legislation: phytosanitary requirements/ restrictions/ prohibitions", y:  '+str(rep_array[1][i])+'},	{label: "Non-compliance", y:  '+str(ev_array[1][i])+'},{label: "Organizational arrangements of plant protection", y: '+str(ev_array[2][i])+'},{label: "Pest status", y:'+str(ev_array[3][i])+'},{label: "Rationale for phytosanitary requirements", y: '+str(ev_array[4][i])+'}]},'
+            datachart1 += '{type: "column", name: "'+str(y)+'", legendText: "'+str(y)+'",showInLegend: true, dataPoints:[{label: "Description of NPPO", y: '+str(rep_array1[0][i])+'},	{label: "Pest reports", y: '+str(pest_array1[0][i])+'},	{label: "Emergency action", y: '+str(ev_array1[0][i])+'},{label: "List of regulated pests", y: '+str(rep_array1[3][i])+'},{label: "Entry points", y:  '+str(rep_array1[2][i])+'},{label: "Legislation: phytosanitary requirements/ restrictions/ prohibitions", y:  '+str(rep_array1[1][i])+'},	{label: "Non-compliance", y:  '+str(ev_array1[1][i])+'},{label: "Organizational arrangements of plant protection", y: '+str(ev_array1[2][i])+'},{label: "Pest status", y:'+str(ev_array1[3][i])+'},{label: "Rationale for phytosanitary requirements", y: '+str(ev_array1[4][i])+'}]},'
+            i=i+1
+            totyearsarray.append(totyear)
+            totyears1array.append(totyear1)
+            
+        context['totyearsarray']=totyearsarray
+        context['totyears1array']=totyears1array
+       
+        context['curryear']=curryear
+        context['num_years']=num_years
+        context['num_years_range']=range(2005,curryear +1)
+        context['rep_array']=rep_array
+        context['ev_array']=ev_array
+        context['pest_array']=pest_array
+        context['rep_array1']=rep_array1
+        context['ev_array1']=ev_array1
+        context['pest_array1']=pest_array1
+            
+        context['datachart']=datachart
+        
+        
+            
+        context['datachart1']=datachart1
+        return context   
+    
+
 class CountryRegionsUsersListView(ListView):
     """   Statistic users per regions  """
     context_object_name = 'latest'
@@ -4936,6 +5537,498 @@ class CountryRegionsUsersListView(ListView):
         context['datachart5']=datachart5       
         return context
 
+class CountryRegionsUsersNeverLoggedNewListView(ListView):
+    """   Statistic users per regions that never logged in  """
+    context_object_name = 'latest'
+    model = CountryPage
+    template_name = 'countries/countries_regionsusersneverlogged_new.html'
+    queryset = CountryPage.objects.all().order_by('title')
+   
+    def get_context_data(self, **kwargs): # http://stackoverflow.com/a/15515220
+        context = super(CountryRegionsUsersNeverLoggedNewListView, self).get_context_data(**kwargs)
+        context['dategenerate']=timezone.now()
+    
+        regionCNcp = []
+        regionCNncp = []
+        regionCNterr = []
+        regionall= []
+        
+        regionOffcp = []
+        regionInfoncp = []
+        regionLocal = []
+        
+        regionEditorsInfo = []
+        regionEditorsTerr = []
+        
+        prev_year = datetime.now().year -1 
+        context['prev_year']=prev_year
+        context['tot_num_CP']=CountryPage.objects.filter(cp_ncp_t_type='CP').count()
+        context['tot_num_NCP']=CountryPage.objects.filter( cp_ncp_t_type='NCP').count()
+        context['tot_num_T']=CountryPage.objects.filter( cp_ncp_t_type='T').count()
+            
+        tot_o_count=0   
+        tot_o_2015_count=0
+        tot_e_count=0
+        tot_e_2015_count=0
+        
+        tot_i_count=0
+        tot_i_2015_count=0
+        tot_l_count=0
+        tot_l_2015_count=0
+        tot_encp_count=0
+        tot_encp_2015_count=0
+        tot_eterr_count=0
+        tot_eterr_2015_count=0
+            
+        t=''   
+        for k,v in REGIONS:
+            reg = v.lower()
+            t=t+reg+': '
+            numCNcp = []
+            countriesperregioncp=CountryPage.objects.filter(region=k,cp_ncp_t_type='CP')
+            numb_countriesperregioncp=countriesperregioncp.count()
+            numCNcp.append(reg)
+            numCNcp.append(numb_countriesperregioncp)
+            regionCNcp.append(numCNcp)
+            context['region_cp']=regionCNcp
+
+            numCNncp = []
+            countriesperregionncp=CountryPage.objects.filter(region=k,cp_ncp_t_type='NCP')
+            numb_countriesperregionncp=countriesperregionncp.count()
+            infop_count1=0
+            for c in countriesperregionncp:
+                infop_count1=infop_count1+IppcUserProfile.objects.filter(country=c.id,contact_type='3').count()
+      
+            newnum=infop_count1
+            
+            numCNncp.append(reg)
+            numCNncp.append(newnum)
+            regionCNncp.append(numCNncp)
+            context['region_ncp']=regionCNncp
+            
+            
+            numCNterr = []
+            countriesperregioterr=CountryPage.objects.filter(region=k,cp_ncp_t_type='T')
+            numb_countriesperregioterr=countriesperregioterr.count()
+            numCNterr.append(reg)
+            numCNterr.append(numb_countriesperregioterr)
+            regionCNterr.append(numCNterr)
+            context['region_terr']=regionCNterr
+            
+            
+            numAll = []
+            numAll.append(reg)
+            numAll.append(numb_countriesperregioncp+numb_countriesperregionncp)
+            regionall.append(numAll)
+            context['regions']=regionall
+
+            official = []
+            infopoint = []
+            local = []
+            editorsncp = []
+            editorsterr = []
+            
+            o_count=0
+            o_2015_count=0
+            e_count=0
+            e_2015_count=0
+            #CP
+            for c in countriesperregioncp:
+                offneverlogg=IppcUserProfile.objects.filter(country=c.id,contact_type='1')
+                editorneverlogg=IppcUserProfile.objects.filter(country=c.id,contact_type='5')
+                editorCPcount=editorneverlogg.count()
+                              
+                for o in offneverlogg:
+                    u= User.objects.get(id=o.user_id)
+                    if u.last_login.year == 1970:
+                        #print(u.last_login.year)
+                        o_count=o_count+1
+                    if u.last_login.year > 1970 and u.last_login.year!=prev_year:
+                        #print(u.last_login.year)
+                        o_2015_count=o_2015_count+1
+                for o in editorneverlogg:
+                    u= User.objects.get(id=o.user_id)
+                    if u.last_login.year == 1970:
+                        #print(u.last_login.year)
+                        e_count=e_count+1
+                    if u.last_login.year > 1970 and u.last_login.year!=prev_year:
+                        #print(u.last_login.year)
+                        e_2015_count=e_2015_count+1        
+            official.append(o_count)
+            official.append(o_2015_count)
+            official.append(e_count)
+            official.append(e_2015_count)
+            regionOffcp.append(official)   
+            context['region_off_cp']=regionOffcp
+            
+        
+  
+            tot_o_count+=o_count
+            tot_o_2015_count+=o_2015_count
+            tot_e_count+=e_count
+            tot_e_2015_count+=e_2015_count
+            
+           
+            i_count=0
+            i_2015_count=0
+            encp_count=0
+            encp_2015_count=0
+            #NCP
+            for c in countriesperregionncp:
+                infop_neverlogg=IppcUserProfile.objects.filter(country=c.id,contact_type='3')
+                
+                editorneverlogg=IppcUserProfile.objects.filter(country=c.id,contact_type='5')
+                for o in infop_neverlogg:
+                    u= User.objects.get(id=o.user_id)
+                    if u.last_login.year == 1970:
+                        i_count=i_count+1
+                    if u.last_login.year > 1970 and u.last_login.year!=prev_year:
+                        i_2015_count=i_2015_count+1
+                for o in editorneverlogg:
+                    u= User.objects.get(id=o.user_id)
+                    if u.last_login.year == 1970:
+                        encp_count=encp_count+1
+                    if u.last_login.year > 1970 and u.last_login.year!=prev_year:
+                        encp_2015_count=encp_2015_count+1           
+            infopoint.append(i_count)
+            infopoint.append(i_2015_count)
+            regionInfoncp.append(infopoint)   
+            context['region_info_ncp']=regionInfoncp
+            editorsncp.append(encp_count)
+            editorsncp.append(encp_2015_count)
+            regionEditorsInfo.append(editorsncp)   
+            context['region_editors']=regionEditorsInfo
+            
+            tot_i_count+=i_count
+            tot_i_2015_count+=i_2015_count
+            
+            tot_encp_count+=encp_count
+            tot_encp_2015_count+=encp_2015_count
+            
+            
+            l_count=0
+            l_2015_count=0
+            eterr_count=0
+            eterr_2015_count=0
+            
+          #TERR
+            for c in countriesperregioterr:
+                localp_neverlogg=IppcUserProfile.objects.filter(country=c.id,contact_type='4')
+                editorneverlogg=IppcUserProfile.objects.filter(country=c.id,contact_type='5')
+              
+                for o in localp_neverlogg:
+                    u= User.objects.get(id=o.user_id)
+                    if u.last_login.year == 1970:
+                        l_count=l_count+1
+                    if u.last_login.year > 1970 and u.last_login.year!=prev_year:
+                        l_2015_count=l_2015_count+1   
+                for o in editorneverlogg:
+                    u= User.objects.get(id=o.user_id)
+                    if u.last_login.year == 1970:
+                        t=t+ '1970 - '+ u.last_name+', '
+                        #print(u.last_login.year)
+                        eterr_count=eterr_count+1
+                    if u.last_login.year > 1970 and u.last_login.year!=prev_year:
+                        #print(u.last_login.year)
+                        t=t+ '2015 - '+ u.last_name+', '
+                        eterr_2015_count=eterr_2015_count+1           
+           
+            local.append(l_count)
+            local.append(l_2015_count)
+            regionLocal.append(local)   
+            context['region_local_terr']=regionLocal
+            editorsterr.append(eterr_count)
+            editorsterr.append(eterr_2015_count)
+            regionEditorsTerr.append(editorsterr)   
+            context['region_terr_editors']=regionEditorsTerr
+            
+            tot_l_count+=l_count
+            tot_l_2015_count+=l_2015_count
+            
+            tot_eterr_count+=eterr_count
+            tot_eterr_2015_count+=eterr_2015_count
+            
+        infop_count=0
+        t=''
+        for k,v in REGIONS:
+            countriesperregioNcp=CountryPage.objects.filter(region=k,cp_ncp_t_type='NCP')
+        
+            
+            for c in countriesperregioNcp:
+                    infop_count=infop_count+IppcUserProfile.objects.filter(country=c.id,contact_type='3').count()
+                    
+            
+     
+        context['tot_num_NCP']=CountryPage.objects.filter( cp_ncp_t_type='NCP')
+        
+        context['infop_count']=infop_count
+           
+        context['tot_o_count']=tot_o_count       
+        context['tot_o_2015_count']=tot_o_2015_count       
+        context['tot_e_count']=tot_e_count       
+        context['tot_e_2015_count']=tot_e_2015_count       
+        context['tot_i_count']=tot_i_count       
+        context['tot_i_2015_count']=tot_i_2015_count       
+        context['tot_encp_count']=tot_encp_count       
+        context['tot_encp_2015_count']=tot_encp_2015_count       
+        context['tot_l_count']=tot_l_count       
+        context['tot_l_2015_count']=tot_l_2015_count       
+        context['tot_eterr_count']=tot_eterr_count       
+        context['tot_eterr_2015_count']=tot_eterr_2015_count       
+        context['t']=t       
+         
+        
+        datachartCPnever=''
+        datachartCPnever += '{type: "stackedColumn",  color: "#ff6666",       name: "Never logged in", showInLegend: "true",  dataPoints:['
+        datachartCPnever_year=''
+        datachartCPnever_year += '{type: "stackedColumn",  color: "#ff6666",       name: "Never logged in '+str(prev_year)+'", showInLegend: "true",  dataPoints:['
+        datachartEnever=''
+        datachartEnever += '{type: "stackedColumn",  color: "#ff6666",       name: "Never logged in", showInLegend: "true",  dataPoints:['
+        datachartEnever_year=''
+        datachartEnever_year += '{type: "stackedColumn", color: "#ff6666",        name: "Never logged in '+str(prev_year)+'", showInLegend: "true",  dataPoints:['
+       
+        datachartNCPnever=''
+        datachartNCPnever += '{type: "stackedColumn", color: "#ff6666",        name: "Never logged in", showInLegend: "true",  dataPoints:['
+        datachartNCPnever_year=''
+        datachartNCPnever_year += '{type: "stackedColumn",  color: "#ff6666",       name: "Never logged in '+str(prev_year)+'", showInLegend: "true",  dataPoints:['
+        datachartNCPEnever=''
+        datachartNCPEnever += '{type: "stackedColumn",  color: "#ff6666",       name: "Never logged in", showInLegend: "true",  dataPoints:['
+        datachartNCPEnever_year=''
+        datachartNCPEnever_year += '{type: "stackedColumn",  color: "#ff6666",       name: "Never logged in '+str(prev_year)+'", showInLegend: "true",  dataPoints:['
+      
+        datachartTnever=''
+        datachartTnever += '{type: "stackedColumn",   color: "#ff6666",      name: "Never logged in", showInLegend: "true",  dataPoints:['
+        datachartTnever_year=''
+        datachartTnever_year += '{type: "stackedColumn",   color: "#ff6666",      name: "Never logged in '+str(prev_year)+'", showInLegend: "true",  dataPoints:['
+        datachartTEnever=''
+        datachartTEnever += '{type: "stackedColumn",  color: "#ff6666",       name: "Never logged in", showInLegend: "true",  dataPoints:['
+        datachartTEnever_year=''
+        datachartTEnever_year += '{type: "stackedColumn",   color: "#ff6666",      name: "Never logged in '+str(prev_year)+'", showInLegend: "true",  dataPoints:['
+		
+        datachartTnever_1 =''
+        datachartTnever_year_1=''
+        datachartTEnever_1 =''
+        datachartTEnever_year_1 =''
+	   
+        datachartCPnever_1 =''
+        datachartCPnever_year_1=''
+        datachartEnever_1 =''
+        datachartEnever_year_1 =''
+        
+        datachartNCPnever_1 =''
+        datachartNCPnever_year_1 =''
+        datachartNCPEnever_1 =''
+        datachartNCPEnever_year_1=''
+            
+		
+        for k,v in REGIONS:
+            reg = v.lower()
+            numb_countriesperregio_cp=CountryPage.objects.filter(region=k,cp_ncp_t_type='CP').count()
+       	    numb_countriesperregionncp=CountryPage.objects.filter(region=k,cp_ncp_t_type='NCP').count()
+            numb_countriesperregioterr=CountryPage.objects.filter(region=k,cp_ncp_t_type='T').count()
+         
+    	    cp=0
+            cp_currYear=0
+            cp_1=0
+            cp_currYear_1=0
+            eCPcount=0
+            cpEditor=0
+            cpEditor_currYear=0
+            cpEditor_1=0
+            cpEditor_currYear_1=0
+
+            ncp=0
+            ncp_currYear=0
+            ncp_1=0
+            ncp_currYear_1=0
+            eNCPcount=0
+            ncpEditor=0
+            ncpEditor_currYear=0
+            ncpEditor_1=0
+            ncpEditor_currYear_1=0
+			
+            terr=0
+            terr_currYear=0
+            terr_1=0
+            terr_currYear_1=0
+            eTerrCount=0
+            terrEditor=0
+            terrEditor_currYear=0
+            terrEditor_1=0
+            terrEditor_currYear_1=0
+		
+           
+			
+            
+           #-------------------------------CP----------------------------------------
+            cp=regionOffcp[k-1][0]*100/numb_countriesperregio_cp
+            cp_currYear=regionOffcp[k-1][1]*100/numb_countriesperregio_cp
+            cp_1=(numb_countriesperregio_cp-regionOffcp[k-1][0])*100/numb_countriesperregio_cp
+            cp_currYear_1=(numb_countriesperregio_cp-regionOffcp[k-1][1])*100/numb_countriesperregio_cp
+            
+            for c in CountryPage.objects.filter(region=k,cp_ncp_t_type='CP'):
+                eCPcount=eCPcount+IppcUserProfile.objects.filter(country=c.id,contact_type='5').count()
+            if editorCPcount>0:
+                cpEditor=regionOffcp[k-1][2]*100/eCPcount
+                cpEditor_currYear=regionOffcp[k-1][3]*100/eCPcount
+                cpEditor_1=(eCPcount-regionOffcp[k-1][2])*100/eCPcount
+                cpEditor_currYear_1=(eCPcount-regionOffcp[k-1][3])*100/eCPcount	
+           #-------------------------------NCP----------------------------------------
+            for c in CountryPage.objects.filter(region=k,cp_ncp_t_type='NCP'):
+                eNCPcount=eNCPcount+IppcUserProfile.objects.filter(country=c.id,contact_type='5').count()
+                print()
+                print(str(reg)+': '+str(eNCPcount))
+            if numb_countriesperregionncp>0:
+                ncp=regionInfoncp[k-1][0]*100/numb_countriesperregionncp
+                ncp_currYear=regionInfoncp[k-1][1]*100/numb_countriesperregionncp
+                ncp_1=(numb_countriesperregionncp-regionInfoncp[k-1][0])*100/numb_countriesperregionncp
+                ncp_currYear_1=(numb_countriesperregionncp-regionInfoncp[k-1][1])*100/numb_countriesperregionncp
+                if eNCPcount>0:
+                    ncpEditor=regionEditorsInfo[k-1][0]*100/eNCPcount
+                    ncpEditor_currYear=regionEditorsInfo[k-1][1]*100/eNCPcount
+                    ncpEditor_1=(eNCPcount-regionEditorsInfo[k-1][0])*100/eNCPcount
+                    ncpEditor_currYear_1=(eNCPcount-regionEditorsInfo[k-1][1])*100/eNCPcount
+
+			#-----------------------------TERR------------------------------------------  
+            for c in CountryPage.objects.filter(region=k,cp_ncp_t_type='T'):
+                eTerrCount=eTerrCount+IppcUserProfile.objects.filter(country=c.id,contact_type='5').count()
+            if numb_countriesperregioterr>0:
+                terr=regionLocal[k-1][0]*100/numb_countriesperregioterr
+                terr_currYear=regionLocal[k-1][1]*100/numb_countriesperregioterr
+                terr_1=(numb_countriesperregioterr-regionLocal[k-1][0])*100/numb_countriesperregioterr
+                terr_currYear_1=(numb_countriesperregioterr-regionLocal[k-1][1])*100/numb_countriesperregioterr
+                if eTerrCount>0:
+                    terrEditor=regionEditorsTerr[k-1][0]*100/eTerrCount
+                    terrEditor_currYear=regionEditorsTerr[k-1][1]*100/eTerrCount		
+                    terrEditor_1=(eTerrCount-regionEditorsTerr[k-1][0])*100/eTerrCount
+                    terrEditor_currYear_1=(eTerrCount-regionEditorsTerr[k-1][1])*100/eTerrCount
+         #------------------------------------------------------------------------------------------ 
+		
+        
+            datachartCPnever += '{  y: '+str(cp)+' , label: "'+str(reg)+'"},'
+            datachartCPnever_year += '{  y: '+str(cp_currYear)+' , label: "'+str(reg)+'"},'
+            datachartEnever += '{  y: '+str(cpEditor)+' , label: "'+str(reg)+'"},'
+            datachartEnever_year += '{  y: '+str(cpEditor_currYear)+' , label: "'+str(reg)+'"},'
+			
+            datachartNCPnever += '{  y: '+str(ncp)+' , label: "'+str(reg)+'"},'
+            datachartNCPnever_year += '{  y: '+str(ncp_currYear)+' , label: "'+str(reg)+'"},'
+            datachartNCPEnever += '{  y: '+str(ncpEditor)+' , label: "'+str(reg)+'"},'
+            datachartNCPEnever_year += '{  y: '+str(ncpEditor_currYear)+' , label: "'+str(reg)+'"},'
+          
+            datachartTnever += '{  y: '+str(terr)+' , label: "'+str(reg)+'"},'
+            datachartTnever_year += '{  y: '+str(terr_currYear)+' , label: "'+str(reg)+'"},'
+            datachartTEnever += '{  y: '+str(terrEditor)+' , label: "'+str(reg)+'"},'
+            datachartTEnever_year += '{  y: '+str(terrEditor_currYear)+' , label: "'+str(reg)+'"},'
+     # ------------------------------------------------------------------------------------------------------
+		
+                
+               
+            
+              
+            datachartCPnever_1+= '{  y: '+str(cp_1)+' , label: "'+str(reg)+'"},'
+            datachartCPnever_year_1+= '{  y: '+str(cp_currYear_1)+' , label: "'+str(reg)+'"},'
+            datachartEnever_1 += '{  y: '+str(cpEditor_1)+' , label: "'+str(reg)+'"},'
+            datachartEnever_year_1 += '{  y: '+str(cpEditor_currYear_1)+' , label: "'+str(reg)+'"},'
+			
+            datachartNCPnever_1 += '{  y: '+str(ncp_1)+' , label: "'+str(reg)+'"},'
+            datachartNCPnever_year_1 += '{  y: '+str(ncp_currYear_1)+' , label: "'+str(reg)+'"},'
+            datachartNCPEnever_1 += '{  y: '+str(ncpEditor_1)+' , label: "'+str(reg)+'"},'
+            datachartNCPEnever_year_1 += '{  y: '+str(ncpEditor_currYear_1)+' , label: "'+str(reg)+'"},'
+			
+            datachartTnever_1 += '{  y: '+str(terr_1)+' , label: "'+str(reg)+'"},'
+            datachartTnever_year_1 += '{  y: '+str(terr_currYear_1)+' , label: "'+str(reg)+'"},'
+            datachartTEnever_1 += '{  y: '+str(terrEditor_1)+' , label: "'+str(reg)+'"},'
+            datachartTEnever_year_1 += '{  y: '+str(terrEditor_currYear_1)+' , label: "'+str(reg)+'"},'
+
+			
+	datachartCPnever += ' ]},'
+        datachartCPnever_year += ' ]},'
+        datachartEnever += ' ]},'
+        datachartEnever_year += ' ]},'
+		
+	datachartNCPnever += ' ]},'
+        datachartNCPnever_year += ' ]},'
+        datachartNCPEnever += ' ]},'
+        datachartNCPEnever_year += ' ]},'
+		
+	datachartTnever += ' ]},'
+        datachartTnever_year += ' ]},'
+        datachartTEnever += ' ]},'
+        datachartTEnever_year += ' ]},'
+		
+		
+	datachartTnever_1 += ' ]},'
+        datachartTnever_year_1 += ' ]},'
+        datachartTEnever_1 += ' ]},'
+        datachartTEnever_year_1 += ' ]},'
+	   
+        datachartCPnever_1 += ' ]},'
+        datachartCPnever_year_1 += ' ]},'
+        datachartEnever_1 += ' ]},'
+        datachartEnever_year_1 += ' ]},'
+        
+        datachartNCPnever_1 += ' ]},'
+        datachartNCPnever_year_1 += ' ]},'
+        datachartNCPEnever_1 += ' ]},'
+        datachartNCPEnever_year_1 += ' ]},'
+            
+			
+        datachartCPnever += '{type: "stackedColumn",   color:   "#00cc66" ,   name: "Logged in", showInLegend: "true",  dataPoints:['
+        datachartCPnever_year += '{type: "stackedColumn",   color:   "#00cc66" ,   name: "Logged in in '+str(prev_year)+'", showInLegend: "true",  dataPoints:['
+        datachartEnever += '{type: "stackedColumn",   color:   "#00cc66" ,   name: "Logged in", showInLegend: "true",  dataPoints:['
+        datachartEnever_year += '{type: "stackedColumn",   color:   "#00cc66" ,   name: "Logged in in '+str(prev_year)+'", showInLegend: "true",  dataPoints:['
+		
+		
+        datachartNCPnever += '{type: "stackedColumn",    color:   "#00cc66" ,  name: "Logged in", showInLegend: "true",  dataPoints:['
+        datachartNCPnever_year += '{type: "stackedColumn",  color:   "#00cc66" ,    name: "Logged in in '+str(prev_year)+'", showInLegend: "true",  dataPoints:['
+        datachartNCPEnever += '{type: "stackedColumn", color:   "#00cc66" ,     name: "Logged in", showInLegend: "true",  dataPoints:['
+        datachartNCPEnever_year += '{type: "stackedColumn",   color:   "#00cc66" ,   name: "Logged in in '+str(prev_year)+'", showInLegend: "true",  dataPoints:['
+        
+            
+       
+        datachartTnever += '{type: "stackedColumn",  color:   "#00cc66" ,    name: "Logged in", showInLegend: "true",  dataPoints:['
+        datachartTnever_year += '{type: "stackedColumn",  color:   "#00cc66" ,    name: "Logged in in '+str(prev_year)+'", showInLegend: "true",  dataPoints:['
+        datachartTEnever += '{type: "stackedColumn",  color:   "#00cc66" ,    name: "Logged in", showInLegend: "true",  dataPoints:['
+        datachartTEnever_year += '{type: "stackedColumn", color:   "#00cc66" ,     name: "Logged in in '+str(prev_year)+'", showInLegend: "true",  dataPoints:['
+		
+		
+	datachartCPnever += datachartCPnever_1
+        datachartCPnever_year += datachartCPnever_year_1
+        datachartEnever += datachartEnever_1
+        datachartEnever_year+= datachartEnever_year_1
+		
+	datachartNCPnever += datachartNCPnever_1
+        datachartNCPnever_year+= datachartNCPnever_year_1
+        datachartNCPEnever += datachartNCPEnever_1
+        datachartNCPEnever_year += datachartNCPEnever_year_1
+		
+	datachartTnever += datachartTnever_1
+        datachartTnever_year += datachartTnever_year_1
+        datachartTEnever += datachartTEnever_1
+        datachartTEnever_year += datachartTEnever_year_1
+       
+            
+       
+   	  
+           
+        context['datachartCPnever']=datachartCPnever      
+        context['datachartCPnever_year']=datachartCPnever_year       
+        context['datachartEnever']=datachartEnever       
+        context['datachartEnever_year']=datachartEnever_year       
+
+        context['datachartNCPnever']=datachartNCPnever
+        context['datachartNCPnever_year']=datachartNCPnever_year       
+        context['datachartNCPEnever']=datachartNCPEnever       
+        context['datachartNCPEnever_year']=datachartNCPEnever_year  
+
+
+        context['datachartTnever']=datachartTnever
+        context['datachartTnever_year']=datachartTnever_year       
+        context['datachartTEnever']=datachartTEnever       
+        context['datachartTEnever_year']=datachartTEnever_year  
+
+
+        return context
 class CountryRegionsUsersNeverLoggedListView(ListView):
     """   Statistic users per regions that never logged in  """
     context_object_name = 'latest'
@@ -5287,6 +6380,50 @@ class CountryRegionsUsersNeverLoggedListView(ListView):
         return context
 
 
+class CountryStatsChangeInCPsListView(ListView):
+    """    Changes in CPs/Local/Infopoints  """
+    context_object_name = 'latest'
+    model = CountryPage
+    template_name = 'countries/countries_changes_cp.html'
+    queryset = CountryPage.objects.all().order_by('title')
+   
+    def get_context_data(self, **kwargs): # http://stackoverflow.com/a/15515220
+        context = super(CountryStatsChangeInCPsListView, self).get_context_data(**kwargs)
+        context['dategenerate']=timezone.now()
+        
+        prevyear=timezone.now().year-1
+     
+        months=[1,2,3,4,5,6,7,8,9,10,11,12]
+        months_days=[31,28,31,30,31,30,31,31,30,31,30,31]
+        
+        i=0
+        ocp_change=[]
+        for m in months:
+            mm=[]
+            datex=datetime(prevyear,m, 01,00,01,00)
+            datey=datetime(prevyear,m, months_days[i],23,59,00)
+            ocp=OCPHistory.objects.filter(start_date__gte=datex,start_date__lte=datey).count()
+            rppo=PartnersContactPointHistory.objects.filter(start_date__gte=datex,start_date__lte=datey).count()
+            ocpEd=CnEditorsHistory.objects.filter(start_date__gte=datex,start_date__lte=datey).count()
+            rppoEd=PartnersEditorHistory.objects.filter(start_date__gte=datex,start_date__lte=datey).count()
+            
+            mm.append(m)
+            mm.append(ocp+rppo)
+            mm.append(ocpEd+rppoEd)
+            ocp_change.append(mm)
+            i+=1
+        datachart=''
+        datachart1=''
+        for  xx in ocp_change:
+            datachart+=' { x: new Date('+str(prevyear)+', '+str(int(xx[0])-1)+', 1), y: '+str(xx[1])+' },'
+            datachart1+=' { x: new Date('+str(prevyear)+', '+str(int(xx[0])-1)+', 1), y: '+str(xx[2])+' },'
+  
+       
+        context['prevyear']=prevyear
+        context['datachart1']=datachart1
+        context['datachart']=datachart
+        context['ocp_change']=ocp_change
+        return context
 
 class CountryTotalUsersListView(ListView):
     """    Statistic status of ippc contact points,editors,users  """
@@ -5320,7 +6457,12 @@ class CountryTotalUsersListView(ListView):
 
         u_percentage=0
         if u_date1>0:
-            u_precentage=u_date2*100/u_date1
+            u_percentage=u_date2*100/u_date1
+            
+        print('--------------------------------')    
+        print(u_date1)    
+        print(u_date2)    
+        print(u_percentage)  
         context['u_date1']=u_date1
         context['u_date2']=u_date2
         context['u_percentage']=u_percentage
@@ -5539,7 +6681,7 @@ def split(arr, size):
          arr   = arr[size:]
      arrs.append(arr)
      return arrs
- 
+
 @login_required
 @permission_required('ippc.add_emailutilitymessage', login_url="/accounts/login/")
 def email_send(request):
@@ -5572,7 +6714,7 @@ def email_send(request):
            user_obj=User.objects.get(id=u.user_id)
            cn = get_object_or_404(CountryPage,id=u.country_id)
            users_u.append(str(cn))
-           users_u.append(' ('+(unicode(u.first_name))+' '+(unicode(u.last_name))+') ')
+           users_u.append(' ('+(unicode(u.first_name))+' '+(unicode(u.last_name))+' - '+str(user_obj.email)+') ')
            users_u.append(str(user_obj.email))
            users_all.append(users_u)
            
@@ -5629,7 +6771,7 @@ def email_send(request):
                     #print('$%$%$%$%$%$%$%$%$%$')
                     #print(user_obj.id)
                     userippc = get_object_or_404(IppcUserProfile, user_id=user_obj.id)
-                    print(userippc)
+                    #print(userippc)
                     
                 
                 
@@ -5743,6 +6885,286 @@ def email_send(request):
     return render_to_response('emailutility/emailutility_send.html', {'form': form  ,'f_form': f_form,'emailgroups':g_set,'emailcp':cp_set,'emailcp2':cp_set0,'emaile2':emaile2},#'emailcpu':cpu_set,'emailcpi':cpi_set,'emailcpl':cpl_set
         context_instance=RequestContext(request))
 
+
+class MassEmailUtilityMessageListView(ListView):
+    """    MassEmailUtilityMessage List view """
+    context_object_name = 'latest'
+    model = MassEmailUtilityMessage
+    date_field = 'date'
+    template_name = 'emailutility/massemailutility_list.html'
+    queryset = MassEmailUtilityMessage.objects.all().order_by('-date', 'subject')
+   
+       
+class MassEmailUtilityMessageDetailView(DetailView):
+    """ MassEmailUtilityMessage detail page """
+    model = MassEmailUtilityMessage
+    context_object_name = 'massemailmessage'
+    template_name = 'emailutility/massemailutility_detail.html'
+    queryset = MassEmailUtilityMessage.objects.filter()
+
+    def get_context_data(self, **kwargs): # http://stackoverflow.com/a/15515220
+        context = super(MassEmailUtilityMessageDetailView, self).get_context_data(**kwargs)
+        mail = get_object_or_404(MassEmailUtilityMessage, id=self.kwargs['pk'])
+        
+        aaa=''
+        emailto=[]
+        sentto=[]
+        not_sentto=[]
+        if mail.emailto != None and mail.emailto!='':
+            emailto=mail.emailto.split(",") 
+        if mail.sentto != None and mail.sentto!='':
+            sentto=mail.sentto.split(",") 
+        if mail.not_sentto != None and mail.not_sentto!='':
+            not_sentto=mail.not_sentto.split(",") 
+        for m in emailto:
+            if m in not_sentto:
+                aaa+='<span style="color: red;">'+m+'</span>,  '
+            if m in  sentto:   
+                aaa+='<span style="color: green;">'+m+'</span>,  '
+        context['aaa']=aaa
+        print(aaa)
+        
+        return context
+ 
+def massemailutility_to_send(request):
+    
+    emailutility_to_send_done_dir = MEDIA_ROOT+'/massemailutility_sent'
+    log_report =  open(os.path.join(emailutility_to_send_done_dir, "massemailutility_sent_"+timezone.now().strftime('%Y%m%d%H%M%S')+".log"), 'wb')
+    log_report.write("List of sent emails:\n\n")
+    
+    text_=''
+    emails_to_send = MassEmailUtilityMessage.objects.filter(sent=0)
+    for email in emails_to_send :
+        print(email.subject)
+        log_report.write("["+ timezone.now().strftime('%Y%m%d%H%M%S')+" - email id ="+email.subject+" [ID:"+str(email.id)+"] \n")
+        email_not_sentto=email.not_sentto
+        email_sent=email.sentto
+        emailfrom=email.emailfrom
+        subject=email.subject
+        messagebody=email.messagebody
+       
+
+        email_not_sentto1=email_not_sentto.split(",") 
+        email_sent1=''  
+        
+        print('--------------------------------------- NO SENT:-----------------------------')
+        print(email_not_sentto1)
+        print('-----------------sent---------------------------------------------')
+        print(email_sent1)
+        print('--------------------------------------------------------------')
+        eee=''
+        if email_sent!= None and email_sent!='':
+             aaa=email_sent
+             email_sent1=email_sent 
+
+    
+        
+        for y in range(0,len(email_not_sentto1)):
+            if y > 5:
+                eee+=email_not_sentto1[y]+','
+            else:
+               message = mail.EmailMessage(subject,messagebody,emailfrom,[email_not_sentto1[y]], ['paola.sentinelli@fao.org'])#/**/
+               fileset= MassEmailUtilityMessageFile.objects.filter(emailmessage_id=email.id)
+               for f in fileset:
+                   pf=MEDIA_ROOT+str(f.file)
+                   message.attach_file(pf) 
+               message.content_subtype = "html"
+               sent =message.send()
+               
+               if sent:
+                   email_sent1+=email_not_sentto1[y]+','
+                   text_+='sent to: '+email_not_sentto1[y]+'<br>'
+                   log_report.write("sent to: "+email_not_sentto1[y]+":\n")
+               else:
+                   eee+=email_not_sentto1[y]+','
+                  
+        email.not_sentto = eee
+        email.sentto = email_sent1
+        text_+='Sent email:'+subject+'<br>'
+        print('aaaaaaaaaaaaaaaaaaaaaaaaaaaaaa')
+        print(len(email_not_sentto1))
+        print(email_not_sentto1)
+        
+        if email_not_sentto1 ==  [u''] or email_not_sentto1 == '' :
+            email.sent = True
+            messages=[]
+            bodytext='Please note that the mass email message has been sent out to all recipients: https://www.ippc.int/massemailutility/'+str(email.id)
+            message = mail.EmailMessage('Notification mass email sent: '+str(subject),bodytext,emailfrom,[email.author.email], ['paola.sentinelli@fao.org'])
+            message.content_subtype = "html"
+            messages.append(message) 
+            connection = mail.get_connection()
+            connection.open()
+            sent=connection.send_messages(messages)
+            connection.close()
+        email.save()
+                        
+                
+        
+    log_report.close()     
+    context = {'aa':text_}
+    response = render(request, "emailutility/sendemail_system.html", context)
+    return response
+
+
+@login_required
+@permission_required('ippc.add_massemailutilitymessage', login_url="/accounts/login/")
+def massemail_send(request):
+    """ Create  mass email to send """
+    form = MassEmailUtilityMessageForm(request.POST)
+    g_set=[]
+    for g in Group.objects.filter():
+        users = g.user_set.all()
+        users_all=[]
+        users_all.append(str(g))
+        users_all.append(str(g.id))
+        for u in users:
+           users_u=[]
+           user_obj=User.objects.get(username=u)
+           if user_obj.is_active:
+            userippc = get_object_or_404(IppcUserProfile, user_id=user_obj.id)
+            users_u.append((unicode(userippc.first_name)))
+            users_u.append((unicode(userippc.last_name)))
+            users_u.append((user_obj.email))
+            users_all.append(users_u)
+        g_set.append(users_all)
+    
+    users_all=[]
+    cp_set0=[]
+    users_all=[]
+    cp=IppcUserProfile.objects.filter(contact_type=1)
+    cpname = get_object_or_404(ContactType,id=1)
+    for u in cp:
+           users_u=[]
+           user_obj=User.objects.get(id=u.user_id)
+           cn = get_object_or_404(CountryPage,id=u.country_id)
+           users_u.append(str(cn))
+           users_u.append(' ('+(unicode(u.first_name))+' '+(unicode(u.last_name))+' - '+str(user_obj.email)+') ')
+           users_u.append(str(user_obj.email))
+           users_all.append(users_u)
+           
+    j=0
+    users_all_2=[]
+    k=j+1
+    users_all_2.append(str(cpname))
+    users_all_2.append(str(j))
+    j=j+1
+    for x in users_all:
+         users_all_2.append(x)
+    cp_set0.append(users_all_2)    
+   
+    cp_set=[]      
+    for h in range(2,5):
+        users_all=[]
+        cp=IppcUserProfile.objects.filter(contact_type=h)
+        cpname = get_object_or_404(ContactType,id=h)
+        users_all.append(str(cpname))
+        users_all.append(str(h))
+        cp=IppcUserProfile.objects.filter(contact_type=h)
+        for u in cp:
+               users_u=[]
+               user_obj=User.objects.get(id=u.user_id)
+               cn = get_object_or_404(CountryPage,id=u.country_id)
+               users_u.append(str(cn))
+               users_u.append(' ('+(unicode(u.first_name))+' '+(unicode(u.last_name))+') ')
+               users_u.append(str(user_obj.email))
+               users_all.append(users_u)
+
+        cp_set.append(users_all)
+   
+    
+    emaile2=[]
+    users_all_e=[]
+    for g in Group.objects.filter():
+       
+        if g.name == 'Country editor':
+            users = g.user_set.all()
+           
+            for u in users:
+                users_u=[]
+                
+                user_obj=User.objects.get(username=u)
+                if user_obj.is_active:
+                    userippc = get_object_or_404(IppcUserProfile, user_id=user_obj.id)
+                    users_u.append(' ('+(unicode(userippc.first_name))+' '+(unicode(userippc.last_name))+') ')
+                    users_u.append(str(user_obj.email))
+                    users_all_e.append(users_u)
+    users_all_e2= split(users_all_e,30)   
+    j=0
+    users_all_e_2=[]
+    k=j+1
+    users_all_e_2.append("Country editors")
+    users_all_e_2.append(str(j))
+    j=j+1
+    for x in users_all_e:
+        users_all_e_2.append(x)
+
+    emaile2.append(users_all_e_2)
+            
+   
+           
+    if request.method == "POST":
+        f_form =MassEmailUtilityMessageFileFormSet(request.POST, request.FILES)
+        if form.is_valid() and f_form.is_valid():
+            emailto_all1 = str(request.POST['emailto'])
+            emailto_all2=emailto_all1[3:-4]
+            emailto_all=[emailto_all2]
+            for u in request.POST.getlist('users'):
+                user_obj=User.objects.get(id=u)
+                user_email=user_obj.email
+                emailto_all.append(str(user_email))
+            for g in Group.objects.filter():
+                for uemail in request.POST.getlist('user_'+str(g.id)+'_0'):
+                    emailto_all.append(str(uemail))
+            for h in range(2,5):
+                  for uemail in request.POST.getlist('usercp_'+str(h)+'_0'):
+                     emailto_all.append(str(uemail))
+            for h in range(0,6):
+                  for uemail in request.POST.getlist('usercp1_'+str(h)+'_0'):
+                     emailto_all.append(str(uemail)) 
+            for h in range(0,7):
+                  for uemail in request.POST.getlist('usere1_'+str(h)+'_0'):
+                     emailto_all.append(str(uemail))                        
+
+            new_emailmessage = form.save(commit=False)
+            new_emailmessage.author = request.user
+            new_emailmessage.date=timezone.now()
+    
+            emailto_all_last=''
+            for ee in emailto_all:
+                print(ee)
+                emailto_all_last=emailto_all_last+ee+','
+            new_emailmessage.emailto=emailto_all_last
+            new_emailmessage.not_sentto=emailto_all_last
+            new_emailmessage.sent=0
+            #save file to message in db
+            f_form.instance = new_emailmessage
+            f_form.save()
+            messages=[]
+            message = mail.EmailMessage('COPY email: '+str(request.POST['subject']),request.POST['messagebody'],request.POST['emailfrom'],[request.user.email], ['paola.sentinelli@fao.org'])
+            fileset= MassEmailUtilityMessageFile.objects.filter(emailmessage_id=new_emailmessage.id)
+            for f in fileset:
+                pf=MEDIA_ROOT+str(f.file)
+                message.attach_file(pf) 
+            message.content_subtype = "html"
+            messages.append(message) 
+            connection = mail.get_connection()
+            connection.open()
+            sent=connection.send_messages(messages)
+            connection.close()
+            form.save()
+           
+            info(request, _(" Mass Email stored, it would be sent out in the next hours."))
+            return redirect("mass-email-detail",new_emailmessage.id)
+        else:
+             return render_to_response('emailutility/massemailutility_send.html', {'form': form,'f_form': f_form,'emailgroups':g_set,'emailcp':cp_set,'emailcp2':cp_set0,'emaile2':emaile2},
+             context_instance=RequestContext(request))
+    else:
+        form = MassEmailUtilityMessageForm(instance=MassEmailUtilityMessage())
+        f_form =MassEmailUtilityMessageFileFormSet()
+      
+    return render_to_response('emailutility/massemailutility_send.html', {'form': form  ,'f_form': f_form,'emailgroups':g_set,'emailcp':cp_set,'emailcp2':cp_set0,'emaile2':emaile2},#'emailcpu':cpu_set,'emailcpi':cpi_set,'emailcpl':cpl_set
+        context_instance=RequestContext(request))
+
    
 #
 class ContactUsEmailMessageListView(ListView):
@@ -5792,7 +7214,7 @@ def contactus_email_send(request):
                  emails_a='Dorota.buzon@fao.org'
                  subj1='Contact IPPC: National Reporting Obligations (NROs) - '
              elif request.POST['contact_us_type']== "5":
-                 emails_a='dave.nowell@fao.org'
+                 emails_a='Craig.Fedchock@fao.org'
                  subj1='Contact IPPC: News / Communications - '
              elif request.POST['contact_us_type']== "6":
                  emails_a='Shane.Sela@fao.org'
@@ -5865,7 +7287,7 @@ class AdvancesSearchCNListView(ListView):
         if self.kwargs['type'] == 'pestreport':
             context['type_label'] = 'Official pest report (Art. VIII.1a)'
             context['link_to_item'] = 'pest-report-detail'
-            context['items']= PestReport.objects.filter(is_version=False)#PestReport.objects.all()
+            context['items']= PestReport.objects.filter(is_version=False,status=CONTENT_STATUS_PUBLISHED)#PestReport.objects.all()
             context['counttotal'] =context['items'].count() 
            
             cns= CountryPage.objects.all()

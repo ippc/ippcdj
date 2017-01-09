@@ -184,8 +184,8 @@ class CountryPage(Page):
     
 class OCPHistory(models.Model):
     countrypage = models.ForeignKey(CountryPage)
-    contact_point = models.OneToOneField("auth.User", 
-            verbose_name=_("Country Chief Contact Point"), blank=True, null=True)
+   # contact_point = models.OneToOneField("auth.User",             verbose_name=_("Country Chief Contact Point"), blank=True, null=True)
+    contact_point = models.ForeignKey("auth.User",             verbose_name=_("Country Chief Contact Point"), blank=True, null=True)
     start_date = models.DateTimeField(_("Nomination start date"), blank=True, null=True, editable=True)
     end_date = models.DateTimeField(_("Nomination end date"), blank=True, null=True, editable=True)
     
@@ -1691,7 +1691,7 @@ class EmailUtilityMessage(models.Model):
     messagebody = models.TextField(_("Message: "),max_length=500,blank=True, null=True)
     date = models.DateTimeField('date')
     sent =  models.BooleanField()
-    #notsentto = models.CharField(_("notsent: "),max_length=250)
+    
     #User.__unicode__ = user_unicode_patch
     users = models.ManyToManyField(User,
             verbose_name=_("Send to single users:"),help_text=_("CTRL/Command+mouseclick for more than 1 selection"),
@@ -1705,6 +1705,39 @@ class EmailUtilityMessage(models.Model):
     
 class EmailUtilityMessageFile(models.Model):
     emailmessage = models.ForeignKey(EmailUtilityMessage)
+    file = models.FileField(max_length=255,blank=True, help_text='10 MB maximum file size.', verbose_name='Attach a file', upload_to='files/email/', validators=[validate_file_extension])
+
+    def __unicode__(self):  
+        return self.file.name  
+    def name(self):
+        return self.file.name
+    def filename(self):
+        return os.path.basename(self.file.name) 
+    def fileextension(self):
+        return os.path.splitext(self.file.name)[1]
+
+class MassEmailUtilityMessage(models.Model):
+    emailfrom = models.CharField(_("From: "),max_length=200,default=_("ippc@fao.org"),help_text=_("The email will be sent from ippc@fao.org, if you want you can specify an other sender email address."))
+    emailto = models.TextField(_("Send to users that are not registered in IPPC: "),default=_("ippc@fao.org"),help_text=_("Please leave ippc@fao.org for the form to work, and enter email addresses of addition recipients, separated by comma. Example: ippc@fao.org, someone@somewhere.tld, etc@etc.tld"))
+    subject = models.CharField(_("Subject: "),max_length=200)
+    messagebody = models.TextField(_("Message: "),max_length=500,blank=True, null=True)
+    date = models.DateTimeField('date')
+    sent =  models.BooleanField()
+    not_sentto = models.TextField(_("notsent: "),blank=True, null=True)
+    sentto = models.TextField(_("sent: "),blank=True, null=True)
+    author = models.ForeignKey(User, related_name="author")
+     #User.__unicode__ = user_unicode_patch
+    users = models.ManyToManyField(User,
+            verbose_name=_("Send to single users:"),help_text=_("CTRL/Command+mouseclick for more than 1 selection"),
+            related_name='massemailusers', blank=True, null=True)
+    groups = models.ManyToManyField(Group,
+            verbose_name=_("Send to groups:"),help_text=_("CTRL/Command+mouseclick for more than 1 selection"),
+            related_name='massemailgroups', blank=True, null=True)
+    def __unicode__(self):  
+         return self.subject 
+    
+class MassEmailUtilityMessageFile(models.Model):
+    emailmessage = models.ForeignKey(MassEmailUtilityMessage)
     file = models.FileField(max_length=255,blank=True, help_text='10 MB maximum file size.', verbose_name='Attach a file', upload_to='files/email/', validators=[validate_file_extension])
 
     def __unicode__(self):  
