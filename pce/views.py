@@ -119,8 +119,14 @@ def check_and_addUser(firstname,lastname,email,grp,num,country,user_country_slug
     g1=Group.objects.get(name=grp_name)
 
     user_obj=User.objects.filter(email=email)
+    username_obj=User.objects.filter(username=slugify(firstname+"."+lastname).lower())
     if user_obj.count()>0:
         user=user_obj[0]
+        c=user.groups.filter(name=grp_name).count()
+        if c==0:
+            user.groups.add(g1)
+    elif  username_obj.count()>0:
+        user=username_obj[0]
         c=user.groups.filter(name=grp_name).count()
         if c==0:
             user.groups.add(g1)
@@ -9133,6 +9139,7 @@ def stakeholders_create(request, country,sessionid=None,module=None):
 
     return render_to_response('pce/stakeholders.html',{'context': 'Edit','form': form,'form2': form2,'can_edit':can_edit,'version_number':pceversion.version_number,'tot_percentage':get_tot_percentage(sessionid),'module':module,'sessionid':pceversion.id, 'm_percentage':percentage_module,  'is_st_filled':is_st_filled,'is_pa_filled':is_pa_filled,'is_sa_filled':is_sa_filled,    'is_lf_filled':is_lf_filled, },
         context_instance=RequestContext(request))
+
 
         
 @login_required
