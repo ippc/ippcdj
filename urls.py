@@ -31,15 +31,17 @@ CountryNewsListView,CountryNewsDetailView,countrynews_create,countrynews_edit,\
 PartnersNewsDetailView,partners_news_create,partners_news_edit,\
 PollListView,PollResultsView,PollDetailView,vote_poll,poll_edit,poll_create,\
 email_send,EmailUtilityMessageDetailView,EmailUtilityMessageListView,ReminderMessageDetailView,ReminderMessageListView,\
+MassEmailUtilityMessageDetailView,MassEmailUtilityMessageListView,massemail_send,massemailutility_to_send,\
 DraftProtocolDetailView,  draftprotocol_create, draftprotocol_edit,draftprotocol_compilecomments,\
 draftprotocol_comment_create,draftprotocol_comment_edit,PublicationLibraryView,commenta,contactPointExtractor,\
-CountryRegionsPercentageListView,CountryStatsreportsListView,CountryStatsTotalreportsListView,CountryRegionsUsersListView,CountryTotalUsersListView,CountryRegionsUsersNeverLoggedListView,\
+CountryRegionsPercentageListView,CountryStatsreportsListView,CountryStatsTotalreportsListView,CountryRegionsUsersListView,CountryTotalUsersListView,CountryStatsChangeInCPsListView,\
+CountryRegionsUsersNeverLoggedListView,CountryRegionsUsersNeverLoggedNewListView,CountryStatsTotalreports1ListView,CountryStatsSingleReportsListView,CountryStatsTotalReportsIncreaseListView,\
 vote_answer_up ,vote_answer_down,reporting_trough_eppo,reminder_to_cn,\
 reporting_obligation_validate,event_reporting_validate,pest_report_validate,\
 QAQuestionListView, QAQuestionDetailView, QAQuestionAnswersView,question_create,answer_create,\
 FAQsListView, faqcategory_edit,faqcategory_create,faq_edit,faq_create,FAQsItemDetailView,FAQsCategoryDetailView,\
 ContactUsEmailMessageListView,   ContactUsEmailMessageDetailView , contactus_email_send,UserAutoRegistrationListView,auto_register,auto_register_approve,auto_register_delete,\
-IRSSActivityListView,IRSSActivityDetailView,irss_activity_create,irss_activity_edit   
+IRSSActivityListView,IRSSActivityDetailView,irss_activity_create,irss_activity_edit   ,CountryStatisticsTotalNroByYearListView
 
 #QuestionListView, QuestionDetailView, QuestionAnswersView,question_create,question_edit,answer_edit      
 #reporting_obligation_translate,
@@ -129,8 +131,7 @@ urlpatterns = patterns("",
    #---------EPPO REPORTING------------------------------------
     url(r'^epporeporting/', reporting_trough_eppo, name='reporting_trough_eppo'),
 
-   #----------------------------------
-   #--------- Reminder system ------------------------------------
+    #--------- Reminder system ------------------------------------
     url(r'^reminder/(?P<id>\d+)/$', reminder_to_cn, name='reminder_to_cn'),
     url(r'^remindermessages/all/$',view=ReminderMessageListView.as_view(), name='remindermessages-list'),
     url(r'^remindermessages/(?P<pk>\d+)/$',ReminderMessageDetailView.as_view(), name='remindermessages-detail'),
@@ -225,7 +226,11 @@ urlpatterns = patterns("",
    
     url(r'^countries/statistics/regionspercentage/$',
         view=CountryRegionsPercentageListView.as_view(),
-        name='regionspercentage'),
+        name='regionspercentage'),   
+   
+    url(r'^countries/statistics/totalnrobyyear/$',
+        view=CountryStatisticsTotalNroByYearListView.as_view(),
+        name='totalnrobyyear'),
     url(r'^countries/statistics/reports/$',
         view=CountryStatsreportsListView.as_view(),
         name='statsreports'),
@@ -238,9 +243,27 @@ urlpatterns = patterns("",
     url(r'^countries/statistics/total-users/$',
         view=CountryTotalUsersListView.as_view(),
         name='totalusers'),
+        
     url(r'^countries/statistics/region-users-neverlogged/$',
-        view=CountryRegionsUsersNeverLoggedListView.as_view(),
-        name='regionusers'),    
+        view=CountryRegionsUsersNeverLoggedNewListView.as_view(),
+        name='neverlogged'),    
+    #url(r'^countries/statistics/region-users-neverlogged/$',
+    #    view=CountryRegionsUsersNeverLoggedListView.as_view(),
+    #    name='regionusers'),    
+     url(r'^countries/statistics/total-reports1/$',
+        view=CountryStatsTotalreports1ListView.as_view(),
+        name='regionusers'),
+        url(r'^countries/statistics/totalreporting-increase/$',
+        view=CountryStatsTotalReportsIncreaseListView.as_view(),
+        name='regionusers'),
+        url(r'^countries/statistics/change-in-cp/$',
+        view=CountryStatsChangeInCPsListView.as_view(),
+        name='regionusers'),   
+            
+      url(r'^countries/statistics/singlereporting/$',
+        view=CountryStatsSingleReportsListView.as_view(),
+        name='regionspercentage'),   
+    
     #-------------------------------------------#    
     #POLL:
     
@@ -273,7 +296,14 @@ urlpatterns = patterns("",
     url(r'^emailutility/send/$',
         view=email_send,
         name='email-send'),
-     #------- CONTACT US EMAIL--------------------------------------#
+    #--------------------------------------#
+    # MASS EMAIL:    
+    url(r'^massemailutility/all/$',view=MassEmailUtilityMessageListView.as_view(), name='mass-email-list'),
+    url(r'^massemailutility/(?P<pk>\d+)/$',MassEmailUtilityMessageDetailView.as_view(), name='mass-email-detail'),
+    url(r'^massemailutility/send/$',view=massemail_send, name='mass-email-send'),
+    url(r'^massemailutility_to_send/sendout/$', massemailutility_to_send, name='massemailutility-to-send'),
+     
+    #------- CONTACT US EMAIL--------------------------------------#
     url(r'^contactusemail/all/$', view=ContactUsEmailMessageListView.as_view(),  name='contactus-email-list'),
     url(r'^contactusemail/(?P<pk>\d+)/$',ContactUsEmailMessageDetailView.as_view(), name='contactus-email-detail'),
     url(r'^contact/$',  view=contactus_email_send,    name='contactus-email-send'),    
