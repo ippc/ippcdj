@@ -5009,9 +5009,9 @@ class CountryStatsSingleReportsListView(ListView):
             for c in countriesperregioncp:
                 pests= PestReport.objects.filter(country=c.id,is_version=False)
                 for p in pests:
-                    if e.publish_date != None and e.publish_date.year == curryear:
+                    if p.publish_date != None and p.publish_date.year == curryear:
                          cNewP+=1
-                    if e.modify_date != None and e.modify_date.year == curryear:
+                    if p.modify_date != None and p.modify_date.year == curryear:
                         cUpP+=1
                 countP+=pests.count()
                 if pests.count()>0:
