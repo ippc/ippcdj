@@ -5822,7 +5822,7 @@ class CountryRegionsUsersNeverLoggedNewListView(ListView):
             
 		
         for k,v in REGIONS:
-            reg = v.lower()
+            reg = str(ugettext((v)))#v.lower()
             numb_countriesperregio_cp=CountryPage.objects.filter(region=k,cp_ncp_t_type='CP').count()
        	    numb_countriesperregionncp=CountryPage.objects.filter(region=k,cp_ncp_t_type='NCP').count()
             numb_countriesperregioterr=CountryPage.objects.filter(region=k,cp_ncp_t_type='T').count()
