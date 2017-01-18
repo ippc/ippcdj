@@ -58,9 +58,10 @@
 				contentFormatter: function (e) {
 					var content = "<strong>"+e.entries[0].dataPoint.label+"</strong>:<br/>";
 					
-					for (var y= 2005;y <={% autoescape off %}{{curryear}}{% endautoescape %} ;y++) {
-					
+					for (var y=2005; y<={% autoescape off %}{{curryear}}{% endautoescape %}; y++) {
+                                                alert(y);
 						for (var i = 0; i < e.entries.length; i++) {
+                                                      alert(e.entries[i].dataSeries.name);
 							if (e.entries[i].dataSeries.name == y){
 								content += "<span style='color:"+e.entries[i].dataSeries.color +";'>"+e.entries[i].dataSeries.name + "<span>  :<strong>  " + e.entries[i].dataPoint.y + "</strong>";
 								content += "<br/>";
@@ -216,19 +217,19 @@ chart1.render();
 </tr>
 <tr>
     <td>List of regulated pests</td>
-    {% for object in rep_array.3 %}
-       <td>{{object }} </td>
-    {% endfor %}
-</tr>
-<tr>
-    <td>Entry points</td>
     {% for object in rep_array.2 %}
        <td>{{object }} </td>
     {% endfor %}
 </tr>
 <tr>
-    <td>Legislation: phytosanitary requirements/ restrictions/ prohibitions</td>
+    <td>Entry points</td>
     {% for object in rep_array.1 %}
+       <td>{{object }} </td>
+    {% endfor %}
+</tr>
+<tr>
+    <td>Legislation: phytosanitary requirements/ restrictions/ prohibitions</td>
+    {% for object in rep_array.3 %}
        <td>{{object }} </td>
     {% endfor %}
 </tr>
@@ -314,19 +315,19 @@ chart1.render();
 </tr>
 <tr>
     <td>List of regulated pests</td>
-    {% for object in rep_array1.3 %}
-       <td>{{object }} </td>
-    {% endfor %}
-</tr>
-<tr>
-    <td>Entry points</td>
     {% for object in rep_array1.2 %}
        <td>{{object }} </td>
     {% endfor %}
 </tr>
 <tr>
-    <td>Legislation: phytosanitary requirements/ restrictions/ prohibitions</td>
+    <td>Entry points</td>
     {% for object in rep_array1.1 %}
+       <td>{{object }} </td>
+    {% endfor %}
+</tr>
+<tr>
+    <td>Legislation: phytosanitary requirements/ restrictions/ prohibitions</td>
+    {% for object in rep_array1.3 %}
        <td>{{object }} </td>
     {% endfor %}
 </tr>

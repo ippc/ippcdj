@@ -152,19 +152,19 @@
 </tr>
 <tr>
     <td>List of regulated pests</td>
-    {% for object in rep_array.3 %}
-       <td>{{object }} </td>
-    {% endfor %}
-</tr>
-<tr>
-    <td>Entry points</td>
     {% for object in rep_array.2 %}
        <td>{{object }} </td>
     {% endfor %}
 </tr>
 <tr>
-    <td>Legislation: phytosanitary requirements/ restrictions/ prohibitions</td>
+    <td>Entry points</td>
     {% for object in rep_array.1 %}
+       <td>{{object }} </td>
+    {% endfor %}
+</tr>
+<tr>
+    <td>Legislation: phytosanitary requirements/ restrictions/ prohibitions</td>
+    {% for object in rep_array.3 %}
        <td>{{object }} </td>
     {% endfor %}
 </tr>

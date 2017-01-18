@@ -101,22 +101,7 @@
 </tr>
 <tr>
     <td>List of regulated pests</td>
-        {% for object in rep_array.3 %}
-          <td> {{object }} </td>
-     {% endfor %}
-    {% for object in rep_array1.3 %}
-      {%if  forloop.counter == 1 %}
-           
-                <td> {% autoescape off %} {{object }}  {% endautoescape %}  </td>
-          
-      {% else %}
-           <td> {% autoescape off %} {{object }}  {% endautoescape %}  </td>
-      {% endif%}
-    {% endfor %}
-</tr>
-<tr>
-    <td>Entry points</td>
-     {% for object in rep_array.2 %}
+        {% for object in rep_array.2 %}
           <td> {{object }} </td>
      {% endfor %}
     {% for object in rep_array1.2 %}
@@ -130,11 +115,26 @@
     {% endfor %}
 </tr>
 <tr>
-    <td>Legislation: phytosanitary requirements/ restrictions/ prohibitions</td>
+    <td>Entry points</td>
      {% for object in rep_array.1 %}
           <td> {{object }} </td>
      {% endfor %}
     {% for object in rep_array1.1 %}
+      {%if  forloop.counter == 1 %}
+           
+                <td> {% autoescape off %} {{object }}  {% endautoescape %}  </td>
+          
+      {% else %}
+           <td> {% autoescape off %} {{object }}  {% endautoescape %}  </td>
+      {% endif%}
+    {% endfor %}
+</tr>
+<tr>
+    <td>Legislation: phytosanitary requirements/ restrictions/ prohibitions</td>
+     {% for object in rep_array.3 %}
+          <td> {{object }} </td>
+     {% endfor %}
+    {% for object in rep_array1.3 %}
       {%if  forloop.counter == 1 %}
            
                 <td> {% autoescape off %} {{object }}  {% endautoescape %}  </td>
