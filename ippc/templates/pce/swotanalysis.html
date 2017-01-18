@@ -104,9 +104,9 @@
 
                                         {% for form in form1 %}   
                                         <tr class="inline {{ form1.prefix }}"> 
-                                            {% for f in form %}
+                                              {% for f in form %}
                                             {% if not f.label == 'Swotanalysis' and not f.label == 'Id'%}
-                                            {% if f.label == 'Strengths' or f.label == 'Fortalezas' or f.label == 'Ã�Â¡Ã�Â¸Ã�Â»Ã‘Å’Ã�Â½Ã‘â€¹Ã�Âµ Ã‘ï¿½Ã‘â€šÃ�Â¾Ã‘â‚¬Ã�Â¾Ã�Â½Ã‘â€¹' or f.label == 'Atouts'  %}
+                                            {% if f.label == 'Strengths' or f.label == 'Fortalezas' or f.name == 'strengths' or f.label == 'Atouts'  %}
                                             <td>{{f}} </td>
                                             <td style="background:#ffc; "> <b>{% trans "Weakness" %} 1:</b>{{weakeness.w1}} </td>
                                             {%else%}
@@ -125,7 +125,7 @@
                                         <tr class="inline {{ form2.prefix }}"> 
                                             {% for f in form %}
                                             {% if not f.label == 'Swotanalysis' and not f.label == 'Id'%}
-                                            {% if f.label == 'Strengths' or f.label == 'Fortalezas' or f.label == 'Ã�Â¡Ã�Â¸Ã�Â»Ã‘Å’Ã�Â½Ã‘â€¹Ã�Âµ Ã‘ï¿½Ã‘â€šÃ�Â¾Ã‘â‚¬Ã�Â¾Ã�Â½Ã‘â€¹' or f.label == 'Atouts' %}
+                                            {% if f.label == 'Strengths' or f.label == 'Fortalezas' or f.name == 'strengths' or f.label == 'Atouts'  %}
                                             <td>{{f}} </td>
                                             <td style="background:#ffc; "> <b>{% trans "Weakness" %} 2:</b>{{weakeness.w2}} </td>
                                             {%else%}
@@ -144,7 +144,7 @@
                                         <tr class="inline {{ form3.prefix }}"> 
                                             {% for f in form %}
                                             {% if not f.label == 'Swotanalysis' and not f.label == 'Id'%}
-                                            {% if f.label == 'Strengths' or f.label == 'Fortalezas' or f.label == 'Ã�Â¡Ã�Â¸Ã�Â»Ã‘Å’Ã�Â½Ã‘â€¹Ã�Âµ Ã‘ï¿½Ã‘â€šÃ�Â¾Ã‘â‚¬Ã�Â¾Ã�Â½Ã‘â€¹' or f.label == 'Atouts'  %}
+                                         {% if f.label == 'Strengths' or f.label == 'Fortalezas' or f.name == 'strengths' or f.label == 'Atouts'  %}
                                             <td>{{f}} </td>
                                             <td style="background:#ffc; "> <b>{% trans "Weakness" %} 3:</b>{{weakeness.w3}} </td>
                                             {%else%}
@@ -163,8 +163,8 @@
                                         <tr class="inline {{ form4.prefix }}"> 
                                             {% for f in form %}
                                             {% if not f.label == 'Swotanalysis' and not f.label == 'Id'%}
-                                            {% if f.label == 'Strengths' or f.label == 'Fortalezas' or f.label == 'Ã�Â¡Ã�Â¸Ã�Â»Ã‘Å’Ã�Â½Ã‘â€¹Ã�Âµ Ã‘ï¿½Ã‘â€šÃ�Â¾Ã‘â‚¬Ã�Â¾Ã�Â½Ã‘â€¹' or f.label == 'Atouts'  %}
-                                            <td>{{f}} </td>
+                                                                                    {% if f.label == 'Strengths' or f.label == 'Fortalezas' or f.name == 'strengths' or f.label == 'Atouts'  %}
+                    <td>{{f}} </td>
                                             <td style="background:#ffc; "> <b>{% trans "Weakness" %} 4:</b>{{weakeness.w4}} </td>
                                             {%else%}
                                             <td>{{f}} </td>
@@ -182,8 +182,8 @@
                                         <tr class="inline {{ form5.prefix }}"> 
                                             {% for f in form %}
                                             {% if not f.label == 'Swotanalysis' and not f.label == 'Id'%}
-                                            {% if f.label == 'Strengths' or f.label == 'Fortalezas' or f.label == 'Ã�Â¡Ã�Â¸Ã�Â»Ã‘Å’Ã�Â½Ã‘â€¹Ã�Âµ Ã‘ï¿½Ã‘â€šÃ�Â¾Ã‘â‚¬Ã�Â¾Ã�Â½Ã‘â€¹' or f.label == 'Atouts'  %}
-                                            <td>{{f}} </td>
+                                                                                        {% if f.label == 'Strengths' or f.label == 'Fortalezas' or f.name == 'strengths' or f.label == 'Atouts'  %}
+<td>{{f}} </td>
                                             <td style="background:#ffc; "> <b>{% trans "Weakness" %} 5:</b>{{weakeness.w5}} </td>
                                             {%else%}
                                             <td>{{f}} </td>
