@@ -3312,9 +3312,9 @@ class PartnersView(TemplateView):
         context['titleparentslug'] = titleparent
         #context['pageslug'] =  page.slug
         
-        context['publications'] = PartnersPublication.objects.filter(partners__partner_slug=self.kwargs['partner'])
-        context['news'] = PartnersNews.objects.filter(partners__partner_slug=self.kwargs['partner'])
-        context['websites'] = PartnersWebsite.objects.filter(partners__partner_slug=self.kwargs['partner'])
+        context['publications'] = PartnersPublication.objects.filter(partners__partner_slug=self.kwargs['partner'],status=2)
+        context['news'] = PartnersNews.objects.filter(partners__partner_slug=self.kwargs['partner'],status=2)
+        context['websites'] = PartnersWebsite.objects.filter(partners__partner_slug=self.kwargs['partner'],status=2)
        
         return context
     
