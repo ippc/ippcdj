@@ -39,6 +39,24 @@
 <h1>
 {% trans "Detailed statistics for each NRO in " %}{{curryear}} <br>
   </h1> 
+<script type="text/javascript" charset="utf-8">
+$(function() {
+      $('#sel_year').change(function() {
+            window.location.href = $(this).val()+'/';
+      });
+});
+</script>
+  <p>
+ <b>Select year for statistics:</b><br>
+  <form action="" >
+<select data-placeholder="Go to year..." tabindex="3"  id="sel_year" >
+ <option value="">{% trans "Go to year ... " %}</option>
+  {% for i in selyear_range %}
+     <option  {% if curryear == i %}selected{% endif %} value="/countries/statistics/singlereporting/{{i}}">{{i}}</option>    
+ {% endfor %}
+</select>
+</form>
+ </p>
 <p>{% trans "The tables below show the detailed breakdown by region of NRO reports made available by countries on the IPP regarding the following National Reporting Obligations" %}:
 <ul><li>{% trans "Description of the NPPO" %};</li>
 <li>{% trans "Pest reports" %};</li>

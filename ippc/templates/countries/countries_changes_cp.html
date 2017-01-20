@@ -33,7 +33,13 @@
 <p class="pull-right">
   <a href="javascript:history.go(-1)">{% trans "« Go back" %}</a>
 </p>
-    
+    <script type="text/javascript" charset="utf-8">
+$(function() {
+      $('#sel_year').change(function() {
+            window.location.href = $(this).val()+'/';
+      });
+});
+</script>
    <script type="text/javascript">
   window.onload = function () {
     var chart = new CanvasJS.Chart("chartContainer",
@@ -108,7 +114,17 @@ chart.render();
 <h1> 
 <h1>Changes among IPPC Contact Points over {{prevyear}}. <br>
   </h1> 
-<p></p>
+  <p>
+ <b>Select year for statistics:</b><br>
+  <form action="" >
+<select data-placeholder="Go to year..." tabindex="3"  id="sel_year" >
+ <option value="">{% trans "Go to year ... " %}</option>
+  {% for i in selyear_range %}
+     <option  {% if prevyear == i %}selected{% endif %} value="/countries/statistics/change-in-cp/{{i}}">{{i}}</option>    
+ {% endfor %}
+</select>
+</form>
+ </p>
 
 <b>{% trans "Date generated" %}: </b>  {{ dategenerate|date:"d M Y, H:m" }}</p><br>
 

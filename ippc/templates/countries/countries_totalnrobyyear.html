@@ -59,9 +59,9 @@
 					var content = "<strong>"+e.entries[0].dataPoint.label+"</strong>:<br/>";
 					
 					for (var y=2005; y<={% autoescape off %}{{curryear}}{% endautoescape %}; y++) {
-                                                alert(y);
+                                                //alert(y);
 						for (var i = 0; i < e.entries.length; i++) {
-                                                      alert(e.entries[i].dataSeries.name);
+                                                      //alert(e.entries[i].dataSeries.name);
 							if (e.entries[i].dataSeries.name == y){
 								content += "<span style='color:"+e.entries[i].dataSeries.color +";'>"+e.entries[i].dataSeries.name + "<span>  :<strong>  " + e.entries[i].dataPoint.y + "</strong>";
 								content += "<br/>";
@@ -161,6 +161,13 @@ var chart1 = new CanvasJS.Chart("chartContainer1",
 chart1.render();
 }
 </script>
+<script type="text/javascript" charset="utf-8">
+$(function() {
+      $('#sel_year').change(function() {
+            window.location.href = $(this).val()+'/';
+      });
+});
+</script>
 <script src='{% static "/static/canvasjs/canvasjs.min.js" %}'></script>
 
 
@@ -171,8 +178,18 @@ chart1.render();
     
 <h1>
 {% trans "Summary statistics for National Reporting Obligations" %} <br>
-  <small class="normal"> 2005 - {{curryear}} </small>
-  </h1> 
+  <small class="normal"> 2005 - {{curryear}} </small></h1> 
+  <p>
+ <b>Select year for statistics:</b><br>
+  <form action="" >
+<select data-placeholder="Go to year..." tabindex="3"  id="sel_year" >
+ <option value="">{% trans "Go to year ... " %}</option>
+  {% for i in selyear_range %}
+     <option  {% if curryear == i %}selected{% endif %} value="/countries/statistics/totalnrobyyear/{{i}}">{{i}}</option>    
+ {% endfor %}
+</select>
+</form>
+ </p>
 <p>While contracting parties did start reporting in 2005, the level of reporting was relatively low. However, as more contracting parties were trained in understanding their NROs and how to meeting NROs, so the cumulative number of reports made through the IPP has grown. Overall, the number of NRO reports, both considered as public or bilateral, made available by countries on the IPP has been steadily increasing for the last {{num_years}} years.
 <br>
 

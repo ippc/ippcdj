@@ -32,7 +32,13 @@
 
 <p class="pull-right">
     <a href="javascript:history.go(-1)">{% trans "« Go back" %}</a>
-</p>
+</p><script type="text/javascript" charset="utf-8">
+$(function() {
+      $('#sel_year').change(function() {
+            window.location.href = $(this).val()+'/';
+      });
+});
+</script>
 <script type="text/javascript">
    window.onload = function () {
 	
@@ -493,6 +499,17 @@
 <h1>
     <small class="normal">{% trans "Activity of IPPC Contact Points and IPP Editors on the IPPC" %} </small>
 </h1> 
+  <p>
+ <b>Select year for statistics:</b><br>
+  <form action="" >
+<select data-placeholder="Go to year..." tabindex="3"  id="sel_year" >
+ <option value="">{% trans "Go to year ... " %}</option>
+  {% for i in selyear_range %}
+     <option  {% if prev_year == i %}selected{% endif %} value="/countries/statistics/region-users-neverlogged/{{i}}">{{i}}</option>    
+ {% endfor %}
+</select>
+</form>
+ </p>
 <p>The tables and Graphs below summarize by region the number of IPPC Contact Points and IPP editors that never logged in.
     <br>
 

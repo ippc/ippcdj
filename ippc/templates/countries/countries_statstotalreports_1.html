@@ -32,7 +32,13 @@
 
 <p class="pull-right">
   <a href="javascript:history.go(-1)">{% trans "« Go back" %}</a>
-</p>
+</p><script type="text/javascript" charset="utf-8">
+$(function() {
+      $('#sel_year').change(function() {
+            window.location.href = $(this).val()+'/';
+      });
+});
+</script>
 <script type="text/javascript">
       window.onload = function () {
     var chart = new CanvasJS.Chart("chartContainer0",
@@ -113,6 +119,18 @@
 <h1>
 {% trans "Summary statistics for National Reporting Obligations: NROs only for  " %} {{prevyear}}  
   </h1> 
+    <p>
+ <b>Select year for statistics:</b><br>
+  <form action="" >
+<select data-placeholder="Go to year..." tabindex="3"  id="sel_year" >
+ <option value="">{% trans "Go to year ... " %}</option>
+  {% for i in selyear_range %}
+     <option  {% if prevyear == i %}selected{% endif %} value="/countries/statistics/total-reports1/{{i}}">{{i}}</option>    
+ {% endfor %}
+</select>
+</form>
+ </p>
+
 <p>The past year has proved to be a relatively active year for providing and maintaining NROs.</p>
 <br>
 
