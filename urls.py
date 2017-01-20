@@ -224,45 +224,34 @@ urlpatterns = patterns("",
     
     #-------------------STATS------------------------    
    
-    url(r'^countries/statistics/regionspercentage/$',
-        view=CountryRegionsPercentageListView.as_view(),
-        name='regionspercentage'),   
+    url(r'^countries/statistics/regionspercentage/$',view=CountryRegionsPercentageListView.as_view(), name='regionspercentage'),   
    
-    url(r'^countries/statistics/totalnrobyyear/$',
-        view=CountryStatisticsTotalNroByYearListView.as_view(),
-        name='totalnrobyyear'),
-    url(r'^countries/statistics/reports/$',
-        view=CountryStatsreportsListView.as_view(),
-        name='statsreports'),
-    url(r'^countries/statistics/total-reports/$',
-        view=CountryStatsTotalreportsListView.as_view(),
-        name='statstotalreports'),  
-    url(r'^countries/statistics/region-users/$',
-        view=CountryRegionsUsersListView.as_view(),
-        name='regionusers'),
-    url(r'^countries/statistics/total-users/$',
-        view=CountryTotalUsersListView.as_view(),
-        name='totalusers'),
+    url(r'^countries/statistics/reports/$',        view=CountryStatsreportsListView.as_view(), name='statsreports'),
+    url(r'^countries/statistics/total-reports/$', view=CountryStatsTotalreportsListView.as_view(),   name='statstotalreports'),  
+    url(r'^countries/statistics/region-users/$',    view=CountryRegionsUsersListView.as_view(),  name='regionusers'),
+    url(r'^countries/statistics/total-users/$',  view=CountryTotalUsersListView.as_view(),  name='totalusers'),
         
-    url(r'^countries/statistics/region-users-neverlogged/$',
-        view=CountryRegionsUsersNeverLoggedNewListView.as_view(),
-        name='neverlogged'),    
     #url(r'^countries/statistics/region-users-neverlogged/$',
     #    view=CountryRegionsUsersNeverLoggedListView.as_view(),
     #    name='regionusers'),    
-     url(r'^countries/statistics/total-reports1/$',
-        view=CountryStatsTotalreports1ListView.as_view(),
-        name='regionusers'),
-        url(r'^countries/statistics/totalreporting-increase/$',
-        view=CountryStatsTotalReportsIncreaseListView.as_view(),
-        name='regionusers'),
-        url(r'^countries/statistics/change-in-cp/$',
-        view=CountryStatsChangeInCPsListView.as_view(),
-        name='regionusers'),   
-            
-      url(r'^countries/statistics/singlereporting/$',
-        view=CountryStatsSingleReportsListView.as_view(),
-        name='regionspercentage'),   
+    url(r'^countries/statistics/totalnrobyyear/(?P<year>\d+)/$',  view=CountryStatisticsTotalNroByYearListView.as_view(),   name='totalnrobyyear'),
+    url(r'^countries/statistics/totalnrobyyear/$',  view=CountryStatisticsTotalNroByYearListView.as_view(),   name='totalnrobyyear'),
+   
+    
+    url(r'^countries/statistics/region-users-neverlogged/(?P<year>\d+)/$',    view=CountryRegionsUsersNeverLoggedNewListView.as_view(),       name='neverlogged'),  ###  
+    url(r'^countries/statistics/region-users-neverlogged/$',    view=CountryRegionsUsersNeverLoggedNewListView.as_view(),       name='neverlogged'),    ####
+    
+    
+    url(r'^countries/statistics/total-reports1/(?P<year>\d+)/$',      view=CountryStatsTotalreports1ListView.as_view(),     name='regionusers'),###
+    url(r'^countries/statistics/total-reports1/$',      view=CountryStatsTotalreports1ListView.as_view(),     name='regionusers'),###
+    
+    url(r'^countries/statistics/totalreporting-increase/(?P<year>\d+)/$',     view=CountryStatsTotalReportsIncreaseListView.as_view(),     name='regionusers'),###
+    url(r'^countries/statistics/totalreporting-increase/$',     view=CountryStatsTotalReportsIncreaseListView.as_view(),     name='regionusers'),###
+  
+    url(r'^countries/statistics/change-in-cp/(?P<year>\d+)/$',   view=CountryStatsChangeInCPsListView.as_view(),   name='regionusers'), ###  
+    url(r'^countries/statistics/change-in-cp/$',   view=CountryStatsChangeInCPsListView.as_view(),   name='regionusers'),   ###
+    url(r'^countries/statistics/singlereporting/(?P<year>\d+)/$',    view=CountryStatsSingleReportsListView.as_view(), name='regionspercentage'),   ##
+    url(r'^countries/statistics/singlereporting/$',    view=CountryStatsSingleReportsListView.as_view(), name='regionspercentage'),   ##
     
     #-------------------------------------------#    
     #POLL:
