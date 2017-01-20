@@ -77,7 +77,7 @@
                 theme.event.tape.height = 5; // px
                 theme.event.track.height = theme.event.tape.height + 6;
 
-                var d = SimileAjax.DateTime.parseIso8601DateTime("2015-06");
+                var d = SimileAjax.DateTime.parseIso8601DateTime("2016-12");
                 var bandInfos = [
 
                     Timeline.createBandInfo({
@@ -177,8 +177,58 @@
         <div id="tl" class="timeline-default" style="height: 250px; border: 1px solid #aaa;"></div>
         <div><small><a href="/iyph/chronology/list/">See complete list of chronology of events</a></small></div>
         <br>
+       
         <!--iframe src='https://cdn.knightlab.com/libs/timeline/latest/embed/index.html?source=1xkSrj3zU7qTaqG42FGczSbOEng1gYwWxaAVMj_lHTrU&font=Bevan-PotanoSans&maptype=toner&lang=en&width=600&height=500' width='600' height='500' frameborder='0'></iframe-->
-{% if tag or category or year or month or author %}
+      <div><ul id="regionsmap1"> 
+        <li id="africa1"><a><span><b><u>Africa:</u></b><br><br>
+                    <img width="38px" src="/static/img/iyph-stc/kenneth_msiska.jpg"/><br>
+                    Mr Kenneth Kajarayekha MSISKA<br>
+                    msiska12@yahoo.co.uk</span></a></li>
+                    
+        <li id="asia1"><a><span><b><u>Asia:</u></b> <br><br>
+                    <img width="38px" src="/static/img/iyph-stc/akiko_nagano.jpg"/><br>Ms Akiko NAGANO<br>
+                    akiko_nagano720@maff.go.jp</span></a></li>
+                    
+        <li id="europe1"><a><span><b><u>Europe:</u></b><br><br>
+                    
+                    <img width="38px" src="/static/img/iyph-stc/ralf_lopian.jpg"/><br>
+                    Mr Ralf LOPIAN<br>
+                    ralf.lopian@mmm.fi Europe</span></a></li>
+                    
+        <li id="latinamericacaribbean1"><a><span><b><u>Latin America and Caribbean:</u></b><br><br>
+                    <img width="38px" src="/static/img/iyph-stc/alvaro_sepulveda.jpg"/><br>
+                    Mr &Aacute;lvaro SEP&Uacute;LVEDA LUQUE<br>
+                    alvaro.sepulveda@sag.gob.cl<br><br>
+                    <img width="38px" src="/static/img/iyph-stc/ryan_amselm.jpg"/><br>
+                    Mr Ryan ANSELM<br>anselmr@dominica.gov.dm</span></a></li>
+                    
+        <li id="neareast1"><a><span><b><u>Near East:</u></b><br><br>
+                            <img width="38px" src="/static/img/iyph-stc/anwar_gamel.jpg"/><br>
+                            Mr Gamil Anwar Mohammed RAMADHAN<br>
+                            anwar.gamel@mail.ru <br><br>
+                            <img width="38px" src="/static/img/iyph-stc/pauline_eid.jpg"/><br>
+                            Ms Pauline EID<br>
+                            peid@agriculture.gov.lb<br><br>
+                            <img width="38px" src="/static/img/iyph-stc/shaza_omar.jpg"/><br>
+                            Ms Shaza OMAR<br>
+                            shaza.roshdy@gmail.com</span></a></li>
+        <li id="northamerica1"><a>
+                <span>
+                    <b><u>North America</u></b><br><br>
+                    <img width="38px" src="/static/img/iyph-stc/alonso_suazo.jpg"/><br>
+                    Mr Alonso SUAZO<br>
+                    alonso.suazo@nappo.org
+                </span></a></li>
+        <li id="southwestpacific1"><a><span><b><u>South West Pacific:</u></b><br><br>
+                   <img width="38px" src="/static/img/iyph-stc/Viliami_Kami.jpg"/><br>
+                   Mr Viliami Kami<br>
+                    maf-ento@kalianet.to</span></a></li>
+    </ul>
+        </div> 
+        
+        
+        
+        {% if tag or category or year or month or author %}
     {% block iyph_post_list_filterinfo %}
     <p>
     {% if tag %}
