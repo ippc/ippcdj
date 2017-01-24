@@ -6692,7 +6692,7 @@ def module8_edit(request, country, id=None,sessionid=None, template_name='pce/mo
     
     if id:
         module8 = get_object_or_404(Module8, pk=id)
-        if pceversion.status==1 and  canEdit(sessionid,pceversion.country,user,9):
+        if pceversion.status==1 and  canEdit(sessionid,pceversion.country,user,8):
             can_edit=1
             m_percentage=get_percentage_module_filled(8,sessionid)
             tot_percentage=get_tot_percentage(sessionid)
@@ -6746,7 +6746,7 @@ def module8_edit(request, country, id=None,sessionid=None, template_name='pce/mo
         form45 = Module8WeaknessesFormSet(instance=module8)
      
     return render_to_response(template_name, {
-        'context':'Edit','M8_17': M8_17.objects.filter(),'form': form, 'form3': form3,'form18': form18,'form30': form30,'form45': form45,'sessionid':sessionid,'can_edit':can_edit,'m_percentage':m_percentage,'tot_percentage':tot_percentage,'is_st_filled':is_st_filled,'is_pa_filled':is_pa_filled,'is_sa_filled':is_sa_filled,'is_lf_filled':is_lf_filled,'st_id':st_id,'pa_id':pa_id,'sa_id':sa_id,'lf_id':lf_id,'module':8,
+        'context':'Edit','id':id,'M8_17': M8_17.objects.filter(),'form': form, 'form3': form3,'form18': form18,'form30': form30,'form45': form45,'sessionid':sessionid,'can_edit':can_edit,'m_percentage':m_percentage,'tot_percentage':tot_percentage,'is_st_filled':is_st_filled,'is_pa_filled':is_pa_filled,'is_sa_filled':is_sa_filled,'is_lf_filled':is_lf_filled,'st_id':st_id,'pa_id':pa_id,'sa_id':sa_id,'lf_id':lf_id,'module':8,
     }, context_instance=RequestContext(request))
 
 #MODULE 9
