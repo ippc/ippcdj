@@ -31,7 +31,7 @@ CountryNewsListView,CountryNewsDetailView,countrynews_create,countrynews_edit,\
 PartnersNewsDetailView,partners_news_create,partners_news_edit,\
 PollListView,PollResultsView,PollDetailView,vote_poll,poll_edit,poll_create,\
 email_send,EmailUtilityMessageDetailView,EmailUtilityMessageListView,ReminderMessageDetailView,ReminderMessageListView,\
-MassEmailUtilityMessageDetailView,MassEmailUtilityMessageListView,massemail_send,massemailutility_to_send,\
+MassEmailUtilityMessageDetailView,MassEmailUtilityMessageListView,massemail_send,massemailutility_to_send,massemailutility_setstatus,\
 DraftProtocolDetailView,  draftprotocol_create, draftprotocol_edit,draftprotocol_compilecomments,\
 draftprotocol_comment_create,draftprotocol_comment_edit,PublicationLibraryView,commenta,contactPointExtractor,\
 CountryRegionsPercentageListView,CountryStatsreportsListView,CountryStatsTotalreportsListView,CountryRegionsUsersListView,CountryTotalUsersListView,CountryStatsChangeInCPsListView,\
@@ -290,6 +290,7 @@ urlpatterns = patterns("",
     url(r'^massemailutility/all/$',view=MassEmailUtilityMessageListView.as_view(), name='mass-email-list'),
     url(r'^massemailutility/(?P<pk>\d+)/$',MassEmailUtilityMessageDetailView.as_view(), name='mass-email-detail'),
     url(r'^massemailutility/send/$',view=massemail_send, name='mass-email-send'),
+    url(r'^massemailutility/status/(?P<pk>\d+)/(?P<status>\d+)/$',view=massemailutility_setstatus, name='mass-email-status'),
     url(r'^massemailutility_to_send/sendout/$', massemailutility_to_send, name='massemailutility-to-send'),
      
     #------- CONTACT US EMAIL--------------------------------------#
