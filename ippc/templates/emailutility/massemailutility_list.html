@@ -44,6 +44,7 @@
       <th>{% trans "Subject" %}</th>
       <th>{% trans "Sent date" %}</th>
       <th><i class="icon-envelope"></i>  {% trans "Sent" %}</th>
+      <th>Status</th>
     </tr>
   </thead>
   <tbody>
@@ -57,6 +58,8 @@
             {% else %}
             <i class="icon-exclamation-sign"> </i> not sent - waiting to be sent
             {% endif %}
+      </td>
+      <td>  {% if object.status == 1 %}<span class="alert-success"><i class="icon-share"> </i> To be sent</span>{% elif object.status == 0 %}<span class="alert-danger"><i class="icon-edit"> </i> DRAFT</span>{% endif %}
       </td>
     </tr>
     {% endfor %}

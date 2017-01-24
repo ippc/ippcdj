@@ -15,6 +15,7 @@
   <p><a href="/massemailutility/all/">« {% trans "Back to" %} {% trans "Mass Email message" %}</a></p>
       {% if perms.ippc.add_massemailutilitymessage or user.is_superuser%}
         <a class="btn btn-small btn-info" href="/massemailutility/send"><i class="icon-edit icon-white"></i> Create New Mass Email Message</a>
+        
     {% endif %}
   </div>
 {% endblock local_nav %}
@@ -29,13 +30,35 @@
 <dt>{% trans "Sent date" %}</dt>
 <dd>{{ sometime }}  {{massemailmessage.date|date:"d-m-Y"}} at {{massemailmessage.date|date:"H:m:s"}} CET</dd>
 
-<dt>{% trans "Sent satus" %}</dt>
+<dt>{% trans "Sent status" %}</dt>
 <dd>{% if massemailmessage.sent %}
 <i class="icon-envelope"></i> <i class="icon-ok"></i> 
 {% else %}
 <i class="icon-envelope"></i> <i class="icon-exclamation-sign"> </i> not sent - waiting to be sent out
 {% endif %}
 
+</dd>
+<dt>{% trans "Message status" %}</dt>
+<dd>{% if massemailmessage.sent %}
+        &#160; {% if massemailmessage.status == 0 %}
+    <span class="alert-danger"><i class="icon-edit"></i> DRAFT</span>
+  {% elif massemailmessage.status == 1 %}
+    <span class="alert-success"><i class="icon-share"></i> TO BE SENT</span>
+          {% endif %}
+        {% else %}
+    {% if massemailmessage.status == 0 %}
+    <span class="alert-danger"><i class="icon-edit"></i> DRAFT</span>
+        {% if perms.ippc.add_massemailutilitymessage or user.is_superuser%}
+            <a class="btn btn-small btn-success" href="/massemailutility/status/{{massemailmessage.id}}/1"><i class="icon-share icon-white"></i> {% trans "click to set as TO BE SENT" %}</a>
+        {% endif %}
+    {% elif massemailmessage.status == 1 %}
+    <span class="alert-success"><i class="icon-share"></i> TO BE SENT</span>
+        {% if perms.ippc.add_massemailutilitymessage or user.is_superuser%}
+        <a class="btn btn-small btn-warning" href="/massemailutility/status/{{massemailmessage.id}}/0"><i class="icon-edit icon-white"></i> {% trans "click to set as DRAFT" %}</a>
+        {% endif %}
+    {% endif %}
+
+      {% endif %}
 </dd>
    
 <dt>{% trans "From" %}</dt>
