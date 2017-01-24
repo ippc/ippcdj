@@ -185,14 +185,14 @@ class CountryPage(Page):
 class OCPHistory(models.Model):
     countrypage = models.ForeignKey(CountryPage)
    # contact_point = models.OneToOneField("auth.User",             verbose_name=_("Country Chief Contact Point"), blank=True, null=True)
-    contact_point = models.ForeignKey("auth.User",             verbose_name=_("Country Chief Contact Point"), blank=True, null=True)
+    contact_point = models.ForeignKey("auth.User",verbose_name=_("Country Chief Contact Point"), blank=True, null=True)
     start_date = models.DateTimeField(_("Nomination start date"), blank=True, null=True, editable=True)
     end_date = models.DateTimeField(_("Nomination end date"), blank=True, null=True, editable=True)
     
 class CnEditorsHistory(models.Model):
     countrypage = models.ForeignKey(CountryPage)
-    editor = models.OneToOneField("auth.User", 
-            verbose_name=_("Country Editor"), blank=True, null=True)
+    editor = models.ForeignKey("auth.User",verbose_name=_("Country Editor"), blank=True, null=True)
+    #editor = models.OneToOneField("auth.User",             verbose_name=_("Country Editor"), blank=True, null=True)
     start_date = models.DateTimeField(_("Nomination start date"), blank=True, null=True, editable=True)
     end_date = models.DateTimeField(_("Nomination end date"), blank=True, null=True, editable=True)
     
@@ -224,15 +224,16 @@ class PartnersPage(Page, RichText):
     
 class PartnersContactPointHistory(models.Model):
     partnerspage = models.ForeignKey(PartnersPage)
-    contact_point = models.OneToOneField("auth.User", 
-            verbose_name=_("RPPO/Organization Contact Point"), blank=True, null=True)
+    #contact_point = models.OneToOneField("auth.User",    verbose_name=_("RPPO/Organization Contact Point"), blank=True, null=True)
+    contact_point = models.ForeignKey("auth.User",verbose_name=_("RPPO/Organization Contact Point"), blank=True, null=True)
+   
     start_date = models.DateTimeField(_("Nomination start date"), blank=True, null=True, editable=True)
     end_date = models.DateTimeField(_("Nomination end date"), blank=True, null=True, editable=True)
     
 class PartnersEditorHistory(models.Model):
     partnerspage = models.ForeignKey(PartnersPage)
-    editor = models.OneToOneField("auth.User", 
-            verbose_name=_("Country Editor"), blank=True, null=True)
+    #editor = models.OneToOneField("auth.User",             verbose_name=_("Country Editor"), blank=True, null=True)
+    editor = models.ForeignKey("auth.User",verbose_name=_("RPPO/Organization Editor"), blank=True, null=True)
     start_date = models.DateTimeField(_("Nomination start date"), blank=True, null=True, editable=True)
     end_date = models.DateTimeField(_("Nomination end date"), blank=True, null=True, editable=True)
           
