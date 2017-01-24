@@ -85,7 +85,7 @@ TYPES = (
     (EVENT_TYPE_10, _("Finance Committee")),
     (EVENT_TYPE_11, _("Focus Group")),
     (EVENT_TYPE_12, _("IRSS")),
-    (EVENT_TYPE_13, _("Member Consultation")),
+    (EVENT_TYPE_13, _("Consultation")),
     (EVENT_TYPE_14, _("Mentoring / Assistance")),
     (EVENT_TYPE_15, _("NRO")),
     (EVENT_TYPE_16, _("NRO Advidory Group")),
