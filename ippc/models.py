@@ -1723,6 +1723,7 @@ class MassEmailUtilityMessage(models.Model):
     messagebody = models.TextField(_("Message: "),max_length=500,blank=True, null=True)
     date = models.DateTimeField('date')
     sent =  models.BooleanField()
+    status =  models.BooleanField()
     not_sentto = models.TextField(_("notsent: "),blank=True, null=True)
     sentto = models.TextField(_("sent: "),blank=True, null=True)
     author = models.ForeignKey(User, related_name="author")

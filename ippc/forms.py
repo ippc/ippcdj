@@ -532,7 +532,7 @@ class MassEmailUtilityMessageForm(forms.ModelForm):
            'users',
            ]
        
-        exclude = ( 'date','sent', 'groups','not_sentto','sentto','author')       
+        exclude = ( 'date','sent', 'groups','not_sentto','sentto','author','status')       
 MassEmailUtilityMessageFileFormSet = inlineformset_factory(MassEmailUtilityMessage,  MassEmailUtilityMessageFile,extra=1)
 
 ##NEW

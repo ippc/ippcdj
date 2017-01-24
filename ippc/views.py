@@ -4580,9 +4580,20 @@ class CountryStatsTotalreports1ListView(ListView):
     def get_context_data(self, **kwargs): 
         context = super(CountryStatsTotalreports1ListView, self).get_context_data(**kwargs)
         context['dategenerate']=timezone.now()
+        context['selyear_range']=range(2010,timezone.now().year+1)
        
         tot_rep_count=0
-        prevyear=timezone.now().year -1
+       
+        prevyear=0
+        print('>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>')
+        if 'year' in self.kwargs:
+            print(self.kwargs['year'])
+            prevyear=int(self.kwargs['year'])
+        else :   
+             prevyear=timezone.now().year -1
+        
+        
+        
         rep_array=[]
         ev_array=[]
         pest_array=[]
@@ -4925,8 +4936,17 @@ class CountryStatsSingleReportsListView(ListView):
     def get_context_data(self, **kwargs): # http://stackoverflow.com/a/15515220
         context = super(CountryStatsSingleReportsListView, self).get_context_data(**kwargs)
         context['dategenerate']=timezone.now()
+        context['selyear_range']=range(2010,timezone.now().year+1)
        
-        curryear=timezone.now().year-1
+        curryear=0
+        print('>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>')
+        if 'year' in self.kwargs:
+            print(self.kwargs['year'])
+            curryear=int(self.kwargs['year'])
+        else :   
+             curryear=timezone.now().year-1
+     
+        #curryear=timezone.now().year-1
         
         regionsRepCP = []
         regionsEvCP = []
@@ -5101,9 +5121,22 @@ class CountryStatsTotalReportsIncreaseListView(ListView):
     def get_context_data(self, **kwargs): # http://stackoverflow.com/a/15515220
         context = super(CountryStatsTotalReportsIncreaseListView, self).get_context_data(**kwargs)
         context['dategenerate']=timezone.now()
+        context['selyear_range']=range(2010,timezone.now().year+1)
+       
         
-        curryear=timezone.now().year-1
-        prevyear=timezone.now().year-2
+        curryear=0
+        prevyear=0
+        print('>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>')
+        if 'year' in self.kwargs:
+            print(self.kwargs['year'])
+            curryear=int(self.kwargs['year'])
+            prevyear=curryear-1
+        else :   
+            curryear=timezone.now().year-1
+            prevyear=timezone.now().year-2
+        
+        #curryear=timezone.now().year-1
+        #prevyear=timezone.now().year-2
    
 
         rep_array=[]
@@ -5321,9 +5354,23 @@ class CountryStatisticsTotalNroByYearListView(ListView):
     def get_context_data(self, **kwargs): # http://stackoverflow.com/a/15515220
         context = super(CountryStatisticsTotalNroByYearListView, self).get_context_data(**kwargs)
         context['dategenerate']=timezone.now()
+      
+        context['selyear_range']=range(2010,timezone.now().year+1)
+       
         
-        curryear=timezone.now().year   
-        num_years=curryear-2005
+        #curryear=timezone.now().year   
+        num_years=0
+
+
+        curryear=0
+        print('>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>')
+        if 'year' in self.kwargs:
+            print(self.kwargs['year'])
+            curryear=int(self.kwargs['year'])
+            num_years=curryear-2005
+        else :   
+            curryear=timezone.now().year   
+            num_years=curryear-2005
 
         rep_array=[]
         ev_array=[]
@@ -5560,7 +5607,17 @@ class CountryRegionsUsersNeverLoggedNewListView(ListView):
         regionEditorsInfo = []
         regionEditorsTerr = []
         
-        prev_year = datetime.now().year -1 
+        #prev_year = datetime.now().year -1 
+        context['selyear_range']=range(2010,timezone.now().year+1)
+       
+        prev_year=0
+        print('>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>')
+        if 'year' in self.kwargs:
+            print(self.kwargs['year'])
+            prev_year=int(self.kwargs['year'])
+        else :   
+             prev_year= datetime.now().year-1
+             
         context['prev_year']=prev_year
         context['tot_num_CP']=CountryPage.objects.filter(cp_ncp_t_type='CP').count()
         context['tot_num_NCP']=CountryPage.objects.filter( cp_ncp_t_type='NCP').count()
@@ -6389,9 +6446,17 @@ class CountryStatsChangeInCPsListView(ListView):
    
     def get_context_data(self, **kwargs): # http://stackoverflow.com/a/15515220
         context = super(CountryStatsChangeInCPsListView, self).get_context_data(**kwargs)
-        context['dategenerate']=timezone.now()
         
-        prevyear=timezone.now().year-1
+        context['dategenerate']=timezone.now()
+        context['selyear_range']=range(2010,timezone.now().year+1)
+       
+        prevyear=0
+        print('>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>')
+        if 'year' in self.kwargs:
+            print(self.kwargs['year'])
+            prevyear=int(self.kwargs['year'])
+        else :   
+             prevyear=timezone.now().year-1
      
         months=[1,2,3,4,5,6,7,8,9,10,11,12]
         months_days=[31,28,31,30,31,30,31,31,30,31,30,31]
@@ -6926,6 +6991,31 @@ class MassEmailUtilityMessageDetailView(DetailView):
         
         return context
  
+@login_required
+@permission_required('ippc.add_massemailutilitymessage', login_url="/accounts/login/")
+def massemailutility_setstatus(request, pk=None , status=None):
+    email=get_object_or_404(MassEmailUtilityMessage,id=pk)
+    if email:
+        print("++++++++++++++++++++++++++++++++++++++++++")
+        print(status)
+        if status == "1":
+            print("!!!!!!! 1")
+            email.status=1
+            email.save()
+     
+            info(request, _("Successfully set mass email message to 'TO BE SENT'."))
+            return redirect("mass-email-list")
+        elif status == "0":
+            print("!!!!!!! 0")
+            email.status=0
+            email.save()
+            info(request, _("Successfully set mass email message to 'DRAFT'."))
+            return redirect("mass-email-list")
+        
+    else: 
+        warning(request, _("Error setting the status of mass email message."))
+        return redirect("mass-email-list")
+   
 def massemailutility_to_send(request):
     
     emailutility_to_send_done_dir = MEDIA_ROOT+'/massemailutility_sent'
@@ -6933,10 +7023,9 @@ def massemailutility_to_send(request):
     log_report.write("List of sent emails:\n\n")
     
     text_=''
-    emails_to_send = MassEmailUtilityMessage.objects.filter(sent=0)
+    emails_to_send = MassEmailUtilityMessage.objects.filter(sent=0,status=1)
     for email in emails_to_send :
-        print(email.subject)
-        log_report.write("["+ timezone.now().strftime('%Y%m%d%H%M%S')+" - email id ="+email.subject+" [ID:"+str(email.id)+"] \n")
+        log_report.write("["+ timezone.now().strftime('%Y%m%d%H%M%S')+" - email id  [ID:"+str(email.id)+"] \n")
         email_not_sentto=email.not_sentto
         email_sent=email.sentto
         emailfrom=email.emailfrom
@@ -6981,15 +7070,12 @@ def massemailutility_to_send(request):
         email.not_sentto = eee
         email.sentto = email_sent1
         text_+='Sent email:'+subject+'<br>'
-        print('aaaaaaaaaaaaaaaaaaaaaaaaaaaaaa')
-        print(len(email_not_sentto1))
-        print(email_not_sentto1)
         
         if email_not_sentto1 ==  [u''] or email_not_sentto1 == '' :
             email.sent = True
             messages=[]
             bodytext='Please note that the mass email message has been sent out to all recipients: https://www.ippc.int/massemailutility/'+str(email.id)
-            message = mail.EmailMessage('Notification mass email sent: '+str(subject),bodytext,emailfrom,[email.author.email], ['paola.sentinelli@fao.org'])
+            message = mail.EmailMessage('Notification mass email sent: '+ugettext(subject),bodytext,emailfrom,[email.author.email], ['paola.sentinelli@fao.org'])
             message.content_subtype = "html"
             messages.append(message) 
             connection = mail.get_connection()
@@ -7136,11 +7222,12 @@ def massemail_send(request):
             new_emailmessage.emailto=emailto_all_last
             new_emailmessage.not_sentto=emailto_all_last
             new_emailmessage.sent=0
+            new_emailmessage.status=0
             #save file to message in db
             f_form.instance = new_emailmessage
             f_form.save()
             messages=[]
-            message = mail.EmailMessage('COPY email: '+str(request.POST['subject']),request.POST['messagebody'],request.POST['emailfrom'],[request.user.email], ['paola.sentinelli@fao.org'])
+            message = mail.EmailMessage('COPY email: '+ugettext(request.POST['subject']),request.POST['messagebody'],request.POST['emailfrom'],[request.user.email], ['paola.sentinelli@fao.org'])
             fileset= MassEmailUtilityMessageFile.objects.filter(emailmessage_id=new_emailmessage.id)
             for f in fileset:
                 pf=MEDIA_ROOT+str(f.file)
@@ -7165,7 +7252,7 @@ def massemail_send(request):
     return render_to_response('emailutility/massemailutility_send.html', {'form': form  ,'f_form': f_form,'emailgroups':g_set,'emailcp':cp_set,'emailcp2':cp_set0,'emaile2':emaile2},#'emailcpu':cpu_set,'emailcpi':cpi_set,'emailcpl':cpl_set
         context_instance=RequestContext(request))
 
-   
+      
 #
 class ContactUsEmailMessageListView(ListView):
     """    ContactUsEmailMessageListView List view """
@@ -7241,8 +7328,8 @@ def contactus_email_send(request):
              form.save()
              sent = 0
              messages=[]
-             print(request.POST['contact_us_type'])
-             subject=subj1+': '+str(request.POST['subject'])
+             #print(request.POST['contact_us_type'])
+             subject=subj1+': '+ugettext(request.POST['subject'])
              message= mail.EmailMessage(subject,request.POST['messagebody'],request.POST['emailfrom'],[emails_a], ['paola.sentinelli@fao.org'])#emailto_all for PROD, in TEST all to paola#
              message.content_subtype = "html"
              messages.append(message)
