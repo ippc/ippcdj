@@ -36,7 +36,17 @@
 <h1>
   <small class="normal">{% trans "Mass Email list" %}</small>
 </h1> 
-
+ <p class="alert alert-warning">Please remember:<br>
+- before sending a new mass email message check that all the previous messages, not in draft status, where sent (done by you or other users on the same or previous day)<br>
+- any new message will be stored by default in 'Draft' status<br>
+- after receiving a copy of the message check that it is correct (check text, mistakes, links working, ect.)<br>
+- if the message is ok open it and in the detail page click on the button 'click to set as TO BE SENT'<br>
+- if the message is not ok, leave it in 'Draft' status  and create a new one<br>
+- all the message in 'TO BE SENT' status message will be sent automatically in the background to recipients in the next hours, sending a message to several recipients (e.g. Contact Points, RPPOs) in real time will take a few hours<br>
+- when the message has been sent to all recipients you will get a notification<br>
+- you can check the status of the message at any moment 
+- if you note an error in the email and you want to stop the messages to be sent out go to the messages detail page  andclick on the button 'click to set as DRAFT'<br>
+</ul></p>
 {% if latest %}
 <table class="table table-condensed table-striped" id="publications">
   <thead>
@@ -59,7 +69,15 @@
             <i class="icon-exclamation-sign"> </i> not sent - waiting to be sent
             {% endif %}
       </td>
-      <td>  {% if object.status == 1 %}<span class="alert-success"><i class="icon-share"> </i> To be sent</span>{% elif object.status == 0 %}<span class="alert-danger"><i class="icon-edit"> </i> DRAFT</span>{% endif %}
+      <td>{% if object.sent %}
+          &#160;
+          {% else %}  
+            {% if object.status == 1 %}
+                <span class="alert-success"><i class="icon-share"> </i> To be sent</span>
+            {% elif object.status == 0 %}
+            <span class="alert-danger"><i class="icon-edit"> </i> DRAFT</span>
+            {% endif %}
+           {% endif %}
       </td>
     </tr>
     {% endfor %}
