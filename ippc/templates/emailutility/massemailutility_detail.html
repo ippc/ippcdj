@@ -25,6 +25,9 @@
 {% endblock pageinfo %}
 
 {% block main %}
+
+{% if request.user.is_authenticated and perms.ippc.add_massemailutilitymessage %}
+
 <h1>{{ massemailmessage.subject }}</h1> 
 <dl class="dl-horizontal">
 <dt>{% trans "Sent date" %}</dt>
@@ -71,27 +74,6 @@
 </dd>
 
 
-<!--dt>{% trans "To" %}</dt>
-<dd>
-    {{ massemailmessage.emailto }}<br>
-    
-    {% for entry in massemailmessage.users.all %}
-        {{entry.first_name}} {{entry.last_name}} [{{entry.email}}] <br/>
-    {% endfor %}
-    {% for entry in massemailmessage.groups.all %}
-        {{entry.name}} <br/>
-    {% endfor %}
-
-</dd-->
-<!--dt>{% trans "Not sent" %}</dt>
-
-<dd style="color: red;">
-   {% if massemailmessage.not_sentto != '[]' %} {{ massemailmessage.not_sentto }}{% endif %}<br>
-</dd>
-<dt>{% trans "sent" %}</dt>
-<dd style="color: green;">
-    {{ massemailmessage.sentto }}<br>
-</dd-->
 <dt>{% trans "Subject" %}</dt>
 <dd>{{ massemailmessage.subject }}</dd>
 
@@ -107,5 +89,9 @@
     
 </dl>
 
+{% else %}
+<div class="alert alert-warning">
+  <p>You must be logged in and a staff member to access this page.</p>
+ </div> {% endif %}
 {% endblock %}
 

@@ -25,6 +25,8 @@
 
 {% block main %}
 
+{% if request.user.is_authenticated and perms.ippc.add_massemailutilitymessage %}
+
 <p class="pull-right">
   <a href="javascript:history.go(-1)">{% trans "« Go back" %}</a><br>
       {% if perms.ippc.add_massemailutilitymessage or user.is_superuser%}
@@ -89,5 +91,11 @@
 <p>No mass emails available.</p>
 {% endif %}
 
+
+
+{% else %}
+<div class="alert alert-warning">
+  <p>You must be logged in and a staff member to access this page.</p>
+ </div> {% endif %}
 {% endblock %}
 
