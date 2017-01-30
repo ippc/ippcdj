@@ -7215,8 +7215,15 @@ def massemail_send(request):
             new_emailmessage.author = request.user
             new_emailmessage.date=timezone.now()
     
-            emailto_all_last=''
+            emailto_all_clean=[]
             for ee in emailto_all:
+                if ee in emailto_all_clean:
+                    print('no')
+                else:    
+                    emailto_all_clean.append(ee)    
+            
+            emailto_all_last=''
+            for ee in emailto_all_clean:
                 print(ee)
                 emailto_all_last=emailto_all_last+ee+','
             new_emailmessage.emailto=emailto_all_last
