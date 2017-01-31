@@ -41,7 +41,7 @@ reporting_obligation_validate,event_reporting_validate,pest_report_validate,\
 QAQuestionListView, QAQuestionDetailView, QAQuestionAnswersView,question_create,answer_create,\
 FAQsListView, faqcategory_edit,faqcategory_create,faq_edit,faq_create,FAQsItemDetailView,FAQsCategoryDetailView,\
 ContactUsEmailMessageListView,   ContactUsEmailMessageDetailView , contactus_email_send,UserAutoRegistrationListView,auto_register,auto_register_approve,auto_register_delete,\
-IRSSActivityListView,IRSSActivityDetailView,irss_activity_create,irss_activity_edit   ,CountryStatisticsTotalNroByYearListView
+IRSSActivityListView,IRSSActivityDetailView,irss_activity_create,irss_activity_edit   ,CountryStatisticsTotalNroByYearListView,subscribe_to_news
 
 #QuestionListView, QuestionDetailView, QuestionAnswersView,question_create,question_edit,answer_edit      
 #reporting_obligation_translate,
@@ -81,7 +81,10 @@ urlpatterns = patterns("",
 (r'^google10111c8a3426cf77\.html$', lambda r:HttpResponse("google-site-verification: google10111c8a3426cf77.html", mimetype="text/plain")),
 (r'^robots\.txt$', lambda r: HttpResponse("User-agent:*\nDisallow: ", mimetype="text/plain")),
     url(r'^sitemap\.xml$', 'django.contrib.sitemaps.views.sitemap', {'sitemaps': sitemaps}),
-  
+   
+   #-------------- NEWS notification subscribe:
+   url(r'^news-subscribe/$',subscribe_to_news, name='subscribe_to_news'),
+   
   
    #---------IRSS:--------------------------#    
     
