@@ -3,10 +3,14 @@
     <div class="pull-right">
         <a class="btn btn-small btn-info" href="/admin/news/newspost/add/">{% trans "Add new news" %}</a><br>
     </div>
+   
 {% endif %}
+
 {% block news_recent_posts %}
+
 {% news_recent_posts 5 as recent_posts %}
 {% if recent_posts %}
+
 <div class="panel">
   <h3>{% trans "Latest" %}</h3>
   <ul class="unstyled recent-posts">
@@ -15,10 +19,12 @@
       >{{ recent_post.title }}</a></li>
   {% endfor %}
   </ul>
+{% if request.user.is_authenticated %}
+    <p>Don't miss the latest News: <a class="btn btn-small btn-info" href="/news-subscribe">{% trans "Subscribe" %}</a></p>
+{% endif %}
 </div>
 {% endif %}
 {% endblock %}
-
 {% block news_categories %}
 {% news_categories as categories %}
 {% if categories %}
