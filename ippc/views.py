@@ -7230,6 +7230,7 @@ def massemail_send(request):
             new_emailmessage.not_sentto=emailto_all_last
             new_emailmessage.sent=0
             new_emailmessage.status=0
+            form.save()
             #save file to message in db
             f_form.instance = new_emailmessage
             f_form.save()
@@ -8459,8 +8460,10 @@ def irss_activity_edit(request,  id=None, template_name='irss/irss_activities_ed
 @login_required
 def subscribe_to_news(request):
     """ subscribe to news """
-    previous_page = request.META['HTTP_REFERER']
+    #previous_page = request.get('return_url')
+    previous_page = request.GET.get('return_url', None)
     print(previous_page)
+    
     #data = {'previous_page': previous_page,}
     user = request.user
     g1=Group.objects.get(name="News Notification group")
@@ -8472,6 +8475,6 @@ def subscribe_to_news(request):
         error(request, _("You are already subcribed to News."))
     
 
-    return redirect(previous_page)  
+    return redirect('https://www.ippc.int/'+str(previous_page)  )
    # return render(request, "news/news_post_list.html", data)
    # return render_to_response(context_instance=RequestContext(request)) 
