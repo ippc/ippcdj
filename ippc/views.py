@@ -8455,4 +8455,23 @@ def irss_activity_edit(request,  id=None, template_name='irss/irss_activities_ed
         'form': form, 'f_form':f_form,"irssactivity": irssactivity
     }, context_instance=RequestContext(request))            
             
+  
+@login_required
+def subscribe_to_news(request):
+    """ subscribe to news """
+    previous_page = request.META['HTTP_REFERER']
+    print(previous_page)
+    #data = {'previous_page': previous_page,}
+    user = request.user
+    g1=Group.objects.get(name="News Notification group")
+    c=user.groups.filter(name="News Notification group").count()
+    if c==0:
+        user.groups.add(g1)
+        info(request, _("Successfully Subcribed to News."))
+    else:
+        error(request, _("You are already subcribed to News."))
     
+
+    return redirect(previous_page)  
+   # return render(request, "news/news_post_list.html", data)
+   # return render_to_response(context_instance=RequestContext(request)) 
