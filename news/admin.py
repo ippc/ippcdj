@@ -7,6 +7,13 @@ from django.utils.translation import ugettext_lazy as _
 from news.models import NewsPost, NewsCategory,TransNewsPost
 from mezzanine.conf import settings
 from mezzanine.core.admin import DisplayableAdmin, OwnableAdmin,StackedDynamicInlineAdmin
+from django.contrib.auth.models import User,Group
+from django.shortcuts import get_object_or_404
+from django.core import mail
+from django.core.mail import send_mail
+
+from django.template.defaultfilters import slugify
+
 
 class TransNewsPostAdmin(StackedDynamicInlineAdmin):
     model = TransNewsPost
@@ -49,9 +56,26 @@ class NewsPostAdmin(DisplayableAdmin):
             DisplayableAdmin.save_form(self, request, form, change)
         else: 
             DisplayableAdmin.save_form(self, request, form, change)
-
+         #new news post send notifications to Secretariat
+        if change==False:
+            emailto_all = []
+            group=Group.objects.get(name="News Notification group")
+            users = group.user_set.all()
+            for u in users:
+               user_obj=User.objects.get(username=u)
+               user_email=user_obj.email
+               emailto_all.append(str(user_email))
+       
+            category=get_object_or_404(NewsCategory, id=request.POST['categories']).title 
+            if(category == 'Announcements' or category == 'IPPC news' ):
+                subject='IPPC News: a new '+category+' has been posted'       
+                text='<html><body><p>Dear IPPC User,</p><p>a new "'+str(category)+'" has been posted in IPPC:<br><br> <b>'+ request.POST['title']+'</b></p><p>You can view it at the following url: <a href="http://www.ippc.int/news/'+slugify(request.POST['title'])+'">https://www.ippc.int/news/'+slugify(request.POST['title'])+'</s></p><p><br>International Plant Protection Convention team </p></body></html>'
+            
+            notifificationmessage = mail.EmailMessage(subject,text,'ippc@fao.org',  emailto_all, ['paola.sentinelli@fao.org'])
+            notifificationmessage.content_subtype = "html"  
+            sent =notifificationmessage.send()
+            
         return DisplayableAdmin.save_form(self, request, form, change)
-
 
 class NewsCategoryAdmin(admin.ModelAdmin):
     """
