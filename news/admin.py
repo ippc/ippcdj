@@ -49,6 +49,13 @@ class NewsPostAdmin(DisplayableAdmin):
         Super class ordering is important here - user must get saved first.
         """
         #OwnableAdmin.save_form(self, request, form, change)
+        send=False
+        if change==True:
+          if request.POST['slug'] != None:
+            n_obj=get_object_or_404(NewsPost,slug=request.POST['slug']) 
+            if n_obj.status == 1 and request.POST['status']=='2':
+               send=True
+            
         if change==False:
             obj = form.save(commit=False)
             if obj.user_id is None:
@@ -56,8 +63,11 @@ class NewsPostAdmin(DisplayableAdmin):
             DisplayableAdmin.save_form(self, request, form, change)
         else: 
             DisplayableAdmin.save_form(self, request, form, change)
-         #new news post send notifications to Secretariat
-        if change==False:
+         
+        if change==False and request.POST['status'] == '2'  :
+            send=True
+        #new news post send notifications to Secretariat
+        if send==True  :
             emailto_all = []
             group=Group.objects.get(name="News Notification group")
             users = group.user_set.all()
@@ -65,6 +75,7 @@ class NewsPostAdmin(DisplayableAdmin):
                user_obj=User.objects.get(username=u)
                user_email=user_obj.email
                emailto_all.append(str(user_email))
+               print(user_email)
        
             category=get_object_or_404(NewsCategory, id=request.POST['categories']).title 
             if(category == 'Announcements' or category == 'IPPC news' ):
