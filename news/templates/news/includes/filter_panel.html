@@ -20,7 +20,7 @@
   {% endfor %}
   </ul>
 {% if request.user.is_authenticated %}
-    <p>Don't miss the latest News: <a class="btn btn-small btn-info" href="/news-subscribe">{% trans "Subscribe" %}</a></p>
+    <p>Don't miss the latest News: <a class="btn btn-small btn-info" href="/news-subscribe?return_url={{ request.path }}">{% trans "Subscribe" %}</a></p>
 {% endif %}
 </div>
 {% endif %}
