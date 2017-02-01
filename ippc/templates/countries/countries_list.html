@@ -51,14 +51,14 @@
  {% endif %}
   </h1> 
 <div class="span7 middle">
-	<p>There are currently <strong>{{ number_of_cp }}</strong> contracting parties. Visit the <a href="http://www.fao.org/fileadmin/user_upload/legal/docs/004s-e.pdf">FAO Legal</a> website for details.</p>
+	<p>{% trans "There are currently" %} <strong>{{ number_of_cp }}</strong> {% trans "contracting parties. Visit the" %} <a href="http://www.fao.org/fileadmin/user_upload/legal/docs/004s-e.pdf"> {% trans "FAO Legal</a> website for details." %} </p>
 	{%if region_name == 'NPPOs' %}{% else %}
 <p>
-	<span class="icn-adoptedbadge">Contracting parties</span> 
+	<span class="icn-adoptedbadge">{% trans "Contracting parties" %} </span> 
 	<br />
-	<span class="icn-noncontracting">Non-Contracting</span>
+	<span class="icn-noncontracting">{% trans "Non-Contracting" %} </span>
 	<br />
-	<span class="icn-territory">Territory</span>
+	<span class="icn-territory">{% trans "Territory" %} </span>
 </p>
   {% endif %}
 
