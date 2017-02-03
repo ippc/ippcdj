@@ -2795,8 +2795,8 @@ def draftprotocol_comment_edit(request, id=None, dp_id=None, template_name='dp/d
         form = DraftProtocolCommentsForm(request.POST,  request.FILES, instance=draftprotocolcomment)
         if form.is_valid() :
             form.save()
-            f_form.instance = draftprotocolcomment
-            f_form.save()
+           # f_form.instance = draftprotocolcomment
+          #  f_form.save()
             info(request, _("Successfully updated DraftProtocol."))
             return redirect("draftprotocol-detail", year=draftprotocol.publish_date.strftime("%Y"), month=draftprotocol.publish_date.strftime("%m"), slug=draftprotocol.slug)
 
@@ -6657,7 +6657,7 @@ def poll_create(request):
            
             c_form.instance = new_poll
             c_form.save()
-            send_pollnotification_message(id)
+            send_pollnotification_message(new_poll.id)
             
             info(request, _("Successfully created Poll."))
             return redirect("detail", pk=new_poll.id)
