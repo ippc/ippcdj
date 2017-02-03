@@ -32,6 +32,8 @@
 <dl class="dl-horizontal">
 <dt>{% trans "Sent date" %}</dt>
 <dd>{{ sometime }}  {{massemailmessage.date|date:"d-m-Y"}} at {{massemailmessage.date|date:"H:m:s"}} CET</dd>
+<dt>{% trans "Author" %}</dt>
+<dd>{{massemailmessage.author}}</dd>
 
 <dt>{% trans "Sent status" %}</dt>
 <dd>{% if massemailmessage.sent %}
