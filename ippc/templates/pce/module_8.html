@@ -38,29 +38,57 @@ function checkRules()
     if (document.getElementById('id_m_14_2').checked){
         document.getElementById('id_m_15').value=""
     }
-     document.getElementById('id_m_23_1').disabled=document.getElementById('id_m_22_2').checked;
-     document.getElementById('id_m_23_2').disabled=document.getElementById('id_m_22_2').checked;
-     document.getElementById('id_m_25').disabled=document.getElementById('id_m_22_2').checked;
-     
-    document.getElementById('id_m_24').disabled=document.getElementById('id_m_22_2').checked;
-    if (document.getElementById('id_m_22_2').checked){
-    document.getElementById('id_m_24').id="id_m_24_bis";
-    var hiddencontainer =document.getElementById('hiddencontainer');
-    var input = document.createElement("input");
-                input.type = "hidden";
-                input.name = "m_24";
-                input.id = "id_m_24";
-                input.value = 0
-                hiddencontainer.appendChild(input);
-
-        document.getElementById('id_m_23_1').checked=false
-        document.getElementById('id_m_23_2').checked=false
-     
-          document.getElementById('id_m_25').value=""
-     
-          
-    }
     
+    document.getElementById('id_m_23_1').disabled=document.getElementById('id_m_22_2').checked;
+    document.getElementById('id_m_23_2').disabled=document.getElementById('id_m_22_2').checked;
+     
+    
+        document.getElementById('id_m_25').disabled=document.getElementById('id_m_22_2').checked;
+     
+   document.getElementById('id_m_24').disabled=document.getElementById('id_m_22_2').checked;
+       
+       
+    if (document.getElementById('id_m_22_2').checked){
+    
+            document.getElementById('id_m_24').id="id_m_24_bis";
+            document.getElementById('id_m_24_bis').disabled=document.getElementById('id_m_22_2').checked;
+    
+            var hiddencontainer =document.getElementById('hiddencontainer');
+            var input = document.createElement("input");
+            input.type = "hidden";
+            input.name = "m_24";
+            input.id = "id_m_24";
+            input.value = 0
+            hiddencontainer.appendChild(input);
+
+            document.getElementById('id_m_23_1').checked=false
+            document.getElementById('id_m_23_2').checked=false
+            document.getElementById('id_m_25').value=""
+    
+          
+    }else  if (!document.getElementById('id_m_22_2').checked){
+      
+      
+           
+            var hiddencontainer =document.getElementById('hiddencontainer');
+            var input = document.createElement("input");
+            input.type = "hidden";
+            input.name = "m_24_bis";
+            input.id = "id_m_24_bis";
+            input.value = 0
+            hiddencontainer.appendChild(input);
+
+            
+            
+        /*  var elements = document.getElementById("aa").elements;
+            alert( document.getElementById("aa").elements);
+            for (var i = 0, element; element = elements[i++];) {
+                if(element.id == 'id_m_24' ||  element.id == 'id_m_24_bis'  )
+                    alert(element.id+'-'+element.disabled);
+         }*/
+
+         document.getElementById('id_m_24').disabled=false;
+    }
     
   
 }
@@ -90,7 +118,8 @@ function checkRules()
                         {%endif%} </div>
                 <div class="panel-body">
                     <p class="alert alert-warning"   {%if context == 'Pdf' %}style="background:#faf2cc;"{%endif%} > {% trans "Pest surveillance is a core activity and an essential component of the NPPO capacity. Under IPPC Article IV 2b, the NPPO have the obligation to perform the surveillance of growing plants, including both areas under cultivation (inter alia fields, plantations, nurseries, gardens, greenhouses and laboratories) and wild flora, and of plants and plant products in storage or in transportation, particularly with the object of reporting the occurrence, outbreak and spread of pests, and of controlling those pests, including the reporting referred to under Article VIII paragraph 1(a). Also the IPPC provides that Contracting parties shall, to the best of their ability, conduct surveillance for pests and develop and maintain adequate information on pest status in order to support categorization of pests, and for the development of appropriate phytosanitary measures. (Article VII.2j). Furthermore IPPC Article IV 2e assign to the NPPO the responsibility for the protection of endangered areas and the designation, maintenance and surveillance of pest free areas and areas of low pest prevalence. ISPM 6 describes the components of survey and monitoring systems for the purpose of pest detection and the supply of information for use in pest risk analyses, the establishment of pest free areas and, where appropriate, the preparation of pest lists. Pest reporting is also a critical obligation under the IPPC. Under IPPC Article VIII 1a establish that Contracting parties ... shall cooperate ... to the fullest practicable extent in ... the reporting of the occurrence, outbreak or spread of pests that may be of immediate or potential danger ... to other contracting parties In this respect, they should follow the procedures established in ISPM No. 17 and other relevant procedures. ISPM 17 describes the responsibilities of and requirements for contracting parties in reporting the occurrence, outbreak and spread of pests in areas for which they are responsible. It also provides guidance on reporting successful eradication of pests and establishment of Pest Free Areas. <br>Guiding questions for the capacity assessment of NPPO's Pest Surveillance program<br>Keep the following questions in mind while working through this module:<br>1. What is the existing situation and performance of NPPO's pest surveillance and pest reporting activities? <br>2. What is the desired future situation of NPPO's pest surveillance and pest reporting activities? <br>3. What are the major gaps in the current capacity of NPPO's for pest surveillance and for pest reporting? <br>4. What are the capacity building needs and requirements to improve the performance of the NPPO's pest surveillance and pest reporting programs? " %}</p>
-                  {% if context == 'Edit' %}   <form class="customform" method="POST" action="" enctype="multipart/form-data">
+                  {% if context == 'Edit' %}   <form id='aa' class="customform" method="POST" action="" enctype="multipart/form-data">
+                          <div id="hiddencontainer" style="display: none">a</div>
                             {% csrf_token %} {%endif%}
                             <fieldset>
                                 {% if context == 'Edit' %}   

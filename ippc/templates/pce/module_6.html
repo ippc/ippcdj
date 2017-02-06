@@ -50,9 +50,9 @@ function checkRules()
     }
     document.getElementById('id_m_4').disabled=document.getElementById('id_m_3_1').checked;
     if (document.getElementById('id_m_3_1').checked){
-    document.getElementById('id_m_4').id="id_m_4_bis";
-    var hiddencontainer =document.getElementById('hiddencontainer');
-    var input = document.createElement("input");
+            document.getElementById('id_m_4').id="id_m_4_bis";
+            var hiddencontainer =document.getElementById('hiddencontainer');
+            var input = document.createElement("input");
                 input.type = "hidden";
                 input.name = "m_4";
                 input.id = "id_m_4";
@@ -63,7 +63,30 @@ function checkRules()
     
     
        
-    } 
+    } else  if (!document.getElementById('id_m_3_1').checked){
+      
+      
+           
+            var hiddencontainer =document.getElementById('hiddencontainer');
+            var input = document.createElement("input");
+            input.type = "hidden";
+            input.name = "m_4_bis";
+            input.id = "id_m_4_bis";
+            input.value = 0
+            hiddencontainer.appendChild(input);
+
+            
+            
+        /*  var elements = document.getElementById("aa").elements;
+            alert( document.getElementById("aa").elements);
+            for (var i = 0, element; element = elements[i++];) {
+                if(element.id == 'id_m_24' ||  element.id == 'id_m_24_bis'  )
+                    alert(element.id+'-'+element.disabled);
+         }*/
+
+         document.getElementById('id_m_4').disabled=false;
+    }
+    
     
      document.getElementById('id_m_7_1').disabled=document.getElementById('id_m_6_2').checked;
     document.getElementById('id_m_7_2').disabled=document.getElementById('id_m_6_2').checked;
@@ -102,6 +125,7 @@ function checkRules()
                     <p class="alert alert-warning"   {%if context == 'Pdf' %}style="background:#faf2cc;"{%endif%}>{% trans "NPPO's resources may be a strength (sufficient) or a weakness (insufficient).They consist of financial (both operating and capital), Human resources (number and skills), Information resources, Infrastructure, and communications technologies required for the efficient and effective functioning of the NPPO. Alternative sources of funding should strength the NPPO capacity.<br>Guiding questions for the capacity needs assessment of NPPO's resources<br>Keep in mind the following questions while working through this module:<br>1. What is the existing situation of NPPO's resources?<br>2. What is the desired future situation of NPPO's resources?<br>3. What are the major gaps in the current capacity of NPPO's resources? <br>4. What are the capacity building needs and requirements to create an effective system for NPPO's resources?" %}</p>
                     {% if context == 'Edit' %}   
                         <form class="customform" method="POST" action="" enctype="multipart/form-data">
+                          <div id="hiddencontainer" style="display: none">a</div>
                         {% csrf_token %} 
                     {%endif%}
                         <fieldset>
