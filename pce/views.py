@@ -1374,6 +1374,7 @@ def get_percentage_module_filled(num_mod,version):
          
     if num_mod == 8:
         tot_num_fields=45
+        print(tot_num_fields)
         i=0
         modules = Module8.objects.filter(session_id=version).count()
         if modules>0:
@@ -1382,112 +1383,168 @@ def get_percentage_module_filled(num_mod,version):
                  tot_num_fields=tot_num_fields-1
             if module.m_22==False:
                  tot_num_fields=tot_num_fields-3
-            
+            #print(tot_num_fields)
             if module.m_1==True or module.m_1==False:
-                i=i+1
+                 i=i+1        
+                 #print('1:'+str(i))
             if module.m_2==True or module.m_2==False:
-                    i=i+1
-            if module.m_4==True or module.m_4==False:
-                    i=i+1
-            if module.m_5==True or module.m_6==False:
-                    i=i+1
-            if module.m_6==True or module.m_6==False:
-                    i=i+1
-            if module.m_7==True or module.m_7==False:
-                    i=i+1
-            if module.m_10==True or module.m_10==False:
-                    i=i+1
-            if module.m_11==True or module.m_11==False:
-                    i=i+1
-            if module.m_12==True or module.m_12==False:
-                    i=i+1
-            if module.m_13==True or module.m_13==False:
-                    i=i+1
-            if module.m_14==True or module.m_14==False:
-                    i=i+1
-            if module.m_16==True or module.m_16==False:
-                    i=i+1
-            if module.m_19==True or module.m_19==False:
-                    i=i+1
-            if module.m_20==True or module.m_20==False:
-                    i=i+1
-            if module.m_21==True or module.m_21==False:
-                    i=i+1
-            if module.m_22==True or module.m_22==False:
-                    i=i+1
-            if module.m_23==True or module.m_23==False:
-                    i=i+1
-            if module.m_28==True or module.m_28==False:
-                    i=i+1
-            if module.m_29==True or module.m_29==False:
-                    i=i+1
-            if module.m_36==True or module.m_36==False:
-                    i=i+1
-            if module.m_39==True or module.m_39==False:
-                    i=i+1
-            if module.m_41==True or module.m_41==False:
-                    i=i+1
-                    
-            if module.m_24>0:
-                    i=i+1
-            if module.m_31>0:
-                    i=i+1
-            if module.m_32>0:
-                    i=i+1
-            if module.m_33>0:
-                    i=i+1
-            if module.m_34>0:
-                    i=i+1
-            if module.m_35>0:
-                    i=i+1
-            if module.m_37>0:
-                    i=i+1
-            if module.m_38>0:
-                i=i+1
-            if module.m_40>0:
-                    i=i+1
-            if module.m_42>0:
-                    i=i+1
-            if module.m_44>0:
-                    i=i+1
-            if module.m_25>0:
-                    i=i+1        
-            
-
-            if module.m_8!='':
-                    i=i+1
-            if module.m_9!='':
-                    i=i+1
-            if module.m_15!='':
-                    i=i+1
-            
-            if module.m_26!='':
-                    i=i+1
-            if module.m_27!='':
-                    i=i+1
-            if module.m_43!='':
-                    i=i+1
-            if module.m_17.count()>0:
-                    i=i+1
-            
+                     i=i+1     
+                     #print('2:'+str(i))
             if Module8Grid3.objects.filter(module8=module.id).count()>0:
                     m8g3=Module8Grid3.objects.filter(module8=module.id)[0]
                     if (m8g3.c1== True or m8g3.c1== False) and (m8g3.c2== True or m8g3.c2== False) and (m8g3.c3== True or m8g3.c3== False) and(m8g3.c4== True or m8g3.c4== False)and (m8g3.c5== True or m8g3.c5== False):
-                        i=i+1
-                       
+                         i=i+1   
+                         #print('3:'+str(i))        
+            if module.m_4==True or module.m_4==False:
+                     i=i+1     
+                     #print('4:'+str(i))
+            if module.m_5==True or module.m_5==False:
+                     i=i+1      
+                     #print('5:'+str(i))
+            if module.m_6==True or module.m_6==False:
+                     i=i+1      
+                     #print('6:'+str(i))
+            if module.m_7==True or module.m_7==False:
+                     i=i+1        
+                     #print('7:'+str(i))
+            
+            if module.m_8!='':
+                     i=i+1        
+                     #print('8:'+str(i))
+            if module.m_9!='':
+                     i=i+1         
+                     #print('9:'+str(i))
+            
+            
+            if module.m_10==True or module.m_10==False:
+                     i=i+1      
+                     #print('10:'+str(i))
+            if module.m_11==True or module.m_11==False:
+                     i=i+1      
+                     #print('11:'+str(i))
+            if module.m_12==True or module.m_12==False:
+                     i=i+1    
+                     #print('12:'+str(i))
+            if module.m_13==True or module.m_13==False:
+                     i=i+1    
+                     #print('13:'+str(i))
+            if module.m_14==True or module.m_14==False:
+                     i=i+1     
+                     #print('14:'+str(i))
+            if module.m_15!='':
+                     i=i+1     
+                     #print('15:'+str(i))
+                    
+            if module.m_16==True or module.m_16==False:
+                     i=i+1      
+                     #print('16:'+str(i))
+            if module.m_17.count()>0:
+                     i=i+1       
+                     #print('17:'+str(i))
             if Module8Grid18.objects.filter(module8=module.id).count()>0:
                     m8g18=Module8Grid18.objects.filter(module8=module.id)[0]
                     if (m8g18.c1== True or m8g18.c1== False) and (m8g18.c2== True or m8g18.c2== False) and (m8g18.c3== True or m8g18.c3== False) and(m8g18.c4== True or m8g18.c4== False)and (m8g18.c5== True or m8g18.c5== False)and (m8g18.c6== True or m8g18.c6== False):
-                        i=i+1
-                       
-            
+                         i=i+1    
+                         #print('18:'+str(i))        
+            if module.m_19==True or module.m_19==False:
+                     i=i+1       
+                     #print('18:'+str(i))
+            if module.m_20==True or module.m_20==False:
+                     i=i+1     
+                     #print('20:'+str(i))
+            if module.m_21==True or module.m_21==False:
+                     i=i+1       
+                     #print('21:'+str(i))
+            if module.m_22==True or module.m_22==False:
+                     i=i+1          
+                     #print('22:'+str(i))
+            if module.m_23==True or module.m_23==False:
+                     i=i+1          
+                     #print('23:'+str(i))
+                    
+            if module.m_24>0:
+                     i=i+1       
+                     #print('24:'+str(i))
+            if module.m_25!='':
+                     i=i+1       
+                     #print('25:'+str(i))
+            if module.m_26>0:
+                     i=i+1        
+                     #print('26:'+str(i))     
+            if module.m_27!='':
+                
+                
+                     i=i+1     
+                     #print('27:'+str(i))     
+                    
+            if module.m_28==True or module.m_28==False:
+                     i=i+1     
+                     #print('28:'+str(i))
+            if module.m_29==True or module.m_29==False:
+                     i=i+1    
+                     #print('29:'+str(i))
             if Module8Matrix30.objects.filter(module8=module.id).count()>0:                               
-                i=i+1
+                 i=i+1         
+                 #print('30:'+str(i))
+        
+            if module.m_31>0:
+                     i=i+1       
+                     #print('31:'+str(i))
+            if module.m_32>0:
+                     i=i+1      
+                     #print('32:'+str(i))
+            if module.m_33>0:
+                     i=i+1         
+                     
+                     #print('33:'+str(i))
+            if module.m_34>0:
+                     i=i+1         
+                     #print('34:'+str(i))
+            if module.m_35>0:
+                     i=i+1            
+                     #print('35:'+str(i))
+            
+            if module.m_36==True or module.m_36==False:
+                     i=i+1       
+                     #print('36:'+str(i))
+            if module.m_37>0:
+                     i=i+1        
+                     #print('37:'+str(i))
+            if module.m_38>0:
+                 i=i+1            
+                 #print('38:'+str(i))
+            
+            if module.m_39==True or module.m_39==False:
+                     i=i+1         
+                     #print('39:'+str(i))
+            if module.m_40>0:
+                     i=i+1         
+                     #print('40:'+str(i))
+            
+            if module.m_41==True or module.m_41==False:
+                     i=i+1        
+                     #print('41:'+str(i))
+                    
+                 
+            if module.m_42>0:
+                    i=i+1
+                    #print('42:'+str(i))
+            if module.m_43!='':
+                    i=i+1
+                    #print('43:'+str(i))
+
+            if module.m_44>0:
+                    i=i+1
+                    #print('44:'+str(i))
+            
+            
+           
                
             if Module8Weaknesses.objects.filter(module8=module.id).count()>0 :
                 i=i+1
+                #print('45:'+str(i))
                 
-        
+        #print('i='+str(i))
         percent=(i*100/tot_num_fields)
        
        
