@@ -159,6 +159,58 @@ var chart1 = new CanvasJS.Chart("chartContainer1",
         });
 
 chart1.render();
+
+
+
+
+
+
+    var chart2 = new CanvasJS.Chart("chartContainer2",
+    {
+      title:{
+	text: "Total Number of Reports for each year",
+	fontSize: 26
+      },
+      animationEnabled: true,
+      
+      axisY: {
+            title: "Total Number of reports",
+            titleFontSize: 20,
+            labelFontSize: 20,
+    },
+    axisX: {
+            labelFontSize: 10,
+            labelMaxWidth:90,
+            
+            interval: 1,
+    },
+                        
+     
+      legend: {
+        verticalAlign: "bottom",
+        horizontalAlign: "center"
+      },
+      theme: "theme1",
+        width:780,
+       height:400,
+      data: [
+
+      {        
+        type: "column",  
+        showInLegend: true, 
+        legendMarkerColor: "grey",
+        legendText: "years",
+        dataPoints: [      
+        {% autoescape off %} 
+                                {{datachart2}}
+                             {% endautoescape %}     
+        ]
+      }   
+      ]
+    });
+
+    chart2.render();
+
 }
 </script>
 <script type="text/javascript" charset="utf-8">
@@ -388,5 +440,7 @@ $(function() {
             </tr>
  </table>
 
+<div id="chartContainer2" style="height: 700px; width: 100%;">
+	</div>
 
 {% endblock %}

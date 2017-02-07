@@ -23,6 +23,69 @@
 {% endblock %}
 
 {% block main %}
+
+<script type="text/javascript">
+    
+    window.onload = function () {
+
+    var chart2 = new CanvasJS.Chart("chartContainer2",
+    {
+      title:{
+	text: "Total reports",
+        fontSize: 20
+			
+        
+      },
+      animationEnabled: true,
+      
+      axisY: {
+            title: "number of reports",
+            titleFontSize: 16,
+            labelFontSize: 16,
+    },
+    axisX: {
+            labelFontSize: 10,
+            labelMaxWidth:70,
+            interval: 1,
+    },
+                        
+     
+      legend: {
+        verticalAlign: "bottom",
+        horizontalAlign: "center"
+      },
+      theme: "theme1",
+       // width:780,
+       //height:400,
+      data: [
+
+      {        
+        type: "column",  
+        showInLegend: true, 
+        legendMarkerColor: "grey",
+        legendText: "type of reports",
+        dataPoints: [      
+        {% autoescape off %} 
+                                {{datachart}}
+                             {% endautoescape %}     
+        ]
+      }   
+      ]
+    });
+
+    chart2.render();
+
+
+
+
+		
+}
+</script>
+<script src='{% static "/static/canvasjs/canvasjs.min.js" %}'></script>
+
+
+
+
   {% if user.is_superuser %} 
   <div class="pull-right">
       <a class="btn btn-mini btn-info" href="/admin/ippc/countrypage/{{ page.id }}">Edit page as Admin <small>(also contact point &amp; editors relation)</a><br>
@@ -121,8 +184,11 @@
         </tbody>
         
      </table> 
-     
-       
+
+         
+<div id="chartContainer2" style="height: 300px; width:100%;">
+	</div>
+
          
    
       
