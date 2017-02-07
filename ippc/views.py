@@ -1076,6 +1076,29 @@ class CountryView(TemplateView):
             # 'editors': self.kwargs['editors']
             # 'profile_user': self.kwargs['profile_user']
         })
+        
+     
+        reporting_array = []
+        for i in range(1,5):
+            reps=ReportingObligation.objects.filter(country__country_slug=self.country,reporting_obligation_type=i,is_version=False)
+            reporting_array.append(reps.count())
+        
+        eventreporting_array = []
+        for i in range(1,6):
+            evrep=EventReporting.objects.filter(country__country_slug=self.country,event_rep_type=i,is_version=False)
+            eventreporting_array.append(evrep.count())
+        
+     
+        pestreporting_array = []
+        pests=PestReport.objects.filter(country__country_slug=self.country,is_version=False)
+        pestreporting_array.append(pests.count())
+        
+        datachart= '{label: "Description of NPPO", y: '+str(reporting_array[0])+'},{label: "Legislation: phytosanitary requirements/ restrictions/ prohibitions", y:  '+str(reporting_array[3])+'},{label: "Entry points", y:  '+str(reporting_array[1])+'},{label: "List of regulated pests", y: '+str(reporting_array[2])+'},{label: "Pest reports", y: '+str(pestreporting_array[0])+'},{label: "Organizational arrangements of plant protection", y: '+str(eventreporting_array[2])+'},{label: "Rationale for phytosanitary requirements", y: '+str(eventreporting_array[4])+'},{label: "Non-compliance", y:  '+str(eventreporting_array[1])+'},{label: "Pest status", y:'+str(eventreporting_array[3])+'},{label: "Emergency action", y: '+str(eventreporting_array[0])+'},'
+
+        context['datachart']=datachart
+        
+        
+        
         return context
 
 
@@ -5369,7 +5392,7 @@ class CountryStatisticsTotalNroByYearListView(ListView):
             curryear=int(self.kwargs['year'])
             num_years=curryear-2005
         else :   
-            curryear=timezone.now().year   
+            curryear=timezone.now().year -1  
             num_years=curryear-2005
 
         rep_array=[]
@@ -5443,7 +5466,13 @@ class CountryStatisticsTotalNroByYearListView(ListView):
             i=i+1
             totyearsarray.append(totyear)
             totyears1array.append(totyear1)
-            
+      
+        datachart2=''
+        i=0
+        for y in range(2005,curryear +1):
+           datachart2+='{ y:'+ str(totyears1array[i])+', label: '+str(y)+'},'
+           i=i+1
+           
         context['totyearsarray']=totyearsarray
         context['totyears1array']=totyears1array
        
@@ -5458,7 +5487,8 @@ class CountryStatisticsTotalNroByYearListView(ListView):
         context['pest_array1']=pest_array1
             
         context['datachart']=datachart
-        
+        context['datachart2']=datachart2
+       
         
             
         context['datachart1']=datachart1
