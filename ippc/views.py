@@ -5000,26 +5000,33 @@ class CountryStatsSingleReportsListView(ListView):
                 cNewE=0
                 cUpE=0
                 for c in countriesperregioncp:
-                    
+                    reps_count=0
+                    evs_count=0
                     reps=ReportingObligation.objects.filter(country=c.id,reporting_obligation_type=i,is_version=False)
                     
                     for r in reps:
+                        if r.publication_date != None and r.publication_date.year <= curryear:
+                            reps_count= reps_count+1
                         if r.publication_date != None and r.publication_date.year == curryear:
                             cNewR+=1
                         if r.modify_date != None and r.modify_date.year == curryear:
                             cUpR+=1
                     evs=EventReporting.objects.filter(country=c.id,event_rep_type=i,is_version=False)
                     for e in evs:
+                        if e.publication_date != None and e.publication_date.year <= curryear:
+                            evs_count=evs_count+1
                         if e.publication_date != None and e.publication_date.year == curryear:
                              cNewE+=1
                         if e.modify_date != None and e.modify_date.year == curryear:
                             cUpE+=1
-                    countRep+=reps.count()
-                    countEv+=evs.count()
+                    #countRep+=reps.count()
+                    #countEv+=evs.count()
+                    countRep+=reps_count
+                    countEv+=evs_count
                     
-                    if reps.count()>0:
+                    if reps_count>0:#reps.count()>0:
                         numRepCN+=1
-                    if evs.count()>0:
+                    if evs_count>0:#evs.count()>0:
                         numEvsCN+=1
              
                             
@@ -5051,13 +5058,16 @@ class CountryStatsSingleReportsListView(ListView):
             cUpP=0
             for c in countriesperregioncp:
                 pests= PestReport.objects.filter(country=c.id,is_version=False)
+                p_count=0
                 for p in pests:
+                    if p.publish_date != None and p.publish_date.year <= curryear:
+                        p_count=p_count+1
                     if p.publish_date != None and p.publish_date.year == curryear:
                          cNewP+=1
                     if p.modify_date != None and p.modify_date.year == curryear:
                         cUpP+=1
-                countP+=pests.count()
-                if pests.count()>0:
+                countP+=p_count#pests.count()
+                if p_count>0:#pests.count()>0:
                     numRepP+=1    
             numCP_P.append(numRepP)
             numCP_P.append(countP)
