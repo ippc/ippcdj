@@ -10308,8 +10308,11 @@ def generate_report(request, country,sessionid=None):
             str_m_17=ugettext(dict(VAL_PERCENT)[module1.m_17])
             str_m_18=ugettext(dict(VAL_PERCENT)[module1.m_18])
             str_m_19=ugettext(dict(VAL_PERCENT)[module1.m_19])
-            str_m1m22=str(ugettext(m1m22))
-            str_m1m23=str(ugettext(m1m23))
+           # print(m1m22)
+            #print(ugettext(str(m1m22)))
+            str_m1m23=str(m1m23)
+            str_m1m22=str(m1m22)
+            
             str_m_24=ugettext(dict(NUM_BILATERAL)[module1.m_24])
             str_m_25=ugettext(dict(NUM_BILATERAL)[module1.m_25])
             str_m1m26=str(m1m26)
@@ -10346,8 +10349,8 @@ def generate_report(request, country,sessionid=None):
             str_27 =_("  more negotiations are in progress.\n\nDuring the last few years, major aid programs that have significantly contributed to phytosanitary capacity development or strengthening in the country include : ")+""
 
 
-            print('------------------------------------------------------------aaa----------')
-            print(countryname+str_1+regionname+str_2+str_m_3+str_3+str_m_4+str_4+str_m_5+str_5+str_m_6+str_6+str_m1m7+str_7+str_m1m8+str_8+str_m_9+str_9+countryname+str_10+str_m1m20+str_11+str_m1m11+str_12+str_m_12+str_13+countryname+str_14+str_m1m21+str_15+str_m_13+str_16+str_m_14+str_17+str_m_15+str_18+str_m_16+str_19+str_m_17+str_20+str_m_18+str_21+str_m_19+str_22+countryname+str_23+str_m1m22+str_24+str_m1m23+str_25+str_m_24+str_26+str_m_25+str_27+str_m1m26)
+           # print('------------------------------------------------------------aaa----------')
+           # print(countryname+str_1+regionname+str_2+str_m_3+str_3+str_m_4+str_4+str_m_5+str_5+str_m_6+str_6+str_m1m7+str_7+str_m1m8+str_8+str_m_9+str_9+countryname+str_10+str_m1m20+str_11+str_m1m11+str_12+str_m_12+str_13+countryname+str_14+str_m1m21+str_15+str_m_13+str_16+str_m_14+str_17+str_m_15+str_18+str_m_16+str_19+str_m_17+str_20+str_m_18+str_21+str_m_19+str_22+countryname+str_23+str_m1m22+str_24+str_m1m23+str_25+str_m_24+str_26+str_m_25+str_27+str_m1m26)
 
              
             #p=document.add_paragraph(""+countryname+str(_(" is a country situated in "))+regionname+_(".  It has population of about ")+str_m_3+_(". Total land area is ")+str_m_4+_(" sq.km. with a total arable land area of ")+str_m_5+_(" sq.km. Total natural vegetation occupies ")+str_m_6+_(" sq.km.\n\nThe major crops grown in the country are: ")+str_m1m7+_(".\n\nTen major imports of plant and plant products are: ")+str_m1m8+_(". Total value of imports of plant and plant products (including forestry products) amounted to ")+str_m_9+_(" in ")+countryname+_("'s  major trading partners in plants and plant products imports are ")+str_m1m20+_(".\n\nTen major exports of plant and plant products are: ")+str_m1m11+_(". Total value of exports of plant and plant products (including forestry products) amounted to ")+str_m_12+_(" in ")+countryname+_("''s major trading partners in plants and plant products exports are ")+str_m1m21+_(". ")+str_m_13+_(" % of total exports (includes Forestry) are re-export consignments.\n\nThe Gross National Income (GNI) per capita is estimated at ")+str_m_14+_(" US $; latest GDP in US $ (World Bank) is ")+str_m_15+_(". Percentage contribution of agriculture (including forestry) to GDP is about ")+str_m_16+_(" %; with about ")+str_m_17+_(" % for plants and plant products (including forestry). The agricultural labour force (including forestry) as a percentage of total labour force is ")+str_m_18+_(" %. ")+str_m_19+_(" % of the agricultural labour force is directly employed in the production of plant and plant products (including forestry).\n\n")+countryname+_("  has membership of or is signatory to, the following organizations/ conventions: ")+str_m1m22+_(". It is a member of the following Regional economic integration/ co-operation organizations: ")+str_m1m23+_(". Currently there are ")+str_m_24+_(" bilateral phytosanitary arrangements in operation and ")+str_m_25+_("  more negotiations are in progress.\n\nDuring the last few years, major aid programs that have significantly contributed to phytosanitary capacity development or strengthening in the country include : ")+str_m1m26)
@@ -10372,7 +10375,7 @@ def generate_report(request, country,sessionid=None):
             document.add_paragraph()
             p=document.add_paragraph("")
             p.add_run(_("2.2. Identified Weakness:")).bold = True
-            
+            print(items)
             if '2' in items or '3' in items:
                 p=document.add_paragraph("")
                 p.add_run(_("Legislation and policy:")).bold = True
@@ -10383,17 +10386,17 @@ def generate_report(request, country,sessionid=None):
                 hdr_cells[0].text = _("Module")
                 hdr_cells[1].text = _("Weakness/Priority (highest priority 1)")
                 
-            for h in range(2,4):
-                i=str(h)
-                
-                if i == '2':
-                    row_cells = table.add_row().cells
-                    row_cells[0].text = _("Module")+' 2 -' + ugettext(m_names[2])
-                    row_cells[1].text = str( '1. '+w2.w1+'\n'+'2. '+w2.w2+'\n'+'3. '+w2.w3+'\n'+'4. '+w2.w4+'\n'+'5. '+w2.w5)
-                if i == '3':
-                    row_cells = table.add_row().cells
-                    row_cells[0].text = _("Module")+' 3 -' + ugettext(m_names[3])
-                    row_cells[1].text = str( '1. '+w3.w1+'\n'+'2. '+w3.w2+'\n'+'3. '+w3.w3+'\n'+'4. '+w3.w4+'\n'+'5. '+w3.w5)
+                for h in range(2,4):
+                    i=str(h)
+
+                    if i == '2' and '2' in items:
+                        row_cells = table.add_row().cells
+                        row_cells[0].text = _("Module")+' 2 -' + ugettext(m_names[2])
+                        row_cells[1].text = str( '1. '+w2.w1+'\n'+'2. '+w2.w2+'\n'+'3. '+w2.w3+'\n'+'4. '+w2.w4+'\n'+'5. '+w2.w5)
+                    if i == '3' and '3' in items:
+                        row_cells = table.add_row().cells
+                        row_cells[0].text = _("Module")+' 3 -' + ugettext(m_names[3])
+                        row_cells[1].text = str( '1. '+w3.w1+'\n'+'2. '+w3.w2+'\n'+'3. '+w3.w3+'\n'+'4. '+w3.w4+'\n'+'5. '+w3.w5)
 #
             if '4' in items or '5' in items or '6' in items:
                 document.add_paragraph()
@@ -10406,21 +10409,21 @@ def generate_report(request, country,sessionid=None):
                 hdr_cells[0].text = _("Module")
                 hdr_cells[1].text = _("Weakness/Priority (highest priority 1)")
                 
-            for h in range(4,7):
-                i=str(h)
-                if  i == '4':
-                    row_cells = table.add_row().cells
-                    row_cells[0].text = _("Module")+' 4 -' +ugettext(m_names[4])
-                    row_cells[1].text = str( '1. '+w4.w1+'\n'+'2. '+w4.w2+'\n'+'3. '+w4.w3+'\n'+'4. '+w4.w4+'\n'+'5. '+w4.w5)
-                if i == '5' :
-                    row_cells = table.add_row().cells
-                    row_cells[0].text = _("Module")+' 5 -' + ugettext(m_names[5])
-                    row_cells[1].text = str( '1. '+w5.w1+'\n'+'2. '+w5.w2+'\n'+'3. '+w5.w3+'\n'+'4. '+w5.w4+'\n'+'5. '+w5.w5)
-                if  i == '6' :
-                    row_cells = table.add_row().cells
-                    row_cells[0].text = _("Module")+' 6 -' + ugettext(m_names[6])
-                    row_cells[1].text = str( '1. '+w6.w1+'\n'+'2. '+w6.w2+'\n'+'3. '+w6.w3+'\n'+'4. '+w6.w4+'\n'+'5. '+w6.w5)
-       
+                for h in range(4,7):
+                    i=str(h)
+                    if  i == '4' and '4' in items:
+                        row_cells = table.add_row().cells
+                        row_cells[0].text = _("Module")+' 4 -' +ugettext(m_names[4])
+                        row_cells[1].text = str( '1. '+w4.w1+'\n'+'2. '+w4.w2+'\n'+'3. '+w4.w3+'\n'+'4. '+w4.w4+'\n'+'5. '+w4.w5)
+                    if i == '5'  and '5' in items:
+                        row_cells = table.add_row().cells
+                        row_cells[0].text = _("Module")+' 5 -' + ugettext(m_names[5])
+                        row_cells[1].text = str( '1. '+w5.w1+'\n'+'2. '+w5.w2+'\n'+'3. '+w5.w3+'\n'+'4. '+w5.w4+'\n'+'5. '+w5.w5)
+                    if  i == '6' and '6' in items :
+                        row_cells = table.add_row().cells
+                        row_cells[0].text = _("Module")+' 6 -' + ugettext(m_names[6])
+                        row_cells[1].text = str( '1. '+w6.w1+'\n'+'2. '+w6.w2+'\n'+'3. '+w6.w3+'\n'+'4. '+w6.w4+'\n'+'5. '+w6.w5)
+
            
             if '7' in items or '8' in items or '9' in items or '10' in items or '11' in items or '12' in items or '13' in items:
                 document.add_paragraph()
@@ -10433,38 +10436,38 @@ def generate_report(request, country,sessionid=None):
                 hdr_cells[0].text = _("Module")
                 hdr_cells[1].text = _("Weakness/Priority (highest priority 1)")
                 
-            for h in range(7,14):
-                i=str(h)
-                if i == '7':
-                    row_cells = table.add_row().cells
-                    row_cells[0].text = _("Module")+' 7 -' +ugettext(m_names[7])
-                    row_cells[1].text = str( '1. '+w7.w1+'\n'+'2. '+w7.w2+'\n'+'3. '+w7.w3+'\n'+'4. '+w7.w4+'\n'+'5. '+w7.w5)
-                if i == '8':
-                    row_cells = table.add_row().cells
-                    row_cells[0].text = _("Module")+' 8 -' +ugettext(m_names[8])
-                    row_cells[1].text = str( '1. '+w8.w1+'\n'+'2. '+w8.w2+'\n'+'3. '+w8.w3+'\n'+'4. '+w8.w4+'\n'+'5. '+w8.w5)
-                if i == '9':
-                    row_cells = table.add_row().cells
-                    row_cells[0].text = _("Module")+' 9 -' + ugettext(m_names[9])
-                    row_cells[1].text = str( '1. '+w9.w1+'\n'+'2. '+w9.w2+'\n'+'3. '+w9.w3+'\n'+'4. '+w9.w4+'\n'+'5. '+w9.w5)
-                if i == '10':
-                    row_cells = table.add_row().cells
-                    row_cells[0].text = _("Module")+' 10 -' +ugettext(m_names[10])
-                    row_cells[1].text = str( '1. '+w10.w1+'\n'+'2. '+w10.w2+'\n'+'3. '+w10.w3+'\n'+'4. '+w10.w4+'\n'+'5. '+w10.w5)
-                if i == '11':
-                    row_cells = table.add_row().cells
-                    row_cells[0].text = _("Module")+' 11 -' +ugettext(m_names[11])
-                    row_cells[1].text = str( '1. '+w11.w1+'\n'+'2. '+w11.w2+'\n'+'3. '+w11.w3+'\n'+'4. '+w11.w4+'\n'+'5. '+w11.w5)
-                if i == '12':
-                    row_cells = table.add_row().cells
-                    row_cells[0].text = _("Module")+' 12 -' +ugettext(m_names[12])
-                    row_cells[1].text = str( '1. '+w12.w1+'\n'+'2. '+w12.w2+'\n'+'3. '+w12.w3+'\n'+'4. '+w12.w4+'\n'+'5. '+w12.w5)
-                if i == '13':
-                    row_cells = table.add_row().cells
-                    row_cells[0].text = _("Module")+' 13 -' +ugettext(m_names[13])
-                    row_cells[1].text = str( '1. '+w13.w1+'\n'+'2. '+w13.w2+'\n'+'3. '+w13.w3+'\n'+'4. '+w13.w4+'\n'+'5. '+w13.w5)
-               
-        
+                for h in range(7,14):
+                    i=str(h)
+                    if i == '7' and '7' in items:
+                        row_cells = table.add_row().cells
+                        row_cells[0].text = _("Module")+' 7 -' +ugettext(m_names[7])
+                        row_cells[1].text = str( '1. '+w7.w1+'\n'+'2. '+w7.w2+'\n'+'3. '+w7.w3+'\n'+'4. '+w7.w4+'\n'+'5. '+w7.w5)
+                    if i == '8' and '8' in items:
+                        row_cells = table.add_row().cells
+                        row_cells[0].text = _("Module")+' 8 -' +ugettext(m_names[8])
+                        row_cells[1].text = str( '1. '+w8.w1+'\n'+'2. '+w8.w2+'\n'+'3. '+w8.w3+'\n'+'4. '+w8.w4+'\n'+'5. '+w8.w5)
+                    if i == '9' and '9' in items:
+                        row_cells = table.add_row().cells
+                        row_cells[0].text = _("Module")+' 9 -' + ugettext(m_names[9])
+                        row_cells[1].text = str( '1. '+w9.w1+'\n'+'2. '+w9.w2+'\n'+'3. '+w9.w3+'\n'+'4. '+w9.w4+'\n'+'5. '+w9.w5)
+                    if i == '10' and '10' in items:
+                        row_cells = table.add_row().cells
+                        row_cells[0].text = _("Module")+' 10 -' +ugettext(m_names[10])
+                        row_cells[1].text = str( '1. '+w10.w1+'\n'+'2. '+w10.w2+'\n'+'3. '+w10.w3+'\n'+'4. '+w10.w4+'\n'+'5. '+w10.w5)
+                    if i == '11' and '11' in items:
+                        row_cells = table.add_row().cells
+                        row_cells[0].text = _("Module")+' 11 -' +ugettext(m_names[11])
+                        row_cells[1].text = str( '1. '+w11.w1+'\n'+'2. '+w11.w2+'\n'+'3. '+w11.w3+'\n'+'4. '+w11.w4+'\n'+'5. '+w11.w5)
+                    if i == '12' and '12' in items:
+                        row_cells = table.add_row().cells
+                        row_cells[0].text = _("Module")+' 12 -' +ugettext(m_names[12])
+                        row_cells[1].text = str( '1. '+w12.w1+'\n'+'2. '+w12.w2+'\n'+'3. '+w12.w3+'\n'+'4. '+w12.w4+'\n'+'5. '+w12.w5)
+                    if i == '13' and '13' in items:
+                        row_cells = table.add_row().cells
+                        row_cells[0].text = _("Module")+' 13 -' +ugettext(m_names[13])
+                        row_cells[1].text = str( '1. '+w13.w1+'\n'+'2. '+w13.w2+'\n'+'3. '+w13.w3+'\n'+'4. '+w13.w4+'\n'+'5. '+w13.w5)
+
+
             document.add_paragraph()
             p=document.add_paragraph("")
             p.add_run(_("3. Methodology:")).bold = True
@@ -10910,653 +10913,659 @@ def generate_report(request, country,sessionid=None):
             p.add_run(_("Human Resources")).bold = True
             p=document.add_paragraph("")
             
-            
-            p.add_run(_("Module")+" 7 - "+ugettext(m_names[7])).bold = True
-            p=document.add_paragraph("")
-            p.add_run(_("Pest diagnostic laboratory current human resources")).bold = True
-            
-            table = document.add_table(rows=1, cols=7)
-            table.style = document.styles['Table Grid']
-            
-           
-            hdr_cells = table.rows[0].cells
-            hdr_cells[0].text = ''
-            hdr_cells[1].text = ''
-            hdr_cells[2].text = ''
-            hdr_cells[3].text = ''
-            hdr_cells[4].text = ''
-            hdr_cells[5].text = ''
-            hdr_cells[6].text = ''
-           
-            hdr_cells[1].merge(hdr_cells[4])
-            hdr_cells[5].merge(hdr_cells[6])
-            hdr_cells[1].text = _("Current")
-            hdr_cells[5].text = _("Required")
-            row_cells = table.add_row().cells
-            row_cells[0].text = ''
-            row_cells[2].text = ''
-            row_cells[4].text = ''
-            row_cells[5].text = ''
-            row_cells[6].text = ''
-            row_cells[1].merge(row_cells[2])
-            row_cells[3].merge(row_cells[4])
-            row_cells[5].merge(row_cells[6])
-            row_cells[1].text = _("PEST DIAGNOSTIC AND SUPPORT STAFF")
-            row_cells[3].text = _("LABORATORY MANAGERS")
-          
-            row_cells = table.add_row().cells
-            row_cells[0].text = ''
-            row_cells[1].text = _("No. of Staff")
-            row_cells[2].text = _("Average years of experience")
-            row_cells[3].text = _("No. of Staff")
-            row_cells[4].text = _("Average years of experience")
-            row_cells[5].text = _("Diagnostic /support")
-            row_cells[6].text = _("Managers")
-          
-            mod7 = get_object_or_404(Module7, session_id=sessionid)
-            q23 = Module7Matrix23.objects.filter(module7=mod7.id)
-           
-                        
-            bb=0
-            for qq in q23:
-                  
-               if bb == 0:
-                    tt=_("Mycology")
-               if bb == 4:
-                    tt=_("Virology")
-               if bb == 8:
-                    tt=_("Nematology")
-               if bb == 12:
-                    tt=_("Weed science")
-               if bb == 16:
-                    tt=_("Entomology")
-               if bb == 20:
-                    tt=_("LMOs")
-               if bb == 24:
-                    tt=_("BCAs")
-               if bb == 28:
-                    tt=_("Plants For Planting")
-               if bb == 32:
-                    tt=_("Treatments")
-               if bb == 36:
-                    tt=_("Economist")
-               if bb == 40:
-                    tt=_("Staticians")
-               if bb == 44:
-                    tt=_("Crop specialists")
-               if bb == 48:
-                    tt=_("Technical support and administrative staff")
-               if bb == 0 or  bb == 4 or  bb == 8 or  bb == 12 or  bb == 16 or  bb == 20 or  bb == 24 or  bb == 28 or  bb == 32 or  bb == 36 or  bb == 40 or  bb == 44 or  bb == 48:
-                   aa=_("Doctoral equivalent")
-               if bb == 1 or  bb == 5 or  bb == 9 or  bb == 13 or  bb == 17 or  bb == 21 or  bb == 25 or  bb == 29 or  bb == 33 or  bb == 37 or  bb == 41 or  bb == 45 or  bb == 49:
-                   aa=_("Master equivalent")
-               if bb == 2 or  bb == 6 or  bb == 10 or  bb == 13 or  bb == 18 or  bb == 22 or  bb == 26 or  bb == 30 or  bb == 34 or  bb == 38 or  bb == 42 or  bb == 46 or  bb == 50:
-                   aa=_("Bachelor equivalent")
-               if bb == 3 or  bb == 7 or  bb == 11 or  bb == 15 or  bb == 19 or  bb == 23 or  bb == 27 or  bb == 31 or  bb == 35 or  bb == 39 or  bb == 43 or  bb == 47 or  bb == 51:
-                   aa=_("Lower than bachelor level")
-                
-               if bb == 0 or  bb == 4 or  bb == 8 or  bb == 12 or  bb == 16 or  bb == 20 or  bb == 24 or  bb == 28 or  bb == 32 or  bb == 36 or  bb == 40 or  bb == 44 or  bb == 48:
-                    row_cells = table.add_row().cells
-                    row_cells[1].text = ''
-                    row_cells[2].text = ''
-                    row_cells[3].text = ''
-                    row_cells[4].text = ''
-                    row_cells[5].text = ''
-                    row_cells[6].text = ''
-                    row_cells[0].merge(row_cells[6])
-                    row_cells[0].text = tt
-                  
-               row_cells = table.add_row().cells
-               row_cells[0].text = aa
-               row_cells[1].text = str(qq.nstaff)
-               row_cells[2].text = str(dict(VAL_AV)[qq.average])
-               row_cells[3].text = str(qq.nstafflab)
-               row_cells[4].text = str(dict(VAL_AV)[qq.averagelab])
-               row_cells[5].text = str(dict(BOOL_CHOICESM_M)[qq.support])
-               row_cells[6].text = str(dict(BOOL_CHOICESM_M)[qq.managers])
-               
-               
-               bb=bb+1 
-               
-            p=document.add_paragraph("")
-            p=document.add_paragraph("")
-            p=document.add_paragraph("")
-            p.add_run(_("Module ")+" 8 - "+ugettext(m_names[8])).bold = True
-            p=document.add_paragraph("")
-            p.add_run(_("The human resources of the pest surveillance activities")).bold = True
-         
-       
-            
-            table = document.add_table(rows=1, cols=7)
-            table.style = document.styles['Table Grid']
-           
-            hdr_cells = table.rows[0].cells
-            hdr_cells[0].text = ''
-            hdr_cells[1].text = ''
-            hdr_cells[2].text = ''
-            hdr_cells[3].text = ''
-            hdr_cells[4].text = ''
-            hdr_cells[5].text = ''
-            hdr_cells[6].text = ''
-           
-            hdr_cells[1].merge(hdr_cells[4])
-            hdr_cells[5].merge(hdr_cells[6])
-            hdr_cells[1].text = _("Current")
-            hdr_cells[5].text = _("Required")
-          
-            
-            
-            
-            row_cells = table.add_row().cells
-            row_cells[0].text = ''
-            row_cells[2].text = ''
-            row_cells[4].text = ''
-            row_cells[5].text = ''
-            row_cells[6].text = ''
-          
-            row_cells[1].merge(row_cells[2])
-            row_cells[3].merge(row_cells[4])
-            row_cells[5].merge(row_cells[6])
-            row_cells[1].text = _("PEST SURVEILLANCE AND SUPPORT STAFF")
-            row_cells[3].text = _("SURVEILLANCE MANAGERS")
-          
-            row_cells = table.add_row().cells
-            row_cells[0].text = ''
-            row_cells[1].text = _("No. of Staff")
-            row_cells[2].text = _("Average years of experience")
-            row_cells[3].text = _("No. of Staff")
-            row_cells[4].text = _("Average years of experience")
-            row_cells[5].text = _("Surveillance/support")
-            row_cells[6].text = _("Managers")
-          
-            mod8 = get_object_or_404(Module8, session_id=sessionid)
-            q29 = Module8Matrix30.objects.filter(module8=mod8.id)
-           
-                        
-            bb=0
-            for qq in q29:
-                  
-               if bb == 0:
-                    tt=_("General surveillance")
-               if bb == 4:
-                    tt=_("Specific surveillance")
+            if '7' in items:
+                p.add_run(_("Module")+" 7 - "+ugettext(m_names[7])).bold = True
+                p=document.add_paragraph("")
+                p.add_run(_("Pest diagnostic laboratory current human resources")).bold = True
 
-               if bb == 8:
-                    tt=_("Total")
-              
-               if bb == 0 or  bb == 4 or  bb == 8:
-                   aa=_("Doctoral equivalent")
-               if bb == 1 or  bb == 5 or  bb == 9: 
-                   aa=_("Master equivalent")
-               if bb == 2 or  bb == 6 or  bb == 10:
-                   aa=_("Bachelor equivalent")
-               if bb == 3 or  bb == 7 or  bb == 11:
-                   aa=_("Lower than bachelor level")
-                
-               if bb == 0 or  bb == 4 or  bb == 8:
-                    row_cells = table.add_row().cells
-                    row_cells[1].text = ''
-                    row_cells[2].text = ''
-                    row_cells[3].text = ''
-                    row_cells[4].text = ''
-                    row_cells[5].text = ''
-                    row_cells[6].text = ''
-                    row_cells[0].merge(row_cells[6])
-                    row_cells[0].text = tt
-                  
-               row_cells = table.add_row().cells
-               row_cells[0].text = aa
-               row_cells[1].text = str(qq.nstaff)
-               row_cells[2].text = str(dict(VAL_AV)[qq.average])
-               row_cells[3].text = str(qq.nstafflab)
-               row_cells[4].text = str(dict(VAL_AV)[qq.averagelab])
-               row_cells[5].text = str(dict(BOOL_CHOICESM_M)[qq.support])
-               row_cells[6].text = str(dict(BOOL_CHOICESM_M)[qq.managers])
-               
-               
-               bb=bb+1   
-            
-            p=document.add_paragraph("")
-            p=document.add_paragraph("")
-            p=document.add_paragraph("")
-            p.add_run(_("Module ")+" 9 - "+ugettext(m_names[9])).bold = True
-            p=document.add_paragraph("")
-            p.add_run(_("The human resources involved in eradication programmes")).bold = True
-         
-       
-            
-            table = document.add_table(rows=1, cols=7)
-            table.style = document.styles['Table Grid']
-           
-            hdr_cells = table.rows[0].cells
-            hdr_cells[0].text = ''
-            hdr_cells[1].text = ''
-            hdr_cells[2].text = ''
-            hdr_cells[3].text = ''
-            hdr_cells[4].text = ''
-            hdr_cells[5].text = ''
-            hdr_cells[6].text = ''
-           
-            hdr_cells[1].merge(hdr_cells[4])
-            hdr_cells[5].merge(hdr_cells[6])
-            hdr_cells[1].text = _("Current")
-            hdr_cells[5].text = _("Required")
-          
-            
-            
-            
-            row_cells = table.add_row().cells
-            row_cells[0].text = ''
-            row_cells[2].text = ''
-            row_cells[4].text = ''
-            row_cells[5].text = ''
-            row_cells[6].text = ''
-          
-            row_cells[1].merge(row_cells[2])
-            row_cells[3].merge(row_cells[4])
-            row_cells[5].merge(row_cells[6])
-            row_cells[1].text = _("Field and support Staff")
-            row_cells[3].text = _("Eradication managers")
-          
-            row_cells = table.add_row().cells
-            row_cells[0].text =''
-            row_cells[1].text = _("No. of Staff")
-            row_cells[2].text = _("Average years of experience")
-            row_cells[3].text = _("No. of Staff")
-            row_cells[4].text = _("Average years of experience")
-            row_cells[5].text = _("Field/support Stafft")
-            row_cells[6].text = _("Managers")
-          
-            mod9 = get_object_or_404(Module9, session_id=sessionid)
-            q35 = Module9Matrix35.objects.filter(module9=mod9.id)
-           
-                        
-            bb=0
-            for qq in q35:
-              
-               if bb == 0 :
-                   aa=_("Doctoral equivalent")
-               if bb == 1 : 
-                   aa=_("Master equivalent")
-               if bb == 2:
-                   aa=_("Bachelor equivalent")
-               if bb == 3:
-                   aa=_("Lower than bachelor level")
-                
-              
-               row_cells = table.add_row().cells
-               row_cells[0].text = aa
-               row_cells[1].text = str(qq.nstaff)
-               row_cells[2].text = str(dict(VAL_AV)[qq.average])
-               row_cells[3].text = str(qq.nstafflab)
-               row_cells[4].text = str(dict(VAL_AV)[qq.averagelab])
-               row_cells[5].text = str(dict(BOOL_CHOICESM_M)[qq.support])
-               row_cells[6].text = str(dict(BOOL_CHOICESM_M)[qq.managers])
-               
-               
-               bb=bb+1   
-           
-            p=document.add_paragraph("")
-            p=document.add_paragraph("")
-            p=document.add_paragraph("")
-            p.add_run(_("Module ")+" 10 - "+ugettext(m_names[10])).bold = True
-            p=document.add_paragraph("")
-            p.add_run(_("The import regulatory system human resour")).bold = True
-         
-       
-            
-            table = document.add_table(rows=1, cols=9)
-            table.style = document.styles['Table Grid']
-           
-            hdr_cells = table.rows[0].cells
-            hdr_cells[0].text = ''
-            hdr_cells[1].text = ''
-            hdr_cells[2].text = ''
-            hdr_cells[3].text = ''
-            hdr_cells[4].text = ''
-            hdr_cells[5].text = ''
-            hdr_cells[6].text = ''
-            hdr_cells[7].text = ''
-            hdr_cells[8].text = ''
-           
-            hdr_cells[1].merge(hdr_cells[5])
-            hdr_cells[6].merge(hdr_cells[8])
-            hdr_cells[1].text = _("Current")
-            hdr_cells[6].text = _("Required")
-          
-            
-            
-            
-            row_cells = table.add_row().cells
-            row_cells[0].text = ''
-            row_cells[1].text = ''
-            row_cells[2].text = ''
-            row_cells[3].text = ''
-            row_cells[4].text = ''
-            row_cells[5].text = ''
-            hdr_cells[6].text = ''
-            hdr_cells[7].text = ''
-            hdr_cells[8].text = ''
-           
-            row_cells[1].merge(row_cells[2])
-            row_cells[3].merge(row_cells[4])
-            #row_cells[5].merge(row_cells[6])
-            row_cells[6].merge(row_cells[8])
-            row_cells[1].text = _("TECHNICAL")
-            row_cells[3].text = _("IMPORT MANAGERS")
-            row_cells[5 ].text = _("SUPPORT STAFF")
-          
-            row_cells = table.add_row().cells
-            row_cells[0].text = ''
-            row_cells[1].text = _("No. of Staff")
-            row_cells[2].text = _("Average years of experience")
-            row_cells[3].text = _("No. of Staff")
-            row_cells[4].text = _("Average years of experience")
-            row_cells[5].text = _("No. of Staff")
-            row_cells[6].text = _("Technical")
-            row_cells[7].text = _("Managers")
-            row_cells[8].text = _("Support")
-          
-            mod10 = get_object_or_404(Module10, session_id=sessionid)
-            q47 = Module10Matrix_47.objects.filter(module10=mod10.id)
-           
-                        
-            bb=0
-            for qq in q47:
-              
-               if bb == 0 :
-                   aa=_("Doctoral equivalent")
-               if bb == 1 : 
-                   aa=_("Master equivalent")
-               if bb == 2:
-                   aa=_("Bachelor equivalent")
-               if bb == 3:
-                   aa=_("Lower than bachelor level")
-    
-               row_cells = table.add_row().cells
-               row_cells[0].text = aa
-               row_cells[1].text = str(qq.nstaff)
-               row_cells[2].text = str(dict(VAL_AV)[qq.average])
-               row_cells[3].text = str(qq.nstafflab)
-               row_cells[4].text = str(dict(VAL_AV)[qq.averagelab])
-               row_cells[5].text = str(qq.supstafflab)
-               row_cells[6].text = str(dict(BOOL_CHOICESM_M)[qq.technical])
-               row_cells[7].text = str(dict(BOOL_CHOICESM_M)[qq.managers])
-               row_cells[8].text = str(dict(BOOL_CHOICESM_M)[qq.support])
-          
-               
-               bb=bb+1   
-            p=document.add_paragraph("")
-            p=document.add_paragraph("")
-            p=document.add_paragraph("")
-            p.add_run(_("Module ")+" 11 - "+ugettext(m_names[11])).bold = True
-            p=document.add_paragraph("")
-            p.add_run(_("The human resources of the NPPO PRA programme")).bold = True
-            
-            table = document.add_table(rows=1, cols=5)
-            table.style = document.styles['Table Grid']
-            
-           
-            hdr_cells = table.rows[0].cells
-            hdr_cells[0].text = ''
-            hdr_cells[1].text = ''
-            hdr_cells[2].text = ''
-            hdr_cells[3].text = ''
-            hdr_cells[4].text = ''
-           
-           
-            hdr_cells[1].merge(hdr_cells[3])
-            hdr_cells[1].text = _("Current")
-            hdr_cells[4].text = _("Required")
-            row_cells = table.add_row().cells
-            row_cells[0].text = ''
-            row_cells[1].text = ''
-            row_cells[2].text = ''
-            row_cells[3].text = ''
-            row_cells[4].text = ''
-           
-            row_cells[1].merge(row_cells[2])
-            row_cells[1].text = _("Full Time Staff")
-            row_cells[3].text = _("Ad hoc Staff")
-          
-            row_cells = table.add_row().cells
-            row_cells[0].text = ''
-            row_cells[1].text = _("No. of Staff")
-            row_cells[2].text = _("Average years of experience")
-            row_cells[3].text = _("No. of Staff")
-            row_cells[4].text = _("Required")
-          
-            mod11 = get_object_or_404(Module11, session_id=sessionid)
-            q42 = Module11Matrix42.objects.filter(module11=mod11.id)
-           
-                        
-            bb=0
-            for qq in q42:
-                  
-               if bb == 0:
-                    tt=_("Mycology")
-               if bb == 4:
-                    tt=_("Virology")
-               if bb == 8:
-                    tt=_("Nematology")
-               if bb == 12:
-                    tt=_("Weed science")
-               if bb == 16:
-                    tt=_("Entomology")
-               if bb == 20:
-                    tt=_("LMOs")
-               if bb == 24:
-                    tt=_("BCAs")
-               if bb == 28:
-                    tt=_("Plants For Planting")
-               if bb == 32:
-                    tt=_("Treatments")
-               if bb == 36:
-                    tt=_("Economist")
-               if bb == 40:
-                    tt=_("Staticians")
-               if bb == 44:
-                    tt=_("Crop specialists")
-               if bb == 48:
-                    tt=_("Technical support and administrative staff")
-               if bb == 0 or  bb == 4 or  bb == 8 or  bb == 12 or  bb == 16 or  bb == 20 or  bb == 24 or  bb == 28 or  bb == 32 or  bb == 36 or  bb == 40 or  bb == 44 or  bb == 48:
-                   aa=_("Doctoral equivalent")
-               if bb == 1 or  bb == 5 or  bb == 9 or  bb == 13 or  bb == 17 or  bb == 21 or  bb == 25 or  bb == 29 or  bb == 33 or  bb == 37 or  bb == 41 or  bb == 45 or  bb == 49:
-                   aa=_("Master equivalent")
-               if bb == 2 or  bb == 6 or  bb == 10 or  bb == 13 or  bb == 18 or  bb == 22 or  bb == 26 or  bb == 30 or  bb == 34 or  bb == 38 or  bb == 42 or  bb == 46 or  bb == 50:
-                   aa=_("Bachelor equivalent")
-               if bb == 3 or  bb == 7 or  bb == 11 or  bb == 15 or  bb == 19 or  bb == 23 or  bb == 27 or  bb == 31 or  bb == 35 or  bb == 39 or  bb == 43 or  bb == 47 or  bb == 51:
-                   aa=_("Lower than bachelor level")
-                
-               if bb == 0 or  bb == 4 or  bb == 8 or  bb == 12 or  bb == 16 or  bb == 20 or  bb == 24 or  bb == 28 or  bb == 32 or  bb == 36 or  bb == 40 or  bb == 44 or  bb == 48:
-                    row_cells = table.add_row().cells
-                    row_cells[1].text = ''
-                    row_cells[2].text = ''
-                    row_cells[3].text = ''
-                    row_cells[4].text = ''
-                    row_cells[0].merge(row_cells[4])
-                    row_cells[0].text = tt
-                  
-               row_cells = table.add_row().cells
-               row_cells[0].text = aa
-               row_cells[1].text = str(qq.nstaff)
-               row_cells[2].text = str(dict(VAL_AV)[qq.average])
-               row_cells[3].text = str(qq.nstafflab)
-          
-               row_cells[4].text = str(dict(BOOL_CHOICESM_M)[qq.support])
-               
-               
-               bb=bb+1    
-            
-            p=document.add_paragraph("")
-            p=document.add_paragraph("")
-            p=document.add_paragraph("")
-            p.add_run(_("Module ")+" 12 - "+ugettext(m_names[12])).bold = True
-            p=document.add_paragraph("")
-            p.add_run(_("PFA/ALPP/PFPP/PFPS - human resources")).bold = True
-         
-       
-            
-            table = document.add_table(rows=1, cols=7)
-            table.style = document.styles['Table Grid']
-           
-            hdr_cells = table.rows[0].cells
-            hdr_cells[0].text = ''
-            hdr_cells[1].text = ''
-            hdr_cells[2].text = ''
-            hdr_cells[3].text = ''
-            hdr_cells[4].text = ''
-            hdr_cells[5].text = ''
-            hdr_cells[6].text = ''
-           
-            hdr_cells[1].merge(hdr_cells[4])
-            hdr_cells[5].merge(hdr_cells[6])
-            hdr_cells[1].text = _("Current")
-            hdr_cells[5].text = _("Required")
-          
-            
-            
-            
-            row_cells = table.add_row().cells
-            row_cells[0].text = ''
-            row_cells[2].text = ''
-            row_cells[4].text = ''
-            row_cells[5].text = ''
-            row_cells[6].text = ''
-          
-            row_cells[1].merge(row_cells[2])
-            row_cells[3].merge(row_cells[4])
-            row_cells[5].merge(row_cells[6])
-            row_cells[1].text = _("Field and support Staff")
-            row_cells[3].text = _("Eradication managers")
-          
-            row_cells = table.add_row().cells
-            row_cells[0].text = ''
-            row_cells[1].text = _("No. of Staff")
-            row_cells[2].text = _("Average years of experience")
-            row_cells[3].text = _("No. of Staff")
-            row_cells[4].text = _("Average years of experience")
-            row_cells[5].text = _("Field/support Staff")
-            row_cells[6].text = _("Support")
-          
-            mod12 = get_object_or_404(Module12, session_id=sessionid)
-            q22 = Module12Matrix22.objects.filter(module12=mod12.id)
-           
-                        
-            bb=0
-            for qq in q22:
-                  
-               if bb == 0 or  bb == 4 or  bb == 8:
-                   aa=_("Doctoral equivalent")
-               if bb == 1 or  bb == 5 or  bb == 9: 
-                   aa=_("Master equivalent")
-               if bb == 2 or  bb == 6 or  bb == 10:
-                   aa=_("Bachelor equivalent")
-               if bb == 3 or  bb == 7 or  bb == 11:
-                   aa=_("Lower than bachelor level")
-                
-                  
-               row_cells = table.add_row().cells
-               row_cells[0].text = aa
-               row_cells[1].text = str(qq.nstaff)
-               row_cells[2].text = str(dict(VAL_AV)[qq.average])
-               row_cells[3].text = str(qq.nstafflab)
-               row_cells[4].text = str(dict(VAL_AV)[qq.averagelab])
-               row_cells[5].text = str(dict(BOOL_CHOICESM_M)[qq.support])
-               row_cells[6].text = str(dict(BOOL_CHOICESM_M)[qq.managers])
-               
-               
-               bb=bb+1 
-               
-               
-            p=document.add_paragraph("")
-            p=document.add_paragraph("")
-            p=document.add_paragraph("")
-            p.add_run( _("Module ")+" 13 - "+ugettext(m_names[13])).bold = True
-            p=document.add_paragraph("")
-            p.add_run( _("The human resources in the NPPO export certification program")).bold = True
-         
-       
-            
-            table = document.add_table(rows=1, cols=7)
-            table.style = document.styles['Table Grid']
-           
-            hdr_cells = table.rows[0].cells
-            hdr_cells[0].text = ''
-            hdr_cells[1].text = ''
-            hdr_cells[2].text = ''
-            hdr_cells[3].text = ''
-            hdr_cells[4].text = ''
-            hdr_cells[5].text = ''
-            hdr_cells[6].text = ''
-           
-            hdr_cells[1].merge(hdr_cells[4])
-            hdr_cells[5].merge(hdr_cells[6])
-            hdr_cells[1].text =  _("Current")
-            hdr_cells[5].text =  _("Required")
-          
-            
-            
-            
-            row_cells = table.add_row().cells
-            row_cells[0].text = ''
-            row_cells[2].text = ''
-            row_cells[4].text = ''
-            row_cells[5].text = ''
-            row_cells[6].text = ''
-          
-            row_cells[1].merge(row_cells[2])
-            row_cells[3].merge(row_cells[4])
-            row_cells[5].merge(row_cells[6])
-            row_cells[1].text = _("Inspector and support Staff")
-            row_cells[3].text = _("Export managers")
-          
-            row_cells = table.add_row().cells
-            row_cells[0].text = ''
-            row_cells[1].text = _("No. of Staff")
-            row_cells[2].text = _("Average years of experience")
-            row_cells[3].text = _("No. of Staff")
-            row_cells[4].text = _("Average years of experience")
-            row_cells[5].text = _("Inspector/support Staff")
-            row_cells[6].text = _("Export managers")
-          
-            mod13 = get_object_or_404(Module13, session_id=sessionid)
-            q47 = Module13Matrix47.objects.filter(module13=mod13.id)
-           
-                        
-            bb=0
-            for qq in q47:
-               if bb == 0 or  bb == 4 or  bb == 8:
-                   aa=_("Doctoral equivalent")
-               if bb == 1 or  bb == 5 or  bb == 9: 
-                   aa=_("Master equivalent")
-               if bb == 2 or  bb == 6 or  bb == 10:
-                   aa=_("Bachelor equivalent")
-               if bb == 3 or  bb == 7 or  bb == 11:
-                   aa=_("Lower than bachelor level")
-                
-               if bb == 0 or  bb == 4 or  bb == 8:
-                    row_cells = table.add_row().cells
-                    row_cells[1].text = ''
-                    row_cells[2].text = ''
-                    row_cells[3].text = ''
-                    row_cells[4].text = ''
-                    row_cells[5].text = ''
-                    row_cells[6].text = ''
-                    row_cells[0].merge(row_cells[6])
-                    row_cells[0].text = tt
-                  
-               row_cells = table.add_row().cells
-               row_cells[0].text = aa
-               row_cells[1].text = str(qq.nstaff)
-               row_cells[2].text = str(dict(VAL_AV)[qq.average])
-               row_cells[3].text = str(qq.nstafflab)
-               row_cells[4].text = str(dict(VAL_AV)[qq.averagelab])
-               row_cells[5].text = str(dict(BOOL_CHOICESM_M)[qq.support])
-               row_cells[6].text = str(dict(BOOL_CHOICESM_M)[qq.managers])
-               
-               
-               bb=bb+1 
+                table = document.add_table(rows=1, cols=7)
+                table.style = document.styles['Table Grid']
+
+
+                hdr_cells = table.rows[0].cells
+                hdr_cells[0].text = ''
+                hdr_cells[1].text = ''
+                hdr_cells[2].text = ''
+                hdr_cells[3].text = ''
+                hdr_cells[4].text = ''
+                hdr_cells[5].text = ''
+                hdr_cells[6].text = ''
+
+                hdr_cells[1].merge(hdr_cells[4])
+                hdr_cells[5].merge(hdr_cells[6])
+                hdr_cells[1].text = _("Current")
+                hdr_cells[5].text = _("Required")
+                row_cells = table.add_row().cells
+                row_cells[0].text = ''
+                row_cells[2].text = ''
+                row_cells[4].text = ''
+                row_cells[5].text = ''
+                row_cells[6].text = ''
+                row_cells[1].merge(row_cells[2])
+                row_cells[3].merge(row_cells[4])
+                row_cells[5].merge(row_cells[6])
+                row_cells[1].text = _("PEST DIAGNOSTIC AND SUPPORT STAFF")
+                row_cells[3].text = _("LABORATORY MANAGERS")
+
+                row_cells = table.add_row().cells
+                row_cells[0].text = ''
+                row_cells[1].text = _("No. of Staff")
+                row_cells[2].text = _("Average years of experience")
+                row_cells[3].text = _("No. of Staff")
+                row_cells[4].text = _("Average years of experience")
+                row_cells[5].text = _("Diagnostic /support")
+                row_cells[6].text = _("Managers")
+
+                mod7 = get_object_or_404(Module7, session_id=sessionid)
+                q23 = Module7Matrix23.objects.filter(module7=mod7.id)
+
+
+                bb=0
+                for qq in q23:
+
+                   if bb == 0:
+                        tt=_("Mycology")
+                   if bb == 4:
+                        tt=_("Virology")
+                   if bb == 8:
+                        tt=_("Nematology")
+                   if bb == 12:
+                        tt=_("Weed science")
+                   if bb == 16:
+                        tt=_("Entomology")
+                   if bb == 20:
+                        tt=_("LMOs")
+                   if bb == 24:
+                        tt=_("BCAs")
+                   if bb == 28:
+                        tt=_("Plants For Planting")
+                   if bb == 32:
+                        tt=_("Treatments")
+                   if bb == 36:
+                        tt=_("Economist")
+                   if bb == 40:
+                        tt=_("Staticians")
+                   if bb == 44:
+                        tt=_("Crop specialists")
+                   if bb == 48:
+                        tt=_("Technical support and administrative staff")
+                   if bb == 0 or  bb == 4 or  bb == 8 or  bb == 12 or  bb == 16 or  bb == 20 or  bb == 24 or  bb == 28 or  bb == 32 or  bb == 36 or  bb == 40 or  bb == 44 or  bb == 48:
+                       aa=_("Doctoral equivalent")
+                   if bb == 1 or  bb == 5 or  bb == 9 or  bb == 13 or  bb == 17 or  bb == 21 or  bb == 25 or  bb == 29 or  bb == 33 or  bb == 37 or  bb == 41 or  bb == 45 or  bb == 49:
+                       aa=_("Master equivalent")
+                   if bb == 2 or  bb == 6 or  bb == 10 or  bb == 13 or  bb == 18 or  bb == 22 or  bb == 26 or  bb == 30 or  bb == 34 or  bb == 38 or  bb == 42 or  bb == 46 or  bb == 50:
+                       aa=_("Bachelor equivalent")
+                   if bb == 3 or  bb == 7 or  bb == 11 or  bb == 15 or  bb == 19 or  bb == 23 or  bb == 27 or  bb == 31 or  bb == 35 or  bb == 39 or  bb == 43 or  bb == 47 or  bb == 51:
+                       aa=_("Lower than bachelor level")
+
+                   if bb == 0 or  bb == 4 or  bb == 8 or  bb == 12 or  bb == 16 or  bb == 20 or  bb == 24 or  bb == 28 or  bb == 32 or  bb == 36 or  bb == 40 or  bb == 44 or  bb == 48:
+                        row_cells = table.add_row().cells
+                        row_cells[1].text = ''
+                        row_cells[2].text = ''
+                        row_cells[3].text = ''
+                        row_cells[4].text = ''
+                        row_cells[5].text = ''
+                        row_cells[6].text = ''
+                        row_cells[0].merge(row_cells[6])
+                        row_cells[0].text = tt
+
+                   row_cells = table.add_row().cells
+                   row_cells[0].text = aa
+                   row_cells[1].text = str(qq.nstaff)
+                   row_cells[2].text = str(dict(VAL_AV)[qq.average])
+                   row_cells[3].text = str(qq.nstafflab)
+                   row_cells[4].text = str(dict(VAL_AV)[qq.averagelab])
+                   row_cells[5].text = str(dict(BOOL_CHOICESM_M)[qq.support])
+                   row_cells[6].text = str(dict(BOOL_CHOICESM_M)[qq.managers])
+
+
+                   bb=bb+1 
+
+                p=document.add_paragraph("")
+                p=document.add_paragraph("")
+                p=document.add_paragraph("")
+            if '7' in items:
+                p.add_run(_("Module ")+" 8 - "+ugettext(m_names[8])).bold = True
+                p=document.add_paragraph("")
+                p.add_run(_("The human resources of the pest surveillance activities")).bold = True
+
+
+
+                table = document.add_table(rows=1, cols=7)
+                table.style = document.styles['Table Grid']
+
+                hdr_cells = table.rows[0].cells
+                hdr_cells[0].text = ''
+                hdr_cells[1].text = ''
+                hdr_cells[2].text = ''
+                hdr_cells[3].text = ''
+                hdr_cells[4].text = ''
+                hdr_cells[5].text = ''
+                hdr_cells[6].text = ''
+
+                hdr_cells[1].merge(hdr_cells[4])
+                hdr_cells[5].merge(hdr_cells[6])
+                hdr_cells[1].text = _("Current")
+                hdr_cells[5].text = _("Required")
+
+
+
+
+                row_cells = table.add_row().cells
+                row_cells[0].text = ''
+                row_cells[2].text = ''
+                row_cells[4].text = ''
+                row_cells[5].text = ''
+                row_cells[6].text = ''
+
+                row_cells[1].merge(row_cells[2])
+                row_cells[3].merge(row_cells[4])
+                row_cells[5].merge(row_cells[6])
+                row_cells[1].text = _("PEST SURVEILLANCE AND SUPPORT STAFF")
+                row_cells[3].text = _("SURVEILLANCE MANAGERS")
+
+                row_cells = table.add_row().cells
+                row_cells[0].text = ''
+                row_cells[1].text = _("No. of Staff")
+                row_cells[2].text = _("Average years of experience")
+                row_cells[3].text = _("No. of Staff")
+                row_cells[4].text = _("Average years of experience")
+                row_cells[5].text = _("Surveillance/support")
+                row_cells[6].text = _("Managers")
+
+                mod8 = get_object_or_404(Module8, session_id=sessionid)
+                q29 = Module8Matrix30.objects.filter(module8=mod8.id)
+
+
+                bb=0
+                for qq in q29:
+
+                   if bb == 0:
+                        tt=_("General surveillance")
+                   if bb == 4:
+                        tt=_("Specific surveillance")
+
+                   if bb == 8:
+                        tt=_("Total")
+
+                   if bb == 0 or  bb == 4 or  bb == 8:
+                       aa=_("Doctoral equivalent")
+                   if bb == 1 or  bb == 5 or  bb == 9: 
+                       aa=_("Master equivalent")
+                   if bb == 2 or  bb == 6 or  bb == 10:
+                       aa=_("Bachelor equivalent")
+                   if bb == 3 or  bb == 7 or  bb == 11:
+                       aa=_("Lower than bachelor level")
+
+                   if bb == 0 or  bb == 4 or  bb == 8:
+                        row_cells = table.add_row().cells
+                        row_cells[1].text = ''
+                        row_cells[2].text = ''
+                        row_cells[3].text = ''
+                        row_cells[4].text = ''
+                        row_cells[5].text = ''
+                        row_cells[6].text = ''
+                        row_cells[0].merge(row_cells[6])
+                        row_cells[0].text = tt
+
+                   row_cells = table.add_row().cells
+                   row_cells[0].text = aa
+                   row_cells[1].text = str(qq.nstaff)
+                   row_cells[2].text = str(dict(VAL_AV)[qq.average])
+                   row_cells[3].text = str(qq.nstafflab)
+                   row_cells[4].text = str(dict(VAL_AV)[qq.averagelab])
+                   row_cells[5].text = str(dict(BOOL_CHOICESM_M)[qq.support])
+                   row_cells[6].text = str(dict(BOOL_CHOICESM_M)[qq.managers])
+
+
+                   bb=bb+1   
+
+                p=document.add_paragraph("")
+                p=document.add_paragraph("")
+                p=document.add_paragraph("")
+            if '9' in items:
+                p.add_run(_("Module ")+" 9 - "+ugettext(m_names[9])).bold = True
+                p=document.add_paragraph("")
+                p.add_run(_("The human resources involved in eradication programmes")).bold = True
+
+
+
+                table = document.add_table(rows=1, cols=7)
+                table.style = document.styles['Table Grid']
+
+                hdr_cells = table.rows[0].cells
+                hdr_cells[0].text = ''
+                hdr_cells[1].text = ''
+                hdr_cells[2].text = ''
+                hdr_cells[3].text = ''
+                hdr_cells[4].text = ''
+                hdr_cells[5].text = ''
+                hdr_cells[6].text = ''
+
+                hdr_cells[1].merge(hdr_cells[4])
+                hdr_cells[5].merge(hdr_cells[6])
+                hdr_cells[1].text = _("Current")
+                hdr_cells[5].text = _("Required")
+
+
+
+
+                row_cells = table.add_row().cells
+                row_cells[0].text = ''
+                row_cells[2].text = ''
+                row_cells[4].text = ''
+                row_cells[5].text = ''
+                row_cells[6].text = ''
+
+                row_cells[1].merge(row_cells[2])
+                row_cells[3].merge(row_cells[4])
+                row_cells[5].merge(row_cells[6])
+                row_cells[1].text = _("Field and support Staff")
+                row_cells[3].text = _("Eradication managers")
+
+                row_cells = table.add_row().cells
+                row_cells[0].text =''
+                row_cells[1].text = _("No. of Staff")
+                row_cells[2].text = _("Average years of experience")
+                row_cells[3].text = _("No. of Staff")
+                row_cells[4].text = _("Average years of experience")
+                row_cells[5].text = _("Field/support Stafft")
+                row_cells[6].text = _("Managers")
+
+                mod9 = get_object_or_404(Module9, session_id=sessionid)
+                q35 = Module9Matrix35.objects.filter(module9=mod9.id)
+
+
+                bb=0
+                for qq in q35:
+
+                   if bb == 0 :
+                       aa=_("Doctoral equivalent")
+                   if bb == 1 : 
+                       aa=_("Master equivalent")
+                   if bb == 2:
+                       aa=_("Bachelor equivalent")
+                   if bb == 3:
+                       aa=_("Lower than bachelor level")
+
+
+                   row_cells = table.add_row().cells
+                   row_cells[0].text = aa
+                   row_cells[1].text = str(qq.nstaff)
+                   row_cells[2].text = str(dict(VAL_AV)[qq.average])
+                   row_cells[3].text = str(qq.nstafflab)
+                   row_cells[4].text = str(dict(VAL_AV)[qq.averagelab])
+                   row_cells[5].text = str(dict(BOOL_CHOICESM_M)[qq.support])
+                   row_cells[6].text = str(dict(BOOL_CHOICESM_M)[qq.managers])
+
+
+                   bb=bb+1   
+
+                p=document.add_paragraph("")
+                p=document.add_paragraph("")
+                p=document.add_paragraph("")
+            if '10' in items:
+                p.add_run(_("Module ")+" 10 - "+ugettext(m_names[10])).bold = True
+                p=document.add_paragraph("")
+                p.add_run(_("The import regulatory system human resour")).bold = True
+
+
+
+                table = document.add_table(rows=1, cols=9)
+                table.style = document.styles['Table Grid']
+
+                hdr_cells = table.rows[0].cells
+                hdr_cells[0].text = ''
+                hdr_cells[1].text = ''
+                hdr_cells[2].text = ''
+                hdr_cells[3].text = ''
+                hdr_cells[4].text = ''
+                hdr_cells[5].text = ''
+                hdr_cells[6].text = ''
+                hdr_cells[7].text = ''
+                hdr_cells[8].text = ''
+
+                hdr_cells[1].merge(hdr_cells[5])
+                hdr_cells[6].merge(hdr_cells[8])
+                hdr_cells[1].text = _("Current")
+                hdr_cells[6].text = _("Required")
+
+
+
+
+                row_cells = table.add_row().cells
+                row_cells[0].text = ''
+                row_cells[1].text = ''
+                row_cells[2].text = ''
+                row_cells[3].text = ''
+                row_cells[4].text = ''
+                row_cells[5].text = ''
+                hdr_cells[6].text = ''
+                hdr_cells[7].text = ''
+                hdr_cells[8].text = ''
+
+                row_cells[1].merge(row_cells[2])
+                row_cells[3].merge(row_cells[4])
+                #row_cells[5].merge(row_cells[6])
+                row_cells[6].merge(row_cells[8])
+                row_cells[1].text = _("TECHNICAL")
+                row_cells[3].text = _("IMPORT MANAGERS")
+                row_cells[5 ].text = _("SUPPORT STAFF")
+
+                row_cells = table.add_row().cells
+                row_cells[0].text = ''
+                row_cells[1].text = _("No. of Staff")
+                row_cells[2].text = _("Average years of experience")
+                row_cells[3].text = _("No. of Staff")
+                row_cells[4].text = _("Average years of experience")
+                row_cells[5].text = _("No. of Staff")
+                row_cells[6].text = _("Technical")
+                row_cells[7].text = _("Managers")
+                row_cells[8].text = _("Support")
+
+                mod10 = get_object_or_404(Module10, session_id=sessionid)
+                q47 = Module10Matrix_47.objects.filter(module10=mod10.id)
+
+
+                bb=0
+                for qq in q47:
+
+                   if bb == 0 :
+                       aa=_("Doctoral equivalent")
+                   if bb == 1 : 
+                       aa=_("Master equivalent")
+                   if bb == 2:
+                       aa=_("Bachelor equivalent")
+                   if bb == 3:
+                       aa=_("Lower than bachelor level")
+
+                   row_cells = table.add_row().cells
+                   row_cells[0].text = aa
+                   row_cells[1].text = str(qq.nstaff)
+                   row_cells[2].text = str(dict(VAL_AV)[qq.average])
+                   row_cells[3].text = str(qq.nstafflab)
+                   row_cells[4].text = str(dict(VAL_AV)[qq.averagelab])
+                   row_cells[5].text = str(qq.supstafflab)
+                   row_cells[6].text = str(dict(BOOL_CHOICESM_M)[qq.technical])
+                   row_cells[7].text = str(dict(BOOL_CHOICESM_M)[qq.managers])
+                   row_cells[8].text = str(dict(BOOL_CHOICESM_M)[qq.support])
+
+
+                   bb=bb+1   
+                p=document.add_paragraph("")
+                p=document.add_paragraph("")
+                p=document.add_paragraph("")
+            if '11' in items:
+                p.add_run(_("Module ")+" 11 - "+ugettext(m_names[11])).bold = True
+                p=document.add_paragraph("")
+                p.add_run(_("The human resources of the NPPO PRA programme")).bold = True
+
+                table = document.add_table(rows=1, cols=5)
+                table.style = document.styles['Table Grid']
+
+
+                hdr_cells = table.rows[0].cells
+                hdr_cells[0].text = ''
+                hdr_cells[1].text = ''
+                hdr_cells[2].text = ''
+                hdr_cells[3].text = ''
+                hdr_cells[4].text = ''
+
+
+                hdr_cells[1].merge(hdr_cells[3])
+                hdr_cells[1].text = _("Current")
+                hdr_cells[4].text = _("Required")
+                row_cells = table.add_row().cells
+                row_cells[0].text = ''
+                row_cells[1].text = ''
+                row_cells[2].text = ''
+                row_cells[3].text = ''
+                row_cells[4].text = ''
+
+                row_cells[1].merge(row_cells[2])
+                row_cells[1].text = _("Full Time Staff")
+                row_cells[3].text = _("Ad hoc Staff")
+
+                row_cells = table.add_row().cells
+                row_cells[0].text = ''
+                row_cells[1].text = _("No. of Staff")
+                row_cells[2].text = _("Average years of experience")
+                row_cells[3].text = _("No. of Staff")
+                row_cells[4].text = _("Required")
+
+                mod11 = get_object_or_404(Module11, session_id=sessionid)
+                q42 = Module11Matrix42.objects.filter(module11=mod11.id)
+
+
+                bb=0
+                for qq in q42:
+
+                   if bb == 0:
+                        tt=_("Mycology")
+                   if bb == 4:
+                        tt=_("Virology")
+                   if bb == 8:
+                        tt=_("Nematology")
+                   if bb == 12:
+                        tt=_("Weed science")
+                   if bb == 16:
+                        tt=_("Entomology")
+                   if bb == 20:
+                        tt=_("LMOs")
+                   if bb == 24:
+                        tt=_("BCAs")
+                   if bb == 28:
+                        tt=_("Plants For Planting")
+                   if bb == 32:
+                        tt=_("Treatments")
+                   if bb == 36:
+                        tt=_("Economist")
+                   if bb == 40:
+                        tt=_("Staticians")
+                   if bb == 44:
+                        tt=_("Crop specialists")
+                   if bb == 48:
+                        tt=_("Technical support and administrative staff")
+                   if bb == 0 or  bb == 4 or  bb == 8 or  bb == 12 or  bb == 16 or  bb == 20 or  bb == 24 or  bb == 28 or  bb == 32 or  bb == 36 or  bb == 40 or  bb == 44 or  bb == 48:
+                       aa=_("Doctoral equivalent")
+                   if bb == 1 or  bb == 5 or  bb == 9 or  bb == 13 or  bb == 17 or  bb == 21 or  bb == 25 or  bb == 29 or  bb == 33 or  bb == 37 or  bb == 41 or  bb == 45 or  bb == 49:
+                       aa=_("Master equivalent")
+                   if bb == 2 or  bb == 6 or  bb == 10 or  bb == 13 or  bb == 18 or  bb == 22 or  bb == 26 or  bb == 30 or  bb == 34 or  bb == 38 or  bb == 42 or  bb == 46 or  bb == 50:
+                       aa=_("Bachelor equivalent")
+                   if bb == 3 or  bb == 7 or  bb == 11 or  bb == 15 or  bb == 19 or  bb == 23 or  bb == 27 or  bb == 31 or  bb == 35 or  bb == 39 or  bb == 43 or  bb == 47 or  bb == 51:
+                       aa=_("Lower than bachelor level")
+
+                   if bb == 0 or  bb == 4 or  bb == 8 or  bb == 12 or  bb == 16 or  bb == 20 or  bb == 24 or  bb == 28 or  bb == 32 or  bb == 36 or  bb == 40 or  bb == 44 or  bb == 48:
+                        row_cells = table.add_row().cells
+                        row_cells[1].text = ''
+                        row_cells[2].text = ''
+                        row_cells[3].text = ''
+                        row_cells[4].text = ''
+                        row_cells[0].merge(row_cells[4])
+                        row_cells[0].text = tt
+
+                   row_cells = table.add_row().cells
+                   row_cells[0].text = aa
+                   row_cells[1].text = str(qq.nstaff)
+                   row_cells[2].text = str(dict(VAL_AV)[qq.average])
+                   row_cells[3].text = str(qq.nstafflab)
+
+                   row_cells[4].text = str(dict(BOOL_CHOICESM_M)[qq.support])
+
+
+                   bb=bb+1    
+
+                p=document.add_paragraph("")
+                p=document.add_paragraph("")
+                p=document.add_paragraph("")
+            if '12' in items:
+                p.add_run(_("Module ")+" 12 - "+ugettext(m_names[12])).bold = True
+                p=document.add_paragraph("")
+                p.add_run(_("PFA/ALPP/PFPP/PFPS - human resources")).bold = True
+
+
+
+                table = document.add_table(rows=1, cols=7)
+                table.style = document.styles['Table Grid']
+
+                hdr_cells = table.rows[0].cells
+                hdr_cells[0].text = ''
+                hdr_cells[1].text = ''
+                hdr_cells[2].text = ''
+                hdr_cells[3].text = ''
+                hdr_cells[4].text = ''
+                hdr_cells[5].text = ''
+                hdr_cells[6].text = ''
+
+                hdr_cells[1].merge(hdr_cells[4])
+                hdr_cells[5].merge(hdr_cells[6])
+                hdr_cells[1].text = _("Current")
+                hdr_cells[5].text = _("Required")
+
+
+
+
+                row_cells = table.add_row().cells
+                row_cells[0].text = ''
+                row_cells[2].text = ''
+                row_cells[4].text = ''
+                row_cells[5].text = ''
+                row_cells[6].text = ''
+
+                row_cells[1].merge(row_cells[2])
+                row_cells[3].merge(row_cells[4])
+                row_cells[5].merge(row_cells[6])
+                row_cells[1].text = _("Field and support Staff")
+                row_cells[3].text = _("Eradication managers")
+
+                row_cells = table.add_row().cells
+                row_cells[0].text = ''
+                row_cells[1].text = _("No. of Staff")
+                row_cells[2].text = _("Average years of experience")
+                row_cells[3].text = _("No. of Staff")
+                row_cells[4].text = _("Average years of experience")
+                row_cells[5].text = _("Field/support Staff")
+                row_cells[6].text = _("Support")
+
+                mod12 = get_object_or_404(Module12, session_id=sessionid)
+                q22 = Module12Matrix22.objects.filter(module12=mod12.id)
+
+
+                bb=0
+                for qq in q22:
+
+                   if bb == 0 or  bb == 4 or  bb == 8:
+                       aa=_("Doctoral equivalent")
+                   if bb == 1 or  bb == 5 or  bb == 9: 
+                       aa=_("Master equivalent")
+                   if bb == 2 or  bb == 6 or  bb == 10:
+                       aa=_("Bachelor equivalent")
+                   if bb == 3 or  bb == 7 or  bb == 11:
+                       aa=_("Lower than bachelor level")
+
+
+                   row_cells = table.add_row().cells
+                   row_cells[0].text = aa
+                   row_cells[1].text = str(qq.nstaff)
+                   row_cells[2].text = str(dict(VAL_AV)[qq.average])
+                   row_cells[3].text = str(qq.nstafflab)
+                   row_cells[4].text = str(dict(VAL_AV)[qq.averagelab])
+                   row_cells[5].text = str(dict(BOOL_CHOICESM_M)[qq.support])
+                   row_cells[6].text = str(dict(BOOL_CHOICESM_M)[qq.managers])
+
+
+                   bb=bb+1 
+
+
+                p=document.add_paragraph("")
+                p=document.add_paragraph("")
+                p=document.add_paragraph("")
+            if '13' in items:
+                p.add_run( _("Module ")+" 13 - "+ugettext(m_names[13])).bold = True
+                p=document.add_paragraph("")
+                p.add_run( _("The human resources in the NPPO export certification program")).bold = True
+
+
+
+                table = document.add_table(rows=1, cols=7)
+                table.style = document.styles['Table Grid']
+
+                hdr_cells = table.rows[0].cells
+                hdr_cells[0].text = ''
+                hdr_cells[1].text = ''
+                hdr_cells[2].text = ''
+                hdr_cells[3].text = ''
+                hdr_cells[4].text = ''
+                hdr_cells[5].text = ''
+                hdr_cells[6].text = ''
+
+                hdr_cells[1].merge(hdr_cells[4])
+                hdr_cells[5].merge(hdr_cells[6])
+                hdr_cells[1].text =  _("Current")
+                hdr_cells[5].text =  _("Required")
+
+
+
+
+                row_cells = table.add_row().cells
+                row_cells[0].text = ''
+                row_cells[2].text = ''
+                row_cells[4].text = ''
+                row_cells[5].text = ''
+                row_cells[6].text = ''
+
+                row_cells[1].merge(row_cells[2])
+                row_cells[3].merge(row_cells[4])
+                row_cells[5].merge(row_cells[6])
+                row_cells[1].text = _("Inspector and support Staff")
+                row_cells[3].text = _("Export managers")
+
+                row_cells = table.add_row().cells
+                row_cells[0].text = ''
+                row_cells[1].text = _("No. of Staff")
+                row_cells[2].text = _("Average years of experience")
+                row_cells[3].text = _("No. of Staff")
+                row_cells[4].text = _("Average years of experience")
+                row_cells[5].text = _("Inspector/support Staff")
+                row_cells[6].text = _("Export managers")
+
+                mod13 = get_object_or_404(Module13, session_id=sessionid)
+                q47 = Module13Matrix47.objects.filter(module13=mod13.id)
+
+
+                bb=0
+                for qq in q47:
+                   if bb == 0 or  bb == 4 or  bb == 8:
+                       aa=_("Doctoral equivalent")
+                   if bb == 1 or  bb == 5 or  bb == 9: 
+                       aa=_("Master equivalent")
+                   if bb == 2 or  bb == 6 or  bb == 10:
+                       aa=_("Bachelor equivalent")
+                   if bb == 3 or  bb == 7 or  bb == 11:
+                       aa=_("Lower than bachelor level")
+
+                   if bb == 0 or  bb == 4 or  bb == 8:
+                        row_cells = table.add_row().cells
+                        row_cells[1].text = ''
+                        row_cells[2].text = ''
+                        row_cells[3].text = ''
+                        row_cells[4].text = ''
+                        row_cells[5].text = ''
+                        row_cells[6].text = ''
+                        row_cells[0].merge(row_cells[6])
+                        row_cells[0].text = tt
+
+                   row_cells = table.add_row().cells
+                   row_cells[0].text = aa
+                   row_cells[1].text = str(qq.nstaff)
+                   row_cells[2].text = str(dict(VAL_AV)[qq.average])
+                   row_cells[3].text = str(qq.nstafflab)
+                   row_cells[4].text = str(dict(VAL_AV)[qq.averagelab])
+                   row_cells[5].text = str(dict(BOOL_CHOICESM_M)[qq.support])
+                   row_cells[6].text = str(dict(BOOL_CHOICESM_M)[qq.managers])
+
+
+                   bb=bb+1 
 
     response = HttpResponse(content_type='application/vnd.openxmlformats-officedocument.wordprocessingml.document')
     response['Content-Disposition'] = 'attachment; filename=' + docx_title
