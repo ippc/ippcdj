@@ -1,0 +1,201 @@
+{% extends "base.html" %}
+{% load pages_tags mezzanine_tags i18n future staticfiles accounts_tags %}
+
+{% block meta_title %}
+  {% trans "Countries Stats" %}: 
+  {{ page.title }}
+{% endblock %}
+
+{% block body_class %}wide{% endblock %}
+
+{% block breadcrumb_menu %}
+<li><a href="/{{ LANGUAGE_CODE }}/">{% trans "Home" %}</a><span class="divider">/</span></li>
+<li>
+  <a href="/countries/">Countries</a>
+  <span class="divider">/</span>
+</li>
+<li>
+    <a href="/nro-reports-and-statistics/">Statistics</a>
+    <span class="divider">/</span>
+</li>
+
+<li class="active">{% trans "Summary of NRO year of Pest reports" %} </li>
+{% endblock %}
+
+{% block local_nav %}
+{% endblock local_nav %}
+
+{% block pageinfo %}
+{% endblock pageinfo %}
+
+{% block main %}
+
+<p class="pull-right">
+  <a href="javascript:history.go(-1)">{% trans "« Go back" %}</a>
+</p>
+    
+    
+    
+<h1>
+{% trans "Summary of NRO year of Pest reports " %} 1 {% trans "April" %} {{prevyear}} - 1 {% trans "March" %} {{curryear}} <br>
+  </h1> 
+<script type="text/javascript" charset="utf-8">
+$(function() {
+      $('#sel_year').change(function() {
+            window.location.href = $(this).val()+'/';
+      });
+});
+</script>
+  <p>
+ <b>Select year for statistics:</b><br>
+  <form action="" >
+<select data-placeholder="Go to year..." tabindex="3"  id="sel_year" >
+ <option value="">{% trans "Go to year ... " %}</option>
+  {% for i in selyear_range %}
+     <option  {% if curryear == i %}selected{% endif %} value="/countries/statistics/year-pestreports/{{i}}">{{i}}</option>    
+ {% endfor %}
+</select>
+</form>
+ </p>
+<p><b>{% trans "Date generated" %}: </b>  {{ dategenerate|date:"d M Y, H:m" }}</p><br>
+<p>{% trans "The tables below show the detailed breakdown by region of Pest reports made available by Contracting Parties on the IPP in the 'NRO year of Pest reports' " %}:  1 {% trans "April" %} {{prevyear}} - 31 {% trans "March" %} {{curryear}}</p>
+
+<h3>Pest reports by Contracting Parties overall state to 31 {% trans "March" %} {{curryear}}</h3>
+        
+<table class="table table-condensed table-striped">
+   <thead>
+        <tr>
+            <th colspan="4"  style="background:#cccccc; text-align: center;"><center>Pest reports</center></th>
+        </tr> 
+        <tr>
+            <th style="background:#f2f2f2;">Region</th>
+            <th style="background:#f2f2f2;">Number of contracting parties</th>
+            <th style="background:#f2f2f2;">Number of reporting parties</th>
+            <th style="background:#f2f2f2;">Number of reports</th>
+        </tr>
+    </thead>
+    <tbody>
+        
+            {% for object in regionsPCP.0 %}
+            <tr>
+            <th style="background:#f2f2f2;">{{ object.0 }} </th>
+            <td>{{ object.1 }} </td>
+            <td>{{ object.2 }}</td>
+            <td>{{ object.3 }}</td>    
+        </tr>
+            {% endfor %}
+           <tr>
+                <th style="background:#f2f2f2;">Total</th>
+                <th>{{ totNumReg }}  </th>
+                <th>  {{regionsPCPTot.0.0}} </th>
+                <th>  {{regionsPCPTot.0.1}} </th>
+            </tr>
+    </tbody>
+        
+</table>   
+<h3>Pest reports by Contracting Parties changes during 1 {% trans "April" %} {{prevyear}} - 31 {% trans "March" %} {{curryear}}</h3>
+    <table class="table table-condensed">
+                <thead>
+                    <tr>
+                     <th colspan="1"  style="background:#cccccc; text-align: center;"><center>Pest reports</center></th>
+                     <th colspan="1"  style="background:#cccccc; text-align: center;"><center>Country</center></th>
+                     <th colspan="2"  style="background:#cccccc; text-align: center;"><center> {{curryear}}</center></th>
+                    </tr> 
+                    <tr>
+                        <th style="background:#f2f2f2;">Region</th>
+                        <th style="background:#f2f2f2;">Countries</th>
+                        <th style="background:#f2f2f2;">New reports</th>
+                        <th style="background:#f2f2f2;">Updated reports</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for object in regionsPCP.0 %}
+                    <tr>
+                        <th style="background:#f2f2f2;">{{ object.0 }} </th>
+                            <td>{{ object.6 }} </td>
+                        <td>{{ object.4 }} </td>
+                        <td>{{ object.5 }}</td>    
+                    </tr>
+                    {% endfor %}
+                     <tr>
+                        <th style="background:#f2f2f2;">Total</th>
+                        <th>   </th>
+                        <th>  {{regionsPCPTot.0.2}} </th>
+                        <th>  {{regionsPCPTot.0.3}} </th>
+                    </tr>
+                </tbody>
+            </table> 
+   <hr style="border: 2px solid #009926;">
+   
+   
+   
+   
+<p>{% trans "The tables below show the detailed breakdown by region of Pest reports made available by all countries on the IPP in the 'NRO year of Pest reports' " %}:  1 {% trans "April" %} {{prevyear}} - 31 {% trans "March" %} {{curryear}}</p>
+
+
+<h3>Pest reports by all countries overall state to 31 {% trans "March" %} {{curryear}}</h3>
+        
+<table class="table table-condensed table-striped">
+   <thead>
+        <tr>
+            <th colspan="4"  style="background:#cccccc; text-align: center;"><center>Pest reports</center></th>
+        </tr> 
+        <tr>
+            <th style="background:#f2f2f2;">Region</th>
+            <th style="background:#f2f2f2;">Number of countries</th>
+            <th style="background:#f2f2f2;">Number of reporting countries</th>
+            <th style="background:#f2f2f2;">Number of reports</th>
+        </tr>
+    </thead>
+    <tbody>
+        
+            {% for object in regionsAll.0 %}
+            <tr>
+            <th style="background:#f2f2f2;">{{ object.0 }} </th>
+            <td>{{ object.1 }} </td>
+            <td>{{ object.2 }}</td>
+            <td>{{ object.3 }}</td>    
+        </tr>
+            {% endfor %}
+           <tr>
+                <th style="background:#f2f2f2;">Total</th>
+                <th>{{ totALLcn }}  </th>
+                <th>  {{regionsALLTot.0.0}} </th>
+                <th>  {{regionsALLTot.0.1}} </th>
+            </tr>
+    </tbody>
+        
+</table>   
+<h3>Pest reports by all countries changes during 1 {% trans "April" %} {{prevyear}} - 31 {% trans "March" %} {{curryear}}</h3>
+    <table class="table table-condensed">
+                <thead>
+                    <tr>
+                     <th colspan="1"  style="background:#cccccc; text-align: center;"><center>Pest reports</center></th>
+                     <th colspan="1"  style="background:#cccccc; text-align: center;"><center>Country</center></th>
+                     <th colspan="2"  style="background:#cccccc; text-align: center;"><center> {{curryear}}</center></th>
+                    </tr> 
+                    <tr>
+                        <th style="background:#f2f2f2;">Region</th>
+                        <th style="background:#f2f2f2;">Countries</th>
+                        <th style="background:#f2f2f2;">New reports</th>
+                        <th style="background:#f2f2f2;">Updated reports</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for object in regionsAll.0 %}
+                    <tr>
+                        <th style="background:#f2f2f2;">{{ object.0 }} </th>
+                            <td>{{ object.6 }} </td>
+                        <td>{{ object.4 }} </td>
+                        <td>{{ object.5 }}</td>    
+                    </tr>
+                    {% endfor %}
+                     <tr>
+                        <th style="background:#f2f2f2;">Total</th>
+                        <th>   </th>
+                        <th>  {{regionsALLTot.0.2}} </th>
+                        <th>  {{regionsALLTot.0.3}} </th>
+                    </tr>
+                </tbody>
+            </table> 
+{% endblock %}
