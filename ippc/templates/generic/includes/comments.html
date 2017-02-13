@@ -1,6 +1,11 @@
 {% load i18n mezzanine_tags comment_tags %}
 <div id="comments">
 <h3>{% trans "Comments" %}</h3>
+{% if error_msg %}
+
+<div class="alert alert-error">{{error_msg}}  <a href='javascript:history.go(-1)'>Go back</a> to post again.</div>
+{% endif%}
+    
 {% if settings.COMMENTS_DISQUS_SHORTNAME %}
 {% include "generic/includes/disqus_comments.html" %}
 {% else %}
@@ -17,6 +22,11 @@ $(function() {
 {% comment_thread object_for_comments %}
     {% if  forum_post.allow_comments %}
 <h3>{% trans "New Comment" %}</h3>
+
+{% if error_msg %}
+
+<div class="alert alert-error">{{error_msg}}</div>
+{% endif%}
 <form method="post" id="comment" action="{{ comment_url }}#comment" enctype="multipart/form-data">
     {% if not request.POST.replied_to %}
     {% fields_for posted_comment_form %}
