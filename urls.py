@@ -35,7 +35,7 @@ MassEmailUtilityMessageDetailView,MassEmailUtilityMessageListView,massemail_send
 DraftProtocolDetailView,  draftprotocol_create, draftprotocol_edit,draftprotocol_compilecomments,\
 draftprotocol_comment_create,draftprotocol_comment_edit,PublicationLibraryView,commenta,contactPointExtractor,\
 CountryRegionsPercentageListView,CountryStatsreportsListView,CountryStatsTotalreportsListView,CountryRegionsUsersListView,CountryTotalUsersListView,CountryStatsChangeInCPsListView,\
-CountryRegionsUsersNeverLoggedListView,CountryRegionsUsersNeverLoggedNewListView,CountryStatsTotalreports1ListView,CountryStatsSingleReportsListView,CountryStatsTotalReportsIncreaseListView,\
+CountryRegionsUsersNeverLoggedListView,CountryRegionsUsersNeverLoggedNewListView,CountryStatsTotalreports1ListView,CountryStatsSinglePestReportsListView,CountryStatsSingleReportsListView,CountryStatsTotalReportsIncreaseListView,\
 vote_answer_up ,vote_answer_down,reporting_trough_eppo,reminder_to_cn,\
 reporting_obligation_validate,event_reporting_validate,pest_report_validate,\
 QAQuestionListView, QAQuestionDetailView, QAQuestionAnswersView,question_create,answer_create,\
@@ -255,7 +255,10 @@ urlpatterns = patterns("",
     url(r'^countries/statistics/change-in-cp/$',   view=CountryStatsChangeInCPsListView.as_view(),   name='regionusers'),   ###
     url(r'^countries/statistics/singlereporting/(?P<year>\d+)/$',    view=CountryStatsSingleReportsListView.as_view(), name='regionspercentage'),   ##
     url(r'^countries/statistics/singlereporting/$',    view=CountryStatsSingleReportsListView.as_view(), name='regionspercentage'),   ##
-    
+   
+    url(r'^countries/statistics/year-pestreports/(?P<year>\d+)/$',    view=CountryStatsSinglePestReportsListView.as_view(), name='regionspercentage'),   ##
+    url(r'^countries/statistics/year-pestreports/$',    view=CountryStatsSinglePestReportsListView.as_view(), name='regionspercentage'),   ##
+   
     #-------------------------------------------#    
     #POLL:
     
