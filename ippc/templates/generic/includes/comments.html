@@ -22,7 +22,7 @@ $(function() {
 {% comment_thread object_for_comments %}
     {% if  forum_post.allow_comments %}
 <h3>{% trans "New Comment" %}</h3>
-
+<div class="alert alert-warning">    Please note, the text in the 'Comment' field should not exceed 3000 characters</div>
 {% if error_msg %}
 
 <div class="alert alert-error">{{error_msg}}</div>
