@@ -1021,9 +1021,10 @@ def commenta(request, template="generic/comments.html"):
     import sys;
     reload(sys);
     sys.setdefaultencoding("utf8")
-
+    error_msg=''
     form = myview.ThreadedCommentForm(request, obj, post_data)
     if form.is_valid():
+        print('aaaaaaaaaaaaaaaaaaaaaaaaaaaaa VALID')
         url = obj.get_absolute_url()
         if myview.is_spam(request, form, url):
             return redirect(url)
@@ -1046,10 +1047,16 @@ def commenta(request, template="generic/comments.html"):
             myview.set_cookie(response, cookie_name, cookie_value)
         return response
     elif request.is_ajax() and form.errors:
+        print('aaaaaaaaaaaaaaaaaaaaaaaaaaaaa ERRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRR')
         return HttpResponse(dumps({"errors": form.errors}))
+    else :
+        if len(request.POST['comment']) > 3000:
+             error_msg='ERROR: the message in the comment exceed the limit of 3000 characters.'
+    
     # Show errors with stand-alone comment form.
-    context = {"obj": obj, "posted_comment_form": form,}
+    context = {"obj": obj, "posted_comment_form": form,"error_msg":error_msg}
     response = render(request, template, context)
+    
     return response
 
 class CountryView(TemplateView):
@@ -4947,6 +4954,175 @@ class CountryRegionsPercentageListView(ListView):
         return context
 
 from datetime import date
+
+class CountryStatsSinglePestReportsListView(ListView):
+    """   stat  """
+    context_object_name = 'latest'
+    model = CountryPage
+    template_name = 'countries/countries_year_of_pestreport.html'
+    queryset = CountryPage.objects.all().order_by('title')
+   
+    def get_context_data(self, **kwargs): # http://stackoverflow.com/a/15515220
+        context = super(CountryStatsSinglePestReportsListView, self).get_context_data(**kwargs)
+        context['dategenerate']=timezone.now()
+        context['selyear_range']=range(2010,timezone.now().year+1)
+       
+        curryear=0
+        prevyear=0
+        if 'year' in self.kwargs:
+            curryear=int(self.kwargs['year'])
+        else :   
+            curryear=timezone.now().year
+        prevyear=curryear-1  
+        
+        startstartdate = datetime(1999, 1, 1, 00, 01,00)
+        startdate = datetime(prevyear, 4, 1, 00, 01,00)
+        enddate = datetime(curryear, 3, 31, 23, 59,00)
+        
+        regionsPCP = []
+        totNumReg=countriesperregioncp=CountryPage.objects.filter(cp_ncp_t_type='CP').count()
+        region_cp_p = []
+        numRepP=0
+
+      
+
+           
+        for k,v in REGIONS:
+            reg = v+''
+            numRepP=0
+            countriesperregioncp=CountryPage.objects.filter(region=k,cp_ncp_t_type='CP')
+            numCP_P = []
+            numCP_P.append(reg)
+            numCP_P.append(countriesperregioncp.count())
+            countP=0
+            cNewP=0
+            cUpP=0
+            cns=''
+            p_count=0
+            cNewP=0
+            cUpP=0
+            for c in countriesperregioncp:
+                pests= PestReport.objects.filter(country=c.id,is_version=False,publish_date__gte=startstartdate,publish_date__lte=enddate)
+                p_count=pests.count()
+                pests1= PestReport.objects.filter(country=c.id,is_version=False,publish_date__gte=startdate,publish_date__lte=enddate)
+                pests2= PestReport.objects.filter(country=c.id,is_version=False,modify_date__gte=startdate,modify_date__lte=enddate)
+               
+                if p_count>0:
+                    numRepP+=1    
+                if pests1.count()>0 or pests2.count()>0:
+                    cns+=c.title+', '
+                countP+=p_count
+                cNewP+=pests1.count()
+                cUpP+=pests2.count()
+                    
+            numCP_P.append(numRepP)
+            numCP_P.append(countP)
+            numCP_P.append(cNewP)
+            numCP_P.append(cUpP)
+            numCP_P.append(cns)
+            region_cp_p.append(numCP_P)
+        regionsPCP.append(region_cp_p)
+        
+        #-----------------ALL COUNTRIES---------
+        regionsAll = []
+        totALLcn=countriesperregioncp=CountryPage.objects.filter().count()
+        region_all_p = []
+        numRepPAll=0
+
+      
+
+           
+        for k,v in REGIONS:
+            reg = v+''
+            numRepPAll=0
+            countriesperregioncp=CountryPage.objects.filter(region=k)
+            numCP_P = []
+            numCP_P.append(reg)
+            numCP_P.append(countriesperregioncp.count())
+            countP=0
+            cNewP=0
+            cUpP=0
+            cns=''
+            p_count=0
+            cNewP=0
+            cUpP=0
+            for c in countriesperregioncp:
+                pests= PestReport.objects.filter(country=c.id,is_version=False,publish_date__gte=startstartdate,publish_date__lte=enddate)
+                p_count=pests.count()
+                pests1= PestReport.objects.filter(country=c.id,is_version=False,publish_date__gte=startdate,publish_date__lte=enddate)
+                pests2= PestReport.objects.filter(country=c.id,is_version=False,modify_date__gte=startdate,modify_date__lte=enddate)
+               
+                if p_count>0:
+                    numRepPAll+=1    
+                if pests1.count()>0 or pests2.count()>0:
+                    cns+=c.title+', '
+                countP+=p_count
+                cNewP+=pests1.count()
+                cUpP+=pests2.count()
+                       
+                    
+            numCP_P.append(numRepPAll)
+            numCP_P.append(countP)
+            numCP_P.append(cNewP)
+            numCP_P.append(cUpP)
+            numCP_P.append(cns)
+            region_all_p.append(numCP_P)
+        regionsAll.append(region_all_p)
+        
+        
+        
+        #----------------
+        
+        regionsPCPTot=[]
+        totarray=[]
+        tot=0
+        tot2=0
+        tot4=0
+        tot5=0
+        for x in  regionsPCP[0]:
+            tot+= x[2]
+            tot2+= x[3]
+            tot4+= x[4]
+            tot5+= x[5]
+        totarray.append(tot)
+        totarray.append(tot2)
+        totarray.append(tot4)
+        totarray.append(tot5)
+
+        regionsPCPTot.append(totarray)     
+        
+        #----------------
+        
+        regionsALLTot=[]
+        totarray1=[]
+        tot=0
+        tot2=0
+        tot4=0
+        tot5=0
+        for x in  regionsAll[0]:
+            tot+= x[2]
+            tot2+= x[3]
+            tot4+= x[4]
+            tot5+= x[5]
+        totarray1.append(tot)
+        totarray1.append(tot2)
+        totarray1.append(tot4)
+        totarray1.append(tot5)
+
+        regionsALLTot.append(totarray1)     
+
+        context['curryear']=curryear
+        context['prevyear']=prevyear
+        context['regionsPCP']=regionsPCP
+        context['totNumReg']=totNumReg
+        context['regionsPCPTot']=regionsPCPTot
+        
+        context['regionsAll']=regionsAll
+        context['totALLcn']=totALLcn
+        context['regionsALLTot']=regionsALLTot
+        
+ 
+        return context   
 
 
 class CountryStatsSingleReportsListView(ListView):
