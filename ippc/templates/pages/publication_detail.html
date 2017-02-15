@@ -6,7 +6,9 @@
 
 {% block breadcrumb_menu %}
 <li><a href="javascript:history.go(-1)">{% trans "« Go back" %}</a> <span class="divider">/</span> {# <a href="/publications/">{% trans "Publications" %}</a><span class="divider">/</span> #}</li>
-<li class="active">{{ publication.title }}</li>
+<li class="active">
+    {% if publication %}
+    {{ publication.title }}  {% else %} {% trans "Restricted publication " %}{% endif %}</li>
 {% endblock %}
 
 
@@ -55,26 +57,11 @@
 {% endblock pageinfo %}
 
 {% block main %}
-
-    {% if login_required %}
-        {% if user.is_superuser or perms.ippc.change_publication  %}
-            {% include "pages/publication_detail_block.html" %}
-        {% else %}
-            {% if  publication.groups.all %}
-                 {% for g in request.user.groups.all %}
-                      {% if g.name == 'Observers' or g in groups.all and g not in publication.groups.all %}
-                             {% include "pages/publication_detail_block.html" %}
-                      {% else %}   
-                        <p>{% trans "The page is restricted to group members. Please Login  to view the page." %}</p>
-                      {% endif %}
-                {% endfor %}
-            {% else %}   
-                  {% include "pages/publication_detail_block.html" %}
-            {% endif %}
-        {% endif %}    
-    
-    {% else %} 
-   {% include "pages/publication_detail_block.html" %}
+                {% include "pages/publication_detail_block.html" %}  
+    {% if  restrictedmessage == 'true' %}
+      
+           <p>{% trans "The page is restricted to group members. Please Login  to view the page." %}</p>
+      
     {% endif %}
 {% endblock %}
  

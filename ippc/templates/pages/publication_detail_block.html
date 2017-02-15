@@ -1,24 +1,25 @@
 {% load mezzanine_tags staticfiles i18n %}
     {% load translate_tags %}
-<h1> {% if LANGUAGE_CODE != 'en' %}
-        {% if LANGUAGE_CODE == 'es'  and publication.title_es != '' and publication.title_es != None %}
-            {{ publication.title_es }}
-        {% elif LANGUAGE_CODE == 'fr'  and publication.title_fr != '' and publication.title_fr != None%}
-            {{ publication.title_fr }}
-        {% elif LANGUAGE_CODE == 'ru'  and publication.title_ru != '' and publication.title_ru != None%}
-            {{ publication.title_ru }}
-        {% elif LANGUAGE_CODE == 'ar'  and publication.title_ar != '' and publication.title_ar != None%}
-            {{ publication.title_ar }}
-        {% elif LANGUAGE_CODE == 'zh'  and publication.title_zh != '' and publication.title_zh != None%}
-            {{ publication.title_zh }}
-        {% else %}
+    {% if publication %}
+    <h1> {% if LANGUAGE_CODE != 'en' %}
+            {% if LANGUAGE_CODE == 'es'  and publication.title_es != '' and publication.title_es != None %}
+                {{ publication.title_es }}
+            {% elif LANGUAGE_CODE == 'fr'  and publication.title_fr != '' and publication.title_fr != None%}
+                {{ publication.title_fr }}
+            {% elif LANGUAGE_CODE == 'ru'  and publication.title_ru != '' and publication.title_ru != None%}
+                {{ publication.title_ru }}
+            {% elif LANGUAGE_CODE == 'ar'  and publication.title_ar != '' and publication.title_ar != None%}
+                {{ publication.title_ar }}
+            {% elif LANGUAGE_CODE == 'zh'  and publication.title_zh != '' and publication.title_zh != None%}
+                {{ publication.title_zh }}
+            {% else %}
+                {{ publication.title }}
+            {% endif %}
+         {% else %}
             {{ publication.title }}
-        {% endif %}
-     {% else %}
-        {{ publication.title }}
-     {% endif %}
-       
-   </h1> 
+         {% endif %}
+
+       </h1> 
 {% if publication.is_version %}
 <dl class="dl-horizontal" style="border: 3px double red;    padding: 0.5em;">
     
@@ -166,7 +167,7 @@
           
      <dt>&#160;</dt>
   <dd>  &#160;     </dd>   
-  <dt>{% trans "Parent page" %}</dt>
+  <dt>{% if  publication %}{% trans "Parent page" %}  {% endif %}</dt>
   <dd>
    <a href="{{ publication.library.get_absolute_url }}">   {% with  publication.library.richtextpage|get_object_translation as translated_page %}
                 {% if translated_page.title %}
@@ -196,3 +197,4 @@
           
           
         </dl>
+  {% endif %}
