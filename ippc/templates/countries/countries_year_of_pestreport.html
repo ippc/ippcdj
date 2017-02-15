@@ -39,6 +39,112 @@
 <h1>
 {% trans "Summary of NRO year of Pest reports " %} 1 {% trans "April" %} {{prevyear}} - 1 {% trans "March" %} {{curryear}} <br>
   </h1> 
+
+
+
+    
+<script type="text/javascript">
+    
+    
+	window.onload = function () {
+	
+
+    var chart2 = new CanvasJS.Chart("chartContainer2",
+    {
+      title:{
+	text: "Comulative number of Pest reports in each year",
+        fontSize: 20
+			
+        
+      },
+      animationEnabled: true,
+      
+      axisY: {
+            title: "number of reports",
+            titleFontSize: 16,
+            labelFontSize: 16,
+    },
+    axisX: {
+            labelFontSize: 10,
+            labelMaxWidth:70,
+            interval: 1,
+    },
+                        
+     
+      legend: {
+        verticalAlign: "bottom",
+        horizontalAlign: "center"
+      },
+      theme: "theme1",
+       // width:780,
+       //height:400,
+      data: [
+
+      {        
+        type: "column",  
+        showInLegend: true, 
+        legendMarkerColor: "grey",
+        legendText: "years",
+        dataPoints: [      
+        {% autoescape off %} 
+                                {{datachart2}}
+                             {% endautoescape %}     
+        ]
+      }   
+      ]
+    });
+
+    chart2.render();
+
+  var chart3 = new CanvasJS.Chart("chartContainer3",
+    {
+      title:{
+	text: "Number of Pest reports in each year",
+        fontSize: 20
+			
+        
+      },
+      animationEnabled: true,
+      
+      axisY: {
+            title: "number of reports",
+            titleFontSize: 16,
+            labelFontSize: 16,
+    },
+    axisX: {
+            labelFontSize: 10,
+            labelMaxWidth:70,
+            interval: 1,
+    },
+                        
+     
+      legend: {
+        verticalAlign: "bottom",
+        horizontalAlign: "center"
+      },
+      theme: "theme1",
+       // width:780,
+       //height:400,
+      data: [
+
+      {        
+        type: "column",  
+        showInLegend: true, 
+        legendMarkerColor: "grey",
+        legendText: "years",
+        dataPoints: [      
+        {% autoescape off %} 
+            {{datachart3}}
+         {% endautoescape %}     
+        ]
+      }   
+      ]
+    });
+
+    chart3.render();
+
+}
+</script>
 <script type="text/javascript" charset="utf-8">
 $(function() {
       $('#sel_year').change(function() {
@@ -46,6 +152,7 @@ $(function() {
       });
 });
 </script>
+<script src='{% static "/static/canvasjs/canvasjs.min.js" %}'></script>
   <p>
  <b>Select year for statistics:</b><br>
   <form action="" >
@@ -198,4 +305,81 @@ $(function() {
                     </tr>
                 </tbody>
             </table> 
+
+<hr style="border: 4px solid #009926;"/>
+<h4>The cumulative total of Pest reports made available by all countries through the IPP for the years 2005 - {{prevyear}}.</h4>
+
+<table class="table table-condensed table-striped">
+<thead>
+<tr>
+    <th rowspan="2">&#160;</th>
+    <th colspan="{{num_years}}">Reporting Year (cumulative totals)</th>
+</tr> 
+<tr>
+   {% for i in num_years_range %}
+       <th>{{i}}</th>
+{% endfor %}
+ 
+</tr> 
+
+    
+</thead>
+<tbody>
+
+<tr>
+    <td>Pest reports</td>
+    {% for object in pest_array.0 %}
+       <td>{{object }} </td>
+    {% endfor %}
+</tr>
+
+</tbody>
+
+</table>
+<table class="table table-condensed table-striped">
+<tr><td>	<div id="chartContainer2" style="height: 600px; width: 100%;">
+	</div>
+</td>
+            </tr>
+ </table>
+
+
+
+<h4>The number of new Pest reports made available by all countries on the IPP every year (2005 - {{prevyear}}). </h4>
+
+<table class="table table-condensed table-striped">
+<thead>
+<tr>
+    <th rowspan="2"></th>
+    <th colspan="{{num_years}}">Reporting Year (actual number per annum)</th>
+</tr> 
+<tr>
+   {% for i in num_years_range %}
+       <th>{{i}}</th>
+{% endfor %}
+ 
+</tr> 
+
+    
+</thead>
+<tbody>
+<tr>
+    <td>Pest reports</td>
+    {% for object in pest_array1.0 %}
+       <td>{{object }} </td>
+    {% endfor %}
+</tr>
+</tbody>
+
+</table>
+
+<table class="table table-condensed table-striped">
+<tr><td>	<div id="chartContainer3" style="height: 600px; width: 100%;">
+	</div>
+</td>
+            </tr>
+ </table>
+
+
+
 {% endblock %}
