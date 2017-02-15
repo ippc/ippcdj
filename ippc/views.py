@@ -1425,17 +1425,49 @@ class PublicationDetailView(DetailView):
     
     def get_context_data(self, **kwargs): # http://stackoverflow.com/a/15515220
         context = super(PublicationDetailView, self).get_context_data(**kwargs)
+        
         publication = get_object_or_404(Publication, id=self.kwargs['pk'])
     
         publicationlibrary = get_object_or_404(PublicationLibrary, id=publication.library_id)
+        
+       
         context['users'] =publicationlibrary.users
         context['groups'] = publicationlibrary.groups
         context['login_required'] = publicationlibrary.login_required
         
+      
+        restrictedmessage=''    
+        versions=''
+        if publicationlibrary.login_required:
+            context['publication'] = ''
         
-        
-        versions= Publication.objects.filter( is_version=True, parent_id=publication.id).order_by('-modify_date')
+            if self.request.user.is_authenticated():
+                if self.request.user.groups.filter(name='IPPC Secretariat') or self.request.user.groups.filter(name='Admin'):
+                    context['publication'] = publication
+                    versions= Publication.objects.filter( is_version=True, parent_id=publication.id).order_by('-modify_date')
+                    restrictedmessage= ''
+                else:
+                   for g in self.request.user.groups.all():
+                     
+                        if g in publicationlibrary.groups.all() and g not in publication.groups.all():
+                              context['publication'] = publication
+                              versions= Publication.objects.filter( is_version=True, parent_id=publication.id).order_by('-modify_date')
+                              restrictedmessage= ''
+                        else:      
+                            restrictedmessage= 'true'
+            else: 
+                context['publication'] = ''
+                restrictedmessage= 'true'
+            
+        else:
+            context['publication'] =publication
+            versions= Publication.objects.filter( is_version=True, parent_id=publication.id).order_by('-modify_date')
+      
+       
+     
         context['versions'] = versions
+        context['restrictedmessage'] = restrictedmessage
+      
       
         
         return context
@@ -1452,13 +1484,45 @@ class PublicationDetail2View(DetailView):
         publication = get_object_or_404(Publication, slug=self.kwargs['slug'])
     
         publicationlibrary = get_object_or_404(PublicationLibrary, id=publication.library_id)
+        
+       
         context['users'] =publicationlibrary.users
         context['groups'] = publicationlibrary.groups
         context['login_required'] = publicationlibrary.login_required
         
-        versions= Publication.objects.filter( is_version=True, parent_id=publication.id).order_by('-modify_date')
+      
+        restrictedmessage=''    
+        versions=''
+        if publicationlibrary.login_required:
+            context['publication'] = ''
+        
+            if self.request.user.is_authenticated():
+                if self.request.user.groups.filter(name='IPPC Secretariat') or self.request.user.groups.filter(name='Admin'):
+                    context['publication'] = publication
+                    versions= Publication.objects.filter( is_version=True, parent_id=publication.id).order_by('-modify_date')
+                    restrictedmessage= ''
+                else:
+                   for g in self.request.user.groups.all():
+                     
+                        if g in publicationlibrary.groups.all() and g not in publication.groups.all():
+                              context['publication'] = publication
+                              versions= Publication.objects.filter( is_version=True, parent_id=publication.id).order_by('-modify_date')
+                              restrictedmessage= ''
+                        else:      
+                            restrictedmessage= 'true'
+            else: 
+                context['publication'] = ''
+                restrictedmessage= 'true'
+            
+        else:
+            context['publication'] =publication
+            versions= Publication.objects.filter( is_version=True, parent_id=publication.id).order_by('-modify_date')
+      
+       
+     
         context['versions'] = versions
-        return context
+        context['restrictedmessage'] = restrictedmessage
+      
     
 
 
@@ -4969,11 +5033,14 @@ class CountryStatsSinglePestReportsListView(ListView):
        
         curryear=0
         prevyear=0
+        num_years=0
+        
         if 'year' in self.kwargs:
             curryear=int(self.kwargs['year'])
         else :   
             curryear=timezone.now().year
         prevyear=curryear-1  
+        num_years=curryear-2005
         
         startstartdate = datetime(1999, 1, 1, 00, 01,00)
         startdate = datetime(prevyear, 4, 1, 00, 01,00)
@@ -4983,9 +5050,6 @@ class CountryStatsSinglePestReportsListView(ListView):
         totNumReg=countriesperregioncp=CountryPage.objects.filter(cp_ncp_t_type='CP').count()
         region_cp_p = []
         numRepP=0
-
-      
-
            
         for k,v in REGIONS:
             reg = v+''
@@ -5028,10 +5092,6 @@ class CountryStatsSinglePestReportsListView(ListView):
         totALLcn=countriesperregioncp=CountryPage.objects.filter().count()
         region_all_p = []
         numRepPAll=0
-
-      
-
-           
         for k,v in REGIONS:
             reg = v+''
             numRepPAll=0
@@ -5120,8 +5180,48 @@ class CountryStatsSinglePestReportsListView(ListView):
         context['regionsAll']=regionsAll
         context['totALLcn']=totALLcn
         context['regionsALLTot']=regionsALLTot
-        
  
+ 
+        pest_array=[]
+        pest_array1=[]
+     
+        pestreporting_array = []
+        pestreporting_array1 = []
+        p_count=0
+        for y in range(2005,curryear):
+            pests=PestReport.objects.filter(is_version=False)
+            p_count1=0
+            for p in pests:
+                if p.publish_date != None and p.publish_date.year == y:
+                    p_count=p_count+1
+                    p_count1=p_count1+1
+            pestreporting_array.append(p_count)
+            pestreporting_array1.append(p_count1)
+            
+        pest_array.append(pestreporting_array)       
+        pest_array1.append(pestreporting_array1)       
+        datachartbis=''
+        datachart1bis=''
+        datachart2=''
+        datachart3=''
+        i=0
+     
+        for y in range(2005,curryear ):
+            datachartbis += '{type: "column", name: "'+str(y)+'", legendText: "'+str(y)+'",showInLegend: true, dataPoints:[{label: "Pest reports", y: '+str(pest_array[0][i])+'},]},'
+            datachart1bis +='{type: "column", name: "'+str(y)+'", legendText: "'+str(y)+'",showInLegend: true, dataPoints:[{label: "Pest reports", y: '+str(pest_array1[0][i])+'},]},'
+            
+            datachart2+= '{label: "'+str(y)+'", y: '+str(pest_array[0][i])+'}, '
+            datachart3+= '{label: "'+str(y)+'", y: '+str(pest_array1[0][i])+'}, '
+            i=i+1
+        context['pest_array']=pest_array
+        context['pest_array1']=pest_array1
+        context['num_years_range']=range(2005,curryear)
+        context['datachartbis']=datachartbis
+        context['datachart1bis']=datachart1bis
+        context['num_years']=num_years
+        context['datachart2']=datachart2
+        context['datachart3']=datachart3
+        
         return context   
 
 
