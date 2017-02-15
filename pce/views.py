@@ -1,7 +1,7 @@
 
 #import autocomplete_light
 #autocomplete_light.autodiscover()
-
+# -- coding: utf-8 --
 from django.shortcuts import render
 from django.utils.translation import ugettext_lazy as _
 from django.contrib.messages import info, error
@@ -10071,10 +10071,18 @@ def generate_report(request, country,sessionid=None):
     user_country_slug = lower(slugify(country))
     document = Document()
     docx_title="PCE_Report.docx"
-           
+    p= document.add_paragraph("")
+    #p.add_run(_("1. Introduction:"+str(sessionid))).bold = True
+
     if sessionid:
         pceversion = get_object_or_404(PceVersion,  pk=sessionid)
-        if user.groups.filter(name='Admin') or (lower(pceversion.country) == user_country_slug and user.groups.filter(name='PCE Manager/Validator')) :
+        #p.add_run(_("1. Introduction:"+str(sessionid))).bold = True
+        #p.add_run(_("-"+str(lower(pceversion.country)))).bold = True
+        #p.add_run(_("-"+str(lower(user_country_slug)))).bold = True
+        #p.add_run(_("-"+str(user.groups.filter(name='PCE Manager/Validator')))).bold = True
+
+        if user.groups.filter(name='Admin') or (lower(slugify(pceversion.country)) == user_country_slug and user.groups.filter(name='PCE Manager/Validator')) :
+            #p.add_run(_("1. Introduction:"+str(lower(pceversion.country) == user_country_slug))).bold = True
             m_names={}
             w2=None
             w3=None
@@ -10290,20 +10298,20 @@ def generate_report(request, country,sessionid=None):
             regionname=ugettext(dict(REGIONS_LABELS)[module1.region])
             #regionname=str(ugettext(dict(REGIONS_LABELS)[module1.region]))#.encode('utf-8')
             
-            str_m_3=str(ugettext(module1.m_3))
-            str_m_4=str(ugettext(module1.m_4))
-            str_m_5=str(ugettext(module1.m_5))
-            str_m_6=str(ugettext(module1.m_6))
-            str_m1m7=str(ugettext(m1m7))
-            str_m1m8=str(ugettext(m1m8))
+            str_m_3=module1.m_3
+            str_m_4=module1.m_4
+            str_m_5=module1.m_5
+            str_m_6=module1.m_6
+            str_m1m7=m1m7
+            str_m1m8=m1m8
             str_m_9=ugettext(dict(VAL_IMP)[module1.m_9])
-            str_m1m20=str(ugettext(m1m20))
-            str_m1m11=str(ugettext(m1m11))
+            str_m1m20=m1m20
+            str_m1m11=m1m11
             str_m_12=ugettext(dict(VAL_EXP)[module1.m_12])
-            str_m1m21=str(ugettext(m1m21))
+            str_m1m21=m1m21
             str_m_13=ugettext(dict(VAL_PERCENT)[module1.m_13])
-            str_m_14=str(ugettext(module1.m_14))
-            str_m_15=str(ugettext(module1.m_15))
+            str_m_14=module1.m_14
+            str_m_15=module1.m_15
             str_m_16=ugettext(dict(VAL_PERCENT)[module1.m_16])
             str_m_17=ugettext(dict(VAL_PERCENT)[module1.m_17])
             str_m_18=ugettext(dict(VAL_PERCENT)[module1.m_18])
@@ -10315,7 +10323,33 @@ def generate_report(request, country,sessionid=None):
             
             str_m_24=ugettext(dict(NUM_BILATERAL)[module1.m_24])
             str_m_25=ugettext(dict(NUM_BILATERAL)[module1.m_25])
-            str_m1m26=str(m1m26)
+            str_m1m26=m1m26
+# str_m_3=module1.m_3.encode('utf-8')
+#            str_m_4=module1.m_4.encode('utf-8')
+#            str_m_5=module1.m_5.encode('utf-8')
+#            str_m_6=module1.m_6.encode('utf-8')
+#            str_m1m7=m1m7.encode('utf-8')
+#            str_m1m8=m1m8.encode('utf-8')
+#            str_m_9=ugettext(dict(VAL_IMP)[module1.m_9])
+#            str_m1m20=m1m20.encode('utf-8')
+#            str_m1m11=m1m11.encode('utf-8')
+#            str_m_12=ugettext(dict(VAL_EXP)[module1.m_12])
+#            str_m1m21=m1m21.encode('utf-8')
+#            str_m_13=ugettext(dict(VAL_PERCENT)[module1.m_13])
+#            str_m_14=module1.m_14.encode('utf-8')
+#            str_m_15=module1.m_15.encode('utf-8')
+#            str_m_16=ugettext(dict(VAL_PERCENT)[module1.m_16])
+#            str_m_17=ugettext(dict(VAL_PERCENT)[module1.m_17])
+#            str_m_18=ugettext(dict(VAL_PERCENT)[module1.m_18])
+#            str_m_19=ugettext(dict(VAL_PERCENT)[module1.m_19])
+#           # print(m1m22)
+#            #print(ugettext(str(m1m22)))
+#            str_m1m23=str(m1m23)
+#            str_m1m22=str(m1m22)
+#            
+#            str_m_24=ugettext(dict(NUM_BILATERAL)[module1.m_24])
+#            str_m_25=ugettext(dict(NUM_BILATERAL)[module1.m_25])
+#            str_m1m26=m1m26.encode('utf-8')
 
 
             str_1=_(" is a country situated in ")+""
@@ -10392,11 +10426,11 @@ def generate_report(request, country,sessionid=None):
                     if i == '2' and '2' in items:
                         row_cells = table.add_row().cells
                         row_cells[0].text = _("Module")+' 2 -' + ugettext(m_names[2])
-                        row_cells[1].text = str( '1. '+w2.w1+'\n'+'2. '+w2.w2+'\n'+'3. '+w2.w3+'\n'+'4. '+w2.w4+'\n'+'5. '+w2.w5)
+                        row_cells[1].text =  '1. '+w2.w1+'\n'+'2. '+w2.w2+'\n'+'3. '+w2.w3+'\n'+'4. '+w2.w4+'\n'+'5. '+w2.w5
                     if i == '3' and '3' in items:
                         row_cells = table.add_row().cells
                         row_cells[0].text = _("Module")+' 3 -' + ugettext(m_names[3])
-                        row_cells[1].text = str( '1. '+w3.w1+'\n'+'2. '+w3.w2+'\n'+'3. '+w3.w3+'\n'+'4. '+w3.w4+'\n'+'5. '+w3.w5)
+                        row_cells[1].text =  '1. '+w3.w1+'\n'+'2. '+w3.w2+'\n'+'3. '+w3.w3+'\n'+'4. '+w3.w4+'\n'+'5. '+w3.w5
 #
             if '4' in items or '5' in items or '6' in items:
                 document.add_paragraph()
@@ -10414,15 +10448,15 @@ def generate_report(request, country,sessionid=None):
                     if  i == '4' and '4' in items:
                         row_cells = table.add_row().cells
                         row_cells[0].text = _("Module")+' 4 -' +ugettext(m_names[4])
-                        row_cells[1].text = str( '1. '+w4.w1+'\n'+'2. '+w4.w2+'\n'+'3. '+w4.w3+'\n'+'4. '+w4.w4+'\n'+'5. '+w4.w5)
+                        row_cells[1].text =  '1. '+w4.w1+'\n'+'2. '+w4.w2+'\n'+'3. '+w4.w3+'\n'+'4. '+w4.w4+'\n'+'5. '+w4.w5
                     if i == '5'  and '5' in items:
                         row_cells = table.add_row().cells
                         row_cells[0].text = _("Module")+' 5 -' + ugettext(m_names[5])
-                        row_cells[1].text = str( '1. '+w5.w1+'\n'+'2. '+w5.w2+'\n'+'3. '+w5.w3+'\n'+'4. '+w5.w4+'\n'+'5. '+w5.w5)
+                        row_cells[1].text =  '1. '+w5.w1+'\n'+'2. '+w5.w2+'\n'+'3. '+w5.w3+'\n'+'4. '+w5.w4+'\n'+'5. '+w5.w5
                     if  i == '6' and '6' in items :
                         row_cells = table.add_row().cells
                         row_cells[0].text = _("Module")+' 6 -' + ugettext(m_names[6])
-                        row_cells[1].text = str( '1. '+w6.w1+'\n'+'2. '+w6.w2+'\n'+'3. '+w6.w3+'\n'+'4. '+w6.w4+'\n'+'5. '+w6.w5)
+                        row_cells[1].text =  '1. '+w6.w1+'\n'+'2. '+w6.w2+'\n'+'3. '+w6.w3+'\n'+'4. '+w6.w4+'\n'+'5. '+w6.w5
 
            
             if '7' in items or '8' in items or '9' in items or '10' in items or '11' in items or '12' in items or '13' in items:
@@ -10441,31 +10475,31 @@ def generate_report(request, country,sessionid=None):
                     if i == '7' and '7' in items:
                         row_cells = table.add_row().cells
                         row_cells[0].text = _("Module")+' 7 -' +ugettext(m_names[7])
-                        row_cells[1].text = str( '1. '+w7.w1+'\n'+'2. '+w7.w2+'\n'+'3. '+w7.w3+'\n'+'4. '+w7.w4+'\n'+'5. '+w7.w5)
+                        row_cells[1].text =  '1. '+w7.w1+'\n'+'2. '+w7.w2+'\n'+'3. '+w7.w3+'\n'+'4. '+w7.w4+'\n'+'5. '+w7.w5
                     if i == '8' and '8' in items:
                         row_cells = table.add_row().cells
                         row_cells[0].text = _("Module")+' 8 -' +ugettext(m_names[8])
-                        row_cells[1].text = str( '1. '+w8.w1+'\n'+'2. '+w8.w2+'\n'+'3. '+w8.w3+'\n'+'4. '+w8.w4+'\n'+'5. '+w8.w5)
+                        row_cells[1].text =  '1. '+w8.w1+'\n'+'2. '+w8.w2+'\n'+'3. '+w8.w3+'\n'+'4. '+w8.w4+'\n'+'5. '+w8.w5
                     if i == '9' and '9' in items:
                         row_cells = table.add_row().cells
                         row_cells[0].text = _("Module")+' 9 -' + ugettext(m_names[9])
-                        row_cells[1].text = str( '1. '+w9.w1+'\n'+'2. '+w9.w2+'\n'+'3. '+w9.w3+'\n'+'4. '+w9.w4+'\n'+'5. '+w9.w5)
+                        row_cells[1].text =  '1. '+w9.w1+'\n'+'2. '+w9.w2+'\n'+'3. '+w9.w3+'\n'+'4. '+w9.w4+'\n'+'5. '+w9.w5
                     if i == '10' and '10' in items:
                         row_cells = table.add_row().cells
                         row_cells[0].text = _("Module")+' 10 -' +ugettext(m_names[10])
-                        row_cells[1].text = str( '1. '+w10.w1+'\n'+'2. '+w10.w2+'\n'+'3. '+w10.w3+'\n'+'4. '+w10.w4+'\n'+'5. '+w10.w5)
+                        row_cells[1].text =  '1. '+w10.w1+'\n'+'2. '+w10.w2+'\n'+'3. '+w10.w3+'\n'+'4. '+w10.w4+'\n'+'5. '+w10.w5
                     if i == '11' and '11' in items:
                         row_cells = table.add_row().cells
                         row_cells[0].text = _("Module")+' 11 -' +ugettext(m_names[11])
-                        row_cells[1].text = str( '1. '+w11.w1+'\n'+'2. '+w11.w2+'\n'+'3. '+w11.w3+'\n'+'4. '+w11.w4+'\n'+'5. '+w11.w5)
+                        row_cells[1].text =  '1. '+w11.w1+'\n'+'2. '+w11.w2+'\n'+'3. '+w11.w3+'\n'+'4. '+w11.w4+'\n'+'5. '+w11.w5
                     if i == '12' and '12' in items:
                         row_cells = table.add_row().cells
                         row_cells[0].text = _("Module")+' 12 -' +ugettext(m_names[12])
-                        row_cells[1].text = str( '1. '+w12.w1+'\n'+'2. '+w12.w2+'\n'+'3. '+w12.w3+'\n'+'4. '+w12.w4+'\n'+'5. '+w12.w5)
+                        row_cells[1].text =  '1. '+w12.w1+'\n'+'2. '+w12.w2+'\n'+'3. '+w12.w3+'\n'+'4. '+w12.w4+'\n'+'5. '+w12.w5
                     if i == '13' and '13' in items:
                         row_cells = table.add_row().cells
                         row_cells[0].text = _("Module")+' 13 -' +ugettext(m_names[13])
-                        row_cells[1].text = str( '1. '+w13.w1+'\n'+'2. '+w13.w2+'\n'+'3. '+w13.w3+'\n'+'4. '+w13.w4+'\n'+'5. '+w13.w5)
+                        row_cells[1].text =  '1. '+w13.w1+'\n'+'2. '+w13.w2+'\n'+'3. '+w13.w3+'\n'+'4. '+w13.w4+'\n'+'5. '+w13.w5
 
 
             document.add_paragraph()
@@ -10625,11 +10659,11 @@ def generate_report(request, country,sessionid=None):
                         if int(i) == 13:
                             w=w13
                         row_cells = table.add_row().cells
-                        row_cells[0].text = _("Strength")+str('\n\n'+str(sa1_all_s)+'\n'+str(sa2_all_s)+'\n'+str(sa3_all_s)+'\n'+str(sa4_all_s)+'\n'+str(sa5_all_s))
-                        row_cells[1].text = _("Weakness")+str('\n\n1. '+w.w1+'\n'+'2. '+w.w2+'\n'+'3. '+w.w3+'\n'+'4. '+w.w4+'\n'+'5. '+w.w5)
+                        row_cells[0].text = _("Strength")+'\n\n'+sa1_all_s+'\n'+sa2_all_s+'\n'+sa3_all_s+'\n'+sa4_all_s+'\n'+sa5_all_s
+                        row_cells[1].text = _("Weakness")+'\n\n1. '+w.w1+'\n'+'2. '+w.w2+'\n'+'3. '+w.w3+'\n'+'4. '+w.w4+'\n'+'5. '+w.w5
                         row_cells = table.add_row().cells
-                        row_cells[0].text = _("Opportunities")+str('\n\n'+sa1_all_o+'\n'+sa2_all_o+'\n'+sa3_all_o+'\n'+sa4_all_o+'\n'+sa5_all_o)
-                        row_cells[1].text = _("Threats")+str('\n\n'+sa1_all_t+'\n'+sa2_all_t+'\n'+sa3_all_t+'\n'+sa4_all_t+'\n'+sa5_all_t)  
+                        row_cells[0].text = _("Opportunities")+'\n\n'+sa1_all_o+'\n'+sa2_all_o+'\n'+sa3_all_o+'\n'+sa4_all_o+'\n'+sa5_all_o
+                        row_cells[1].text = _("Threats")+'\n\n'+sa1_all_t+'\n'+sa2_all_t+'\n'+sa3_all_t+'\n'+sa4_all_t+'\n'+sa5_all_t  
 #
           
             document.add_page_break()
@@ -10681,10 +10715,10 @@ def generate_report(request, country,sessionid=None):
                                 count1=count1+int(lf5.cost)
                             
                         
-                        row_cells[1].text = str(str(lf.overobjective))
-                        row_cells[2].text = str(str(lf.objective))
-                        row_cells[3].text = str(lf.output1+'\n'+lf.output2+'\n'+lf.output3+'\n'+lf.output4+'\n'+lf.output5)
-                        row_cells[4].text = str(count1)  
+                        row_cells[1].text = lf.overobjective
+                        row_cells[2].text = lf.objective
+                        row_cells[3].text = lf.output1+'\n'+lf.output2+'\n'+lf.output3+'\n'+lf.output4+'\n'+lf.output5
+                        row_cells[4].text = str(count1)
                         
             document.add_paragraph()
             p=document.add_paragraph("")
@@ -10725,10 +10759,10 @@ def generate_report(request, country,sessionid=None):
                     if logicalframework>0:
                         lf = get_object_or_404(LogicalFramework, session_id=sessionid,module=int(i))
                         row_cells = table.add_row().cells
-                        row_cells[0].text=str(lf.overobjective)
-                        row_cells[1].text=str(lf.keyindicator0)
-                        row_cells[2].text=str(lf.verification0)
-                        row_cells[3].text=str(lf.assumptions0)
+                        row_cells[0].text=lf.overobjective
+                        row_cells[1].text=lf.keyindicator0
+                        row_cells[2].text=lf.verification0
+                        row_cells[3].text=lf.assumptions0
                     document.add_paragraph("")   
                    
                     table = document.add_table(rows=1, cols=4)
@@ -10742,10 +10776,10 @@ def generate_report(request, country,sessionid=None):
                     if logicalframework>0:
                         lf = get_object_or_404(LogicalFramework, session_id=sessionid,module=int(i))
                         row_cells = table.add_row().cells
-                        row_cells[0].text=str(lf.objective)
-                        row_cells[1].text=str(lf.keyindicator)
-                        row_cells[2].text=str(lf.verification)
-                        row_cells[3].text=str(lf.assumptions)
+                        row_cells[0].text=lf.objective
+                        row_cells[1].text=lf.keyindicator
+                        row_cells[2].text=lf.verification
+                        row_cells[3].text=lf.assumptions
                     
                     document.add_paragraph("")   
                     
@@ -10760,31 +10794,31 @@ def generate_report(request, country,sessionid=None):
                     if logicalframework>0:
                         lf = get_object_or_404(LogicalFramework, session_id=sessionid,module=int(i))
                         row_cells = table.add_row().cells
-                        row_cells[0].text=str(lf.output1)
-                        row_cells[1].text=str(lf.keyindicator1)
-                        row_cells[2].text=str(lf.verification1)
-                        row_cells[3].text=str(lf.assumptions1)
+                        row_cells[0].text=lf.output1
+                        row_cells[1].text=lf.keyindicator1
+                        row_cells[2].text=lf.verification1
+                        row_cells[3].text=lf.assumptions1
                   
                         row_cells = table.add_row().cells
-                        row_cells[0].text=str(lf.output2)
-                        row_cells[1].text=str(lf.keyindicator2)
-                        row_cells[2].text=str(lf.verification2)
-                        row_cells[3].text=str(lf.assumptions2)
+                        row_cells[0].text=lf.output2
+                        row_cells[1].text=lf.keyindicator2
+                        row_cells[2].text=lf.verification2
+                        row_cells[3].text=lf.assumptions2
                         row_cells = table.add_row().cells
-                        row_cells[0].text=str(lf.output3)
-                        row_cells[1].text=str(lf.keyindicator3)
-                        row_cells[2].text=str(lf.verification3)
-                        row_cells[3].text=str(lf.assumptions3)
+                        row_cells[0].text=lf.output3
+                        row_cells[1].text=lf.keyindicator3
+                        row_cells[2].text=lf.verification3
+                        row_cells[3].text=lf.assumptions3
                         row_cells = table.add_row().cells
-                        row_cells[0].text=str(lf.output4)
-                        row_cells[1].text=str(lf.keyindicator4)
-                        row_cells[2].text=str(lf.verification4)
-                        row_cells[3].text=str(lf.assumptions4)
+                        row_cells[0].text=lf.output4
+                        row_cells[1].text=lf.keyindicator4
+                        row_cells[2].text=lf.verification4
+                        row_cells[3].text=lf.assumptions4
                         row_cells = table.add_row().cells
-                        row_cells[0].text=str(lf.output5)
-                        row_cells[1].text=str(lf.keyindicator5)
-                        row_cells[2].text=str(lf.verification5)
-                        row_cells[3].text=str(lf.assumptions5)
+                        row_cells[0].text=lf.output5
+                        row_cells[1].text=lf.keyindicator5
+                        row_cells[2].text=lf.verification5
+                        row_cells[3].text=lf.assumptions5
                     document.add_paragraph("") 
                     document.add_paragraph("Indicative Work Plan") 
                     table = document.add_table(rows=1, cols=4)
@@ -10803,57 +10837,47 @@ def generate_report(request, country,sessionid=None):
                         if LogicalFrameworkAct1.objects.filter(logicalframework_id=lf.id).count()>0:
                             lf1 = LogicalFrameworkAct1.objects.filter(logicalframework_id=lf.id)[0]
                             row_cells = table.add_row().cells
-                            row_cells[0].text=str(lf1.activity1)
-                            row_cells[1].text=str(lf1.cost)
-                            row_cells[2].text=str(lf1.responsible)
-                            row_cells[3].text=str(lf1.deadline)
-                           # row_cells[4].text=str(lf1.target)
-                           # row_cells[5].text=str(lf1.sourcverification)
-                           # row_cells[6].text=str(lf1.external)
+                            row_cells[0].text=lf1.activity1
+                            row_cells[1].text=lf1.cost
+                            row_cells[2].text=lf1.responsible
+                            row_cells[3].text=lf1.deadline
+                         
                             row_cells = table.add_row().cells
                         if  LogicalFrameworkAct2.objects.filter(logicalframework_id=lf.id).count()>0:
                             lf2 = LogicalFrameworkAct2.objects.filter(logicalframework_id=lf.id)[0]
                             row_cells = table.add_row().cells
-                            row_cells[0].text=str(lf2.activity2)
-                            row_cells[1].text=str(lf2.cost)
-                            row_cells[2].text=str(lf2.responsible)
-                            row_cells[3].text=str(lf2.deadline)
-                           # row_cells[4].text=str(lf2.target)
-                          #  row_cells[5].text=str(lf2.sourcverification)
-                          #  row_cells[6].text=str(lf2.external)
+                            row_cells[0].text=lf2.activity2
+                            row_cells[1].text=lf2.cost
+                            row_cells[2].text=lf2.responsible
+                            row_cells[3].text=lf2.deadline
+                          
                             row_cells = table.add_row().cells
                         if  LogicalFrameworkAct3.objects.filter(logicalframework_id=lf.id).count()>0:
                             lf3 = LogicalFrameworkAct3.objects.filter(logicalframework_id=lf.id)[0]
                             row_cells = table.add_row().cells
-                            row_cells[0].text=str(lf3.activity3)
-                            row_cells[1].text=str(lf3.cost)
-                            row_cells[2].text=str(lf3.responsible)
-                            row_cells[3].text=str(lf3.deadline)
-                            #row_cells[4].text=str(lf3.target)
-                            #row_cells[5].text=str(lf3.sourcverification)
-                            #row_cells[6].text=str(lf3.external)
+                            row_cells[0].text=lf3.activity3
+                            row_cells[1].text=lf3.cost
+                            row_cells[2].text=lf3.responsible
+                            row_cells[3].text=lf3.deadline
+                           
                             row_cells = table.add_row().cells
                         if  LogicalFrameworkAct4.objects.filter(logicalframework_id=lf.id).count()>0:
                             lf4 = LogicalFrameworkAct4.objects.filter(logicalframework_id=lf.id)[0]
-                            row_cells[0].text=str(lf4.activity4)
-                            row_cells[1].text=str(lf4.cost)
-                            row_cells[2].text=str(lf4.responsible)
-                            row_cells[3].text=str(lf4.deadline)
-                            #row_cells[4].text=str(lf4.target)
-                            #row_cells[5].text=str(lf4.sourcverification)
-                            #row_cells[6].text=str(lf4.external)
+                            row_cells[0].text=lf4.activity4
+                            row_cells[1].text=lf4.cost
+                            row_cells[2].text=lf4.responsible
+                            row_cells[3].text=lf4.deadline
+                           
                             row_cells = table.add_row().cells
                         if  LogicalFrameworkAct5.objects.filter(logicalframework_id=lf.id).count()>0:
                             lf5 = LogicalFrameworkAct5.objects.filter(logicalframework_id=lf.id)[0]
                             row_cells = table.add_row().cells
-                            row_cells[0].text=str(lf5.activity5)
-                            row_cells[1].text=str(lf5.cost)
-                            row_cells[2].text=str(lf5.responsible)
-                            row_cells[3].text=str(lf5.deadline)
+                            row_cells[0].text=lf5.activity5
+                            row_cells[1].text=lf5.cost
+                            row_cells[2].text=lf5.responsible
+                            row_cells[3].text=lf5.deadline
                             row_cells = table.add_row().cells
-                            #row_cells[4].text=str(lf5.target)
-                            #row_cells[5].text=str(lf5.sourcverification)
-                            #row_cells[6].text=str(lf5.external)
+                          
                     
                         
                         
@@ -10887,7 +10911,7 @@ def generate_report(request, country,sessionid=None):
                     if si.email not in ss:
                         row_cells = table.add_row().cells
                         ss.append(si.email)
-                        row_cells[0].text = str(si.firstname)+' '+ str(si.lastname)
+                        row_cells[0].text = si.firstname+' '+ si.lastname
                         row_cells[1].text = str(si.organisation)
                         row_cells[2].text = str(si.email)
     
