@@ -156,7 +156,7 @@
       <td><a href="{% url 'partner-websites-detail' object.partners.partner_slug object.publish_date|date:'Y' object.publish_date|date:'m'  object.slug %}">{{ object.title }}</a></td>
       <td>
             {% for f in object.partnerswebsiteurl_set.all %} 
-<a href="{{MEDIA_URL}}{{f.url_for_more_information}}">{{ f.url_for_more_information }}</a><br>
+<a href="{{f.url_for_more_information}}">{{ f.url_for_more_information }}</a><br>
 {% endfor %}
           
       </td>
