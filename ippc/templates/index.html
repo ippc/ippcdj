@@ -14,13 +14,21 @@
 
 
 {% block main %}
-    <div style="margin:0;color:black; background-color: yellow;" class="alert alert-warning" ><span style="color:red;"><b>CPM-12 deadline: 17 March 2017</b></span><br><span style="color:black;">Contracting Parties attending CPM-12 are reminded that by 17 March 2017 originals of credentials of the representative(s) including the names of alternate representatives and advisers should be submitted to:<br>
+   <div style="margin:0;color:black; background-color: yellow;" class="alert alert-warning" >
+<span style="color:red;"><b>CPM-12 deadline: 17 March 2017</b></span><br>
+<span style="color:black;">Contracting Parties attending CPM-12 are reminded that by 17 March 2017</span><span style="color:red;"> originals of credentials of the representative(s) including the names of alternate representatives and advisers should be submitted to:</span>
+<br><span style="color:black;">
 
             <b><i>Secretariat of the International Plant Protection Convention (IPPC) <br>
 Agriculture and Consumer Protection Department (AG), room B767b<br>
 Food and Agriculture Organization of the United Nations <br>
 Viale delle Terme di Caracalla <br>
-00153 Rome, Italy</i></b></span></div>
+00153 Rome, Italy</i></b>
+<br>
+The copy of Credentials should be sent to the above address or as a scan to Katarina Spisiakova at <a href="mailto:Katarina.Spisiakova@fao.org">Katarina.Spisiakova@fao.org</a>. The original should be delivered directly at the Registration Desk at CPM12 in Incheon, ROK. 
+</span>
+</div>
+
 
             
             
@@ -46,7 +54,7 @@ Viale delle Terme di Caracalla - Room B767B<br>
 
             <!-- or NEWS in BLOCKS ================== -->
             <div class="row-fluid">
-                <div class="span6">
+                <div class="span7">
                     <div class="homepage-ippcnews-box">  {# panel  #}
                         <h4><a href="/news/category/ippcnews/">{% trans "IPPC News" %}</a> <small><a class="small quiet pull-right" href="/news/category/ippcnews/">{% trans "see all" %} »</a></small></h4>
                      
@@ -73,9 +81,9 @@ Viale delle Terme di Caracalla - Room B767B<br>
                                         {% if entry.featured_image %} 
                                         <a href="{{ entry.get_absolute_url }}">
                                             <!--img src="{{ MEDIA_URL }}{{entry.featured_image}}" style="width:400px;height:220px;"-->
-                                            <img src="{{ MEDIA_URL }}{% thumbnail entry.featured_image 400 220 %}">
+                                            <img src="{{ MEDIA_URL }}{% thumbnail entry.featured_image 550 250 %}">
                                         </a>
-                                        <div style="position: relative; bottom: 0; left: 0.5em; width: 400px; font-weight: bold; color: #fff;">
+                                        <div style="position: relative; bottom: 0; left: 0.5em; width: 550px; font-weight: bold; color: #fff;">
                                             <center><h6>
 
                                                     {% with entry|get_object_translation as translated_page %}
@@ -95,8 +103,43 @@ Viale delle Terme di Caracalla - Room B767B<br>
                         </div>   
 
                     </div>
-                    <div class="span6">
+                    <div class="span5">
+                          <!--div class="panel homepage-announcements-box"> 
+            <h4><a href="/{{ LANGUAGE_CODE }}/news/category/announcements/">{% trans "Announcements" %}</a> <small><a class="small quiet" href="/{{ LANGUAGE_CODE }}/news/category/announcements/"  class="pull-right">{% trans "see all" %} »</a></small></h4>
+                <ul class="unstyled">
+                  {% news_recent_posts limit=10 category="announcements" as recent_announcements %}  
+                  {% for entry in recent_announcements|slice:":3" %}
+                      <li>
+                        <b><small>{{ entry.publish_date|date:"d-m-Y" }}</small></b>
+                        <br>
+                        <a  href="{{ entry.get_absolute_url }}">
+                              {% with entry|get_object_translation as translated_page %}
+                              {{ translated_page.title|safe}}
+                              {% endwith %}
+                        </a>
+                      </li>
+                {% endfor %} 
+              </ul>
+        </div--> 
                         <div class="panel homepage-briefnews-box">
+                            <h4><a href="/news/category/announcements/">{% trans "Announcements" %}</a> <small><a class="small quiet pull-right" href="/news/category/announcements/">{% trans "see all" %} »</a></small></h4>
+                        
+                            <dl class="dl-horizontal">
+                              {% news_recent_posts limit=10 category="announcements" as recent_announcements %}  
+                  {% for entry in recent_announcements|slice:":10" %}
+                     <dt><small>{{ entry.publish_date|date:"d-m-Y" }}</small></dt>
+                                    <dd>
+                                      <a  href="{{ entry.get_absolute_url }}">
+                                        {% with entry|get_object_translation as translated_page %}
+                                        {{ translated_page.title|safe}}
+                                        {% endwith %}
+                                      </a>
+                                </dd>
+                                {% endfor %}   
+                            </dl>
+                      
+                        </div>
+                        <!--div class="panel homepage-briefnews-box">
                             <h4><a href="/news/category/briefnews/">{% trans "Brief News" %}</a> <small><a class="small quiet pull-right" href="/news/category/briefnews/">{% trans "see all" %} »</a></small></h4>
                             {% if recent_posts_brief %}
                             <dl class="dl-horizontal">
@@ -108,11 +151,11 @@ Viale delle Terme di Caracalla - Room B767B<br>
                                         {{ translated_page.title|safe}}
                                         {% endwith %}
                                       </a>
-                                </dd><!--small>{{ entry.publish_date|date:"D, d M Y, H:i" }}.</small-->
+                                </dd>
                                 {% endfor %}   
                             </dl>
                             {% endif %}
-                        </div>
+                        </div-->
                     </div>
                 </div>   
 
@@ -200,8 +243,8 @@ Viale delle Terme di Caracalla - Room B767B<br>
                         </div>
                         <div class="span4">
                             
-                                <div class="panel" style="position: relative; repeat:no; background: url(/static/img/65Logo.jpg); width: 260px; height:70px;"> 
-                                        
+                                <div class="panel" style="position: relative; background-color: white;repeat:no; width: 260px; height:70px;"> <!--65Logo.jpg-->
+                                        <img src="/static/img/IPPC_65YearsLogo_EN-website4.jpg">
 
                                 </div>  
                             
@@ -294,7 +337,7 @@ Viale delle Terme di Caracalla - Room B767B<br>
             <a href="/{{ LANGUAGE_CODE }}/contact/">{% trans "Contact us" %}</a>
 
         </div>
-        <div class="panel homepage-announcements-box"> 
+        <!--div class="panel homepage-announcements-box"> 
             <h4><a href="/{{ LANGUAGE_CODE }}/news/category/announcements/">{% trans "Announcements" %}</a> <small><a class="small quiet" href="/{{ LANGUAGE_CODE }}/news/category/announcements/"  class="pull-right">{% trans "see all" %} »</a></small></h4>
                 <ul class="unstyled">
                   {% news_recent_posts limit=10 category="announcements" as recent_announcements %}  
@@ -310,7 +353,7 @@ Viale delle Terme di Caracalla - Room B767B<br>
                       </li>
                 {% endfor %} 
               </ul>
-        </div> 
+        </div--> 
 
         <div class="panel homepage-callsdeadlines-box"> 
             <h4><a href="/{{ LANGUAGE_CODE }}/calls/">{% trans "Calls &amp; Deadlines" %}</a> <small><a class="small quiet" href="/{{ LANGUAGE_CODE }}/calls/category/deadline/">{% trans "see all" %} »</a></small></h4>
