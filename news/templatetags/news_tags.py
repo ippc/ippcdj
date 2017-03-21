@@ -101,7 +101,7 @@ def news_months_for_category1(category=None):
 #            h=0
     curryear=timezone.now().year+1
     aaa=[]
-    for g in reversed(range(2012,curryear)):
+    for g in reversed(range(2003,curryear)):
         yyy=[]
         h=0
         for  i, date_dict in enumerate(month_dicts):
