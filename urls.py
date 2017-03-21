@@ -495,15 +495,19 @@ urlpatterns = patterns("",
 
 #-------------PARTNERS---------------------------
 
-    url(r'^partners/international-organizations/(?P<partner>[\w-]+)/$',
-        view=PartnersView.as_view(),
-        name='partner'),
-    url(r'^partners/regional-plant-protection-organizations/(?P<partner>[\w-]+)/$',
-        view=PartnersView.as_view(),
-        name='partner'), 
-    url(r'^liason/organizations/(?P<partner>[\w-]+)/$',
-        view=PartnersView.as_view(),
-        name='partner'),     
+#    url(r'^partners/international-organizations/(?P<partner>[\w-]+)/$',
+#        view=PartnersView.as_view(),
+#        name='partner'),
+#    url(r'^partners/regional-plant-protection-organizations/(?P<partner>[\w-]+)/$',
+#        view=PartnersView.as_view(),
+#        name='partner'), 
+#    url(r'^liason/organizations/(?P<partner>[\w-]+)/$',
+#        view=PartnersView.as_view(),
+#        name='partner'),     
+url(r'^external-cooperation/organizations-page-in-ipp/(?P<partner>[\w-]+)/$',        view=PartnersView.as_view(),        name='partner'),
+    url(r'^external-cooperation/regional-plant-protection-organizations/(?P<partner>[\w-]+)/$',        view=PartnersView.as_view(),        name='partner'), 
+   # url(r'^liason/organizations/(?P<partner>[\w-]+)/$',        view=PartnersView.as_view(),        name='partner'),     
+ 
 
     # partners publications detail
     url(r'^partners/(?P<partners>[\w-]+)/publications/(?P<year>\d+)/(?P<month>\d{2})/(?P<slug>[\w-]+)/$',
