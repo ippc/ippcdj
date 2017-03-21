@@ -950,7 +950,7 @@ def reminder_to_cn(request,id=None):
                         remider_message.pk = None
                         remider_message.emailfrom = "ippc@fao.org"
                         remider_message.emailto = emails
-                        remider_message.subject = "IPPC NOR remider for "+str(cn)+": LINKS and FILES"
+                        remider_message.subject = "IPPC NRO remider for "+str(cn)+": LINKS and FILES"
                         remider_message.messagebody = textmessage
                         remider_message.date = timezone.now()
 
@@ -1522,7 +1522,7 @@ class PublicationDetail2View(DetailView):
      
         context['versions'] = versions
         context['restrictedmessage'] = restrictedmessage
-      
+        return context
     
 
 
@@ -5952,9 +5952,11 @@ class CountryRegionsUsersNeverLoggedNewListView(ListView):
         tot_encp_2015_count=0
         tot_eterr_count=0
         tot_eterr_2015_count=0
-            
+        
+        
         t=''   
         for k,v in REGIONS:
+            
             reg = v.lower()
             t=t+reg+': '
             numCNcp = []
@@ -6005,12 +6007,14 @@ class CountryRegionsUsersNeverLoggedNewListView(ListView):
             o_2015_count=0
             e_count=0
             e_2015_count=0
+            editorCPcount=0
+            editorCPcount_reg=0
             #CP
             for c in countriesperregioncp:
                 offneverlogg=IppcUserProfile.objects.filter(country=c.id,contact_type='1')
                 editorneverlogg=IppcUserProfile.objects.filter(country=c.id,contact_type='5')
                 editorCPcount=editorneverlogg.count()
-                              
+                editorCPcount_reg=editorCPcount_reg+     editorCPcount     
                 for o in offneverlogg:
                     u= User.objects.get(id=o.user_id)
                     if u.last_login.year == 1970:
@@ -6029,12 +6033,13 @@ class CountryRegionsUsersNeverLoggedNewListView(ListView):
                         e_2015_count=e_2015_count+1        
             official.append(o_count)
             official.append(o_2015_count)
-            official.append(e_count)
+            if editorCPcount_reg>0:
+                official.append(e_count)
+            else: 
+                official.append('-')
             official.append(e_2015_count)
             regionOffcp.append(official)   
             context['region_off_cp']=regionOffcp
-            
-        
   
             tot_o_count+=o_count
             tot_o_2015_count+=o_2015_count
@@ -6047,16 +6052,19 @@ class CountryRegionsUsersNeverLoggedNewListView(ListView):
             encp_count=0
             encp_2015_count=0
             #NCP
+            editorInfocount_reg=0
             for c in countriesperregionncp:
                 infop_neverlogg=IppcUserProfile.objects.filter(country=c.id,contact_type='3')
                 
                 editorneverlogg=IppcUserProfile.objects.filter(country=c.id,contact_type='5')
+                editorInfocount_reg=editorInfocount_reg+editorneverlogg.count()
                 for o in infop_neverlogg:
                     u= User.objects.get(id=o.user_id)
                     if u.last_login.year == 1970:
                         i_count=i_count+1
                     if u.last_login.year > 1970 and u.last_login.year!=prev_year:
                         i_2015_count=i_2015_count+1
+               
                 for o in editorneverlogg:
                     u= User.objects.get(id=o.user_id)
                     if u.last_login.year == 1970:
@@ -6067,7 +6075,10 @@ class CountryRegionsUsersNeverLoggedNewListView(ListView):
             infopoint.append(i_2015_count)
             regionInfoncp.append(infopoint)   
             context['region_info_ncp']=regionInfoncp
-            editorsncp.append(encp_count)
+            if editorInfocount_reg>0:
+                 editorsncp.append(encp_count)
+            else :
+                  editorsncp.append('-')
             editorsncp.append(encp_2015_count)
             regionEditorsInfo.append(editorsncp)   
             context['region_editors']=regionEditorsInfo
@@ -6085,10 +6096,11 @@ class CountryRegionsUsersNeverLoggedNewListView(ListView):
             eterr_2015_count=0
             
           #TERR
+            editorTerrcount_reg=0
             for c in countriesperregioterr:
                 localp_neverlogg=IppcUserProfile.objects.filter(country=c.id,contact_type='4')
                 editorneverlogg=IppcUserProfile.objects.filter(country=c.id,contact_type='5')
-              
+                editorTerrcount_reg=editorTerrcount_reg+editorneverlogg.count()
                 for o in localp_neverlogg:
                     u= User.objects.get(id=o.user_id)
                     if u.last_login.year == 1970:
@@ -6105,12 +6117,15 @@ class CountryRegionsUsersNeverLoggedNewListView(ListView):
                         #print(u.last_login.year)
                         t=t+ '2015 - '+ u.last_name+', '
                         eterr_2015_count=eterr_2015_count+1           
-           
+
             local.append(l_count)
             local.append(l_2015_count)
             regionLocal.append(local)   
             context['region_local_terr']=regionLocal
-            editorsterr.append(eterr_count)
+            if editorTerrcount_reg>0:
+                editorsterr.append(eterr_count)
+            else:
+                editorsterr.append('-')
             editorsterr.append(eterr_2015_count)
             regionEditorsTerr.append(editorsterr)   
             context['region_terr_editors']=regionEditorsTerr
@@ -6242,9 +6257,18 @@ class CountryRegionsUsersNeverLoggedNewListView(ListView):
             for c in CountryPage.objects.filter(region=k,cp_ncp_t_type='CP'):
                 eCPcount=eCPcount+IppcUserProfile.objects.filter(country=c.id,contact_type='5').count()
             if editorCPcount>0:
-                cpEditor=regionOffcp[k-1][2]*100/eCPcount
+                if regionOffcp[k-1][2]!='-':
+                    print(regionOffcp[k-1][2])
+                    cpEditor=regionOffcp[k-1][2]*100/eCPcount
+                else:
+                    print('???')
+                    print(regionOffcp[k-1][2])
+                    cpEditor=0
                 cpEditor_currYear=regionOffcp[k-1][3]*100/eCPcount
-                cpEditor_1=(eCPcount-regionOffcp[k-1][2])*100/eCPcount
+                if regionOffcp[k-1][2]!='-':
+                    cpEditor_1=(eCPcount-regionOffcp[k-1][2])*100/eCPcount
+                else:    
+                    cpEditor_1=(eCPcount-0)*100/eCPcount
                 cpEditor_currYear_1=(eCPcount-regionOffcp[k-1][3])*100/eCPcount	
            #-------------------------------NCP----------------------------------------
             for c in CountryPage.objects.filter(region=k,cp_ncp_t_type='NCP'):
@@ -6257,9 +6281,17 @@ class CountryRegionsUsersNeverLoggedNewListView(ListView):
                 ncp_1=(numb_countriesperregionncp-regionInfoncp[k-1][0])*100/numb_countriesperregionncp
                 ncp_currYear_1=(numb_countriesperregionncp-regionInfoncp[k-1][1])*100/numb_countriesperregionncp
                 if eNCPcount>0:
-                    ncpEditor=regionEditorsInfo[k-1][0]*100/eNCPcount
+                    if regionEditorsInfo[k-1][0] !='-':
+                        print( regionEditorsInfo[k-1][0])
+                        ncpEditor=regionEditorsInfo[k-1][0]*100/eNCPcount
+                    else:
+                        ncpEditor=0
                     ncpEditor_currYear=regionEditorsInfo[k-1][1]*100/eNCPcount
-                    ncpEditor_1=(eNCPcount-regionEditorsInfo[k-1][0])*100/eNCPcount
+                    if regionEditorsInfo[k-1][0] !='-':
+                        ncpEditor_1=(eNCPcount-0)*100/eNCPcount
+                    else:
+                        ncpEditor=0
+                  
                     ncpEditor_currYear_1=(eNCPcount-regionEditorsInfo[k-1][1])*100/eNCPcount
 
 			#-----------------------------TERR------------------------------------------  
@@ -6271,9 +6303,15 @@ class CountryRegionsUsersNeverLoggedNewListView(ListView):
                 terr_1=(numb_countriesperregioterr-regionLocal[k-1][0])*100/numb_countriesperregioterr
                 terr_currYear_1=(numb_countriesperregioterr-regionLocal[k-1][1])*100/numb_countriesperregioterr
                 if eTerrCount>0:
-                    terrEditor=regionEditorsTerr[k-1][0]*100/eTerrCount
+                    if regionEditorsTerr[k-1][0] !='-':
+                         terrEditor=regionEditorsTerr[k-1][0]*100/eTerrCount
+                    else:
+                        terrEditor=0
                     terrEditor_currYear=regionEditorsTerr[k-1][1]*100/eTerrCount		
-                    terrEditor_1=(eTerrCount-regionEditorsTerr[k-1][0])*100/eTerrCount
+                    if regionEditorsTerr[k-1][0] !='-':
+                        terrEditor_1=(eTerrCount-regionEditorsTerr[k-1][0])*100/eTerrCount
+                    else:
+                        terrEditor_1=(eTerrCount-0)*100/eTerrCount
                     terrEditor_currYear_1=(eTerrCount-regionEditorsTerr[k-1][1])*100/eTerrCount
          #------------------------------------------------------------------------------------------ 
 		
@@ -6403,6 +6441,7 @@ class CountryRegionsUsersNeverLoggedNewListView(ListView):
 
         return context
 class CountryRegionsUsersNeverLoggedListView(ListView):
+
     """   Statistic users per regions that never logged in  """
     context_object_name = 'latest'
     model = CountryPage
@@ -6764,7 +6803,7 @@ class CountryStatsChangeInCPsListView(ListView):
         context = super(CountryStatsChangeInCPsListView, self).get_context_data(**kwargs)
         
         context['dategenerate']=timezone.now()
-        context['selyear_range']=range(2010,timezone.now().year+1)
+        context['selyear_range']=range(2015,timezone.now().year+1)
        
         prevyear=0
         print('>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>')
