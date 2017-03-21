@@ -38,7 +38,7 @@
     var chart = new CanvasJS.Chart("chartContainer",
     {
       title:{
-        text: "Chart showing status of IPP Contact Points"    
+        text: "Chart showing status of IPPC Contact Points and IPP editors (country editors)"    
       },
       axisY: {
         title: "Number"
@@ -72,9 +72,9 @@
   </script>
   <script src='{% static "/static/canvasjs/canvasjs.min.js" %}'></script>
 <h1>
-  <small class="normal">{% trans "Status of IPPC Contact Points" %} </small>
+  <small class="normal">{% trans "Status of IPPC Contact Points and IPP editors" %} </small>
   </h1> 
-<p>The tables and Graphs below summarize the status of IPPC Contact Points and IPPC editors.
+<p>The tables and Graphs below summarize the status of IPPC Contact Points and IPP editors.
 <br>
 
 <b>Date generated: </b>  {{ dategenerate|date:"d M Y, H:m" }}</p><br>
@@ -105,14 +105,14 @@
 <td> {{tot_l_count}}</td>
 </tr>
  <tr>
-<td>Editors</td>
+<td>IPP Editors</td>
 <td> {{tot_e_count}}</td>
 </tr>
 </tbody>
 
 </table>
 
-<div id="chartContainer" style="height:300px; width: 100%;">
+<div id="chartContainer" style="height:300px; width: 70%;">
             </div>
 
 <!--h1> <small class="normal">All users</small></h1>

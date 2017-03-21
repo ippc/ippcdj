@@ -80,7 +80,7 @@ $(function() {
 
     chart.render();
   
-      /*var chart = new CanvasJS.Chart("chartContainer1",
+      var chart = new CanvasJS.Chart("chartContainer1",
     {
       title:{
         text: "Logging Activity of Official Contact Points in  {{prev_year}}"   
@@ -116,11 +116,11 @@ $(function() {
       }
     });
 
-    chart.render();*/
+    chart.render();
      var chart = new CanvasJS.Chart("chartContainer2",
     {
       title:{
-        text: "Logging Activity of IPP Editors (of Official Contact Points)"   
+        text: "Logging Activity of IPP Editors (Contracting Parties)"   
       },
       axisY:{
         title:"Percentage"   
@@ -155,7 +155,7 @@ $(function() {
 
     chart.render();
   
- /*     var chart = new CanvasJS.Chart("chartContainer3",
+      var chart = new CanvasJS.Chart("chartContainer3",
     {
       title:{
         text: "Logging Activity of IPP Editors (Contractting Parties) in {{prev_year}}"   
@@ -191,11 +191,11 @@ $(function() {
       }
     });
 
-    chart.render();*/
+    chart.render();
         var chart = new CanvasJS.Chart("chartContainer0_",
     {
       title:{
-        text: "Logging Activity of Information Points "   
+        text: "Logging Activity of Info Points "   
       },
       axisY:{
         title:"Percentage"   
@@ -230,7 +230,7 @@ $(function() {
 
     chart.render();
   
-    /*  var chart = new CanvasJS.Chart("chartContainer1_",
+      var chart = new CanvasJS.Chart("chartContainer1_",
     {
       title:{
         text: "Logging Activity of Info Points  in  {{prev_year}}"   
@@ -266,11 +266,11 @@ $(function() {
       }
     });
 
-    chart.render();*/
+    chart.render();
      var chart = new CanvasJS.Chart("chartContainer2_",
     {
       title:{
-        text: "Logging Activity of IPP Editors (of Information Points)"   
+        text: "Logging Activity of IPP Editors (Non-contracting parties)"   
       },
       axisY:{
         title:"Percentage"   
@@ -304,7 +304,7 @@ $(function() {
     });
 
     chart.render();
-  /*
+  
       var chart = new CanvasJS.Chart("chartContainer3_",
     {
       title:{
@@ -341,7 +341,7 @@ $(function() {
       }
     });
 
-    chart.render();*/
+    chart.render();
         var chart = new CanvasJS.Chart("chartContainer0_1",
     {
       title:{
@@ -379,7 +379,7 @@ $(function() {
     });
 
     chart.render();
-  /*
+  
       var chart = new CanvasJS.Chart("chartContainer1_1",
     {
       title:{
@@ -416,11 +416,11 @@ $(function() {
       }
     });
 
-    chart.render();*/
+    chart.render();
      var chart = new CanvasJS.Chart("chartContainer2_1",
     {
       title:{
-        text:  "Logging Activity of IPP Editors (of Local contacts)"   
+        text:  "Logging Activity of IPP Editors (Territories)"   
       },
       axisY:{
         title:"Percentage"   
@@ -455,7 +455,7 @@ $(function() {
 
     chart.render();
   
-    /*  var chart = new CanvasJS.Chart("chartContainer3_1",
+      var chart = new CanvasJS.Chart("chartContainer3_1",
     {
       title:{
         text: "Logging Activity of IPP Editors (Territories) in  {{prev_year}}"   
@@ -491,7 +491,7 @@ $(function() {
       }
     });
 
-    chart.render();*/
+    chart.render();
     
     }            
   </script>
@@ -499,7 +499,7 @@ $(function() {
 <h1>
     <small class="normal">{% trans "Activity of IPPC Contact Points and IPP Editors on the IPPC" %} </small>
 </h1> 
-  <!--p>
+  <p>
  <b>Select year for statistics:</b><br>
   <form action="" >
 <select data-placeholder="Go to year..." tabindex="3"  id="sel_year" >
@@ -509,13 +509,13 @@ $(function() {
  {% endfor %}
 </select>
 </form>
- </p-->
+ </p>
 <p>The tables and Graphs below summarize by region the number of IPPC Contact Points and IPP editors that never logged in.
     <br>
 
     <b>Date generated: </b>  {{ dategenerate|date:"d M Y, H:m" }}</p><br>
 <h1>
-    <small class="normal">{% trans "Activity of Official Contact Points (contracting parties)" %} </small>
+    <small class="normal">{% trans "Contracting parties" %} </small>
 </h1> 
 <table class="table table-condensed table-striped">
     <thead>
@@ -557,7 +557,7 @@ $(function() {
             <td> {{tot_o_count}}</td>
             </td>
         </tr>
-        <!--tr>
+        <tr>
             <td>OCPs that <b>did not log</b> in <b>{{prev_year}}</b></td>
             {% if latest %}
             {% for object in region_off_cp %}
@@ -567,9 +567,9 @@ $(function() {
 
             <td> {{tot_o_2015_count}}</td>
             </td>
-        </tr-->
+        </tr>
         <tr>
-            <td>IPP Editors that <b>never</b> logged in to IPP</td>
+            <td>IPP Editors that <b>never</b> logged in</td>
             {% if latest %}
             {% for object in region_off_cp %}
             <td>{{object.2 }} </td>
@@ -579,7 +579,7 @@ $(function() {
             <td> {{tot_e_count}}</td>
             </td>
         </tr>
-        <!--tr>
+        <tr>
             <td>IPP Editors that <b>did not log</b> in <b>{{prev_year}}</b></td>
             {% if latest %}
             {% for object in region_off_cp %}
@@ -589,8 +589,8 @@ $(function() {
 
             <td> {{tot_e_2015_count}}</td>
             </td>
-        </tr-->
-   
+        </tr>
+        <tr>
     </tbody>
 
 </table>
@@ -600,30 +600,30 @@ $(function() {
             <div id="chartContainer0" style="height:300px; width: 100%;">
             </div>
         </td>
+      
+   
+        <td>
+            <div id="chartContainer1" style="height:300px; width: 100%;">
+            </div>
+        </td>
+      
+    </tr> 
+      <tr>
         <td>
             <div id="chartContainer2" style="height:300px; width: 100%;">
             </div>
         </td>
-   </tr> 
-    
-        <!--td>
-            <div id="chartContainer1" style="height:300px; width: 100%;">
-            </div>
-        </td-->
-      
-     
-      
       
    
-        <!--td>
+        <td>
             <div id="chartContainer3" style="height:300px; width: 100%;">
             </div>
-        </td-->
+        </td>
       
-   
+    </tr> 
 </table>
 <h1>
-    <small class="normal">{% trans "Activity of Information points (Non-contracting parties)" %} </small>
+    <small class="normal">{% trans "Non-contracting parties" %} </small>
 </h1> 
 
 <table class="table table-condensed table-striped">
@@ -654,37 +654,37 @@ $(function() {
       </th>
         </tr>
         <tr>
-            <td>Information Points that <b>never</b> logged in to IPP</td>
+            <td>Information Points that <b>never</b> logged in</td>
             {% if latest %}
             {% for object in region_info_ncp %}
             <td>{{object.0 }} </td>
             {% endfor %}
             {% endif %} <td> {{tot_i_count}}</td>
         </tr>
-        <!--tr><td>Information Points that <b>did not log</b> in <b>{{prev_year}}</b></td>
+        <tr><td>Information Points that <b>did not log</b> in <b>{{prev_year}}</b></td>
             {% if latest %}
             {% for object in region_info_ncp %}
             <td>{{object.1 }} </td>
             {% endfor %}
             {% endif %} <td> {{tot_i_2015_count}}</td>
-        </tr-->
+        </tr>
         
         <tr>
-            <td>IPP Editors that <b>never</b> logged in to IPP </td>
+            <td>IPP Editors that <b>never</b> logged in  </td>
             {% if latest %}
             {% for object in region_editors %}
             <td>{{object.0 }} </td>
             {% endfor %}
             {% endif %}<td> {{tot_encp_count}}</td>
         </tr>
-        <!--tr>
+        <tr>
             <td>IPP Editors that <b>did not log</b> in <b>{{prev_year}}</b></td>
             {% if latest %}
             {% for object in region_editors %}
             <td>{{object.1 }} </td>
             {% endfor %}
             {% endif %}<td> {{tot_encp_2015_count}}</td>
-        </tr-->
+        </tr>
 
         </tbody>
 
@@ -695,26 +695,27 @@ $(function() {
             <div id="chartContainer0_" style="height:300px; width: 100%;">
             </div>
         </td>
+      
+   
+        <td>
+            <div id="chartContainer1_" style="height:300px; width: 100%;">
+            </div>
+        </td>
+      
+    </tr> 
+      <tr>
         <td>
             <div id="chartContainer2_" style="height:300px; width: 100%;">
             </div>
         </td>
-   
-       
       
-    </tr> 
    
-       <!--td>
-            <div id="chartContainer1_" style="height:300px; width: 100%;">
-            </div>
-        </td-->
-   
-        <!--td>
+        <td>
             <div id="chartContainer3_" style="height:300px; width: 100%;">
             </div>
-        </td-->
+        </td>
       
-   
+    </tr> 
 </table>
 
 
@@ -722,7 +723,7 @@ $(function() {
 
 
 <h1>
-    <small class="normal">{% trans "Activity of Local contacts (dependent territories of contracting parties)" %} </small>
+    <small class="normal">{% trans "Territories" %} </small>
 </h1> 
 
 <table class="table table-condensed table-striped">
@@ -754,37 +755,37 @@ $(function() {
         </tr>
        
         <tr>
-            <td>Local contacts that <b>never</b> logged in to IPP</td>
+            <td>Local contacts that <b>never</b> logged in</td>
             {% if latest %}
             {% for object in region_local_terr %}
             <td>{{object.0 }} </td>
             {% endfor %}
             {% endif %}<td> {{tot_l_count}}</td>
         </tr>
-        <!--tr>
+        <tr>
             <td>Local contacts that <b>did not log</b> in <b>{{prev_year}}</b></td>
             {% if latest %}
             {% for object in region_local_terr %}
             <td>{{object.1 }} </td>
             {% endfor %}
             {% endif %}<td> {{tot_l_2015_count}}</td>
-        </tr-->
+        </tr>
         <tr>
-            <td>IPP Editors that <b>never</b> logged in to IPP  </td>
+            <td>IPP Editors that <b>never</b> logged in  </td>
             {% if latest %}
             {% for object in region_terr_editors %}
             <td>{{object.0 }} </td>
             {% endfor %}
             {% endif %}<td> {{tot_eterr_count}}</td>
         </tr>
-        <!--tr>
+        <tr>
             <td>IPP Editors that <b>did not log</b> in <b>{{prev_year}}</b></td>
             {% if latest %}
             {% for object in region_terr_editors %}
             <td>{{object.1 }} </td>
             {% endfor %}
             {% endif %}<td> {{tot_eterr_2015_count}}</td>
-        </tr-->
+        </tr>
 
         </tbody>
 
@@ -796,26 +797,26 @@ $(function() {
             </div>
         </td>
       
-    <td>
-            <div id="chartContainer2_1" style="height:300px; width: 100%;">
-            </div>
-        </td></tr> 
-        <!--td>
+   
+        <td>
             <div id="chartContainer1_1" style="height:300px; width: 100%;">
             </div>
-        </td-->
+        </td>
       
-    
-     
-       
+    </tr> 
+      <tr>
+        <td>
+            <div id="chartContainer2_1" style="height:300px; width: 100%;">
+            </div>
+        </td>
       
    
-        <!--td>
+        <td>
             <div id="chartContainer3_1" style="height:300px; width: 100%;">
             </div>
-        </td-->
+        </td>
       
-   
+    </tr> 
 </table>
 
 {% endblock %}

@@ -19,7 +19,7 @@
     <span class="divider">/</span>
 </li>
 
-<li class="active">{% trans "Countries Statistics: Activity of IPPC Contact Points and IPP Editors on the IPPC" %} </li>
+<li class="active">{% trans "Countries Statistics: Activity of IPPC Contact Points and IPP Editors on the IPP" %} </li>
 {% endblock %}
 
 {% block local_nav %}
@@ -484,7 +484,7 @@
             </td>
         </tr>
         <tr>
-            <td>IPP Editors that <b>never</b> logged in</td>
+            <td>IPP Editors that <b>never</b> logged in to IPP</td>
             {% if latest %}
             {% for object in region_off_cp %}
             <td>{{object.2 }} </td>
@@ -577,7 +577,7 @@
         </tr>
         
         <tr>
-            <td>IPP Editors that <b>never</b> logged in  </td>
+            <td>IPP Editors that <b>never</b> logged in to IPP </td>
             {% if latest %}
             {% for object in region_editors %}
             <td>{{object.0 }} </td>
@@ -670,7 +670,7 @@
             {% endif %}<td> {{tot_l_2015_count}}</td>
         </tr>
         <tr>
-            <td>IPP Editors that <b>never</b> logged in  </td>
+            <td>IPP Editors that <b>never</b> logged in to IPP </td>
             {% if latest %}
             {% for object in region_terr_editors %}
             <td>{{object.0 }} </td>

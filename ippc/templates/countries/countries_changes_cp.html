@@ -19,7 +19,7 @@
     <span class="divider">/</span>
 </li>
 
-<li class="active">{% trans "Changes among IPPC Contact Points over " %}  {{prevyear}}.</li>
+<li class="active">{% trans "Changes among IPPC Contact Points in " %}  {{prevyear}}.</li>
 {% endblock %}
 
 {% block local_nav %}
@@ -46,7 +46,7 @@ $(function() {
     {
       theme: "theme2",
       title:{
-        text: "Changes among IPPC Contact Points over "+{{prevyear}}
+        text: "Changes among IPPC Contact Points in "+{{prevyear}}
       },
       animationEnabled: true,
       axisX: {
@@ -79,7 +79,7 @@ chart.render();
     {
       theme: "theme2",
       title:{
-        text: "Changes among IPPC Editors over "+{{prevyear}}
+        text: "Changes among IPPC Editors in "+{{prevyear}}
       },
       animationEnabled: true,
       axisX: {
@@ -112,7 +112,7 @@ chart.render();
   </script>
   <script src='{% static "/static/canvasjs/canvasjs.min.js" %}'></script>
 <h1> 
-<h1>Changes among IPPC Contact Points over {{prevyear}}. <br>
+<h1>Changes among IPPC Contact Points in {{prevyear}}. <br>
   </h1> 
   <p>
  <b>Select year for statistics:</b><br>
@@ -143,7 +143,7 @@ chart.render();
 </table>
 <br>
 <br>
-<h1>Changes among the IPP editors during  {{prevyear}}. <br>
+<h1>Changes among the IPP editors in  {{prevyear}}. <br>
   </h1> 
 <table class="table table-condensed table-striped">
 
