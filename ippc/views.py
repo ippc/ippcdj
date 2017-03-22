@@ -5754,9 +5754,11 @@ class CountryStatisticsTotalNroByYearListView(ListView):
             totyears1array.append(totyear1)
       
         datachart2=''
+        datachart3=''
         i=0
         for y in range(2005,curryear +1):
            datachart2+='{ y:'+ str(totyears1array[i])+', label: '+str(y)+'},'
+           datachart3+='{ y:'+ str(totyearsarray[i])+', label: '+str(y)+'},'
            i=i+1
            
         context['totyearsarray']=totyearsarray
@@ -5774,6 +5776,7 @@ class CountryStatisticsTotalNroByYearListView(ListView):
             
         context['datachart']=datachart
         context['datachart2']=datachart2
+        context['datachart3']=datachart3
        
         
             
