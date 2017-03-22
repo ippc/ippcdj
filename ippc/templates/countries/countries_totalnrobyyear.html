@@ -42,7 +42,7 @@
 			theme: "theme1",
                         animationEnabled: true,
 			title:{
-				text: "Total of NRO reports",
+				text: "NRO Reporting by categories (cumulative number of reports)",
 				fontSize: 30
 			},
                         subtitles:[
@@ -211,6 +211,53 @@ chart1.render();
 
     chart2.render();
 
+
+
+    var chart3 = new CanvasJS.Chart("chartContainer3",
+    {
+      title:{
+	text: "Cumulative totals of NRO Reports uploaded by countries on the IPP since 2005",
+	fontSize: 26
+      },
+      animationEnabled: true,
+      
+      axisY: {
+            title: "Cumulative totals of reports",
+            titleFontSize: 20,
+            labelFontSize: 20,
+    },
+    axisX: {
+            labelFontSize: 14,
+            labelMaxWidth:90,
+            
+            interval: 1,
+    },
+                        
+     
+      legend: {
+        verticalAlign: "bottom",
+        horizontalAlign: "center"
+      },
+      theme: "theme1",
+        width:780,
+       height:400,
+      data: [
+
+      {        
+        type: "column",  
+        showInLegend: true, 
+        legendMarkerColor: "grey",
+        legendText: "years",
+        dataPoints: [      
+        {% autoescape off %} 
+                                {{datachart3}}
+                             {% endautoescape %}     
+        ]
+      }   
+      ]
+    });
+
+    chart3.render();
 }
 </script>
 <script type="text/javascript" charset="utf-8">
@@ -342,6 +389,9 @@ $(function() {
 </td>
             </tr>
  </table>
+
+<div id="chartContainer3" style="height: 700px; width: 100%;">
+	</div>
 
 
 <h1>
