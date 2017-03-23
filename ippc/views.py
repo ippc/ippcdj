@@ -6946,8 +6946,90 @@ class CountryTotalUsersListView(ListView):
        
             
         return context
+from news.models import NewsPost, NewsCategory
 
+class NewsStatisticsByYearListView(ListView):
+    """   stat  """
+    context_object_name = 'latest'
+    model = CountryPage
+    template_name = 'news/news_totalbyyear.html'
+    queryset = CountryPage.objects.all().order_by('title')
+   
+    def get_context_data(self, **kwargs): # http://stackoverflow.com/a/15515220
+        context = super(NewsStatisticsByYearListView, self).get_context_data(**kwargs)
+        context['dategenerate']=timezone.now()
+        context['selyear_range']=range(2003,timezone.now().year+1)
+       
+        num_years=0
+        curryear=0
+        if 'year' in self.kwargs:
+            curryear=int(self.kwargs['year'])
+            num_years=curryear-2003
+        else :   
+            curryear=timezone.now().year -1  
+            num_years=curryear-2003
+        y_array=[]    
+        n_array=[]
+        news_posts = NewsPost.objects.published()
+        news_posts = news_posts.filter(categories=1)
 
+        for y in range(2003,curryear +1):
+    
+            
+            num=0
+            for n in news_posts:
+                if n.publish_date.year == y:
+                 num =num+1
+            n_array.append(num)
+            y_array.append(y)
+        lastY=[]  
+    
+        for y in range(1,13):
+            num=0
+            for n in news_posts:
+                if n.publish_date.year == curryear:
+                    print(n.publish_date.month)
+                    if n.publish_date.month ==  y:
+                        num =num+1
+                        print('..................................................')
+                        
+            lastY.append(num)
+
+        datachart=''
+        datachart3=''
+        i=0
+        
+        for y in range(2003,curryear +1):
+           datachart+=' { x: new Date('+str(y)+',1,1), y: '+str(n_array[i])+' },'
+           datachart3+='{ y:'+ str(n_array[i])+', label: '+str(y)+'},'
+       
+            
+           i=i+1
+     
+        datachart4=''
+        datachart5=''
+        i=0
+        arrayMOnths=['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec',]
+        for y in range(1,13):
+           datachart4+=' { x: new Date('+str(curryear)+','+str(y-1)+',1), y: '+str(lastY[i])+' },'
+           datachart5+='{ y:'+ str(lastY[i])+', label: "'+str(arrayMOnths[y-1])+'"},'
+       
+            
+           i=i+1   
+        context['n_array']=n_array
+        context['curryear']=curryear
+        context['num_years']=num_years
+        context['num_years_range']=range(2003,curryear +1)
+        context['num_month_range']=arrayMOnths#range(1,13)
+        context['y_array']=y_array
+        context['lastY']=lastY
+        context['datachart']=datachart
+        context['datachart3']=datachart3
+        context['datachart4']=datachart4
+        context['datachart5']=datachart5
+        
+        return context   
+    
 class PollListView(ListView):
     template_name = 'polls/index.html'
     context_object_name = 'latest_poll_list'
