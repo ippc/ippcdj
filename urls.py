@@ -41,7 +41,7 @@ reporting_obligation_validate,event_reporting_validate,pest_report_validate,\
 QAQuestionListView, QAQuestionDetailView, QAQuestionAnswersView,question_create,answer_create,\
 FAQsListView, faqcategory_edit,faqcategory_create,faq_edit,faq_create,FAQsItemDetailView,FAQsCategoryDetailView,\
 ContactUsEmailMessageListView,   ContactUsEmailMessageDetailView , contactus_email_send,UserAutoRegistrationListView,auto_register,auto_register_approve,auto_register_delete,\
-IRSSActivityListView,IRSSActivityDetailView,irss_activity_create,irss_activity_edit   ,CountryStatisticsTotalNroByYearListView,subscribe_to_news
+IRSSActivityListView,IRSSActivityDetailView,irss_activity_create,irss_activity_edit   ,CountryStatisticsTotalNroByYearListView,subscribe_to_news,NewsStatisticsByYearListView
 
 #QuestionListView, QuestionDetailView, QuestionAnswersView,question_create,question_edit,answer_edit      
 #reporting_obligation_translate,
@@ -224,7 +224,11 @@ urlpatterns = patterns("",
         view=contactPointExtractor,
         name='contactextractor'),
         
-    
+    #-------------------NEWS STATS------------------------    
+   
+    url(r'^resources/statistics/news-statistics/$',view=NewsStatisticsByYearListView.as_view(), name='newsstatistics'),   
+    url(r'^resources/statistics/news-statistics/(?P<year>\d+)/$',  view=NewsStatisticsByYearListView.as_view(),   name='newsstatistics'),
+   
     #-------------------STATS------------------------    
    
     url(r'^countries/statistics/regionspercentage/$',view=CountryRegionsPercentageListView.as_view(), name='regionspercentage'),   
