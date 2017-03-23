@@ -1,0 +1,311 @@
+{% extends "base.html" %}
+{% load pages_tags mezzanine_tags i18n future staticfiles accounts_tags %}
+
+{% block meta_title %}
+  {% trans "News Statistics" %}: 
+  {{ page.title }}
+{% endblock %}
+
+{% block body_class %}wide{% endblock %}
+
+{% block breadcrumb_menu %}
+<li><a href="/{{ LANGUAGE_CODE }}/">{% trans "Home" %}</a><span class="divider">/</span></li>
+<li>
+  <a href="/resources/">Resources</a>
+  <span class="divider">/</span>
+</li>
+<li>
+    <a href="/resources/statistics/">Statistics</a>
+    <span class="divider">/</span>
+</li>
+
+<li class="active">{% trans "News Statistics" %} </li>
+{% endblock %}
+
+{% block local_nav %}
+{% endblock local_nav %}
+
+{% block pageinfo %}
+{% endblock pageinfo %}
+
+{% block main %}
+
+<p class="pull-right">
+  <a href="javascript:history.go(-1)">{% trans "« Go back" %}</a>
+</p>
+<script type="text/javascript">
+  window.onload = function () {
+    var chart1 = new CanvasJS.Chart("chartContainer1",
+    {
+      theme: "theme2",
+     // width:500,
+      //height:350,
+      title:{
+        text: "Number of IPPC news (2003-"+{{curryear}}+")",
+        fontSize: 26,
+      },
+      animationEnabled: true,
+      
+      axisY:{
+        title: "Number of news",
+        titleFontSize: 20,
+        includeZero: false
+        
+      },
+      axisX:{
+        title: "Year",
+        titleFontSize: 20,
+      },
+      data: [
+      {        
+        type: "line",
+        dataPoints: [
+             {% autoescape off %} 
+                {{datachart}}
+             {% endautoescape %}        
+        ]
+      }
+      ]
+    });
+    chart1.render();
+  
+    var chart3 = new CanvasJS.Chart("chartContainer3",
+    {
+      title:{
+	  text: "Number of IPPC news (2003-"+{{curryear}}+")",
+	fontSize: 26
+      },
+      animationEnabled: true,
+      
+      axisY: {
+            title: "Number of news",
+            titleFontSize: 20,
+            labelFontSize: 20,
+    },
+    axisX: {
+            labelFontSize: 14,
+            labelMaxWidth:90,
+            
+            interval: 1,
+    },
+                        
+     
+      legend: {
+        verticalAlign: "bottom",
+        horizontalAlign: "center"
+      },
+      theme: "theme1",
+      // width:500,
+      // height:350,
+      data: [
+
+      {        
+        type: "column",  
+        showInLegend: true, 
+        legendMarkerColor: "grey",
+        legendText: "years",
+        dataPoints: [      
+        {% autoescape off %} 
+            {{datachart3}}
+         {% endautoescape %}     
+        ]
+      }   
+      ]
+    });
+
+    chart3.render();
+ var chart4 = new CanvasJS.Chart("chartContainer4",
+    {
+      theme: "theme2",
+         //width:780,
+       //height:400,
+      title:{
+        text: "Number of IPPC news in "+{{curryear}}+".",
+        fontSize: 26
+      },
+      animationEnabled: true,
+      
+      axisY:{
+        title: "Number of news",
+        titleFontSize: 20,
+        includeZero: false
+        
+      },
+      axisX:{
+        title: "Months",
+        titleFontSize: 20,
+          valueFormatString: "MMM",
+        interval:1,
+        intervalType: "month"
+      },
+      data: [
+      {        
+        type: "line",
+        //lineThickness: 3,        
+        dataPoints: [
+       {% autoescape off %} 
+                {{datachart4}}
+             {% endautoescape %}        
+        ]
+      }
+      
+      
+      ]
+    });
+
+chart4.render();
+  var chart5 = new CanvasJS.Chart("chartContainer5",
+    {
+      title:{
+	  text: "Number of IPPC news in "+{{curryear}}+".",
+	fontSize: 26
+      },
+      animationEnabled: true,
+      
+      axisY: {
+            title: "Number of news",
+            titleFontSize: 20,
+            labelFontSize: 20,
+    },
+    axisX: {
+            labelFontSize: 14,
+           // labelMaxWidth:100,
+            
+            
+     
+       
+        interval:1,
+       
+     
+    },
+                        
+     
+      legend: {
+        verticalAlign: "bottom",
+        horizontalAlign: "center"
+      },
+      theme: "theme1",
+      // width:780,
+    //   height:400,
+      data: [
+
+      {        
+        type: "column",  
+        showInLegend: true, 
+        legendMarkerColor: "grey",
+        legendText: "months",
+        dataPoints: [      
+        {% autoescape off %} 
+                                {{datachart5}}
+                             {% endautoescape %}     
+        ]
+      }   
+      ]
+    });
+
+    chart5.render();
+}
+</script>
+<script type="text/javascript" charset="utf-8">
+$(function() {
+      $('#sel_year').change(function() {
+            window.location.href = $(this).val()+'/';
+      });
+});
+</script>
+<script src='{% static "/static/canvasjs/canvasjs.min.js" %}'></script>
+
+
+    
+    
+    
+    
+    
+<h1>{% trans "Summary statistics for IPPC News" %}</h1> 
+<p><b>Date generated: </b>  {{ dategenerate|date:"d M Y, H:m" }}<br>
+<b>Select year for statistics:</b><br>
+<form action="" >
+    <select data-placeholder="Go to year..." tabindex="3"  id="sel_year" >
+     <option value="">{% trans "Go to year ... " %}</option>
+      {% for i in selyear_range %}
+         <option  {% if curryear == i %}selected{% endif %} value="/resources/statistics/news-statistics/{{i}}">{{i}}</option>    
+     {% endfor %}
+    </select>
+</form>
+</p>
+<h1>
+{% trans "The graphs show the number of IPPC News in the years 2003-" %} {{curryear}}. 
+</h1> 
+
+<table class="table table-condensed table-striped" >
+    <thead>
+        <tr>
+            <th colspan="2" style="background-color: #cccccc">&#160;</th>
+            <th colspan="{{num_years}}" style="background-color: #cccccc">Number of IPPC News in the years 2003- {{curryear}}</th>
+        </tr> 
+        <tr>
+            <th rowspan="1">Year</th>
+            {% for i in num_years_range %}
+            <th>{{i}}</th>
+            {% endfor %}
+        </tr> 
+    </thead>
+    <tbody>
+        <tr>
+        <td>Number of news</td>
+        {% for object in n_array %}
+           <td>{{object }} </td>
+        {% endfor %}
+        </tr>
+    </tbody>
+
+</table>
+
+ 
+          <table  class="table table-condensed table-striped">
+              <tr><td><div id="chartContainer1" style="height: 500px; width: 90%;">
+    </div></td></tr> </table>
+              <table  class="table table-condensed table-striped">
+              <tr><td>   <div  id="chartContainer3"  style="height: 500px; width: 90%;">
+	</div></td></tr>
+          </table>
+         
+  
+
+<h1>  {% trans "The graphs show the number of IPPC News in last year: " %} {{curryear}}.   </h1>  
+
+<table class="table table-condensed table-striped">
+    <thead>
+     <tr>
+            <th colspan="1" style="background-color: #cccccc">&#160;</th>
+            <th colspan="12" style="background-color: #cccccc">Number of IPPC News in the last year: {{curryear}}</th>
+        </tr>
+       
+    <tr>  <th rowspan="1">Month</th>
+       {% for i in num_month_range %}
+        <th>{{i}}</th>
+        {% endfor %}
+
+    </tr> 
+
+
+    </thead>
+    <tbody>
+        <tr>
+        <td>Number of news</td>
+        {% for object in lastY %}
+           <td>{{object }} </td>
+        {% endfor %}
+        </tr>
+    </tbody>
+
+</table>
+
+          <table  class="table table-condensed table-striped">
+              <tr><td><div id="chartContainer4" style="height: 500px; width: 90%;">
+    </div></td></tr> </table>
+              <table  class="table table-condensed table-striped">
+              <tr><td>   <div  id="chartContainer5"  style="height: 500px; width: 90%;">
+	</div></td></tr>
+          </table>
+{% endblock %}
