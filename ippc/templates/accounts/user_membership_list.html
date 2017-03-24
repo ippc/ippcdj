@@ -1,0 +1,88 @@
+{% extends "base.html" %}
+{% load pages_tags mezzanine_tags i18n future staticfiles accounts_tags %}
+
+{% block meta_title %}{% trans "User Membership History List" %} {% endblock %}
+
+{% block body_class %}wide{% endblock %}
+
+{% block breadcrumb_menu %}
+<li><a href="/{{ LANGUAGE_CODE }}/">{% trans "Home" %}</a><span class="divider">/</span></li>
+
+<li>
+  <a href="/work-area/">Workarea</a>
+  <span class="divider">/</span>
+</li>
+<li class="active">{% trans "User Membership History List" %}</li>
+{% endblock %}
+
+{% block main %}
+{% if user.is_superuser or perms.ippc.change_publication  %}
+ <h1>{% trans "User Membership History List" %}</h1>
+    <p>{% trans "In the table below you can find the User Membership History." %}</p>
+ 
+ <p class="pull-right">
+  <a href="javascript:history.go(-1)">{% trans "« Go back" %}</a>
+    {% if user.is_superuser  %}<br>
+       <small><a class="btn btn-small btn-info" href="/admin/ippc/usermembershiphistory/add/">+ {% trans "Add new as admin" %}</a></small><br>
+       <small><a class="btn btn-small btn-info" href="/work-area/user_membership/create/">+ {% trans "Add new" %}</a></small>
+  {% endif %}
+</p>
+   
+
+     
+{% if latest %}
+<table class="table table-condensed table-striped table-bordered" id="publications">
+  <thead>
+    <tr>
+      <th>{% trans "User" %}</th>
+      <th>{% trans "Group" %}</th>
+      <th>{% trans "Nomination Start Date" %}</th>
+      <th>{% trans "Nomination End Date" %}</th>
+      <th>{% trans "File" %}</th>
+       <th>{% trans "Country" %}</th>
+        <th>{% trans "Partner organization" %}</th>
+               <th>&#160</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for o in latest %}
+    <tr>
+      <td><a href="/work-area/user_membership/{{o.id}}">{{ o.user }}</a></td>
+      <td>{{ o.group }}</td>
+      <td>{{ o.start_date|date:"d M Y" }}</td>  
+      <td>{{ o.end_date|date:"d M Y" }}</td>  
+      <td>{%if o.file %} <a href="{{ MEDIA_URL }}{{ o.file }}">  <i class="icon-file"></i> </a>{%endif%}</td>  
+      <td>{{o.countrypage}}</td>  
+      <td>{{o.partnerpage}}</td>  
+ 
+       
+            
+      <td>{% if user.is_superuser %} 
+         <a class="small pull-right" href="/admin/ippc/usermembershiphistory/{{ o.id }}"><i class="icon-edit"></i> Edit as Admin</a><br> 
+         <a class="small pull-right" href="/work-area/user_membership/edit/{{o.id}}"><i class="icon-edit"></i> Edit</a>     
+         {% endif %}
+        
+      </td>
+    </tr>
+
+    {% endfor %}
+  </tbody>
+</table>
+
+<script src="{% static "js/jquery.dataTables.js" %}"></script>
+  <script src="{% static "js/DT_bootstrap.js" %}"></script>
+
+{% else %}
+<p>No list available.</p>
+{% endif %}
+{%else%}
+<p>No Permissions to see this page</p>
+{% endif %}
+
+  
+{% endblock %}
+
+
+{% block extra_js %}
+  
+{% endblock %}

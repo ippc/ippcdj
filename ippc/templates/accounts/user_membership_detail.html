@@ -1,0 +1,82 @@
+{% extends "base.html" %}
+{% load pages_tags translate_tags mezzanine_tags i18n future staticfiles accounts_tags %}
+
+{% block meta_title %}{% trans "User Membership History" %} {% endblock %}
+
+{% block body_class %}wide{% endblock %}
+
+{% block breadcrumb_menu %}
+<li><a href="/{{ LANGUAGE_CODE }}/">{% trans "Home" %}</a><span class="divider">/</span></li>
+<li>
+  <a href="/work-area/">Workarea</a>
+  <span class="divider">/</span>
+</li><li>
+  <a href="/work-area/user_membership/">{% trans "User Membership History" %}</a>
+  <span class="divider">/</span>
+</li>
+<li class="active">{% trans "User: " %} {{user_membership.user}}</li>
+{% endblock %}
+
+
+
+{% block local_nav %}
+{% if user.is_superuser or perms.ippc.change_publication  %}
+    <div class="well localnav"> 
+    <p><a href="javascript:history.go(-1)">{% trans "« Go back" %}</a></p>
+        {% if user.is_superuser %}
+         <a class="btn btn-small btn-info" href="/admin/ippc/usermembershiphistory/{{ user_membership.id }}"><i class="icon-edit icon-white"></i> Edit as admin</a>     
+         <a class="btn btn-small btn-info" href="/work-area/user_membership/edit/{{user_membership.id}}"><i class="icon-edit icon-white"></i> Edit</a>     
+    {% endif %}
+    
+ </div> {% endif %} 
+{% endblock local_nav %}
+
+{% block pageinfo %}
+{% endblock pageinfo %}
+
+{% block main %}
+             {% if user.is_superuser or perms.ippc.change_publication  %}
+<h1>{{ user_membership.user }}</h1>   
+
+<dl class="dl-horizontal">
+<dt>{% trans "Group" %}</dt>
+<dd>{{ user_membership.group }}</dd>
+
+
+<dt>{% trans "Nomination Start Date" %}</dt> 
+<dd>{% blocktrans with sometime=user_membership.start_date|date:"D, d M Y, H:i" %}{{ sometime }}{% endblocktrans %}</dd> 
+
+<dt>{% trans "Nomination End Date" %}</dt>
+<dd>{% blocktrans with sometime=user_membership.end_date|date:"D, d M Y, H:i" %}{{ sometime }}{% endblocktrans %}</dd> 
+
+{% if user_membership.file%}
+<dt>{% trans "File" %}</dt>
+<dd>
+   <a href="{{ MEDIA_URL }}{{ user_membership.file }}"><i class="icon-file"></i> </a>
+</dd> 
+{%endif%}  
+
+{% if user_membership.countrypage%}
+<dt>{% trans "Country" %}</dt>
+<dd>
+{{user_membership.countrypage}}
+</dd> 
+{%endif%} 
+
+
+{% if user_membership.partnerpage%}
+<dt>{% trans "Partner organization" %}</dt>
+<dd>
+{{user_membership.partnerpage}}
+</dd> 
+{%endif%} 
+</dl> 
+
+ {% else %}
+ <p>No permissions to see this page.</p> 
+ {% endif %} 
+ 
+ 
+{% endblock %}
+ 
+  
