@@ -41,8 +41,8 @@ reporting_obligation_validate,event_reporting_validate,pest_report_validate,\
 QAQuestionListView, QAQuestionDetailView, QAQuestionAnswersView,question_create,answer_create,\
 FAQsListView, faqcategory_edit,faqcategory_create,faq_edit,faq_create,FAQsItemDetailView,FAQsCategoryDetailView,\
 ContactUsEmailMessageListView,   ContactUsEmailMessageDetailView , contactus_email_send,UserAutoRegistrationListView,auto_register,auto_register_approve,auto_register_delete,\
-IRSSActivityListView,IRSSActivityDetailView,irss_activity_create,irss_activity_edit   ,CountryStatisticsTotalNroByYearListView,subscribe_to_news,NewsStatisticsByYearListView
-
+IRSSActivityListView,IRSSActivityDetailView,irss_activity_create,irss_activity_edit   ,CountryStatisticsTotalNroByYearListView,subscribe_to_news,NewsStatisticsByYearListView,\
+UserMembershipHistoryListView,UserMembershipHistoryDetailView,usermembershiphistory_create,usermembershiphistory_edit
 #QuestionListView, QuestionDetailView, QuestionAnswersView,question_create,question_edit,answer_edit      
 #reporting_obligation_translate,
 from schedule.periods import Year, Month, Week, Day
@@ -746,7 +746,26 @@ url(r'^external-cooperation/organizations-page-in-ipp/(?P<partner>[\w-]+)/$',   
 
     url(r"^login/user/(?P<user_id>.+)/$", "loginas.views.user_login", name="loginas-user-login"),
 
+#---------- USER MEMBERSHIP HISTORY ------------------------------#
 
+
+  url(r'^work-area/user_membership/$',
+        view=UserMembershipHistoryListView.as_view(),
+        name='usermembershiphistory-list'),
+
+    url(r'^work-area/user_membership/(?P<pk>\d+)/$',
+        view=UserMembershipHistoryDetailView.as_view(),
+        name="usermembershiphistory-detail"),
+        
+
+    url(r'^work-area/user_membership/create/$',
+        view=usermembershiphistory_create,
+        name='usermembershiphistory-create'),
+
+    url(r'^work-area/user_membership/edit/(?P<id>\d+)/$',
+        view=usermembershiphistory_edit,
+        name='usermembershiphistory-edit'),
+        
 #-------------------------------------------#
     # pagedown for markdown wysiwyg
     ("^pagedown/", include(mezzanine_pagedown.urls)),
