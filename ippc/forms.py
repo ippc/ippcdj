@@ -20,7 +20,8 @@ PartnersNews,PartnersNewsFile,PartnersNewsUrl, \
 CountryNews,CountryNewsFile,CountryNewsUrl, EmailUtilityMessage, EmailUtilityMessageFile, MassEmailUtilityMessage, MassEmailUtilityMessageFile,\
 DraftProtocol,DraftProtocolFile,DraftProtocolComments,NotificationMessageRelate,Poll,  Poll_Choice,\
 FAQsCategory,FAQsItem,\
-QAQuestion,QAAnswer,ContactUsEmailMessage,UserAutoRegistration,IRSSActivityFile,IRSSActivity
+QAQuestion,QAAnswer,ContactUsEmailMessage,UserAutoRegistration,IRSSActivityFile,IRSSActivity,\
+UserMembershipHistory
 #,TransReportingObligation,Question,Answer
 
 
@@ -602,4 +603,24 @@ class IRSSActivityForm(forms.ModelForm):
         }
 IRSSActivityFileFormSet = inlineformset_factory(IRSSActivity,  IRSSActivityFile,extra=1)
       
-      
+class UserMembershipHistoryForm(forms.ModelForm):
+
+    # country = forms.ChoiceField(widget=forms.Select(), initial='country')
+    # =todo: https://docs.djangoproject.com/en/dev/ref/forms/api/#dynamic-initial-values
+
+    class Meta:
+        model = UserMembershipHistory
+        fields = [
+           'user', 
+           'group', 
+           'start_date', 
+           'end_date', 
+           'countrypage', 
+           'partnerpage', 
+           'file',
+           ]
+        widgets = {
+            'start_date': AdminDateWidget(),
+            'end_date': AdminDateWidget(),
+        }
+       

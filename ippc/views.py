@@ -17,7 +17,7 @@ ReportingObligation, BASIC_REP_TYPE_CHOICES, EventReporting, EVT_REP_TYPE_CHOICE
 PestFreeArea,ImplementationISPM,REGIONS, IssueKeywordsRelate,CommodityKeywordsRelate,EventreportingFile,ReportingObligation_File,\
 ContactUsEmailMessage,FAQsItem,FAQsCategory,QAQuestion, QAAnswer,UserAutoRegistration,IRSSActivity,IRSSActivityFile,IRSS_ACT_TYPE_CHOICES,\
 TransFAQsCategory,TransFAQsItem,MassEmailUtilityMessage,MassEmailUtilityMessageFile,\
-OCPHistory, PartnersContactPointHistory,CnEditorsHistory,PartnersEditorHistory
+OCPHistory, PartnersContactPointHistory,CnEditorsHistory,PartnersEditorHistory,UserMembershipHistory
          
 #TransReportingObligation,
 from mezzanine.core.models import Displayable, CONTENT_STATUS_DRAFT, CONTENT_STATUS_PUBLISHED
@@ -32,7 +32,8 @@ PartnersNewsUrlFormSet,PartnersNewsForm, PartnersNewsFileFormSet,PartnersWebsite
 EmailUtilityMessageForm,EmailUtilityMessageFileFormSet,MassEmailUtilityMessageForm,MassEmailUtilityMessageFileFormSet,\
 CountryNewsUrlFormSet,CountryNewsForm, CountryNewsFileFormSet,NotificationMessageRelateForm,\
 DraftProtocolForm,  DraftProtocolFileFormSet,DraftProtocolCommentsForm,IppcUserProfileForm,\
-ContactUsEmailMessageForm,FAQsItemForm,FAQsCategoryForm,QAQuestionForm, QAAnswerForm,UserAutoRegistrationForm,IRSSActivityForm,IRSSActivityFileFormSet
+ContactUsEmailMessageForm,FAQsItemForm,FAQsCategoryForm,QAQuestionForm, QAAnswerForm,UserAutoRegistrationForm,IRSSActivityForm,IRSSActivityFileFormSet,\
+    UserMembershipHistoryForm
 ##TansReportingObligationForm , UserForm,
 
 
@@ -6966,7 +6967,7 @@ class NewsStatisticsByYearListView(ListView):
             curryear=int(self.kwargs['year'])
             num_years=curryear-2003
         else :   
-            curryear=timezone.now().year -1  
+            curryear=timezone.now().year   
             num_years=curryear-2003
         y_array=[]    
         n_array=[]
@@ -8896,6 +8897,97 @@ def irss_activity_edit(request,  id=None, template_name='irss/irss_activities_ed
         'form': form, 'f_form':f_form,"irssactivity": irssactivity
     }, context_instance=RequestContext(request))            
             
+
+
+class UserMembershipHistoryListView(ListView):
+    """
+    UserMembershipHistory
+    
+    """
+    context_object_name = 'latest'
+    model = UserMembershipHistory
+    date_field = 'start_date'
+    template_name = 'accounts/user_membership_list.html'
+    queryset = UserMembershipHistory.objects.all().order_by('-start_date')
+    allow_future = False
+    allow_empty = True
+    paginate_by = 500
+
+    def get_queryset(self):
+        """ only  """
+        # self.country = get_object_or_404(CountryPage, country=self.kwargs['country'])
+        # CountryPage country_slug == country URL parameter keyword argument
+        return UserMembershipHistory.objects.all().order_by('-start_date')
+    
+    def get_context_data(self, **kwargs): # http://stackoverflow.com/a/15515220
+        context = super(UserMembershipHistoryListView, self).get_context_data(**kwargs)
+       # context['activity_types'] =IRSS_ACT_TYPE_CHOICES
+       
+        #context['country'] = self.kwargs['country']
+        return context
+
+
+class UserMembershipHistoryDetailView(DetailView):
+    """ Pest report detail page """
+    model = UserMembershipHistory
+    context_object_name = 'user_membership'
+    template_name = 'accounts/user_membership_detail.html'
+    queryset = UserMembershipHistory.objects.filter()
+    
+  
+    
+@login_required
+@permission_required('ippc.add_usermembershiphistory', login_url="/accounts/login/")
+def usermembershiphistory_create(request):
+    """ Create  usermembershiphistory """
+    
+    form = UserMembershipHistoryForm(request.POST)
+    
+    if request.method == "POST":
+        if form.is_valid():
+            new_usermembershiphistory = form.save(commit=False)
+            form.save()
+            
+            info(request, _("Successfully created user membership entry."))
+            
+            return redirect("usermembershiphistory-detail", pk=new_usermembershiphistory.id)
+        else:
+             return render_to_response('accounts/user_membership_create.html', {'form': form,},
+             context_instance=RequestContext(request))
+    else:
+        form = UserMembershipHistoryForm(instance= UserMembershipHistory())
+     
+
+    return render_to_response('accounts/user_membership_create.html', {'form': form },
+        context_instance=RequestContext(request))
+
+  
+@login_required
+@permission_required('ippc.change_usermembershiphistory', login_url="/accounts/login/")
+def usermembershiphistory_edit(request, id=None, template_name='accounts/user_membership_edit.html'):
+    """ Edit  usermembershiphistory """
+    if id:
+        usermembership = get_object_or_404(UserMembershipHistory,  pk=id)
+        print(id)
+        print(usermembership)
+        
+    if request.POST:
+        form = UserMembershipHistoryForm(request.POST, instance=usermembership)
+        
+        if form.is_valid():
+           form.save()
+          
+           return redirect("usermembership-detail",id=usermembership.id)
+
+    else:
+        form = UserMembershipHistoryForm(instance=usermembership)
+        print(usermembership.user)
+    return render_to_response(template_name, {
+        'form': form, "usermembership": usermembership,"username":usermembership.user,
+    }, context_instance=RequestContext(request))
+
+  
+  
   
 @login_required
 def subscribe_to_news(request):

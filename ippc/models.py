@@ -2019,7 +2019,15 @@ class IRSSActivityFile(models.Model):
     def fileextension(self):
         return os.path.splitext(self.file.name)[1]
     
-    
+class UserMembershipHistory(models.Model):
+    user = models.ForeignKey("auth.User",verbose_name=_("User"), blank=True, null=True)
+    group = models.ForeignKey(Group,  blank=True, null=True)
+    start_date = models.DateTimeField(_("Nomination start date"), blank=True, null=True, editable=True)
+    end_date = models.DateTimeField(_("Nomination end date"), blank=True, null=True, editable=True)
+    countrypage = models.ForeignKey(CountryPage,blank=True, null=True )
+    partnerpage = models.ForeignKey(PartnersPage,blank=True, null=True)
+    file = models.FileField(max_length=255,blank=True, help_text='10 MB maximum file size.', verbose_name='Upload a file', upload_to='files/membership/%Y/%m/%d/', validators=[validate_file_extension])
+
 class Translatable(models.Model):
     """ Translations of user-generated content - https://gist.github.com/renyi/3596248"""
     lang = models.CharField(max_length=5, choices=settings.LANGUAGES)

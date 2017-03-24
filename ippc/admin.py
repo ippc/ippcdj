@@ -16,7 +16,7 @@ CountryNews,CountryNewsFile,CountryNewsUrl,CommodityKeyword,PreferredLanguages, 
 PartnersWebsite,PartnersWebsiteUrl,\
 PartnersNews,PartnersNewsFile,PartnersNewsUrl, \
 EppoCode,IssueKeyword, CommodityKeyword,IssueKeywordsRelate,CommodityKeywordsRelate, ContactType, IppcUserProfile,\
-QAQuestion,QAAnswer,FAQsCategory,FAQsItem,IRSSActivity,IRSSActivityFile,TransFAQsCategory,TransFAQsItem
+QAQuestion,QAAnswer,FAQsCategory,FAQsItem,IRSSActivity,IRSSActivityFile,TransFAQsCategory,TransFAQsItem,UserMembershipHistory
 #,TransReportingObligation
 
 from django.forms.models import inlineformset_factory
@@ -637,6 +637,15 @@ class IRSSActivityAdmin(admin.ModelAdmin):
     search_fields = ('title', 'description')
     
 admin.site.register(IRSSActivity, IRSSActivityAdmin)   
+
+class UserMembershipHistoryAdmin(admin.ModelAdmin):
+    save_on_top = True
+    list_display = ('user', 'group', 'start_date','end_date' ,'countrypage','partnerpage','file' )
+    list_filter = ('user', 'group',  )
+    search_fields = ('user', 'group')
+    
+admin.site.register(UserMembershipHistory, UserMembershipHistoryAdmin)   
+
 
 # Translatable user-content  -----------------
 if "mezzanine.pages" in settings.INSTALLED_APPS:
