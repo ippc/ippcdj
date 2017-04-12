@@ -1,0 +1,657 @@
+{% extends "base.html" %}
+{% load pages_tags mezzanine_tags i18n future staticfiles accounts_tags %}
+
+{% block meta_title %}
+  {% trans "Countries Stats" %}: 
+  {{ page.title }}
+{% endblock %}
+
+{% block body_class %}wide{% endblock %}
+
+{% block breadcrumb_menu %}
+<li><a href="/{{ LANGUAGE_CODE }}/">{% trans "Home" %}</a><span class="divider">/</span></li>
+<li>
+  <a href="/countries/">Countries</a>
+  <span class="divider">/</span>
+</li>
+<li>
+    <a href="/nro-reports-and-statistics/">Statistics</a>
+    <span class="divider">/</span>
+</li>
+
+<li class="active">{% trans "Summary of NRO year of Phytosanitary legislation " %} </li>
+{% endblock %}
+
+{% block local_nav %}
+{% endblock local_nav %}
+
+{% block pageinfo %}
+{% endblock pageinfo %}
+
+{% block main %}
+
+<p class="pull-right">
+  <a href="javascript:history.go(-1)">{% trans "« Go back" %}</a>
+</p>
+    
+    
+    
+<h1>
+{% trans "Summary of Phytosanitary legislation " %} 1 {% trans "April" %} {{prevyear}} - 31 {% trans "March" %} {{curryear}} <br>
+  </h1> 
+
+
+
+    
+<script type="text/javascript">
+    
+    
+	window.onload = function () {
+	
+
+    var chart2 = new CanvasJS.Chart("chartContainer2",
+    {
+      title:{
+	text: "Comulative number of Phytosanitary legislation in each year",
+        fontSize: 20
+			
+        
+      },
+      animationEnabled: true,
+      
+      axisY: {
+            title: "number of reports",
+            titleFontSize: 16,
+            labelFontSize: 16,
+    },
+    axisX: {
+            labelFontSize: 10,
+            labelMaxWidth:70,
+            interval: 1,
+    },
+                        
+     
+      legend: {
+        verticalAlign: "bottom",
+        horizontalAlign: "center"
+      },
+      theme: "theme1",
+       // width:780,
+       //height:400,
+      data: [
+
+      {        
+        type: "column",  
+        showInLegend: true, 
+        legendMarkerColor: "grey",
+        legendText: "years",
+        dataPoints: [      
+        {% autoescape off %} 
+                                {{datachart2}}
+                             {% endautoescape %}     
+        ]
+      }   
+      ]
+    });
+
+    chart2.render();
+
+  var chart3 = new CanvasJS.Chart("chartContainer3",
+    {
+      title:{
+	text: "Number of Phytosanitary legislation in each year",
+        fontSize: 20
+			
+        
+      },
+      animationEnabled: true,
+      
+      axisY: {
+            title: "number of reports",
+            titleFontSize: 16,
+            labelFontSize: 16,
+    },
+    axisX: {
+            labelFontSize: 10,
+            labelMaxWidth:70,
+            interval: 1,
+    },
+                        
+     
+      legend: {
+        verticalAlign: "bottom",
+        horizontalAlign: "center"
+      },
+      theme: "theme1",
+       // width:780,
+       //height:400,
+      data: [
+
+      {        
+        type: "column",  
+        showInLegend: true, 
+        legendMarkerColor: "grey",
+        legendText: "years",
+        dataPoints: [      
+        {% autoescape off %} 
+            {{datachart3}}
+         {% endautoescape %}     
+        ]
+      }   
+      ]
+    });
+
+    chart3.render();
+
+}
+</script>
+<script type="text/javascript" charset="utf-8">
+$(function() {
+      $('#sel_year').change(function() {
+            window.location.href = $(this).val()+'/';
+      });
+});
+</script>
+<script src='{% static "/static/canvasjs/canvasjs.min.js" %}'></script>
+  <p>
+ <b>Select year for statistics:</b><br>
+  <form action="" >
+<select data-placeholder="Go to year..." tabindex="3"  id="sel_year" >
+ <option value="">{% trans "Go to year ... " %}</option>
+  {% for i in selyear_range %}
+     <option  {% if curryear == i %}selected{% endif %} value="/countries/statistics/year-legislations/{{i}}">{{i}}</option>    
+ {% endfor %}
+</select>
+</form>
+ </p>
+<p><b>{% trans "Date generated" %}: </b>  {{ dategenerate|date:"d M Y, H:m" }}</p><br>
+<p>{% trans "The tables below show the detailed breakdown by region of Phytosanitary legislation  made available by Contracting Parties on the IPP in the 'NRO year of Pest reports' " %}:  1 {% trans "April" %} {{prevyear}} - 31 {% trans "March" %} {{curryear}}</p>
+
+<h3>Phytosanitary legislation  by Contracting Parties overall state to 31 {% trans "March" %} {{curryear}}</h3>
+        
+<table class="table table-condensed table-striped">
+   <thead>
+        <tr>
+            <th colspan="4"  style="background:#cccccc; text-align: center;"><center>Phytosanitary legislation </center></th>
+        </tr> 
+        <tr>
+            <th style="background:#f2f2f2;">Region</th>
+            <th style="background:#f2f2f2;">Number of contracting parties</th>
+            <th style="background:#f2f2f2;">Number of reporting parties</th>
+            <th style="background:#f2f2f2;">Number of reports</th>
+        </tr>
+    </thead>
+    <tbody>
+        
+            {% for object in regionsPCP.0 %}
+            <tr>
+            <th style="background:#f2f2f2;">{{ object.0 }} </th>
+            <td>{{ object.1 }} </td>
+            <td>{{ object.2 }}</td>
+            <td>{{ object.3 }}</td>    
+        </tr>
+            {% endfor %}
+           <tr>
+                <th style="background:#f2f2f2;">Total</th>
+                <th>{{ totNumReg }}  </th>
+                <th>  {{regionsPCPTot.0.0}} </th>
+                <th>  {{regionsPCPTot.0.1}} </th>
+            </tr>
+    </tbody>
+        
+</table>   
+<h3>Phytosanitary legislation  by Contracting Parties changes during 1 {% trans "April" %} {{prevyear}} - 31 {% trans "March" %} {{curryear}}</h3>
+    <table class="table table-condensed" border="1">
+                <thead>
+                  
+                  <tr>
+                     <th colspan="1"  style="background:#cccccc; text-align: center;"><center>&#160;</center></th>
+                     <th colspan="1"  style="background:#cccccc; text-align: center;"><center>&#160;</center></th>
+                     <th colspan="2"  style="background:#f2f2f2; text-align: center;"><center>Apr {{prevyear}}</center></th>
+                     <th colspan="2"  style="background:#cccccc; text-align: center;"><center>May {{prevyear}}</center></th>
+                     <th colspan="2"  style="background:#f2f2f2; text-align: center;"><center>Jun {{prevyear}}</center></th>
+                     <th colspan="2"  style="background:#cccccc; text-align: center;"><center>Jul {{prevyear}}</center></th>
+                     <th colspan="2"  style="background:#f2f2f2; text-align: center;"><center>Aug {{prevyear}}</center></th>
+                     <th colspan="2"  style="background:#cccccc; text-align: center;"><center>Sep {{prevyear}}</center></th>
+                    </tr> 
+                    <tr>
+                     <th colspan="1"  style="background:#cccccc; text-align: center;"><center>Region </center></th>
+                        <th style="background:#cccccc;">Countries</th>
+                        <th style="background:#f2f2f2;">New reports</th>
+                        <th style="background:#f2f2f2;">Updated reports</th>
+                        <th style="background:#cccccc;">New reports</th>
+                        <th style="background:#cccccc;">Updated reports</th>
+                        <th style="background:#f2f2f2;">New reports</th>
+                        <th style="background:#f2f2f2;">Updated reports</th>
+                        <th style="background:#cccccc;">New reports</th>
+                        <th style="background:#cccccc;">Updated reports</th>
+                        <th style="background:#f2f2f2;">New reports</th>
+                        <th style="background:#f2f2f2;">Updated reports</th>
+                        <th style="background:#cccccc;">New reports</th>
+                        <th style="background:#cccccc;">Updated reports</th>
+                    </tr> 
+                  
+                </thead>
+                <tbody>
+                    {% for object in regionsPCP.0 %}
+                    <tr>
+                       <th style="background:#f2f2f2;">{{ object.0 }}</th>
+                       <td>{{ object.6}}</td>
+                           <td>{%if object.7.0.0 == 0 %} &#160; {%else%} {{object.7.0.0}} {%endif%}  </td> 
+                           <td>{%if object.7.1.0 == 0 %} &#160; {%else%} {{object.7.1.0}} {%endif%}  </td> 
+                           
+                           <td>{%if object.7.0.1 == 0 %} &#160; {%else%} {{object.7.0.1}} {%endif%}  </td> 
+                           <td>{%if object.7.1.1 == 0 %} &#160; {%else%} {{object.7.1.1}} {%endif%}  </td> 
+                    
+                           <td>{%if object.7.0.2 == 0 %} &#160; {%else%} {{object.7.0.2}} {%endif%}  </td> 
+                           <td>{%if object.7.1.2 == 0 %} &#160; {%else%} {{object.7.1.2}} {%endif%}  </td> 
+                    
+                           <td>{%if object.7.0.3 == 0 %} &#160; {%else%} {{object.7.0.3}} {%endif%}  </td> 
+                           <td>{%if object.7.1.3 == 0 %} &#160; {%else%} {{object.7.1.3}} {%endif%}  </td> 
+                    
+                           <td>{%if object.7.0.4 == 0 %} &#160; {%else%} {{object.7.0.4}} {%endif%}  </td> 
+                           <td>{%if object.7.1.4 == 0 %} &#160; {%else%} {{object.7.1.4}} {%endif%}  </td> 
+                    
+                           <td>{%if object.7.0.5 == 0 %} &#160; {%else%} {{object.7.0.5}} {%endif%}  </td> 
+                           <td>{%if object.7.1.5 == 0 %} &#160; {%else%} {{object.7.1.5}} {%endif%}  </td> 
+             
+
+                           
+                          
+                    </tr>
+                    {% endfor %}
+                     
+                </tbody>
+                
+                
+                 <thead>
+                  
+                  <tr>
+                     <th colspan="1"  style="background:#cccccc; text-align: center;"><center>&#160;</center></th>
+                     <th colspan="1"  style="background:#cccccc; text-align: center;"><center>&#160;</center></th>
+                     <th colspan="2"  style="background:#f2f2f2; text-align: center;"><center>Oct {{curryear}}</center></th>
+                     <th colspan="2"  style="background:#cccccc; text-align: center;"><center>Nov {{curryear}}</center></th>
+                     <th colspan="2"  style="background:#f2f2f2; text-align: center;"><center>Dec {{curryear}}</center></th>
+                     <th colspan="2"  style="background:#cccccc; text-align: center;"><center>Jan {{curryear}}</center></th>
+                     <th colspan="2"  style="background:#f2f2f2; text-align: center;"><center>Feb {{curryear}}</center></th>
+                     <th colspan="2"  style="background:#cccccc; text-align: center;"><center>Mar {{curryear}}</center></th>
+                    </tr> 
+                    <tr>
+                       <th colspan="1"  style="background:#cccccc; text-align: center;"><center>Region </center></th>
+                      <th style="background:#cccccc;">Countries</th>
+                         <th style="background:#f2f2f2;">New reports</th>
+                        <th style="background:#f2f2f2;">Updated reports</th>
+                        <th style="background:#cccccc;">New reports</th>
+                        <th style="background:#cccccc;">Updated reports</th>
+                        <th style="background:#f2f2f2;">New reports</th>
+                        <th style="background:#f2f2f2;">Updated reports</th>
+                        <th style="background:#cccccc;">New reports</th>
+                        <th style="background:#cccccc;">Updated reports</th>
+                        <th style="background:#f2f2f2;">New reports</th>
+                        <th style="background:#f2f2f2;">Updated reports</th>
+                        <th style="background:#cccccc;">New reports</th>
+                        <th style="background:#cccccc;">Updated reports</th>
+                    </tr> 
+                    </tr> 
+                  
+                </thead>
+                <tbody>
+                    {% for object in regionsPCP.0 %}
+                    <tr>
+                        <th style="background:#f2f2f2;">{{ object.0 }} </th>
+                         <td>{{ object.6}}</td>
+                           <td>{%if object.7.0.6 == 0 %} &#160; {%else%} {{object.7.0.6}} {%endif%}  </td> 
+                           <td>{%if object.7.1.6 == 0 %} &#160; {%else%} {{object.7.1.6}} {%endif%}  </td> 
+                           
+                           <td>{%if object.7.0.7 == 0 %} &#160; {%else%} {{object.7.0.7}} {%endif%}  </td> 
+                           <td>{%if object.7.1.7 == 0 %} &#160; {%else%} {{object.7.1.7}} {%endif%}  </td> 
+                    
+                           <td>{%if object.7.0.8 == 0 %} &#160; {%else%} {{object.7.0.8}} {%endif%}  </td> 
+                           <td>{%if object.7.1.8 == 0 %} &#160; {%else%} {{object.7.1.8}} {%endif%}  </td> 
+                    
+                           <td>{%if object.7.0.9 == 0 %} &#160; {%else%} {{object.7.0.9}} {%endif%}  </td> 
+                           <td>{%if object.7.1.9 == 0 %} &#160; {%else%} {{object.7.1.9}} {%endif%}  </td> 
+                    
+                           <td>{%if object.7.0.10 == 0 %} &#160; {%else%} {{object.7.0.10}} {%endif%}  </td> 
+                           <td>{%if object.7.1.10 == 0 %} &#160; {%else%} {{object.7.1.10}} {%endif%}  </td> 
+                    
+                           <td>{%if object.7.0.11 == 0 %} &#160; {%else%} {{object.7.0.11}} {%endif%}  </td> 
+                           <td>{%if object.7.1.11 == 0 %} &#160; {%else%} {{object.7.1.11}} {%endif%}  </td> 
+                    
+                           
+                          
+                    </tr>
+                        
+                        
+                       
+                    {% endfor %}
+                     
+              
+                  <tr>
+                        <th style="background:#cccccc;">Total</th>
+                      
+                        <th style="background:#cccccc;"> new: {{regionsPCPTot.0.2}} <br> updated: {{regionsPCPTot.0.3}} </th>
+                    </tr>
+                </tbody>
+                 
+                
+            </table> 
+   <hr style="border: 2px solid #009926;">
+<!--h3>Phytosanitary legislation  by Contracting Parties changes during 1 {% trans "April" %} {{prevyear}} - 31 {% trans "March" %} {{curryear}}</h3>
+    <table class="table table-condensed">
+                <thead>
+                    <tr>
+                     <th colspan="1"  style="background:#cccccc; text-align: center;"><center>Phytosanitary legislation </center></th>
+                     <th colspan="1"  style="background:#cccccc; text-align: center;"><center>Country</center></th>
+                     <th colspan="2"  style="background:#cccccc; text-align: center;"><center> {{curryear}}</center></th>
+                    </tr> 
+                    <tr>
+                        <th style="background:#f2f2f2;">Region</th>
+                        <th style="background:#f2f2f2;">Countries</th>
+                        <th style="background:#f2f2f2;">New reports</th>
+                        <th style="background:#f2f2f2;">Updated reports</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for object in regionsPCP.0 %}
+                    <tr>
+                        <th style="background:#f2f2f2;">{{ object.0 }} </th>
+                            <td>{{ object.6 }} </td>
+                        <td>{{ object.4 }} </td>
+                        <td>{{ object.5 }}</td>    
+                    </tr>
+                    {% endfor %}
+                     <tr>
+                        <th style="background:#f2f2f2;">Total</th>
+                        <th>   </th>
+                        <th>  {{regionsPCPTot.0.2}} </th>
+                        <th>  {{regionsPCPTot.0.3}} </th>
+                    </tr>
+                </tbody>
+            </table> 
+   <hr style="border: 2px solid #009926;"-->
+   
+   
+   
+   
+<p>{% trans "The tables below show the detailed breakdown by region of Phytosanitary legislation  made available by all countries on the IPP in the 'NRO year of Pest reports' " %}:  1 {% trans "April" %} {{prevyear}} - 31 {% trans "March" %} {{curryear}}</p>
+
+
+<h3>Phytosanitary legislation  by all countries overall state to 31 {% trans "March" %} {{curryear}}</h3>
+        
+<table class="table table-condensed table-striped">
+   <thead>
+        <tr>
+            <th colspan="4"  style="background:#cccccc; text-align: center;"><center>Phytosanitary legislation </center></th>
+        </tr> 
+        <tr>
+            <th style="background:#f2f2f2;">Region</th>
+            <th style="background:#f2f2f2;">Number of countries</th>
+            <th style="background:#f2f2f2;">Number of reporting countries</th>
+            <th style="background:#f2f2f2;">Number of reports</th>
+        </tr>
+    </thead>
+    <tbody>
+        
+            {% for object in regionsAll.0 %}
+            <tr>
+            <th style="background:#f2f2f2;">{{ object.0 }} </th>
+            <td>{{ object.1 }} </td>
+            <td>{{ object.2 }}</td>
+            <td>{{ object.3 }}</td>    
+        </tr>
+            {% endfor %}
+           <tr>
+                <th style="background:#f2f2f2;">Total</th>
+                <th>{{ totALLcn }}  </th>
+                <th>  {{regionsALLTot.0.0}} </th>
+                <th>  {{regionsALLTot.0.1}} </th>
+            </tr>
+    </tbody>
+        
+</table>   
+<h3>Phytosanitary legislation  by all countries changes during 1 {% trans "April" %} {{prevyear}} - 31 {% trans "March" %} {{curryear}}</h3>
+   <table class="table table-condensed" border="1">
+                <thead>
+                  
+                  <tr>
+                     <th colspan="1"  style="background:#cccccc; text-align: center;"><center>&#160;</center></th>
+                     <th colspan="1"  style="background:#cccccc; text-align: center;"><center>&#160;</center></th>
+                     <th colspan="2"  style="background:#f2f2f2; text-align: center;"><center>Apr {{prevyear}}</center></th>
+                     <th colspan="2"  style="background:#cccccc; text-align: center;"><center>May {{prevyear}}</center></th>
+                     <th colspan="2"  style="background:#f2f2f2; text-align: center;"><center>Jun {{prevyear}}</center></th>
+                     <th colspan="2"  style="background:#cccccc; text-align: center;"><center>Jul {{prevyear}}</center></th>
+                     <th colspan="2"  style="background:#f2f2f2; text-align: center;"><center>Aug {{prevyear}}</center></th>
+                     <th colspan="2"  style="background:#cccccc; text-align: center;"><center>Sep {{prevyear}}</center></th>
+                    </tr> 
+                    <tr>
+                     <th colspan="1"  style="background:#cccccc; text-align: center;"><center>Region </center></th>
+                        <th style="background:#cccccc;">Countries</th>
+                        <th style="background:#f2f2f2;">New reports</th>
+                        <th style="background:#f2f2f2;">Updated reports</th>
+                        <th style="background:#cccccc;">New reports</th>
+                        <th style="background:#cccccc;">Updated reports</th>
+                        <th style="background:#f2f2f2;">New reports</th>
+                        <th style="background:#f2f2f2;">Updated reports</th>
+                        <th style="background:#cccccc;">New reports</th>
+                        <th style="background:#cccccc;">Updated reports</th>
+                        <th style="background:#f2f2f2;">New reports</th>
+                        <th style="background:#f2f2f2;">Updated reports</th>
+                        <th style="background:#cccccc;">New reports</th>
+                        <th style="background:#cccccc;">Updated reports</th>
+                    </tr> 
+                  
+                </thead>
+                <tbody>
+                    {% for object in regionsAll.0 %}
+                    <tr>
+                       <th style="background:#f2f2f2;">{{ object.0 }}</th>
+                       <td>{{ object.6}}</td>
+                           <td>{%if object.7.0.0 == 0 %} &#160; {%else%} {{object.7.0.0}} {%endif%}  </td> 
+                           <td>{%if object.7.1.0 == 0 %} &#160; {%else%} {{object.7.1.0}} {%endif%}  </td> 
+                           
+                           <td>{%if object.7.0.1 == 0 %} &#160; {%else%} {{object.7.0.1}} {%endif%}  </td> 
+                           <td>{%if object.7.1.1 == 0 %} &#160; {%else%} {{object.7.1.1}} {%endif%}  </td> 
+                    
+                           <td>{%if object.7.0.2 == 0 %} &#160; {%else%} {{object.7.0.2}} {%endif%}  </td> 
+                           <td>{%if object.7.1.2 == 0 %} &#160; {%else%} {{object.7.1.2}} {%endif%}  </td> 
+                    
+                           <td>{%if object.7.0.3 == 0 %} &#160; {%else%} {{object.7.0.3}} {%endif%}  </td> 
+                           <td>{%if object.7.1.3 == 0 %} &#160; {%else%} {{object.7.1.3}} {%endif%}  </td> 
+                    
+                           <td>{%if object.7.0.4 == 0 %} &#160; {%else%} {{object.7.0.4}} {%endif%}  </td> 
+                           <td>{%if object.7.1.4 == 0 %} &#160; {%else%} {{object.7.1.4}} {%endif%}  </td> 
+                    
+                           <td>{%if object.7.0.5 == 0 %} &#160; {%else%} {{object.7.0.5}} {%endif%}  </td> 
+                           <td>{%if object.7.1.5 == 0 %} &#160; {%else%} {{object.7.1.5}} {%endif%}  </td> 
+             
+
+                           
+                          
+                    </tr>
+                    {% endfor %}
+                     
+                </tbody>
+                
+                
+                 <thead>
+                  
+                  <tr>
+                     <th colspan="1"  style="background:#cccccc; text-align: center;"><center>&#160;</center></th>
+                     <th colspan="1"  style="background:#cccccc; text-align: center;"><center>&#160;</center></th>
+                     <th colspan="2"  style="background:#f2f2f2; text-align: center;"><center>Oct {{curryear}}</center></th>
+                     <th colspan="2"  style="background:#cccccc; text-align: center;"><center>Nov {{curryear}}</center></th>
+                     <th colspan="2"  style="background:#f2f2f2; text-align: center;"><center>Dec {{curryear}}</center></th>
+                     <th colspan="2"  style="background:#cccccc; text-align: center;"><center>Jan {{curryear}}</center></th>
+                     <th colspan="2"  style="background:#f2f2f2; text-align: center;"><center>Feb {{curryear}}</center></th>
+                     <th colspan="2"  style="background:#cccccc; text-align: center;"><center>Mar {{curryear}}</center></th>
+                    </tr> 
+                    <tr>
+                      <th colspan="1"  style="background:#cccccc; text-align: center;"><center>Region </center></th>
+                      <th style="background:#cccccc;">Countries</th>
+                         <th style="background:#f2f2f2;">New reports</th>
+                        <th style="background:#f2f2f2;">Updated reports</th>
+                        <th style="background:#cccccc;">New reports</th>
+                        <th style="background:#cccccc;">Updated reports</th>
+                        <th style="background:#f2f2f2;">New reports</th>
+                        <th style="background:#f2f2f2;">Updated reports</th>
+                        <th style="background:#cccccc;">New reports</th>
+                        <th style="background:#cccccc;">Updated reports</th>
+                        <th style="background:#f2f2f2;">New reports</th>
+                        <th style="background:#f2f2f2;">Updated reports</th>
+                        <th style="background:#cccccc;">New reports</th>
+                        <th style="background:#cccccc;">Updated reports</th>
+                    </tr> 
+                    </tr> 
+                  
+                </thead>
+                <tbody>
+                    {% for object in regionsAll.0 %}
+                    <tr>
+                        <th style="background:#f2f2f2;">{{ object.0 }} </th>
+                         <td>{{ object.6}}</td>
+                           <td>{%if object.7.0.6 == 0 %} &#160; {%else%} {{object.7.0.6}} {%endif%}  </td> 
+                           <td>{%if object.7.1.6 == 0 %} &#160; {%else%} {{object.7.1.6}} {%endif%}  </td> 
+                           
+                           <td>{%if object.7.0.7 == 0 %} &#160; {%else%} {{object.7.0.7}} {%endif%}  </td> 
+                           <td>{%if object.7.1.7 == 0 %} &#160; {%else%} {{object.7.1.7}} {%endif%}  </td> 
+                    
+                           <td>{%if object.7.0.8 == 0 %} &#160; {%else%} {{object.7.0.8}} {%endif%}  </td> 
+                           <td>{%if object.7.1.8 == 0 %} &#160; {%else%} {{object.7.1.8}} {%endif%}  </td> 
+                    
+                           <td>{%if object.7.0.9 == 0 %} &#160; {%else%} {{object.7.0.9}} {%endif%}  </td> 
+                           <td>{%if object.7.1.9 == 0 %} &#160; {%else%} {{object.7.1.9}} {%endif%}  </td> 
+                    
+                           <td>{%if object.7.0.10 == 0 %} &#160; {%else%} {{object.7.0.10}} {%endif%}  </td> 
+                           <td>{%if object.7.1.10 == 0 %} &#160; {%else%} {{object.7.1.10}} {%endif%}  </td> 
+                    
+                           <td>{%if object.7.0.11 == 0 %} &#160; {%else%} {{object.7.0.11}} {%endif%}  </td> 
+                           <td>{%if object.7.1.11 == 0 %} &#160; {%else%} {{object.7.1.11}} {%endif%}  </td> 
+                    
+                           
+                          
+                    </tr>
+                        
+                        
+                       
+                    {% endfor %}
+                     
+              
+                  <tr>
+                        <th style="background:#cccccc;">Total</th>
+                      
+                        <th style="background:#cccccc;"> new: {{regionsALLTot.0.2}} <br> updated: {{regionsALLTot.0.3}} </th>
+                    </tr>
+                </tbody>
+                 
+                
+            </table> 
+<!--table class="table table-condensed">
+                <thead>
+                    <tr>
+                     <th colspan="1"  style="background:#cccccc; text-align: center;"><center>Phytosanitary legislation </center></th>
+                     <th colspan="1"  style="background:#cccccc; text-align: center;"><center>Country</center></th>
+                     <th colspan="2"  style="background:#cccccc; text-align: center;"><center> {{curryear}}</center></th>
+                    </tr> 
+                    <tr>
+                        <th style="background:#f2f2f2;">Region</th>
+                        <th style="background:#f2f2f2;">Countries</th>
+                        <th style="background:#f2f2f2;">New reports</th>
+                        <th style="background:#f2f2f2;">Updated reports</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for object in regionsAll.0 %}
+                    <tr>
+                        <th style="background:#f2f2f2;">{{ object.0 }} </th>
+                            <td>{{ object.6 }} </td>
+                        <td>{{ object.4 }} </td>
+                        <td>{{ object.5 }}</td>    
+                    </tr>
+                    {% endfor %}
+                     <tr>
+                        <th style="background:#f2f2f2;">Total</th>
+                        <th>   </th>
+                        <th>  {{regionsALLTot.0.2}} </th>
+                        <th>  {{regionsALLTot.0.3}} </th>
+                    </tr>
+                </tbody>
+            </table--> 
+
+<hr style="border: 4px solid #009926;"/>
+<h4>The cumulative total of Phytosanitary legislation made available by all countries through the IPP for the years 2005 - {{prevyear}}.</h4>
+
+<table class="table table-condensed table-striped">
+<thead>
+<tr>
+    <th rowspan="2">&#160;</th>
+    <th colspan="{{num_years}}">Reporting Year (cumulative totals)</th>
+</tr> 
+<tr>
+   {% for i in num_years_range %}
+       <th>{{i}}</th>
+{% endfor %}
+ 
+</tr> 
+
+    
+</thead>
+<tbody>
+
+<tr>
+    <td>Phytosanitary legislation </td>
+    {% for object in pest_array.0 %}
+       <td>{{object }} </td>
+    {% endfor %}
+</tr>
+
+</tbody>
+
+</table>
+<table class="table table-condensed table-striped">
+<tr><td>	<div id="chartContainer2" style="height: 600px; width: 100%;">
+	</div>
+</td>
+            </tr>
+ </table>
+
+
+
+<h4>The number of new Phytosanitary legislation made available by all countries on the IPP every year (2005 - {{prevyear}}). </h4>
+
+<table class="table table-condensed table-striped">
+<thead>
+<tr>
+    <th rowspan="2"></th>
+    <th colspan="{{num_years}}">Reporting Year (actual number per annum)</th>
+</tr> 
+<tr>
+   {% for i in num_years_range %}
+       <th>{{i}}</th>
+{% endfor %}
+ 
+</tr> 
+
+    
+</thead>
+<tbody>
+<tr>
+    <td>Phytosanitary legislation</td>
+    {% for object in pest_array1.0 %}
+       <td>{{object }} </td>
+    {% endfor %}
+</tr>
+</tbody>
+
+</table>
+
+<table class="table table-condensed table-striped">
+<tr><td>	<div id="chartContainer3" style="height: 600px; width: 100%;">
+	</div>
+</td>
+            </tr>
+ </table>
+
+
+
+{% endblock %}
