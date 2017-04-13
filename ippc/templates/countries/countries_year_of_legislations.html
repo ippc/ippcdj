@@ -259,22 +259,39 @@ $(function() {
                            
                           
                     </tr>
+                    
                     {% endfor %}
-                     
+                      <tr>
+                        <th style="background:#cccccc;">Total</th>
+                        <th>&#160;</th>
+                        <th style="background:#f2f2f2;">{{totarray_months_n.0}}</th>
+                        <th style="background:#f2f2f2;">{{totarray_months_u.0}}</th>
+                        <th style="background:#f2f2f2;">{{totarray_months_n.1}}</th>
+                        <th style="background:#f2f2f2;">{{totarray_months_u.1}}</th>
+                        <th style="background:#f2f2f2;">{{totarray_months_n.2}}</th>
+                        <th style="background:#f2f2f2;">{{totarray_months_u.2}}</th>
+                        <th style="background:#f2f2f2;">{{totarray_months_n.3}}</th>
+                        <th style="background:#f2f2f2;">{{totarray_months_u.3}}</th>
+                        <th style="background:#f2f2f2;">{{totarray_months_n.4}}</th>
+                        <th style="background:#f2f2f2;">{{totarray_months_u.4}}</th>
+                        <th style="background:#f2f2f2;">{{totarray_months_n.5}}</th>
+                        <th style="background:#f2f2f2;">{{totarray_months_u.5}}</th>
+                       
+                    </tr>
                 </tbody>
                 
                 
                  <thead>
                   
                   <tr>
-                     <th colspan="1"  style="background:#cccccc; text-align: center;"><center>&#160;</center></th>
-                     <th colspan="1"  style="background:#cccccc; text-align: center;"><center>&#160;</center></th>
-                     <th colspan="2"  style="background:#f2f2f2; text-align: center;"><center>Oct {{curryear}}</center></th>
-                     <th colspan="2"  style="background:#cccccc; text-align: center;"><center>Nov {{curryear}}</center></th>
-                     <th colspan="2"  style="background:#f2f2f2; text-align: center;"><center>Dec {{curryear}}</center></th>
-                     <th colspan="2"  style="background:#cccccc; text-align: center;"><center>Jan {{curryear}}</center></th>
-                     <th colspan="2"  style="background:#f2f2f2; text-align: center;"><center>Feb {{curryear}}</center></th>
-                     <th colspan="2"  style="background:#cccccc; text-align: center;"><center>Mar {{curryear}}</center></th>
+                     <th colspan="1"  style="background:#cccccc; text-align: center;border-top: 2px solid black;"><center>&#160;</center></th>
+                     <th colspan="1"  style="background:#cccccc; text-align: center;border-top: 2px solid black;""><center>&#160;</center></th>
+                     <th colspan="2"  style="background:#f2f2f2; text-align: center;border-top: 2px solid black;""><center>Oct {{prevyear}}</center></th>
+                     <th colspan="2"  style="background:#cccccc; text-align: center;border-top: 2px solid black;""><center>Nov {{prevyear}}</center></th>
+                     <th colspan="2"  style="background:#f2f2f2; text-align: center;border-top: 2px solid black;""><center>Dec {{prevyear}}</center></th>
+                     <th colspan="2"  style="background:#cccccc; text-align: center;border-top: 2px solid black;""><center>Jan {{curryear}}</center></th>
+                     <th colspan="2"  style="background:#f2f2f2; text-align: center;border-top: 2px solid black;""><center>Feb {{curryear}}</center></th>
+                     <th colspan="2"  style="background:#cccccc; text-align: center;border-top: 2px solid black;""><center>Mar {{curryear}}</center></th>
                     </tr> 
                     <tr>
                        <th colspan="1"  style="background:#cccccc; text-align: center;"><center>Region </center></th>
@@ -322,15 +339,28 @@ $(function() {
                           
                     </tr>
                         
-                        
+                 
                        
                     {% endfor %}
                      
-              
-                  <tr>
+                   <tr>
                         <th style="background:#cccccc;">Total</th>
-                      
-                        <th style="background:#cccccc;"> new: {{regionsPCPTot.0.2}} <br> updated: {{regionsPCPTot.0.3}} </th>
+                        <th>&#160;</th>
+                             <th>{{totarray_months_n.6}}</th>
+                        <th>{{totarray_months_u.6}}</th>
+                        <th>{{totarray_months_n.7}}</th>
+                        <th>{{totarray_months_u.7}}</th>
+                        <th>{{totarray_months_n.8}}</th>
+                        <th>{{totarray_months_u.8}}</th>
+                        <th>{{totarray_months_n.9}}</th>
+                        <th>{{totarray_months_u.9}}</th>
+                        <th>{{totarray_months_n.10}}</th>
+                        <th>{{totarray_months_u.10}}</th>
+                        <th>{{totarray_months_n.11}}</th>
+                        <th>{{totarray_months_u.11}}</th>
+                    </tr>   
+                <tr>
+                        <th style="background:#f2f2f2;">Total<br>new: {{regionsPCPTot.0.2}} <br>updated: {{regionsPCPTot.0.3}} </th>
                     </tr>
                 </tbody>
                  
@@ -470,21 +500,37 @@ $(function() {
                           
                     </tr>
                     {% endfor %}
-                     
+                          <tr>
+                        <th style="background:#cccccc;">Total</th>
+                        <th>&#160;</th>
+                        <th style="background:#f2f2f2;">{{totarray_months_n_all.0}}</th>
+                        <th style="background:#f2f2f2;">{{totarray_months_u_all.0}}</th>
+                        <th style="background:#f2f2f2;">{{totarray_months_n_all.1}}</th>
+                        <th style="background:#f2f2f2;">{{totarray_months_u_all.1}}</th>
+                        <th style="background:#f2f2f2;">{{totarray_months_n_all.2}}</th>
+                        <th style="background:#f2f2f2;">{{totarray_months_u_all.2}}</th>
+                        <th style="background:#f2f2f2;">{{totarray_months_n_all.3}}</th>
+                        <th style="background:#f2f2f2;">{{totarray_months_u_all.3}}</th>
+                        <th style="background:#f2f2f2;">{{totarray_months_n_all.4}}</th>
+                        <th style="background:#f2f2f2;">{{totarray_months_u_all.4}}</th>
+                        <th style="background:#f2f2f2;">{{totarray_months_n_all.5}}</th>
+                        <th style="background:#f2f2f2;">{{totarray_months_u_all.5}}</th>
+                       
+                    </tr>
                 </tbody>
                 
                 
                  <thead>
                   
                   <tr>
-                     <th colspan="1"  style="background:#cccccc; text-align: center;"><center>&#160;</center></th>
-                     <th colspan="1"  style="background:#cccccc; text-align: center;"><center>&#160;</center></th>
-                     <th colspan="2"  style="background:#f2f2f2; text-align: center;"><center>Oct {{curryear}}</center></th>
-                     <th colspan="2"  style="background:#cccccc; text-align: center;"><center>Nov {{curryear}}</center></th>
-                     <th colspan="2"  style="background:#f2f2f2; text-align: center;"><center>Dec {{curryear}}</center></th>
-                     <th colspan="2"  style="background:#cccccc; text-align: center;"><center>Jan {{curryear}}</center></th>
-                     <th colspan="2"  style="background:#f2f2f2; text-align: center;"><center>Feb {{curryear}}</center></th>
-                     <th colspan="2"  style="background:#cccccc; text-align: center;"><center>Mar {{curryear}}</center></th>
+                     <th colspan="1"  style="background:#cccccc; text-align: center;border-top: 2px solid black;"><center>&#160;</center></th>
+                     <th colspan="1"  style="background:#cccccc; text-align: center;border-top: 2px solid black;"><center>&#160;</center></th>
+                     <th colspan="2"  style="background:#f2f2f2; text-align: center;border-top: 2px solid black;"><center>Oct {{prevyear}}</center></th>
+                     <th colspan="2"  style="background:#cccccc; text-align: center;border-top: 2px solid black;"><center>Nov {{prevyear}}</center></th>
+                     <th colspan="2"  style="background:#f2f2f2; text-align: center;border-top: 2px solid black;"><center>Dec {{prevyear}}</center></th>
+                     <th colspan="2"  style="background:#cccccc; text-align: center;border-top: 2px solid black;"><center>Jan {{curryear}}</center></th>
+                     <th colspan="2"  style="background:#f2f2f2; text-align: center;border-top: 2px solid black;"><center>Feb {{curryear}}</center></th>
+                     <th colspan="2"  style="background:#cccccc; text-align: center;border-top: 2px solid black;"><center>Mar {{curryear}}</center></th>
                     </tr> 
                     <tr>
                       <th colspan="1"  style="background:#cccccc; text-align: center;"><center>Region </center></th>
@@ -537,10 +583,26 @@ $(function() {
                     {% endfor %}
                      
               
-                  <tr>
+                       <tr>
                         <th style="background:#cccccc;">Total</th>
-                      
-                        <th style="background:#cccccc;"> new: {{regionsALLTot.0.2}} <br> updated: {{regionsALLTot.0.3}} </th>
+                        <th>&#160;</th>
+                        <th style="background:#f2f2f2;">{{totarray_months_n_all.6}}</th>
+                        <th style="background:#f2f2f2;">{{totarray_months_u_all.6}}</th>
+                        <th style="background:#f2f2f2;">{{totarray_months_n_all.7}}</th>
+                        <th style="background:#f2f2f2;">{{totarray_months_u_all.7}}</th>
+                        <th style="background:#f2f2f2;">{{totarray_months_n_all.8}}</th>
+                        <th style="background:#f2f2f2;">{{totarray_months_u_all.8}}</th>
+                        <th style="background:#f2f2f2;">{{totarray_months_n_all.9}}</th>
+                        <th style="background:#f2f2f2;">{{totarray_months_u_all.9}}</th>
+                        <th style="background:#f2f2f2;">{{totarray_months_n_all.10}}</th>
+                        <th style="background:#f2f2f2;">{{totarray_months_u_all.10}}</th>
+                        <th style="background:#f2f2f2;">{{totarray_months_n_all.11}}</th>
+                        <th style="background:#f2f2f2;">{{totarray_months_u_all.11}}</th>
+                       
+                    </tr>
+                
+                   <tr>
+                        <th style="background:#f2f2f2;">Total<br>new: {{regionsALLTot.0.2}} <br>updated: {{regionsALLTot.0.3}} </th>
                     </tr>
                 </tbody>
                  
@@ -579,7 +641,7 @@ $(function() {
             </table--> 
 
 <hr style="border: 4px solid #009926;"/>
-<h4>The cumulative total of Phytosanitary legislation made available by all countries through the IPP for the years 2005 - {{prevyear}}.</h4>
+<h4>The cumulative total of Phytosanitary legislation made available by all countries through the IPP for the years 2005 - {{curryear}}.</h4>
 
 <table class="table table-condensed table-striped">
 <thead>
@@ -617,7 +679,7 @@ $(function() {
 
 
 
-<h4>The number of new Phytosanitary legislation made available by all countries on the IPP every year (2005 - {{prevyear}}). </h4>
+<h4>The number of new Phytosanitary legislation made available by all countries on the IPP every year (2005 - {{curryear}}). </h4>
 
 <table class="table table-condensed table-striped">
 <thead>
