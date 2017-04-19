@@ -16,7 +16,7 @@ CountryNews,CountryNewsFile,CountryNewsUrl,CommodityKeyword,PreferredLanguages, 
 PartnersWebsite,PartnersWebsiteUrl,\
 PartnersNews,PartnersNewsFile,PartnersNewsUrl, \
 EppoCode,IssueKeyword, CommodityKeyword,IssueKeywordsRelate,CommodityKeywordsRelate, ContactType, IppcUserProfile,\
-QAQuestion,QAAnswer,FAQsCategory,FAQsItem,IRSSActivity,IRSSActivityFile,TransFAQsCategory,TransFAQsItem,UserMembershipHistory
+QAQuestion,QAAnswer,FAQsCategory,FAQsItem,IRSSActivity,IRSSActivityFile,TransFAQsCategory,TransFAQsItem,UserMembershipHistory,MediaKitDocument
 #,TransReportingObligation
 
 from django.forms.models import inlineformset_factory
@@ -646,6 +646,16 @@ class UserMembershipHistoryAdmin(admin.ModelAdmin):
     
 admin.site.register(UserMembershipHistory, UserMembershipHistoryAdmin)   
 
+class MediaKitDocumentAdmin(admin.ModelAdmin):
+    save_on_top = True
+    list_display = ('title',  'mediakit_type','modify_date')
+    list_filter = ('title', 'mediakit_type',  'modify_date')
+    prepopulated_fields = { 'slug': ['title']}
+    search_fields = ['title',  'slug', 'file_en', 'file_es', 'file_ar', 'file_ru', 'file_zh', 'file_fr']
+
+    
+    
+admin.site.register(MediaKitDocument, MediaKitDocumentAdmin)
 
 # Translatable user-content  -----------------
 if "mezzanine.pages" in settings.INSTALLED_APPS:

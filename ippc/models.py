@@ -2028,6 +2028,109 @@ class UserMembershipHistory(models.Model):
     partnerpage = models.ForeignKey(PartnersPage,blank=True, null=True)
     file = models.FileField(max_length=255,blank=True, help_text='10 MB maximum file size.', verbose_name='Upload a file', upload_to='files/membership/%Y/%m/%d/', validators=[validate_file_extension])
 
+
+
+
+
+
+
+
+
+# used by MediaKitDocument type
+MEDIAKIT_TYPE_1 = 1
+MEDIAKIT_TYPE_2 = 2
+MEDIAKIT_TYPE_3 = 3
+MEDIAKIT_TYPE_4 = 4
+MEDIAKIT_TYPE_5 = 5
+MEDIAKIT_TYPE_6 = 6
+MEDIAKIT_TYPE_7 = 7
+MEDIAKIT_TYPE_CHOICES = (
+    (MEDIAKIT_TYPE_1, _("Brochures")), 
+    (MEDIAKIT_TYPE_2, _("Publications")),
+    (MEDIAKIT_TYPE_3, _("Quick Guides")),
+    (MEDIAKIT_TYPE_4, _("Factsheets")),
+    (MEDIAKIT_TYPE_5, _("Posters")),
+    (MEDIAKIT_TYPE_6, _("Videos")),
+    (MEDIAKIT_TYPE_7, _("Logos")),
+)
+
+
+
+   
+  
+class MediaKitDocument(Orderable):
+    """Single publication to add in a publication library."""
+
+    class Meta:
+        verbose_name = _("MediaKitDocument")
+        verbose_name_plural = _("MediaKitDocuments")
+        
+    title = models.CharField(_("Title"), blank=True, null=True, max_length=250)
+    mediakit_type = models.IntegerField(_("MediaKit Document  Type"), choices=MEDIAKIT_TYPE_CHOICES, default=None)
+    image = models.ImageField(_("Image of document"), upload_to="files/mediakitdocument/images/%Y/%m/", blank=True)
+    file_en = models.FileField(_("File - English"), 
+            upload_to=upload_to("galleries.GalleryImage.file", "files/mediakitdocument/en/%Y/%m/"),
+            unique_for_date='modify_date', max_length=204, 
+            blank=True, null=True)  
+    file_es = models.FileField(_("File - Spanish"), 
+            upload_to=upload_to("galleries.GalleryImage.file", "files/mediakitdocument/es/%Y/%m/"),
+            unique_for_date='modify_date', max_length=204, 
+            blank=True, null=True)        
+    file_fr = models.FileField(_("File - French"), 
+            upload_to=upload_to("galleries.GalleryImage.file", "files/mediakitdocument/fr/%Y/%m/"),
+            unique_for_date='modify_date', max_length=204, 
+            blank=True, null=True)        
+    file_ru = models.FileField(_("File - Russian"), 
+            upload_to=upload_to("galleries.GalleryImage.file", "files/mediakitdocument/ru/%Y/%m/"),
+            unique_for_date='modify_date', max_length=204, 
+            blank=True, null=True)        
+    file_ar = models.FileField(_("File - Arabic"), 
+            upload_to=upload_to("galleries.GalleryImage.file", "files/mediakitdocument/ar/%Y/%m/"),
+            unique_for_date='modify_date', max_length=204, 
+            blank=True, null=True)        
+    file_zh = models.FileField(_("File - Chinese"), 
+            upload_to=upload_to("galleries.GalleryImage.file", "files/mediakitdocument/zh/%Y/%m/"),
+            unique_for_date='modify_date', max_length=204, 
+            blank=True, null=True)        
+    slug = models.SlugField(max_length=200, blank=True, null=True,
+            unique_for_date='modify_date')
+    status = models.IntegerField(_("Status"), choices=PUBLICATION_STATUS_CHOICES, default=IS_PUBLIC)
+    
+    modify_date = models.DateTimeField(_("Modified date"),
+        blank=True, null=True, editable=False, auto_now=True)
+   
+    publication_date = models.DateTimeField(_("Publication date"), blank=True, null=True, editable=True)
+    short_description = models.TextField(_("Short Description"),  blank=True, null=True)
+    def __unicode__(self):
+        return self.title
+
+    def save(self, *args, **kwargs):
+        """
+        If no title is given when created, create one from the
+        file name.
+        """
+        if not self.id and not self.title:
+            name = unquote(self.file_en.url).split("/")[-1].rsplit(".", 1)[0]
+            name = name.replace("'", "")
+            name = "".join([c if c not in punctuation else " " for c in name])
+            # str.title() doesn't deal with unicode very well.
+            # http://bugs.python.org/issue6412
+            name = "".join([s.upper() if i == 0 or name[i - 1] == " " else s
+                            for i, s in enumerate(name)])
+            self.title = name
+        super(MediaKitDocument, self).save(*args, **kwargs)
+
+    @models.permalink # or: get_absolute_url = models.permalink(get_absolute_url) below
+    def get_absolute_url(self): # "view on site" link will be visible in admin interface
+        """Construct the absolute URL for a Publication."""
+        return ('mediakitdocument-detail', (), {
+                        
+                            'pk': self.pk})
+                            
+    def mediakit_type_verbose(self):
+        return dict(MEDIAKIT_TYPE_CHOICES)[self.mediakit_type]
+                         
+                            
 class Translatable(models.Model):
     """ Translations of user-generated content - https://gist.github.com/renyi/3596248"""
     lang = models.CharField(max_length=5, choices=settings.LANGUAGES)

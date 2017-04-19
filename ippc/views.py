@@ -17,7 +17,7 @@ ReportingObligation, BASIC_REP_TYPE_CHOICES, EventReporting, EVT_REP_TYPE_CHOICE
 PestFreeArea,ImplementationISPM,REGIONS, IssueKeywordsRelate,CommodityKeywordsRelate,EventreportingFile,ReportingObligation_File,\
 ContactUsEmailMessage,FAQsItem,FAQsCategory,QAQuestion, QAAnswer,UserAutoRegistration,IRSSActivity,IRSSActivityFile,IRSS_ACT_TYPE_CHOICES,\
 TransFAQsCategory,TransFAQsItem,MassEmailUtilityMessage,MassEmailUtilityMessageFile,\
-OCPHistory, PartnersContactPointHistory,CnEditorsHistory,PartnersEditorHistory,UserMembershipHistory
+OCPHistory, PartnersContactPointHistory,CnEditorsHistory,PartnersEditorHistory,UserMembershipHistory,MediaKitDocument,MEDIAKIT_TYPE_CHOICES
          
 #TransReportingObligation,
 from mezzanine.core.models import Displayable, CONTENT_STATUS_DRAFT, CONTENT_STATUS_PUBLISHED
@@ -5020,6 +5020,1172 @@ class CountryRegionsPercentageListView(ListView):
 
 from datetime import date
 
+
+
+class CountryStatsSingleLegislationsListView(ListView):
+    """   stat  """
+    context_object_name = 'latest'
+    model = CountryPage
+    template_name = 'countries/countries_year_of_legislations.html'
+    queryset = CountryPage.objects.all().order_by('title')
+   
+    def get_context_data(self, **kwargs): # http://stackoverflow.com/a/15515220
+        context = super(CountryStatsSingleLegislationsListView, self).get_context_data(**kwargs)
+        context['dategenerate']=timezone.now()
+        context['selyear_range']=range(2010,timezone.now().year+1)
+       
+        curryear=0
+        prevyear=0
+        num_years=0
+        
+        if 'year' in self.kwargs:
+            curryear=int(self.kwargs['year'])
+        else:   
+            curryear=timezone.now().year+1
+        prevyear=curryear-1
+        num_years=curryear-2005
+        
+        startstartdate = datetime(1999, 1, 1, 00, 01,00)
+        startdate = datetime(prevyear, 4, 1, 00, 01,00)
+        enddate = datetime(curryear, 3, 31, 23, 59,00)
+      
+        
+        regionsPCP = []
+        totNumReg=CountryPage.objects.filter(cp_ncp_t_type='CP').count()
+        region_cp_p = []
+        numRepP=0
+           
+        for k,v in REGIONS:
+            reg = v+''
+            numRepP=0
+            countriesperregioncp=CountryPage.objects.filter(region=k,cp_ncp_t_type='CP')
+            numCP_P = []
+            numCP_P.append(reg)
+            numCP_P.append(countriesperregioncp.count())
+            countP=0
+            cNewP=0
+            cUpP=0
+            cns=''
+            
+            cns_4=''
+            cns_5=''
+            cns_6=''
+            cns_7=''
+            cns_8=''
+            cns_9=''
+            cns_10=''
+            cns_11=''
+            cns_12=''
+            cns_1=''
+            cns_2=''
+            cns_3=''
+            tot_4=''
+            cns_5=''
+            cns_6=''
+            cns_7=''
+            cns_8=''
+            cns_9=''
+            cns_10=''
+            cns_11=''
+            cns_12=''
+            cns_1=''
+            cns_2=''
+            cns_3=''
+            p_count=0
+            
+            cNewP_4=0
+            cNewP_5=0
+            cNewP_6=0
+            cNewP_7=0
+            cNewP_8=0
+            cNewP_9=0
+            cNewP_10=0
+            cNewP_11=0
+            cNewP_12=0
+            cNewP_1=0
+            cNewP_2=0
+            cNewP_3=0
+            cUpP_4=0
+            cUpP_5=0
+            cUpP_6=0
+            cUpP_7=0
+            cUpP_8=0
+            cUpP_9=0
+            cUpP_10=0
+            cUpP_11=0
+            cUpP_12=0
+            cUpP_1=0
+            cUpP_2=0
+            cUpP_3=0
+           
+            array_cns_p=[]
+            for c in countriesperregioncp:
+                array_cns_p_up_new=[]
+                array_cns_pn_=[]
+                array_cns_pu_=[]
+                
+                pests= ReportingObligation.objects.filter(country=c.id,reporting_obligation_type=4,is_version=False,publication_date__gte=startstartdate,publication_date__lte=enddate)
+                p_count=pests.count()
+                
+                pests1= ReportingObligation.objects.filter(country=c.id,reporting_obligation_type=4,is_version=False,publication_date__gte=startdate,publication_date__lte=enddate)
+                pests2= ReportingObligation.objects.filter(country=c.id,reporting_obligation_type=4,is_version=False,modify_date__gte=startdate,modify_date__lte=enddate)
+           
+           
+                if p_count>0:
+                    numRepP+=1    
+                if pests1.count()>0 or pests2.count()>0:
+                    cns+=c.title+', '
+                countP+=p_count
+                cNewP+=pests1.count()
+                cUpP+=pests2.count()
+                
+                if pests1.count()>0:
+                    for p in pests1:
+                        p_date=p.publication_date.month
+                        if   p_date==4:
+                          cNewP_4=cNewP_4+1
+                        elif   p_date==5:
+                          cNewP_5=cNewP_5+1
+                        elif   p_date==6:
+                              cNewP_6=cNewP_6+1
+                        elif   p_date==5:
+                              cNewP_7=cNewP_7+1
+                        elif   p_date==8:
+                              cNewP8=cNewP_8+1
+                        elif   p_date==9:
+                              cNewP_9=cNewP_9+1
+                        elif   p_date==10:
+                              cNewP_10=cNewP_10+1
+                        elif   p_date==11:
+                              cNewP_11=cNewP_11+1
+                        elif   p_date==12:
+                              cNewP_12=cNewP_12+1
+                        elif   p_date==1:
+                              cNewP_1=cNewP_1+1
+                        elif   p_date==2:
+                              cNewP_2=cNewP_2+1
+                        elif   p_date==3:
+                              cNewP_3=cNewP_3+1
+                if pests2.count()>0:
+                    for p in pests2:
+                        # @type p 
+                        p_date=p.modify_date.month
+                        if   p_date==4:
+                           cUpP_4= cUpP_4+1
+                        elif   p_date==5:
+                           cUpP_5= cUpP_5+1
+                        elif   p_date==6:
+                               cUpP_6= cUpP_6+1
+                        elif   p_date==5:
+                               cUpP_7= cUpP_7+1
+                        elif   p_date==8:
+                               cUpP8= cUpP_8+1
+                        elif   p_date==9:
+                               cUpP_9= cUpP_9+1
+                        elif   p_date==10:
+                               cUpP_10= cUpP_10+1
+                        elif   p_date==11:
+                               cUpP_11= cUpP_11+1
+                        elif   p_date==12:
+                               cUpP_12= cUpP_12+1
+                        elif   p_date==1:
+                               cUpP_1= cUpP_1+1
+                        elif   p_date==2:
+                               cUpP_2= cUpP_2+1
+                        elif   p_date==3:
+                               cUpP_3= cUpP_3+1 
+
+                
+                array_cns_pn_.append(cNewP_4)
+                array_cns_pn_.append(cNewP_5)
+                array_cns_pn_.append(cNewP_6)
+                array_cns_pn_.append(cNewP_7)
+                array_cns_pn_.append(cNewP_8)
+                array_cns_pn_.append(cNewP_9)
+                array_cns_pn_.append(cNewP_10)
+                array_cns_pn_.append(cNewP_11)
+                array_cns_pn_.append(cNewP_12)
+                array_cns_pn_.append(cNewP_1)
+                array_cns_pn_.append(cNewP_2)
+                array_cns_pn_.append(cNewP_3)
+
+                array_cns_pu_.append( cUpP_4)
+                array_cns_pu_.append( cUpP_5)
+                array_cns_pu_.append( cUpP_6)
+                array_cns_pu_.append( cUpP_7)
+                array_cns_pu_.append( cUpP_8)
+                array_cns_pu_.append( cUpP_9)
+                array_cns_pu_.append( cUpP_10)
+                array_cns_pu_.append( cUpP_11)
+                array_cns_pu_.append( cUpP_12)
+                array_cns_pu_.append( cUpP_1)
+                array_cns_pu_.append( cUpP_2)
+                array_cns_pu_.append( cUpP_3)
+
+                
+                array_cns_p_up_new.append(array_cns_pn_)
+                
+                array_cns_p_up_new.append(array_cns_pu_)
+
+                
+            numCP_P.append(numRepP)
+            numCP_P.append(countP)
+            numCP_P.append(cNewP)
+            numCP_P.append(cUpP)
+            numCP_P.append(cns)
+            numCP_P.append(array_cns_p_up_new)#7
+            region_cp_p.append(numCP_P)
+        regionsPCP.append(region_cp_p)
+
+        #-----------------ALL COUNTRIES---------
+        regionsAll = []
+        totALLcn=countriesperregioncp=CountryPage.objects.filter().count()
+        region_all_p = []
+        numRepPAll=0
+        for k,v in REGIONS:
+            reg = v+''
+            numRepPAll=0
+            countriesperregioncp=CountryPage.objects.filter(region=k)
+            numCP_P = []
+            numCP_P.append(reg)
+            numCP_P.append(countriesperregioncp.count())
+            countP=0
+            cNewP=0
+            cUpP=0
+            cns=''
+            
+            cns_4=''
+            cns_5=''
+            cns_6=''
+            cns_7=''
+            cns_8=''
+            cns_9=''
+            cns_10=''
+            cns_11=''
+            cns_12=''
+            cns_1=''
+            cns_2=''
+            cns_3=''
+
+            p_count=0
+            
+            cNewP_4=0
+            cNewP_5=0
+            cNewP_6=0
+            cNewP_7=0
+            cNewP_8=0
+            cNewP_9=0
+            cNewP_10=0
+            cNewP_11=0
+            cNewP_12=0
+            cNewP_1=0
+            cNewP_2=0
+            cNewP_3=0
+            cUpP_4=0
+            cUpP_5=0
+            cUpP_6=0
+            cUpP_7=0
+            cUpP_8=0
+            cUpP_9=0
+            cUpP_10=0
+            cUpP_11=0
+            cUpP_12=0
+            cUpP_1=0
+            cUpP_2=0
+            cUpP_3=0
+           
+            array_cns_p=[]
+            for c in countriesperregioncp:
+                array_cns_p_up_new=[]
+                array_cns_pn_=[]
+                array_cns_pu_=[]
+                
+                pests= ReportingObligation.objects.filter(country=c.id,reporting_obligation_type=4,is_version=False,publication_date__gte=startstartdate,publication_date__lte=enddate)
+                p_count=pests.count()
+                
+                pests1= ReportingObligation.objects.filter(country=c.id,reporting_obligation_type=4,is_version=False,publication_date__gte=startdate,publication_date__lte=enddate)
+                pests2= ReportingObligation.objects.filter(country=c.id,reporting_obligation_type=4,is_version=False,modify_date__gte=startdate,modify_date__lte=enddate)
+           
+           
+                if p_count>0:
+                    numRepP+=1    
+                if pests1.count()>0 or pests2.count()>0:
+                    cns+=c.title+', '
+                countP+=p_count
+                cNewP+=pests1.count()
+                cUpP+=pests2.count()
+                
+                if pests1.count()>0:
+                    for p in pests1:
+                        p_date=p.publication_date.month
+                        if   p_date==4:
+                          cNewP_4=cNewP_4+1
+                        elif   p_date==5:
+                          cNewP_5=cNewP_5+1
+                        elif   p_date==6:
+                              cNewP_6=cNewP_6+1
+                        elif   p_date==5:
+                              cNewP_7=cNewP_7+1
+                        elif   p_date==8:
+                              cNewP8=cNewP_8+1
+                        elif   p_date==9:
+                              cNewP_9=cNewP_9+1
+                        elif   p_date==10:
+                              cNewP_10=cNewP_10+1
+                        elif   p_date==11:
+                              cNewP_11=cNewP_11+1
+                        elif   p_date==12:
+                              cNewP_12=cNewP_12+1
+                        elif   p_date==1:
+                              cNewP_1=cNewP_1+1
+                        elif   p_date==2:
+                              cNewP_2=cNewP_2+1
+                        elif   p_date==3:
+                              cNewP_3=cNewP_3+1
+                if pests2.count()>0:
+                    for p in pests2:
+                        # @type p 
+                        p_date=p.modify_date.month
+                        if   p_date==4:
+                           cUpP_4= cUpP_4+1
+                        elif   p_date==5:
+                           cUpP_5= cUpP_5+1
+                        elif   p_date==6:
+                               cUpP_6= cUpP_6+1
+                        elif   p_date==5:
+                               cUpP_7= cUpP_7+1
+                        elif   p_date==8:
+                               cUpP8= cUpP_8+1
+                        elif   p_date==9:
+                               cUpP_9= cUpP_9+1
+                        elif   p_date==10:
+                               cUpP_10= cUpP_10+1
+                        elif   p_date==11:
+                               cUpP_11= cUpP_11+1
+                        elif   p_date==12:
+                               cUpP_12= cUpP_12+1
+                        elif   p_date==1:
+                               cUpP_1= cUpP_1+1
+                        elif   p_date==2:
+                               cUpP_2= cUpP_2+1
+                        elif   p_date==3:
+                               cUpP_3= cUpP_3+1 
+
+                
+                array_cns_pn_.append(cNewP_4)
+                array_cns_pn_.append(cNewP_5)
+                array_cns_pn_.append(cNewP_6)
+                array_cns_pn_.append(cNewP_7)
+                array_cns_pn_.append(cNewP_8)
+                array_cns_pn_.append(cNewP_9)
+                array_cns_pn_.append(cNewP_10)
+                array_cns_pn_.append(cNewP_11)
+                array_cns_pn_.append(cNewP_12)
+                array_cns_pn_.append(cNewP_1)
+                array_cns_pn_.append(cNewP_2)
+                array_cns_pn_.append(cNewP_3)
+
+                array_cns_pu_.append( cUpP_4)
+                array_cns_pu_.append( cUpP_5)
+                array_cns_pu_.append( cUpP_6)
+                array_cns_pu_.append( cUpP_7)
+                array_cns_pu_.append( cUpP_8)
+                array_cns_pu_.append( cUpP_9)
+                array_cns_pu_.append( cUpP_10)
+                array_cns_pu_.append( cUpP_11)
+                array_cns_pu_.append( cUpP_12)
+                array_cns_pu_.append( cUpP_1)
+                array_cns_pu_.append( cUpP_2)
+                array_cns_pu_.append( cUpP_3)
+
+                
+                array_cns_p_up_new.append(array_cns_pn_)
+                
+                array_cns_p_up_new.append(array_cns_pu_)
+
+                
+            numCP_P.append(numRepPAll)
+            numCP_P.append(countP)
+            numCP_P.append(cNewP)
+            numCP_P.append(cUpP)
+            numCP_P.append(cns)
+            numCP_P.append(array_cns_p_up_new)#7
+            region_all_p.append(numCP_P)
+        regionsAll.append(region_all_p)
+        
+        
+        #----------------
+        
+        regionsPCPTot=[]
+        totarray=[]
+        tot=0
+        tot2=0
+        tot4=0
+        tot5=0
+        for x in  regionsPCP[0]:
+            tot+= x[2]
+            tot2+= x[3]
+            tot4+= x[4]
+            tot5+= x[5]
+        totarray.append(tot)
+        totarray.append(tot2)
+        totarray.append(tot4)
+        totarray.append(tot5)
+
+        regionsPCPTot.append(totarray)     
+        #----------------
+        totarray_months_n=[]
+        totarray_months_u=[]
+        tot_n_4=0
+        tot_n_5=0
+        tot_n_6=0
+        tot_n_7=0
+        tot_n_8=0
+        tot_n_9=0
+        tot_n_10=0
+        tot_n_11=0
+        tot_n_12=0
+        tot_n_1=0
+        tot_n_2=0
+        tot_n_3=0
+       
+        tot_u_4=0
+        tot_u_5=0
+        tot_u_6=0
+        tot_u_7=0
+        tot_u_8=0
+        tot_u_9=0
+        tot_u_10=0
+        tot_u_11=0
+        tot_u_12=0
+        tot_u_1=0
+        tot_u_2=0
+        tot_u_3=0
+        for x in  regionsPCP[0]:
+            print('TOT-------------------')
+            print(x[7][0])
+            tot_n_4+=x[7][0][0]
+            tot_n_5+=x[7][0][1]
+            tot_n_6+=x[7][0][2]
+            tot_n_7+=x[7][0][3]
+            tot_n_8+=x[7][0][4]
+            tot_n_9+=x[7][0][5]
+            tot_n_10+=x[7][0][6]
+            tot_n_11+=x[7][0][7]
+            tot_n_12+=x[7][0][8]
+            tot_n_1+=x[7][0][9]
+            tot_n_2+=x[7][0][10]
+            tot_n_3+=x[7][0][11]
+            
+            print(x[7][1])
+            tot_u_4+=x[7][1][0]
+            tot_u_5+=x[7][1][1]
+            tot_u_6+=x[7][1][2]
+            tot_u_7+=x[7][1][3]
+            tot_u_8+=x[7][1][4]
+            tot_u_9+=x[7][1][5]
+            tot_u_10+=x[7][1][6]
+            tot_u_11+=x[7][1][7]
+            tot_u_12+=x[7][1][8]
+            tot_u_1+=x[7][1][9]
+            tot_u_2+=x[7][1][10]
+            tot_u_3+=x[7][1][11]
+         
+        totarray_months_n.append(tot_n_4)
+        totarray_months_n.append(tot_n_5)
+        totarray_months_n.append(tot_n_6)
+        totarray_months_n.append(tot_n_7)
+        totarray_months_n.append(tot_n_8)
+        totarray_months_n.append(tot_n_9)
+        totarray_months_n.append(tot_n_10)
+        totarray_months_n.append(tot_n_11)
+        totarray_months_n.append(tot_n_1)
+        totarray_months_n.append(tot_n_2)
+        totarray_months_n.append(tot_n_3)
+        
+        totarray_months_u.append(tot_u_4)
+        totarray_months_u.append(tot_u_5)
+        totarray_months_u.append(tot_u_6)
+        totarray_months_u.append(tot_u_7)
+        totarray_months_u.append(tot_u_8)
+        totarray_months_u.append(tot_u_9)
+        totarray_months_u.append(tot_u_10)
+        totarray_months_u.append(tot_u_11)
+        totarray_months_u.append(tot_u_1)
+        totarray_months_u.append(tot_u_2)
+        totarray_months_u.append(tot_u_3)
+        
+        #----------------
+        
+        regionsALLTot=[]
+        totarray1=[]
+        tot=0
+        tot2=0
+        tot4=0
+        tot5=0
+        for x in  regionsAll[0]:
+            tot+= x[2]
+            tot2+= x[3]
+            tot4+= x[4]
+            tot5+= x[5]
+        totarray1.append(tot)
+        totarray1.append(tot2)
+        totarray1.append(tot4)
+        totarray1.append(tot5)
+
+        regionsALLTot.append(totarray1)     
+
+
+
+  #----------------
+        totarray_months_n_all=[]
+        totarray_months_u_all=[]
+        tot_n_4=0
+        tot_n_5=0
+        tot_n_6=0
+        tot_n_7=0
+        tot_n_8=0
+        tot_n_9=0
+        tot_n_10=0
+        tot_n_11=0
+        tot_n_12=0
+        tot_n_1=0
+        tot_n_2=0
+        tot_n_3=0
+       
+        tot_u_4=0
+        tot_u_5=0
+        tot_u_6=0
+        tot_u_7=0
+        tot_u_8=0
+        tot_u_9=0
+        tot_u_10=0
+        tot_u_11=0
+        tot_u_12=0
+        tot_u_1=0
+        tot_u_2=0
+        tot_u_3=0
+        for x in  regionsAll[0]:
+            print('TOT-------------------')
+            print(x[7][0])
+            tot_n_4+=x[7][0][0]
+            tot_n_5+=x[7][0][1]
+            tot_n_6+=x[7][0][2]
+            tot_n_7+=x[7][0][3]
+            tot_n_8+=x[7][0][4]
+            tot_n_9+=x[7][0][5]
+            tot_n_10+=x[7][0][6]
+            tot_n_11+=x[7][0][7]
+            tot_n_12+=x[7][0][8]
+            tot_n_1+=x[7][0][9]
+            tot_n_2+=x[7][0][10]
+            tot_n_3+=x[7][0][11]
+            
+            print(x[7][1])
+            tot_u_4+=x[7][1][0]
+            tot_u_5+=x[7][1][1]
+            tot_u_6+=x[7][1][2]
+            tot_u_7+=x[7][1][3]
+            tot_u_8+=x[7][1][4]
+            tot_u_9+=x[7][1][5]
+            tot_u_10+=x[7][1][6]
+            tot_u_11+=x[7][1][7]
+            tot_u_12+=x[7][1][8]
+            tot_u_1+=x[7][1][9]
+            tot_u_2+=x[7][1][10]
+            tot_u_3+=x[7][1][11]
+         
+        totarray_months_n_all.append(tot_n_4)
+        totarray_months_n_all.append(tot_n_5)
+        totarray_months_n_all.append(tot_n_6)
+        totarray_months_n_all.append(tot_n_7)
+        totarray_months_n_all.append(tot_n_8)
+        totarray_months_n_all.append(tot_n_9)
+        totarray_months_n_all.append(tot_n_10)
+        totarray_months_n_all.append(tot_n_11)
+        totarray_months_n_all.append(tot_n_1)
+        totarray_months_n_all.append(tot_n_2)
+        totarray_months_n_all.append(tot_n_3)
+        
+        totarray_months_u_all.append(tot_u_4)
+        totarray_months_u_all.append(tot_u_5)
+        totarray_months_u_all.append(tot_u_6)
+        totarray_months_u_all.append(tot_u_7)
+        totarray_months_u_all.append(tot_u_8)
+        totarray_months_u_all.append(tot_u_9)
+        totarray_months_u_all.append(tot_u_10)
+        totarray_months_u_all.append(tot_u_11)
+        totarray_months_u_all.append(tot_u_1)
+        totarray_months_u_all.append(tot_u_2)
+        totarray_months_u_all.append(tot_u_3)
+
+
+
+
+
+
+
+        context['curryear']=curryear
+        context['prevyear']=prevyear
+        context['regionsPCP']=regionsPCP
+        context['totNumReg']=totNumReg
+        context['regionsPCPTot']=regionsPCPTot
+        
+        context['regionsAll']=regionsAll
+        context['totALLcn']=totALLcn
+        context['regionsALLTot']=regionsALLTot
+        context['totarray_months_n']=totarray_months_n
+        context['totarray_months_u']=totarray_months_u
+        context['totarray_months_n_all']=totarray_months_n_all
+        context['totarray_months_u_all']=totarray_months_u_all
+ 
+       
+        pest_array=[]
+        pest_array1=[]
+     
+        pestreporting_array = []
+        pestreporting_array1 = []
+        p_count=0
+        for y in range(2005,curryear+1):
+            pests= ReportingObligation.objects.filter(reporting_obligation_type=4,is_version=False)
+              
+            p_count1=0
+            for p in pests:
+                if p.publication_date != None and p.publication_date.year == y:
+                    p_count=p_count+1
+                    p_count1=p_count1+1
+            pestreporting_array.append(p_count)
+            pestreporting_array1.append(p_count1)
+            
+        pest_array.append(pestreporting_array)       
+        pest_array1.append(pestreporting_array1)       
+        datachartbis=''
+        datachart1bis=''
+        datachart2=''
+        datachart3=''
+        i=0
+     
+        for y in range(2005,curryear+1 ):
+            datachartbis += '{type: "column", name: "'+str(y)+'", legendText: "'+str(y)+'",showInLegend: true, dataPoints:[{label: "Pest reports", y: '+str(pest_array[0][i])+'},]},'
+            datachart1bis +='{type: "column", name: "'+str(y)+'", legendText: "'+str(y)+'",showInLegend: true, dataPoints:[{label: "Pest reports", y: '+str(pest_array1[0][i])+'},]},'
+            
+            datachart2+= '{label: "'+str(y)+'", y: '+str(pest_array[0][i])+'}, '
+            datachart3+= '{label: "'+str(y)+'", y: '+str(pest_array1[0][i])+'}, '
+            i=i+1
+        context['pest_array']=pest_array
+        context['pest_array1']=pest_array1
+        context['num_years_range']=range(2005,curryear+1)
+        context['datachartbis']=datachartbis
+        context['datachart1bis']=datachart1bis
+        context['num_years']=num_years
+        context['datachart2']=datachart2
+        context['datachart3']=datachart3
+        
+        return context    
+
+#class CountryStatsSingleLegislationsListView(ListView):
+#    """   stat  """
+#    context_object_name = 'latest'
+#    model = CountryPage
+#    template_name = 'countries/countries_year_of_legislations.html'
+#    queryset = CountryPage.objects.all().order_by('title')
+#   
+#    def get_context_data(self, **kwargs): # http://stackoverflow.com/a/15515220
+#        context = super(CountryStatsSingleLegislationsListView, self).get_context_data(**kwargs)
+#        context['dategenerate']=timezone.now()
+#        context['selyear_range']=range(2010,timezone.now().year+1)
+#       
+#        curryear=0
+#        prevyear=0
+#        num_years=0
+#        
+#        if 'year' in self.kwargs:
+#            curryear=int(self.kwargs['year'])
+#        else :   
+#            curryear=timezone.now().year+1
+#        prevyear=curryear-1
+#        num_years=curryear-2005
+#        
+#        startstartdate = datetime(1999, 1, 1, 00, 01,00)
+#        startdate = datetime(prevyear, 4, 1, 00, 01,00)
+#        enddate = datetime(curryear, 3, 31, 23, 59,00)
+#      
+#        startdate_4 = datetime(prevyear, 4, 1, 00, 01,00)
+#        enddate_4 = datetime(prevyear,   4, 30, 23, 59,00)
+#        startdate_5 = datetime(prevyear, 5, 1, 00, 01,00)
+#        enddate_5 = datetime(prevyear,   5, 31, 23, 59,00)
+#        startdate_6 = datetime(prevyear, 6, 1, 00, 01,00)
+#        enddate_6 = datetime(prevyear,   6, 30, 23, 59,00)
+#        startdate_7 = datetime(prevyear, 7, 1, 00, 01,00)
+#        enddate_7 = datetime(prevyear,   7, 31, 23, 59,00)
+#        startdate_8 = datetime(prevyear, 8, 1, 00, 01,00)
+#        enddate_8 = datetime(prevyear,   8, 31, 23, 59,00)
+#        startdate_9 = datetime(prevyear, 9, 1, 00, 01,00)
+#        enddate_9 = datetime(prevyear,   9, 30, 23, 59,00)
+#        startdate_10 = datetime(prevyear, 10, 1, 00, 01,00)
+#        enddate_10 = datetime(prevyear,   10, 31, 23, 59,00)
+#        startdate_11 = datetime(prevyear, 11, 1, 00, 01,00)
+#        enddate_11 = datetime(prevyear,   11, 30, 23, 59,00)
+#        startdate_12 = datetime(prevyear, 12, 1, 00, 01,00)
+#        enddate_12 = datetime(prevyear,   12, 31, 23, 59,00)
+#        startdate_1 = datetime(prevyear, 1, 1, 00, 01,00)
+#        enddate_1 = datetime(prevyear,   1, 31, 23, 59,00)
+#        startdate_2 = datetime(prevyear, 2, 1, 00, 01,00)
+#        enddate_2 = datetime(prevyear,   2, 28, 23, 59,00)
+#        startdate_3 = datetime(prevyear, 3, 1, 00, 01,00)
+#        enddate_3 = datetime(prevyear,   3, 31, 23, 59,00)
+#      
+#        
+#        
+#        
+#        regionsPCP = []
+#     #   totNumReg=countriesperregioncp=CountryPage.objects.filter(cp_ncp_t_type='CP').count()
+#        totNumReg=CountryPage.objects.filter(cp_ncp_t_type='CP').count()
+#        region_cp_p = []
+#        numRepP=0
+#           
+#        for k,v in REGIONS:
+#            reg = v+''
+#            numRepP=0
+#            countriesperregioncp=CountryPage.objects.filter(region=k,cp_ncp_t_type='CP')
+#            numCP_P = []
+#            numCP_P.append(reg)
+#            numCP_P.append(countriesperregioncp.count())
+#            countP=0
+#            cNewP=0
+#            cUpP=0
+#            cns=''
+#            
+#            cns_4=''
+#            cns_5=''
+#            cns_6=''
+#            cns_7=''
+#            cns_8=''
+#            cns_9=''
+#            cns_10=''
+#            cns_11=''
+#            cns_12=''
+#            cns_1=''
+#            cns_2=''
+#            cns_3=''
+#
+#            p_count=0
+#            
+#            cNewP_4=0
+#            cNewP_5=0
+#            cNewP_6=0
+#            cNewP_7=0
+#            cNewP_8=0
+#            cNewP_9=0
+#            cNewP_10=0
+#            cNewP_11=0
+#            cNewP_12=0
+#            cNewP_1=0
+#            cNewP_2=0
+#            cNewP_3=0
+#            cUpP_4=0
+#            cUpP_5=0
+#            cUpP_6=0
+#            cUpP_7=0
+#            cUpP_8=0
+#            cUpP_9=0
+#            cUpP_10=0
+#            cUpP_11=0
+#            cUpP_12=0
+#            cUpP_1=0
+#            cUpP_2=0
+#            cUpP_3=0
+#           
+#            array_cns_p=[]
+#            for c in countriesperregioncp:
+#                array_cns_p_up_new=[]
+#                array_cns_pn_=[]
+#                array_cns_pu_=[]
+#                
+#                pests= ReportingObligation.objects.filter(country=c.id,reporting_obligation_type=4,is_version=False,publish_date__gte=startstartdate,publish_date__lte=enddate)
+#                p_count=pests.count()
+#                
+#                pests1= ReportingObligation.objects.filter(country=c.id,reporting_obligation_type=4,is_version=False,publish_date__gte=startdate,publish_date__lte=enddate)
+#                pests2= ReportingObligation.objects.filter(country=c.id,reporting_obligation_type=4,is_version=False,modify_date__gte=startdate,modify_date__lte=enddate)
+#           
+#           
+#                if p_count>0:
+#                    numRepP+=1    
+#                if pests1.count()>0 or pests2.count()>0:
+#                    cns+=c.title+', '
+#                countP+=p_count
+#                cNewP+=pests1.count()
+#                cUpP+=pests2.count()
+#                
+#                if pests1.count()>0:
+#                    for p in pests1:
+#                        p_date=p.publish_date.month
+#                        if   p_date==4:
+#                          cNewP_4=cNewP_4+1
+#                        elif   p_date==5:
+#                          cNewP_5=cNewP_5+1
+#                        elif   p_date==6:
+#                              cNewP_6=cNewP_6+1
+#                        elif   p_date==5:
+#                              cNewP_7=cNewP_7+1
+#                        elif   p_date==8:
+#                              cNewP8=cNewP_8+1
+#                        elif   p_date==9:
+#                              cNewP_9=cNewP_9+1
+#                        elif   p_date==10:
+#                              cNewP_10=cNewP_10+1
+#                        elif   p_date==11:
+#                              cNewP_11=cNewP_11+1
+#                        elif   p_date==12:
+#                              cNewP_12=cNewP_12+1
+#                        elif   p_date==1:
+#                              cNewP_1=cNewP_1+1
+#                        elif   p_date==2:
+#                              cNewP_2=cNewP_2+1
+#                        elif   p_date==3:
+#                              cNewP_3=cNewP_3+1
+#                if pests2.count()>0:
+#                    for p in pests2:
+#                        # @type p 
+#                        p_date=p.modify_date.month
+#                        if   p_date==4:
+#                           cUpP_4= cUpP_4+1
+#                        elif   p_date==5:
+#                           cUpP_5= cUpP_5+1
+#                        elif   p_date==6:
+#                               cUpP_6= cUpP_6+1
+#                        elif   p_date==5:
+#                               cUpP_7= cUpP_7+1
+#                        elif   p_date==8:
+#                               cUpP8= cUpP_8+1
+#                        elif   p_date==9:
+#                               cUpP_9= cUpP_9+1
+#                        elif   p_date==10:
+#                               cUpP_10= cUpP_10+1
+#                        elif   p_date==11:
+#                               cUpP_11= cUpP_11+1
+#                        elif   p_date==12:
+#                               cUpP_12= cUpP_12+1
+#                        elif   p_date==1:
+#                               cUpP_1= cUpP_1+1
+#                        elif   p_date==2:
+#                               cUpP_2= cUpP_2+1
+#                        elif   p_date==3:
+#                               cUpP_3= cUpP_3+1 
+#
+#                
+#                array_cns_pn_.append(cNewP_4)
+#                array_cns_pn_.append(cNewP_5)
+#                array_cns_pn_.append(cNewP_6)
+#                array_cns_pn_.append(cNewP_7)
+#                array_cns_pn_.append(cNewP_8)
+#                array_cns_pn_.append(cNewP_9)
+#                array_cns_pn_.append(cNewP_10)
+#                array_cns_pn_.append(cNewP_11)
+#                array_cns_pn_.append(cNewP_12)
+#                array_cns_pn_.append(cNewP_1)
+#                array_cns_pn_.append(cNewP_2)
+#                array_cns_pn_.append(cNewP_3)
+#
+#                array_cns_pu_.append( cUpP_4)
+#                array_cns_pu_.append( cUpP_5)
+#                array_cns_pu_.append( cUpP_6)
+#                array_cns_pu_.append( cUpP_7)
+#                array_cns_pu_.append( cUpP_8)
+#                array_cns_pu_.append( cUpP_9)
+#                array_cns_pu_.append( cUpP_10)
+#                array_cns_pu_.append( cUpP_11)
+#                array_cns_pu_.append( cUpP_12)
+#                array_cns_pu_.append( cUpP_1)
+#                array_cns_pu_.append( cUpP_2)
+#                array_cns_pu_.append( cUpP_3)
+#
+#                
+#                array_cns_p_up_new.append(array_cns_pn_)
+#                
+#                array_cns_p_up_new.append(array_cns_pu_)
+#
+#                
+#            numCP_P.append(numRepP)
+#            numCP_P.append(countP)
+#            numCP_P.append(cNewP)
+#            numCP_P.append(cUpP)
+#            numCP_P.append(cns)
+#            numCP_P.append(array_cns_p_up_new)#7
+#            region_cp_p.append(numCP_P)
+#        regionsPCP.append(region_cp_p)
+#
+#        #-----------------ALL COUNTRIES---------
+#        regionsAll = []
+#        totALLcn=countriesperregioncp=CountryPage.objects.filter().count()
+#        region_all_p = []
+#        numRepPAll=0
+#        for k,v in REGIONS:
+#            reg = v+''
+#            numRepPAll=0
+#            countriesperregioncp=CountryPage.objects.filter(region=k)
+#            numCP_P = []
+#            numCP_P.append(reg)
+#            numCP_P.append(countriesperregioncp.count())
+#            countP=0
+#            cNewP=0
+#            cUpP=0
+#            cns=''
+#            
+#            cns_4=''
+#            cns_5=''
+#            cns_6=''
+#            cns_7=''
+#            cns_8=''
+#            cns_9=''
+#            cns_10=''
+#            cns_11=''
+#            cns_12=''
+#            cns_1=''
+#            cns_2=''
+#            cns_3=''
+#
+#            p_count=0
+#            
+#            cNewP_4=0
+#            cNewP_5=0
+#            cNewP_6=0
+#            cNewP_7=0
+#            cNewP_8=0
+#            cNewP_9=0
+#            cNewP_10=0
+#            cNewP_11=0
+#            cNewP_12=0
+#            cNewP_1=0
+#            cNewP_2=0
+#            cNewP_3=0
+#            cUpP_4=0
+#            cUpP_5=0
+#            cUpP_6=0
+#            cUpP_7=0
+#            cUpP_8=0
+#            cUpP_9=0
+#            cUpP_10=0
+#            cUpP_11=0
+#            cUpP_12=0
+#            cUpP_1=0
+#            cUpP_2=0
+#            cUpP_3=0
+#           
+#            array_cns_p=[]
+#            for c in countriesperregioncp:
+#                array_cns_p_up_new=[]
+#                array_cns_pn_=[]
+#                array_cns_pu_=[]
+#                
+#                pests= ReportingObligation.objects.filter(country=c.id,reporting_obligation_type=4,is_version=False,publish_date__gte=startstartdate,publish_date__lte=enddate)
+#                p_count=pests.count()
+#                
+#                pests1= ReportingObligation.objects.filter(country=c.id,reporting_obligation_type=4,is_version=False,publish_date__gte=startdate,publish_date__lte=enddate)
+#                pests2= ReportingObligation.objects.filter(country=c.id,reporting_obligation_type=4,is_version=False,modify_date__gte=startdate,modify_date__lte=enddate)
+#           
+#           
+#                if p_count>0:
+#                    numRepP+=1    
+#                if pests1.count()>0 or pests2.count()>0:
+#                    cns+=c.title+', '
+#                countP+=p_count
+#                cNewP+=pests1.count()
+#                cUpP+=pests2.count()
+#                
+#                if pests1.count()>0:
+#                    for p in pests1:
+#                        p_date=p.publish_date.month
+#                        if   p_date==4:
+#                          cNewP_4=cNewP_4+1
+#                        elif   p_date==5:
+#                          cNewP_5=cNewP_5+1
+#                        elif   p_date==6:
+#                              cNewP_6=cNewP_6+1
+#                        elif   p_date==5:
+#                              cNewP_7=cNewP_7+1
+#                        elif   p_date==8:
+#                              cNewP8=cNewP_8+1
+#                        elif   p_date==9:
+#                              cNewP_9=cNewP_9+1
+#                        elif   p_date==10:
+#                              cNewP_10=cNewP_10+1
+#                        elif   p_date==11:
+#                              cNewP_11=cNewP_11+1
+#                        elif   p_date==12:
+#                              cNewP_12=cNewP_12+1
+#                        elif   p_date==1:
+#                              cNewP_1=cNewP_1+1
+#                        elif   p_date==2:
+#                              cNewP_2=cNewP_2+1
+#                        elif   p_date==3:
+#                              cNewP_3=cNewP_3+1
+#                if pests2.count()>0:
+#                    for p in pests2:
+#                        # @type p 
+#                        p_date=p.modify_date.month
+#                        if   p_date==4:
+#                           cUpP_4= cUpP_4+1
+#                        elif   p_date==5:
+#                           cUpP_5= cUpP_5+1
+#                        elif   p_date==6:
+#                               cUpP_6= cUpP_6+1
+#                        elif   p_date==5:
+#                               cUpP_7= cUpP_7+1
+#                        elif   p_date==8:
+#                               cUpP8= cUpP_8+1
+#                        elif   p_date==9:
+#                               cUpP_9= cUpP_9+1
+#                        elif   p_date==10:
+#                               cUpP_10= cUpP_10+1
+#                        elif   p_date==11:
+#                               cUpP_11= cUpP_11+1
+#                        elif   p_date==12:
+#                               cUpP_12= cUpP_12+1
+#                        elif   p_date==1:
+#                               cUpP_1= cUpP_1+1
+#                        elif   p_date==2:
+#                               cUpP_2= cUpP_2+1
+#                        elif   p_date==3:
+#                               cUpP_3= cUpP_3+1 
+#
+#                
+#                array_cns_pn_.append(cNewP_4)
+#                array_cns_pn_.append(cNewP_5)
+#                array_cns_pn_.append(cNewP_6)
+#                array_cns_pn_.append(cNewP_7)
+#                array_cns_pn_.append(cNewP_8)
+#                array_cns_pn_.append(cNewP_9)
+#                array_cns_pn_.append(cNewP_10)
+#                array_cns_pn_.append(cNewP_11)
+#                array_cns_pn_.append(cNewP_12)
+#                array_cns_pn_.append(cNewP_1)
+#                array_cns_pn_.append(cNewP_2)
+#                array_cns_pn_.append(cNewP_3)
+#
+#                array_cns_pu_.append( cUpP_4)
+#                array_cns_pu_.append( cUpP_5)
+#                array_cns_pu_.append( cUpP_6)
+#                array_cns_pu_.append( cUpP_7)
+#                array_cns_pu_.append( cUpP_8)
+#                array_cns_pu_.append( cUpP_9)
+#                array_cns_pu_.append( cUpP_10)
+#                array_cns_pu_.append( cUpP_11)
+#                array_cns_pu_.append( cUpP_12)
+#                array_cns_pu_.append( cUpP_1)
+#                array_cns_pu_.append( cUpP_2)
+#                array_cns_pu_.append( cUpP_3)
+#
+#                
+#                array_cns_p_up_new.append(array_cns_pn_)
+#                
+#                array_cns_p_up_new.append(array_cns_pu_)
+#
+#                
+#            numCP_P.append(numRepPAll)
+#            numCP_P.append(countP)
+#            numCP_P.append(cNewP)
+#            numCP_P.append(cUpP)
+#            numCP_P.append(cns)
+#            numCP_P.append(array_cns_p_up_new)#7
+#            region_all_p.append(numCP_P)
+#        regionsAll.append(region_all_p)
+#        
+#        
+#        #----------------
+#        
+#        regionsPCPTot=[]
+#        totarray=[]
+#        tot=0
+#        tot2=0
+#        tot4=0
+#        tot5=0
+#        for x in  regionsPCP[0]:
+#            tot+= x[2]
+#            tot2+= x[3]
+#            tot4+= x[4]
+#            tot5+= x[5]
+#        totarray.append(tot)
+#        totarray.append(tot2)
+#        totarray.append(tot4)
+#        totarray.append(tot5)
+#
+#        regionsPCPTot.append(totarray)     
+#        
+#        #----------------
+#        
+#        regionsALLTot=[]
+#        totarray1=[]
+#        tot=0
+#        tot2=0
+#        tot4=0
+#        tot5=0
+#        for x in  regionsAll[0]:
+#            tot+= x[2]
+#            tot2+= x[3]
+#            tot4+= x[4]
+#            tot5+= x[5]
+#        totarray1.append(tot)
+#        totarray1.append(tot2)
+#        totarray1.append(tot4)
+#        totarray1.append(tot5)
+#
+#        regionsALLTot.append(totarray1)     
+#
+#        context['curryear']=curryear
+#        context['prevyear']=prevyear
+#        context['regionsPCP']=regionsPCP
+#        context['totNumReg']=totNumReg
+#        context['regionsPCPTot']=regionsPCPTot
+#        
+#        context['regionsAll']=regionsAll
+#        context['totALLcn']=totALLcn
+#        context['regionsALLTot']=regionsALLTot
+# 
+# 
+#        pest_array=[]
+#        pest_array1=[]
+#     
+#        pestreporting_array = []
+#        pestreporting_array1 = []
+#        p_count=0
+#        for y in range(2005,curryear):
+#            pests=PestReport.objects.filter(is_version=False)
+#            p_count1=0
+#            for p in pests:
+#                if p.publish_date != None and p.publish_date.year == y:
+#                    p_count=p_count+1
+#                    p_count1=p_count1+1
+#            pestreporting_array.append(p_count)
+#            pestreporting_array1.append(p_count1)
+#            
+#        pest_array.append(pestreporting_array)       
+#        pest_array1.append(pestreporting_array1)       
+#        datachartbis=''
+#        datachart1bis=''
+#        datachart2=''
+#        datachart3=''
+#        i=0
+#     
+#        for y in range(2005,curryear ):
+#            datachartbis += '{type: "column", name: "'+str(y)+'", legendText: "'+str(y)+'",showInLegend: true, dataPoints:[{label: "Pest reports", y: '+str(pest_array[0][i])+'},]},'
+#            datachart1bis +='{type: "column", name: "'+str(y)+'", legendText: "'+str(y)+'",showInLegend: true, dataPoints:[{label: "Pest reports", y: '+str(pest_array1[0][i])+'},]},'
+#            
+#            datachart2+= '{label: "'+str(y)+'", y: '+str(pest_array[0][i])+'}, '
+#            datachart3+= '{label: "'+str(y)+'", y: '+str(pest_array1[0][i])+'}, '
+#            i=i+1
+#        context['pest_array']=pest_array
+#        context['pest_array1']=pest_array1
+#        context['num_years_range']=range(2005,curryear)
+#        context['datachartbis']=datachartbis
+#        context['datachart1bis']=datachart1bis
+#        context['num_years']=num_years
+#        context['datachart2']=datachart2
+#        context['datachart3']=datachart3
+#        
+#        return context    
+
+
 class CountryStatsSinglePestReportsListView(ListView):
     """   stat  """
     context_object_name = 'latest'
@@ -5048,7 +6214,8 @@ class CountryStatsSinglePestReportsListView(ListView):
         enddate = datetime(curryear, 3, 31, 23, 59,00)
         
         regionsPCP = []
-        totNumReg=countriesperregioncp=CountryPage.objects.filter(cp_ncp_t_type='CP').count()
+     #   totNumReg=countriesperregioncp=CountryPage.objects.filter(cp_ncp_t_type='CP').count()
+        totNumReg=CountryPage.objects.filter(cp_ncp_t_type='CP').count()
         region_cp_p = []
         numRepP=0
            
@@ -8986,7 +10153,34 @@ def usermembershiphistory_edit(request, id=None, template_name='accounts/user_me
         'form': form, "usermembership": usermembership,"username":usermembership.user,
     }, context_instance=RequestContext(request))
 
-  
+
+
+class MediaKitDocumentListView(ListView):
+    """
+    MediaKitDocument
+    
+    """
+    context_object_name = 'latest'
+    model = MediaKitDocument
+    date_field = 'start_date'
+    template_name = 'pages/mediakit_list.html'
+    queryset = MediaKitDocument.objects.all().order_by('_order')
+    allow_future = False
+    allow_empty = True
+    paginate_by = 500
+
+    def get_queryset(self):
+        """ only  """
+        # self.country = get_object_or_404(CountryPage, country=self.kwargs['country'])
+        # CountryPage country_slug == country URL parameter keyword argument
+        return MediaKitDocument.objects.all().order_by('_order')
+    
+    def get_context_data(self, **kwargs): # http://stackoverflow.com/a/15515220
+        context = super(MediaKitDocumentListView, self).get_context_data(**kwargs)
+        context['types'] =MEDIAKIT_TYPE_CHOICES
+       
+        #context['country'] = self.kwargs['country']
+        return context  
   
   
 @login_required
