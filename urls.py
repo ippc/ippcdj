@@ -42,7 +42,7 @@ QAQuestionListView, QAQuestionDetailView, QAQuestionAnswersView,question_create,
 FAQsListView, faqcategory_edit,faqcategory_create,faq_edit,faq_create,FAQsItemDetailView,FAQsCategoryDetailView,\
 ContactUsEmailMessageListView,   ContactUsEmailMessageDetailView , contactus_email_send,UserAutoRegistrationListView,auto_register,auto_register_approve,auto_register_delete,\
 IRSSActivityListView,IRSSActivityDetailView,irss_activity_create,irss_activity_edit   ,CountryStatisticsTotalNroByYearListView,subscribe_to_news,NewsStatisticsByYearListView,\
-UserMembershipHistoryListView,UserMembershipHistoryDetailView,usermembershiphistory_create,usermembershiphistory_edit
+UserMembershipHistoryListView,UserMembershipHistoryDetailView,usermembershiphistory_create,usermembershiphistory_edit,MediaKitDocumentListView,CountryStatsSingleLegislationsListView
 #QuestionListView, QuestionDetailView, QuestionAnswersView,question_create,question_edit,answer_edit      
 #reporting_obligation_translate,
 from schedule.periods import Year, Month, Week, Day
@@ -262,6 +262,8 @@ urlpatterns = patterns("",
    
     url(r'^countries/statistics/year-pestreports/(?P<year>\d+)/$',    view=CountryStatsSinglePestReportsListView.as_view(), name='regionspercentage'),   ##
     url(r'^countries/statistics/year-pestreports/$',    view=CountryStatsSinglePestReportsListView.as_view(), name='regionspercentage'),   ##
+    url(r'^countries/statistics/year-legislations/(?P<year>\d+)/$',    view=CountryStatsSingleLegislationsListView.as_view(), name='regionspercentage'),   ##
+    url(r'^countries/statistics/year-legislations/$',    view=CountryStatsSingleLegislationsListView.as_view(), name='regionspercentage'),   ##
    
     #-------------------------------------------#    
     #POLL:
@@ -765,7 +767,13 @@ url(r'^external-cooperation/organizations-page-in-ipp/(?P<partner>[\w-]+)/$',   
     url(r'^work-area/user_membership/edit/(?P<id>\d+)/$',
         view=usermembershiphistory_edit,
         name='usermembershiphistory-edit'),
-        
+#---------------------MEDIA KIT
+
+
+  url(r'^mediakit/$',
+        view=MediaKitDocumentListView.as_view(),
+        name='mediakit-list'),
+
 #-------------------------------------------#
     # pagedown for markdown wysiwyg
     ("^pagedown/", include(mezzanine_pagedown.urls)),
