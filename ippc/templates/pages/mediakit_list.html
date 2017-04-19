@@ -1,0 +1,87 @@
+{% extends "base.html" %}
+{% load pages_tags mezzanine_tags i18n future staticfiles accounts_tags %}
+
+{% block meta_title %}{% trans "User Membership History List" %} {% endblock %}
+
+{% block body_class %}wide{% endblock %}
+
+{% block breadcrumb_menu %}
+<li><a href="/{{ LANGUAGE_CODE }}/">{% trans "Home" %}</a><span class="divider">/</span></li>
+<li><a href="/{{ LANGUAGE_CODE }}/structure/">{% trans "About" %}</a><span class="divider">/</span></li>
+
+
+<li class="active">{% trans "Media Kit" %}</li>
+{% endblock %}
+
+{% block main %}
+ <h1>{% trans "Media Kit" %}</h1>
+    <p>{% trans "All IPPC media are available here subject to the following terms and conditions:" %}</p>
+ <ol>
+     <li>{% trans "No material obtained from this website may be used for the purpose of monetary gain or promotion of products and services;" %}</li>
+     <li>{% trans "Copyright of all material remains that of <a href='http://www.fao.org/home/en/'>FAO</a>, and should be treated as such;" %}</li>
+     <li>{% trans "We are notified how and where this material is utliized so that we can create links and make it more widely available." %}</li>
+ </ol>
+<p>{% trans "Thank you!<br>IPPC Secretariat" %}</p>
+    
+ <p class="pull-right">
+  <a href="javascript:history.go(-1)">{% trans "Ã‚Â« Go back" %}</a>
+  {% if user.is_superuser  %}
+      <br> <small><a class="btn btn-small btn-info" href="/admin/ippc/mediakitdocument/add/">+ {% trans "Add new" %}</a></small>
+  {% endif %}
+</p>
+           
+<!--img src='http://127.0.0.1:8000/static/media/files/mediakit/IPPCOverviewBrochure2012-03-en.pdf'-->
+  
+{% if latest %}
+<table class="table table-condensed  table-bordered" id="publications">
+  
+   
+    {% for key, val in types %}   
+     <tr>
+         <th style="background-color: #e5e5e5">{{ val }}</td> 
+       <th style="background-color: #e5e5e5">{% trans "Title" %}</th>
+       <th colspan="6"  style="background-color: #e5e5e5">{% trans "Download" %}</th>
+    </tr> 
+    {% for o in latest %}
+         
+    {%if o.mediakit_type == key%}
+    <tr>
+        <td><img src='{{ MEDIA_URL }}{{o.image}}' width="50px" height="20px"></td>
+        <td>{{o.title}}</td>
+        <!--iframe src="http://docs.google.com/gview?url=http://127.0.0.1:8000/static/media/files/mediakit/IPPCOverviewBrochure2012-03-en.pdf&embedded=true" style="width:718px; height:700px;" frameborder="1"></iframe-->	
+        <!--embed src="http://127.0.0.1:8000/static/media/files/mediakit/IPPCOverviewBrochure2012-03-en.pdf" width="500" height="375" type='application/pdf'-->
+        
+
+        <td>{%if o.file_ar %}<a href="{{ MEDIA_URL }}{{ o.file_ar }}">العربية</a>{%else%}العربية{% endif %}</td>
+        <td style="white-space: nowrap;">{%if o.file_zh %}<a href="{{ MEDIA_URL }}{{ o.file_zh }}"> 中文</a>{%else%} 中文{% endif %}</td>
+        <td>{%if o.file_en %}<a href="{{ MEDIA_URL }}{{ o.file_en }}">English</a>{%else%}English    {% endif %}</td>
+        <td>{%if o.file_fr %}<a href="{{ MEDIA_URL }}{{ o.file_fr }}">Français</a>{%else%}Français   {% endif %}</td>
+        <td>{%if o.file_ru %}<a href="{{ MEDIA_URL }}{{ o.file_ru }}">Русский</a>{%else%}Русский{% endif %}</td>
+        <td>{%if o.file_es %}<a href="{{ MEDIA_URL }}{{ o.file_es }}">Español</a>{%else%}Español    {% endif %}{% if user.is_superuser %} 
+         <a class="small pull-right" href="/admin/ippc/mediakitdocument/{{ o.id }}"><i class="icon-edit"></i> Edit as Admin</a><br> 
+         {% endif %}
+        
+      </td>
+    </tr>{% endif %}
+ {% endfor %}
+    {% endfor %}
+  
+  </table>
+  </tbody>
+</table>
+
+<script src="{% static "js/jquery.dataTables.js" %}"></script>
+  <script src="{% static "js/DT_bootstrap.js" %}"></script>
+
+{% else %}
+<p>No list available.</p>
+{% endif %}
+
+
+  
+{% endblock %}
+
+
+{% block extra_js %}
+  
+{% endblock %}
