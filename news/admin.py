@@ -14,6 +14,7 @@ from django.core.mail import send_mail
 
 from django.template.defaultfilters import slugify
 
+from datetime import datetime
 
 class TransNewsPostAdmin(StackedDynamicInlineAdmin):
     model = TransNewsPost
@@ -79,8 +80,12 @@ class NewsPostAdmin(DisplayableAdmin):
        
             category=get_object_or_404(NewsCategory, id=request.POST['categories']).title 
             if(category == 'Announcements' or category == 'IPPC news' ):
+                pdate= request.POST['publish_date_0']
+                d = datetime.strptime(pdate, '%Y-%m-%d')
+                day_string = d.strftime('%d-%m-%Y')
+
                 subject='IPPC News: a new '+category+' has been posted'       
-                text='<html><body><p>Dear IPPC User,</p><p>a new "'+str(category)+'" has been posted in IPPC:<br><br> <b>'+ request.POST['title']+'</b></p><p>You can view it at the following url: <a href="http://www.ippc.int/news/'+slugify(request.POST['title'])+'">https://www.ippc.int/news/'+slugify(request.POST['title'])+'</s></p><p><br>International Plant Protection Convention team </p></body></html>'
+                text='<html><body><p>Dear IPPC User,</p><p>a new "'+str(category)+'" has been posted in IPPC:<br><br> <b>'+ request.POST['title']+'</b></p><p>You can view it from '+day_string+' at the following url: <a href="http://www.ippc.int/news/'+slugify(request.POST['title'])+'">https://www.ippc.int/news/'+slugify(request.POST['title'])+'</s></p><p><br>International Plant Protection Convention team </p></body></html>'
             
             notifificationmessage = mail.EmailMessage(subject,text,'ippc@fao.org',  emailto_all, ['paola.sentinelli@fao.org'])
             notifificationmessage.content_subtype = "html"  
