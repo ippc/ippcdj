@@ -48,6 +48,11 @@
           {% endif %}
           <dd>{{ publication.agenda_number }}</dd>
           {% endif %}
+            {% if publication.topic_number %}
+          <dt>{% trans "Topic #" %}</dt>
+          <dd>{{ publication.topic_number }}</dd>
+          {% endif %}
+          
 {% if publication.file_en  or publication.file_es or publication.file_ar or publication.file_fr or publication.file_ru or publication.file_zh%}
           <dt>{% trans "Files" %}</dt>
           <dd>

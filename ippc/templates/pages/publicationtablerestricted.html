@@ -14,9 +14,15 @@
     {# http://datatables.net/blog/Twitter_Bootstrap_2 #}
     <thead>
         <tr>
-          {%if  page.publicationlibrary.show_agenda_doc_colums %}
+          {%if  page.publicationlibrary.show_doc_colums %}
             <th style="width:15%;">{% trans "Doc #" %}</th>
+            {% endif %}
+            {%if  page.publicationlibrary.show_agenda_colums %}
+          
             <th style="width:15%;">{% trans "Agenda #" %}</th>
+            {% endif %}
+          {%if  page.publicationlibrary.show_topicnumber_colums %}
+            <th style="width:15%;">{% trans "Topic #" %}</th>
             {% endif %}
             <th>{% trans "Title" %}</th>
             <th>{% trans "Files" %}</th>
@@ -37,9 +43,14 @@
         {% for g in request.user.groups.all %}
         {% if g.name == 'Observers' or g.name == 'SC Observers' or g in page.get_content_model.groups.all and g not in publication.groups.all %}
         <tr id="media-file-{{ publication.id }}">
-           {%if  page.publicationlibrary.show_agenda_doc_colums %}
+           {%if  page.publicationlibrary.show_doc_colums %}
             <td>{{ publication.document_number }}</td>
+            {% endif %} 
+           {%if  page.publicationlibrary.show_agenda_colums %}
             <td>{{ publication.agenda_number }}</td>
+            {% endif %} 
+           {%if  page.publicationlibrary.show_topicnumber_colums %}
+            <td>{{ publication.topic_number }}</td>
             {% endif %} 
             <td><a href="{% url 'publication-r-detail' publication.pk %}">{% if LANGUAGE_CODE != 'en' %}
         {% if LANGUAGE_CODE == 'es'  and publication.title_es != '' and publication.title_es != None %}
@@ -133,9 +144,14 @@
 
         {% else %}
         <tr id="media-file-{{ publication.id }}">
-               {%if  page.publicationlibrary.show_agenda_doc_colums %}
+            {%if  page.publicationlibrary.show_doc_colums %}
             <td>{{ publication.document_number }}</td>
+            {% endif %} 
+           {%if  page.publicationlibrary.show_agenda_colums %}
             <td>{{ publication.agenda_number }}</td>
+            {% endif %} 
+           {%if  page.publicationlibrary.show_topicnumber_colums %}
+            <td>{{ publication.topic_number }}</td>
             {% endif %} 
             <td><a href="{% url 'publication-r-detail' publication.pk %}">{% if LANGUAGE_CODE != 'en' %}
         {% if LANGUAGE_CODE == 'es'  and publication.title_es != '' and publication.title_es != None %}

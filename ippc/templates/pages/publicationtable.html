@@ -127,16 +127,22 @@
 <table class="table table-condensed table-striped table-bordered" id="publications">
     {# http://datatables.net/blog/Twitter_Bootstrap_2 #}
     <thead>
-        <tr>{%if  page.publicationlibrary.show_agenda_doc_colums %}
+        <tr>{%if  page.publicationlibrary.show_doc_colums %}
             <th style="width:15%;">{% trans "Doc #" %}</th>
+            {% endif %}
+            {%if  page.publicationlibrary.show_agenda_colums %}
             <th style="width:15%;">{% if page.publicationlibrary.id == 999 %}
                   {% trans "Year" %}
-            {%else%}
-                {% trans "Agenda #" %}
-            {%endif%}
+                    {%else%}
+                        {% trans "Agenda #" %}
+                    {%endif%}
             
             </th>
             {% endif %}
+             {%if  page.publicationlibrary.show_topicnumber_colums %}
+            <th style="width:15%;">{% trans "Topic #" %} </th>
+            {% endif %}
+            
             <th>{% trans "Title" %}</th>
             <th>{% trans "Files" %}</th>
             <th>{% trans "Publication date" %}</th>
@@ -150,10 +156,15 @@
         {% if publication.status == 2 and publication.is_version == 0 %}
 
         <tr id="media-file-{{ publication.id }}">
-    {%if  page.publicationlibrary.show_agenda_doc_colums %}
+    {%if  page.publicationlibrary.show_doc_colums %}
         <td>{{ publication.document_number }}</td>
+      {% endif %}
+        {%if  page.publicationlibrary.show_agenda_colums %}
+      <td>{{ publication.agenda_number }}</td>
+      {% endif %}
+      {%if  page.publicationlibrary.show_topicnumber_colums %}
+    <td>{{ publication.topic_number }}</td>
       
-        <td>{{ publication.agenda_number }}</td>
       {% endif %}
       <td><a href="{% url 'publication-detail' publication.pk %}">{% if LANGUAGE_CODE != 'en' %}
         {% if LANGUAGE_CODE == 'es'  and publication.title_es != '' and publication.title_es != None %}
