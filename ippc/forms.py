@@ -319,6 +319,7 @@ class PublicationForm(forms.ModelForm):
            'publication_date', 
            'agenda_number',
            'document_number',
+           'topic_number',
            'short_description',
            'contact_for_more_information',
            ]

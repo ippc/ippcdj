@@ -59,7 +59,9 @@ class PublicationLibrary(Page, RichText):
         verbose_name=_("Groups this library is accessible to"), 
         related_name='publicationlibrarygroups', blank=True, null=True)
     old_id = models.CharField(max_length=50, blank=True, null=True)
-    show_agenda_doc_colums =  models.BooleanField( verbose_name=_("Show columns for 'Agenda number' and 'Document number'."),default=True)
+    show_agenda_colums =  models.BooleanField( verbose_name=_("Show column for 'Agenda number'."),default=True)
+    show_doc_colums =  models.BooleanField( verbose_name=_("Show column for 'Document number'."),default=True)
+    show_topicnumber_colums =  models.BooleanField( verbose_name=_("Show column for 'Topic number'."),default=False)
     class Meta:
         verbose_name = _("Publication Library")
         verbose_name_plural = _("Publication Libraries")
@@ -319,6 +321,8 @@ class Publication(Orderable):
     agenda_number = models.CharField(_("Agenda Item Number"), max_length=100,
                                    blank=True)
     document_number = models.CharField(_("Document Number"), max_length=100,
+                                  blank=True)
+    topic_number = models.CharField(_("Topic Number"), max_length=100,
                                   blank=True)
     publication_date = models.DateTimeField(_("Publication date"), blank=True, null=True, editable=True)
     short_description = models.TextField(_("Short Description"),  blank=True, null=True)
