@@ -10179,6 +10179,51 @@ class MediaKitDocumentListView(ListView):
         context = super(MediaKitDocumentListView, self).get_context_data(**kwargs)
         context['types'] =MEDIAKIT_TYPE_CHOICES
        
+        arraymain=[]
+        innerarray1=[]
+        innerarray1.append("Brochures")
+        innerarray1.append(MediaKitDocument.objects.filter(mediakit_type=1).order_by('_order'))
+        arraymain.append(innerarray1)
+        
+        innerarray2=[]
+        innerarray2.append("Publications")
+        innerarray2.append(MediaKitDocument.objects.filter(mediakit_type=2).order_by('_order'))
+        arraymain.append(innerarray2)
+        
+        innerarray3=[]
+        innerarray3.append("Quickguides")
+        innerarray3.append(MediaKitDocument.objects.filter(mediakit_type=3).order_by('_order'))
+        arraymain.append(innerarray3)
+        
+        innerarray4=[]
+        innerarray4.append("Factsheets")
+        innerarray4.append(MediaKitDocument.objects.filter(mediakit_type=4).order_by('_order'))
+        arraymain.append(innerarray4)
+        
+        
+        innerarray5=[]
+        innerarray5.append("Posters")
+        innerarray5.append(MediaKitDocument.objects.filter(mediakit_type=5).order_by('_order'))
+        arraymain.append(innerarray5)
+        
+        
+        innerarray6=[]
+        innerarray6.append("Videos")
+        innerarray6.append(MediaKitDocument.objects.filter(mediakit_type=6).order_by('_order'))
+        arraymain.append(innerarray6)
+        
+        
+        innerarray7=[]
+        innerarray7.append("Logos")
+        innerarray7.append(MediaKitDocument.objects.filter(mediakit_type=7).order_by('_order'))
+        arraymain.append(innerarray7)
+        
+        
+        
+        
+        
+        context['latest'] =arraymain
+       
         #context['country'] = self.kwargs['country']
         return context  
   
