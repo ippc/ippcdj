@@ -10835,49 +10835,60 @@ def generate_report(request, country,sessionid=None):
                     if logicalframework>0:
                         lf = get_object_or_404(LogicalFramework, session_id=sessionid,module=int(i))
                         if LogicalFrameworkAct1.objects.filter(logicalframework_id=lf.id).count()>0:
-                            lf1 = LogicalFrameworkAct1.objects.filter(logicalframework_id=lf.id)[0]
+#                            lf1 = LogicalFrameworkAct1.objects.filter(logicalframework_id=lf.id)[0]
+#                            row_cells = table.add_row().cells
+#                            row_cells[0].text=lf1.activity1
+#                            row_cells[1].text=lf1.cost
+#                            row_cells[2].text=lf1.responsible
+#                            row_cells[3].text=lf1.deadline
+                            lf1 = LogicalFrameworkAct1.objects.filter(logicalframework_id=lf.id)
+                            counter1 =1
+                            for lf1_i in lf1:
+                                row_cells = table.add_row().cells
+                                row_cells[0].text='1.'+str(counter1)+')'+lf1_i.activity1
+                                row_cells[1].text=lf1_i.cost
+                                row_cells[2].text=lf1_i.responsible
+                                row_cells[3].text=lf1_i.deadline
+                                counter1=counter1+1
+                               # row_cells = table.add_row().cells
+                            #row_cells = table.add_row().cells
+                            lf2 = LogicalFrameworkAct2.objects.filter(logicalframework_id=lf.id)
+                            counter2 =1
+                            for lf2_i in lf2:
+                                row_cells = table.add_row().cells
+                                row_cells[0].text='2.'+str(counter2)+')'+lf2_i.activity2
+                                row_cells[1].text=lf2_i.cost
+                                row_cells[2].text=lf2_i.responsible
+                                row_cells[3].text=lf2_i.deadline
+                                counter2=counter2+1   
+                            lf3 = LogicalFrameworkAct3.objects.filter(logicalframework_id=lf.id)
+                            counter3 =1
+                            for lf3_i in lf3:
+                                row_cells = table.add_row().cells
+                                row_cells[0].text='3.'+str(counter3)+')'+lf3_i.activity3
+                                row_cells[1].text=lf3_i.cost
+                                row_cells[2].text=lf3_i.responsible
+                                row_cells[3].text=lf3_i.deadline
+                                counter3=counter3+1       
+                            lf4 = LogicalFrameworkAct4.objects.filter(logicalframework_id=lf.id)
+                            counter4 =1
+                            for lf4_i in lf4:
+                                row_cells = table.add_row().cells
+                                row_cells[0].text='4.'+str(counter4)+')'+lf4_i.activity4
+                                row_cells[1].text=lf4_i.cost
+                                row_cells[2].text=lf4_i.responsible
+                                row_cells[3].text=lf4_i.deadline
+                                counter4=counter4+1  
+                            lf5 = LogicalFrameworkAct5.objects.filter(logicalframework_id=lf.id)
+                            counter5 =1
+                            for lf5_i in lf5:
+                                row_cells = table.add_row().cells
+                                row_cells[0].text='3.'+str(counter5)+')'+lf5_i.activity5
+                                row_cells[1].text=lf5_i.cost
+                                row_cells[2].text=lf5_i.responsible
+                                row_cells[3].text=lf5_i.deadline
+                                counter5=counter5+1  
                             row_cells = table.add_row().cells
-                            row_cells[0].text=lf1.activity1
-                            row_cells[1].text=lf1.cost
-                            row_cells[2].text=lf1.responsible
-                            row_cells[3].text=lf1.deadline
-                         
-                            row_cells = table.add_row().cells
-                        if  LogicalFrameworkAct2.objects.filter(logicalframework_id=lf.id).count()>0:
-                            lf2 = LogicalFrameworkAct2.objects.filter(logicalframework_id=lf.id)[0]
-                            row_cells = table.add_row().cells
-                            row_cells[0].text=lf2.activity2
-                            row_cells[1].text=lf2.cost
-                            row_cells[2].text=lf2.responsible
-                            row_cells[3].text=lf2.deadline
-                          
-                            row_cells = table.add_row().cells
-                        if  LogicalFrameworkAct3.objects.filter(logicalframework_id=lf.id).count()>0:
-                            lf3 = LogicalFrameworkAct3.objects.filter(logicalframework_id=lf.id)[0]
-                            row_cells = table.add_row().cells
-                            row_cells[0].text=lf3.activity3
-                            row_cells[1].text=lf3.cost
-                            row_cells[2].text=lf3.responsible
-                            row_cells[3].text=lf3.deadline
-                           
-                            row_cells = table.add_row().cells
-                        if  LogicalFrameworkAct4.objects.filter(logicalframework_id=lf.id).count()>0:
-                            lf4 = LogicalFrameworkAct4.objects.filter(logicalframework_id=lf.id)[0]
-                            row_cells[0].text=lf4.activity4
-                            row_cells[1].text=lf4.cost
-                            row_cells[2].text=lf4.responsible
-                            row_cells[3].text=lf4.deadline
-                           
-                            row_cells = table.add_row().cells
-                        if  LogicalFrameworkAct5.objects.filter(logicalframework_id=lf.id).count()>0:
-                            lf5 = LogicalFrameworkAct5.objects.filter(logicalframework_id=lf.id)[0]
-                            row_cells = table.add_row().cells
-                            row_cells[0].text=lf5.activity5
-                            row_cells[1].text=lf5.cost
-                            row_cells[2].text=lf5.responsible
-                            row_cells[3].text=lf5.deadline
-                            row_cells = table.add_row().cells
-                          
                     
                         
                         
