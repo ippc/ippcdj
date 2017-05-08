@@ -10883,7 +10883,7 @@ def generate_report(request, country,sessionid=None):
                             counter5 =1
                             for lf5_i in lf5:
                                 row_cells = table.add_row().cells
-                                row_cells[0].text='3.'+str(counter5)+')'+lf5_i.activity5
+                                row_cells[0].text='5.'+str(counter5)+')'+lf5_i.activity5
                                 row_cells[1].text=lf5_i.cost
                                 row_cells[2].text=lf5_i.responsible
                                 row_cells[3].text=lf5_i.deadline
@@ -11047,11 +11047,11 @@ def generate_report(request, country,sessionid=None):
                    row_cells = table.add_row().cells
                    row_cells[0].text = aa
                    row_cells[1].text = str(qq.nstaff)
-                   row_cells[2].text = str(dict(VAL_AV)[qq.average])
+                   row_cells[2].text = str(ugettext(dict(VAL_AV)[qq.average]))
                    row_cells[3].text = str(qq.nstafflab)
-                   row_cells[4].text = str(dict(VAL_AV)[qq.averagelab])
-                   row_cells[5].text = str(dict(BOOL_CHOICESM_M)[qq.support])
-                   row_cells[6].text = str(dict(BOOL_CHOICESM_M)[qq.managers])
+                   row_cells[4].text = str(ugettext(dict(VAL_AV)[qq.averagelab]))
+                   row_cells[5].text = str(ugettext(dict(BOOL_CHOICESM_M)[qq.support]))
+                   row_cells[6].text = str(ugettext(dict(BOOL_CHOICESM_M)[qq.managers]))
 
 
                    bb=bb+1 
@@ -11059,7 +11059,7 @@ def generate_report(request, country,sessionid=None):
                 p=document.add_paragraph("")
                 p=document.add_paragraph("")
                 p=document.add_paragraph("")
-            if '7' in items:
+            if '8' in items:
                 p.add_run(_("Module ")+" 8 - "+ugettext(m_names[8])).bold = True
                 p=document.add_paragraph("")
                 p.add_run(_("The human resources of the pest surveillance activities")).bold = True
@@ -11148,9 +11148,9 @@ def generate_report(request, country,sessionid=None):
                    row_cells[1].text = str(qq.nstaff)
                    row_cells[2].text = str(dict(VAL_AV)[qq.average])
                    row_cells[3].text = str(qq.nstafflab)
-                   row_cells[4].text = str(dict(VAL_AV)[qq.averagelab])
-                   row_cells[5].text = str(dict(BOOL_CHOICESM_M)[qq.support])
-                   row_cells[6].text = str(dict(BOOL_CHOICESM_M)[qq.managers])
+                   row_cells[4].text = ugettext(dict(VAL_AV)[qq.averagelab])
+                   row_cells[5].text = str(ugettext(dict(BOOL_CHOICESM_M)[qq.support]))
+                   row_cells[6].text = str(ugettext(dict(BOOL_CHOICESM_M)[qq.managers]))
 
 
                    bb=bb+1   
@@ -11227,11 +11227,11 @@ def generate_report(request, country,sessionid=None):
                    row_cells = table.add_row().cells
                    row_cells[0].text = aa
                    row_cells[1].text = str(qq.nstaff)
-                   row_cells[2].text = str(dict(VAL_AV)[qq.average])
+                   row_cells[2].text = str(ugettext(dict(VAL_AV)[qq.average]))
                    row_cells[3].text = str(qq.nstafflab)
-                   row_cells[4].text = str(dict(VAL_AV)[qq.averagelab])
-                   row_cells[5].text = str(dict(BOOL_CHOICESM_M)[qq.support])
-                   row_cells[6].text = str(dict(BOOL_CHOICESM_M)[qq.managers])
+                   row_cells[4].text = str(ugettext(dict(VAL_AV)[qq.averagelab]))
+                   row_cells[5].text = str(ugettext(dict(BOOL_CHOICESM_M)[qq.support]))
+                   row_cells[6].text = str(ugettext(dict(BOOL_CHOICESM_M)[qq.managers]))
 
 
                    bb=bb+1   
@@ -11317,13 +11317,13 @@ def generate_report(request, country,sessionid=None):
                    row_cells = table.add_row().cells
                    row_cells[0].text = aa
                    row_cells[1].text = str(qq.nstaff)
-                   row_cells[2].text = str(dict(VAL_AV)[qq.average])
+                   row_cells[2].text = str(ugettext(dict(VAL_AV)[qq.average]))
                    row_cells[3].text = str(qq.nstafflab)
-                   row_cells[4].text = str(dict(VAL_AV)[qq.averagelab])
+                   row_cells[4].text = str(ugettext(dict(VAL_AV)[qq.averagelab]))
                    row_cells[5].text = str(qq.supstafflab)
-                   row_cells[6].text = str(dict(BOOL_CHOICESM_M)[qq.technical])
-                   row_cells[7].text = str(dict(BOOL_CHOICESM_M)[qq.managers])
-                   row_cells[8].text = str(dict(BOOL_CHOICESM_M)[qq.support])
+                   row_cells[6].text = str(ugettext(dict(BOOL_CHOICESM_M)[qq.technical]))
+                   row_cells[7].text = str(ugettext(dict(BOOL_CHOICESM_M)[qq.managers]))
+                   row_cells[8].text = str(ugettext(dict(BOOL_CHOICESM_M)[qq.support]))
 
 
                    bb=bb+1   
@@ -11422,10 +11422,10 @@ def generate_report(request, country,sessionid=None):
                    row_cells = table.add_row().cells
                    row_cells[0].text = aa
                    row_cells[1].text = str(qq.nstaff)
-                   row_cells[2].text = str(dict(VAL_AV)[qq.average])
+                   row_cells[2].text = str(ugettext(dict(VAL_AV)[qq.average]))
                    row_cells[3].text = str(qq.nstafflab)
 
-                   row_cells[4].text = str(dict(BOOL_CHOICESM_M)[qq.support])
+                   row_cells[4].text = str(ugettext(dict(BOOL_CHOICESM_M)[qq.support]))
 
 
                    bb=bb+1    
@@ -11502,11 +11502,11 @@ def generate_report(request, country,sessionid=None):
                    row_cells = table.add_row().cells
                    row_cells[0].text = aa
                    row_cells[1].text = str(qq.nstaff)
-                   row_cells[2].text = str(dict(VAL_AV)[qq.average])
+                   row_cells[2].text = str(ugettext(dict(VAL_AV)[qq.average]))
                    row_cells[3].text = str(qq.nstafflab)
-                   row_cells[4].text = str(dict(VAL_AV)[qq.averagelab])
-                   row_cells[5].text = str(dict(BOOL_CHOICESM_M)[qq.support])
-                   row_cells[6].text = str(dict(BOOL_CHOICESM_M)[qq.managers])
+                   row_cells[4].text = str(ugettext(dict(VAL_AV)[qq.averagelab]))
+                   row_cells[5].text = str(ugettext(dict(BOOL_CHOICESM_M)[qq.support]))
+                   row_cells[6].text = str(ugettext(dict(BOOL_CHOICESM_M)[qq.managers]))
 
 
                    bb=bb+1 
@@ -11593,11 +11593,11 @@ def generate_report(request, country,sessionid=None):
                    row_cells = table.add_row().cells
                    row_cells[0].text = aa
                    row_cells[1].text = str(qq.nstaff)
-                   row_cells[2].text = str(dict(VAL_AV)[qq.average])
+                   row_cells[2].text = str(ugettext(dict(VAL_AV)[qq.average]))
                    row_cells[3].text = str(qq.nstafflab)
-                   row_cells[4].text = str(dict(VAL_AV)[qq.averagelab])
-                   row_cells[5].text = str(dict(BOOL_CHOICESM_M)[qq.support])
-                   row_cells[6].text = str(dict(BOOL_CHOICESM_M)[qq.managers])
+                   row_cells[4].text = str(ugettext(dict(VAL_AV)[qq.averagelab]))
+                   row_cells[5].text = str(ugettext(dict(BOOL_CHOICESM_M)[qq.support]))
+                   row_cells[6].text = str(ugettext(dict(BOOL_CHOICESM_M)[qq.managers]))
 
 
                    bb=bb+1 
