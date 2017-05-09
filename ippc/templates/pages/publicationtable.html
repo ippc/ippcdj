@@ -140,7 +140,7 @@
             </th>
             {% endif %}
              {%if  page.publicationlibrary.show_topicnumber_colums %}
-            <th style="width:15%;">{% trans "Topic #" %} </th>
+            <th style="width:15%;">{%if page.id == 925%}{% trans "Type" %} {%else%}{% trans "Topic #" %} {% endif %} </th>
             {% endif %}
             
             <th>{% trans "Title" %}</th>

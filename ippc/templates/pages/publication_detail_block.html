@@ -49,7 +49,7 @@
           <dd>{{ publication.agenda_number }}</dd>
           {% endif %}
             {% if publication.topic_number %}
-          <dt>{% trans "Topic #" %}</dt>
+          <dt>{%if publication.library.id == 925%}{% trans "Type" %} {%else%}{% trans "Topic #" %} {% endif %}</dt>
           <dd>{{ publication.topic_number }}</dd>
           {% endif %}
           
