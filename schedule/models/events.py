@@ -71,7 +71,7 @@ EVENT_TYPE_28 = 28
 EVENT_TYPE_29 = 29
 EVENT_TYPE_30 = 30
 EVENT_TYPE_31 = 31
-
+EVENT_TYPE_32 = 32
 TYPES = (
     (EVENT_TYPE_1, (" ")),
     (EVENT_TYPE_2, _("Bilateral assistance")),
@@ -92,6 +92,7 @@ TYPES = (
     (EVENT_TYPE_17, _("Other")),
     (EVENT_TYPE_18, _("Other Working Group")),
     (EVENT_TYPE_19, _("Regional Workshops on Draft ISPMs")),
+    (EVENT_TYPE_32, _("Resource Mobilization")),
     (EVENT_TYPE_20, _("SBDS")),
     (EVENT_TYPE_21, _("Seminar")),
     (EVENT_TYPE_22, _("SPG + SPTA")),
