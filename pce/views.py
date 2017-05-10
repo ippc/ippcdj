@@ -2938,14 +2938,15 @@ def pceversion_edit_step1(request, country, id=None ):
         version_number = 1
     
     if request.method == "POST":
-        form = PceVersionForm1(request.POST, request.FILES,instance=pceversion)
-        if form.is_valid():
-            form.save()
-            info(request, _("Successfully saved session configuration - step 1."))
-            return redirect("pceversion-edit-2", country=user_country_slug,  id=pceversion.id)
-        else:
-            return render_to_response('pce/pceversion_edit_step1.html', {'form': form,'pceversion':pceversion,'can_edit':can_edit,'can_see':can_see,'version_number':version_number,'version_id':version_id},
-            context_instance=RequestContext(request))
+        print('aaaaaaaaaaaaaaaaaaaaaaa')
+        form = PceVersionForm1(request.POST, instance=pceversion)
+      #  if form.is_valid():
+       # form.save()
+        info(request, _("Successfully saved session configuration - step 1."))
+        return redirect("pceversion-edit-2", country=user_country_slug,  id=pceversion.id)
+       # else:
+       #     return render_to_response('pce/pceversion_edit_step1.html', {'form': form,'pceversion':pceversion,'can_edit':can_edit,'can_see':can_see,'version_number':version_number,'version_id':version_id},
+       #     context_instance=RequestContext(request))
     else:
         form = PceVersionForm1(instance=pceversion )
      
