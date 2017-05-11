@@ -21,7 +21,7 @@
               <link rel="stylesheet" href="{% static "css/bootstrap.css" %}">
               <link rel="stylesheet" href="{% static "css/mezzanine.css" %}">
               <link rel="stylesheet" href="{% static "css/bootstrap-responsive.css" %}">
-              <link rel="stylesheet" href="{% static "css/ippc20160201.css" %}">
+              <link rel="stylesheet" href="{% static "css/ippc20160201_.css" %}">
               <link rel="stylesheet" href="{% static "css/chosen.css" %}">
               <link rel="stylesheet" href="{% static "schedule/css/schedule.css" %}" type="text/css" media="screen" />
 
@@ -254,8 +254,9 @@
         <div class="container-fluid">
 
             <div class="row-fluid">
-                <div class="span{% block mainspansize %}{% if page.id != None %}8{% else %}12{% endif %}{% endblock mainspansize %} middle">
+                <div class="span{% block mainspansize %}{% if page.id != None %}{% if page.id == 322 %}7{% else %}8{% endif %}{% else %}12{% endif %}{% endblock mainspansize %} middle">
                 {% block main %}{% endblock %}
+                
                 </div>
                 
                 <div class="span{% block sidebarspansize %}{% if page.id != None %}4{% else %}8{% endif %}{% endblock sidebarspansize %} right">
@@ -276,11 +277,16 @@
                         {% page_menu "pages/menus/tree.html" %}
                     </div> 
                     {% include "pages/menus/tree_key_partners.html" %}
-                    {% elif page.id == 322 or  page.parent_id == 322   or  page.parent_id == 323 or  page.parent_id == 345       or  page.parent_id == 449 or  page.parent_id == 427 or  page.parent_id == 429 or  page.parent_id == 459   or  page.parent_id == 455 or  page.parent_id == 445 %}
+                    {% elif page.id == 322 or  page.parent_id == 322   or  page.parent_id == 323    or  page.parent_id == 449 or  page.parent_id == 427 or  page.parent_id == 429 or  page.parent_id == 459   or  page.parent_id == 455 or  page.parent_id == 445 %}
                     <div class="panel tree">
                         {% page_menu "pages/menus/tree.html" %}
                     </div> 
                     {% include "pages/menus/tree_key_core.html" %}
+                {% elif page.id == 345 or   page.parent_id == 345   %}
+                    <div class="panel tree">
+                        {% page_menu "pages/menus/tree.html" %}
+                    </div> 
+                    {% include "pages/menus/tree_key_ssu.html" %}
 
                     {# FAQ page show/hide ================= #}
                    
