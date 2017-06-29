@@ -140,9 +140,118 @@ class Chronology (Displayable, models.Model):
             self.slug = slugify(self.title)
         self.modify_date = datetime.now()
         super(Chronology, self).save(*args, **kwargs)
-        
-        
+
+def validate_file_extension(value):
+    if not (value.name.endswith('.pdf') or value.name.endswith('.doc')or value.name.endswith('.txt')
+        or value.name.endswith('.xls')   or value.name.endswith('.ppt') or value.name.endswith('.jpg')
+        or value.name.endswith('.png') or value.name.endswith('.gif') or value.name.endswith('.xlsx')
+        or value.name.endswith('.docx')or value.name.endswith('.ppt') or value.name.endswith('.pptx') or value.name.endswith('.zip')
+        or value.name.endswith('.rar')):
+        raise ValidationError(u'You can only upload files:  txt pdf ppt doc xls jpg png docx xlsx pptx zip rar.')
+
+class IYPHSteeringCommitteeResource (Displayable, models.Model):
+    """ IYPHSteeringCommitteeResource """
+    # slug - provided by mezzanine.core.models.slugged (subclassed by displayable)
+    # title - provided by mezzanine.core.models.slugged (subclassed by displayable)
+    # status - provided by mezzanine.core.models.displayable
+    # publish_date - provided by mezzanine.core.models.displayable
+    modify_date = models.DateTimeField(_("Modified date"), blank=True, null=True, editable=False)
+    summary = models.TextField(_("Summary or Short Description"), blank=True, null=True)
+    file = models.FileField(max_length=255,blank=True, help_text='10 MB maximum file size.', verbose_name='Upload a file', upload_to='uploads/iyph/%Y/%m/%d/', validators=[validate_file_extension])
+
+    # attachments = AttachmentManager()
+    search_fields = ("title", "summary")
+
+    class Meta:
+        verbose_name_plural = _("IYPHSteeringCommitteeResources")
+        # abstract = True
+
+    def __unicode__(self):
+        return self.title
+     
+    # http://devwiki.beloblotskiy.com/index.php5/Django:_Decoupling_the_URLs  
+    @models.permalink # or: get_absolute_url = models.permalink(get_absolute_url) below
+    def get_absolute_url(self): # "view on site" link will be visible in admin interface
+        """Construct the absolute URL for a IYPHSteeringCommitteeResource."""
+        print( 'year'+ self.publish_date.strftime("%Y"))
+        print( 'month'+ self.publish_date.strftime("%m"))
+        print( 'slug'+ self.slug)
+        return ('iyphsteeringcommitteeResource-detail', (), {
+                            'year': self.publish_date.strftime("%Y"),
+                            'month': self.publish_date.strftime("%m"),
+                            'slug': self.slug})
+            
+    def save(self, *args, **kwargs):
+        ''' On save, update timestamps '''
+        if not self.id:
+            self.publish_date = datetime.today()
+            # Newly created object, so set slug
+            self.slug = slugify(self.title)
+        self.modify_date = datetime.now()
+        super(IYPHSteeringCommitteeResource, self).save(*args, **kwargs)
+
+class IYPHToolBoxCategory(Slugged):
+    """
+    A category for grouping iyph IYPHToolBox into a series.
+    """
+
+    class Meta:
+        verbose_name = _("IYPHToolBox Category")
+        verbose_name_plural = _("IYPHToolBox Categories")
+        ordering = ("title",)
+
+    @models.permalink
+    def get_absolute_url(self):
+        return ("iyphtoolbox_category", (), {"category": self.slug})
     
+    
+
+class IYPHToolBoxItem (Displayable, models.Model):
+    """ IYPHToolBoxItem """
+    # slug - provided by mezzanine.core.models.slugged (subclassed by displayable)
+    # title - provided by mezzanine.core.models.slugged (subclassed by displayable)
+    # status - provided by mezzanine.core.models.displayable
+    # publish_date - provided by mezzanine.core.models.displayable
+    modify_date = models.DateTimeField(_("Modified date"), blank=True, null=True, editable=False)
+    summary = models.TextField(_("Summary or Short Description"), blank=True, null=True)
+    categories = models.ManyToManyField("IYPHToolBoxCategory",
+                                        verbose_name=_("Categories"),
+                                        blank=True, related_name="iyphtoolbox")
+  
+    file = models.FileField(max_length=255,blank=True, help_text='10 MB maximum file size.', verbose_name='Upload a file', upload_to='uploads/iyph/%Y/%m/%d/', validators=[validate_file_extension])
+    url = models.URLField(blank=True, null=True,max_length=500)
+   
+    # attachments = AttachmentManager()
+    search_fields = ("title", "summary")
+
+    class Meta:
+        verbose_name_plural = _("IYPHToolBoxItems")
+        # abstract = True
+
+    def __unicode__(self):
+        return self.title
+     
+    # http://devwiki.beloblotskiy.com/index.php5/Django:_Decoupling_the_URLs  
+    @models.permalink # or: get_absolute_url = models.permalink(get_absolute_url) below
+    def get_absolute_url(self): # "view on site" link will be visible in admin interface
+        """Construct the absolute URL for a IYPHToolBoxItem."""
+        print( 'year'+ self.publish_date.strftime("%Y"))
+        print( 'month'+ self.publish_date.strftime("%m"))
+        print( 'slug'+ self.slug)
+        return ('iyphtoolboxitem-detail', (), {
+                            'year': self.publish_date.strftime("%Y"),
+                            'month': self.publish_date.strftime("%m"),
+                            'slug': self.slug})
+            
+    def save(self, *args, **kwargs):
+        ''' On save, update timestamps '''
+        if not self.id:
+            self.publish_date = datetime.today()
+            # Newly created object, so set slug
+            self.slug = slugify(self.title)
+        self.modify_date = datetime.now()
+        super(IYPHToolBoxItem, self).save(*args, **kwargs)
+        
 class Translatable(models.Model):
     """ Translations of user-generated content - https://gist.github.com/renyi/3596248"""
     lang = models.CharField(max_length=5, choices=settings.LANGUAGES)
