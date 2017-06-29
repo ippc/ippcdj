@@ -1,8 +1,9 @@
-{% load iyph_tags keyword_tags i18n future %}
-<div class="panel">
+{% load iyph_tags keyword_tags i18n mezzanine_tags staticfiles future %}
+
+<!--div class="panel">
   <h3><a href="/iyph/iyph-toolbox">{% trans "IYPH Toolbox" %}</a></h3>
   <ul class="unstyled recent-posts">
-<b>{% trans "Advocacy:" %}</b><ul class="unstyled recent-posts">
+    <b>{% trans "Advocacy:" %}</b><ul class="unstyled recent-posts">
         <li><a href="https://www.ippc.int/static/media/uploads/iyph_2020_-_advocacy_document_2016-02-05.docx">IYPH 2020 - ADVOCACY DOCUMENT</a></li>
         <li><a href="https://www.ippc.int/static/media/uploads/iyph_2020_-_advocacy_document_1_fr_final.docx">IYPH 2020 - ADVOCACY DOCUMENT (Fr)</a></li>
         <li><a href="https://www.ippc.int/static/media/uploads/2_update_on_activities_undertaken_april_2016_2016-04-29.docx">April 2016 - Update on Activities (En)</a></li>
@@ -11,12 +12,10 @@
   </ul>
 <b>{% trans "Presentations:" %}</b>
 <ul class="unstyled recent-posts">
-    <li><a href="https://www.ippc.int/static/media/uploads/iyph/iyph_presentation_rev_newoutline_20150626.ppt">Introduction to IYPH</a></li>
+   <li><a href="https://www.ippc.int/static/media/uploads/iyph/iyph_presentation_rev_newoutline_20150626.ppt">Introduction to IYPH</a></li>
    <li><a href="https://www.ippc.int/static/media/uploads/iyph_and_other_challenges_to_the_ippc.ppt">IYPH and other future challenges for the IPPC</a></li>
    <li><a href="https://www.ippc.int/static/media/uploads/iyph_2020_giorin.ppt">ROK 2020 MIĘDZYNARODOWYM  ROKIEM  ZDROWIA  ROŚLIN</a></li>
    <li><a href="https://www.ippc.int/static/media/uploads/general_iyph_presentation.ppt">General presentation to IYPH</a></li>
- 
-  
   </ul>
 
 <b>{% trans "Videos:" %}</b>
@@ -31,20 +30,39 @@
   
   </ul>
   
-</div>
+</div-->
+
+
+
+
+{% iyph_tool_categories as iyph_tool_cats %}
+{% if iyph_tool_cats %}
 <div class="panel">
+  <h3>{% trans "IYPH Toolbox" %}</h3>{% for category in iyph_tool_cats %}{{category|richtext_filter|safe}}{% endfor %}</div>
+{% endif %}
+
+<!--div class="panel">
   <h3>{% trans "IYPH Resources" %}</h3>
     <ul class="unstyled recent-posts">
         <li><a href="https://www.ippc.int/static/media/uploads/iyph_steering_comm_tors_2016-04-18.docx">IYPH Steering Committee Terms of Reference</a></li>
         <li><a href="https://www.ippc.int/static/media/uploads/report_iyph-sc_1_2016-12-06.pdf">Report of first meeting of the IYPH Steering Committee - November 2016</a></li>
-        <!--li><a href="https://www.ippc.int/static/media/uploads/iyph_stc_membership_2016-12-14.pdf">IYPH Steering Committee Membership list</a></li-->
-	<!--a href="https://www.ippc.int/static/media/uploads/iyph_stc_membership_2017-02-21.pdf">IYPH Steering Committee Membership list</a></li-->
-	<li><a href="https://www.ippc.int/static/media/uploads/IYPHSteeringCommittee_MembershipList_2017-04-18.pdf">IYPH Steering Committee Membership list</a></li>
+        <li><a href="https://www.ippc.int/static/media/uploads/IYPHSteeringCommittee_MembershipList_2017-04-18.pdf">IYPH Steering Committee Membership list</a></li>
         <li><a href="https://www.ippc.int/static/media/uploads/Report for the 2nd IYPH-StC Meeting-2017-05-10.pdf">Report of second meeting of the IYPH Steering Committee, April 2017</a></li>
 
   </ul>
+</div-->
+{% iyph_recent_resources as recent_resources %}
+{% if recent_resources %}
+<div class="panel">
+  <h3>{% trans "IYPH Steering Committee" %}</h3>
+  <ul class="unstyled recent-posts">
+  {% for recent_resource in recent_resources %}
+  <li><a href="{{ recent_resource.get_absolute_url }}"
+      >{{ recent_resource.title }}</a></li>
+  {% endfor %}
+  </ul>
 </div>
-
+{% endif %}
 
 {% if user.is_superuser  or perms.iyph.add_iyphpost  %} 
     <div class="pull-right">
