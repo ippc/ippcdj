@@ -97,7 +97,7 @@ def iyph_recent_resources():
         {% iyph_recent_resources 5 as iyph_recent_resources %}
      
     """
-    iyph_resources = IYPHSteeringCommitteeResource.objects.published()
+    iyph_resources = IYPHSteeringCommitteeResource.objects.published().order_by('id')
     title_or_slug = lambda s: Q(title=s) | Q(slug=s)
    
     return list(iyph_resources[:100])
@@ -130,7 +130,7 @@ def iyph_tool_categories(*args):
     print(categories)
     for c in categories:
         print(c)
-        items = iyphtoolboxitem.filter(categories=c)
+        items = iyphtoolboxitem.filter(categories=c).order_by('id')
         aaa="<b>"+str(c)+":</b><ul class='unstyled recent-posts'>"
         for itm in items:
             url=''
