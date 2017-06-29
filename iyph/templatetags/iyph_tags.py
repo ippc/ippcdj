@@ -3,7 +3,7 @@ from datetime import datetime
 from django.db.models import Count, Q
 
 from iyph.forms import IyphPostForm
-from iyph.models import IyphPost, IyphCategory
+from iyph.models import IyphPost, IyphCategory, IYPHSteeringCommitteeResource,IYPHToolBoxItem,IYPHToolBoxCategory
 from mezzanine.generic.models import Keyword
 from mezzanine import template
 from mezzanine.utils.models import get_user_model
@@ -85,6 +85,66 @@ def iyph_recent_posts(limit=5, tag=None, username=None, category=None):
         except User.DoesNotExist:
             return []
     return list(iyph_posts[:limit])
+
+@register.as_tag
+def iyph_recent_resources():
+    """
+    Put a list of recently published iyph_recent_resources   into the template
+    context. 
+
+    Usage::
+
+        {% iyph_recent_resources 5 as iyph_recent_resources %}
+     
+    """
+    iyph_resources = IYPHSteeringCommitteeResource.objects.published()
+    title_or_slug = lambda s: Q(title=s) | Q(slug=s)
+   
+    return list(iyph_resources[:100])
+
+@register.as_tag
+def iyph_recent_toolboxitem():
+    """
+    Put a list of recently published iyph_recent_resources   into the template
+    context. 
+
+    Usage::
+
+        {% iyph_recent_toolboxitem 5 as sss %}
+     
+    """
+    iyph_toolboxitem = IYPHToolBoxItem.objects.published()
+    
+    title_or_slug = lambda s: Q(title=s) | Q(slug=s)
+   
+    return list(iyph_resources[:100])
+@register.as_tag
+def iyph_tool_categories(*args):
+    """
+    Put a list of categories for iyph posts into the template context.
+    """
+    results=[]
+    iyphtoolboxitem = IYPHToolBoxItem.objects.published()
+    
+    categories = IYPHToolBoxCategory.objects.all().order_by('id')
+    print(categories)
+    for c in categories:
+        print(c)
+        items = iyphtoolboxitem.filter(categories=c)
+        aaa="<b>"+str(c)+":</b><ul class='unstyled recent-posts'>"
+        for itm in items:
+            url=''
+            if itm.url != "":
+                url=itm.url
+            else:
+                url='/static/media/'+str(itm.file)
+            aaa=aaa+"<li><a href='"+str(url)+"'>"+str(itm.title)+"</a></li>"
+        aaa=aaa+"</ul> "
+  
+
+        results.append(aaa)
+
+    return results
 
 
 @register.inclusion_tag("admin/includes/quick_iyph.html", takes_context=True)
