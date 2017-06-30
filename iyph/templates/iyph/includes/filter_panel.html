@@ -57,8 +57,8 @@
   <h3>{% trans "IYPH Steering Committee" %}</h3>
   <ul class="unstyled recent-posts">
   {% for recent_resource in recent_resources %}
-  <li><a href="{{ recent_resource.get_absolute_url }}"
-      >{{ recent_resource.title }}</a></li>
+  <li><a href="/static/media/{{ recent_resource.file }}"
+      >{{ recent_resource.title }}</a> </li>
   {% endfor %}
   </ul>
 </div>
