@@ -1,0 +1,200 @@
+{% extends "base.html" %}
+{% load pages_tags mezzanine_tags i18n future staticfiles accounts_tags %}
+{% block extra_css %}
+  <link rel="stylesheet" href="{% static "css/DT_bootstrap.css" %}">
+{% endblock %}
+
+{% block meta_title %}
+  {% trans "IPPC Phytosanitary Treatments search tool" %}
+{% endblock %}
+
+{% block body_class %}wide{% endblock %}
+
+{% block breadcrumb_menu %}
+<li><a href="/{{ LANGUAGE_CODE }}/">{% trans "Home" %}</a><span class="divider">/</span></li>
+<li>
+  <a href="/core-activities/">{% trans "Core Activities" %}</a>
+  <span class="divider">/</span>
+</li>
+<li>
+  <a href="/core-activities/standards-setting/">{% trans "Standards setting" %}</a>
+  <span class="divider">/</span>
+</li>
+
+<li>
+  <a href="/core-activities/standards-setting/expert-drafting-groups/technical-panels/">{% trans "Technical panels (TPs)" %}</a>
+  <span class="divider">/</span>
+</li>
+<li>
+  <a href="/core-activities/standards-setting/expert-drafting-groups/technical-panels/technical-panel-phytosanitary-treatments/">{% trans "Technical Panel Phytosanitary Treatments (TPPT)" %}</a>
+  <span class="divider">/</span>
+</li>
+
+
+
+<li class="active">{% trans "IPPC Phytosanitary Treatments search tool" %}</li>
+{% endblock %}
+
+{% block local_nav %}
+{% endblock local_nav %}
+
+{% block pageinfo %}
+{% endblock pageinfo %}
+
+{% block main %}
+<p class="pull-right">
+<a href="javascript:history.go(-1)">{% trans "« Go back" %}</a>
+{% if user.is_superuser or perms.ippc.add_phytosanitarytreatment %}
+  <br>
+  <small><a class="btn btn-small btn-info" href="/core-activities/standards-setting/technical-panels/technical-panel-phytosanitary-treatments/phytosanitary-treatments-tool/create/new/">+ {% trans "Add new Phytosanitary Treatment" %}</a></small>
+{% endif %}
+</p>
+
+
+
+
+
+
+<h1>
+  <small class="normal">{% trans "IPPC Phytosanitary Treatments search tool" %}</small>
+</h1> 
+
+<div class="alert alert-warning">
+The tool presents summarized information on phytosanitary treatments. Please do not rely exclusively on the information provided in this search tool, but follow the link to the full treatment details that contain all the necessary information to conduct a treatment successfully. In case used in international trade, users are responsible in ensuring that the treatments comply with the import requirements of the importing country.
+</div>
+<div><b>Note:</b>
+<ul><li>This search tool will return phytosanitary treatments that are either internationally adopted by CPM (green) or it is used in national level (red).</li>
+    <li>The treatment types are categorized and linked to the treatment codes from the IPPC treatment types: Harmonized Terms for Treatment Types: <a href='http://ephyto.ippc.int/Tmt-types/'>http://ephyto.ippc.int/Tmt-types/</a> </li>
+<li>The information on the name of the pest are based on the text of the phytosanitary treatment and the scientific and common names are sourced from the European and Mediterranean Plant Protection Organization's (EPPO) Global Database: <a href='https://gd.eppo.int/search'>https://gd.eppo.int/search</a> </li>
+<li>The information on the commodity is based on the text of the treatment. Citrus species and hybrids are named according to the nomenclature in Cottin, R. 2002. Citrus of the world: A citrus directory version 2.0. France, SRA INRA-CIRAD. </li>
+</ul></div>
+<span style="width: 20px;height: 20px;background-color: #e5fce0">&#160;&#160;&#160;&#160;</span> <b>Adopted </b>
+<span style="width: 20px;height: 20px;background-color: #f7e2de">&#160;&#160;&#160;&#160;</span> <b>NON Adopted </b>
+
+
+{% if phyto_treatments_array %}
+<table class="table table-condensed table-striped" id="publications">
+  <thead>
+      <tr>
+          <th style="background-color: #ebcd2b;text-align: center;vertical-align:middle" >{% trans "Title" %}</th>
+        <th style="background-color:#ebcd2b;text-align: center; vertical-align:middle;" title="The treatment types are categorized and linked to the IPPC treatment codes from the IPPC treatment types: Harmonized Terms for Treatment Types: http://ephyto.ippc.int/Tmt-types/">{% trans "Treatment type" %}</th>
+        <th style="background-color:#ebcd2b;text-align: center; vertical-align:middle;" title="The information on the name of the pest are based on the text of the phytosanitary treatment and the scientific and common names are sourced  from the European and Mediterranean Plant Protection Organization's (EPPO) Global Database: https://gd.eppo.int/search ">{% trans "Pest" %}</th>
+        <th style="background-color:#ebcd2b;text-align: center; vertical-align:middle;"  title="The information on the commodity is based on the text of the treatment. Citrus species and hybrids are named according to the nomenclature in Cottin, R. 2002. Citrus of the world: A citrus directory version 2.0. France, SRA INRA-CIRAD">{% trans "Product/Commodity" %}</th>
+        <th style="background-color:#ebcd2b;text-align: center; vertical-align:middle;" >{% trans "Treatment schedule" %}</th>
+        <th style="background-color:#ebcd2b;text-align: center; vertical-align:middle;"  title="Country that accepts trade based on the treatment">{% trans "Country" %}</th>
+        <!--th>{% trans "Link" %}</th-->
+        <th style="background-color:#ebcd2b;text-align: center; vertical-align:middle;" >{% trans "Last Updated" %}</th>
+        {% if user.is_superuser  or  perms.ippc.add_phytosanitarytreatment %}
+           <th style="background-color:#ebcd2b;text-align: center; vertical-align:middle;" >&#160;</th>
+         {% endif %}
+    </tr>
+  </thead>
+  <tbody>
+{% for object in phyto_treatments_array %}
+
+ <tr>
+   {% if  object.0.treatment_status == 1 %}
+         <td style="background-color: #e5fce0" nowrap>
+    {% else %}
+        <td style="background-color: #f7e2de" nowrap>
+ {% endif %}
+ <a href="/core-activities/standards-setting/technical-panels/technical-panel-phytosanitary-treatments/phytosanitary-treatments-tool/{{ object.0.slug }}">{% autoescape off %}{{ object.0.title }} {% endautoescape %}</a></td>
+      <td>{{ object.0.treatment_type }}</td>
+      <td>{% autoescape off %}{{ object.1}} {% endautoescape %}</td>
+      <td>{% autoescape off %}{{ object.2 }} {% endautoescape %}</td>
+      <td> {% if object.0.treatmentschedule %}   
+          {% autoescape off %} 
+              {{ object.0.treatmentschedule  }} 
+             {% endautoescape %}   {% endif %} 
+         </td>
+       <td>
+            {% if  object.0.internationally_approved == 1 %}
+{% trans "Internationally approved" %}
+    {% else %}
+   {% if  object.0.countries.all %}
+  
+    <ul class="unstyled nomargin">
+    {% for c in object.0.countries.all %}
+      <li>{{ c.title  }} ({{c.iso3}})</li>
+    {% empty %}
+    {% endfor %}
+    </ul>  {% endif %}
+  </dd>
+  {% endif %}
+           
+        
+      </td>
+         <!--td><a href="{{object.0.treatmeant_link}}">{% trans "Link" %}</a>  </td-->
+    
+      <td>{{ object.0.modify_date|date:"d M Y" }} </td>
+        {% if user.is_superuser or perms.ippc.change_phytosanitarytreatment %}
+        <td>
+            {% if user.is_superuser %}   
+                <a class="small pull-right" href="/admin/ippc/phytosanitarytreatment/{{ object.0.id }}"><i class="icon-edit"></i>Edit as Admin</a><br>
+            {% endif %}
+            {% if perms.ippc.change_phytosanitarytreatment %}
+             <a class="small pull-right" href="/core-activities/standards-setting/technical-panels/technical-panel-phytosanitary-treatments/phytosanitary-treatments-tool/edit/{{ object.0.id }}"><i class="icon-edit"></i> {% trans "Edit" %}</a>
+        {% endif %}
+        </td>
+        {% endif %}
+    </tr>
+ 
+    {% endfor %}
+  </tbody>
+</table>
+
+
+
+{% if is_paginated %}
+  {% if page_obj.has_other_pages %}
+    <div class="pagination">
+    <ul>
+    <li class="disabled page-info">
+        <a>{% trans "Page" %} {{ page_obj.number }} {% trans "of" %} {{ page_obj.paginator.num_pages }}</a>
+    </li>
+    <li class="prev previous{% if not page_obj.has_previous %} disabled{% endif %}">
+        <a{% if page_obj.has_previous %} href="{% url 'event-reporting-list' page.title|slugify %}?page={{ page_obj.previous_page_number }}"{% endif %}>&larr;</a>
+    </li>
+    {% for page in page_obj.paginator.page_range %}
+        {% if page %}
+            <li class="{% ifequal page page_obj.number %}active{% endifequal %}"><a href="?page={{ page }}">{{ page }}</a></li>
+        {% else %}
+            <li class="disabled"><a href="#">…</a></li>
+        {% endif %}
+    {% endfor %}
+    <li class="next{% if not page_obj.has_next %} disabled{% endif %}">
+        <a{% if page_obj.has_next %} href="{% url 'event-reporting-list' page.title|slugify %}?page={{ page_obj.next_page_number }}"{% endif %}>&rarr;</a>
+    </li>
+    </ul>
+    </div>
+  {% endif %}
+{% endif %}
+
+{% else %}
+<p>No Phytosanitary treatments available.</p>
+{% endif %}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+ 
+
+{% endblock %}
+{% block extra_js %}
+  <script src="{% static "js/jquery.dataTables.js" %}"></script>
+  <script src="{% static "js/DT_bootstrap.js" %}"></script>
+{% endblock %}

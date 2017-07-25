@@ -1,0 +1,127 @@
+{% extends "base.html" %}
+{% load pages_tags mezzanine_tags i18n future staticfiles accounts_tags %}
+
+{% block meta_title %}{{ phytotreatment.title}}{% endblock %}
+
+{% block breadcrumb_menu %}
+<li><a href="/{{ LANGUAGE_CODE }}/">{% trans "Home" %}</a><span class="divider">/</span></li>
+<li>
+  <a href="/core-activities/">{% trans "Core Activities" %}</a>
+  <span class="divider">/</span>
+</li>
+<li>
+  <a href="/core-activities/standards-setting/">{% trans "Standards setting" %}</a>
+  <span class="divider">/</span>
+</li>
+
+<li>
+  <a href="/core-activities/standards-setting/expert-drafting-groups/technical-panels/">{% trans "Technical panels (TPs)" %}</a>
+  <span class="divider">/</span>
+</li>
+<li>
+  <a href="/core-activities/standards-setting/expert-drafting-groups/technical-panels/technical-panel-phytosanitary-treatments/">{% trans "Technical Panel Phytosanitary Treatments (TPPT)" %}</a>
+  <span class="divider">/</span>
+</li>
+
+<li>
+  <a href="/core-activities/standards-setting/technical-panels/technical-panel-phytosanitary-treatments/phytosanitary-treatments-tool/">{% trans "IPPC Phytosanitary Treatments search tool" %}</a>
+  <span class="divider">/</span>
+</li>
+
+
+
+
+<li class="active">{{ phytotreatment.title }}</li>
+{% endblock %}
+
+{% block local_nav %}
+<div class="well localnav">
+    
+  <p>
+    <a href="javascript:history.go(-1)">{% trans "« Go back" %}</a><br>
+       {% if perms.ippc.change_phytosanitarytreatment %}
+           <a class="btn btn-small btn-info" href="/core-activities/standards-setting/technical-panels/technical-panel-phytosanitary-treatments/phytosanitary-treatments-tool/edit/{{phytotreatment.id}}"><i class="icon-edit icon-white"></i> Edit</a>
+        {% endif %}
+        {% if user.is_superuser %} 
+        <a class="btn btn-small btn-info" href="/admin/ippc/phytosanitarytreatment/{{ phytotreatment.id }}">Edit as Admin</a><br>
+         {% endif %}
+    
+    </p>
+    
+    
+    
+    
+    
+</div>
+{% endblock local_nav %}
+
+{% block pageinfo %}
+
+{% endblock pageinfo %}
+
+{% block main %}
+<h1>{{ phytotreatment.title }}</h1> 
+<dl class="dl-horizontal">
+
+
+
+
+  <dt>{% trans "Publish Date" %}</dt>
+  <dd>{% blocktrans with sometime=phytotreatment.publish_date|date:"D, d M Y, H:i" %}{{ sometime }}{% endblocktrans %}</dd>
+  
+  <dt>{% trans "Last Updated" %}</dt>
+  <dd>{{ phytotreatment.modify_date }}</dd>
+
+  <dt>{% trans "Status" %}</dt>
+  {% if phytotreatment.treatment_status == 1  %}
+  <dd style="background-color: #e5fce0">
+   {% else %}
+  <dd style="background-color: #f7e2de"> 
+  {% endif %}
+      {{ phytotreatment.treatment_status_verbose }}</dd>
+
+  <dt>{% trans "Treatment type" %}</dt>
+  <dd>{{phytotreatment.treatment_type}}</dd>
+  
+  {% if pestidentity %}
+  <dt>{% trans "Pest" %}</dt>
+  <dd>{% autoescape off %} {{ pestidentity }}  {% endautoescape %} </dd>
+  {% endif %}
+  {% if commodityidentity %}
+  <dt>{% trans "Product/Commodity" %}</dt>
+  <dd>{% autoescape off %}{{ commodityidentity }} {% endautoescape %} </dd>
+  {% endif %}
+  
+  {% if phytotreatment.treatmentschedule %}
+  <dt>{% trans "Treatment schedule" %}</dt>
+  <dd>  {% autoescape off %} 
+              {{ object.treatmentschedule  }} 
+             {% endautoescape %}  
+  </dd>
+  {% endif %}
+  
+
+<dt>{% trans "Country that accepts trade based on the treatment" %}</dt>
+ <dd>
+   {% if phytotreatment.internationally_approved == 1 %}
+{% trans "Internationally approved" %}
+    {% else %}
+   {% if phytotreatment.countries.all %}
+  
+    <ul class="unstyled nomargin">
+    {% for c in phytotreatment.countries.all %}
+      <li>{{ c.title  }} [{{c.iso3}}]</li>
+    {% empty %}
+    {% endfor %}
+    </ul>  {% endif %}
+  </dd>
+  {% endif %}
+  
+  <dt>{% trans "Link" %}</dt>
+ <dd><a href="{{phytotreatment.treatmeant_link}}">{{ phytotreatment.treatmeant_link }}</a></dd>
+ 
+  
+
+</dl>
+
+{% endblock %}

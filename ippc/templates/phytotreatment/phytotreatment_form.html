@@ -1,0 +1,120 @@
+{# https://github.com/samwillis/pagedown-bootstrap #}
+{# http://stackoverflow.com/a/5930179 #}
+<script src="//tinymce.cachefly.net/4.2/tinymce.min.js"></script>
+<script>
+tinymce.init({selector: "textarea",    theme: "modern",    plugins: [        "advlist autolink lists link image charmap print preview hr anchor pagebreak",        "searchreplace wordcount visualblocks visualchars code fullscreen",        "insertdatetime media nonbreaking save table contextmenu directionality",        "emoticons template paste textcolor colorpicker textpattern imagetools"    ],    toolbar1: "insertfile undo redo | styleselect | bold italic | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | link image",     image_advtab: true,    templates: [        {title: 'Test template 1', content: 'Test 1'},        {title: 'Test template 2', content: 'Test 2'}    ]});
+</script>
+{% load pages_tags translate_tags mezzanine_tags ippc_tags i18n future staticfiles accounts_tags %} {# accounts_tags #}
+
+{% if form.non_field_errors or form.errors %}
+<div class="alert alert-error">{% trans "Please correct the errors below." %}
+<ul>
+{% for error in form.non_field_errors %}
+<li>{{ error }}</li>
+{% endfor %}
+{% for error in form.errors %}
+<li>{{ error }}</li>
+{% endfor %}
+</ul>
+</div>
+{% endif %}
+
+
+{% for f in form %}
+{% if f.name == 'internationally_approved' %}  
+<div class="control-group">
+                                          
+<label>{{f.label|safe}}</label>
+                                            
+{{f}}<p>{{f.help_text|safe}}</p><b>OR</b> select countries</div>
+{% elif f.name == 'treatment_pestidentity_other' %}                            
+ <fieldset>
+    <legend>{% trans "Pest" %}</legend>
+                {{ pestform.management_form }}
+                {{ pestform.non_form_errors }}
+                {% for form in pestform %}
+                    {{ form.id }}
+                       {% if  form.errors %}
+                        <div class="inline {{ pestform.prefix }}"> 
+                       {% else %}   
+                        <div class="inline {{ pestform.prefix }}"  style="border:1px solid #808080; background: #f2f2f2;  padding:10px">
+                       {% endif %}
+                  
+                       {% if  form.errors %}
+                       <div class="alert alert-error"> 
+                       {% endif %}
+                           
+                        {{ form.pest.errors }}
+                        {{ form.pest.label_tag }}
+                        {{ form.pest }}
+                       
+                         {% if pestform.can_delete %}
+                            {{ form.DELETE }}
+                        {% endif %}
+                        {% if  pestform.errors %}
+                       </div> 
+                       {% endif %}
+                    </div>
+                {% endfor %}
+            </fieldset>
+ 
+<div class="control-group">
+                                       
+<label>OR {{f.label|safe}}</label>
+                                            
+{{f}} {{f.help_text|safe}}</div>
+
+{% elif f.name == 'treatment_commodityidentity_other' %}                            
+ 
+   <fieldset>
+    <legend>{% trans "Commodity" %}</legend>
+                {{ commodityform.management_form }}
+                {{ commodityform.non_form_errors }}
+                {% for form in commodityform %}
+                
+                    {{ form.id }}
+                       {% if  form.errors %}
+                        <div class="inline {{ commodityform.prefix }}"> 
+                       {% else %}   
+                        <div class="inline {{ commodityform.prefix }}"  style="border:1px solid #808080; background: #f2f2f2;  padding:10px">
+                       {% endif %}
+                  
+                       {% if  form.errors %}
+                       <div class="alert alert-error"> 
+                       {% endif %}
+                           
+                        {{ form.commodity.errors }}
+                        {{ form.commodity.label_tag }}
+                   
+                       {{ form.commodity }}
+                       
+                         {% if commodityform.can_delete %}
+                            {{ form.DELETE }}
+                        {% endif %}
+                        {% if  commodityform.errors %}
+                       </div> 
+                       {% endif %}
+                    </div>
+                {% endfor %}
+            </fieldset>
+ 
+ 
+<br>        
+<div class="control-group">
+<label>OR {{f.label|safe}}</label>
+{{f}} {{f.help_text|safe}} </div>
+
+{% else %} 
+<div class="control-group">
+<label>{{f.label|safe}}</label>
+{{f}}<p>{{f.help_text|safe}}</p></div>
+{% endif %}
+
+{% endfor %}
+
+
+
+  
+
+
+
