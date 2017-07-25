@@ -4,7 +4,7 @@
 {% block meta_title %}{% trans "Media-kit page" %} {% endblock %}
 
 {% block body_class %}wide{% endblock %}
-
+ 
 {% block breadcrumb_menu %}
 <li><a href="/{{ LANGUAGE_CODE }}/">{% trans "Home" %}</a><span class="divider">/</span></li>
 <li><a href="/{{ LANGUAGE_CODE }}/structure/">{% trans "About" %}</a><span class="divider">/</span></li>
@@ -13,7 +13,8 @@
 <li class="active">{% trans "Media Kit" %}</li>
 {% endblock %}
 
-{% block main %}
+{% block main %}  
+{% if user.is_superuser or perms.ippc.change_publication  %}
  <h1>{% trans "Media Kit" %}</h1>
     <p>{% trans "All IPPC media are available here subject to the following terms and conditions:" %}</p>
  <ol>
@@ -66,7 +67,7 @@
 
 
 
-
+{% endif%}
   
 {% endblock %}
 
