@@ -16,7 +16,7 @@ CountryNews,CountryNewsFile,CountryNewsUrl,CommodityKeyword,PreferredLanguages, 
 PartnersWebsite,PartnersWebsiteUrl,\
 PartnersNews,PartnersNewsFile,PartnersNewsUrl, \
 EppoCode,IssueKeyword, CommodityKeyword,IssueKeywordsRelate,CommodityKeywordsRelate, ContactType, IppcUserProfile,\
-QAQuestion,QAAnswer,FAQsCategory,FAQsItem,IRSSActivity,IRSSActivityFile,TransFAQsCategory,TransFAQsItem,UserMembershipHistory,MediaKitDocument
+QAQuestion,QAAnswer,FAQsCategory,FAQsItem,IRSSActivity,IRSSActivityFile,TransFAQsCategory,TransFAQsItem,UserMembershipHistory,MediaKitDocument,PhytosanitaryTreatment,PhytosanitaryTreatmentType#,PhytosanitaryTreatmentFile,PhytosanitaryTreatmentUrl
 #,TransReportingObligation
 
 from django.forms.models import inlineformset_factory
@@ -375,6 +375,35 @@ class PestReportAdmin(admin.ModelAdmin):
 
 admin.site.register(PestStatus, PestStatusAdmin)
 admin.site.register(PestReport, PestReportAdmin)
+
+class PhytosanitaryTreatmentTypeAdmin(admin.ModelAdmin):
+    save_on_top = True
+    
+admin.site.register(PhytosanitaryTreatmentType,PhytosanitaryTreatmentTypeAdmin)
+
+
+    
+class MyPhytosanitaryTreatmentAdminForm(forms.ModelForm):
+    class Meta:
+        model = PhytosanitaryTreatment
+        widgets = {
+            'treatment_type': autocomplete_light.ChoiceWidget('PhytosanitaryTreatmentTypeAutocomplete'),
+            'treatment_pestidentity': autocomplete_light.ChoiceWidget('NamesAutocomplete'),
+            'product_commodityidentity': autocomplete_light.ChoiceWidget('NamesAutocomplete'),
+        }
+
+   
+class PhytosanitaryTreatmentAdmin(admin.ModelAdmin):
+    form = MyPhytosanitaryTreatmentAdminForm
+  
+    save_on_top = True
+    list_display = ('title', 'publish_date', 'modify_date', 'status',)
+    list_filter = ('title', 'publish_date', 'modify_date', 'status', )
+    search_fields = ('title', 'summary')
+    prepopulated_fields = { 'slug': ['title'] }
+
+admin.site.register(PhytosanitaryTreatment, PhytosanitaryTreatmentAdmin)
+
 
 class PreferredLanguagesAdmin(admin.ModelAdmin):
     """Options for the PreferredLanguages field of users"""

@@ -21,7 +21,7 @@ CountryNews,CountryNewsFile,CountryNewsUrl, EmailUtilityMessage, EmailUtilityMes
 DraftProtocol,DraftProtocolFile,DraftProtocolComments,NotificationMessageRelate,Poll,  Poll_Choice,\
 FAQsCategory,FAQsItem,\
 QAQuestion,QAAnswer,ContactUsEmailMessage,UserAutoRegistration,IRSSActivityFile,IRSSActivity,\
-UserMembershipHistory
+UserMembershipHistory,PhytosanitaryTreatment,PhytosanitaryTreatmentPestsIdentity,PhytosanitaryTreatmentCommodityIdentity#,PhytosanitaryTreatmentUrl,PhytosanitaryTreatmentFile
 #,TransReportingObligation,Question,Answer
 
 
@@ -169,7 +169,9 @@ class CommodityKeywordsRelateForm(forms.ModelForm):
         widgets = {
          'commname': autocomplete_light.MultipleChoiceWidget ('CommodityKeywordAutocomplete'),   
          }   
+         
 
+     
 class ReportingObligationForm(forms.ModelForm):
 
     # country = forms.ChoiceField(widget=forms.Select(), initial='country')
@@ -403,6 +405,71 @@ class PartnersNewsForm(forms.ModelForm):
             'partners': forms.HiddenInput(),
             'publication_date': AdminDateWidget(),
            }
+class PhytosanitaryTreatmentForm(forms.ModelForm):
+
+    # country = forms.ChoiceField(widget=forms.Select(), initial='country')
+    # =todo: https://docs.djangoproject.com/en/dev/ref/forms/api/#dynamic-initial-values
+
+    class Meta:
+        model = PhytosanitaryTreatment
+        fields = [
+            'title', 
+            'status', 
+            'treatment_status', 
+            'treatment_type',
+            'treatmeant_link',
+            'internationally_approved',
+            'countries',
+            'treatmentschedule',
+            'treatment_pestidentity_other',
+            'treatment_commodityidentity_other',
+            ]
+        exclude = ('author', 'slug', 'publish_date', 'modify_date', 'summary', )
+        widgets = {
+            'treatment_type': autocomplete_light.ChoiceWidget('PhytosanitaryTreatmentTypeAutocomplete'),
+            # 'treatment_pestidentity': autocomplete_light.ChoiceWidget('NamesAutocomplete'),
+            #'product_commodityidentity': autocomplete_light.ChoiceWidget('NamesAutocomplete'),
+            
+        }
+class PhytosanitaryTreatmentPestsIdentityForm(forms.ModelForm):
+
+    # country = forms.ChoiceField(widget=forms.Select(), initial='country')
+    # =todo: https://docs.djangoproject.com/en/dev/ref/forms/api/#dynamic-initial-values
+
+    class Meta:
+        model = PhytosanitaryTreatmentPestsIdentity
+        fields = [
+            'pest', 
+        ]
+        exclude = ('phytosanitarytreatment', )
+        widgets = {
+              'pest': autocomplete_light.ChoiceWidget('NamesAutocomplete'),
+        }
+
+
+PhytosanitaryTreatmentPestsIdentityFormSet = inlineformset_factory(PhytosanitaryTreatment, PhytosanitaryTreatmentPestsIdentity,  form=PhytosanitaryTreatmentPestsIdentityForm, extra=3)
+
+class PhytosanitaryTreatmentCommodityIdentityForm(forms.ModelForm):
+
+    # country = forms.ChoiceField(widget=forms.Select(), initial='country')
+    # =todo: https://docs.djangoproject.com/en/dev/ref/forms/api/#dynamic-initial-values
+
+    class Meta:
+        model = PhytosanitaryTreatmentCommodityIdentity
+        fields = [
+            'commodity', 
+        ]
+        exclude = ('phytosanitarytreatment', )
+        widgets = {
+              'commodity': autocomplete_light.ChoiceWidget('NamesAutocomplete'),
+        }
+
+
+PhytosanitaryTreatmentCommodityIdentityFormSet = inlineformset_factory(PhytosanitaryTreatment, PhytosanitaryTreatmentCommodityIdentity,  form=PhytosanitaryTreatmentCommodityIdentityForm, extra=3)
+
+
+
+
 
 PublicationUrlFormSet  = inlineformset_factory(Publication,  PublicationUrl, extra=1)
 PublicationFileFormSet = inlineformset_factory(Publication,  PublicationFile,extra=1)

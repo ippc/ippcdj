@@ -2134,7 +2134,108 @@ class MediaKitDocument(Orderable):
     def mediakit_type_verbose(self):
         return dict(MEDIAKIT_TYPE_CHOICES)[self.mediakit_type]
                          
+
+TREATMENT_STATUS_1 = 1
+TREATMENT_STATUS_2 = 2
+TREATMENT_STATUS_CHOICES = (
+    (TREATMENT_STATUS_1, _("Adopted")),
+    (TREATMENT_STATUS_2, _("NON Adopted")),
+)
+
+
+
+         
+         
+class PhytosanitaryTreatmentType(models.Model):
+    """ Phytosanitary Treatment Type"""
+    typecode=models.CharField(_("Treatment type code"), max_length=8)
+    typename = models.CharField(_("Treatment Full name + Treatment code"), max_length=250)
+    typefullname=models.CharField(_("Treatment Full name"), max_length=250)
+   
+    def __unicode__(self):
+        return self.typefullname
+    
+class PhytosanitaryTreatment(Displayable, models.Model):
+    """  Phytosanitary Treatment """
+
+    # slug - provided by mezzanine.core.models.slugged (subclassed by displayable)
+    # title - provided by mezzanine.core.models.slugged (subclassed by displayable)
+    # status - provided by mezzanine.core.models.displayable
+    # publish_date - provided by mezzanine.core.models.displayable
+    
+    modify_date = models.DateTimeField(_("Modified date"),
+        blank=True, null=True, editable=False)
+    summary = models.TextField(_("Summary or Short Description"),
+        blank=True, null=True)
+
+    treatment_type = models.ForeignKey(PhytosanitaryTreatmentType, null=True, blank=True)
+    treatment_status =models.IntegerField(_("Treatment status"),
+        choices=TREATMENT_STATUS_CHOICES, default=TREATMENT_STATUS_1)
+    treatment_pestidentity_other = models.CharField(_("Other pest"),help_text=_("type the text for the pest here if not found in the DB"),max_length=500,  blank=True, null=True)
+    treatment_commodityidentity_other = models.CharField(_("Other commodity"),help_text=_("type the text for the commodity here if not found in the DB"),max_length=500,blank=True, null=True)
+    
+    treatmentschedule = models.TextField(_("Treatment schedule"),
+        blank=True, null=True)
+    countries = models.ManyToManyField(CountryPage, 
+        verbose_name=_("Countries"), 
+        related_name='pythotreatment_country_page', blank=True, null=True)
+    internationally_approved = models.BooleanField(verbose_name=_("Internationally approved"),help_text=_("click on the checkbox if the Phytosanitary treatment is Internationally approved"),
+                                         default=False)
+    treatmeant_link = models.URLField(verbose_name=_("Link"), help_text=_("type the correct URL e.g. http://www.test.com"),blank=True, null=True)
+    objects = SearchableManager()
+    # attachments = AttachmentManager()
+    search_fields = ("title", "summary")
+
+    class Meta:
+        verbose_name_plural = _("Phytosanitary Treatments")
+        # abstract = True
+
+    def __unicode__(self):
+        return self.title
+
+    def country_code(self):
+        return self.country
+    
+    def filename(self):
+        return os.path.basename(self.file.name)
+        
+    
+    def treatment_status_verbose(self):
+        return dict(TREATMENT_STATUS_CHOICES)[self.treatment_status]
+      
+    # http://devwiki.beloblotskiy.com/index.php5/Django:_Decoupling_the_URLs  
+    @models.permalink # or: get_absolute_url = models.permalink(get_absolute_url) below
+    def get_absolute_url(self): # "view on site" link will be visible in admin interface
+        """Construct the absolute URL for a Pest Report."""
+        return ('pythosanitary-treatment-detail', (), {
+                            'slug': self.slug})
+            
+    def save(self, *args, **kwargs):
+        ''' On save, update timestamps '''
+        if not self.id:
+            self.publish_date = datetime.today()
+            # Newly created object, so set slug
+            self.slug = slugify(self.title)
+        self.modify_date = datetime.now()
+        super(PhytosanitaryTreatment, self).save(*args, **kwargs)
+
+class PhytosanitaryTreatmentPestsIdentity(models.Model):
+    phytosanitarytreatment= models.ForeignKey(PhytosanitaryTreatment)
+    pest = models.ForeignKey(Names, null=True, blank=True)
+   # def __unicode__(self):  
+   #     return self  
+#    def name(self):
+#        return self.pest
+#    
+class PhytosanitaryTreatmentCommodityIdentity(models.Model):
+    phytosanitarytreatment= models.ForeignKey(PhytosanitaryTreatment)
+    commodity = models.ForeignKey(Names, null=True, blank=True)
+    def __unicode__(self):  
+        return self.commodity  
+    def name(self):
+        return self.commodity
                             
+                                                            
 class Translatable(models.Model):
     """ Translations of user-generated content - https://gist.github.com/renyi/3596248"""
     lang = models.CharField(max_length=5, choices=settings.LANGUAGES)
