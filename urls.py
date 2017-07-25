@@ -42,7 +42,8 @@ QAQuestionListView, QAQuestionDetailView, QAQuestionAnswersView,question_create,
 FAQsListView, faqcategory_edit,faqcategory_create,faq_edit,faq_create,FAQsItemDetailView,FAQsCategoryDetailView,\
 ContactUsEmailMessageListView,   ContactUsEmailMessageDetailView , contactus_email_send,UserAutoRegistrationListView,auto_register,auto_register_approve,auto_register_delete,\
 IRSSActivityListView,IRSSActivityDetailView,irss_activity_create,irss_activity_edit   ,CountryStatisticsTotalNroByYearListView,subscribe_to_news,NewsStatisticsByYearListView,\
-UserMembershipHistoryListView,UserMembershipHistoryDetailView,usermembershiphistory_create,usermembershiphistory_edit,MediaKitDocumentListView,CountryStatsSingleLegislationsListView
+UserMembershipHistoryListView,UserMembershipHistoryDetailView,usermembershiphistory_create,usermembershiphistory_edit,MediaKitDocumentListView,CountryStatsSingleLegislationsListView,\
+PhytosanitaryTreatmentDetailView,PhytosanitaryTreatmentListView ,phytosanitarytreatment_create,phytosanitarytreatment_edit
 #QuestionListView, QuestionDetailView, QuestionAnswersView,question_create,question_edit,answer_edit      
 #reporting_obligation_translate,
 from schedule.periods import Year, Month, Week, Day
@@ -639,7 +640,24 @@ url(r'^external-cooperation/organizations-page-in-ipp/(?P<partner>[\w-]+)/$',   
      url(r'^draftprotocolcomments/edit/(?P<dp_id>\d+)/(?P<id>\d+)/$',
         view=draftprotocol_comment_edit,
         name='draftprotocol-comment-edit'),
+#--------------------------------
 
+#------------ PHYTO TREATMENT----------------------
+    url(r'^core-activities/standards-setting/technical-panels/technical-panel-phytosanitary-treatments/phytosanitary-treatments-tool/(?P<slug>[\w-]+)/$',
+        view=PhytosanitaryTreatmentDetailView.as_view(), name="phytosanitary-treatment-detail"),
+     #create
+    url(r'^core-activities/standards-setting/technical-panels/technical-panel-phytosanitary-treatments/phytosanitary-treatments-tool/create/new/$',
+        view=phytosanitarytreatment_create,
+        name='phytosanitary-treatment-create'),
+     #   edit
+        url(r'^core-activities/standards-setting/technical-panels/technical-panel-phytosanitary-treatments/phytosanitary-treatments-tool/edit/(?P<id>\d+)/$',
+        view=phytosanitarytreatment_edit,
+        name='phytosanitary-treatment-edit'),
+    url(r'^core-activities/standards-setting/technical-panels/technical-panel-phytosanitary-treatments/phytosanitary-treatments-tool/$',
+        view=PhytosanitaryTreatmentListView.as_view(),
+        # view=country_view(),
+        name='phytosanitary-treatment-list'),
+        
         
 #-------------------------------------------#
     # CN news list
