@@ -94,6 +94,27 @@
             })
 
         </script>
+        
+        {% endif %}
+          {% if pestform.prefix %}
+        <script type="text/javascript">
+            $(function() {
+                $(".inline.{{ pestform.prefix }}").formset({
+                    prefix: "{{ pestform.prefix }}",
+                })
+            })
+
+        </script>
+        {% endif %}
+           {% if commodityform.prefix %}
+        <script type="text/javascript">
+            $(function() {
+                $(".inline.{{ commodityform.prefix }}").formset({
+                    prefix: "{{ commodityform.prefix }}",
+                })
+            })
+
+        </script>
         {% endif %}
         <style type="text/css">
 
@@ -253,8 +274,8 @@
 
         <div class="container-fluid">
 
-            <div class="row-fluid">
-                <div class="span{% block mainspansize %}{% if page.id != None %}{% if page.id == 322 %}7{% else %}8{% endif %}{% else %}12{% endif %}{% endblock mainspansize %} middle">
+            <div class="row-fluid"> 
+                <div class="span{% block mainspansize %}{% if page.id != None %}{% if  '/phytosanitary-treatments-tool/' in request.path %}12{% else %}8{% endif %}{% else %}12{% endif %}{% endblock mainspansize %} middle">
                 {% block main %}{% endblock %}
                 
                 </div>
@@ -277,21 +298,24 @@
                         {% page_menu "pages/menus/tree.html" %}
                     </div> 
                     {% include "pages/menus/tree_key_partners.html" %}
-                    {% elif page.id == 322 or  page.parent_id == 322   or  page.parent_id == 323    or  page.parent_id == 449 or  page.parent_id == 427 or  page.parent_id == 429 or  page.parent_id == 459   or  page.parent_id == 455 or  page.parent_id == 445 %}
-                    <div class="panel tree">
+                    {% elif  page.id == 322 or  page.parent_id == 322 or page.parent_id == 323    or  page.parent_id == 449 or  page.parent_id == 427 or  page.parent_id == 429 or  page.parent_id == 459   or  page.parent_id == 455 or  page.parent_id == 445 %}
+                    <div class="panel tree"<!-- -->
                         {% page_menu "pages/menus/tree.html" %}
                     </div> 
                     {% include "pages/menus/tree_key_core.html" %}
                 {% elif page.id == 345 or   page.parent_id == 345   %}
+                {% if  '/phytosanitary-treatments-tool/' in request.path %}
+                {% else %}
                     <div class="panel tree">
                         {% page_menu "pages/menus/tree.html" %}
                     </div> 
                     {% include "pages/menus/tree_key_ssu.html" %}
-
+{% endif %}
                     {# FAQ page show/hide ================= #}
                    
                    {% elif	page.id == 1096 %}<!--#530???-->
-                   
+                    
+                 
                    {% elif	page.id == 858 %} 
                     <style type="text/css" media="screen">
                         h2 {margin:1em 0 0;}
