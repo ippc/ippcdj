@@ -206,7 +206,6 @@ $(function() {
                   
                   <tr>
                      <th colspan="1"  style="background:#cccccc; text-align: center;"><center>&#160;</center></th>
-                     <th colspan="1"  style="background:#cccccc; text-align: center;"><center>&#160;</center></th>
                      <th colspan="2"  style="background:#f2f2f2; text-align: center;"><center>Apr {{prevyear}}</center></th>
                      <th colspan="2"  style="background:#cccccc; text-align: center;"><center>May {{prevyear}}</center></th>
                      <th colspan="2"  style="background:#f2f2f2; text-align: center;"><center>Jun {{prevyear}}</center></th>
@@ -216,7 +215,6 @@ $(function() {
                     </tr> 
                     <tr>
                      <th colspan="1"  style="background:#cccccc; text-align: center;"><center>Region </center></th>
-                        <th style="background:#cccccc;">Countries</th>
                         <th style="background:#f2f2f2;">New reports</th>
                         <th style="background:#f2f2f2;">Updated reports</th>
                         <th style="background:#cccccc;">New reports</th>
@@ -236,34 +234,33 @@ $(function() {
                     {% for object in regionsPCP.0 %}
                     <tr>
                        <th style="background:#f2f2f2;">{{ object.0 }}</th>
-                       <td>{{ object.6}}</td>
-                           <td>{%if object.7.0.0 == 0 %} &#160; {%else%} {{object.7.0.0}} {%endif%}  </td> 
-                           <td>{%if object.7.1.0 == 0 %} &#160; {%else%} {{object.7.1.0}} {%endif%}  </td> 
+                           <td>{{object.7.2.0}}<br>{%if object.7.0.0 == 0 %} &#160; {%else%} {{object.7.0.0}} {%endif%}  </td> 
+                           <td>{{object.7.3.0}}<br>{%if object.7.1.0 == 0 %} &#160; {%else%} {{object.7.1.0}} {%endif%}  </td> 
                            
-                           <td>{%if object.7.0.1 == 0 %} &#160; {%else%} {{object.7.0.1}} {%endif%}  </td> 
-                           <td>{%if object.7.1.1 == 0 %} &#160; {%else%} {{object.7.1.1}} {%endif%}  </td> 
+                           <td>{{object.7.2.1}}<br>{%if object.7.0.1 == 0 %} &#160; {%else%} {{object.7.0.1}} {%endif%}  </td> 
+                           <td>{{object.7.3.1}}<br>{%if object.7.1.1 == 0 %} &#160; {%else%} {{object.7.1.1}} {%endif%}  </td> 
                     
-                           <td>{%if object.7.0.2 == 0 %} &#160; {%else%} {{object.7.0.2}} {%endif%}  </td> 
-                           <td>{%if object.7.1.2 == 0 %} &#160; {%else%} {{object.7.1.2}} {%endif%}  </td> 
+                           <td>{{object.7.2.2}}<br>{%if object.7.0.2 == 0 %} &#160; {%else%} {{object.7.0.2}} {%endif%}  </td> 
+                           <td>{{object.7.3.2}}<br>{%if object.7.1.2 == 0 %} &#160; {%else%} {{object.7.1.2}} {%endif%}  </td> 
                     
-                           <td>{%if object.7.0.3 == 0 %} &#160; {%else%} {{object.7.0.3}} {%endif%}  </td> 
-                           <td>{%if object.7.1.3 == 0 %} &#160; {%else%} {{object.7.1.3}} {%endif%}  </td> 
+                           <td>{{object.7.2.3}}<br>{%if object.7.0.3 == 0 %} &#160; {%else%} {{object.7.0.3}} {%endif%}  </td> 
+                           <td>{{object.7.3.3}}<br>{%if object.7.1.3 == 0 %} &#160; {%else%} {{object.7.1.3}} {%endif%}  </td> 
                     
-                           <td>{%if object.7.0.4 == 0 %} &#160; {%else%} {{object.7.0.4}} {%endif%}  </td> 
-                           <td>{%if object.7.1.4 == 0 %} &#160; {%else%} {{object.7.1.4}} {%endif%}  </td> 
+                           <td>{{object.7.2.4}}<br>{%if object.7.0.4 == 0 %} &#160; {%else%} {{object.7.0.4}} {%endif%}  </td> 
+                           <td>{{object.7.3.4}}<br>{%if object.7.1.4 == 0 %} &#160; {%else%} {{object.7.1.4}} {%endif%}  </td> 
                     
-                           <td>{%if object.7.0.5 == 0 %} &#160; {%else%} {{object.7.0.5}} {%endif%}  </td> 
-                           <td>{%if object.7.1.5 == 0 %} &#160; {%else%} {{object.7.1.5}} {%endif%}  </td> 
+                           <td>{{object.7.2.5}}<br>{%if object.7.0.5 == 0 %} &#160; {%else%} {{object.7.0.5}} {%endif%}  </td> 
+                           <td>{{object.7.3.5}}<br>{%if object.7.1.5 == 0 %} &#160; {%else%} {{object.7.1.5}} {%endif%}  </td> 
              
 
-                           
-                          
+                         
+                    
+                        
                     </tr>
                     
                     {% endfor %}
                       <tr>
                         <th style="background:#cccccc;">Total</th>
-                        <th>&#160;</th>
                         <th style="background:#f2f2f2;">{{totarray_months_n.0}}</th>
                         <th style="background:#f2f2f2;">{{totarray_months_u.0}}</th>
                         <th style="background:#f2f2f2;">{{totarray_months_n.1}}</th>
@@ -284,7 +281,6 @@ $(function() {
                  <thead>
                   
                   <tr>
-                     <th colspan="1"  style="background:#cccccc; text-align: center;border-top: 2px solid black;"><center>&#160;</center></th>
                      <th colspan="1"  style="background:#cccccc; text-align: center;border-top: 2px solid black;""><center>&#160;</center></th>
                      <th colspan="2"  style="background:#f2f2f2; text-align: center;border-top: 2px solid black;""><center>Oct {{prevyear}}</center></th>
                      <th colspan="2"  style="background:#cccccc; text-align: center;border-top: 2px solid black;""><center>Nov {{prevyear}}</center></th>
@@ -295,7 +291,6 @@ $(function() {
                     </tr> 
                     <tr>
                        <th colspan="1"  style="background:#cccccc; text-align: center;"><center>Region </center></th>
-                      <th style="background:#cccccc;">Countries</th>
                          <th style="background:#f2f2f2;">New reports</th>
                         <th style="background:#f2f2f2;">Updated reports</th>
                         <th style="background:#cccccc;">New reports</th>
@@ -316,24 +311,23 @@ $(function() {
                     {% for object in regionsPCP.0 %}
                     <tr>
                         <th style="background:#f2f2f2;">{{ object.0 }} </th>
-                         <td>{{ object.6}}</td>
-                           <td>{%if object.7.0.6 == 0 %} &#160; {%else%} {{object.7.0.6}} {%endif%}  </td> 
-                           <td>{%if object.7.1.6 == 0 %} &#160; {%else%} {{object.7.1.6}} {%endif%}  </td> 
+                           <td>{{object.7.2.6}}<br>{%if object.7.0.6 == 0 %} &#160; {%else%} {{object.7.0.6}} {%endif%}  </td> 
+                           <td>{{object.7.3.6}}<br>{%if object.7.1.6 == 0 %} &#160; {%else%} {{object.7.1.6}} {%endif%}  </td> 
                            
-                           <td>{%if object.7.0.7 == 0 %} &#160; {%else%} {{object.7.0.7}} {%endif%}  </td> 
-                           <td>{%if object.7.1.7 == 0 %} &#160; {%else%} {{object.7.1.7}} {%endif%}  </td> 
+                           <td>{{object.7.2.7}}<br>{%if object.7.0.7 == 0 %} &#160; {%else%} {{object.7.0.7}} {%endif%}  </td> 
+                           <td>{{object.7.3.7}}<br>{%if object.7.1.7 == 0 %} &#160; {%else%} {{object.7.1.7}} {%endif%}  </td> 
                     
-                           <td>{%if object.7.0.8 == 0 %} &#160; {%else%} {{object.7.0.8}} {%endif%}  </td> 
-                           <td>{%if object.7.1.8 == 0 %} &#160; {%else%} {{object.7.1.8}} {%endif%}  </td> 
+                           <td>{{object.7.2.8}}<br>{%if object.7.0.8 == 0 %} &#160; {%else%} {{object.7.0.8}} {%endif%}  </td> 
+                           <td>{{object.7.3.8}}<br>{%if object.7.1.8 == 0 %} &#160; {%else%} {{object.7.1.8}} {%endif%}  </td> 
                     
-                           <td>{%if object.7.0.9 == 0 %} &#160; {%else%} {{object.7.0.9}} {%endif%}  </td> 
-                           <td>{%if object.7.1.9 == 0 %} &#160; {%else%} {{object.7.1.9}} {%endif%}  </td> 
+                           <td>{{object.7.2.9}}<br>{%if object.7.0.9 == 0 %} &#160; {%else%} {{object.7.0.9}} {%endif%}  </td> 
+                           <td>{{object.7.3.9}}<br>{%if object.7.1.9 == 0 %} &#160; {%else%} {{object.7.1.9}} {%endif%}  </td> 
                     
-                           <td>{%if object.7.0.10 == 0 %} &#160; {%else%} {{object.7.0.10}} {%endif%}  </td> 
-                           <td>{%if object.7.1.10 == 0 %} &#160; {%else%} {{object.7.1.10}} {%endif%}  </td> 
+                           <td>{{object.7.2.10}}<br>{%if object.7.0.10 == 0 %} &#160; {%else%} {{object.7.0.10}} {%endif%}  </td> 
+                           <td>{{object.7.3.10}}<br>{%if object.7.1.10 == 0 %} &#160; {%else%} {{object.7.1.10}} {%endif%}  </td> 
                     
-                           <td>{%if object.7.0.11 == 0 %} &#160; {%else%} {{object.7.0.11}} {%endif%}  </td> 
-                           <td>{%if object.7.1.11 == 0 %} &#160; {%else%} {{object.7.1.11}} {%endif%}  </td> 
+                           <td>{{object.7.2.11}}<br>{%if object.7.0.11 == 0 %} &#160; {%else%} {{object.7.0.11}} {%endif%}  </td> 
+                           <td>{{object.7.3.11}}<br>{%if object.7.1.11 == 0 %} &#160; {%else%} {{object.7.1.11}} {%endif%}  </td> 
                     
                            
                           
@@ -345,8 +339,7 @@ $(function() {
                      
                    <tr>
                         <th style="background:#cccccc;">Total</th>
-                        <th>&#160;</th>
-                             <th>{{totarray_months_n.6}}</th>
+                        <th>{{totarray_months_n.6}}</th>
                         <th>{{totarray_months_u.6}}</th>
                         <th>{{totarray_months_n.7}}</th>
                         <th>{{totarray_months_u.7}}</th>
@@ -446,7 +439,6 @@ $(function() {
                   
                   <tr>
                      <th colspan="1"  style="background:#cccccc; text-align: center;"><center>&#160;</center></th>
-                     <th colspan="1"  style="background:#cccccc; text-align: center;"><center>&#160;</center></th>
                      <th colspan="2"  style="background:#f2f2f2; text-align: center;"><center>Apr {{prevyear}}</center></th>
                      <th colspan="2"  style="background:#cccccc; text-align: center;"><center>May {{prevyear}}</center></th>
                      <th colspan="2"  style="background:#f2f2f2; text-align: center;"><center>Jun {{prevyear}}</center></th>
@@ -456,7 +448,6 @@ $(function() {
                     </tr> 
                     <tr>
                      <th colspan="1"  style="background:#cccccc; text-align: center;"><center>Region </center></th>
-                        <th style="background:#cccccc;">Countries</th>
                         <th style="background:#f2f2f2;">New reports</th>
                         <th style="background:#f2f2f2;">Updated reports</th>
                         <th style="background:#cccccc;">New reports</th>
@@ -476,24 +467,23 @@ $(function() {
                     {% for object in regionsAll.0 %}
                     <tr>
                        <th style="background:#f2f2f2;">{{ object.0 }}</th>
-                       <td>{{ object.6}}</td>
-                           <td>{%if object.7.0.0 == 0 %} &#160; {%else%} {{object.7.0.0}} {%endif%}  </td> 
-                           <td>{%if object.7.1.0 == 0 %} &#160; {%else%} {{object.7.1.0}} {%endif%}  </td> 
+                           <td>{{object.7.2.0}}<br>{%if object.7.0.0 == 0 %} &#160; {%else%} {{object.7.0.0}} {%endif%}  </td> 
+                           <td>{{object.7.3.0}}<br>{%if object.7.1.0 == 0 %} &#160; {%else%} {{object.7.1.0}} {%endif%}  </td> 
                            
-                           <td>{%if object.7.0.1 == 0 %} &#160; {%else%} {{object.7.0.1}} {%endif%}  </td> 
-                           <td>{%if object.7.1.1 == 0 %} &#160; {%else%} {{object.7.1.1}} {%endif%}  </td> 
+                           <td>{{object.7.2.1}}<br>{%if object.7.0.1 == 0 %} &#160; {%else%} {{object.7.0.1}} {%endif%}  </td> 
+                           <td>{{object.7.3.1}}<br>{%if object.7.1.1 == 0 %} &#160; {%else%} {{object.7.1.1}} {%endif%}  </td> 
                     
-                           <td>{%if object.7.0.2 == 0 %} &#160; {%else%} {{object.7.0.2}} {%endif%}  </td> 
-                           <td>{%if object.7.1.2 == 0 %} &#160; {%else%} {{object.7.1.2}} {%endif%}  </td> 
+                           <td>{{object.7.2.2}}<br>{%if object.7.0.2 == 0 %} &#160; {%else%} {{object.7.0.2}} {%endif%}  </td> 
+                           <td>{{object.7.3.2}}<br>{%if object.7.1.2 == 0 %} &#160; {%else%} {{object.7.1.2}} {%endif%}  </td> 
                     
-                           <td>{%if object.7.0.3 == 0 %} &#160; {%else%} {{object.7.0.3}} {%endif%}  </td> 
-                           <td>{%if object.7.1.3 == 0 %} &#160; {%else%} {{object.7.1.3}} {%endif%}  </td> 
+                           <td>{{object.7.2.3}}<br>{%if object.7.0.3 == 0 %} &#160; {%else%} {{object.7.0.3}} {%endif%}  </td> 
+                           <td>{{object.7.3.3}}<br>{%if object.7.1.3 == 0 %} &#160; {%else%} {{object.7.1.3}} {%endif%}  </td> 
                     
-                           <td>{%if object.7.0.4 == 0 %} &#160; {%else%} {{object.7.0.4}} {%endif%}  </td> 
-                           <td>{%if object.7.1.4 == 0 %} &#160; {%else%} {{object.7.1.4}} {%endif%}  </td> 
+                           <td>{{object.7.2.4}}<br>{%if object.7.0.4 == 0 %} &#160; {%else%} {{object.7.0.4}} {%endif%}  </td> 
+                           <td>{{object.7.3.4}}<br>{%if object.7.1.4 == 0 %} &#160; {%else%} {{object.7.1.4}} {%endif%}  </td> 
                     
-                           <td>{%if object.7.0.5 == 0 %} &#160; {%else%} {{object.7.0.5}} {%endif%}  </td> 
-                           <td>{%if object.7.1.5 == 0 %} &#160; {%else%} {{object.7.1.5}} {%endif%}  </td> 
+                           <td>{{object.7.2.5}}<br>{%if object.7.0.5 == 0 %} &#160; {%else%} {{object.7.0.5}} {%endif%}  </td> 
+                           <td>{{object.7.3.5}}<br>{%if object.7.1.5 == 0 %} &#160; {%else%} {{object.7.1.5}} {%endif%}  </td> 
              
 
                            
@@ -502,7 +492,6 @@ $(function() {
                     {% endfor %}
                           <tr>
                         <th style="background:#cccccc;">Total</th>
-                        <th>&#160;</th>
                         <th style="background:#f2f2f2;">{{totarray_months_n_all.0}}</th>
                         <th style="background:#f2f2f2;">{{totarray_months_u_all.0}}</th>
                         <th style="background:#f2f2f2;">{{totarray_months_n_all.1}}</th>
@@ -523,8 +512,7 @@ $(function() {
                  <thead>
                   
                   <tr>
-                     <th colspan="1"  style="background:#cccccc; text-align: center;border-top: 2px solid black;"><center>&#160;</center></th>
-                     <th colspan="1"  style="background:#cccccc; text-align: center;border-top: 2px solid black;"><center>&#160;</center></th>
+                     <th colspan="1"  style="background:#cccccc; text-align: center;"><center>&#160;</center></th>
                      <th colspan="2"  style="background:#f2f2f2; text-align: center;border-top: 2px solid black;"><center>Oct {{prevyear}}</center></th>
                      <th colspan="2"  style="background:#cccccc; text-align: center;border-top: 2px solid black;"><center>Nov {{prevyear}}</center></th>
                      <th colspan="2"  style="background:#f2f2f2; text-align: center;border-top: 2px solid black;"><center>Dec {{prevyear}}</center></th>
@@ -534,9 +522,8 @@ $(function() {
                     </tr> 
                     <tr>
                       <th colspan="1"  style="background:#cccccc; text-align: center;"><center>Region </center></th>
-                      <th style="background:#cccccc;">Countries</th>
-                         <th style="background:#f2f2f2;">New reports</th>
-                        <th style="background:#f2f2f2;">Updated reports</th>
+                       <th style="background:#f2f2f2;">New reports</th>
+                         <th style="background:#f2f2f2;">Updated reports</th>
                         <th style="background:#cccccc;">New reports</th>
                         <th style="background:#cccccc;">Updated reports</th>
                         <th style="background:#f2f2f2;">New reports</th>
@@ -554,25 +541,24 @@ $(function() {
                 <tbody>
                     {% for object in regionsAll.0 %}
                     <tr>
-                        <th style="background:#f2f2f2;">{{ object.0 }} </th>
-                         <td>{{ object.6}}</td>
-                           <td>{%if object.7.0.6 == 0 %} &#160; {%else%} {{object.7.0.6}} {%endif%}  </td> 
-                           <td>{%if object.7.1.6 == 0 %} &#160; {%else%} {{object.7.1.6}} {%endif%}  </td> 
+                      <th colspan="1"  style="background:#cccccc; text-align: center;">{{object.0}}</center></th>
+                          <td>{{object.7.2.6}}<br>{%if object.7.0.6 == 0 %} &#160; {%else%} {{object.7.0.6}} {%endif%}  </td> 
+                           <td>{{object.7.3.6}}<br>{%if object.7.1.6 == 0 %} &#160; {%else%} {{object.7.1.6}} {%endif%}  </td> 
                            
-                           <td>{%if object.7.0.7 == 0 %} &#160; {%else%} {{object.7.0.7}} {%endif%}  </td> 
-                           <td>{%if object.7.1.7 == 0 %} &#160; {%else%} {{object.7.1.7}} {%endif%}  </td> 
+                           <td>{{object.7.2.7}}<br>{%if object.7.0.7 == 0 %} &#160; {%else%} {{object.7.0.7}} {%endif%}  </td> 
+                           <td>{{object.7.3.7}}<br>{%if object.7.1.7 == 0 %} &#160; {%else%} {{object.7.1.7}} {%endif%}  </td> 
                     
-                           <td>{%if object.7.0.8 == 0 %} &#160; {%else%} {{object.7.0.8}} {%endif%}  </td> 
-                           <td>{%if object.7.1.8 == 0 %} &#160; {%else%} {{object.7.1.8}} {%endif%}  </td> 
+                           <td>{{object.7.2.8}}<br>{%if object.7.0.8 == 0 %} &#160; {%else%} {{object.7.0.8}} {%endif%}  </td> 
+                           <td>{{object.7.3.8}}<br>{%if object.7.1.8 == 0 %} &#160; {%else%} {{object.7.1.8}} {%endif%}  </td> 
                     
-                           <td>{%if object.7.0.9 == 0 %} &#160; {%else%} {{object.7.0.9}} {%endif%}  </td> 
-                           <td>{%if object.7.1.9 == 0 %} &#160; {%else%} {{object.7.1.9}} {%endif%}  </td> 
+                           <td>{{object.7.2.9}}<br>{%if object.7.0.9 == 0 %} &#160; {%else%} {{object.7.0.9}} {%endif%}  </td> 
+                           <td>{{object.7.3.9}}<br>{%if object.7.1.9 == 0 %} &#160; {%else%} {{object.7.1.9}} {%endif%}  </td> 
                     
-                           <td>{%if object.7.0.10 == 0 %} &#160; {%else%} {{object.7.0.10}} {%endif%}  </td> 
-                           <td>{%if object.7.1.10 == 0 %} &#160; {%else%} {{object.7.1.10}} {%endif%}  </td> 
+                           <td>{{object.7.2.10}}<br>{%if object.7.0.10 == 0 %} &#160; {%else%} {{object.7.0.10}} {%endif%}  </td> 
+                           <td>{{object.7.3.10}}<br>{%if object.7.1.10 == 0 %} &#160; {%else%} {{object.7.1.10}} {%endif%}  </td> 
                     
-                           <td>{%if object.7.0.11 == 0 %} &#160; {%else%} {{object.7.0.11}} {%endif%}  </td> 
-                           <td>{%if object.7.1.11 == 0 %} &#160; {%else%} {{object.7.1.11}} {%endif%}  </td> 
+                           <td>{{object.7.2.11}}<br>{%if object.7.0.11 == 0 %} &#160; {%else%} {{object.7.0.11}} {%endif%}  </td> 
+                           <td>{{object.7.3.11}}<br>{%if object.7.1.11 == 0 %} &#160; {%else%} {{object.7.1.11}} {%endif%}  </td> 
                     
                            
                           
@@ -585,7 +571,6 @@ $(function() {
               
                        <tr>
                         <th style="background:#cccccc;">Total</th>
-                        <th>&#160;</th>
                         <th style="background:#f2f2f2;">{{totarray_months_n_all.6}}</th>
                         <th style="background:#f2f2f2;">{{totarray_months_u_all.6}}</th>
                         <th style="background:#f2f2f2;">{{totarray_months_n_all.7}}</th>
