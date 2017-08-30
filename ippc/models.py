@@ -828,7 +828,7 @@ class ReportingObligation(Displayable, models.Model):
     def reporting_obligation_type_verbose(self):
         return dict(BASIC_REP_TYPE_CHOICES)[self.reporting_obligation_type]
     
-
+#c
 class ReportingObligation_File(models.Model):
     reportingobligation = models.ForeignKey(ReportingObligation)
     description = models.CharField(max_length=255)
@@ -2234,8 +2234,8 @@ class PhytosanitaryTreatmentCommodityIdentity(models.Model):
         return self.commodity  
     def name(self):
         return self.commodity
-                            
-                                                            
+  
+        
 class Translatable(models.Model):
     """ Translations of user-generated content - https://gist.github.com/renyi/3596248"""
     lang = models.CharField(max_length=5, choices=settings.LANGUAGES)
