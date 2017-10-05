@@ -186,7 +186,7 @@ def check_and_addUser(firstname,lastname,email,grp,num,country,user_country_slug
             message1 = mail.EmailMessage(subject1,msg1,'ippc@fao.org', ['paola.sentinelli@fao.org'], ['paola.sentinelli@fao.org'])
             message1.content_subtype = "html"
             message1.send()
-            print('ERROR sending')
+            ##print('ERROR sending')
                         
 def canEdit(sessionid,country,user,module):
     can_edit=0
@@ -296,7 +296,7 @@ def canEdit(sessionid,country,user,module):
            is_module_editable=1
     else:       
                is_module_editable=1
-    print('+++++++++'+str(lower(slugify(user.get_profile().country))==lower(slugify(country))))
+    ##print('+++++++++'+str(lower(slugify(user.get_profile().country))==lower(slugify(country))))
     if  chosen_mod and is_module_editable and (user.groups.filter(name='Admin') or (lower(slugify(user.get_profile().country))==lower(slugify(country))  and (user.groups.filter(name='PCE Manager/Validator') or (is_edin_session and is_in_group)))):
         can_edit=1
         
@@ -313,7 +313,7 @@ def canSee(sessionid,country,user,module):
         session = get_object_or_404(PceVersion, id=sessionid)
     else:
         chosen_mod=1 
-    print('-------------paola--------------')
+    ##print('-------------paola--------------')
    
     
     
@@ -369,8 +369,8 @@ def canSee(sessionid,country,user,module):
     else:   
         is_in_group=1
         is_edin_session=1
-    print(is_in_group)
-    print(is_edin_session)
+    ##print(is_in_group)
+    ##print(is_edin_session)
     
     if  chosen_mod and (user.groups.filter(name='Admin') or (lower(slugify(user.get_profile().country))==lower(slugify(country))  and (user.groups.filter(name='PCE Manager/Validator') or ((user.groups.filter(name='PCE Facilitator') and is_fain_session) or (is_in_group and is_edin_session) )))):
         can_see=1
@@ -442,7 +442,7 @@ def getWeakenessFromModuleNameAndId(modulenum,sessionid):
         elif modulenum ==3:
            module = get_object_or_404(Module3, session=sessionid)
            weaknesses=get_object_or_404(Module3Weaknesses, module3_id=module.id)
-           print(weaknesses)
+           ##print(weaknesses)
         elif modulenum ==4:
            module = get_object_or_404(Module4, session=sessionid)
            weaknesses=get_object_or_404(Module4Weaknesses, module4_id=module.id)
@@ -1107,30 +1107,30 @@ def get_percentage_module_filled(num_mod,version):
     if num_mod == 6:
         tot_num_fields=37
         i=0
-        print()     
-        print()     
-        print()     
-        print("------------------------------------------------")     
-        print()     
-        print("------------        MOD 6              -----------------")     
-        print("tot_num_fields"+str(tot_num_fields))     
+        ##print()     
+        ##print()     
+        ##print()     
+        ##print("------------------------------------------------")     
+        ##print()     
+        ##print("------------        MOD 6              -----------------")     
+        ##print("tot_num_fields"+str(tot_num_fields))     
           
         modules = Module6.objects.filter(session_id=version).count()
         if modules>0:
             module = Module6.objects.filter(session_id=version)[0]
             if module.m_1==False:
                  tot_num_fields=tot_num_fields-2
-                 print("m1 tot_num_fields"+str(tot_num_fields))     
+                 ##print("m1 tot_num_fields"+str(tot_num_fields))     
         
             if module.m_3==True:
                  tot_num_fields=tot_num_fields-1
-                 print("m3 tot_num_fields"+str(tot_num_fields))     
+                 ##print("m3 tot_num_fields"+str(tot_num_fields))     
         
             if module.m_6==False:
                  tot_num_fields=tot_num_fields-1
-                 print("m6 tot_num_fields"+str(tot_num_fields))     
+                 ##print("m6 tot_num_fields"+str(tot_num_fields))     
         
-            print(">>>tot_num_fields"+str(tot_num_fields))     
+            ##print(">>>tot_num_fields"+str(tot_num_fields))     
              
             if module.m_1==True or module.m_1==False:
                     i=i+1
@@ -1207,7 +1207,7 @@ def get_percentage_module_filled(num_mod,version):
                     i=i+1
             if Module6Weaknesses.objects.filter(module6=module.id).count()>0 :
                 i=i+1
-        print(i)        
+        ##print(i)        
         percent=(i*100/tot_num_fields)
         
     if num_mod == 7:
@@ -1374,7 +1374,7 @@ def get_percentage_module_filled(num_mod,version):
          
     if num_mod == 8:
         tot_num_fields=45
-        print(tot_num_fields)
+        ##print(tot_num_fields)
         i=0
         modules = Module8.objects.filter(session_id=version).count()
         if modules>0:
@@ -1383,173 +1383,174 @@ def get_percentage_module_filled(num_mod,version):
                  tot_num_fields=tot_num_fields-1
             if module.m_22==False:
                  tot_num_fields=tot_num_fields-3
-            #print(tot_num_fields)
+            ###print(tot_num_fields)
             if module.m_1==True or module.m_1==False:
                  i=i+1        
-                 #print('1:'+str(i))
+                 ##print('1:'+str(i))
             if module.m_2==True or module.m_2==False:
                      i=i+1     
-                     #print('2:'+str(i))
+                     ##print('2:'+str(i))
             if Module8Grid3.objects.filter(module8=module.id).count()>0:
                     m8g3=Module8Grid3.objects.filter(module8=module.id)[0]
                     if (m8g3.c1== True or m8g3.c1== False) and (m8g3.c2== True or m8g3.c2== False) and (m8g3.c3== True or m8g3.c3== False) and(m8g3.c4== True or m8g3.c4== False)and (m8g3.c5== True or m8g3.c5== False):
                          i=i+1   
-                         #print('3:'+str(i))        
+                         ##print('3:'+str(i))        
             if module.m_4==True or module.m_4==False:
                      i=i+1     
-                     #print('4:'+str(i))
+                     ##print('4:'+str(i))
             if module.m_5==True or module.m_5==False:
                      i=i+1      
-                     #print('5:'+str(i))
+                     ##print('5:'+str(i))
             if module.m_6==True or module.m_6==False:
                      i=i+1      
-                     #print('6:'+str(i))
+                     ##print('6:'+str(i))
             if module.m_7==True or module.m_7==False:
                      i=i+1        
-                     #print('7:'+str(i))
+                     ##print('7:'+str(i))
             
             if module.m_8!='':
                      i=i+1        
-                     #print('8:'+str(i))
+                     ##print('8:'+str(i))
             if module.m_9!='':
                      i=i+1         
-                     #print('9:'+str(i))
+                     ##print('9:'+str(i))
             
             
             if module.m_10==True or module.m_10==False:
                      i=i+1      
-                     #print('10:'+str(i))
+                     ##print('10:'+str(i))
             if module.m_11==True or module.m_11==False:
                      i=i+1      
-                     #print('11:'+str(i))
+                     ##print('11:'+str(i))
             if module.m_12==True or module.m_12==False:
                      i=i+1    
-                     #print('12:'+str(i))
+                     ##print('12:'+str(i))
             if module.m_13==True or module.m_13==False:
                      i=i+1    
-                     #print('13:'+str(i))
+                     ##print('13:'+str(i))
             if module.m_14==True or module.m_14==False:
                      i=i+1     
-                     #print('14:'+str(i))
+                     ##print('14:'+str(i))
             if module.m_15!='':
                      i=i+1     
-                     #print('15:'+str(i))
+                     ##print('15:'+str(i))
                     
             if module.m_16==True or module.m_16==False:
                      i=i+1      
-                     #print('16:'+str(i))
+                     ##print('16:'+str(i))
             if module.m_17.count()>0:
                      i=i+1       
-                     #print('17:'+str(i))
+                     ##print('17:'+str(i))
             if Module8Grid18.objects.filter(module8=module.id).count()>0:
                     m8g18=Module8Grid18.objects.filter(module8=module.id)[0]
                     if (m8g18.c1== True or m8g18.c1== False) and (m8g18.c2== True or m8g18.c2== False) and (m8g18.c3== True or m8g18.c3== False) and(m8g18.c4== True or m8g18.c4== False)and (m8g18.c5== True or m8g18.c5== False)and (m8g18.c6== True or m8g18.c6== False):
                          i=i+1    
-                         #print('18:'+str(i))        
+                         ##print('18:'+str(i))        
             if module.m_19==True or module.m_19==False:
                      i=i+1       
-                     #print('18:'+str(i))
+                     ##print('18:'+str(i))
             if module.m_20==True or module.m_20==False:
                      i=i+1     
-                     #print('20:'+str(i))
+                     ##print('20:'+str(i))
             if module.m_21==True or module.m_21==False:
                      i=i+1       
-                     #print('21:'+str(i))
+                     ##print('21:'+str(i))
             if module.m_22==True or module.m_22==False:
                      i=i+1          
-                     #print('22:'+str(i))
+                     ##print('22:'+str(i))
             if module.m_23==True or module.m_23==False:
                      i=i+1          
-                     #print('23:'+str(i))
+                     ##print('23:'+str(i))
                     
             if module.m_24>0:
                      i=i+1       
-                     #print('24:'+str(i))
+                     ##print('24:'+str(i))
             if module.m_25!='':
                      i=i+1       
-                     #print('25:'+str(i))
+                     ##print('25:'+str(i))
             if module.m_26>0:
                      i=i+1        
-                     #print('26:'+str(i))     
+                     ##print('26:'+str(i))     
             if module.m_27!='':
                 
                 
                      i=i+1     
-                     #print('27:'+str(i))     
+                     ##print('27:'+str(i))     
                     
             if module.m_28==True or module.m_28==False:
                      i=i+1     
-                     #print('28:'+str(i))
+                     ##print('28:'+str(i))
             if module.m_29==True or module.m_29==False:
                      i=i+1    
-                     #print('29:'+str(i))
+                     ##print('29:'+str(i))
             if Module8Matrix30.objects.filter(module8=module.id).count()>0:                               
                  i=i+1         
-                 #print('30:'+str(i))
+                 ##print('30:'+str(i))
         
             if module.m_31>0:
                      i=i+1       
-                     #print('31:'+str(i))
+                     ##print('31:'+str(i))
             if module.m_32>0:
                      i=i+1      
-                     #print('32:'+str(i))
+                     ##print('32:'+str(i))
             if module.m_33>0:
                      i=i+1         
                      
-                     #print('33:'+str(i))
+                     ##print('33:'+str(i))
             if module.m_34>0:
                      i=i+1         
-                     #print('34:'+str(i))
+                     ##print('34:'+str(i))
             if module.m_35>0:
                      i=i+1            
-                     #print('35:'+str(i))
+                     ##print('35:'+str(i))
             
             if module.m_36==True or module.m_36==False:
                      i=i+1       
-                     #print('36:'+str(i))
+                     ##print('36:'+str(i))
             if module.m_37>0:
                      i=i+1        
-                     #print('37:'+str(i))
+                     ##print('37:'+str(i))
             if module.m_38>0:
                  i=i+1            
-                 #print('38:'+str(i))
+                 ##print('38:'+str(i))
             
             if module.m_39==True or module.m_39==False:
                      i=i+1         
-                     #print('39:'+str(i))
+                     ##print('39:'+str(i))
             if module.m_40>0:
                      i=i+1         
-                     #print('40:'+str(i))
+                     ##print('40:'+str(i))
             
             if module.m_41==True or module.m_41==False:
                      i=i+1        
-                     #print('41:'+str(i))
+                     ##print('41:'+str(i))
                     
                  
             if module.m_42>0:
                     i=i+1
-                    #print('42:'+str(i))
+                    ##print('42:'+str(i))
             if module.m_43!='':
                     i=i+1
-                    #print('43:'+str(i))
+                    ##print('43:'+str(i))
 
             if module.m_44>0:
                     i=i+1
-                    #print('44:'+str(i))
+                    ##print('44:'+str(i))
             
             
            
                
             if Module8Weaknesses.objects.filter(module8=module.id).count()>0 :
                 i=i+1
-                #print('45:'+str(i))
+                ##print('45:'+str(i))
                 
-        #print('i='+str(i))
+        ##print('i='+str(i))
         percent=(i*100/tot_num_fields)
        
        
     if num_mod == 9:
         tot_num_fields=47
+        print("tot_num_fields="+str(tot_num_fields))
         i=0
         modules = Module9.objects.filter(session_id=version).count()
         if modules>0:
@@ -1560,115 +1561,165 @@ def get_percentage_module_filled(num_mod,version):
                  tot_num_fields=tot_num_fields-1
             if module.m_22==False:
                  tot_num_fields=tot_num_fields-3
-            if module.m_20==False:
+            if module.m_28==False:
                  tot_num_fields=tot_num_fields-1
-                
-            if module.m_11==True or module.m_11==False:
-                    i=i+1
-            if module.m_12==True or module.m_12==False:
-                    i=i+1
-            if module.m_13==True or module.m_13==False:
-                    i=i+1
-            if module.m_14==True or module.m_14==False:
-                    i=i+1
-            if module.m_15==True or module.m_15==False:
-                    i=i+1
-            if module.m_16==True or module.m_16==False:
-                    i=i+1
-            if module.m_17==True or module.m_17==False:
-                    i=i+1
-            if module.m_18==True or module.m_18==False:
-                    i=i+1
-            if module.m_19==True or module.m_19==False:
-                    i=i+1
+               
             if module.m_2==True or module.m_2==False:
                     i=i+1
-            if module.m_20==True or module.m_20==False:
-                    i=i+1
-            if module.m_22==True or module.m_22==False:
-                    i=i+1
-            if module.m_23==True or module.m_23==False:
-                    i=i+1
-            if module.m_26==True or module.m_26==False:
-                    i=i+1
-            if module.m_27==True or module.m_27==False:
-                    i=i+1
-            if module.m_28==True or module.m_28==False:
-                    i=i+1
-            if module.m_29==True or module.m_29==False:
-                    i=i+1
+                    #print("m2")
             if module.m_3==True or module.m_3==False:
                     i=i+1
-            if module.m_30==True or module.m_30==False:
-                    i=i+1
-            if module.m_32==True or module.m_32==False:
-                    i=i+1
-            if module.m_33==True or module.m_33==False:
-                    i=i+1
-            if module.m_34==True or module.m_34==False:
-                    i=i+1
+                    #print("m3")
             if module.m_4==True or module.m_4==False:
                     i=i+1
-            if module.m_41==True or module.m_41==False:
-                    i=i+1
+                    #print("m4")
             if module.m_6==True or module.m_6==False:
                     i=i+1
+                    #print("m6")
             if module.m_7==True or module.m_7==False:
                     i=i+1
+                    #print("m7")
             if module.m_8==True or module.m_8==False:
                     i=i+1
+                    #print("m8")
             if module.m_9==True or module.m_9==False:
                     i=i+1
+                    #print("m9")
+            if module.m_11==True or module.m_11==False:
+                    i=i+1
+                    #print("m11")
+            if module.m_12==True or module.m_12==False:
+                    i=i+1
+                    #print("m12")
+            if module.m_13==True or module.m_13==False:
+                    i=i+1
+                    #print("m13")
+            if module.m_14==True or module.m_14==False:
+                    i=i+1
+                    #print("m14")
+            if module.m_15==True or module.m_15==False:
+                    i=i+1
+                    #print("m15")
+            if module.m_16==True or module.m_16==False:
+                    i=i+1
+                    #print("m16")
+            if module.m_17==True or module.m_17==False:
+                    i=i+1
+                    #print("m17")
+            if module.m_18==True or module.m_18==False:
+                    i=i+1
+                    #print("m18")
+            if module.m_19==True or module.m_19==False:
+                    i=i+1
+                    #print("m19")
+            if module.m_20==True or module.m_20==False:
+                    i=i+1
+                    #print("m20")
+            if module.m_22==True or module.m_22==False:
+                    i=i+1
+                    #print("m22")
+            if module.m_23==True or module.m_23==False:
+                    i=i+1
+                    #print("m23")
+            if module.m_26==True or module.m_26==False:
+                    i=i+1
+                    #print("m26")
+            if module.m_27==True or module.m_27==False:
+                    i=i+1
+                    #print("m27")
+            if module.m_28==True or module.m_28==False:
+                    i=i+1
+                    #print("m28")
+            if module.m_29==True or module.m_29==False:
+                    i=i+1
+                    #print("m29")
+            if module.m_30==True or module.m_30==False:
+                    i=i+1
+                    #print("m30")
+            if module.m_32==True or module.m_32==False:
+                    i=i+1
+                    #print("m32")
+            if module.m_33==True or module.m_33==False:
+                    i=i+1
+                    #print("m33")
+            if module.m_34==True or module.m_34==False:
+                    i=i+1
+                    #print("m34")
+            if module.m_41==True or module.m_41==False:
+                    i=i+1
+                    #print("m41")
             if module.m_10!='':
                     i=i+1
+                    #print("m10")
             if module.m_21!='':
                     i=i+1
+                    #print("m21")
             if module.m_24!='':
                     i=i+1
+                    #print("m24")
             if module.m_25!='':
                     i=i+1
+                    #print("m25")
 
-            if module.m_43>0:
-                    i=i+1
-            if module.m_44>0:
-                    i=i+1
-            if module.m_45>0:
-                    i=i+1
             if module.m_36>0:
                     i=i+1
+                    #print("m36")
             if module.m_37>0:
                     i=i+1
+                    #print("m37")
             if module.m_38>0:
                     i=i+1
+                    #print("m38")
             if module.m_39>0:
                     i=i+1
-            if module.m_46>0:
-                    i=i+1
+                    #print("m39")
             if module.m_40>0:
                     i=i+1
+                    #print("m40")
             if module.m_42>0:
                     i=i+1
+                    #print("m42")
+            if module.m_43>0:
+                    i=i+1
+                    #print("m43")
+            if module.m_44>0:
+                    i=i+1
+                    #print("m44")
+            if module.m_45>0:
+                    i=i+1
+                    #print("m45")
+            if module.m_46>0:
+                    i=i+1
+                    #print("m46")
+                    
             if Module9Grid1.objects.filter(module9=module.id).count()>0:
                 m9g1=Module9Grid1.objects.filter(module9=module.id)[0]
                 if (m9g1.c1== True or m9g1.c1== False) and (m9g1.c2== True or m9g1.c2== False) and (m9g1.c3== True or m9g1.c3== False) and(m9g1.c4== True or m9g1.c4== False):
                     i=i+1
+                    #print("m9g1=yes")
+            
             if Module9Grid5.objects.filter(module9=module.id).count()>0:
                 m9g5=Module9Grid5.objects.filter(module9=module.id)[0]
                 if (m9g5.c1== True or m9g5.c1== False) and (m9g5.c2== True or m9g5.c2== False) and (m9g5.c3== True or m9g5.c3== False) and(m9g5.c4== True or m9g5.c4== False)and(m9g5.c5== True or m9g5.c5== False):
                     i=i+1
+                    #print("m9g5=yes")
             if Module9Grid31.objects.filter(module9=module.id).count()>0:
                 m9g31=Module9Grid31.objects.filter(module9=module.id)[0]
                 if (m9g31.c1== True or m9g31.c1== False) and (m9g31.c2== True or m9g31.c2== False) and (m9g31.c3== True or m9g31.c3== False) and(m9g31.c4== True or m9g31.c4== False)and(m9g31.c5== True or m9g31.c5== False):
                     i=i+1
-                   
+                    #print("m9g31=yes")
             if Module9Matrix35.objects.filter(module9=module.id).count()>0:                               
                 i=i+1
+                print("Module9Matrix35=yes")
                
          
             if Module9Weaknesses.objects.filter(module9=module.id).count()>0 :
                     i=i+1
-
-
+                    print("Module9Weaknesses=yes")
+            print("=>tot_num_fields="+str(tot_num_fields))
+        
+            print("Module9")
+            print(i)
                 
                 
    
@@ -1797,40 +1848,40 @@ def get_percentage_module_filled(num_mod,version):
                                
             if Module10Matrix_47.objects.filter(module10=module.id).count()>0:
                     i=i+1
-                    print('Module10Matrix_47 +')
+                    #print('Module10Matrix_47 +')
             if Module10Weaknesses.objects.filter(module10=module.id).count()>0:
                     i=i+1
-                    print('Module10Weaknesses +')
+                    #print('Module10Weaknesses +')
             if Module10Grid23.objects.filter(module10=module.id).count()>0:
                 m10g23=Module10Grid23.objects.filter(module10=module.id)[0]
                 if (m10g23.c1== True or m10g23.c1== False) and (m10g23.c2== True or m10g23.c2== False) and (m10g23.c3== True or m10g23.c3== False) and(m10g23.c4== True or m10g23.c4== False)and(m10g23.c5== True or m10g23.c5== False):
                     i=i+1
-                    print('Module10Grid23 +')
+                    #print('Module10Grid23 +')
             if Module10Grid33.objects.filter(module10=module.id).count()>0:
                 m10g33=Module10Grid33.objects.filter(module10=module.id)[0]
                 if (m10g33.c1== True or m10g33.c1== False) and (m10g33.c2== True or m10g33.c2== False) and (m10g33.c3== True or m10g33.c3== False) and(m10g33.c4== True or m10g33.c4== False):
                     i=i+1
-                    print('Module10Grid33 +')
+                    #print('Module10Grid33 +')
             if Module10Grid45.objects.filter(module10=module.id).count()>0:
                 m10g45=Module10Grid45.objects.filter(module10=module.id)[0]
                 if (m10g45.c1== True or m10g45.c1== False) and (m10g45.c2== True or m10g45.c2== False) and (m10g45.c3== True or m10g45.c3== False) and(m10g45.c4== True or m10g45.c4== False)and(m10g45.c5== True or m10g45.c5== False):
                     i=i+1
-                    print('Module10Grid45 +')
+                    #print('Module10Grid45 +')
             if Module10Grid31.objects.filter(module10=module.id).count()>0:
                 m10g31=Module10Grid31.objects.filter(module10=module.id)[0]
                 if (m10g31.c1== True or m10g31.c1== False) and (m10g31.c2== True or m10g31.c2== False) and (m10g31.c3== True or m10g31.c3== False):
                     i=i+1
-                    print('Module10Grid31 +')
+                    #print('Module10Grid31 +')
             if Module10Grid46.objects.filter(module10=module.id).count()>0:
                 m10g46=Module10Grid46.objects.filter(module10=module.id)[0]
                 if (m10g46.c1== True or m10g46.c1== False) and (m10g46.c2== True or m10g46.c2== False) and (m10g46.c3== True or m10g46.c3== False):
                     i=i+1
-                    print('Module10Grid46 +')
+                    #print('Module10Grid46 +')
             if Module10Grid37.objects.filter(module10=module.id).count()>0:
                 m10g37=Module10Grid37.objects.filter(module10=module.id)[0]
                 if (m10g37.c1== True or m10g37.c1== False) and (m10g37.c2== True or m10g37.c2== False) and (m10g37.c3== True or m10g37.c3== False) and(m10g37.c4== True or m10g37.c4== False)and(m10g37.c5== True or m10g37.c5== False)and(m10g37.c6== True or m10g37.c6== False)and(m10g37.c7== True or m10g37.c7== False)and(m10g37.c8== True or m10g37.c8== False):
                     i=i+1        
-                    print('Module10Grid37 +')
+                    #print('Module10Grid37 +')
           
     
    
@@ -2012,7 +2063,7 @@ def get_percentage_module_filled(num_mod,version):
         modules = Module12.objects.filter(session_id=version).count()
         if modules>0:
             module = Module12.objects.filter(session_id=version)[0]
-            print('************   Module12  *****************')
+            #print('************   Module12  *****************')
             if module.m_1==False:
                  tot_num_fields=tot_num_fields-1
             if module.m_12==False:
@@ -2490,8 +2541,8 @@ class ModuleListView(ListView):
                             stake_ids[y] = ''
                         #problemanalysis
                         is_pa_filled=is_problemanalysis_filled(session.id,y)
-                        print('>>>>:'+str(y))
-                        print(is_pa_filled)
+                        ##print('>>>>:'+str(y))
+                        ##print(is_pa_filled)
                         if is_pa_filled:
                             filled_pa_array.append(y)
                             try: 
@@ -2801,7 +2852,7 @@ class PceDashboardListView(ListView):
                         else:
                             lf_ids[y] = ''
                         #fullpce  
-                        print('               DAHS    get percentage mod')
+                        #print('               DAHS    get percentage mod')
                         full_pce[y] =  get_percentage_module(session.id,y)
                                     
                 context['chosen_modules'] = chosen_modules_array
@@ -2817,7 +2868,7 @@ class PceDashboardListView(ListView):
                 context['m_ids'] = m_ids
                 context['m_status'] = m_status
                 context['full_pce'] =full_pce
-                print('               DAHS    get_tot_percentage')
+                #print('               DAHS    get_tot_percentage')
                 context['tot_percentage'] = get_tot_percentage(session.id)
                     
         context['can_see'] = can_see
@@ -2938,7 +2989,7 @@ def pceversion_edit_step1(request, country, id=None ):
         version_number = 1
     
     if request.method == "POST":
-        print('aaaaaaaaaaaaaaaaaaaaaaa')
+        #print('aaaaaaaaaaaaaaaaaaaaaaa')
         form = PceVersionForm1(request.POST, instance=pceversion)
       #  if form.is_valid():
        # form.save()
@@ -2983,7 +3034,7 @@ def pceversion_edit_step2(request, country, id=None ):
     if request.method == "POST":
             
         form = PceVersionForm2(request.POST, request.FILES,instance=pceversion)
-        print(form)
+        ##print(form)
         if form.is_valid():
             modules=''
             for u in request.POST:
@@ -3049,16 +3100,16 @@ def pceversion_edit_step3(request, country, id=None ):
     if user.groups.filter(name='Admin') or (country1 == user_country_slug and user.groups.filter(name='PCE Manager/Validator')) :
         can_see=1
         can_edit=1
-    print('')    
-    print(' >>>> STEP 3 <<<< ')    
-    print(id)    
+    #print('')    
+    #print(' >>>> STEP 3 <<<< ')    
+    #print(id)    
     if id:
         pceversion = get_object_or_404(PceVersion, country=country, pk=id)
         version_number = pceversion.version_number
         version_id=pceversion.id
     else: 
         version_number = 1
-    print(pceversion.id)
+    #print(pceversion.id)
     if request.method == "POST":
         form = PceVersionForm3(request.POST, request.FILES,instance=pceversion)
         
@@ -3099,7 +3150,7 @@ def pceversion_edit_step3(request, country, id=None ):
              context_instance=RequestContext(request))
     else:
         form = PceVersionForm3(instance=pceversion )
-        print(pceversion.ed1_firstname)
+        ##print(pceversion.ed1_firstname)
     return render_to_response('pce/pceversion_edit_step3.html', {'form': form,'pceversion':pceversion,'can_edit':can_edit,'can_see':can_see,'version_number':version_number,'version_id':version_id},
         context_instance=RequestContext(request))
 
@@ -5062,7 +5113,7 @@ def module4_edit(request, country, id=None,sessionid=None, template_name='pce/mo
     is_pa_filled = is_problemanalysis_filled(sessionid,4)
     is_sa_filled = is_swotanalysis_filled(sessionid,4)
     is_lf_filled = is_logicalframework_filled(sessionid,4)
-    print(sessionid)
+    ##print(sessionid)
     if id:
         module4 = get_object_or_404(Module4, pk=id)
         if pceversion.status==1 and  canEdit(sessionid,pceversion.country,user,4):
@@ -5125,6 +5176,83 @@ class Module5ListView(ListView):
         context['country'] = self.kwargs['country']
         context['sessionid'] = self.kwargs['sessionid']
         context['context'] = 'View'
+          
+        ACHIEVE = (
+            (0, _("--- Please select ---")),
+            (1,_("Very difficult")),
+            (2,_("Somewhat difficult")),
+            (3,_("Easy")),
+            (4,_("Very easy")),
+        )
+        CARRY_AC = (
+                (0, _("--- Please select ---")),
+                (1,_("None at all")),
+                (2,_("Lacking in many areas")),
+                (3,_("Partially")),
+                (4,_("Mostly")),
+                (5,_("Completely")),
+        )
+
+        DEFINED = (
+                (0, _("--- Please select ---")),
+                (1,_("No roles definition")),
+                (2,_("Poorly defined")),
+                (3,_("Defined satisfactorily")),
+                (4,_("Well defined")),
+                (5,_("Well defined and flexible")),
+        )
+        CLEAR = (
+                (0, _("--- Please select ---")),
+                (1,_("Not at all")),
+                (2,_("Unsatisfactory")),
+                (3,_("With difficulty")),
+                (4,_("Satisfactory")),
+                (5,_("Very clear and at all levels")),
+        )
+
+        EXPEDI = (
+                (0, _("--- Please select ---")),
+                (1,_("Not at all")),
+                (2,_("Poorly")),
+                (3,_("Satisfactorily")),
+                (4,_("Good")),
+                (5,_("Fully")),
+        )
+        LINKAGE = (
+                (0, _("--- Please select ---")),
+                (1,_("Not at all")),
+                (2,_("Unsatisfactory")),
+                (3,_("With difficulty")),
+                (4,_("Satisfactory")),
+                (5,_("Easily")),
+        )
+        POLICY = (
+                (0, _("--- Please select ---")),
+                (1,_("Not at all")),
+                (2,_("Somewhat")),
+                (3,_("Substantive")),
+                (4,_("Totally")),
+        )
+        THEM = (
+                (0,("--- Please select ---")),
+                (1,("None at all")),
+                (2,("A few of them")),
+                (3,("Some of them")),
+                (4,("Most of them")),
+                (5,("All of them")),
+        )
+
+        
+        context['ACHIEVE'] =ACHIEVE
+        context['CARRY_AC'] =CARRY_AC
+       
+        context['DEFINED'] =DEFINED
+        context['CLEAR'] =CLEAR
+        context['EXPEDI'] =EXPEDI
+        context['LINKAGE'] =LINKAGE
+        context['POLICY'] =POLICY
+        context['THEM'] =THEM
+        
         id=''
         if  'id' in self.kwargs:
             id = self.kwargs['id']
@@ -5158,7 +5286,7 @@ class Module5ListView(ListView):
             context['form']=form
             context['form25']=form25
             context['module5']=module5
-            context['m5_3']=  M5_3.objects.filter()
+            context['M5_3']=  M5_3.objects.filter()
          
             context['module']=module
             context['version_number'] = session.version_number
@@ -5307,7 +5435,7 @@ class Module5ListPDFView(PDFTemplateView):
             context['module5']=module5
          
             context['module']=module
-            context['m5_3']=  M5_3.objects.filter()
+            context['M5_3']=  M5_3.objects.filter()
          
             context['version_number'] = session.version_number
             context['sessionstatus'] = session.status
@@ -6395,6 +6523,8 @@ class Module8ListView(ListView):
         context['context'] = 'View'
         context['VAL_AV'] =VAL_AV
         context['BOOL_CHOICESM_M'] =BOOL_CHOICESM_M
+        context['M8_17']=  M8_17.objects.filter()
+     
         id=''
         if  'id' in self.kwargs:
             id = self.kwargs['id']
@@ -6682,11 +6812,11 @@ def module8_create(request, country,sessionid=None):
         form18 = Module8Grid18FormSet(request.POST)
         form30 = Module8Matrix30FormSet(request.POST)
         form45 = Module8WeaknessesFormSet(request.POST)
-        print('form.is_valid()'+str(form.is_valid()))
-        print('form3.is_valid()'+str(form3.is_valid()))
-        print('form18.is_valid()'+str(form18.is_valid()))
-        print('form30.is_valid()'+str(form30.is_valid()))
-        print('form45.is_valid()'+str(form45.is_valid()))
+        #print('form.is_valid()'+str(form.is_valid()))
+        #print('form3.is_valid()'+str(form3.is_valid()))
+        #print('form18.is_valid()'+str(form18.is_valid()))
+        #print('form30.is_valid()'+str(form30.is_valid()))
+        #print('form45.is_valid()'+str(form45.is_valid()))
         
         if form.is_valid() and form3.is_valid() and  form18.is_valid() and  form30.is_valid() and form45.is_valid():
             new_mod8 = form.save(commit=False)
@@ -6772,11 +6902,11 @@ def module8_edit(request, country, id=None,sessionid=None, template_name='pce/mo
         form18 = Module8Grid18FormSet(request.POST,  request.FILES, instance=module8)
         form30 = Module8Matrix30FormSet(request.POST,  request.FILES, instance=module8)
         form45 = Module8WeaknessesFormSet(request.POST,  request.FILES, instance=module8)
-        print('form.is_valid()'+str(form.is_valid()))
-        print('form3.is_valid()'+str(form3.is_valid()))
-        print('form18.is_valid()'+str(form18.is_valid()))
-        print('form30.is_valid()'+str(form30.is_valid()))
-        print('form45.is_valid()'+str(form45.is_valid()))
+        #print('form.is_valid()'+str(form.is_valid()))
+        #print('form3.is_valid()'+str(form3.is_valid()))
+        #print('form18.is_valid()'+str(form18.is_valid()))
+        #print('form30.is_valid()'+str(form30.is_valid()))
+        #print('form45.is_valid()'+str(form45.is_valid()))
         
    
        
@@ -8079,14 +8209,14 @@ def module11_edit(request, country, id=None,sessionid=None, template_name='pce/m
         form33 = Module11Grid33FormSet(request.POST,  request.FILES, instance=module11)
         form42 = Module11Matrix42FormSet(request.POST,  request.FILES, instance=module11)
         form66= Module11WeaknessesFormSet(request.POST,  request.FILES, instance=module11)
-        print('form'+str(form.is_valid()))
-        print('form2'+str(form2.is_valid()))
-        print('form3'+str(form3.is_valid()))
-        print('form12'+str(form12.is_valid()))
-        print('form14'+str(form14.is_valid()))
-        print('form33'+str(form33.is_valid()))
-        print('form42'+str(form42.is_valid()))
-        print('form66'+str(form66.is_valid()))    
+        #print('form'+str(form.is_valid()))
+        #print('form2'+str(form2.is_valid()))
+        #print('form3'+str(form3.is_valid()))
+        #print('form12'+str(form12.is_valid()))
+        #print('form14'+str(form14.is_valid()))
+        #print('form33'+str(form33.is_valid()))
+        #print('form42'+str(form42.is_valid()))
+        #print('form66'+str(form66.is_valid()))    
         if form.is_valid() and form2.is_valid() and  form3.is_valid() and  form12.is_valid() and form14.is_valid() and form33.is_valid() and form42.is_valid() and  form66.is_valid():
             form.save()
           
@@ -8921,14 +9051,14 @@ def module13_edit(request, country, id=None,sessionid=None, template_name='pce/m
         form47 = Module13Matrix47FormSet(request.POST,  request.FILES, instance=module13)
         form66= Module13WeaknessesFormSet(request.POST,  request.FILES, instance=module13)
       
-        print('form:'+str(form.is_valid()))
-        print('form2:'+str(form2.is_valid()))
-        print('form3:'+str(form3.is_valid()))
-        print('form22:'+str(form22.is_valid()))
-        print('form29:'+str(form29.is_valid()))
-        print('form31:'+str(form31.is_valid()))
-        print('form47:'+str(form47.is_valid()))
-        print('form66:'+str(form66.is_valid()))
+        #print('form:'+str(form.is_valid()))
+        #print('form2:'+str(form2.is_valid()))
+        #print('form3:'+str(form3.is_valid()))
+        #print('form22:'+str(form22.is_valid()))
+        #print('form29:'+str(form29.is_valid()))
+        #print('form31:'+str(form31.is_valid()))
+        #print('form47:'+str(form47.is_valid()))
+        #print('form66:'+str(form66.is_valid()))
         
         if form.is_valid() and form2.is_valid() and  form3.is_valid() and  form29.is_valid() and form22.is_valid() and form31.is_valid() and form47.is_valid() and form66.is_valid():
             form.save()
@@ -9142,8 +9272,8 @@ def stakeholders_create(request, country,sessionid=None,module=None):
     country=user.get_profile().country
     user_country_slug = lower(slugify(country))
     pceversion = get_object_or_404(PceVersion,  pk=sessionid)
-    print("-------------ppppp-------------------------------")
-    print(pceversion)
+    #print("-------------ppppp-------------------------------")
+    ##print(pceversion)
     
     percentage_module=get_percentage_module_filled(int(module),sessionid)
   
@@ -9153,19 +9283,19 @@ def stakeholders_create(request, country,sessionid=None,module=None):
     is_lf_filled=(  is_logicalframework_filled(sessionid,module)>0)
 
     stakeholders_count = Stakeholders.objects.filter(session=sessionid,module=module).count()
-    print('sessionid'+str(sessionid))
-    print('module1'+str(module))
+    #print('sessionid'+str(sessionid))
+    #print('module1'+str(module))
     
 
     can_edit=0
     if stakeholders_count>0:
         can_edit=0
-        print('qui')
+        #print('qui')
     else: 
-        print('qui 1')
+        #print('qui 1')
         if pceversion.status==1 and canEdit(sessionid,pceversion.country,user,str(module)):
             can_edit=1
-            print('qui 1 edit')
+            #print('qui 1 edit')
             
     if request.method == "POST":
         form = StakeholdersForm(request.POST, request.FILES)
@@ -9291,7 +9421,7 @@ class ProblemAnalysisListView(ListView):
         can_edit=0
         can_see=0
         session = get_object_or_404(PceVersion,  pk=self.kwargs['sessionid'])
-        print('check')
+        #print('check')
         if canSee(self.kwargs['sessionid'],session.country,self.request.user,str(self.kwargs['module'])):
             can_see=1
         if canEdit(self.kwargs['sessionid'],session.country,self.request.user,str(self.kwargs['module'])) and session.status==1:
@@ -9396,8 +9526,8 @@ def problemanalysis_create(request, country,sessionid=None,module=None):
           if pceversion.status==1 and canEdit(sessionid,pceversion.country,user,str(module)):
             can_edit=1
             weakeness=getWeakenessFromModuleNameAndId(int(module),sessionid)
-    print("weakeness")    
-    print(weakeness)    
+    #print("weakeness")    
+    ##print(weakeness)    
     if request.method == "POST":
         form = ProblemAnalysisForm(request.POST, request.FILES)
         
@@ -9440,8 +9570,8 @@ def problemanalysis_edit(request, country, id=None,sessionid=None,module=None, t
         if pceversion.status==1 and canEdit(sessionid,pceversion.country,user,str(module)):
             can_edit=1
             weakeness=getWeakenessFromModuleNameAndId(int(module),sessionid)
-            print("weakeness")    
-            print(weakeness.w2)
+            ##print("weakeness")    
+            ##print(weakeness.w2)
     else:
         pa = ProblemAnalysis()
     
@@ -10317,8 +10447,8 @@ def generate_report(request, country,sessionid=None):
             str_m_17=ugettext(dict(VAL_PERCENT)[module1.m_17])
             str_m_18=ugettext(dict(VAL_PERCENT)[module1.m_18])
             str_m_19=ugettext(dict(VAL_PERCENT)[module1.m_19])
-           # print(m1m22)
-            #print(ugettext(str(m1m22)))
+           # #print(m1m22)
+            ##print(ugettext(str(m1m22)))
             str_m1m23=str(m1m23)
             str_m1m22=str(m1m22)
             
@@ -10343,8 +10473,8 @@ def generate_report(request, country,sessionid=None):
 #            str_m_17=ugettext(dict(VAL_PERCENT)[module1.m_17])
 #            str_m_18=ugettext(dict(VAL_PERCENT)[module1.m_18])
 #            str_m_19=ugettext(dict(VAL_PERCENT)[module1.m_19])
-#           # print(m1m22)
-#            #print(ugettext(str(m1m22)))
+#           # #print(m1m22)
+#            ##print(ugettext(str(m1m22)))
 #            str_m1m23=str(m1m23)
 #            str_m1m22=str(m1m22)
 #            
@@ -10384,8 +10514,8 @@ def generate_report(request, country,sessionid=None):
             str_27 =_("  more negotiations are in progress.\n\nDuring the last few years, major aid programs that have significantly contributed to phytosanitary capacity development or strengthening in the country include : ")+""
 
 
-           # print('------------------------------------------------------------aaa----------')
-           # print(countryname+str_1+regionname+str_2+str_m_3+str_3+str_m_4+str_4+str_m_5+str_5+str_m_6+str_6+str_m1m7+str_7+str_m1m8+str_8+str_m_9+str_9+countryname+str_10+str_m1m20+str_11+str_m1m11+str_12+str_m_12+str_13+countryname+str_14+str_m1m21+str_15+str_m_13+str_16+str_m_14+str_17+str_m_15+str_18+str_m_16+str_19+str_m_17+str_20+str_m_18+str_21+str_m_19+str_22+countryname+str_23+str_m1m22+str_24+str_m1m23+str_25+str_m_24+str_26+str_m_25+str_27+str_m1m26)
+           # #print('------------------------------------------------------------aaa----------')
+           # #print(countryname+str_1+regionname+str_2+str_m_3+str_3+str_m_4+str_4+str_m_5+str_5+str_m_6+str_6+str_m1m7+str_7+str_m1m8+str_8+str_m_9+str_9+countryname+str_10+str_m1m20+str_11+str_m1m11+str_12+str_m_12+str_13+countryname+str_14+str_m1m21+str_15+str_m_13+str_16+str_m_14+str_17+str_m_15+str_18+str_m_16+str_19+str_m_17+str_20+str_m_18+str_21+str_m_19+str_22+countryname+str_23+str_m1m22+str_24+str_m1m23+str_25+str_m_24+str_26+str_m_25+str_27+str_m1m26)
 
              
             #p=document.add_paragraph(""+countryname+str(_(" is a country situated in "))+regionname+_(".  It has population of about ")+str_m_3+_(". Total land area is ")+str_m_4+_(" sq.km. with a total arable land area of ")+str_m_5+_(" sq.km. Total natural vegetation occupies ")+str_m_6+_(" sq.km.\n\nThe major crops grown in the country are: ")+str_m1m7+_(".\n\nTen major imports of plant and plant products are: ")+str_m1m8+_(". Total value of imports of plant and plant products (including forestry products) amounted to ")+str_m_9+_(" in ")+countryname+_("'s  major trading partners in plants and plant products imports are ")+str_m1m20+_(".\n\nTen major exports of plant and plant products are: ")+str_m1m11+_(". Total value of exports of plant and plant products (including forestry products) amounted to ")+str_m_12+_(" in ")+countryname+_("''s major trading partners in plants and plant products exports are ")+str_m1m21+_(". ")+str_m_13+_(" % of total exports (includes Forestry) are re-export consignments.\n\nThe Gross National Income (GNI) per capita is estimated at ")+str_m_14+_(" US $; latest GDP in US $ (World Bank) is ")+str_m_15+_(". Percentage contribution of agriculture (including forestry) to GDP is about ")+str_m_16+_(" %; with about ")+str_m_17+_(" % for plants and plant products (including forestry). The agricultural labour force (including forestry) as a percentage of total labour force is ")+str_m_18+_(" %. ")+str_m_19+_(" % of the agricultural labour force is directly employed in the production of plant and plant products (including forestry).\n\n")+countryname+_("  has membership of or is signatory to, the following organizations/ conventions: ")+str_m1m22+_(". It is a member of the following Regional economic integration/ co-operation organizations: ")+str_m1m23+_(". Currently there are ")+str_m_24+_(" bilateral phytosanitary arrangements in operation and ")+str_m_25+_("  more negotiations are in progress.\n\nDuring the last few years, major aid programs that have significantly contributed to phytosanitary capacity development or strengthening in the country include : ")+str_m1m26)
@@ -10410,7 +10540,7 @@ def generate_report(request, country,sessionid=None):
             document.add_paragraph()
             p=document.add_paragraph("")
             p.add_run(_("2.2. Identified Weakness:")).bold = True
-            print(items)
+            ##print(items)
             if '2' in items or '3' in items:
                 p=document.add_paragraph("")
                 p.add_run(_("Legislation and policy:")).bold = True
@@ -10914,7 +11044,7 @@ def generate_report(request, country,sessionid=None):
             hdr_cells[2].text = _("Email")
             
             stakeholders = Stakeholders.objects.filter(session_id=sessionid)
-            print(stakeholders) 
+            ##print(stakeholders) 
             ss=[]
             for s in stakeholders:
                 stakes=StakeholdersFields.objects.filter(stakeholder_id= s.id)

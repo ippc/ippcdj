@@ -24,7 +24,7 @@ from .views import PceDashboardListView,PceVersionDetailView,PceSessionListView,
 #-------------- PCE ---------------------------------#
 urlpatterns = patterns("pce.views",  
     url(r"^$", direct_to_template, {"template": "pce/index.html"}, name="pce"),
- 
+   
     #TRAINING MATERIAL
     url(r'^training_material/$', direct_to_template, {"template": "pce/training_material_page.html"}, name="pce"),
    
