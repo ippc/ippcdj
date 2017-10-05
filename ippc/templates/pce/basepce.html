@@ -332,7 +332,8 @@
 {%  else %}
 <!DOCTYPE html>
 <html>
-<head>
+<head>  <meta http-equiv="Content-type" content="text/html; charset=windows-1251">
+     
       {% load pages_tags mezzanine_tags i18n future staticfiles %}
     <title>{{ title|default:"" }}</title>
         
@@ -348,7 +349,7 @@
 <style type="text/css">
 
 html {
-    font-family: Helvetica;
+    font-family:  'Open Sans';
     font-size: 10px;
     font-weight: normal;
     color: #000000;
@@ -393,7 +394,7 @@ code,
 kbd,
 samp,
 tt {
-    font-family: "Courier New";
+    font-family:  'Open Sans';
 }
 h5 {font-size:1.5em;}
 h1,
@@ -554,6 +555,11 @@ noscript {
                         height: 1cm;
                     }
                 }
+                @font-face {
+                  /* font-family: 'Open Sans';  font-weight: 800; src: url({% static "static/img/open-sans-v14-latin-regular.ttf" %});*/
+                  font-family: 'Open Sans';   src: url({% static "static/img/open-sans-v14-vietnamese_greek_greek-ext_cyrillic_latin-ext_latin_cyrillic-ext-regular.ttf" %});
+                
+                 }
             </style>
         {%endblock%}
         {% block extra_style %}{% endblock %}

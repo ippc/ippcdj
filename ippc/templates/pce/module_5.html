@@ -91,7 +91,7 @@
                                             <div class="control-group">
                                                 <label>{{f.label|safe}}</label>
                                                 <div class="controls">
-                                                  {%if f.name == 'm_4' or f.name == 'm_5' or f.name == 'm_6' or f.name == 'm_7' or f.name == 'm_8' or f.name == 'm_9' or f.name == 'm_10' or f.name == 'm_11' or f.name == 'm_12' or f.name == 'm_13' or f.name == 'm_14' or f.name == 'm_15' or f.name == 'm_22' or f.name == 'm_23' or f.name == 'm_24'  %}
+                                               {%if f.name == 'm_4' or f.name == 'm_5' or f.name == 'm_6' or f.name == 'm_7' or f.name == 'm_8' or f.name == 'm_9' or f.name == 'm_10' or f.name == 'm_11' or f.name == 'm_12' or f.name == 'm_13' or f.name == 'm_14' or f.name == 'm_15' or f.name == 'm_22' or f.name == 'm_23' or f.name == 'm_24'  %}
                                               <ul>
                                                             <li>
                                                                 <label for="id_{{f.name}}_1" class="control-label">
@@ -106,105 +106,70 @@
                                                         </ul>                                             
                                                     
                                               {%else%}
-                                                     {% if  context == 'Edit' %}
+                                                {% if  context == 'Edit' %}
                                                        {% if f.name == 'm_3' %}
                                                                     <select multiple="multiple" class="yyy1" id="id_{{f.name}}" name="{{f.name}}" size="6">
-                                                                            {% for o in M5_3 %}
-                                                                                 {% if o.id in f.value %}
-                                                                                    <option selected="selected" value="{{o.id}}">{% if  LANGUAGE_CODE == 'en' %}{{o}}{% elif  LANGUAGE_CODE == 'es'  %}{{o.name_es}}{% elif  LANGUAGE_CODE == 'fr'  %}{{o.name_fr}}{% elif  LANGUAGE_CODE == 'ru'  %}{{o.name_ru}}{% elif  LANGUAGE_CODE == 'ar'  %}{{o.name_ar}}{% elif  LANGUAGE_CODE == 'zh'  %}{{o.name_zh}}{% else  %}{{o}}{%endif%}</option>
-                                                                                 {% else %}
-                                                                                    <option value="{{o.id}}">{% if  LANGUAGE_CODE == 'en' %}{{o}}{% elif  LANGUAGE_CODE == 'es'  %}{{o.name_es}}{% elif  LANGUAGE_CODE == 'fr'  %}{{o.name_fr}}{% elif  LANGUAGE_CODE == 'ru'  %}{{o.name_ru}}{% elif  LANGUAGE_CODE == 'ar'  %}{{o.name_ar}}{% elif  LANGUAGE_CODE == 'zh'  %}{{o.name_zh}}{% else  %}{{o}}{%endif%}</option>
-                                                                                 {% endif %}
-                                                                             {% endfor %} 
+                                                                        {% for o in M5_3 %}
+                                                                        <option {% if o.id in f.value %}selected="selected"{% endif %} value="{{o.id}}">{% if  LANGUAGE_CODE == 'en' %}{{o}}{% elif  LANGUAGE_CODE == 'es'  %}{{o.name_es}}{% elif  LANGUAGE_CODE == 'fr'  %}{{o.name_fr}}{% elif  LANGUAGE_CODE == 'ru'  %}{{o.name_ru}}{% elif  LANGUAGE_CODE == 'ar'  %}{{o.name_ar}}{% elif  LANGUAGE_CODE == 'zh'  %}{{o.name_zh}}{% else  %}{{o}}{%endif%}</option>
+                                                                        {% endfor %} 
                                                                     </select>
                                                         {% else %}
                                                            {{f}}   
                                                         {% endif %}
-                                                    {% elif context == 'View'  %}
-                                                      
-                                                            {% if f.name == 'm_3' %}
-                                                                    <select multiple="multiple" readonly="true" class="yyy1" id="id_{{f.name}}" name="{{f.name}}" size="6">
-                                                                            {% for o in m5_3 %}
-                                                                                 {% if o.id in f.value %}
-                                                                                     <option selected="selected">{{o}}</option>
-                                                                                   {% else %}
-                                                                                
-                                                                                    <option>{{o}}</option>
-                                                                                 {% endif %}
-                                                                                 
-                                                                             {% endfor %} </select>
-                                                                                 
-                                                                            {%else%}
-                                                                                       {{f}}
-                                                                          {% endif %}
-                                                    {%else%}
+                                                {% elif  context == 'View' %}
+                                                       {% if f.name == 'm_3' %}
+                                                            <select multiple="multiple" readonly="true"  class="yyy1" id="id_{{f.name}}" name="{{f.name}}" size="6">
+                                                                    {% for o in M5_3 %}
+                                                                        <option {% if o.id in f.value %}selected="selected"{% endif %} value="{{o.id}}">{% if  LANGUAGE_CODE == 'en' %}{{o}}{% elif  LANGUAGE_CODE == 'es'  %}{{o.name_es}}{% elif  LANGUAGE_CODE == 'fr'  %}{{o.name_fr}}{% elif  LANGUAGE_CODE == 'ru'  %}{{o.name_ru}}{% elif  LANGUAGE_CODE == 'ar'  %}{{o.name_ar}}{% elif  LANGUAGE_CODE == 'zh'  %}{{o.name_zh}}{% else  %}{{o}}{%endif%}</option>
+                                                                    {% endfor %} 
+                                                            </select>
+                                                        {% else %}
+                                                           {{f}}   
+                                                        {% endif %}
                                                     
-     
+                                                    {%else%}
+                        {% if  context == 'Pdf' %}  
                                  
                                  {%if f.name == 'm_1'%}
                                       {% for key, val in ACHIEVE %}
-                                         {% ifequal key f.value %}
-                                       <b><u>{{val}}</u>  &#10003;</b>    
-                                      {%else%}
-                                        {{val}}   
-                                      {% endifequal %}<br>
+                                        {% ifequal key f.value %}<b><u>{% endifequal %}{{val}}{% ifequal key f.value %}</u>  &#10003;</b> {% endifequal %} <br>  
                                       {% endfor %}       
                                  {%elif f.name == 'm_2'%}
                                       {% for key, val in CARRY_AC %}
-                                         {% ifequal key f.value %}
-                                       <b><u>{{val}}</u>  &#10003;</b>    
-                                      {%else%}
-                                        {{val}}   
-                                      {% endifequal %}<br>
+                                        {% ifequal key f.value %}<b><u>{% endifequal %}{{val}}{% ifequal key f.value %}</u>  &#10003;</b> {% endifequal %} <br>  
                                       {% endfor %}       
                                 {%elif f.name == 'm_16'%}
                                       {% for key, val in DEFINED %}
-                                         {% ifequal key f.value %}
-                                       <b><u>{{val}}</u>  &#10003;</b>    
-                                      {%else%}
-                                        {{val}}   
-                                      {% endifequal %}<br>
+                                        {% ifequal key f.value %}<b><u>{% endifequal %}{{val}}{% ifequal key f.value %}</u>  &#10003;</b> {% endifequal %} <br>  
                                       {% endfor %}       
                                  {%elif f.name == 'm_17'%}
                                       {% for key, val in CLEAR %}
-                                         {% ifequal key f.value %}
-                                       <b><u>{{val}}</u>  &#10003;</b>    
-                                      {%else%}
-                                        {{val}}   
-                                      {% endifequal %}<br>
+                                        {% ifequal key f.value %}<b><u>{% endifequal %}{{val}}{% ifequal key f.value %}</u>  &#10003;</b> {% endifequal %} <br>  
                                       {% endfor %}           
                                 {%elif f.name == 'm_18'%}
                                       {% for key, val in EXPEDI %}
-                                         {% ifequal key f.value %}
-                                       <b><u>{{val}}</u>  &#10003;</b>    
-                                      {%else%}
-                                        {{val}}   
-                                      {% endifequal %}<br>
+                                        {% ifequal key f.value %}<b><u>{% endifequal %}{{val}}{% ifequal key f.value %}</u>  &#10003;</b> {% endifequal %} <br>  
                                       {% endfor %}       
                                  {%elif f.name == 'm_19'%}
                                       {% for key, val in LINKAGE %}
-                                         {% ifequal key f.value %}
-                                       <b><u>{{val}}</u>  &#10003;</b>    
-                                      {%else%}
-                                        {{val}}   
-                                      {% endifequal %}<br>
+                                         {% ifequal key f.value %}<b><u>{% endifequal %}{{val}}{% ifequal key f.value %}</u>  &#10003;</b> {% endifequal %} <br>  
                                       {% endfor %}           
                                 {%elif f.name == 'm_20'%}
                                       {% for key, val in POLICY %}
-                                         {% ifequal key f.value %}
-                                       <b><u>{{val}}</u>  &#10003;</b>    
-                                      {%else%}
-                                        {{val}}   
-                                      {% endifequal %}<br>
+                                                  {% ifequal key f.value %}<b><u>{% endifequal %}{{val}}{% ifequal key f.value %}</u>  &#10003;</b> {% endifequal %} <br>  
+                   
                                       {% endfor %}       
                                  {%elif f.name == 'm_21'%}
                                       {% for key, val in THEM %}
-                                         {% ifequal key f.value %}
-                                       <b><u>{{val}}</u>  &#10003;</b>    
-                                      {%else%}
-                                        {{val}}   
-                                      {% endifequal %}<br>
-                                      {% endfor %}                     
+                                                    {% ifequal key f.value %}<b><u>{% endifequal %}{{val}}{% ifequal key f.value %}</u>  &#10003;</b> {% endifequal %} <br>  
+                   
+                                      {% endfor %}      
+                                          {%elif f.name == 'm_3' %}
+                                         {% for o in M5_3 %}
+                                            {% if o.id in f.value %}<b> <u> {% endif %}{% if  LANGUAGE_CODE == 'en' %}{{o}}{% elif  LANGUAGE_CODE == 'es'  %}{{o.name_es}}{% elif  LANGUAGE_CODE == 'fr'  %}{{o.name_fr}}{% elif  LANGUAGE_CODE == 'ru'  %}{{o.name_ru}}{% elif  LANGUAGE_CODE == 'ar'  %}{{o.name_ar}}{% elif  LANGUAGE_CODE == 'zh'  %}{{o.name_zh}}{% else  %}{{o}}{%endif%} {% if o.id in f.value %}</u> </b> {% endif %}<br>
+                                                                    {% endfor %} 
+                 
+                                                                    {% endif %}                
                                                         {%else%}
                                                     {{f}}
                                                       {% endif %}
