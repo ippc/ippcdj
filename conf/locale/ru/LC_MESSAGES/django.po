@@ -10739,7 +10739,7 @@ msgstr "Итого (зарплаты и условия конкурентнос�
 #: pce/views.py:4483 pce/views.py:5989 pce/views.py:6461 pce/views.py:6932
 #: pce/views.py:7298 pce/views.py:8236 pce/views.py:8608
 msgid "Insufficient"
-msgstr ""
+msgstr "Недостаточный"
 
 #: pce/models.py:428 pce/models.py:442 pce/views.py:4258 pce/views.py:4285
 #: pce/views.py:4457 pce/views.py:4484
