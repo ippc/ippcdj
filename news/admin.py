@@ -51,22 +51,42 @@ class NewsPostAdmin(DisplayableAdmin):
         """
         #OwnableAdmin.save_form(self, request, form, change)
         send=False
+        
+        news_slug=''
         if change==True:
           if request.POST['slug'] != None:
+            news_slug=request.POST['slug']
             n_obj=get_object_or_404(NewsPost,slug=request.POST['slug']) 
             if n_obj.status == 1 and request.POST['status']=='2':
                send=True
             
         if change==False:
+            slug1=slugify(request.POST['title'])
+            alreadynews = NewsPost.objects.filter(slug__icontains=slug1)
+            if alreadynews.count()>0:
+                print(alreadynews[0].slug)
+                old2slug=alreadynews[0].slug
+                intslug=old2slug.replace(slug1+"-","")
+                intslug1=int(intslug)+1
+                
+                print(intslug1)
+                news_slug=slug1+"-"+str(intslug1)
+                # print(news_slug)
+                #slug = alreadynews[0].slug 
             obj = form.save(commit=False)
+           
+            
             if obj.user_id is None:
                 obj.user = request.user 
+                obj.slug = news_slug 
             DisplayableAdmin.save_form(self, request, form, change)
         else: 
             DisplayableAdmin.save_form(self, request, form, change)
-         
+        
+            
         if change==False and request.POST['status'] == '2'  :
             send=True
+            
         #new news post send notifications to Secretariat
         if send==True  :
             emailto_all = []
@@ -85,12 +105,12 @@ class NewsPostAdmin(DisplayableAdmin):
                 day_string = d.strftime('%d-%m-%Y')
 
                 subject='IPPC News: a new '+category+' has been posted'       
-                text='<html><body><p>Dear IPPC User,</p><p>a new "'+str(category)+'" has been posted in IPPC:<br><br> <b>'+ request.POST['title']+'</b></p><p>You can view it from '+day_string+' at the following url: <a href="http://www.ippc.int/news/'+slugify(request.POST['title'])+'">https://www.ippc.int/news/'+slugify(request.POST['title'])+'</s></p><p><br>International Plant Protection Convention team </p></body></html>'
+                text='<html><body><p>Dear IPPC User,</p><p>a new "'+str(category)+'" has been posted in IPPC:<br><br> <b>'+ request.POST['title']+'</b></p><p>You can view it from '+day_string+' at the following url: <a href="http://www.ippc.int/news/'+news_slug+'">https://www.ippc.int/news/'+news_slug+'</s></p><p><br>International Plant Protection Convention team </p></body></html>'
             
             notifificationmessage = mail.EmailMessage(subject,text,'ippc@fao.org',  emailto_all, ['paola.sentinelli@fao.org'])
             notifificationmessage.content_subtype = "html"  
             sent =notifificationmessage.send()
-            
+        
         return DisplayableAdmin.save_form(self, request, form, change)
 
 class NewsCategoryAdmin(admin.ModelAdmin):
