@@ -69,7 +69,7 @@
               {% include "pages/publicationtablerestricted.html" %}
        {% else %}
  
-              {% if request.user.groups.all.0 in page.get_content_model.groups.all or request.user.groups.all.1 in page.get_content_model.groups.all or request.user.groups.all.3 in page.get_content_model.groups.all or request.user.groups.all.2 in page.get_content_model.groups.all or request.user.groups.all.4 in page.get_content_model.groups.all or request.user.groups.all.5 in page.get_content_model.groups.all or request.user.groups.all.6 in page.get_content_model.groups.all  %}
+              {% if request.user.groups.all.0 in page.get_content_model.groups.all or request.user.groups.all.1 in page.get_content_model.groups.all or request.user.groups.all.3 in page.get_content_model.groups.all or request.user.groups.all.2 in page.get_content_model.groups.all or request.user.groups.all.4 in page.get_content_model.groups.all or request.user.groups.all.5 in page.get_content_model.groups.all or request.user.groups.all.6 in page.get_content_model.groups.all or request.user.groups.all.7 in page.get_content_model.groups.all  %}
                 {{ block.super }}
                 {# {% editable page.publicationlibrary.content %} #}
 
