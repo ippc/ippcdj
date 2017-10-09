@@ -11178,12 +11178,12 @@ def generate_report(request, country,sessionid=None):
                    row_cells = table.add_row().cells
                    row_cells[0].text = aa
                    row_cells[1].text = str(qq.nstaff)
-                   row_cells[2].text = str(ugettext(dict(VAL_AV)[qq.average]))
+                   row_cells[2].text = str((dict(VAL_AV)[qq.average]))
                    row_cells[3].text = str(qq.nstafflab)
-                   row_cells[4].text = str(ugettext(dict(VAL_AV)[qq.averagelab]))
+                   row_cells[4].text = str((dict(VAL_AV)[qq.averagelab]))
                   
-                   row_cells[5].text = str(ugettext(dict(BOOL_CHOICESM_M)[qq.support]))
-                   row_cells[6].text = str(ugettext(dict(BOOL_CHOICESM_M)[qq.managers]))
+                   row_cells[5].text = str((dict(BOOL_CHOICESM_M)[qq.support]))
+                   row_cells[6].text = str((dict(BOOL_CHOICESM_M)[qq.managers]))
 
 
                    bb=bb+1 
@@ -11280,9 +11280,9 @@ def generate_report(request, country,sessionid=None):
                    row_cells[1].text = str(qq.nstaff)
                    row_cells[2].text = str(dict(VAL_AV)[qq.average])
                    row_cells[3].text = str(qq.nstafflab)
-                   row_cells[4].text = ugettext(dict(VAL_AV)[qq.averagelab])
-                   row_cells[5].text = str(ugettext(dict(BOOL_CHOICESM_M)[qq.support]))
-                   row_cells[6].text = str(ugettext(dict(BOOL_CHOICESM_M)[qq.managers]))
+                   row_cells[4].text = str(dict(VAL_AV)[qq.averagelab])
+                   row_cells[5].text = str((dict(BOOL_CHOICESM_M)[qq.support]))
+                   row_cells[6].text = str((dict(BOOL_CHOICESM_M)[qq.managers]))
 
 
                    bb=bb+1   
@@ -11359,11 +11359,11 @@ def generate_report(request, country,sessionid=None):
                    row_cells = table.add_row().cells
                    row_cells[0].text = aa
                    row_cells[1].text = str(qq.nstaff)
-                   row_cells[2].text = str(ugettext(dict(VAL_AV)[qq.average]))
+                   row_cells[2].text = str((dict(VAL_AV)[qq.average]))
                    row_cells[3].text = str(qq.nstafflab)
-                   row_cells[4].text = str(ugettext(dict(VAL_AV)[qq.averagelab]))
-                   row_cells[5].text = str(ugettext(dict(BOOL_CHOICESM_M)[qq.support]))
-                   row_cells[6].text = str(ugettext(dict(BOOL_CHOICESM_M)[qq.managers]))
+                   row_cells[4].text = str((dict(VAL_AV)[qq.averagelab]))
+                   row_cells[5].text = str((dict(BOOL_CHOICESM_M)[qq.support]))
+                   row_cells[6].text = str((dict(BOOL_CHOICESM_M)[qq.managers]))
 
 
                    bb=bb+1   
@@ -11449,13 +11449,13 @@ def generate_report(request, country,sessionid=None):
                    row_cells = table.add_row().cells
                    row_cells[0].text = aa
                    row_cells[1].text = str(qq.nstaff)
-                   row_cells[2].text = str(ugettext(dict(VAL_AV)[qq.average]))
+                   row_cells[2].text = str((dict(VAL_AV)[qq.average]))
                    row_cells[3].text = str(qq.nstafflab)
-                   row_cells[4].text = str(ugettext(dict(VAL_AV)[qq.averagelab]))
+                   row_cells[4].text = str((dict(VAL_AV)[qq.averagelab]))
                    row_cells[5].text = str(qq.supstafflab)
-                   row_cells[6].text = str(ugettext(dict(BOOL_CHOICESM_M)[qq.technical]))
-                   row_cells[7].text = str(ugettext(dict(BOOL_CHOICESM_M)[qq.managers]))
-                   row_cells[8].text = str(ugettext(dict(BOOL_CHOICESM_M)[qq.support]))
+                   row_cells[6].text = str((dict(BOOL_CHOICESM_M)[qq.technical]))
+                   row_cells[7].text = str((dict(BOOL_CHOICESM_M)[qq.managers]))
+                   row_cells[8].text = str((dict(BOOL_CHOICESM_M)[qq.support]))
 
 
                    bb=bb+1   
@@ -11554,10 +11554,10 @@ def generate_report(request, country,sessionid=None):
                    row_cells = table.add_row().cells
                    row_cells[0].text = aa
                    row_cells[1].text = str(qq.nstaff)
-                   row_cells[2].text = str(ugettext(dict(VAL_AV)[qq.average]))
+                   row_cells[2].text = str((dict(VAL_AV)[qq.average]))
                    row_cells[3].text = str(qq.nstafflab)
 
-                   row_cells[4].text = str(ugettext(dict(BOOL_CHOICESM_M)[qq.support]))
+                   row_cells[4].text = str((dict(BOOL_CHOICESM_M)[qq.support]))
 
 
                    bb=bb+1    
@@ -11634,11 +11634,11 @@ def generate_report(request, country,sessionid=None):
                    row_cells = table.add_row().cells
                    row_cells[0].text = aa
                    row_cells[1].text = str(qq.nstaff)
-                   row_cells[2].text = str(ugettext(dict(VAL_AV)[qq.average]))
+                   row_cells[2].text = str((dict(VAL_AV)[qq.average]))
                    row_cells[3].text = str(qq.nstafflab)
-                   row_cells[4].text = str(ugettext(dict(VAL_AV)[qq.averagelab]))
-                   row_cells[5].text = str(ugettext(dict(BOOL_CHOICESM_M)[qq.support]))
-                   row_cells[6].text = str(ugettext(dict(BOOL_CHOICESM_M)[qq.managers]))
+                   row_cells[4].text = str((dict(VAL_AV)[qq.averagelab]))
+                   row_cells[5].text = str((dict(BOOL_CHOICESM_M)[qq.support]))
+                   row_cells[6].text = str((dict(BOOL_CHOICESM_M)[qq.managers]))
 
 
                    bb=bb+1 
@@ -11725,11 +11725,11 @@ def generate_report(request, country,sessionid=None):
                    row_cells = table.add_row().cells
                    row_cells[0].text = aa
                    row_cells[1].text = str(qq.nstaff)
-                   row_cells[2].text = str(ugettext(dict(VAL_AV)[qq.average]))
+                   row_cells[2].text = str((dict(VAL_AV)[qq.average]))
                    row_cells[3].text = str(qq.nstafflab)
-                   row_cells[4].text = str(ugettext(dict(VAL_AV)[qq.averagelab]))
-                   row_cells[5].text = str(ugettext(dict(BOOL_CHOICESM_M)[qq.support]))
-                   row_cells[6].text = str(ugettext(dict(BOOL_CHOICESM_M)[qq.managers]))
+                   row_cells[4].text = str((dict(VAL_AV)[qq.averagelab]))
+                   row_cells[5].text = str((dict(BOOL_CHOICESM_M)[qq.support]))
+                   row_cells[6].text = str((dict(BOOL_CHOICESM_M)[qq.managers]))
 
 
                    bb=bb+1 
