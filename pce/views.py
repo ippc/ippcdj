@@ -11069,8 +11069,8 @@ def generate_report(request, country,sessionid=None):
              )
             BOOL_CHOICESM_M = (
                 (0, (" ")),
-                (1, _("Yes")),
-                (2, _("No")),
+                (1, ("Yes")),
+                (2, ("No")),
             )  
          
             p=document.add_paragraph("")
@@ -11181,6 +11181,7 @@ def generate_report(request, country,sessionid=None):
                    row_cells[2].text = str(ugettext(dict(VAL_AV)[qq.average]))
                    row_cells[3].text = str(qq.nstafflab)
                    row_cells[4].text = str(ugettext(dict(VAL_AV)[qq.averagelab]))
+                  
                    row_cells[5].text = str(ugettext(dict(BOOL_CHOICESM_M)[qq.support]))
                    row_cells[6].text = str(ugettext(dict(BOOL_CHOICESM_M)[qq.managers]))
 
