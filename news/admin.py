@@ -73,6 +73,9 @@ class NewsPostAdmin(DisplayableAdmin):
                 news_slug=slug1+"-"+str(intslug1)
                 # print(news_slug)
                 #slug = alreadynews[0].slug 
+            else:
+                news_slug= slug1
+           
             obj = form.save(commit=False)
            
             
