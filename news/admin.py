@@ -110,9 +110,9 @@ class NewsPostAdmin(DisplayableAdmin):
                 subject='IPPC News: a new '+category+' has been posted'       
                 text='<html><body><p>Dear IPPC User,</p><p>a new "'+str(category)+'" has been posted in IPPC:<br><br> <b>'+ request.POST['title']+'</b></p><p>You can view it from '+day_string+' at the following url: <a href="http://www.ippc.int/news/'+news_slug+'">https://www.ippc.int/news/'+news_slug+'</s></p><p><br>International Plant Protection Convention team </p></body></html>'
             
-            notifificationmessage = mail.EmailMessage(subject,text,'ippc@fao.org',  emailto_all, ['paola.sentinelli@fao.org'])
-            notifificationmessage.content_subtype = "html"  
-            sent =notifificationmessage.send()
+                notifificationmessage = mail.EmailMessage(subject,text,'ippc@fao.org',  emailto_all, ['paola.sentinelli@fao.org'])
+                notifificationmessage.content_subtype = "html"  
+                sent =notifificationmessage.send()
         
         return DisplayableAdmin.save_form(self, request, form, change)
 
