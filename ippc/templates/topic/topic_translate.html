@@ -1,0 +1,83 @@
+{% extends "base.html" %}
+{% load pages_tags translate_tags mezzanine_tags i18n future staticfiles accounts_tags %}
+
+{% block meta_title %}{% trans "Translate Topic" %} {% endblock %}
+
+{% block body_class %}wide{% endblock %}
+
+
+{% block breadcrumb_menu %}
+<li><a href="/{{ LANGUAGE_CODE }}/">{% trans "Home" %}</a><span class="divider">/</span></li>
+<li id="breadcrumb-menu-core-activities"><a href="/{{ LANGUAGE_CODE }}/core-activities/">{% trans "Core Activities" %} </a><span class="divider">/</span></li>
+<li id="breadcrumb-menu-core-activities-standards-and-implementation"><a href="/{{ LANGUAGE_CODE }}/core-activities/standards-and-implementation/">{% trans "Standards &amp; Implementation" %} </a><span class="divider">/</span></li>
+<li id="breadcrumb-menu-core-activities-standards-setting"><a href="/{{ LANGUAGE_CODE }}/core-activities/standards-setting/">{% trans "Standard setting" %} </a><span class="divider">/</span></li>
+<li id="breadcrumb-menu-core-activities-standards-setting-list-topics-ippc-standards" class="active"><a href="/{{ LANGUAGE_CODE }}/core-activities/standards-setting/list-topics-ippc-standards/">{% trans "Current List of topics for IPPC standards" %} </a><span class="divider">/</span></li>           
+<li class="active"><a href="/{{ LANGUAGE_CODE }}/core-activities/standards-setting/list-topics-ippc-standards/list">{% trans "List of topics database" %} </a> <span class="divider">/</span></li>
+<li class="active">{% trans "Traslating: " %} {{ topic.title }}</li>
+{% endblock %}
+
+
+{% block local_nav %}
+{% endblock local_nav %}
+
+{% block pageinfo %}
+{% endblock pageinfo %}
+
+
+{% block main %}
+<p class="pull-right">
+  <a href="javascript:history.go(-1)">{% trans " Cancel and go back" %}</a>
+</p>
+
+<h1><small class="normal">{% trans "Translating in " %}{% if lang == 'es' %}<b>Spanish </b>   
+    {% elif lang == 'fr' %}<b>French </b>   
+    {% elif lang == 'ar' %}<b>Arabic </b>   
+    {% elif lang == 'zh' %}<b>Chinese </b>   
+    {% elif lang == 'ru' %}<b>Russian </b>   
+    {% endif %}</small></h1>
+
+<div class="alert alert-warning">
+The field below are the only fields to translate (the rest is translated automatically from static labels)     
+
+<br><br><b>Original English text in field "Title" to be traslated:</b>
+<div class="alert alert-info"><b> {{ topic.title }} ({{ topic.topicnumber }})</b></div>
+
+<br><br><b>Original English text in field "Topic under technical area" to be traslated:</b>
+<div class="alert alert-info"><b> {{ topic.topic_under }}</b></div>
+
+<br><br><b>Original English text in field Specification number" to be traslated:</b>
+<div class="alert alert-info"><b> {{ topic.specification_number }}</b></div>
+
+
+
+
+    
+</div>
+
+ 
+<form enctype="multipart/form-data" class="customform" method="POST">
+    {% csrf_token %}
+    <fieldset>
+    {% load pages_tags translate_tags mezzanine_tags ippc_tags i18n future staticfiles accounts_tags %} 
+   <input type="hidden" name="translation_id" value="{{topic.id}}">
+    {% if form.non_field_errors or form.errors %}
+    <div class="alert alert-error">{% trans "Please correct the errors below." %}
+    <ul>
+    {% for error in form.non_field_errors %}
+    <li>{{ error }}</li>
+    {% endfor %}
+    {% for error in form.errors %}
+    <li>{{ error }}</li>
+    {% endfor %}
+    </ul>
+    </div>
+    {% endif %}
+    {% fields_for transform %}
+    <div class="form-actions">
+          <button type="submit" class="btn btn-info btn-large">{% trans "Translate Topic" %}</button> {% trans "or" %} <a href="javascript:history.go(-1)">{% trans "Cancel" %}</a>
+    </div>
+    </fieldset>
+</form>
+
+
+{% endblock %}

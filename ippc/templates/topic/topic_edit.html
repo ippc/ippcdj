@@ -1,0 +1,48 @@
+{% extends "base.html" %}
+{% load pages_tags translate_tags mezzanine_tags i18n future staticfiles accounts_tags %}
+
+{% block meta_title %}{% trans "Edit Topic" %}  {% endblock %}
+
+{% block body_class %}wide{% endblock %}
+
+
+
+{% block breadcrumb_menu %}
+<li><a href="/{{ LANGUAGE_CODE }}/">{% trans "Home" %}</a><span class="divider">/</span></li>
+<li id="breadcrumb-menu-core-activities"><a href="/{{ LANGUAGE_CODE }}/core-activities/">{% trans "Core Activities" %} </a><span class="divider">/</span></li>
+<li id="breadcrumb-menu-core-activities-standards-and-implementation"><a href="/{{ LANGUAGE_CODE }}/core-activities/standards-and-implementation/">{% trans "Standards &amp; Implementation" %} </a><span class="divider">/</span></li>
+<li id="breadcrumb-menu-core-activities-standards-setting"><a href="/{{ LANGUAGE_CODE }}/core-activities/standards-setting/">{% trans "Standard setting" %} </a><span class="divider">/</span></li>
+<li id="breadcrumb-menu-core-activities-standards-setting-list-topics-ippc-standards" class="active"><a href="/{{ LANGUAGE_CODE }}/core-activities/standards-setting/list-topics-ippc-standards/">{% trans "Current List of topics for IPPC standards" %} </a><span class="divider">/</span></li>           
+<li class="active"><a href="/{{ LANGUAGE_CODE }}/core-activities/standards-setting/list-topics-ippc-standards/list">{% trans "List of topics database" %} </a> <span class="divider">/</span></li>
+<li class="active">{% trans "Editing: " %} {{ topic.title }}</li>
+{% endblock %}
+
+
+
+{% block local_nav %}
+{% endblock local_nav %}
+
+{% block pageinfo %}
+{% endblock pageinfo %}
+
+{% block main %}
+
+<p class="pull-right">
+  <a href="javascript:history.go(-1)">{% trans " Cancel and go back" %}</a>
+</p>
+
+<h1><small class="normal">{% trans "Editing" %}</small> {{ topic.title }} <br><small class="normal">{% trans "Last updated on" %} {{topic.modify_date}}</small></h1>
+
+<form enctype="multipart/form-data" class="customform" method="POST">
+    {% csrf_token %}
+    <fieldset>
+        {% include "topic/topic_form.html" %}
+    
+        <div class="form-actions">
+            <button type="submit" class="btn btn-info btn-large">{% trans "Update Topic" %}</button> {% trans "or" %} <a href="javascript:history.go(-1)">{% trans "Cancel" %}</a>
+        </div>
+    </fieldset>
+</form>
+
+
+{% endblock %}

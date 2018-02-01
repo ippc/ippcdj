@@ -1,0 +1,405 @@
+{% extends "base.html" %}
+{% load pages_tags mezzanine_tags i18n future staticfiles translate_tags accounts_tags %}
+
+{% block meta_title %}
+  {% trans "Topics" %}: 
+  {{ page.title }}
+{% endblock %}
+
+{% block body_class %}wide{% endblock %}
+
+{% block breadcrumb_menu %}
+<li><a href="/{{ LANGUAGE_CODE }}/">{% trans "Home" %}</a><span class="divider">/</span></li>
+<li id="breadcrumb-menu-core-activities"><a href="/{{ LANGUAGE_CODE }}/core-activities/">{% trans "Core Activities" %} </a><span class="divider">/</span></li>
+<li id="breadcrumb-menu-core-activities-standards-and-implementation"><a href="/{{ LANGUAGE_CODE }}/core-activities/standards-and-implementation/">{% trans "Standards &amp; Implementation" %} </a><span class="divider">/</span></li>
+<li id="breadcrumb-menu-core-activities-standards-setting"><a href="/{{ LANGUAGE_CODE }}/core-activities/standards-setting/">{% trans "Standard setting" %} </a><span class="divider">/</span></li>
+<li id="breadcrumb-menu-core-activities-standards-setting-list-topics-ippc-standards" class="active"><a href="/{{ LANGUAGE_CODE }}/core-activities/standards-setting/list-topics-ippc-standards/">{% trans "Current List of topics for IPPC standards" %} </a><span class="divider">/</span></li>           
+<li class="active">List of topics database</li>
+
+{% endblock %}
+
+{% block local_nav %}
+{% endblock local_nav %}
+
+{% block pageinfo %}
+{% endblock pageinfo %}
+
+{% block main %}
+
+ 
+<p class="pull-right">
+  <a href="javascript:history.go(-1)">{% trans "« Go back" %}</a>
+  {% if perms.ippc.add_publication %}
+ <br>
+  <small>    <a class="btn btn-small btn-info" href="/core-activities/standards-setting/list-topics-ippc-standards/topic/create/new/">+ {% trans "Add new" %}</a>
+ </small>
+  <br>
+  {% else %}
+  {% endif %}
+</p>
+
+
+
+{% if latest %}  
+<h1>
+  {% trans "List of Topics for IPPC Standards" %}
+</h1> 
+<p>
+<i> {% trans "This List of topics for IPPC standards was last updated on 1 June 2017 and reflects the modifications adopted by the CPM or approved by the SC." %}</i><br><br>
+ <b>{% trans "Table" %} 1:</b> {% trans "Technical panels and topics for the Technical Panel on Diagnostic Protocols (TPDP), the Technical Panel for the Glossary (TPG) and the Technical Panel on Phytosanitary Treatments (TPPT)" %}<br>
+ <b>{% trans "Table" %} 2:</b> {% trans "Topics for the Expert Working Groups (EWGs), Technical Panel on Fruit Flies (TPFF), Technical Panel on Forest Quarantine (TPFQ), and Technical Panel on Phytosanitary Treatments (TPPT)" %}<br>
+<b> {% trans "Table" %} 3:</b> {% trans "Subjects for the Technical Panel on Diagnostic Protocols (TPDP)" %}<br>
+ <b>{% trans "Table" %} 4:</b> {% trans "Subjects for the Technical Panel on Phytosanitary Treatments (TPPT)" %}<br>
+ <b>{% trans "Table" %} 5:</b> {% trans "Subjects for the Technical Panel for the Glossary (TPG)" %}<br><br>
+ <b> {% trans "IPPC Strategic Objectives" %}</b><br>
+ {% trans "A: Food Security" %}<br>
+ {% trans "B: Environmental Protection" %}<br>
+ {% trans "C: Trade Facilitation" %}<br>
+ {% trans "D: Capacity Development" %}<br><br>
+<b> {% trans "Priority" %}</b><br>
+ {% trans "Priority 1 to 4 (with 1 being of high priority and 4 being of low priority)" %}<br><br>
+<i><b> {% trans "Notes" %}</b>:  {% trans "Country names and dates are in ISO format (respectively: ISO 3166-1-alpha-2 code and YYYY-MM)." %}<br>
+ {% trans "The List of topics is presented in order of priority, as requested by CPM-7 (2012)." %}</i> </p>
+
+ 
+
+ 
+<table class="table table-condensed table-striped" id="topic1">
+  <thead>
+  <tr>
+    <th colspan="9"  style="background-color: #0000FF; color: #fff">{% trans "Table" %} 1: {% trans "Technical panels and topics for TPDP, TPG and TPPT" %}</th>
+  </tr>
+  <tr>
+    <th style="background-color: #0000FF; color: #fff">{% trans "Topic No." %}</th>
+    <th style="background-color: #0000FF; color: #fff">{% trans "Current title" %}</th>
+    <th style="background-color: #0000FF; color: #fff">{% trans "Drafting body" %}</th>
+    <th style="background-color: #0000FF; color: #fff">{% trans "Topic under technical area (if applicable)" %}</th>
+    <th style="background-color: #0000FF; color: #fff">{% trans "Added to the list" %}</th>
+    <th style="background-color: #0000FF; color: #fff">{% trans "Lead Steward / TP Lead (Country, Meeting assigned)" %}</th>
+    <th style="background-color: #0000FF; color: #fff">{% trans "Assistant Stewards (Country, Meeting assigned)" %}</th>
+    <th style="background-color: #0000FF; color: #fff">{% trans "Spec No" %}</th>
+    <th style="background-color: #0000FF; color: #fff">&#160;</th>
+  </tr>
+  </thead>
+  <tbody>
+  {% for object in topic_table1 %}
+  <tr>
+    <td style="background-color: #8DB3E2;white-space: nowrap;">{{ object.topicnumber }}</td>
+    <td style="background-color: #8DB3E2"><a href="{% url 'topic-detail' object.slug %}">  
+        {% with object|get_object_translation as translated_page %}
+        {{ translated_page.title|safe }}
+        {% endwith %}</a>
+    </td>
+    <td style="background-color: #8DB3E2">
+    {% if object.drafting_body.all %}
+        {% for d in object.drafting_body.all %} 
+           {% if  LANGUAGE_CODE == 'en' %}{{ d }}{% elif  LANGUAGE_CODE == 'es'  %}{{d.draftingbody_es}}{% elif  LANGUAGE_CODE == 'fr'  %}{{d.draftingbody_fr}}{% elif  LANGUAGE_CODE == 'ru'  %}{{d.draftingbody_ru}}{% elif  LANGUAGE_CODE == 'ar'  %}{{d.draftingbody_ar}}{% elif  LANGUAGE_CODE == 'zh'  %}{{d.draftingbody_zh}}{% else  %}{{d}}{%endif%}
+           <br> 
+        {%  endfor %}
+    {% endif %}
+    </td>
+    <td style="background-color: #8DB3E2;white-space: nowrap;">  {% with object|get_object_translation as translated_topic_under %}
+        {{ translated_topic_under.topic_under|safe }}
+        {% endwith %}</td>
+    <td style="background-color: #8DB3E2;white-space: nowrap;">  {%if object.addedtolist_sc != 0  %}{{ object.addedtolist_sc_verbose }} <br> {% endif %}
+          {%if object.addedtolist != 0  %}{{ object.addedtolist_verbose }} ({{ object.addedtolist}}) {% endif %}
+    </td>
+    <td style="background-color: #8DB3E2">
+        {% if object.topicleads_set.all %}
+        <ul style=" list-style-type: none;">
+        {% for lead in  object.topicleads_set.all %} 
+        <li style=" white-space: nowrap;">{{lead.user.prefix}} {{lead.user.first_name}} {{lead.user.last_name}} ({% if lead.representing_country != None %}{{lead.representing_country.iso}}{% endif %}{% if lead.meetingassistantassigned != None %}, {{lead.meetingassistantassigned}}{% endif %})</li>
+            {% endfor %} </ul>
+               {%endif%}
+          
+</td>
+    <td style="background-color: #8DB3E2">  
+        {% if object.topicassistants_set.all %}
+          <ul style=" list-style-type: none;">
+             {% for assist in  object.topicassistants_set.all %} 
+            <li style=" white-space: nowrap;">{{assist.user.prefix}} {{assist.user.first_name}} {{assist.user.last_name}} ({% if assist.representing_country != None %}{{assist.representing_country.iso}}{% endif %}{% if assist.meetingassistantassigned != None %}, {{assist.meetingassistantassigned}}{% endif %})</li>
+            {% endfor %} </ul>
+               {%endif%}
+    </td>
+    <td style="background-color: #8DB3E2">{%if  object.specification_number != None%}
+        {% with object|get_object_translation as translated_specification_number %}
+        {{ translated_specification_number.specification_number|safe }}
+        {% endwith %}
+        {%else%} - {%endif%}</td>
+    <td style="background-color: #8DB3E2">
+    {% if user.is_superuser or perms.ippc.change_publication %}
+        <a class="small pull-right" href="{% url 'topic-edit' object.id %}"><i class="icon-edit"></i>{% trans "Edit" %}</a>
+    {% endif %}
+    </td>
+  </tr>
+   {% endfor %} 
+    </tbody>
+  </table>
+<hr> 
+<table class="table table-condensed table-striped" id="topic2">
+  <thead>
+    <tr>
+        <th colspan="11"  style="background-color: #008000; color: #fff">{% trans "Table" %} 2: {% trans "Topics for EWGs, TPFF, TPFQ and TPPT (sorted by priority, drafting body, then status)" %}</th>
+   </tr>
+   <tr>
+     <th style="background-color: #008000; color: #fff">{% trans "Topic No." %}</th>
+     <th style="background-color: #008000; color: #fff">{% trans "Current title" %}</th>
+     <th style="background-color: #008000; color: #fff">{% trans "Priority" %}</th>
+     <th style="background-color: #008000; color: #fff">{% trans "Strategic objective" %}</th>
+     <th style="background-color: #008000; color: #fff">{% trans "Drafting body" %}</th>
+     <th style="background-color: #008000; color: #fff">{% trans "Added to the list" %}</th>
+     <th style="background-color: #008000; color: #fff">{% trans "Lead Steward / TP Lead (Country, Meeting assigned)" %}</th>
+     <th style="background-color: #008000; color: #fff">{% trans "Assistant Stewards (Country, Meeting assigned)" %}</th>
+     <th style="background-color: #008000; color: #fff">{% trans "Spec No" %}</th>
+     <th style="background-color: #008000; color: #fff">{% trans "Status" %}</th>
+     <th style="background-color: #008000; color: #fff">&#160;</th>
+  </tr>
+  </thead>
+  <tbody>  
+  {% for object in topic_table2 %}
+  <tr>
+    <td style="background-color: #C2D69B;white-space: nowrap;">{{ object.topicnumber }}</td>
+    <td style="background-color: #C2D69B"><a href="{% url 'topic-detail' object.slug %}">  
+        {% with object|get_object_translation as translated_page %}
+        {{ translated_page.title|safe }}
+        {% endwith %}</a>
+    </td>
+    <td style="background-color: #C2D69B">{{object.priority }}</td>
+    <td style="background-color: #C2D69B">{% for o in object.strategicobj.all %}
+       {{ o.strategicobj }}<br>     {% endfor %} </td>
+    <td style="background-color: #C2D69B">
+    {% if object.drafting_body.all %}
+        {% for d in object.drafting_body.all %} 
+           {% if  LANGUAGE_CODE == 'en' %}{{ d }}{% elif  LANGUAGE_CODE == 'es'  %}{{d.draftingbody_es}}{% elif  LANGUAGE_CODE == 'fr'  %}{{d.draftingbody_fr}}{% elif  LANGUAGE_CODE == 'ru'  %}{{d.draftingbody_ru}}{% elif  LANGUAGE_CODE == 'ar'  %}{{d.draftingbody_ar}}{% elif  LANGUAGE_CODE == 'zh'  %}{{d.draftingbody_zh}}{% else  %}{{d}}{%endif%}
+           <br> 
+        {%  endfor %}
+    {% endif %}
+    </td>
+    <td style="background-color: #C2D69B;white-space: nowrap;">{%if object.addedtolist_sc != 0  %}{{ object.addedtolist_sc_verbose }}  <br>{% endif %}
+          {%if object.addedtolist != 0  %}{{ object.addedtolist_verbose }} ({{ object.addedtolist}}) {% endif %}
+    </td>
+ <td style="background-color: #C2D69B">
+        {% if object.topicleads_set.all %}
+        <ul style=" list-style-type: none;">
+        {% for lead in  object.topicleads_set.all %} 
+        <li style=" white-space: nowrap;">{{lead.user.prefix}} {{lead.user.first_name}} {{lead.user.last_name}} ({% if lead.representing_country != None %}{{lead.representing_country.iso}}{% endif %}{% if lead.meetingassistantassigned != None %}, {{lead.meetingassistantassigned}}{% endif %})</li>
+            {% endfor %} </ul>
+               {%endif%}
+          
+</td>
+    <td style="background-color: #C2D69B">  
+        {% if object.topicassistants_set.all %}
+          <ul style=" list-style-type: none;">
+             {% for assist in  object.topicassistants_set.all %} 
+            <li style=" white-space: nowrap;">{{assist.user.prefix}} {{assist.user.first_name}} {{assist.user.last_name}} ({% if assist.representing_country != None %}{{assist.representing_country.iso}}{% endif %}{% if assist.meetingassistantassigned != None %}, {{assist.meetingassistantassigned}}{% endif %})</li>
+            {% endfor %} </ul>
+               {%endif%}
+    </td>
+    <td style="background-color: #C2D69B">{%if  object.specification_number != None%}
+        {% with object|get_object_translation as translated_specification_number %}
+        {{ translated_specification_number.specification_number|safe }}
+        {% endwith %}
+        {%else%} - {%endif%}</td>
+    <td style="background-color: #C2D69B">{{object.topicstatus_verbose }}</td>
+    <td style="background-color: #C2D69B">
+    {% if user.is_superuser or perms.ippc.change_publication %}
+        <a class="small pull-right" href="{% url 'topic-edit' object.id %}"><i class="icon-edit"></i>{% trans "Edit" %}</a>
+    {% endif %}
+    </td>
+</tr>
+   {% endfor %} 
+    </tbody>
+  </table>
+
+
+  <hr> 
+<table class="table table-condensed table-striped" id="topic3">
+  <thead>
+     <tr>
+        <th colspan="10"  style="background-color: #7030A0; color: #fff">{% trans "Table" %} 3: {% trans "Subjects for TPDP (sorted by priority, topic under, then status)" %}</th>
+     </tr>
+  <tr>
+    <th style="background-color: #7030A0; color: #fff">{% trans "Topic No." %}</th>
+    <th style="background-color: #7030A0; color: #fff">{% trans "Current title" %}</th>
+    <th style="background-color: #7030A0; color: #fff">{% trans "Priority" %}</th>
+    <th style="background-color: #7030A0; color: #fff">{% trans "Strategic objective" %}</th>
+    <th style="background-color: #7030A0; color: #fff">{% trans "Topic under technical area (if applicable)" %}</th>
+    <th style="background-color: #7030A0; color: #fff">{% trans "Added to the list" %}</th>
+    <th style="background-color: #7030A0; color: #fff">{% trans "Discipline Lead (Country)" %}</th>
+    <th style="background-color: #7030A0; color: #fff">{% trans "Referee" %}</th>
+    <th style="background-color: #7030A0; color: #fff">{% trans "Status" %}</th>
+    <th style="background-color: #7030A0; color: #fff">&#160;</th>
+  </tr>
+</thead>
+  <tbody> 
+    {% for object in topic_table3 %}
+  <tr>
+    <td style="background-color: #CCC0D9;white-space: nowrap;">{{ object.topicnumber }}</td>
+    <td style="background-color: #CCC0D9"><a href="{% url 'topic-detail' object.slug %}">  
+        {% with object|get_object_translation as translated_page %}
+        {{ translated_page.title|safe }}
+        {% endwith %}</a>
+    </td>
+    <td style="background-color: #CCC0D9">{{object.priority }}</td>
+    <td style="background-color: #CCC0D9">{% for o in object.strategicobj.all %}
+       {{ o.strategicobj }}<br>     {% endfor %} </td>
+    <td style="background-color: #CCC0D9;white-space: nowrap;">{% with object|get_object_translation as translated_topic_under %}
+        {{ translated_topic_under.topic_under|safe }}
+        {% endwith %}</td></td>
+    <td style="background-color: #CCC0D9;white-space: nowrap;"> {%if object.addedtolist_sc != 0  %}{{ object.addedtolist_sc_verbose }} <br>{% endif %}
+          {%if object.addedtolist != 0  %} {{ object.addedtolist_verbose }} ({{ object.addedtolist}}) {% endif %}</td>
+   <td style="background-color: #CCC0D9">
+        {% if object.topicleads_set.all %}
+        <ul style=" list-style-type: none;">
+        {% for lead in  object.topicleads_set.all %} 
+        <li style=" white-space: nowrap;">{{lead.user.prefix}} {{lead.user.first_name}} {{lead.user.last_name}} ({% if lead.representing_country != None %}{{lead.representing_country.iso}}{% endif %}{% if lead.meetingassistantassigned != None %}, {{lead.meetingassistantassigned}}{% endif %})</li>
+            {% endfor %} </ul>
+               {%endif%}
+          
+</td>
+    <td style="background-color: #CCC0D9">  
+        {% if object.topicassistants_set.all %}
+          <ul style=" list-style-type: none;">
+             {% for assist in  object.topicassistants_set.all %} 
+            <li style=" white-space: nowrap;">{{assist.user.prefix}} {{assist.user.first_name}} {{assist.user.last_name}} ({% if assist.representing_country != None %}{{assist.representing_country.iso}}{% endif %}{% if assist.meetingassistantassigned != None %}, {{assist.meetingassistantassigned}}{% endif %})</li>
+            {% endfor %} </ul>
+               {%endif%}
+    </td>
+    <td style="background-color: #CCC0D9">{{object.topicstatus_verbose }}</td>
+    <td style="background-color: #CCC0D9">
+    {% if user.is_superuser or perms.ippc.change_publication %}
+        <a class="small pull-right" href="{% url 'topic-edit' object.id %}"><i class="icon-edit"></i>{% trans "Edit" %}</a>
+    {% endif %}
+    </td>
+</tr>
+      
+       {% endfor %} 
+    </tbody>
+  </table>
+ <hr> 
+<table class="table table-condensed table-striped" id="topic4">
+  <thead>
+    <tr>
+        <th colspan="10"  style="background-color: #E36C0A; color: #fff">{% trans "Table" %} 4: {% trans "Subjects for TPPT (sorted by priority, status, then topic number)" %}</th>
+  </tr>
+  <tr>
+    <th style="background-color: #E36C0A; color: #fff">{% trans "Topic No." %}</th>
+    <th style="background-color: #E36C0A; color: #fff">{% trans "Current title" %}</th>
+    <th style="background-color: #E36C0A; color: #fff">{% trans "Priority" %}</th>
+    <th style="background-color: #E36C0A; color: #fff">{% trans "Strategic objective" %}</th>
+    <th style="background-color: #E36C0A; color: #fff">{% trans "Added to the list" %}</th>
+    <th style="background-color: #E36C0A; color: #fff">{% trans "Treatment Lead (Country,Meeting assigned)" %}</th>
+    <th style="background-color: #E36C0A; color: #fff">{% trans "Assistant  Lead (Country,Meeting assigned)" %}</th>
+    <th style="background-color: #E36C0A; color: #fff">{% trans "Status" %}</th>
+    <th style="background-color: #E36C0A; color: #fff">&#160;</th>
+  </tr>
+      </thead>
+  <tbody>
+    {% for object in topic_table4 %}
+     
+ 
+<tr>
+    <td style="background-color: #FBD4B4;white-space: nowrap;">{{ object.topicnumber }}</td>
+     <td style="background-color: #FBD4B4"><a href="{% url 'topic-detail' object.slug %}">  
+        {% with object|get_object_translation as translated_page %}
+        {{ translated_page.title|safe }}
+        {% endwith %}</a>
+    </td>
+    <td style="background-color: #FBD4B4">{{object.priority }}</td>
+    <td style="background-color: #FBD4B4">{% for o in object.strategicobj.all %}
+       {{ o.strategicobj }}<br>     {% endfor %} </td>
+    
+    <td style="background-color: #FBD4B4;white-space: nowrap;"> {%if object.addedtolist_sc != 0  %}{{ object.addedtolist_sc_verbose }} <br> {% endif %}
+          {%if object.addedtolist != 0  %}{{ object.addedtolist_verbose }} ({{ object.addedtolist}}) {% endif %}</td>
+  <td style="background-color: #FBD4B4">
+        {% if object.topicleads_set.all %}
+        <ul style=" list-style-type: none;">
+        {% for lead in  object.topicleads_set.all %} 
+        <li style=" white-space: nowrap;">{{lead.user.prefix}} {{lead.user.first_name}} {{lead.user.last_name}} ({% if lead.representing_country != None %}{{lead.representing_country.iso}}{% endif %}{% if lead.meetingassistantassigned != None %}, {{lead.meetingassistantassigned}}{% endif %})</li>
+            {% endfor %} </ul>
+               {%endif%}
+          
+</td>
+    <td style="background-color: #FBD4B4">  
+        {% if object.topicassistants_set.all %}
+          <ul style=" list-style-type: none;">
+             {% for assist in  object.topicassistants_set.all %} 
+            <li style=" white-space: nowrap;">{{assist.user.prefix}} {{assist.user.first_name}} {{assist.user.last_name}} ({% if assist.representing_country != None %}{{assist.representing_country.iso}}{% endif %}{% if assist.meetingassistantassigned != None %}, {{assist.meetingassistantassigned}}{% endif %})</li>
+            {% endfor %} </ul>
+               {%endif%}
+    </td>
+    <td style="background-color: #FBD4B4">{{object.topicstatus_verbose }}</td>
+  <td style="background-color: #FBD4B4">
+    {% if user.is_superuser or perms.ippc.change_publication %}
+        <a class="small pull-right" href="{% url 'topic-edit' object.id %}"><i class="icon-edit"></i>{% trans "Edit" %}</a>
+    {% endif %}
+    </td>
+</tr>
+      
+       {% endfor %} 
+  </tbody>
+  </table>
+ 
+ 
+ <hr> 
+<table class="table table-condensed table-striped" id="topic5">
+  <thead>
+    <tr>
+        <th colspan="10"  style="background-color: #C00000; color: #fff">{% trans "Table" %} 5: {% trans "Subjects for TPG (sorted in English alphabetical order)" %}</th>
+  </tr>
+  <tr>
+    <th style="background-color: #C00000; color: #fff">{% trans "Topic No." %}</th>
+    <th style="background-color: #C00000; color: #fff">{% trans "Current title" %}</th>
+    <th style="background-color: #C00000; color: #fff">{% trans "Drafting body" %}</th>
+    <th style="background-color: #C00000; color: #fff">{% trans "Topic under technical area (if applicable)" %}</th>
+    <th style="background-color: #C00000; color: #fff">{% trans "Added to the list" %}</th>
+    <th style="background-color: #C00000; color: #fff">{% trans "Status" %}</th>
+    <th style="background-color: #C00000; color: #fff">&#160;</th>
+  </tr>
+      </thead>
+  <tbody>
+    {% for object in topic_table5 %}
+     
+ 
+<tr>
+    <td style="background-color: #E5B8B7;white-space: nowrap;">{{ object.topicnumber }}</td>
+     <td style="background-color: #E5B8B7"><a href="{% url 'topic-detail' object.slug %}">  
+        {% with object|get_object_translation as translated_page %}
+        {{ translated_page.title|safe }}
+        {% endwith %}</a>
+    </td>
+  <td style="background-color: #E5B8B7">
+   {% if object.drafting_body.all %}
+        {% for d in object.drafting_body.all %} 
+           {% if  LANGUAGE_CODE == 'en' %}{{ d }}{% elif  LANGUAGE_CODE == 'es'  %}{{d.draftingbody_es}}{% elif  LANGUAGE_CODE == 'fr'  %}{{d.draftingbody_fr}}{% elif  LANGUAGE_CODE == 'ru'  %}{{d.draftingbody_ru}}{% elif  LANGUAGE_CODE == 'ar'  %}{{d.draftingbody_ar}}{% elif  LANGUAGE_CODE == 'zh'  %}{{d.draftingbody_zh}}{% else  %}{{d}}{%endif%}
+           <br> 
+        {%  endfor %}
+    {% endif %}
+    </td>
+    <td style="background-color: #E5B8B7;white-space: nowrap;">{% with object|get_object_translation as translated_topic_under %}
+        {{ translated_topic_under.topic_under|safe }}
+        {% endwith %}</td></td>
+    
+    <td style="background-color: #E5B8B7;white-space: nowrap;">{%if object.addedtolist_sc != 0  %}{{ object.addedtolist_sc_verbose }}  <br>{% endif %}
+          {%if object.addedtolist != 0  %}{{ object.addedtolist_verbose }} ({{ object.addedtolist}}) {% endif %}</td>
+     
+    <td style="background-color: #E5B8B7">{{object.topicstatus_verbose }}</td>
+  <td style="background-color: #E5B8B7">
+    {% if user.is_superuser or perms.ippc.change_publication %}
+        <a class="small pull-right" href="{% url 'topic-edit' object.id %}"><i class="icon-edit"></i>{% trans "Edit" %}</a>
+    {% endif %}
+    </td>
+</tr>
+      
+       {% endfor %} 
+    </tbody>
+  </table>
+
+
+{% else %}
+<p>No Reporting obligations available.</p>
+{% endif %}
+<script src="{% static "js/jquery.dataTables.js" %}"></script> 
+  <script src="{% static "js/DT_bootstrap_topic.js" %}"></script>
+{% endblock %}
+

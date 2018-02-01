@@ -1,0 +1,94 @@
+
+{% load pages_tags translate_tags mezzanine_tags ippc_tags i18n future staticfiles accounts_tags %} {# accounts_tags #}
+
+{% if form.non_field_errors or form.errors %}
+<div class="alert alert-error">{% trans "Please correct the errors below." %}
+<ul>
+{% for error in form.non_field_errors %}
+<li>{{ error }}</li>
+{% endfor %}
+{% for error in form.errors %}
+<li>{{ error }}</li>
+{% endfor %}
+</ul>
+</div>
+{% endif %}
+
+{% fields_for form %}
+
+
+ 
+   <fieldset>
+    <legend>Leads</legend>
+    {{ tl_form.management_form }}
+    {{ tl_form.non_form_errors }}
+    
+    {% for form in tl_form %}
+    {{ form.id }}
+      
+     
+     <div class="inline {{ tl_form.prefix }}" style=" background: #f2f2f2;  padding:10px">
+        {% if  form.errors %}
+            <div class="alert alert-error"> 
+        {% endif %}
+        <table>
+              {%if  forloop.counter == 1 %}
+            <tr style="background-color:#C2CBE0; width: 20px ">
+                <th>{% trans "User" %}</th>						
+                <th>{% trans "Representing Country" %}</th>
+                <th>{% trans "Meeting assigned" %}</th>
+               </tr>
+             {% endif %}
+            <tr>
+            <td>{{form.user}}  </td>
+            <td>{{form.representing_country}}  </td>
+            <td>{{form.meetingassistantassigned}}  </td>
+        
+        </tr> 
+                 
+       </table> 
+  {% if tl_form.can_delete %}{{ form.DELETE }}{% endif %}
+            {% if  tl_form.errors %}
+        </div> 
+        {% endif %}
+    </div>
+    {% endfor %}
+</fieldset>
+
+ 
+   <fieldset>
+    <legend>Assistants</legend>
+    {{ ta_form.management_form }}
+    {{ ta_form.non_form_errors }}
+    
+    {% for form in ta_form %}
+    {{ form.id }}
+      
+     
+     <div class="inline {{ ta_form.prefix }}" style=" background: #f2f2f2;  padding:10px">
+        {% if  form.errors %}
+            <div class="alert alert-error"> 
+        {% endif %}
+        <table>
+              {%if  forloop.counter == 1 %}
+            <tr style="background-color:#C2CBE0; width: 20px ">
+                <th>{% trans "User" %}</th>						
+                <th>{% trans "Representing Country" %}</th>
+                <th>{% trans "Meeting assigned" %}</th>
+               </tr>
+             {% endif %}
+            <tr>
+            <td>{{form.user}}  </td>
+            <td>{{form.representing_country}}  </td>
+            <td>{{form.meetingassistantassigned}}  </td>
+        
+        </tr> 
+                 
+       </table> 
+  {% if ta_form.can_delete %}{{ form.DELETE }}{% endif %}
+            {% if  ta_form.errors %}
+        </div> 
+        {% endif %}
+    </div>
+    {% endfor %}
+</fieldset>

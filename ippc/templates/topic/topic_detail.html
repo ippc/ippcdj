@@ -1,0 +1,266 @@
+{% extends "base.html" %}
+{% load pages_tags mezzanine_tags i18n future staticfiles accounts_tags translate_tags%}
+
+
+{% block meta_title %}{% trans "Latest Topic" %}{% endblock %}
+
+
+
+
+{% block breadcrumb_menu %}
+<li><a href="/{{ LANGUAGE_CODE }}/">{% trans "Home" %}</a><span class="divider">/</span></li>
+<li id="breadcrumb-menu-core-activities"><a href="/{{ LANGUAGE_CODE }}/core-activities/">{% trans "Core Activities" %} </a><span class="divider">/</span></li>
+<li id="breadcrumb-menu-core-activities-standards-and-implementation"><a href="/{{ LANGUAGE_CODE }}/core-activities/standards-and-implementation/">{% trans "Standards &amp; Implementation" %} </a><span class="divider">/</span></li>
+<li id="breadcrumb-menu-core-activities-standards-setting"><a href="/{{ LANGUAGE_CODE }}/core-activities/standards-setting/">{% trans "Standard setting" %} </a><span class="divider">/</span></li>
+<li id="breadcrumb-menu-core-activities-standards-setting-list-topics-ippc-standards" class="active"><a href="/{{ LANGUAGE_CODE }}/core-activities/standards-setting/list-topics-ippc-standards/">{% trans "Current List of topics for IPPC standards" %} </a><span class="divider">/</span></li>           
+<li class="active"><a href="/{{ LANGUAGE_CODE }}/core-activities/standards-setting/list-topics-ippc-standards/list">{% trans "List of topics database" %} </a> <span class="divider">/</span></li>
+<li class="active">{% trans "Topic" %}: {{ topic.title }}</li>
+
+{% endblock %}
+
+
+
+
+{% block local_nav %}
+<div class="well localnav">
+     <script type="text/javascript">
+    function toggle_visibility_rev(id) {
+       var e = document.getElementById(id);
+       if(e.style.display == 'block')
+          e.style.display = 'none';
+       else
+          e.style.display = 'block';
+    }
+    </script>
+     <p>
+        <a href="javascript:history.go(-1)">{% trans "« Go back" %}</a>
+       {% if topic.is_version %}
+       {% else %}
+            {% if  user.is_superuser or perms.ippc.change_topic %}
+                <a class="btn btn-small btn-info" href="{% url 'topic-edit' topic.id %}"><i class="icon-edit icon-white"></i> Edit</a><br><br>
+                <a class="btn btn-small btn-info" href="{% url 'topic-translate' 'es' topic.id %}"><i class="icon-edit icon-white"></i>Translate in Spanish</a><br>
+                <a class="btn btn-small btn-info" href="{% url 'topic-translate' 'fr' topic.id %}"><i class="icon-edit icon-white"></i>Translate in French</a><br>
+                <a class="btn btn-small btn-info" href="{% url 'topic-translate' 'ar' topic.id %}"><i class="icon-edit icon-white"></i>Translate in Arabic</a><br>
+                <a class="btn btn-small btn-info" href="{% url 'topic-translate' 'ru' topic.id %}"><i class="icon-edit icon-white"></i>Translate in Russian</a><br>
+                <a class="btn btn-small btn-info" href="{% url 'topic-translate' 'zh' topic.id %}"><i class="icon-edit icon-white"></i>Translate in Chinese</a><br>
+              
+                
+            {% endif %}
+ 
+        {% if versions %}
+            <br><br>
+             <strong><a href="#" onclick="toggle_visibility_rev('rev');">{% trans "Revisions" %}</a></strong>  <br>
+            <div id="rev" style="display:none;">
+            {% for object in versions %}
+               <small><a href="{% url 'topic-detail'  object.slug %}"> {% blocktrans with sometime=object.modify_date|date:"d-m-Y H:i" %}{{ sometime }}{% endblocktrans %}</a></small><br>
+            {% endfor %}
+             </div>
+        {% endif %}
+    {% endif %}
+    
+    </p>
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+   
+</div>
+{% endblock local_nav %}
+
+{% block pageinfo %}
+
+{% endblock pageinfo %}
+
+{% block main %}
+<h1>{% with topic|get_object_translation as translated_page %}
+            {{ topic.title|safe }}
+    {% endwith %}
+</h1> 
+
+ 
+    
+      
+{% if topic.is_version %}
+<table style="border: 3px double red;  padding: 2;">
+ <tr>
+     <td>&#160;</td>
+     <td style="color:red;">{% trans "old revision" %}</td>
+</tr>
+ {% else %}    
+<table  class="table table-condensed" >
+{% endif %}
+
+
+
+{% if topic.publish_date %}
+  <tr><td><b>{% trans "Publish date" %}</b></td>
+  <td>{% blocktrans with sometime=topic.publish_date|date:"d-m-Y" %}{{ sometime }}{% endblocktrans %}</td></tr>
+{% endif %}
+
+  {% if topic.modify_date %}
+    <tr><td><b>{% trans "Last Updated" %}</b></td>
+    <td>{% blocktrans with sometime=topic.modify_date|date:"d-m-Y" %}{{ sometime }}{% endblocktrans %}</td></tr>
+  {% endif %}
+ 
+   {% if topic.topicnumber %}
+  <tr><td><b>{% trans "Topic No." %}</b></td>
+  <td>
+    <ul class="unstyled nomargin">
+      <li>{% if topic.is_version %}{{ topic.topicnumber_version }}{% else %}{{ topic.topicnumber }}{% endif %}</li>
+    </ul>
+  </td></tr>
+  {% endif %}
+  
+  
+ 
+  
+  
+  {% if topic.priority %}
+  <tr><td><b>{% trans "Priority" %}</b></td>
+  <td>
+    <ul class="unstyled nomargin">
+      <li>{{ topic.priority_verbose }}</li>
+    </ul>
+  </td></tr>
+  {% endif %}
+ 
+ 
+  {% if topic.drafting_body %}
+  <tr><td><b>{% trans "Drafting body" %}</b></td>
+  <td>
+    <ul class="unstyled nomargin">
+        {% for d in topic.drafting_body.all %}
+         <li>{% if  LANGUAGE_CODE == 'en' %}{{ d.draftingbody }}{% elif  LANGUAGE_CODE == 'es'  %}{{d.draftingbody_es}}{% elif  LANGUAGE_CODE == 'fr'  %}{{d.draftingbody_fr}}{% elif  LANGUAGE_CODE == 'ru'  %}{{d.draftingbody_ru}}{% elif  LANGUAGE_CODE == 'ar'  %}{{d.draftingbody_ar}}{% elif  LANGUAGE_CODE == 'zh'  %}{{d.draftingbody_zh}}{% else  %}{{d.draftingbody}}{%endif%}</li>
+      {% endfor %} 
+    </ul>
+  </td></tr>
+  {% endif %}
+  
+  {% if topic.topicstatus != -1 %}
+  <tr><td><b>{% trans "Status of topic" %}</b></td>
+  <td>{{ topic.topicstatus_verbose }}</td></tr>
+  {% endif %}
+  
+ {% if topic.strategicobj.all %}
+  <tr><td><b>{% trans "Strategic objectives" %}</b></td>
+  <td>
+    <ul class="unstyled nomargin">
+      {% for o in topic.strategicobj.all %}
+         <li>{{ o.strategicobj }}: {{o.description}}</li>
+      {% endfor %} 
+       </ul>
+  </td></tr>
+  {% endif %}
+  
+{% if topic.addedtolist %}
+  <tr><td><b>{% trans "Added to list" %}</b></td>
+  <td>
+    <ul class="unstyled nomargin">
+      <li>{%if topic.addedtolist_sc != 0  %}{{ topic.addedtolist_sc_verbose }}<br> {% endif %}
+          {%if topic.addedtolist != 0  %} {{ topic.addedtolist_verbose }} ({{ topic.addedtolist}}) {% endif %}
+      </li>
+    </ul>
+  </td></tr>
+  {% endif %}
+{% if topic.specification_number %}
+  <tr><td><b>{% trans "Specification number" %}</b></td>
+  <td>
+    <ul class="unstyled nomargin">
+      <li>{{ topic.specification_number }}</li>
+    </ul>
+  </td></tr>
+  {% endif %}
+  
+{% if topic.topic_under %}
+  <tr><td><b>{% trans "Topic under technical area (if applicable)" %}</b></td>
+  <td>
+     {{ topic.topic_under }}
+  </td></tr>
+  {% endif %}
+  
+{% if topic.topicleads_set.all %}
+<tr><td><b>
+    {% if  topic.topic_type == 0 %}
+        {% trans "Lead Steward / TP Lead (Country, Meeting assigned)" %}
+    {% elif  topic.topic_type == 1 %}
+        {% trans "Lead Steward (Country, Meeting assigned)" %}
+    {% elif  topic.topic_type == 2 %}
+        {% if topic.drafting_body.all %}
+            {% for d in topic.drafting_body.all %} 
+                {% if d.draftingbody == 'TPDP' %}
+                     {% trans " Discipline Lead (Country)" %}
+                {% elif d.draftingbody  == 'TPPT' %}
+                    {% trans "Treatment Lead (Country, Meeting assigned)" %}
+                {% endif %}
+            {%  endfor %}
+        {% endif %}
+    {% endif %}
+    
+    </b>
+     
+    
+  </td>
+  <td>
+    <ul class="unstyled nomargin">
+        {% for lead in topic.topicleads_set.all %}
+        <li style=" white-space: nowrap;">{{lead.user.prefix}} {{lead.user.first_name}} {{lead.user.last_name}} ({% if lead.representing_country != None %}{{lead.representing_country.iso}}{% endif %}{% if lead.meetingassistantassigned != None %}, {{lead.meetingassistantassigned}}{% endif %})</li>
+     {% endfor %}
+    </ul>
+    
+      
+      
+      
+      
+      
+      
+      
+  </td></tr>
+{%endif%}
+{% if topic.topicassistants_set.all %}
+<tr><td><b>
+    {% if  topic.topic_type == 0 %}
+        {% trans "Assistant Stewards (Country, Meeting assigned)" %}
+    {% elif  topic.topic_type == 1 %}
+        {% trans "Assistant Stewards (Country, Meeting assigned)" %}
+    {% elif  topic.topic_type == 2 %}
+        {% if topic.drafting_body.all %}
+            {% for d in topic.drafting_body.all %} 
+                {% if d.draftingbody == 'TPDP' %}
+                     {% trans "Referee" %}
+                {% elif d.draftingbody  == 'TPPT' %}
+                    {% trans "Assistant Lead (Country, Meeting assigned)" %}
+                {% endif %}
+            {%  endfor %}
+        {% endif %}
+    {% endif %}
+    
+    </b>
+     
+    
+  </td>
+  
+
+  <td>
+      <ul class="unstyled nomargin">
+        {% for assist in topic.topicassistants_set.all %}
+        <li style=" white-space: nowrap;">{{assist.user.prefix}} {{assist.user.first_name}} {{assist.user.last_name}} ({% if assist.representing_country != None %}{{assist.representing_country.iso}}{% endif %}{% if assist.meetingassistantassigned != None %}, {{assist.meetingassistantassigned}}{% endif %})</li>
+     {% endfor %}
+    </ul>
+    
+  </td></tr>
+  {% endif %}
+  
+
+
+  
+
+
+</table>
+{% endblock %}
