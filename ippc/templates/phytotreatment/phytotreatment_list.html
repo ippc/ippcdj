@@ -85,7 +85,7 @@ This web page was last updated on 2017-10-23. For queries or comments regarding 
 <table class="table table-condensed table-striped" id="publications">
   <thead>
       <tr>
-          <th style="background-color: #ef9229;text-align: center;vertical-align:middle" >{% trans "Title" %}</th>
+         <th style="background-color: #ef9229;text-align: center;vertical-align:middle" >{% trans "Title" %}</th>
         <th style="background-color:#ef9229;text-align: center; vertical-align:middle;" title="The treatment types are categorized and linked to the IPPC treatment codes from the IPPC treatment types: Harmonized Terms for Treatment Types: http://ephyto.ippc.int/Tmt-types/">{% trans "Treatment type" %}</th>
         <th style="background-color:#ef9229;text-align: center; vertical-align:middle;" title="The information on the name of the pest are based on the text of the phytosanitary treatment and the scientific and common names are sourced  from the European and Mediterranean Plant Protection Organization's (EPPO) Global Database: https://gd.eppo.int/search ">{% trans "Pest" %}</th>
         <th style="background-color:#ef9229;text-align: center; vertical-align:middle;"  title="The information on the commodity is based on the text of the treatment. Citrus species and hybrids are named according to the nomenclature in Cottin, R. 2002. Citrus of the world: A citrus directory version 2.0. France, SRA INRA-CIRAD">{% trans "Product/Commodity" %}</th>
@@ -111,7 +111,14 @@ This web page was last updated on 2017-10-23. For queries or comments regarding 
       <td>{{ object.0.treatment_type }}</td>
       <td>{% autoescape off %}{{ object.1}} {% endautoescape %}</td>
       <td>{% autoescape off %}{{ object.2 }} {% endautoescape %}</td>
-      <td> {% if object.0.treatmentschedule %}   
+      <td>{% if  object.0.chemical%}<b>Chemical (active ingredient):</b>  {{  object.0.chemical  }} <br>  {% endif %}
+      {% if  object.0.duration%}<b>Duration and Temperature:</b>  {{  object.0.duration  }} <br>  {% endif %}
+      {% if  object.0.temperature%}<b>Temperature:</b>  {{  object.0.temperature  }} <br>  {% endif %}
+      {% if  object.0.concentration%}<b>Concentration:</b>  {{  object.0.concentration  }} <br>  {% endif %}
+      
+          
+          {% if object.0.treatmentschedule %}   
+           <br><b>Additional information:</b><br>
           {% autoescape off %} 
               {{ object.0.treatmentschedule  }} 
              {% endautoescape %}   {% endif %} 
@@ -153,31 +160,6 @@ This web page was last updated on 2017-10-23. For queries or comments regarding 
 </table>
 
 
-
-{% if is_paginated %}
-  {% if page_obj.has_other_pages %}
-    <div class="pagination">
-    <ul>
-    <li class="disabled page-info">
-        <a>{% trans "Page" %} {{ page_obj.number }} {% trans "of" %} {{ page_obj.paginator.num_pages }}</a>
-    </li>
-    <li class="prev previous{% if not page_obj.has_previous %} disabled{% endif %}">
-        <a{% if page_obj.has_previous %} href="{% url 'event-reporting-list' page.title|slugify %}?page={{ page_obj.previous_page_number }}"{% endif %}>&larr;</a>
-    </li>
-    {% for page in page_obj.paginator.page_range %}
-        {% if page %}
-            <li class="{% ifequal page page_obj.number %}active{% endifequal %}"><a href="?page={{ page }}">{{ page }}</a></li>
-        {% else %}
-            <li class="disabled"><a href="#">…</a></li>
-        {% endif %}
-    {% endfor %}
-    <li class="next{% if not page_obj.has_next %} disabled{% endif %}">
-        <a{% if page_obj.has_next %} href="{% url 'event-reporting-list' page.title|slugify %}?page={{ page_obj.next_page_number }}"{% endif %}>&rarr;</a>
-    </li>
-    </ul>
-    </div>
-  {% endif %}
-{% endif %}
 
 {% else %}
 <p>No Phytosanitary treatments available.</p>

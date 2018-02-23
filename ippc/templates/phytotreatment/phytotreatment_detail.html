@@ -92,14 +92,22 @@
   <dd>{% autoescape off %}{{ commodityidentity }} {% endautoescape %} </dd>
   {% endif %}
   
-  {% if phytotreatment.treatmentschedule %}
+  {% if phytotreatment.treatmentschedule  or phytotreatment.chemical  or phytotreatment.duration  or phytotreatment.concentration%}
   <dt>{% trans "Treatment schedule" %}</dt>
-  <dd>  {% autoescape off %} 
-              {{ object.treatmentschedule  }} 
-             {% endautoescape %}  
+  <dd>{% if phytotreatment.chemical%}<b>Chemical (active ingredient):</b>  {{ phytotreatment.chemical  }} <br>  {% endif %}
+      {% if phytotreatment.duration%}<b>Duration and Temperature:</b>  {{ phytotreatment.duration  }} <br>  {% endif %}
+      {% if phytotreatment.concentration%}<b>Concentration:</b>  {{ phytotreatment.concentration  }} <br>  {% endif %}
+    
+      {% if phytotreatment.treatmentschedule%}
+        <br><b>Additional information:</b><br>
+      {% autoescape off %} 
+              {{ phytotreatment.treatmentschedule  }} 
+             {% endautoescape %} 
+         {% endif %}    
   </dd>
   {% endif %}
   
+   
 
 <dt>{% trans "Country that accepts trade based on the treatment" %}</dt>
  <dd>
