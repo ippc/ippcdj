@@ -1,0 +1,41 @@
+{% extends "base.html" %}
+
+{% load pages_tags translate_tags mezzanine_tags ippc_tags i18n future staticfiles accounts_tags %} {# accounts_tags #}
+
+
+
+{% block meta_title %}{% trans "MyTOOL result" %} {% endblock %}
+
+{% block body_class %}wide{% endblock %}
+
+{% block breadcrumb_menu %}
+<li>
+  <a href="/">{% trans "Home" %}</a><span class="divider">/</span></li>
+  <li><a href="/work-area/">Workarea</a><span class="divider">/</span></li>
+ 
+
+<li class="active">{% trans "MyTOOL RES" %}</li>
+
+{% endblock %}
+
+{% block local_nav %}
+{% endblock local_nav %}
+
+{% block pageinfo %}
+{% endblock pageinfo %}
+
+{% block main %}
+
+<p class="pull-right">
+  <a href="javascript:history.go(-1)">{% trans "« Cancel and go back" %}</a>
+</p>
+
+<h1><span class="normal">{% trans "MyTOOL RESULT" %}</span> </h1>
+
+
+
+
+<div>RESULTS:<br>
+    {{result}}
+</div>
+{% endblock %}

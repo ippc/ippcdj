@@ -1,0 +1,68 @@
+{% extends "base.html" %}
+{% load pages_tags mezzanine_tags i18n future staticfiles accounts_tags %}
+
+{% block meta_title %}
+  {% trans "Certificates of Appreciation List" %}: 
+{% endblock %}
+
+{% block body_class %}wide{% endblock %}
+
+{% block breadcrumb_menu %}
+<li><a href="/{{ LANGUAGE_CODE }}/">{% trans "Home" %}</a><span class="divider">/</span></li>
+<li>
+  <a href="/work-area/">Workarea</a>
+  <span class="divider">/</span>
+</li>
+
+<li class="active">{% trans "Certificates of Appreciation for Bureau Members or CPM Chair Tool" %}</li>
+{% endblock %}
+
+{% block local_nav %}
+{% endblock local_nav %}
+
+{% block pageinfo %}
+{% endblock pageinfo %}
+
+{% block main %}
+
+<p class="pull-right">
+  <a href="javascript:history.go(-1)">{% trans "« Go back" %}</a><br>
+      {% if perms.ippc.add_b_certificatestool or user.is_superuser%}
+        <a class="btn btn-small btn-info" href="/work-area/b-certificatestool/create"><i class="icon-edit icon-white"></i> Create New Certificates of Appreciation</a>
+    {% endif %}
+  
+ </p>
+
+<h1>
+  <small class="normal">{% trans "List of Certificates of Appreciation  for Bureau Members or CPM Chair" %}</small>
+</h1> 
+
+{% if latest %}
+<table class="table table-condensed table-striped" id="publications">
+  <thead>
+    <tr>
+      <th>{% trans "Certificates" %}</th>
+      <th>{% trans "Date" %}</th>
+      <th>{% trans "Author" %}</th>
+      
+    </tr>
+  </thead>
+  <tbody>
+    {% for object in latest %}
+    <tr>
+      <td><a href="{% url 'b-certificatestool-detail'  object.id %}">{{ object.title }}</a></td>
+      <td>{{ object.date|date:"d M Y  H:m:s"}} </td>
+      <td>{{ object.author}}</td>
+   
+    </tr>
+    {% endfor %}
+  </tbody>
+</table>
+
+
+{% else %}
+<p>No certificates available.</p>
+{% endif %}
+
+{% endblock %}
+

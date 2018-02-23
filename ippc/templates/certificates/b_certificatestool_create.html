@@ -1,0 +1,172 @@
+{% extends "base.html" %}
+
+{% load pages_tags translate_tags mezzanine_tags ippc_tags i18n future staticfiles accounts_tags %} {# accounts_tags #}
+
+
+
+{% block meta_title %}{% trans "New Certificates of Appreciation for Bureau Members or CPM Chair" %} {% endblock %}
+
+{% block body_class %}wide{% endblock %}
+
+{% block breadcrumb_menu %}
+<li>
+  <a href="/home">{% trans "Home" %}</a><span class="divider">/</span></li>
+  <li><a href="/work-area/">Workarea</a><span class="divider">/</span></li>
+ <li><a href="/work-area/b-certificatestool/all/">Certificates of Appreciation for Bureau Members or CPM Chair</a>
+  <span class="divider">/</span>
+</li>
+
+<li class="active">{% trans "Create New Certificates of Appreciation for Bureau Members or CPM Chair" %}</li>
+
+{% endblock %}
+
+{% block local_nav %}
+{% endblock local_nav %}
+
+{% block pageinfo %}
+{% endblock pageinfo %}
+
+{% block main %}
+<script type="text/javascript">
+
+function viewMemb(id){
+    section = document.getElementById(id);
+    if (section.style.display=="inline") {
+        section.style.display="none";
+    } else {
+        section.style.display="inline";
+    }
+}
+      	   
+function isChecked(theform,name,group){
+     var elementlength=theform.elements.length;
+     var item="group"+name+"_"+group;;
+     for( i=1;  i  < elementlength ; i++ ) {
+         if(theform.elements[i].name==item ){
+             if (theform.elements[i].checked ==true){
+                 return true;
+             }else{
+                 return false;
+             }
+
+         }
+    }
+    return false;
+}
+
+function  checkmembers(theform,name,nameisck,group,id){
+    var elementlength=theform.elements.length;
+    var prefix=name+"_"+group+"_";
+    
+    var isC=isChecked(theform,nameisck,group);
+    for( i=1;  i  < elementlength ; i++ ) {
+        if(theform.elements[i].type=="checkbox"  ){
+            var temp=theform.elements[i].name.substr(0,prefix.length);
+            if( prefix==temp){
+                theform.elements[i].checked=isC;
+            }
+        }
+    }
+    viewMemb(id);
+  }
+
+function  checkNotify(theform,group,field){
+    var elementlength=theform.elements.length;
+    var prefix=""+group;
+    var formObj = window.document.forms.my_form;
+    var val  ="";
+
+    for( i=1;  i  < elementlength ; i++ ) {
+        if(theform.elements[i].type=="checkbox" && theform.elements[i].checked){
+            var temp=theform.elements[i].name.substr(0,prefix.length);
+            if( prefix==temp){
+                     val=val+ theform.elements[i].value+",";
+             }
+        }
+    }
+    formObj[""+field].value=val;
+}
+
+
+
+</script>
+<p class="pull-right">
+  <a href="javascript:history.go(-1)">{% trans "« Cancel and go back" %}</a>
+</p>
+
+<h1><span class="normal">{% trans "Create New Certificates of Appreciation for Bureau Members or CPM Chair" %}</span> </h1>
+<div class="alert alert-info">
+    <table>
+    <tr>
+        <td><img src="/static/media/certificate_template/{{img}}" width="500px"/></td>
+        <td> This tool will generate a <b>ZIP file</b> containing the "Certificates of Appreciation for Bureau Members or CPM Chair".<br>
+        <br>
+        How to use it:<br><br>
+        <b> SINGLE CERTIFICATE:</b>
+        <ol>
+            <li>Assign a <b>TITLE</b> that will be used as storing title for the generated certificates</li>        
+            <li>Write the <b>Name of user </b></li>        
+            <li>Write the <b>ROLE</b> of user</li>        
+            <li>Write the name of the <b>Meeting or Committee</b></li>        
+            <li>Click on the <b>CREATE</b> button</li>        
+        </ol>
+        <b> MULTIPLE CERTIFICATES - for users from the same group:</b>
+        <ol>
+            <li>Assign a <b>TITLE</b> that will be used as storing title for the generated certificates</li>        
+            <li>Select <b>Groups</b> of users (e.g. Bureau) that should receive the certificate</li>        
+            <li>Write the <b>ROLE</b> of users</li>        
+            <li>Write the name of the <b>Meeting or Committee</b></li>        
+            <li>Click on the <b>CREATE</b> button</li>        
+        </ol>
+        </td>
+    </tr>
+    </table>
+</div>
+
+<form class="customform" method="POST" action="" enctype="multipart/form-data">
+    {% csrf_token %}
+    <fieldset>
+     {% if form.non_field_errors or form.errors or  f_form.errors %}
+
+<div class="alert alert-error">{% trans "Please correct the errors below." %}
+<ul>
+{% for error in form.non_field_errors %}
+<li>{{ error }}</li>
+{% endfor %}
+{% for error in form.errors %}
+<li>{{ error }}</li>
+{% endfor %}
+</ul>
+</div>
+{% endif %}
+
+
+
+{% fields_for form %}
+
+<strong>Select groups:</strong><br />
+<table cellpadding=2>
+   {% for g in emailgroups %}
+       <tr>
+           <td width="5"><img title="Open Group" src="/static/leaflet/images/zoom-in.png" onclick="javascript:viewMemb('view_{{g.1}}');"/></td>
+           <td>  {{g.0}}</td>
+           <td width="5" title="Check all"><input type="checkbox" onClick="javascript:checkmembers(this.form,'user','',{{g.1}},'view_{{g.1}}');void(0);" name="group_{{g.1}}" value="view_{{g.1}}"/></td>
+        </tr>
+        <tr><td/>
+        <td>
+        <div style="display:none" id="view_{{g.1}}">
+        {% for  u in g|slice:"2:" %} 
+            <input onchange="javascript:checkNotify(this.form,'user_','checkgroups');" type="checkbox" name="user_{{g.1}}_0" value="{{u.2}}"/>{{u.0}} {{u.1}} <br/>
+        {% endfor %}
+        </div>
+        </td>
+     </tr>
+    {% endfor %}
+</table>
+        <div class="form-actions">
+            <button type="submit" class="btn btn-info btn-large" tabindex="7">{% trans "Create" %}</button> or <a href="javascript:history.go(-1)">{% trans "Cancel" %}</a>
+        </div>
+    </fieldset>
+</form>
+
+{% endblock %}

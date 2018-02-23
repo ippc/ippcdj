@@ -1,0 +1,92 @@
+{% extends "base.html" %}
+{% load pages_tags translate_tags mezzanine_tags ippc_tags i18n future staticfiles accounts_tags %} 
+
+{% block meta_title %}{% trans "New Workshop Certificates" %} {% endblock %}
+
+{% block body_class %}wide{% endblock %}
+
+{% block breadcrumb_menu %}
+<li>
+  <a href="/home">{% trans "Home" %}</a><span class="divider">/</span></li>
+  <li><a href="/work-area/">Workarea</a><span class="divider">/</span></li>
+ <li><a href="/w-certificates/all/">Workshop Certificates</a>
+  <span class="divider">/</span>
+</li>
+
+<li class="active">{% trans "Create New Workshop Certificates" %}</li>
+
+{% endblock %}
+
+{% block local_nav %}
+{% endblock local_nav %}
+
+{% block pageinfo %}
+{% endblock pageinfo %}
+
+{% block main %}
+
+<p class="pull-right">
+  <a href="javascript:history.go(-1)">{% trans "« Cancel and go back" %}</a>
+</p>
+
+<h1><span class="normal">{% trans "Create New Workshop Certificates" %}</span> </h1>
+<p class="alert alert-warning"> The "New Workshop Certificates" Tool......</p>
+
+<div class="row-fluid">
+    <div class="span4">
+        <div class="homepage-ippcnews-box">  
+            <h4>A</h4>
+            <img src="http://127.0.0.1:8000/static/media/w_certificate_template/{{imga}}"/>
+        </div>            
+    </div>  
+     <div class="span4">
+        <div class="homepage-ippcnews-box">  
+            <h4>B</h4>
+            <img src="http://127.0.0.1:8000/static/media/w_certificate_template/{{imgb}}"/>
+        </div>            
+    </div>  
+
+</div>      
+    
+<div>
+<form class="customform" method="POST" action="" enctype="multipart/form-data">
+{% csrf_token %}
+<fieldset>
+{% if form.non_field_errors or form.errors or  f_form.errors %}
+<div class="alert alert-error">{% trans "Please correct the errors below." %}
+<ul>
+{% for error in form.non_field_errors %}
+<li>{{ error }}</li>
+{% endfor %}
+{% for error in form.errors %}
+<li>{{ error }}</li>
+{% endfor %}
+</ul>
+</div>
+{% endif %}
+
+
+
+{% fields_for form %}
+
+
+<h3>Select Certificate template</h3>
+<select   id="id_template" name="id_template">
+   <option value="a">A. signed by Brent Larson</option>
+   <option value="b">B. signed by Orlando Sosa</option>
+   <option value="c">C. signed by Shoki</option>
+</select>
+
+<h3>Select Meeting</h3>
+<select   style="width: 400px" id="id_event" name="id_event" >
+{% for ev in events_set %}
+   <option value="{{ev.id}}"> {{ev}}</option>
+{% endfor %} 
+</select>
+  <div class="form-actions">
+     <button type="submit" class="btn btn-info btn-large" tabindex="7">{% trans "Create" %}</button> or <a href="javascript:history.go(-1)">{% trans "Cancel" %}</a>
+   </div>
+</fieldset>
+</form>
+
+{% endblock %}

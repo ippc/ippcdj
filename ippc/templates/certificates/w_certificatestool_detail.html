@@ -1,0 +1,45 @@
+{% extends "base.html" %}
+{% load pages_tags mezzanine_tags i18n future staticfiles accounts_tags %}
+
+{% block meta_title %}{% trans "Certificates" %}{% endblock %}
+
+{% block breadcrumb_menu %}
+<li><a href="/{{ LANGUAGE_CODE }}/">{% trans "Home" %}</a><span class="divider">/</span></li>
+<li><a href="/work-area/">Workarea</a><span class="divider">/</span></li>
+<li><a href="/work-area/w-certificatestool/all/">Workshop Certificates</a><span class="divider">/</span></li>
+<li class="active">{{ workshopcertificatestool.title }}</li>
+{% endblock %}
+
+{% block local_nav %}
+<div class="well localnav">
+  <p><a href="/work-area/w-certificatestool/all/">« {% trans "Back to" %} {% trans "workshop certificates list" %}</a></p>
+      {% if perms.ippc.add_workshopcertificatestool or user.is_superuser%}
+        <a class="btn btn-small btn-info" href="/work-area/w-certificatestool/create"><i class="icon-edit icon-white"></i> Create New workshop certificate</a>
+    {% endif %}
+  
+  
+  </div>
+{% endblock local_nav %}
+
+{% block pageinfo %}
+
+{% endblock pageinfo %}
+
+{% block main %}
+<h1>CERTIFICATES: {{ workshopcertificatestool.title }}</h1> 
+<dl class="dl-horizontal">
+<dt>{% trans "Date created" %}</dt>
+<dd>{{ sometime }}  {{workshopcertificatestool.creation_date.date|date:"d-m-Y"}} at {{workshopcertificatestool.creation_date.date|date:"H:m:s"}} CET</dd>
+<dt>{% trans "Author" %}</dt>
+<dd>{{ workshopcertificatestool.author }}</dd>
+
+
+<dt>{% trans "workshop Certificates" %}</dt>
+<dd><a href="{{workshopcertificatestool.filezip}}">    <span class="icon icon-download-alt"></span>&#160;&#160;Download ZIP file</a>
+  </dd>
+
+    
+</dl>
+
+{% endblock %}
+

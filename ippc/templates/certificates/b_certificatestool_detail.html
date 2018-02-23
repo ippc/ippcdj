@@ -1,0 +1,46 @@
+{% extends "base.html" %}
+{% load pages_tags mezzanine_tags i18n future staticfiles accounts_tags %}
+
+{% block meta_title %}{% trans "Certificates" %}{% endblock %}
+
+{% block breadcrumb_menu %}
+<li><a href="/{{ LANGUAGE_CODE }}/">{% trans "Home" %}</a><span class="divider">/</span></li>
+<li><a href="/work-area/">Workarea</a><span class="divider">/</span></li>
+<li><a href="/work-area/b-certificatestool/all/">Certificates of Appreciation for Bureau Members or CPM Chair</a><span class="divider">/</span></li>
+<li class="active">{{ certificatestool.title }}</li>
+{% endblock %}
+
+{% block local_nav %}
+<div class="well localnav">
+  <p><a href="/work-area/b-certificatestool/all/">« {% trans "Back to" %} {% trans "Certificates of Appreciation for Bureau Members or CPM Chair list" %}</a></p>
+      {% if perms.ippc.add_b_certificatestool or user.is_superuser%}
+        <a class="btn btn-small btn-info" href="/work-area/b-certificatestool/create"><i class="icon-edit icon-white"></i> Create New Certificates of Appreciation</a>
+    {% endif %}
+  
+  
+  </div>
+{% endblock local_nav %}
+
+{% block pageinfo %}
+
+{% endblock pageinfo %}
+
+{% block main %}
+<h1>Certificate of Appreciation for Bureau Members or CPM Chair:</h1> 
+<h3> {{ certificatestool.title }}</h3> 
+<dl class="dl-horizontal">
+<dt>{% trans "Date created" %}</dt>
+<dd>{{certificatestool.date|date:"d-m-Y H:m:s"}}</dd>
+<dt>{% trans "Author" %}</dt>
+<dd>{{ certificatestool.author }}</dd>
+
+
+<dt>{% trans "Certificates" %}</dt>
+<dd><a href="{{certificatestool.filezip}}">    <span class="icon icon-download-alt"></span>&#160;&#160;Download ZIP file</a>
+  </dd>
+
+    
+</dl>
+
+{% endblock %}
+

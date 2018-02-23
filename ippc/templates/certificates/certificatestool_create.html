@@ -1,0 +1,165 @@
+{% extends "base.html" %}
+
+{% load pages_tags translate_tags mezzanine_tags ippc_tags i18n future staticfiles accounts_tags %} {# accounts_tags #}
+
+
+
+{% block meta_title %}{% trans "New Certificates of Appreciation" %} {% endblock %}
+
+{% block body_class %}wide{% endblock %}
+
+{% block breadcrumb_menu %}
+<li>
+  <a href="/">{% trans "Home" %}</a><span class="divider">/</span></li>
+  <li><a href="/work-area/">Workarea</a><span class="divider">/</span></li>
+ <li><a href="/work-area/certificatestool/all/">Certificates of Appreciation</a>
+  <span class="divider">/</span>
+</li>
+
+<li class="active">{% trans "Create New Certificates of Appreciation" %}</li>
+
+{% endblock %}
+
+{% block local_nav %}
+{% endblock local_nav %}
+
+{% block pageinfo %}
+{% endblock pageinfo %}
+
+{% block main %}
+<script type="text/javascript">
+
+function viewMemb(id){
+    section = document.getElementById(id);
+    if (section.style.display=="inline") {
+        section.style.display="none";
+    } else {
+        section.style.display="inline";
+    }
+}
+      	   
+function isChecked(theform,name,group){
+     var elementlength=theform.elements.length;
+     var item="group"+name+"_"+group;;
+     for( i=1;  i  < elementlength ; i++ ) {
+         if(theform.elements[i].name==item ){
+             if (theform.elements[i].checked ==true){
+                 return true;
+             }else{
+                 return false;
+             }
+
+         }
+    }
+    return false;
+}
+
+function  checkmembers(theform,name,nameisck,group,id){
+    var elementlength=theform.elements.length;
+    var prefix=name+"_"+group+"_";
+    
+    var isC=isChecked(theform,nameisck,group);
+    for( i=1;  i  < elementlength ; i++ ) {
+        if(theform.elements[i].type=="checkbox"  ){
+            var temp=theform.elements[i].name.substr(0,prefix.length);
+            if( prefix==temp){
+                theform.elements[i].checked=isC;
+            }
+        }
+    }
+    viewMemb(id);
+  }
+
+function  checkNotify(theform,group,field){
+    var elementlength=theform.elements.length;
+    var prefix=""+group;
+    var formObj = window.document.forms.my_form;
+    var val  ="";
+
+    for( i=1;  i  < elementlength ; i++ ) {
+        if(theform.elements[i].type=="checkbox" && theform.elements[i].checked){
+            var temp=theform.elements[i].name.substr(0,prefix.length);
+            if( prefix==temp){
+                     val=val+ theform.elements[i].value+",";
+             }
+        }
+    }
+    formObj[""+field].value=val;
+}
+
+
+
+</script>
+<p class="pull-right">
+  <a href="javascript:history.go(-1)">{% trans "« Cancel and go back" %}</a>
+</p>
+
+<h1><span class="normal">{% trans "Create New Certificates of Appreciation" %}</span> </h1>
+<div class="alert alert-info">
+    <table>
+    <tr>
+        <td width="30%"><img src="/static/media/certificate_template/{{img}}" width="500px"/></td>
+        <td>This tool will generate a <b>ZIP file</b> containing the "Certificates of Appreciation"  for the users that were involved in the a TOPIC discussion.<br>
+            It will also generate a Word file that contains all the labels with addresses of the users to be used to send out letters (Season's greetings).<i> In the Word file containing labels those users that should receive a "Certificate of Appreciation"+"Season's greetings" will have a <b>*</b> at the bottom-right</i>                
+        <br><br>
+        <b>How to use it:</b>
+        <ol>
+            <li>Assign a <b>TITLE</b> that will appear in the Certificates as the "Standard/Annex" adopted</li>        
+            <li>Select the <b>TOPIC</b> of discussion (the system will search trough the meetings that discussed that topic and will create certificates for the participants of those meetings)</li>        
+            <li>Select <b>GROUPS</b> of users that can should also receive "Season's greetings" (the system will create a file with Address labels of these users)</li>        
+            <li>Click on the <b>CREATE</b> button</li>  
+            <li>The result will be a <b>ZIP file</b> that can be downloaded and that contains certificates+labels</li>  
+            
+        </ol>
+        </td>
+    </tr>
+    </table>
+</div>
+
+<form class="customform" method="POST" action="" enctype="multipart/form-data">
+    {% csrf_token %}
+    <fieldset>
+     {% if form.non_field_errors or form.errors or  f_form.errors %}
+
+<div class="alert alert-error">{% trans "Please correct the errors below." %}
+<ul>
+{% for error in form.non_field_errors %}
+<li>{{ error }}</li>
+{% endfor %}
+{% for error in form.errors %}
+<li>{{ error }}</li>
+{% endfor %}
+</ul>
+</div>
+{% endif %}
+
+
+
+{% fields_for form %}
+
+<strong>Select Groups to create Word file of address labels:</strong><br />
+<table cellpadding=2>
+   {% for g in emailgroups %}
+       <tr>
+           <td width="5"><img title="Open Group" src="/static/leaflet/images/zoom-in.png" onclick="javascript:viewMemb('view_{{g.1}}');"/></td>
+           <td>  {{g.0}}</td>
+           <td width="5" title="Check all"><input type="checkbox" onClick="javascript:checkmembers(this.form,'user','',{{g.1}},'view_{{g.1}}');void(0);" name="group_{{g.1}}" value="view_{{g.1}}"/></td>
+        </tr>
+        <tr><td/>
+        <td>
+        <div style="display:none" id="view_{{g.1}}">
+        {% for  u in g|slice:"2:" %} 
+            <input onchange="javascript:checkNotify(this.form,'user_','checkgroups');" type="checkbox" name="user_{{g.1}}_0" value="{{u.2}}"/>{{u.0}} {{u.1}} <br/>
+        {% endfor %}
+        </div>
+        </td>
+     </tr>
+    {% endfor %}
+</table>
+        <div class="form-actions">
+            <button type="submit" class="btn btn-info btn-large" tabindex="7">{% trans "Create" %}</button> or <a href="javascript:history.go(-1)">{% trans "Cancel" %}</a>
+        </div>
+    </fieldset>
+</form>
+
+{% endblock %}
