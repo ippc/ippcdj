@@ -1,8 +1,9 @@
+
 import json
 import pytz
 import datetime
 from urllib import quote
-
+from django.contrib.messages import info, error
 from django.http import HttpResponse
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import render_to_response, get_object_or_404
@@ -10,18 +11,21 @@ from django.utils import timezone
 from django.http import HttpResponseRedirect, Http404
 from django.template import RequestContext
 from django.core.urlresolvers import reverse
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from django.utils.decorators import method_decorator
 from django.views.generic.edit import DeleteView
-
+from django.contrib.auth.models import User,Group
 from schedule.conf.settings import GET_EVENTS_FUNC, OCCURRENCE_CANCEL_REDIRECT
-from schedule.forms import EventForm, OccurrenceForm, EventFileFormSet, EventUrlFormSet
-from schedule.models import Calendar, Occurrence, Event
+from schedule.forms import EventForm, OccurrenceForm, EventFileFormSet, EventUrlFormSet,EventParticipantsFormSet
+from schedule.models import Calendar, Occurrence, Event,EventParticipants
 from schedule.periods import weekday_names
 from schedule.utils import check_event_permissions, coerce_date_dict
 from ippc.forms import IssueKeywordsRelateForm
-from ippc.models import IssueKeywordsRelate,CountryPage
+from ippc.models import IssueKeywordsRelate,CountryPage,IppcUserProfile, UserMembershipHistory
+from ippc.views import  CPMS, split,send_notificationevent_message,send_notification_register_event_message
 
+from django.core import mail
+from django.core.mail import send_mail
 
 def calendar(request, calendar_slug, template='schedule/calendar.html'):
     """
@@ -207,6 +211,8 @@ def event(request, event_id, template_name="schedule/event.html"):
     is_contryeditor=0
     is_secretariat=0
     is_contryeevent=0
+    is_registered=0
+  
     event = get_object_or_404(Event, id=event_id)
     if event.country.id!=-1 :
         is_contryeevent=1
@@ -214,7 +220,16 @@ def event(request, event_id, template_name="schedule/event.html"):
         is_contryeditor=1
     if user.groups.filter(name='IPPC Secretariat'):
         is_secretariat=1
-        
+    
+    array_participants=[]    
+    eventParticipants=EventParticipants.objects.filter(event_id=event_id)
+    for u in eventParticipants:
+        array_participants.append(u.user)
+    if user in array_participants:
+        is_registered=1
+    else:
+        is_registered=0
+    
     event = get_object_or_404(Event, id=event_id)
     return render(request, template_name, {
         "event": event,
@@ -223,6 +238,7 @@ def event(request, event_id, template_name="schedule/event.html"):
         "is_secretariat": is_secretariat,
         "is_contryeevent":is_contryeevent,
         "country":event.country,
+        "is_registered":is_registered,
     })
 
 
@@ -308,7 +324,8 @@ def get_occurrence(event_id, occurrence_id=None, year=None, month=None, day=None
         raise Http404
     return event, occurrence
 
-
+          
+    
 @check_event_permissions
 def create_or_edit_event(request, country, calendar_slug, event_id=None, next=None, template_name='schedule/create_event.html', form_class=EventForm):
     """
@@ -406,23 +423,27 @@ def create_or_edit_event(request, country, calendar_slug, event_id=None, next=No
     if request.method == "POST":
        f_form = EventFileFormSet(request.POST, request.FILES,instance=instance)
        u_form = EventUrlFormSet(request.POST, instance=instance)
+       p_form = EventParticipantsFormSet(request.POST, instance=instance)
        #issueform =IssueKeywordsRelateForm(request.POST,instance=issues)
     else:
        # issueform =IssueKeywordsRelateForm(instance=issues)
        f_form = EventFileFormSet(instance=instance)
        u_form = EventUrlFormSet(instance=instance)
-       
-    if form.is_valid() and f_form.is_valid() and u_form.is_valid():
+       p_form = EventParticipantsFormSet(instance=instance)
+  
+    if form.is_valid() and f_form.is_valid() and u_form.is_valid() and  p_form.is_valid():
         event = form.save(commit=False)
         event.start=event.start + datetime.timedelta(hours=12)
-       
+
         if user.groups.filter(name='Country editor'):
             event.country=user.get_profile().country
         event.creator = request.user
         event.calendar = calendar
         event.save()
+        form.save_m2m()
       
-        
+      
+       
         issue_instance = issueform.save(commit=False)
         issue_instance.content_object = event
         issue_instance.save()
@@ -432,7 +453,15 @@ def create_or_edit_event(request, country, calendar_slug, event_id=None, next=No
         f_form.save()
         u_form.instance = event
         u_form.save()
+        p_form.instance = event
+        p_form.save()
         
+        if event_id is not None: 
+            print('edit')
+        else:
+           print('new')#sendemail
+           send_notificationevent_message(event.id)
+     
         next = next or reverse('event', args=[event.id])
         next = get_next_url(request, next)
         return HttpResponseRedirect(next)
@@ -444,6 +473,7 @@ def create_or_edit_event(request, country, calendar_slug, event_id=None, next=No
         "issueform": issueform,
         "f_form": f_form,
         "u_form": u_form,
+        "p_form": p_form,
         "calendar": calendar,
         "is_contryeditor":is_contryeditor,
         "is_contryeditor_1":is_contryeditor_1,        
@@ -452,6 +482,75 @@ def create_or_edit_event(request, country, calendar_slug, event_id=None, next=No
         "event_id":event_id,
         "next": next
     }, context_instance=RequestContext(request))
+
+
+@login_required
+def register_to_event(request, id=None):
+    """ register to event  """
+    user = request.user
+   
+    author = user
+    array_participants=[]
+    if id:
+        event = get_object_or_404(Event, id=id)
+        eventParticipants=EventParticipants.objects.filter(event_id=id)
+        for u in eventParticipants:
+           array_participants.append(u.user)
+        
+        if user in array_participants:
+            print("Already registered")
+        else:
+            print("registered") 
+            instance = EventParticipants()
+            instance.user=user
+            instance.registered=1
+            instance.registered_date=timezone.now() 
+            instance.event=event
+            instance.save()
+            send_notification_register_event_message(1,event.id,user)
+     
+            info(request, ("Successfully Registered to Event."))
+            
+      
+        next=None
+        next = next or reverse('event', args=[event.id])
+        next = get_next_url(request, next)
+        return HttpResponseRedirect(next)
+
+        
+    
+
+@login_required
+def unregister_to_event(request, id=None):
+    """ un-register to event  """
+    user = request.user
+    array_participants=[]
+    if id:
+        eventParticipants=get_object_or_404(EventParticipants, user_id=user.id, event_id=id)
+        eventParticipants.delete()
+        info(request, ("Successfully Un-Registered to Event."))
+        send_notification_register_event_message(0,id,user)
+      
+        print('un-registered')
+            
+        next=None
+        next = next or reverse('event', args=[id])
+        next = get_next_url(request, next)
+        return HttpResponseRedirect(next)
+
+@check_event_permissions
+def resend_invite(request, id=None):
+    """ resend_invite to event  """
+    send_notificationevent_message(id)
+
+    info(request, ("Successfully re-sent invite to Event."))
+
+
+    next=None
+    next = next or reverse('event', args=[id])
+    next = get_next_url(request, next)
+    return HttpResponseRedirect(next)
+
 
 
 class DeleteEventView(DeleteView):
