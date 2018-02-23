@@ -81,6 +81,62 @@ class Names(models.Model):
     def __unicode__(self):
         return self.codename
 
+    def getName(self):
+        eppocodeid=self.id
+        code =''
+        latin=''
+        family =''
+        order =''
+        common=''
+        if eppocodeid != None:
+            code=str(Names.objects.filter(id=eppocodeid)[0].eppocode)
+            if code!= '':    
+                if Names.objects.filter(eppocode=code,isolang='la', preferred="true").count()>0:
+                    latin=Names.objects.filter(eppocode=code,isolang='la', preferred="true")[0].fullname
+                if Names.objects.filter(eppocode=code,isolang='en').count()>0:
+                    common=Names.objects.filter(eppocode=code,isolang='en')[0].fullname
+
+                cursor.execute("SELECT eppocode_parent FROM t_eppo_links WHERE eppocode = '"+code+"';")
+                str1= cursor.fetchall()
+                codeparent=''
+                for row in str1:
+                    codeparent=str1[0][0]
+                codeparentlabel = Names.objects.filter(eppocode=codeparent,isolang='la', preferred="true")
+
+                cursor.execute("SELECT eppocode_parent FROM t_eppo_links WHERE eppocode = '"+codeparent+"';")
+                codeparent2=''
+                str2= cursor.fetchall()
+                for row in str2:
+                    codeparent2=str2[0][0]
+                if  Names.objects.filter(eppocode=codeparent2,isolang='la', preferred="true").count()>0:
+                    family = Names.objects.filter(eppocode=codeparent2,isolang='la', preferred="true")[0].fullname
+
+                cursor.execute("SELECT eppocode_parent FROM t_eppo_links WHERE eppocode = '"+codeparent2+"';")
+                codeparent3=''
+                str3= cursor.fetchall()
+                if len(str3)>0:
+                      codeparent3=str3[0][0]
+
+
+                if Names.objects.filter(eppocode=codeparent3,isolang='la', preferred="true").count()>0:
+                    order = Names.objects.filter(eppocode=codeparent3,isolang='la', preferred="true")[0].fullname
+                #print("*******************************")
+                #print(latin+" : "+ order +" : "+ family+" : "+ common )
+                #print("*******************************")
+        if  latin!='':
+            pestidentity=pestidentity+'<i>'+latin+"</i>"
+        if  family!='':
+            pestidentity=pestidentity+ "<br>"+ family
+        if  order!='':
+            pestidentity=pestidentity+  " : "+ order
+        if  common!='':
+            pestidentity=pestidentity+  "<br>"+ common
+        pestidentity=pestidentity+ "<br>"+ str(code)+"<br><br>"
+        return   pestidentity    
+                     
+    
+    
+
 class Links(models.Model):
     """ Eppo EPPT Links """
  #    idlink integer NOT NULL AUTO_INCREMENT UNIQUE PRIMARY KEY,
