@@ -75,8 +75,8 @@
     <th style="background-color: #0000FF; color: #fff">{% trans "Drafting body" %}</th>
     <th style="background-color: #0000FF; color: #fff">{% trans "Topic under technical area (if applicable)" %}</th>
     <th style="background-color: #0000FF; color: #fff">{% trans "Added to the list" %}</th>
-    <th style="background-color: #0000FF; color: #fff">{% trans "Lead Steward / TP Lead (Country, Meeting assigned)" %}</th>
-    <th style="background-color: #0000FF; color: #fff">{% trans "Assistant Stewards (Country, Meeting assigned)" %}</th>
+    <th style="background-color: #0000FF; color: #fff">{% trans "Lead Steward / TP Lead (Country, Date assigned)" %}</th>
+    <th style="background-color: #0000FF; color: #fff">{% trans "Assistant Stewards (Country, Date assigned)" %}</th>
     <th style="background-color: #0000FF; color: #fff">{% trans "Spec No" %}</th>
     <th style="background-color: #0000FF; color: #fff">&#160;</th>
   </tr>
@@ -108,7 +108,7 @@
         {% if object.topicleads_set.all %}
         <ul style=" list-style-type: none;">
         {% for lead in  object.topicleads_set.all %} 
-        <li style=" white-space: nowrap;">{{lead.user.prefix}} {{lead.user.first_name}} {{lead.user.last_name}} ({% if lead.representing_country != None %}{{lead.representing_country.iso}}{% endif %}{% if lead.meetingassistantassigned != None %}, {{lead.meetingassistantassigned}}{% endif %})</li>
+        <li style=" white-space: nowrap;">{{lead}}({% if lead.representing_country != None %}{{lead.representing_country.iso}}{% endif %}{% if lead.meetingassistantassigned != None %}, {{lead.meetingassistantassigned}}{% endif %})</li>
             {% endfor %} </ul>
                {%endif%}
           
@@ -117,7 +117,7 @@
         {% if object.topicassistants_set.all %}
           <ul style=" list-style-type: none;">
              {% for assist in  object.topicassistants_set.all %} 
-            <li style=" white-space: nowrap;">{{assist.user.prefix}} {{assist.user.first_name}} {{assist.user.last_name}} ({% if assist.representing_country != None %}{{assist.representing_country.iso}}{% endif %}{% if assist.meetingassistantassigned != None %}, {{assist.meetingassistantassigned}}{% endif %})</li>
+                         <li style=" white-space: nowrap;">{{assist}} ({% if assist.representing_country != None %}{{assist.representing_country.iso}}{% endif %}{% if assist.meetingassistantassigned != None %}, {{assist.meetingassistantassigned}}{% endif %})</li>
             {% endfor %} </ul>
                {%endif%}
     </td>
@@ -148,8 +148,8 @@
      <th style="background-color: #008000; color: #fff">{% trans "Strategic objective" %}</th>
      <th style="background-color: #008000; color: #fff">{% trans "Drafting body" %}</th>
      <th style="background-color: #008000; color: #fff">{% trans "Added to the list" %}</th>
-     <th style="background-color: #008000; color: #fff">{% trans "Lead Steward / TP Lead (Country, Meeting assigned)" %}</th>
-     <th style="background-color: #008000; color: #fff">{% trans "Assistant Stewards (Country, Meeting assigned)" %}</th>
+     <th style="background-color: #008000; color: #fff">{% trans "Lead Steward / TP Lead (Country, Date assigned)" %}</th>
+     <th style="background-color: #008000; color: #fff">{% trans "Assistant Stewards (Country, Date assigned)" %}</th>
      <th style="background-color: #008000; color: #fff">{% trans "Spec No" %}</th>
      <th style="background-color: #008000; color: #fff">{% trans "Status" %}</th>
      <th style="background-color: #008000; color: #fff">&#160;</th>
@@ -182,7 +182,7 @@
         {% if object.topicleads_set.all %}
         <ul style=" list-style-type: none;">
         {% for lead in  object.topicleads_set.all %} 
-        <li style=" white-space: nowrap;">{{lead.user.prefix}} {{lead.user.first_name}} {{lead.user.last_name}} ({% if lead.representing_country != None %}{{lead.representing_country.iso}}{% endif %}{% if lead.meetingassistantassigned != None %}, {{lead.meetingassistantassigned}}{% endif %})</li>
+        <li style=" white-space: nowrap;">{{lead}} ({% if lead.representing_country != None %}{{lead.representing_country.iso}}{% endif %}{% if lead.meetingassistantassigned != None %}, {{lead.meetingassistantassigned}}{% endif %})</li>
             {% endfor %} </ul>
                {%endif%}
           
@@ -191,7 +191,7 @@
         {% if object.topicassistants_set.all %}
           <ul style=" list-style-type: none;">
              {% for assist in  object.topicassistants_set.all %} 
-            <li style=" white-space: nowrap;">{{assist.user.prefix}} {{assist.user.first_name}} {{assist.user.last_name}} ({% if assist.representing_country != None %}{{assist.representing_country.iso}}{% endif %}{% if assist.meetingassistantassigned != None %}, {{assist.meetingassistantassigned}}{% endif %})</li>
+            <li style=" white-space: nowrap;">{{assist}} ({% if assist.representing_country != None %}{{assist.representing_country.iso}}{% endif %}{% if assist.meetingassistantassigned != None %}, {{assist.meetingassistantassigned}}{% endif %})</li>
             {% endfor %} </ul>
                {%endif%}
     </td>
@@ -252,7 +252,7 @@
         {% if object.topicleads_set.all %}
         <ul style=" list-style-type: none;">
         {% for lead in  object.topicleads_set.all %} 
-        <li style=" white-space: nowrap;">{{lead.user.prefix}} {{lead.user.first_name}} {{lead.user.last_name}} ({% if lead.representing_country != None %}{{lead.representing_country.iso}}{% endif %}{% if lead.meetingassistantassigned != None %}, {{lead.meetingassistantassigned}}{% endif %})</li>
+        <li style=" white-space: nowrap;">{{lead}} ({% if lead.representing_country != None %}{{lead.representing_country.iso}}{% endif %}{% if lead.meetingassistantassigned != None %}, {{lead.meetingassistantassigned}}{% endif %})</li>
             {% endfor %} </ul>
                {%endif%}
           
@@ -261,7 +261,7 @@
         {% if object.topicassistants_set.all %}
           <ul style=" list-style-type: none;">
              {% for assist in  object.topicassistants_set.all %} 
-            <li style=" white-space: nowrap;">{{assist.user.prefix}} {{assist.user.first_name}} {{assist.user.last_name}} ({% if assist.representing_country != None %}{{assist.representing_country.iso}}{% endif %}{% if assist.meetingassistantassigned != None %}, {{assist.meetingassistantassigned}}{% endif %})</li>
+            <li style=" white-space: nowrap;">{{assist}} ({% if assist.representing_country != None %}{{assist.representing_country.iso}}{% endif %}{% if assist.meetingassistantassigned != None %}, {{assist.meetingassistantassigned}}{% endif %})</li>
             {% endfor %} </ul>
                {%endif%}
     </td>
@@ -288,8 +288,8 @@
     <th style="background-color: #E36C0A; color: #fff">{% trans "Priority" %}</th>
     <th style="background-color: #E36C0A; color: #fff">{% trans "Strategic objective" %}</th>
     <th style="background-color: #E36C0A; color: #fff">{% trans "Added to the list" %}</th>
-    <th style="background-color: #E36C0A; color: #fff">{% trans "Treatment Lead (Country,Meeting assigned)" %}</th>
-    <th style="background-color: #E36C0A; color: #fff">{% trans "Assistant  Lead (Country,Meeting assigned)" %}</th>
+    <th style="background-color: #E36C0A; color: #fff">{% trans "Treatment Lead (Country, Date assigned)" %}</th>
+    <th style="background-color: #E36C0A; color: #fff">{% trans "Assistant  Lead (Country, Date assigned)" %}</th>
     <th style="background-color: #E36C0A; color: #fff">{% trans "Status" %}</th>
     <th style="background-color: #E36C0A; color: #fff">&#160;</th>
   </tr>
@@ -315,7 +315,7 @@
         {% if object.topicleads_set.all %}
         <ul style=" list-style-type: none;">
         {% for lead in  object.topicleads_set.all %} 
-        <li style=" white-space: nowrap;">{{lead.user.prefix}} {{lead.user.first_name}} {{lead.user.last_name}} ({% if lead.representing_country != None %}{{lead.representing_country.iso}}{% endif %}{% if lead.meetingassistantassigned != None %}, {{lead.meetingassistantassigned}}{% endif %})</li>
+        <li style=" white-space: nowrap;">{{lead}} ({% if lead.representing_country != None %}{{lead.representing_country.iso}}{% endif %}{% if lead.meetingassistantassigned != None %}, {{lead.meetingassistantassigned}}{% endif %})</li>
             {% endfor %} </ul>
                {%endif%}
           
@@ -324,7 +324,7 @@
         {% if object.topicassistants_set.all %}
           <ul style=" list-style-type: none;">
              {% for assist in  object.topicassistants_set.all %} 
-            <li style=" white-space: nowrap;">{{assist.user.prefix}} {{assist.user.first_name}} {{assist.user.last_name}} ({% if assist.representing_country != None %}{{assist.representing_country.iso}}{% endif %}{% if assist.meetingassistantassigned != None %}, {{assist.meetingassistantassigned}}{% endif %})</li>
+            <li style=" white-space: nowrap;">{{assist}} ({% if assist.representing_country != None %}{{assist.representing_country.iso}}{% endif %}{% if assist.meetingassistantassigned != None %}, {{assist.meetingassistantassigned}}{% endif %})</li>
             {% endfor %} </ul>
                {%endif%}
     </td>

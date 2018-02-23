@@ -188,16 +188,16 @@
 {% if topic.topicleads_set.all %}
 <tr><td><b>
     {% if  topic.topic_type == 0 %}
-        {% trans "Lead Steward / TP Lead (Country, Meeting assigned)" %}
+        {% trans "Lead Steward / TP Lead (Country, Date assigned)" %}
     {% elif  topic.topic_type == 1 %}
-        {% trans "Lead Steward (Country, Meeting assigned)" %}
+        {% trans "Lead Steward (Country, Date assigned)" %}
     {% elif  topic.topic_type == 2 %}
         {% if topic.drafting_body.all %}
             {% for d in topic.drafting_body.all %} 
                 {% if d.draftingbody == 'TPDP' %}
                      {% trans " Discipline Lead (Country)" %}
                 {% elif d.draftingbody  == 'TPPT' %}
-                    {% trans "Treatment Lead (Country, Meeting assigned)" %}
+                    {% trans "Treatment Lead (Country, Date assigned)" %}
                 {% endif %}
             {%  endfor %}
         {% endif %}
@@ -210,7 +210,7 @@
   <td>
     <ul class="unstyled nomargin">
         {% for lead in topic.topicleads_set.all %}
-        <li style=" white-space: nowrap;">{{lead.user.prefix}} {{lead.user.first_name}} {{lead.user.last_name}} ({% if lead.representing_country != None %}{{lead.representing_country.iso}}{% endif %}{% if lead.meetingassistantassigned != None %}, {{lead.meetingassistantassigned}}{% endif %})</li>
+        <li style=" white-space: nowrap;">{{lead}} ({% if lead.representing_country != None %}{{lead.representing_country.iso}}{% endif %}{% if lead.meetingassistantassigned != None %}, {{lead.meetingassistantassigned}}{% endif %})</li>
      {% endfor %}
     </ul>
     
@@ -226,16 +226,16 @@
 {% if topic.topicassistants_set.all %}
 <tr><td><b>
     {% if  topic.topic_type == 0 %}
-        {% trans "Assistant Stewards (Country, Meeting assigned)" %}
+        {% trans "Assistant Stewards (Country, Date assigned)" %}
     {% elif  topic.topic_type == 1 %}
-        {% trans "Assistant Stewards (Country, Meeting assigned)" %}
+        {% trans "Assistant Stewards (Country, Date assigned)" %}
     {% elif  topic.topic_type == 2 %}
         {% if topic.drafting_body.all %}
             {% for d in topic.drafting_body.all %} 
                 {% if d.draftingbody == 'TPDP' %}
                      {% trans "Referee" %}
                 {% elif d.draftingbody  == 'TPPT' %}
-                    {% trans "Assistant Lead (Country, Meeting assigned)" %}
+                    {% trans "Assistant Lead (Country, Date assigned)" %}
                 {% endif %}
             {%  endfor %}
         {% endif %}
@@ -250,7 +250,7 @@
   <td>
       <ul class="unstyled nomargin">
         {% for assist in topic.topicassistants_set.all %}
-        <li style=" white-space: nowrap;">{{assist.user.prefix}} {{assist.user.first_name}} {{assist.user.last_name}} ({% if assist.representing_country != None %}{{assist.representing_country.iso}}{% endif %}{% if assist.meetingassistantassigned != None %}, {{assist.meetingassistantassigned}}{% endif %})</li>
+        <li style=" white-space: nowrap;">{{assist}} ({% if assist.representing_country != None %}{{assist.representing_country.iso}}{% endif %}{% if assist.meetingassistantassigned != None %}, {{assist.meetingassistantassigned}}{% endif %})</li>
      {% endfor %}
     </ul>
     
