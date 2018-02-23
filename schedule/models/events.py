@@ -17,7 +17,9 @@ from schedule.models.rules import Rule
 from schedule.models.calendars import Calendar
 from schedule.utils import OccurrenceReplacer
 from django.contrib.contenttypes.generic import GenericRelation
-from ippc.models import IssueKeywordsRelate,validate_file_extension, CountryPage
+
+from ippc.models import IssueKeywordsRelate,validate_file_extension, CountryPage, PartnersPage, REGIONS, Topic
+from django.contrib.auth.models import User, Group
 
 class EventManager(models.Manager):
     def get_for_object(self, content_object, distinction=None, inherit=True):
@@ -72,6 +74,7 @@ EVENT_TYPE_29 = 29
 EVENT_TYPE_30 = 30
 EVENT_TYPE_31 = 31
 EVENT_TYPE_32 = 32
+EVENT_TYPE_33 = 33
 TYPES = (
     (EVENT_TYPE_1, (" ")),
     (EVENT_TYPE_2, _("Bilateral assistance")),
@@ -92,6 +95,7 @@ TYPES = (
     (EVENT_TYPE_17, _("Other")),
     (EVENT_TYPE_18, _("Other Working Group")),
     (EVENT_TYPE_19, _("Regional Workshops on Draft ISPMs")),
+    (EVENT_TYPE_33, _("Regional Workshops")),
     (EVENT_TYPE_32, _("Resource Mobilization")),
     (EVENT_TYPE_20, _("SBDS")),
     (EVENT_TYPE_21, _("Seminar")),
@@ -105,7 +109,6 @@ TYPES = (
     (EVENT_TYPE_29, _("Workshop / Seminars")),
     (EVENT_TYPE_30, _("WTO Meetings")),
     (EVENT_TYPE_31, _("SPG")),
-  
 )
 
 class Event(models.Model):
@@ -136,6 +139,15 @@ class Event(models.Model):
     organizer = models.CharField(_("Organizer"), max_length=255,blank=True, null=True)
     issuename=generic.GenericRelation(IssueKeywordsRelate)
     country = models.ForeignKey(CountryPage, related_name="event_country_page", default=-1)
+    can_register = models.BooleanField(_("Users can register"), default=False, help_text=_("Check this if you want that users can register to this Event."))
+    end_register_date = models.DateTimeField(_("End registration date"), null=True, blank=True,
+                                                help_text=_("Users won't be able to register after this date."))
+    groups = models.ManyToManyField(Group, 
+        verbose_name=_("Groups that can register to this event"), 
+        related_name='evparticipantgroups', blank=True, null=True)
+    topic_numbers = models.ManyToManyField( Topic, 
+        verbose_name=_("Select all the topic numbers that apply"), 
+        related_name='ev_topic_numbers', blank=True, null=True)
     objects = EventManager()
 
     class Meta:
@@ -154,10 +166,19 @@ class Event(models.Model):
         return dict(CATEGORIES)[self.category]
     def type_verbose(self):
         return dict(TYPES)[self.type]
-    
+    def get_array_participants(self):
+        array_participants=[]    
+        eventParticipants=EventParticipants.objects.filter(event_id=self.id)
+        for u in eventParticipants:
+           array_participants.append(u.user)
+        return array_participants
     def get_absolute_url(self):
         return reverse('event', args=[self.id])
-
+    def is_not_past_due(self):
+        if timezone.now() <= self.end_register_date:
+            return True
+        else: 
+            return False   
     def get_occurrences(self, start, end):
         """
         >>> rule = Rule(frequency = "MONTHLY", name = "Monthly")
@@ -309,7 +330,89 @@ class EventUrl(models.Model):
         verbose_name = _("event url")
         verbose_name_plural = _("event urls")
         app_label = 'schedule'
+                        
+
+FUND_TYPE_0 =0
+FUND_TYPE_1 = 1
+FUND_TYPE_2 =2
+FUNDS = (
+    (FUND_TYPE_0, _("No funding")),
+    (FUND_TYPE_1, _("Airfare funding")),
+    (FUND_TYPE_2, _("Airfare and DSA funding")),
+)  
+BOOL_CHOICES_1 = True
+BOOL_CHOICES_2 = False
+BOOL_CHOICES = (
+    (BOOL_CHOICES_1, _("Yes")),
+    (BOOL_CHOICES_2, _("No")),
+)
+
+
+BOOL_CHOICES2_1 = True
+BOOL_CHOICES2_2 = False
+BOOL_CHOICES2 = (
+    (BOOL_CHOICES2_1, _(u"\u2713")),
+    (BOOL_CHOICES2_2, _(" ")),
+)
+
+class ParticipantRoles(models.Model):
+    """ Participant Role """
+    role = models.CharField(_("Role"), max_length=500)
+
+    def __unicode__(self):
+        return self.role
         
+    class Meta:
+        verbose_name = _("Participant Role")
+        verbose_name_plural = _("Participant Roles")
+        app_label = 'schedule'
+    pass
+        
+class EventParticipants(models.Model):
+    event = models.ForeignKey(Event, verbose_name=_("event"))
+    
+    user = models.ForeignKey(User,verbose_name=_("User"), blank=True, null=True)
+    role = models.ManyToManyField(ParticipantRoles,
+        verbose_name=_("Role"),
+        related_name='role+', blank=True, null=True,)
+        
+    attended = models.NullBooleanField(_("Attended"), choices=BOOL_CHOICES,blank=True, null=True,)
+    registered = models.NullBooleanField(_("Registered"), choices=BOOL_CHOICES,blank=True, null=True,)
+    registered_date =models.DateTimeField(_("Registered date"), blank=True, null=True, editable=True)
+    #funding =  models.IntegerField(_("Funding"), choices=FUNDS, default=None,blank=True, null=True)
+
+    representing_country = models.ForeignKey(CountryPage,  verbose_name=_("Representing Country "), blank=True, null=True )
+    representing_organization = models.ForeignKey(PartnersPage,  verbose_name=_("Representing Organization"), blank=True, null=True)
+    representing_region =   models.IntegerField(_("Representing FAO Region"), choices=REGIONS, default=None,blank=True, null=True)
+
+    class Meta:
+        verbose_name = _("Event Participant")
+        verbose_name_plural = _("Event Participant")
+        app_label = 'schedule'
+    #def __unicode__(self):  
+   #     return self.user.id 
+   # def name(self):
+  #      return self.user
+   
+  
+      
+    def participant_registered_verbose(self):
+        if self.registered != None:
+            return dict(BOOL_CHOICES2)[self.registered]
+        else:
+            return ''
+    def participant_attended_verbose(self):
+        if self.attended != None:
+            return dict(BOOL_CHOICES2)[self.attended]
+        else:
+            return ''    
+    def participant_funding_verbose(self):
+        if self.funding != None:
+            return dict(FUNDS)[self.funding]
+        else:
+            return ''
+        
+  
 class EventRelationManager(models.Manager):
     '''
     >>> EventRelation.objects.all().delete()
