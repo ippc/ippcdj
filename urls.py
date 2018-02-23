@@ -36,15 +36,18 @@ DraftProtocolDetailView,  draftprotocol_create, draftprotocol_edit,draftprotocol
 draftprotocol_comment_create,draftprotocol_comment_edit,PublicationLibraryView,commenta,contactPointExtractor,\
 CountryRegionsPercentageListView,CountryStatsreportsListView,CountryStatsTotalreportsListView,CountryRegionsUsersListView,CountryTotalUsersListView,CountryStatsChangeInCPsListView,\
 CountryRegionsUsersNeverLoggedListView,CountryRegionsUsersNeverLoggedNewListView,CountryStatsTotalreports1ListView,CountryStatsSinglePestReportsListView,CountryStatsSingleReportsListView,CountryStatsTotalReportsIncreaseListView,\
-vote_answer_up ,vote_answer_down,reporting_trough_eppo,reminder_to_cn,\
+vote_answer_up ,vote_answer_down,reporting_trough_eppo,reporting_trough_eppo1,reminder_to_cn,\
 reporting_obligation_validate,event_reporting_validate,pest_report_validate,\
 QAQuestionListView, QAQuestionDetailView, QAQuestionAnswersView,question_create,answer_create,\
 FAQsListView, faqcategory_edit,faqcategory_create,faq_edit,faq_create,FAQsItemDetailView,FAQsCategoryDetailView,\
 ContactUsEmailMessageListView,   ContactUsEmailMessageDetailView , contactus_email_send,UserAutoRegistrationListView,auto_register,auto_register_approve,auto_register_delete,\
 IRSSActivityListView,IRSSActivityDetailView,irss_activity_create,irss_activity_edit   ,CountryStatisticsTotalNroByYearListView,subscribe_to_news,NewsStatisticsByYearListView,\
 UserMembershipHistoryListView,UserMembershipHistoryDetailView,usermembershiphistory_create,usermembershiphistory_edit,MediaKitDocumentListView,CountryStatsSingleLegislationsListView,\
-PhytosanitaryTreatmentDetailView,PhytosanitaryTreatmentListView ,phytosanitarytreatment_create,phytosanitarytreatment_edit
-#QuestionListView, QuestionDetailView, QuestionAnswersView,question_create,question_edit,answer_edit      
+PhytosanitaryTreatmentDetailView,PhytosanitaryTreatmentListView ,phytosanitarytreatment_create,phytosanitarytreatment_edit,\
+CertificatesToolListView,CertificatesToolDetailView,generate_certificates,MembershipListView,generate_list,generate_shortlist,generate_replacementlist,\
+TopicDetailView,TopicListView,topic_create,topic_edit,topic_translate,WorkshopCertificatesToolListView,WorkshopCertificatesToolDetailView,generate_workshopcertificates,\
+B_CertificatesToolListView,B_CertificatesToolDetailView,generate_b_certificates,my_tool,MyToolDetailView,generate_topiclist
+
 #reporting_obligation_translate,
 from schedule.periods import Year, Month, Week, Day
 from mezzanine.core.views import direct_to_template
@@ -134,6 +137,7 @@ urlpatterns = patterns("",
    
    #---------EPPO REPORTING------------------------------------
     url(r'^epporeporting/', reporting_trough_eppo, name='reporting_trough_eppo'),
+    url(r'^epporeporting1/', reporting_trough_eppo1, name='reporting_trough_eppo1'),
 
     #--------- Reminder system ------------------------------------
     url(r'^reminder/(?P<id>\d+)/$', reminder_to_cn, name='reminder_to_cn'),
@@ -167,6 +171,10 @@ urlpatterns = patterns("",
     #     template_name="envelope/contact_form.html",
     #     success_url="/thankyou/",
     # )),
+    url("^organigram_a/$", direct_to_template, {"template": "organigram_a.html"}, name="organigram_a"),
+    url("^organigram_b/$", direct_to_template, {"template": "organigram_b.html"}, name="organigram_b"),
+    url("^organigram_c/$", direct_to_template, {"template": "organigram_c.html"}, name="organigram_c"),
+  
     url("^sitemap/$", direct_to_template, {"template": "sitemap.html"}, name="sitemap"),
     #url("^contact/$", direct_to_template, {"template": "contact.html"}, name="contact"),
     url("^thankyou/$", direct_to_template, {"template": "thankyou.html"}, name="thankyou"),
@@ -176,6 +184,10 @@ urlpatterns = patterns("",
     # url("^faq/$", direct_to_template, {"template": "sitemap.html"}, name="sitemap"),
     url(r'^autocomplete/', include('autocomplete_light.urls')),
     url(r'^events/', include('schedule.urls')),
+    
+    
+    
+   
     url(r'^month/(?P<calendar_slug>[-\w]+)/$',
         'schedule.views.calendar_by_periods',
         name="month_calendar",
@@ -204,6 +216,21 @@ urlpatterns = patterns("",
         'schedule.views.create_or_edit_event',
         name='edit_event'),    
   # countries
+    
+    #register-to-event
+      url(r'^register/(?P<id>\d+)/$',
+        'schedule.views.register_to_event',
+        name='register-to-event'),   
+    #un-register-to-event
+      url(r'^un-register/(?P<id>\d+)/$',
+        'schedule.views.unregister_to_event',
+        name='un-register-to-event'), 
+    #url(r'^generate-participants-list/(?P<id>\d+)/$',
+    #    'ippc.views.generate_participantslist',
+    #    name='generate-participants-list'),     
+   url(r'^resend-invite/(?P<id>\d+)/$',
+        'schedule.views.resend_invite',
+        name='resend-invite'),     
     
     # individual country home
     url(r'^countries/(?P<country>[\w-]+)/$',
@@ -282,7 +309,33 @@ urlpatterns = patterns("",
         name='poll-edit'),
     
     
+    #--------------------------------------#
+    # CERTIFICATES:    
+    url(r'^work-area/certificatestool/all/$',view=CertificatesToolListView.as_view(), name='certificatestool-list'),
+    url(r'^work-area/certificatestool/(?P<pk>\d+)/$',CertificatesToolDetailView.as_view(), name='certificatestool-detail'),
+    url(r'^work-area/certificatestool/create/$',view=generate_certificates, name='certificatestool-create'),
+    #--------------------------------------#
+    # Workshop CERTIFICATES:    
+    url(r'^work-area/w-certificatestool/all/$',view=WorkshopCertificatesToolListView.as_view(), name='w-certificatestool-list'),
+    url(r'^work-area/w-certificatestool/(?P<pk>\d+)/$',WorkshopCertificatesToolDetailView.as_view(), name='w-certificatestool-detail'),
+    url(r'^work-area/w-certificatestool/create/$',view=generate_workshopcertificates, name='w-certificatestool-create'),
+   #--------------------------------------#
+    # bureau/cpm CERTIFICATES:    
+    url(r'^work-area/b-certificatestool/all/$',view=B_CertificatesToolListView.as_view(), name='b-certificatestool-list'),
+    url(r'^work-area/b-certificatestool/(?P<pk>\d+)/$',B_CertificatesToolDetailView.as_view(), name='b-certificatestool-detail'),
+    url(r'^work-area/b-certificatestool/create/$',view=generate_b_certificates, name='b-certificatestool-create'),
     
+    #MEMBERSHIT LIST TOOL
+    url(r'^work-area/membershiptool/$',      view=MembershipListView.as_view(),     name='membership-list'),###
+    url(r'^work-area/membershiptool/(?P<type>[\w-]+)/create/(?P<id>\d+)/$',      view=generate_list,     name='generate-list'),###
+    #url(r'^generate-participants-list/(?P<id>\d+)/$','ippc.views.generate_participantslist',  name='generate-participants-list'),    
+    url(r'^generate-participants-list/(?P<type>\d+)/(?P<id>\d+)/$' , view=generate_list,   name='generate-list'),    
+    #url(r'^work-area/sss/(?P<id>\d+)/$',      view=generate_membershiplist,     name='generate_membershiplist'),###
+    url(r'^work-area/mytool/$',view= my_tool , name='my_tool'),
+    url(r'^work-area/mytoolres/(?P<pk>\d+)/$',view= MyToolDetailView.as_view() , name='my_toolres'),
+ 
+  
+    # url(r'^aaa/pdf/$', view=CertificatePDFView.as_view(), name='aaa-pdf'),
     
     #--------------------------------------#
     #EMAIL:
@@ -657,7 +710,29 @@ url(r'^external-cooperation/organizations-page-in-ipp/(?P<partner>[\w-]+)/$',   
         view=PhytosanitaryTreatmentListView.as_view(),
         # view=country_view(),
         name='phytosanitary-treatment-list'),
-        
+#------------ LIST of  Topics ----------------------
+    url(r'^core-activities/standards-setting/list-topics-ippc-standards/(?P<slug>[\w-]+)/$',
+        view=TopicDetailView.as_view(), name="topic-detail"),
+     #create
+    url(r'^core-activities/standards-setting/list-topics-ippc-standards/topic/create/new/$',
+        view=topic_create,
+        name='topic-create'),
+     #   edit
+        url(r'^core-activities/standards-setting/list-topics-ippc-standards/topic/edit/(?P<id>\d+)/$',
+        view=topic_edit,
+        name='topic-edit'),
+    url(r'^core-activities/standards-setting/list-topics-ippc-standards/list$',
+        view=TopicListView.as_view(),
+        name='topic-list'),
+        url(r'^core-activities/standards-setting/list-topics-ippc-standards/topic/translate/(?P<lang>[\w-]+)/(?P<id>\d+)/$',
+        view=topic_translate,
+        name='topic-translate'),    
+#  PRINT WORD      
+  url(r'^work-area/generate-lot/(?P<lang>[\w-]+)$',      view=generate_topiclist,     name='generate-topiclist'),###
+  
+  url(r'^work-area/generate-sc-shortlist/$',view=generate_shortlist, name='generate-sc-shortlist'),
+  url(r'^work-area/generate-sc-replacementlist/$',view=generate_replacementlist, name='generate-sc-replacementlist'),
+   
         
 #-------------------------------------------#
     # CN news list
