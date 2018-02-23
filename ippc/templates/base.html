@@ -116,6 +116,36 @@
 
         </script>
         {% endif %}
+           {% if p_form.prefix %}
+        <script type="text/javascript">
+            $(function() {
+                $(".inline.{{ p_form.prefix }}").formset({
+                    prefix: "{{ p_form.prefix }}",
+                })
+            })
+
+        </script>
+        {% endif %}
+               {% if tl_form.prefix %}
+        <script type="text/javascript">
+            $(function() {
+                $(".inline.{{ tl_form.prefix }}").formset({
+                    prefix: "{{ tl_form.prefix }}",
+                })
+            })
+
+        </script>
+        {% endif %}
+               {% if ta_form.prefix %}
+        <script type="text/javascript">
+            $(function() {
+                $(".inline.{{ ta_form.prefix }}").formset({
+                    prefix: "{{ ta_form.prefix }}",
+                })
+            })
+
+        </script>
+        {% endif %}
         <style type="text/css">
 
 #floating_link{
@@ -219,14 +249,26 @@
                       <a href="http://www.fao.org"><img src="/static/img/FAO-logo.png" alt="FAO"></a>
                     </div>
 
-                    <div class="pull-right" style="clear:right;  " >
-                        <a class="brand" href="/{{ LANGUAGE_CODE }}">
-                            <img src="/static/img/ippc-logo-glyph-web-80x42.png" class="printlogo" alt="IPPC">
-                            <strong>
-                                 {% trans "International Plant Protection Convention" %}
-                            </strong>
-                            <br>
-                            <em class="small quiet">{% blocktrans %}Protecting the world's plant resources from pests{% endblocktrans %}</em>
+                    <div class="pull-right" style="clear:right; padding-bottom: 0.2cm; " >
+                        <a  href="/{{ LANGUAGE_CODE }}">
+                            
+                            {% if LANGUAGE_CODE != 'en' %}
+                                {% if LANGUAGE_CODE == 'es'  %}
+                                     <img src="/static/img/es.png" width="420px"> 
+                                {% elif LANGUAGE_CODE == 'fr'  %}
+                                     <img src="/static/img/fr.png" width="420px"> 
+                                {% elif LANGUAGE_CODE == 'ru'   %}
+                                   <img src="/static/img/ru.png" width="420px"> 
+                                {% elif LANGUAGE_CODE == 'ar'  %}
+                                  <img src="/static/img/ar.png" width="420px"> 
+                                 {% elif LANGUAGE_CODE == 'zh'   %}
+                                    <img src="/static/img/zh.png" width="420px"> 
+                                {% else %}
+                                    <img src="/static/img/en.png" width="420px"> 
+                                {% endif %}
+                            {% else %}
+                               <img src="/static/img/en.png" width="420px"> 
+                            {% endif %}
                         </a>
                     </div>
                     
@@ -274,10 +316,10 @@
 
         <div class="container-fluid">
 
-            <div class="row-fluid"> 
+            <div class="row-fluid">
                 <div class="span{% block mainspansize %}{% if page.id != None %}{% if  '/phytosanitary-treatments-tool/' in request.path %}12{% else %}8{% endif %}{% else %}12{% endif %}{% endblock mainspansize %} middle">
                 {% block main %}{% endblock %}
-                
+             
                 </div>
                 
                 <div class="span{% block sidebarspansize %}{% if page.id != None %}4{% else %}8{% endif %}{% endblock sidebarspansize %} right">
@@ -305,16 +347,18 @@
                     {% include "pages/menus/tree_key_core.html" %}
                 {% elif page.id == 345 or   page.parent_id == 345   %}
                 {% if  '/phytosanitary-treatments-tool/' in request.path %}
+                    {% elif	page.id == 1096 %}<!--#530???-->
+                    {% elif	page.id == 530 %}<!--#530???-->
+                   {% elif	page.id == 368 %}<!--#530???-->
                 {% else %}
                     <div class="panel tree">
                         {% page_menu "pages/menus/tree.html" %}
                     </div> 
                     {% include "pages/menus/tree_key_ssu.html" %}
-{% endif %}
+                {% endif %}
                     {# FAQ page show/hide ================= #}
                    
-                   {% elif	page.id == 1096 %}<!--#530???-->
-                    
+                  
                  
                    {% elif	page.id == 858 %} 
                     <style type="text/css" media="screen">
