@@ -81,7 +81,7 @@
         {{ f_form.non_form_errors }}
         {% for form in f_form %}
         {{ form.id }}
-        <div class="inline {{ f_form.prefix }}">
+        <div class="inline {{ f_form.prefix }}"   style="border:1px solid #808080; background: #f2f2f2;  padding:10px">
             {% if  form.errors %}
             <div class="alert alert-error"> 
                 {% endif %}
@@ -101,12 +101,13 @@
         </div>
         {% endfor %}
     </fieldset>
-    <legend>Event</legend>
+        <fieldset>
+    <legend>LINKS</legend>
     {{ u_form.management_form }}
     {{ u_form.non_form_errors }}
     {% for form in u_form %}
     {{ form.id }}
-    <div class="inline {{ u_form.prefix }}">
+    <div class="inline {{ u_form.prefix }}" style="border:1px solid #808080; background: #f2f2f2;  padding:10px">
         {% if  form.errors %}
         <div class="alert alert-error"> 
             {% endif %}
@@ -124,12 +125,71 @@
     </div>
     {% endfor %}
 </fieldset>
+ 
+   <fieldset>
+    <legend>Participants</legend>
+    {{ p_form.management_form }}
+    {{ p_form.non_form_errors }}
+    
+    {% for form in p_form %}
+    {{ form.id }}
+      
+     
+     <div class="inline {{ p_form.prefix }}" style=" background: #f2f2f2;  padding:10px">
+        {% if  form.errors %}
+            <div class="alert alert-error"> 
+        {% endif %}
+        <table>
+              {%if  forloop.counter == 1 %}
+            <tr style="background-color:#C2CBE0; width: 20px ">
+                <th>{% trans "User" %}</th>						
+                <th>{% trans "Role" %}</th>
+                <th>{% trans "Attended" %}</th>
+                <th>{% trans "registered" %}</th>
+                <th>{% trans "Registered date" %}</th>
+                <!--th>{% trans "Funding" %}</th-->
+                <th>{% trans "Representing Country" %}</th>
+                <th>{% trans "Representing Organization" %}</th>
+                <th>{% trans "Representing Region" %}</th>
+               </tr>
+             {% endif %}
+            <tr>
+            <td>{{form.user}}  </td>
+            <td>{{form.role}}  </td>
+            <td>{{form.attended}}  </td> 
+            <td>{{form.registered}}  </td>
+            <td>{{form.registered_date}}  </td>
+            <!--td>{{form.funding}}  </td-->
+            <td>{{form.representing_country}}  </td>
+            <td>{{form.representing_organization}}  </td>
+            <td>{{form.representing_region}}  </td>
+        
+        </tr> 
+                 
+       </table> 
+  {% if p_form.can_delete %}{{ form.DELETE }}{% endif %}
+            {% if  p_form.errors %}
+        </div> 
+        {% endif %}
+    </div>
+    {% endfor %}
+</fieldset>
+
+
+
+
+
+     
 <br/>
-<input type="submit" value="{% trans "Save" %}">
-       <input type="button" value="{% trans "Cancel" %}" onclick="window.location='{{next}}'"/>
-       <input type="hidden" name="next" value="{{next|default:""}}"/>
+
+
+
+  <div class="form-actions">
+        <button type="submit" class="btn btn-info btn-large">{% trans "Update Event" %}</button> {% trans "or" %} <a href="javascript:history.go(-1)">{% trans "Cancel" %}</a>
+       <input type="hidden" name="next" value="{{next|default:""}}"/>   </div>
 </form>
 </fieldset>
+    
 {% else %}
 <p>NO PERMISSIONs</p>
 {% endif %}

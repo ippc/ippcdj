@@ -41,15 +41,14 @@
         <th>Activity</th>
         <th>Type</th>
         <th>Location</th>
-        {% if user.is_superuser or can_add %}
-        <th> </th>
-        {% endif %}
+      
+        <th>Register</th>
     </tr>
   </thead>
   <tbody>
 
     {% for m in months_list %}
-    <tr>  <td colspan="5"><strong>{{m.1}}</strong></td></tr>
+    <tr>  <td colspan="6"><strong>{{m.1}}</strong></td></tr>
     {% for e in event_list2 %}
         {% if e.0 == m.0 %}
             {% for event in e.1 %}
@@ -61,9 +60,30 @@
                     <td>{{event.type_verbose}}</td>
                     <td>{{event.location}} {{event.venuecity}} {{event.venuecountry}}  
                     {% if user.is_superuser or can_add %}
-                      <a class="small pull-right" href="{% url 'edit_event' 'event' event.calendar.slug event.id %}"><i class="icon-edit"></i> Edit</a>  
+                    <a class="small pull-right" href="{% url 'edit_event' 'event' event.calendar.slug event.id %}"><i class="icon-edit"></i> Edit</a>  
                     {% endif %}
                 </td>
+                <td> 
+                {% if  event.can_register and event.groups.all and event.is_not_past_due%}
+                    {% for g1 in request.user.groups.all %}
+                       {% if g1 in event.groups.all %}
+                           {% if event.eventparticipants_set.all %} 
+                                {% if  request.user in event.get_array_participants %}
+                                 <a class="btn btn-small btn-warning" href="{% url 'un-register-to-event' event.id %}"><i class="icon-edit icon-white"></i> {% trans "Un-Register to meeting" %}</a>
+                            {% else %} 
+                    <a class="btn btn-small btn-info" href="{% url 'register-to-event' event.id %}"><i class="icon-edit icon-white"></i> {% trans "Register to meeting" %}</a>
+                                {% endif %}
+                            
+                            {% else %} 
+                    <a class="btn btn-small btn-info" href="{% url 'register-to-event' event.id %}"><i class="icon-edit icon-white"></i> {% trans "Register to meeting" %}</a>
+                            {% endif %}
+                         {% endif %}
+                    {% endfor %}   
+                {% endif%}
+                </td>
+                  
+                
+                 
                 </tr>
             {% endfor %}
         {% endif%}
