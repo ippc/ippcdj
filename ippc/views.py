@@ -17,8 +17,9 @@ ReportingObligation, BASIC_REP_TYPE_CHOICES, EventReporting, EVT_REP_TYPE_CHOICE
 PestFreeArea,ImplementationISPM,REGIONS, IssueKeywordsRelate,CommodityKeywordsRelate,EventreportingFile,ReportingObligation_File,\
 ContactUsEmailMessage,FAQsItem,FAQsCategory,QAQuestion, QAAnswer,UserAutoRegistration,IRSSActivity,IRSSActivityFile,IRSS_ACT_TYPE_CHOICES,\
 TransFAQsCategory,TransFAQsItem,MassEmailUtilityMessage,MassEmailUtilityMessageFile,\
-OCPHistory, PartnersContactPointHistory,CnEditorsHistory,PartnersEditorHistory,UserMembershipHistory,MediaKitDocument,MEDIAKIT_TYPE_CHOICES,\
-PhytosanitaryTreatment,PhytosanitaryTreatmentPestsIdentity,PhytosanitaryTreatmentCommodityIdentity
+OCPHistory, PartnersContactPointHistory,CnEditorsHistory,PartnersEditorHistory,UserMembershipHistory,MediaKitDocument,MEDIAKIT_TYPE_CHOICES,MyTool,\
+PhytosanitaryTreatment,PhytosanitaryTreatmentPestsIdentity,PhytosanitaryTreatmentCommodityIdentity,CertificatesTool,WorkshopCertificatesTool,CPMS,TOPIC_PRIORITY_CHOICES,\
+Topic,TopicAssistants,TopicLeads,TransTopic,TOPIC_STATUS_CHOICES,SC_TYPE_CHOICES,B_CertificatesTool
          
 #TransReportingObligation,
 from mezzanine.core.models import Displayable, CONTENT_STATUS_DRAFT, CONTENT_STATUS_PUBLISHED
@@ -34,10 +35,11 @@ EmailUtilityMessageForm,EmailUtilityMessageFileFormSet,MassEmailUtilityMessageFo
 CountryNewsUrlFormSet,CountryNewsForm, CountryNewsFileFormSet,NotificationMessageRelateForm,\
 DraftProtocolForm,  DraftProtocolFileFormSet,DraftProtocolCommentsForm,IppcUserProfileForm,\
 ContactUsEmailMessageForm,FAQsItemForm,FAQsCategoryForm,QAQuestionForm, QAAnswerForm,UserAutoRegistrationForm,IRSSActivityForm,IRSSActivityFileFormSet,\
-    UserMembershipHistoryForm,PhytosanitaryTreatmentForm,PhytosanitaryTreatmentPestsIdentityFormSet,PhytosanitaryTreatmentCommodityIdentityFormSet
+UserMembershipHistoryForm,PhytosanitaryTreatmentForm,PhytosanitaryTreatmentPestsIdentityFormSet,PhytosanitaryTreatmentCommodityIdentityFormSet,\
+CertificatesToolForm,WorkshopCertificatesToolForm, TopicForm ,TransTopicForm, TopicLeadsFormSet,TopicAssistantsFormSet,B_CertificatesToolForm   ,MyToolForm
 ##TansReportingObligationForm , UserForm,
 
-
+from schedule.models import Event, EventParticipants
 from django.views.generic import ListView, MonthArchiveView, YearArchiveView, DetailView, TemplateView, CreateView
 from django.core.urlresolvers import reverse
 from django.core.mail import send_mail,send_mass_mail
@@ -266,6 +268,223 @@ def reporting_trough_eppo(request):
     #SET proper email ROY and Publisher, send real emails'
     response = render(request, "countries/eppo_reporting.html", context)
     return response
+
+#---------------------NEW
+from email.parser import Parser
+
+def process_multipart_message(message):
+    rtn = ''
+    if message.is_multipart():
+        for m in message.get_payload():
+            rtn += process_multipart_message(m)
+    else:
+        rtn += message.get_payload()
+    return rtn
+
+def reporting_trough_eppo1(request):
+    eppo_tmp_dir =MEDIA_ROOT+'/eppo_tmp'
+    eppo_done_dir = MEDIA_ROOT+'/eppo_done'
+    user_obj_reportEmail=User.objects.get(username='ippctest@gmail.com')
+    password=   user_obj_reportEmail.password
+   
+    username = 'paola.sentinelli@fao.org'
+    password = 'Poldina69'
+    conn = imaplib.IMAP4_SSL("outlook.office365.com",993)
+    conn.login(username, password)
+    print('COOOOOOOONNNNNN')
+    conn.select('INBOX')
+
+    resp, items = conn.search(None, '(UNSEEN)')#conn.uid('search', '(UNSEEN)', 'ALL')
+    
+    print(items)
+    uids = items[0].split()
+    
+    for emailid in uids:
+ 
+        resp, data = conn.fetch(emailid, "(RFC822)") # fetching the mail, "`(RFC822)`" means "get the whole stuff", but you can ask for headers only, etc
+     
+        email_body = data[0][1] # getting the mail content
+        mailmsg = email.message_from_string(email_body) # parsing the mail content to get a mail object
+        
+        #Check if any attachments at all
+        if mailmsg.get_content_maintype() != 'multipart':
+            continue
+        # we use walk to create a generator so we can iterate on the parts and forget about the recursive headach
+        for part in mailmsg.walk():
+            # multipart are just containers, so we skip them
+            if part.get_content_maintype() == 'multipart':
+                continue
+            # is this part an attachment ?
+            if part.get('Content-Disposition') is None:
+                continue
+            filename = part.get_filename()
+            counter = 1
+            # if there is no filename, we create one with a counter to avoid duplicates
+            if not filename:
+                filename = 'part-%03d%s' % (counter, 'bin')
+                counter += 1
+            #print(filename)
+            #print(filename.endswith('.xml'))
+            # print(mailmsg.get('From'))
+            if filename.endswith('.xml') and  mailmsg.get('From').endswith('ippctest@gmail.com>'):#pestreporting@eppo.int
+            
+                att_path = os.path.join(eppo_tmp_dir, filename)
+                #Check if its already there
+                if not os.path.isfile(att_path) :
+                    # finally write the stuff
+                    fp = open(att_path, 'wb')
+                    fp.write(part.get_payload(decode=True))
+                    fp.close()
+        xml_files = os.listdir(eppo_tmp_dir)
+        pest_reports=[]
+        #create lof file with report of data uploaded
+        log_report =  open(os.path.join(eppo_done_dir, "eppo_reporting_"+timezone.now().strftime('%Y%m%d%H%M%S')+".log"), 'wb')
+        log_report.write("List of uploaded pest report from Eppo:\n\n")
+    #           
+        for file_name in xml_files:
+          if file_name.endswith('.xml'):
+              title =''
+              slug=''
+              status =2
+              author =1
+              publish_date=''
+              modify_date=''
+              country = ''
+              report_status = ''
+              report_number = ''
+              pest_status = ''
+              pest_identity =''
+              summary = ''
+              hosts = ''
+              geographical_distribution = ''
+              nature_of_danger = ''
+              contact_for_more_information = ''
+
+              xml_file = open(os.path.join(eppo_tmp_dir, file_name),'r')
+              xmldoc = minidom.parse(xml_file)
+              xml_file.close()
+
+              doc_element = xmldoc.documentElement
+              reportIdentity  = doc_element.getElementsByTagName("ReportIdentity")[0]
+              reportdata  = doc_element.getElementsByTagName("ReportData")[0]
+
+              countryelement= reportIdentity.getElementsByTagName("CountryIdentity")[0]
+              countryname=''
+              countryslug=''
+              if countryelement.hasAttribute("ISO3"):
+                  iso31=countryelement.getAttribute("ISO3")
+                  if iso31 == 'ZZZ':
+                      iso31='ITA'
+                  countryo= CountryPage.objects.filter(iso3=iso31)
+                  if countryo:
+                      if True:#countryo[0].accepted_epporeport :
+                          country =countryo[0].id 
+                          countryname=countryo[0].name
+                          countryslug=countryo[0].slug
+    #
+                          title= reportIdentity.getElementsByTagName("Title")[0].childNodes[0].data  
+                          report_status=0
+                          slug = lower(slugify(title))
+    #
+                          numberR=PestReport.objects.filter(country_id=country).count()
+                          numberR=numberR+1
+                          pestnumber=str(numberR)
+                          if numberR<10 :
+                              pestnumber='0'+pestnumber
+                          report_number=countryelement.getAttribute("ISO3")+'-'+pestnumber+'/1'
+    #
+                          if reportIdentity.hasAttribute("DateCreate"):
+                              publish_date=reportIdentity.getAttribute("DateCreate")
+                              modify_date=reportIdentity.getAttribute("DateCreate")
+                          if reportIdentity.hasAttribute("UID"):
+                              eppouid=reportIdentity.getAttribute("UID")
+                          if reportIdentity.hasAttribute("numReport"):
+                              epponumreport=reportIdentity.getAttribute("numReport")
+                          if reportIdentity.hasAttribute("DateValidation"):
+                              eppovalidationdate=reportIdentity.getAttribute("DateValidation")
+    #
+                          eppoPublisher = reportIdentity.getElementsByTagName("Publisher")[0]
+                          eppoPublishername = eppoPublisher.getElementsByTagName("fullname")[0].childNodes[0].data  
+                          eppoPublisheremail = ''
+                          if eppoPublisher.getElementsByTagName("email"):
+                              eppoPublisheremail = eppoPublisher.getElementsByTagName("email")[0].childNodes[0].data  
+                          if eppoPublisher.getElementsByTagName("date"):
+                              eppoPublisherdate = eppoPublisher.getElementsByTagName("date")[0].childNodes[0].data  
+    #
+                          pest_identity = reportIdentity.getElementsByTagName("EppoCode")[0].childNodes[0].data  
+                          pestidentityFinal=Names.objects.get(eppocode=pest_identity, preferred=1)
+    #
+                          if reportdata.getElementsByTagName("GeogDistrib")[0].childNodes:
+                              geographical_distribution= reportdata.getElementsByTagName("GeogDistrib")[0].childNodes[0].data  
+                          if reportdata.getElementsByTagName("Context")[0].childNodes:
+                              summary= reportdata.getElementsByTagName("Context")[0].childNodes[0].data  
+    #
+                          hosts= reportdata.getElementsByTagName("HostName")[0].childNodes[0].data  
+                          peststatuselement = reportdata.getElementsByTagName("PestStatus")[0]
+                          pest_status_label=''
+                          if peststatuselement.getElementsByTagName("libelle")[0].childNodes:
+                              pest_status_label = peststatuselement.getElementsByTagName("libelle")[0].childNodes[0].data  
+                          if pest_status_label!='':
+                              ps=PestStatus.objects.get(status=pest_status_label)
+                              pest_status=ps.id
+                          else:    
+                              ps=PestStatus.objects.get(status='Other')
+                              pest_status=ps.id#Other
+    #
+                          new_pest_report = PestReport()
+                          new_pest_report.country_id=country
+                          new_pest_report.title=title
+                          new_pest_report.publish_date=  publish_date
+                          new_pest_report.country_id=country
+                          new_pest_report.report_number=report_number
+                          new_pest_report.pest_identity_id=pestidentityFinal.id
+                          new_pest_report.geographical_distribution=geographical_distribution
+
+                          safe_str = summary.encode('ascii', 'ignore')
+                          new_pest_report.summary=str(safe_str.encode('utf-8'))#TO DO: #problme with encoded summary
+                          new_pest_report.author_id=1
+                          new_pest_report.hosts=hosts
+                          new_pest_report.importedfromeppo = True
+                          new_pest_report.save()
+
+                          new_pest_report.pest_status.add(ps)
+                          pest_reports.append(new_pest_report)
+    #
+                          #move xml processed in 'eppo_done' dir
+                          os.rename(os.path.join(eppo_tmp_dir, file_name),os.path.join(eppo_done_dir, timezone.now().strftime('%Y%m%d%H%M%S')+'_'+file_name))
+                          #create log and email messages notifications
+                          year=new_pest_report.publish_date.strftime("%Y")
+                          month=new_pest_report.publish_date.strftime("%m")
+                          pest_url="https://www.ippc.int/en/"+countryslug+"/pestreports/"+year+"/"+month+"/"+slug
+    #
+                          log_report.write("["+ timezone.now().strftime('%Y%m%d%H%M%S')+"] "+countryname+" ["+report_number+"] '"+title+" "+pest_url+"\n\n")
+    #
+                          msgtpeppo="Dear EPPO,<br><br>the Pest report<br><br><strong>UID</strong>: "+str(eppouid) +" <br><strong>Numreport:</strong> "+str(epponumreport)+" <br><strong>Publish date:</strong>"+str(eppoPublisherdate)+"<br><br>has been successefully uploaded in the IPPC website<br><br><Strong>URL</strong>: "+pest_url+""
+                          msgtoCP="Dear "+str(eppoPublishername)+",<br><hr><br>the Pest report published in EPPO with:<br><br><strong>UID</strong>: "+str(eppouid) +" <br><strong>Numreport:</strong> "+str(epponumreport)+" <br><strong>Publish date:</strong>"+str(eppoPublisherdate)+"<br><br>has been successefully uploaded in the IPPC website<br><br><Strong>URL</strong>: "+pest_url+""
+    #
+                          subject='EPPO Pest Report successefully uploaded in IPPC'  
+                          #TO DO: #SEND TO roy@eppo.int
+                          notifificationmessageeppo = mail.EmailMessage(subject,msgtpeppo,'ippc@fao.org', ['paola.sentinelli@fao.org'], ['paola.sentinelli@fao.org'])
+                          notifificationmessageeppo.content_subtype = "html"
+                          sent =notifificationmessageeppo.send()
+                          if eppoPublisheremail:
+                              notifificationmessageCp = mail.EmailMessage(subject,msgtoCP,'ippc@fao.org', ['paola.sentinelli@fao.org'], ['paola.sentinelli@fao.org'])
+                              notifificationmessageCp.content_subtype = "html"
+                              sent =notifificationmessageCp.send()
+                      else:
+                          #move xml processed in 'eppo_done' dir & create LOG
+                          os.rename(os.path.join(eppo_tmp_dir, file_name),os.path.join(eppo_done_dir, timezone.now().strftime('%Y%m%d%H%M%S')+'_'+file_name))
+                          log_report.write("["+ timezone.now().strftime('%Y%m%d%H%M%S')+"] "+file_name+" [NOT IMPORTED, NOT ACCETTED TO REPORT TROUH EPPO]\n\n")
+#
+    log_report.close()        
+    #  context = {"pest_reports":pest_reports,}
+    context = {}
+      #TO DO:        
+      #SET COUNTIES in Country page 'allow eppo to report automatically'
+      #SET proper email ROY and Publisher, send real emails'
+    response = render(request, "countries/eppo_reporting.html", context)
+    return response
+
 
 
 #EPPO REP import imaplib
@@ -5082,17 +5301,17 @@ class CountryStatsSingleLegislationsListView(ListView):
             cns_2=''
             cns_3=''
             tot_4=''
-            cns_5=''
-            cns_6=''
-            cns_7=''
-            cns_8=''
-            cns_9=''
-            cns_10=''
-            cns_11=''
-            cns_12=''
-            cns_1=''
-            cns_2=''
-            cns_3=''
+            tot_5=''
+            tot_6=''
+            tot_7=''
+            tot_8=''
+            tot_9=''
+            tot_10=''
+            tot_11=''
+            tot_12=''
+            tot_1=''
+            tot_2=''
+            tot_3=''
             p_count=0
             
             cNewP_4=0
@@ -5278,6 +5497,8 @@ class CountryStatsSingleLegislationsListView(ListView):
                                  cnsUpP_7=cnsUpP_7+c.title+', '
                         elif   p_date==8 and p.modify_date != p.publication_date:
                                cUpP_8= cUpP_8+1
+                               print('****************************')
+                               print('****************************cUpP_8='+str(cUpP_8))
                                if c.title in cnsUpP_8:
                                  print("NO")
                                else:    
@@ -5412,18 +5633,7 @@ class CountryStatsSingleLegislationsListView(ListView):
             cUpP=0
             cns=''
             
-            cns_4=''
-            cns_5=''
-            cns_6=''
-            cns_7=''
-            cns_8=''
-            cns_9=''
-            cns_10=''
-            cns_11=''
-            cns_12=''
-            cns_1=''
-            cns_2=''
-            cns_3=''
+        
 
             p_count=0
             
@@ -5451,6 +5661,7 @@ class CountryStatsSingleLegislationsListView(ListView):
             cUpP_1=0
             cUpP_2=0
             cUpP_3=0
+            
             cnsP_4=""
             cnsP_5=""
             cnsP_6=""
@@ -5502,7 +5713,8 @@ class CountryStatsSingleLegislationsListView(ListView):
                 if pests1.count()>0:
                     for p in pests1:
                         p_date=p.publication_date.month
-                        if   p_date==4:
+                       
+                        if  p_date==4:
                           cNewP_4=cNewP_4+1
                           if c.title in cnsP_4:
                               print("NO")
@@ -5521,18 +5733,26 @@ class CountryStatsSingleLegislationsListView(ListView):
                                 print("NO")
                               else:    
                                 cnsP_6=cnsP_6+c.title+', '
-                        elif   p_date==5:
+                        elif   p_date==7:
                               cNewP_7=cNewP_7+1
                               if c.title in cnsP_7:
                                   print("NO")
                               else:    
                                cnsP_7=cnsP_7+c.title+', '
                         elif   p_date==8:
-                              cNewP8=cNewP_8+1
+                              print("")
+                              print("")
+                              print("p_date"+str(p_date))
+                              print("")
+                              cNewP_8=cNewP_8+1
                               if c.title in cnsP_8:
                                   print("NO")
                               else:    
                                 cnsP_8=cnsP_8+c.title+', '
+                              print("")
+                              print(cnsP_8)
+                              print(cnsP_8)
+                              print("")
                         elif   p_date==9:
                               cNewP_9=cNewP_9+1
                               if c.title in cnsP_9:
@@ -5608,7 +5828,7 @@ class CountryStatsSingleLegislationsListView(ListView):
                                 cnsUpP_7=cnsUpP_7+c.title+', '
 
                         elif   p_date==8 and p.modify_date != p.publication_date:
-                               cUpP8= cUpP_8+1
+                               cUpP_8= cUpP_8+1
                                if c.title in cnsUpP_8:
                                 print("NO")
                                else:    
@@ -5658,6 +5878,10 @@ class CountryStatsSingleLegislationsListView(ListView):
 
                         elif   p_date==3 and p.modify_date != p.publication_date:
                                cUpP_3= cUpP_3+1 
+                               if c.title in cnsUpP_3:
+                                 print("NO")
+                               else:    
+                                 cnsUpP_3=cnsUpP_3+c.title+', '
 
                 
                 array_cns_pn_.append(cNewP_4)
@@ -5885,7 +6109,7 @@ class CountryStatsSingleLegislationsListView(ListView):
         tot_u_2=0
         tot_u_3=0
         for x in  regionsAll[0]:
-            print('TOT-------------------')
+            print('TOT----AOLL---------------')
             print(x[7][0])
             tot_n_4+=x[7][0][0]
             tot_n_5+=x[7][0][1]
@@ -8176,7 +8400,13 @@ def split(arr, size):
          pice = arr[:size]
          arrs.append(pice)
          arr   = arr[size:]
+         
      arrs.append(arr)
+     for r in arrs:
+        print('******************')
+        print(r)
+        print('******************')
+        
      return arrs
 
 @login_required
@@ -10062,8 +10292,9 @@ class PhytosanitaryTreatmentListView(ListView):
     queryset = PhytosanitaryTreatment.objects.filter(status=IS_PUBLIC).order_by('-modify_date', 'title')
     allow_future = False
     allow_empty = True
-    paginate_by = 500
-	
+    paginate_by = 10
+
+    
     def get_context_data(self, **kwargs): # http://stackoverflow.com/a/15515220
         context = super(PhytosanitaryTreatmentListView, self).get_context_data(**kwargs)
         phyto_treatments_array=[]
@@ -10071,144 +10302,33 @@ class PhytosanitaryTreatmentListView(ListView):
         for phyto in phytos:
             phytos_array=[]
             phytos_array.append(phyto)
-        
-            otherpests=phyto.treatment_pestidentity_other
-            othercommodity=phyto.treatment_commodityidentity_other
-            pests =  PhytosanitaryTreatmentPestsIdentity.objects.filter(phytosanitarytreatment=phyto.id)
-            commodities =  PhytosanitaryTreatmentCommodityIdentity.objects.filter(phytosanitarytreatment=phyto.id)
-        
             pestidentity=''
-            commodityidentity=''
-
-            db = MySQLdb.connect(DATABASES["default"]["HOST"],DATABASES["default"]["USER"],DATABASES["default"]["PASSWORD"],DATABASES["default"]["NAME"])
-            cursor = db.cursor()
-
+            otherpests=phyto.treatment_pestidentity_other
+            pests =  PhytosanitaryTreatmentPestsIdentity.objects.filter(phytosanitarytreatment=phyto.id)
             if pests.count()>0:
-                print(pests.count())
-                pestidentity=''#pestidentity+'<ul>'
-
+                pestidentity='' 
                 for p in pests.all():
-                    eppocodeid=p.pest_id
-                    code =''
-                    latin=''
-                    family =''
-                    order =''
-                    common=''
-                    if eppocodeid != None:
-                        code=str(Names.objects.filter(id=eppocodeid)[0].eppocode)
-                        if code!= '':    
-                            if Names.objects.filter(eppocode=code,isolang='la', preferred="true").count()>0:
-                                latin=Names.objects.filter(eppocode=code,isolang='la', preferred="true")[0].fullname
-                            if Names.objects.filter(eppocode=code,isolang='en').count()>0:
-                                common=Names.objects.filter(eppocode=code,isolang='en')[0].fullname
-                         
-                            cursor.execute("SELECT eppocode_parent FROM t_eppo_links WHERE eppocode = '"+code+"';")
-                            str1= cursor.fetchall()
-                            codeparent=''
-                            for row in str1:
-                                codeparent=str1[0][0]
-                            codeparentlabel = Names.objects.filter(eppocode=codeparent,isolang='la', preferred="true")
-
-                            cursor.execute("SELECT eppocode_parent FROM t_eppo_links WHERE eppocode = '"+codeparent+"';")
-                            codeparent2=''
-                            str2= cursor.fetchall()
-                            for row in str2:
-                                codeparent2=str2[0][0]
-                            if  Names.objects.filter(eppocode=codeparent2,isolang='la', preferred="true").count()>0:
-                                family = Names.objects.filter(eppocode=codeparent2,isolang='la', preferred="true")[0].fullname
-
-                            cursor.execute("SELECT eppocode_parent FROM t_eppo_links WHERE eppocode = '"+codeparent2+"';")
-                            codeparent3=''
-                            str3= cursor.fetchall()
-                            if len(str3)>0:
-                                  codeparent3=str3[0][0]
-
-
-                            if Names.objects.filter(eppocode=codeparent3,isolang='la', preferred="true").count()>0:
-                                order = Names.objects.filter(eppocode=codeparent3,isolang='la', preferred="true")[0].fullname
-                            print("*******************************")
-                            print(latin+" : "+ order +" : "+ family+" : "+ common )
-                            print("*******************************")
-                    if  latin!='':
-                        pestidentity=pestidentity+'<i>'+latin+"</i>"
-                    if  family!='':
-                        pestidentity=pestidentity+ "<br>"+ family
-                    if  order!='':
-                        pestidentity=pestidentity+  " : "+ order
-                    if  common!='':
-                        pestidentity=pestidentity+  "<br>"+ common
-                    pestidentity=pestidentity+ "<br>"+ str(code)+"<br><br>"
-               # pestidentity=pestidentity+'</ul>'
-
-            if  commodities.count()>0:
-                commodityidentity=''#commodityidentity+'<ul>'
-
-                for c in commodities.all():
-                    eppocodeid=c.commodity_id
-                    common=''
-                    latin=''
-                    family =''
-                    order =''
-                    code =''
-                    if eppocodeid != None:
-                        code=str(Names.objects.filter(id=eppocodeid)[0].eppocode)
-                        if Names.objects.filter(eppocode=code,isolang='la', preferred="true").count()>0:
-                                latin=Names.objects.filter(eppocode=code,isolang='la', preferred="true")[0].fullname
-                        if Names.objects.filter(eppocode=code,isolang='en').count()>0:
-                            common=Names.objects.filter(eppocode=code,isolang='en')[0].fullname
-
-                        cursor.execute("SELECT eppocode_parent FROM t_eppo_links WHERE eppocode = '"+code+"';")
-                        str1= cursor.fetchall()
-                        codeparent=''
-                        for row in str1:
-                            codeparent=str1[0][0]
-                        codeparentlabel = Names.objects.filter(eppocode=codeparent,isolang='la', preferred="true")
-
-                        cursor.execute("SELECT eppocode_parent FROM t_eppo_links WHERE eppocode = '"+codeparent+"';")
-                        codeparent2=''
-                        str2= cursor.fetchall()
-                        for row in str2:
-
-                        #if str2.count()>0:
-                            codeparent2=str2[0][0]
-                        if  Names.objects.filter(eppocode=codeparent2,isolang='la', preferred="true").count()>0:
-                            family = Names.objects.filter(eppocode=codeparent2,isolang='la', preferred="true")[0].fullname
-
-                        cursor.execute("SELECT eppocode_parent FROM t_eppo_links WHERE eppocode = '"+codeparent2+"';")
-                        codeparent3=''
-                        str3= cursor.fetchall()
-                        if len(str3)>0:
-                              codeparent3=str3[0][0]
-
-
-                        if Names.objects.filter(eppocode=codeparent3,isolang='la', preferred="true").count()>0:
-                            order = Names.objects.filter(eppocode=codeparent3,isolang='la', preferred="true")[0].fullname
-                        print("*******************************")
-                        print(latin+" : "+ order +" : "+ family+" : "+ common )
-                        print("*******************************")
-
-                   # commodityidentity=commodityidentity+'<i>'+latin+"</i><br>"+ family+" : "+ order+"<br>"+ common+"<br>"+ str(code)+"<br><br>"
-                    if  latin!='':
-                        commodityidentity=commodityidentity+'<i>'+latin+"</i>"
-                    if  family!='':
-                        commodityidentity=commodityidentity+ "<br>"+ family
-                    if  order!='':
-                        commodityidentity=commodityidentity+  " : "+ order
-                    if  common!='':
-                        commodityidentity=commodityidentity+  "<br>"+ common
-                    commodityidentity=commodityidentity+ "<br>"+ str(code)+"<br><br>"
-                #commodityidentity=commodityidentity+'</ul>'
-
-            db.close()
+                   if p.pestidentitydescr!=None:
+                        pestidentity=pestidentity+ p.pestidentitydescr
             pestidentity=pestidentity+otherpests
+            
+            commodityidentity=''
+            othercommodity=phyto.treatment_commodityidentity_other
+            commodities =  PhytosanitaryTreatmentCommodityIdentity.objects.filter(phytosanitarytreatment=phyto.id)
+            if  commodities.count()>0:
+                commodityidentity='' 
+                for c in commodities.all():
+                    if c.commoditydescr!=None:
+                        commodityidentity=commodityidentity+ c.commoditydescr
+                
+
             commodityidentity=commodityidentity+othercommodity
+            
             phytos_array.append(pestidentity)
             phytos_array.append(commodityidentity)
             phyto_treatments_array.append(phytos_array)
 
         context['phyto_treatments_array'] = phyto_treatments_array
-        
-       
         return context
     
 class PhytosanitaryTreatmentDetailView(DetailView):
@@ -10220,141 +10340,30 @@ class PhytosanitaryTreatmentDetailView(DetailView):
 #   
     def get_context_data(self, **kwargs): # http://stackoverflow.com/a/15515220
         context = super(PhytosanitaryTreatmentDetailView, self).get_context_data(**kwargs)
-        print("*******************************")
+        
         phyto = get_object_or_404(PhytosanitaryTreatment, slug=self.kwargs['slug'])
-        otherpests=phyto.treatment_pestidentity_other
-        othercommodity=phyto.treatment_commodityidentity_other
-        pests =  PhytosanitaryTreatmentPestsIdentity.objects.filter(phytosanitarytreatment=phyto.id)
-        commodities =  PhytosanitaryTreatmentCommodityIdentity.objects.filter(phytosanitarytreatment=phyto.id)
-        context['phytotreatment'] = phyto
-        
         pestidentity=''
-        commodityidentity=''
-        
-        db = MySQLdb.connect(DATABASES["default"]["HOST"],DATABASES["default"]["USER"],DATABASES["default"]["PASSWORD"],DATABASES["default"]["NAME"])
-        cursor = db.cursor()
-           
-
+        otherpests=phyto.treatment_pestidentity_other
+        pests =  PhytosanitaryTreatmentPestsIdentity.objects.filter(phytosanitarytreatment=phyto.id)
         if pests.count()>0:
-                print(pests.count())
-                pestidentity=''#pestidentity+'<ul>'
-
-                for p in pests.all():
-                    eppocodeid=p.pest_id
-                    code =''
-                    latin=''
-                    family =''
-                    order =''
-                    common=''
-                    if eppocodeid != None:
-                        code=str(Names.objects.filter(id=eppocodeid)[0].eppocode)
-                        if code!= '':    
-                            if Names.objects.filter(eppocode=code,isolang='la', preferred="true").count()>0:
-                                latin=Names.objects.filter(eppocode=code,isolang='la', preferred="true")[0].fullname
-                            if Names.objects.filter(eppocode=code,isolang='en').count()>0:
-                                common=Names.objects.filter(eppocode=code,isolang='en')[0].fullname
-                         
-                            cursor.execute("SELECT eppocode_parent FROM t_eppo_links WHERE eppocode = '"+code+"';")
-                            str1= cursor.fetchall()
-                            codeparent=''
-                            for row in str1:
-                                codeparent=str1[0][0]
-                            codeparentlabel = Names.objects.filter(eppocode=codeparent,isolang='la', preferred="true")
-
-                            cursor.execute("SELECT eppocode_parent FROM t_eppo_links WHERE eppocode = '"+codeparent+"';")
-                            codeparent2=''
-                            str2= cursor.fetchall()
-                            for row in str2:
-                                codeparent2=str2[0][0]
-                            if  Names.objects.filter(eppocode=codeparent2,isolang='la', preferred="true").count()>0:
-                                family = Names.objects.filter(eppocode=codeparent2,isolang='la', preferred="true")[0].fullname
-
-                            cursor.execute("SELECT eppocode_parent FROM t_eppo_links WHERE eppocode = '"+codeparent2+"';")
-                            codeparent3=''
-                            str3= cursor.fetchall()
-                            if len(str3)>0:
-                                  codeparent3=str3[0][0]
-
-
-                            if Names.objects.filter(eppocode=codeparent3,isolang='la', preferred="true").count()>0:
-                                order = Names.objects.filter(eppocode=codeparent3,isolang='la', preferred="true")[0].fullname
-                            print("*******************************")
-                            print(latin+" : "+ order +" : "+ family+" : "+ common )
-                            print("*******************************")
-                    if  latin!='':
-                        pestidentity=pestidentity+'<i>'+latin+"</i>"
-                    if  family!='':
-                        pestidentity=pestidentity+ "<br>"+ family
-                    if  order!='':
-                        pestidentity=pestidentity+  " : "+ order
-                    if  common!='':
-                        pestidentity=pestidentity+  "<br>"+ common
-                    pestidentity=pestidentity+ "<br>"+ str(code)+"<br><br>"
-               # pestidentity=pestidentity+'</ul>'
-
-        if  commodities.count()>0:
-                commodityidentity=''#commodityidentity+'<ul>'
-
-                for c in commodities.all():
-                    eppocodeid=c.commodity_id
-                    common=''
-                    latin=''
-                    family =''
-                    order =''
-                    code =''
-                    if eppocodeid != None:
-                        code=str(Names.objects.filter(id=eppocodeid)[0].eppocode)
-                        if Names.objects.filter(eppocode=code,isolang='la', preferred="true").count()>0:
-                                latin=Names.objects.filter(eppocode=code,isolang='la', preferred="true")[0].fullname
-                        if Names.objects.filter(eppocode=code,isolang='en').count()>0:
-                            common=Names.objects.filter(eppocode=code,isolang='en')[0].fullname
-
-                        cursor.execute("SELECT eppocode_parent FROM t_eppo_links WHERE eppocode = '"+code+"';")
-                        str1= cursor.fetchall()
-                        codeparent=''
-                        for row in str1:
-                            codeparent=str1[0][0]
-                        codeparentlabel = Names.objects.filter(eppocode=codeparent,isolang='la', preferred="true")
-
-                        cursor.execute("SELECT eppocode_parent FROM t_eppo_links WHERE eppocode = '"+codeparent+"';")
-                        codeparent2=''
-                        str2= cursor.fetchall()
-                        for row in str2:
-
-                        #if str2.count()>0:
-                            codeparent2=str2[0][0]
-                        if  Names.objects.filter(eppocode=codeparent2,isolang='la', preferred="true").count()>0:
-                            family = Names.objects.filter(eppocode=codeparent2,isolang='la', preferred="true")[0].fullname
-
-                        cursor.execute("SELECT eppocode_parent FROM t_eppo_links WHERE eppocode = '"+codeparent2+"';")
-                        codeparent3=''
-                        str3= cursor.fetchall()
-                        if len(str3)>0:
-                              codeparent3=str3[0][0]
-
-
-                        if Names.objects.filter(eppocode=codeparent3,isolang='la', preferred="true").count()>0:
-                            order = Names.objects.filter(eppocode=codeparent3,isolang='la', preferred="true")[0].fullname
-                        print("*******************************")
-                        print(latin+" : "+ order +" : "+ family+" : "+ common )
-                        print("*******************************")
-
-                   # commodityidentity=commodityidentity+'<i>'+latin+"</i><br>"+ family+" : "+ order+"<br>"+ common+"<br>"+ str(code)+"<br><br>"
-                    if  latin!='':
-                        commodityidentity=commodityidentity+'<i>'+latin+"</i>"
-                    if  family!='':
-                        commodityidentity=commodityidentity+ "<br>"+ family
-                    if  order!='':
-                        commodityidentity=commodityidentity+  " : "+ order
-                    if  common!='':
-                        commodityidentity=commodityidentity+  "<br>"+ common
-                    commodityidentity=commodityidentity+ "<br>"+ str(code)+"<br><br>"
-                #commodityidentity=commodityidentity+'</ul>'
-
-        db.close()
+            pestidentity='' 
+            for p in pests.all():
+               if p.pestidentitydescr!=None:
+                    pestidentity=pestidentity+ p.pestidentitydescr
         pestidentity=pestidentity+otherpests
+       
+        commodityidentity=''
+        othercommodity=phyto.treatment_commodityidentity_other
+        commodities =  PhytosanitaryTreatmentCommodityIdentity.objects.filter(phytosanitarytreatment=phyto.id)
+        commodities =  PhytosanitaryTreatmentCommodityIdentity.objects.filter(phytosanitarytreatment=phyto.id)
+        if  commodities.count()>0:
+            commodityidentity='' 
+            for c in commodities.all():
+                if c.commoditydescr!=None:
+                    commodityidentity=commodityidentity+ c.commoditydescr
         commodityidentity=commodityidentity+othercommodity
       
+        context['phytotreatment'] = phyto
         context['pestidentity'] = pestidentity
         context['commodityidentity'] = commodityidentity
        
@@ -10370,7 +10379,6 @@ def phytosanitarytreatment_create(request):
     """ Create phytosanitraytreatment """
     user = request.user
     author = user
-    print('ssssssssssssssssssssssssssssss')
     form = PhytosanitaryTreatmentForm(request.POST, request.FILES)
   
     if request.method == "POST":
@@ -10471,3 +10479,2497 @@ def subscribe_to_news(request):
     return redirect('https://www.ippc.int/'+str(previous_page)  )
    # return render(request, "news/news_post_list.html", data)
    # return render_to_response(context_instance=RequestContext(request)) 
+   
+   
+
+def send_notificationevent_message(id):
+    """ send_notification_message """
+    event = get_object_or_404(Event, id=id)
+
+    emailto_all = ['']
+    participant_already_registered=[]
+    participant_not_registered=[] 
+   
+    eventParticipants=EventParticipants.objects.filter(event_id=id)
+    for u in eventParticipants:
+        if u.registered:
+            participant_already_registered.append(u.user)
+        else:
+            participant_not_registered.append(u.user)
+    for g in event.groups.all():
+        print(g)
+        group=Group.objects.get(id=g.id)
+        users = group.user_set.all()
+        for u in users:
+           if u in participant_already_registered:
+               print("already registered")
+           else:    
+                participant_not_registered.append(u)
+
+    for u in participant_not_registered:
+         user_registered_obj=User.objects.get(username=u)
+         email=user_registered_obj.email
+         emailto_all.append(email)
+
+    
+
+    subject='Register to IPPC Meeting: '+event.title
+    itemllink="http://127.0.0.1:8000/en/events/event/"+str(id)
+    textmessage =textmessage ='<table bgcolor="#FFFFFF" cellspacing="2" cellpadding="2" valign="top" width="100%" style="border-bottom: 1px solid #10501F;border-top: 1px solid #10501F;border-left: 1px solid #10501F;border-right: 1px solid #10501F"> <tr><td width="100%" bgcolor="#FFFFFF">Dear Sir/Madam, <br><br>Please be informed that the following meeting:<br><br><a href="'+itemllink+'">'+event.title+'</a> ('+itemllink+') <br><br>is now open for registration on the <b>International Phytosanitary Portal</b>.<br><br>Please <b><a href="'+itemllink+'">REGISTER</a></b> before <b>'+str(event.end_register_date)+'</b><br><br>Please check the data in your profile, you can edit your profile yourself <a href="https://www.ippc.int/en/accounts/login/">after login into the IPP</a> (you can change all contact details except your name and job title). <br><br><p>-- International Plant Protection Convention team </p></td></tr></table>'
+
+    message = mail.EmailMessage(subject,textmessage,'ippc@fao.org',#from
+        ['paola.sentinelli@fao.org'], ['paola.sentinelli@fao.org'])#emailto_all for PROD, in TEST all to paola#
+    print(textmessage)
+    message.content_subtype = "html"
+    sent =message.send()
+        
+def send_notification_register_event_message(register,id,user):
+    """ send_notification_register_event_message """
+    event = get_object_or_404(Event, id=id)
+    emailto_all = ['']
+         
+    user_registered_obj=User.objects.get(username=user)
+    user_registered_email=user_registered_obj.email
+    user_registered_first_name=user_registered_obj.first_name
+    user_registered_last_name=user_registered_obj.last_name
+    
+    author_id=event.creator_id
+    auth_event_obj=User.objects.get(id=author_id)
+    auth_email=auth_event_obj.email
+    emailto_all.append(str(auth_email))
+    
+    registerlabel=''
+    if register:
+        registerlabel='REGISTERED'
+    else:
+        registerlabel='UN-REGISTERED'
+        
+    subject='User has '+registerlabel+' to IPPC Meeting: '+event.title
+    itemllink="https://www.ippc.int/en/events/event/"+str(id)
+    textmessage ='<table bgcolor="#FFFFFF" cellspacing="2" cellpadding="2" valign="top" width="100%" style="border-bottom: 1px solid #10501F;border-top: 1px solid #10501F;border-left: 1px solid #10501F;border-right: 1px solid #10501F"> <tr><td width="100%" bgcolor="#FFFFFF">Dear IPPC Secretariat, <br><br>Please be informed that the following user <b>'+user_registered_first_name+' '+user_registered_last_name+' ('+user_registered_email+')</b> has <b>'+registerlabel+'</b> to the meeting: <a href="'+itemllink+'">'+event.title+'</a> ('+itemllink+').<br><br><p>-- International Plant Protection Convention team </p></td></tr></table>'
+
+    message = mail.EmailMessage(subject,textmessage,'ippc@fao.org',#from
+        ['paola.sentinelli@fao.org'], ['paola.sentinelli@fao.org'])#emailto_all for PROD, in TEST all to paola#
+    print(textmessage)
+    message.content_subtype = "html"
+    sent =message.send()
+    
+    
+from PIL import Image
+from PIL import ImageFont
+from PIL import ImageDraw
+from PIL import ImageFile
+
+
+import os
+
+class CertificatesToolListView(ListView):
+    """    CertificatesTool List view """
+    context_object_name = 'latest'
+    model = CertificatesTool
+    date_field = 'date'
+    template_name = 'certificates/certificatestool_list.html'
+    queryset = CertificatesTool.objects.all().order_by('-date')
+   
+       
+class CertificatesToolDetailView(DetailView):
+    """ CertificatesTool detail page """
+    model = CertificatesTool
+    context_object_name = 'certificatestool'
+    template_name = 'certificates/certificatestool_detail.html'
+    queryset = CertificatesTool.objects.filter()
+
+import shutil
+
+
+@login_required
+@permission_required('ippc.change_publication', login_url="/accounts/login/")
+def generate_certificates(request):
+    """ Create generate_certificates """
+    form = CertificatesToolForm(request.POST)
+    certificatedir_template = MEDIA_ROOT+'/certificate_template'
+    img_template=MEDIA_ROOT+'certificate_template/TemplateCertificate2017_XiaBrent.png'
+    fontfile =MEDIA_ROOT+"certificate_template/times.ttf"
+  
+    g_set=[]
+    for g in Group.objects.filter():
+        users = g.user_set.all()
+        users_all=[]
+        users_all.append(str(g))
+        users_all.append(str(g.id))
+        for u in users:
+           users_u=[]
+           user_obj=User.objects.get(username=u)
+           if user_obj.is_active:
+            userippc = get_object_or_404(IppcUserProfile, user_id=user_obj.id)
+            users_u.append((unicode(userippc.first_name)))
+            users_u.append((unicode(userippc.last_name)))
+            users_u.append((user_obj.id))
+            users_all.append(users_u)
+        g_set.append(users_all)
+        
+
+    zip_all=''
+    zip_all_s=''
+    users_participants=[]       
+    users_address=[]
+    if request.method == "POST":
+        if form.is_valid():
+            topicnumber = str(request.POST['topicnumber'])
+            topic  = get_object_or_404(Topic, id= topicnumber)
+            
+            usersfrom_g=[]
+            print(request.POST)
+            for g in Group.objects.filter():
+                for u_id in request.POST.getlist('user_'+str(g.id)+'_0'):
+                    if u_id not in usersfrom_g:
+                        usersfrom_g.append(str(u_id))
+          
+             
+            new_certificatestool = form.save(commit=False)
+            new_certificatestool.creation_date = timezone.now()
+            new_certificatestool.author =  request.user
+            
+            date = timezone.now().strftime('%Y%m%d%H%M%S')
+            certificatedir_new = MEDIA_ROOT+'files/certificates/'+date
+            zip_all1 ="/static/media/files/certificates/certificates_"+ date+".zip"
+            zip_all = zipfile.ZipFile(MEDIA_ROOT+"/files/certificates/"+"/certificates_"+ date+".zip", "w")
+            new_certificatestool.filezip =zip_all1
+            
+            form.save()
+            try: 
+                os.makedirs(certificatedir_new)
+            except OSError:
+                if not os.path.isdir(certificatedir_new):
+                    raise
+                
+            if topic!=None:
+                topictitle=  request.POST['title']
+               
+                events = Event.objects.filter(topic_numbers=topic)
+                for ev in events:
+                    eventParticipants=EventParticipants.objects.filter(event_id=ev.id)
+                    for u in eventParticipants:
+                        if u not in users_participants:
+                            users_participants.append(u)
+                
+                for u in users_participants:
+                  user_obj=User.objects.get(username=u.user)
+                  usersfrom_g.append(str(user_obj.id))
+                  userippc = get_object_or_404(IppcUserProfile, user_id=user_obj.id)
+                  name=get_gender(userippc.gender)+' '+userippc.first_name+' '+(userippc.last_name).upper()
+                  role=u.role
+                  roletoprint=''
+                  for r in u.role.all():
+                        role_=str(r)
+                        print(role_)
+                        roletoprint=roletoprint+role_
+                 
+
+             
+#                  lenghtofname=len(name)
+#                  xcoord_name=3507-(lenghtofname/2)*100
+#                  
+#                  lenghtofrole=len(roletoprint)
+#                  xcoordrole=3507-(lenghtofrole/2)*100
+#                  
+#                  lenghtoftopic=len(topictitle)
+#                  xcoordtopic=3507-(lenghtoftopic/2)*100
+#                 # fontfile =MEDIA_ROOT+"\\static\\media\\certificate_template\\times.ttf"
+#  
+#                  font = ImageFont.truetype(fontfile, 200) #Arial.ttf", 48)
+#                  font1= ImageFont.truetype(fontfile, 100) #Arial.ttf", 48)
+#                  #ImageFile.LOAD_TRUNCATED_IMAGES = True
+#                  img = Image.open(img_template)
+#                  img.LOAD_TRUNCATED_IMAGES = True
+#                  draw = ImageDraw.Draw(img)
+#                  #draw = img.load()
+#                   
+#                  # font = ImageFont.truetype(<font-file>, <font-size>)
+#                  # draw.text((x, y),"Sample Text",(r,g,b))
+#                  draw.text((xcoord_name, 1863),name,(0,119,67),font=font)
+#                  draw.text((xcoordrole, 2280),roletoprint,(0,119,67),font=font)
+#                  draw.text((xcoordtopic, 2745),topictitle,(0,119,67),font=font)
+#                  draw.text((3210, 4250),"Rome, Italy, "+timezone.now().strftime('%Y')+" ",(0,0,0),font=font1)
+#                  img.save(os.path.join(certificatedir_new,str(u.user)+'.png'))
+#                  strfpath=os.path.join(certificatedir_new,str(u.user)+'.png')
+#                  zip_all.write(strfpath, str(u.user)+'.png')
+                  
+                  lenghtofname=len(name)
+                  xcoord_name=1760-(lenghtofname/2)*50
+
+                  lenghtofrole=len(roletoprint)
+                  xcoordrole=1760-(lenghtofrole/2)*50
+
+                  lenghtoftopic=len(topictitle)
+                  xcoordtopic=1760-(lenghtoftopic/2)*50
+
+                  font = ImageFont.truetype(fontfile, 100) #Arial.ttf", 48)
+                  font1= ImageFont.truetype(fontfile, 50) #Arial.ttf", 48)
+
+                  img = Image.open(img_template)
+                  draw = ImageDraw.Draw(img)
+                  draw.text((xcoord_name, 929),name,(0,119,67),font=font)
+                  draw.text((xcoordrole, 1165),roletoprint,(0,119,67),font=font)
+                  draw.text((xcoordtopic, 1400),topictitle,(0,119,67),font=font)
+                  draw.text((1605, 2134),"Rome, Italy, "+timezone.now().strftime('%Y')+" ",(0,0,0),font=font1)
+    #                  
+                  img.save(os.path.join(certificatedir_new,str(u.user)+'.png'))
+                  strfpath=os.path.join(certificatedir_new,str(u.user)+'.png')
+                  zip_all.write(strfpath, str(u.user)+'.png')
+
+    
+          
+            document = Document()
+             
+            docx_title="Address_labels.docx"
+            strfpath1=os.path.join(certificatedir_new,docx_title+'.jpg')
+            sections = document.sections
+            for section in sections:
+                section.top_margin = Cm(0.01)
+                section.bottom_margin = Cm(0.01)
+                section.left_margin = Cm(0.01)
+                section.right_margin = Cm(0.01)
+
+            style = document.styles['Normal']
+            font = style.font
+            font.name = 'Arial'
+            font.size = Pt(12)
+
+            obj_styles = document.styles
+            obj_charstyle = obj_styles.add_style('CommentsStyle', WD_STYLE_TYPE.CHARACTER)
+            obj_font = obj_charstyle.font
+            obj_font.size = Pt(10)
+            obj_font.name = 'Times New Roman'
+#           #TITLE and sub-titles
+#            p= document.add_paragraph("")
+#            
+#            p.style = document.styles['Normal']
+#          
+            singleletter=[]
+            doubleletter=[]
+            for user in usersfrom_g:
+               if user in singleletter:
+                   doubleletter.append(user)
+               else:
+                   singleletter.append(user)
+            
+            users_split = split(singleletter,12)
+            userdone=[]
+            
+            for users in users_split:
+                print("-------")
+                print(users)
+                #p= document.add_paragraph("")
+                table = document.add_table(rows=1, cols=2)
+                table.style = document.styles['Table Grid']
+              
+                font.size = Pt(9)
+
+                h=0
+                row_cells=None
+                for u in users:
+                   
+                        
+                        user_obj=User.objects.get(id=u)
+                        userippc = get_object_or_404(IppcUserProfile, user_id=user_obj.id)
+                      
+                        
+                        name_title_address=get_gender(userippc.gender)+' '+userippc.first_name+' '+(userippc.last_name).upper()
+                        print(name_title_address)
+                        address2f=''
+                        splitaddress=userippc.address2.splitlines()
+                        for s in splitaddress:
+                            if s!='':
+                                address2f+='\r'+s  
+                        if userippc.address1!='':
+                            name_title_address=name_title_address+'\r'+userippc.address1
+                        if address2f!='':
+                           name_title_address=name_title_address+address2f
+                        if u in doubleletter:
+                           name_title_address=name_title_address+'\r\r\t\t\t\t\t\t\t*'
+                       
+                            
+                        if  h==0 or h==1:
+                            hdr_cells = table.rows[0].cells
+                            hdr_cells[h].text =name_title_address
+                            hdr_cells[h].text =name_title_address
+
+                        if  h>1 and (h % 2) == 0:
+                           row_cells = table.add_row().cells
+
+                        if h>1 :
+                            if (h % 2) == 0:
+                                run = row_cells[0].paragraphs[0].add_run(name_title_address) 
+                                row_cells[0].style = "borderColor:red;background-color:gray"
+
+                            else :
+                                run = row_cells[1].paragraphs[0].add_run(name_title_address) 
+
+                        h+=1    
+                        userdone.append(u)
+                
+                range1=range(0,2)
+                for row in table.rows:
+                    tr = row._tr
+                    trPr = tr.get_or_add_trPr()
+                    trHeight = OxmlElement('w:trHeight')
+                    trHeight.set(qn('w:val'), "2500")
+                    trHeight.set(qn('w:hRule'), "atLeast")
+                    trPr.append(trHeight)
+                    for i in range1 :
+                        tc = row.cells[i]._tc
+                        tcPr = tc.get_or_add_tcPr()
+                        tcVAlign = OxmlElement('w:vAlign')
+                        tcVAlign.set(qn('w:val'), "center")
+                        tcPr.append(tcVAlign)
+           
+            set_column_width(table.columns[0], Cm(10.6))
+            set_column_width(table.columns[1], Cm(10.6))
+             
+            document.add_page_break()
+            response = HttpResponse(content_type='application/vnd.openxmlformats-officedocument.wordprocessingml.document')
+            response['Content-Disposition'] = 'attachment; filename=' + docx_title
+            document.save(strfpath1)
+            zip_all.write(strfpath1, docx_title)
+    
+            zip_all.close()
+            zip_all=zip_all1
+            shutil.rmtree(certificatedir_new)
+            
+            info(request, _("Certificates generated."))
+            return redirect("certificatestool-detail",new_certificatestool.id)
+        else:
+             return render_to_response('certificates/certificatestool_create.html', {'form': form,'fontfile':img_template,'emailgroups':g_set,'img':"TemplateCertificate2017_XiaBrent_example.jpg",'zip_all':zip_all,},
+             context_instance=RequestContext(request))
+    else:
+        form = CertificatesToolForm(instance=CertificatesTool())
+        
+      
+    return render_to_response('certificates/certificatestool_create.html', {'form': form,'fontfile':img_template,'emailgroups':g_set,'zip_all':zip_all,'img':"TemplateCertificate2017_XiaBrent_example.jpg" ,},
+        context_instance=RequestContext(request))
+
+class B_CertificatesToolListView(ListView):
+    """   B_CertificatesTool List view """
+    context_object_name = 'latest'
+    model = B_CertificatesTool
+    date_field = 'date'
+    template_name = 'certificates/b_certificatestool_list.html'
+    queryset = B_CertificatesTool.objects.all().order_by('-date')
+   
+       
+class B_CertificatesToolDetailView(DetailView):
+    """ B_CertificatesTool detail page """
+    model = B_CertificatesTool
+    context_object_name = 'certificatestool'
+    template_name = 'certificates/b_certificatestool_detail.html'
+    queryset = B_CertificatesTool.objects.filter()
+
+
+
+
+@login_required
+@permission_required('ippc.change_publication', login_url="/accounts/login/")
+def generate_b_certificates(request):
+    """ Create generate_certificates """
+    form =B_CertificatesToolForm(request.POST)
+    img_template_example="TemplateCertificate2017_Xia_example.jpg"
+    certificatedir_template = MEDIA_ROOT+'/certificate_template'
+    img_template=MEDIA_ROOT+'certificate_template/TemplateCertificate2017_Xia.png'
+    fontfile =MEDIA_ROOT+"certificate_template/times.ttf"
+  
+    g_set=[]
+    for g in Group.objects.filter():
+        users = g.user_set.all()
+        users_all=[]
+        users_all.append(str(g))
+        users_all.append(str(g.id))
+        for u in users:
+           users_u=[]
+           user_obj=User.objects.get(username=u)
+           if user_obj.is_active:
+            userippc = get_object_or_404(IppcUserProfile, user_id=user_obj.id)
+            users_u.append((unicode(userippc.first_name)))
+            users_u.append((unicode(userippc.last_name)))
+            users_u.append((user_obj.id))
+            users_all.append(users_u)
+        g_set.append(users_all)
+        
+
+    zip_all=''
+    zip_all_s=''
+    users_participants=[]       
+    users_address=[]
+    if request.method == "POST":
+        if form.is_valid():
+            committee = str(request.POST['text3'])
+            role = str(request.POST['role'])
+            username = str(request.POST['user_name'])
+            
+            usersfrom_g=[]
+            for g in Group.objects.filter():
+                for u_id in request.POST.getlist('user_'+str(g.id)+'_0'):
+                    usersfrom_g.append(str(u_id))
+                    
+            new_certificatestool = form.save(commit=False)
+            new_certificatestool.creation_date = timezone.now()
+            new_certificatestool.author =  request.user
+            
+            date = timezone.now().strftime('%Y%m%d%H%M%S')
+            certificatedir_new = MEDIA_ROOT+'files/b_certificates/'+date
+            zip_all1 ="/static/media/files/b_certificates/certificates_"+ date+".zip"
+            zip_all = zipfile.ZipFile(MEDIA_ROOT+"/files/b_certificates/certificates_"+ date+".zip", "w")
+            
+       
+            new_certificatestool.filezip =zip_all1
+            
+            form.save()
+            
+            try: 
+                os.makedirs(certificatedir_new)
+            except OSError:
+                if not os.path.isdir(certificatedir_new):
+                    raise
+                
+            if username!='' :
+                name= username
+                roletoprint=role
+                
+                
+                lenghtofname=len(name)
+                xcoord_name=1760-(lenghtofname/2)*50
+
+                lenghtofrole=len(roletoprint)
+                xcoordrole=1760-(lenghtofrole/2)*50
+
+                lenghtofcommittee=len(committee)
+                xcoordcommittee=1760-(lenghtofcommittee/2)*50
+
+
+                font = ImageFont.truetype(fontfile, 100) #Arial.ttf", 48)
+                font1= ImageFont.truetype(fontfile, 50) #Arial.ttf", 48)
+
+                img = Image.open(img_template)
+                draw = ImageDraw.Draw(img)
+                # font = ImageFont.truetype(<font-file>, <font-size>)
+                # draw.text((x, y),"Sample Text",(r,g,b))
+                draw.text((xcoord_name, 929),name,(0,119,67),font=font)
+                draw.text((xcoordrole, 1165),roletoprint,(0,119,67),font=font)
+                draw.text((xcoordcommittee, 1400),committee,(0,119,67),font=font)
+                draw.text((1605, 2134),"Rome, Italy, "+timezone.now().strftime('%Y')+" ",(0,0,0),font=font1)
+
+
+                img.save(os.path.join(certificatedir_new,str(slugify(name))+'.png'))
+                strfpath=os.path.join(certificatedir_new,str(slugify(name))+'.png')
+                zip_all.write(strfpath, str(slugify(name))+'.png')
+                
+            else:
+                for u in usersfrom_g:
+                    user_obj=User.objects.get(id=u)
+                    userippc = get_object_or_404(IppcUserProfile, user_id=user_obj.id)
+                    name=get_gender(userippc.gender)+' '+userippc.first_name+' '+(userippc.last_name).upper()
+                    roletoprint=role
+
+                    lenghtofname=len(name)
+                    xcoord_name=1760-(lenghtofname/2)*50
+
+                    lenghtofrole=len(roletoprint)
+                    xcoordrole=1760-(lenghtofrole/2)*50
+
+                    lenghtofcommittee=len(committee)
+                    xcoordcommittee=1760-(lenghtofcommittee/2)*50
+
+
+                    font = ImageFont.truetype(fontfile, 100) #Arial.ttf", 48)
+                    font1= ImageFont.truetype(fontfile, 50) #Arial.ttf", 48)
+
+                    img = Image.open(img_template)
+                    draw = ImageDraw.Draw(img)
+                    # font = ImageFont.truetype(<font-file>, <font-size>)
+                    # draw.text((x, y),"Sample Text",(r,g,b))
+                    draw.text((xcoord_name, 929),name,(0,119,67),font=font)
+                    draw.text((xcoordrole, 1165),roletoprint,(0,119,67),font=font)
+                    draw.text((xcoordcommittee, 1400),committee,(0,119,67),font=font)
+                    draw.text((1605, 2134),"Rome, Italy, "+timezone.now().strftime('%Y')+" ",(0,0,0),font=font1)
+
+                  #  draw.text((3210, 4250),"Rome, Italy, "+timezone.now().strftime('%Y')+" ",(0,0,0),font=font1)
+                    img.save(os.path.join(certificatedir_new,str(user_obj.username)+'.png'))
+                    strfpath=os.path.join(certificatedir_new,str(user_obj.username)+'.png')
+                    zip_all.write(strfpath, str(user_obj.username)+'.png')
+
+            zip_all.close()
+            zip_all=zip_all1
+            shutil.rmtree(certificatedir_new)
+             
+            info(request, _("Certificates generated."))
+            return redirect("b-certificatestool-detail",new_certificatestool.id)
+        else:
+             return render_to_response('certificates/b_certificatestool_create.html', {'form': form,'emailgroups':g_set,'img':img_template_example,'zip_all':zip_all,},
+             context_instance=RequestContext(request))
+    else:
+        form = B_CertificatesToolForm(instance=CertificatesTool())
+        
+      
+    return render_to_response('certificates/b_certificatestool_create.html', {'form': form,'emailgroups':g_set,'zip_all':zip_all,'img':img_template_example ,},
+        context_instance=RequestContext(request))
+
+class WorkshopCertificatesToolListView(ListView):
+    """    WorkshopCertificatesTool List view """
+    context_object_name = 'latest'
+    model = WorkshopCertificatesTool
+    date_field = 'creation_date'
+    template_name = 'certificates/w_certificatestool_list.html'
+    queryset = WorkshopCertificatesTool.objects.all().order_by('-creation_date')
+   
+       
+class WorkshopCertificatesToolDetailView(DetailView):
+    """ WorkshopCertificatesTool detail page """
+    model = WorkshopCertificatesTool
+    context_object_name = 'workshopcertificatestool'
+    template_name = 'certificates/w_certificatestool_detail.html'
+    queryset = WorkshopCertificatesTool.objects.filter()
+
+import shutil
+
+
+@login_required
+@permission_required('ippc.certificatestool', login_url="/accounts/login/")
+def generate_workshopcertificates(request):
+    """ Create generate_certificates """
+    form = WorkshopCertificatesToolForm(request.POST)
+    certificatedir_template = MEDIA_ROOT+'\\certificate_template' 
+    fontfile =MEDIA_ROOT+"\\static\\media\\certificate_template\\times.ttf"
+  
+    imgA=os.path.join(certificatedir_template,"template_a.jpg")
+    imgB=os.path.join(certificatedir_template,"template_b.jpg")
+   
+    events_set= Event.objects.filter()
+     
+
+    zip_all=''
+    zip_all_s=''
+    users_selected=[]       
+    if request.method == "POST":
+        if form.is_valid():
+            workshoptitle = str(request.POST['title'])
+            eventid = Event.objects.filter(id=request.POST['id_event'])
+            eventParticipants=EventParticipants.objects.filter(event_id=eventid)
+    
+            imgid =request.POST['id_template']
+            #img_template="TemplateCertificate2017_Xia.jpg"#template_"+str(imgid)+".jpg"
+            img_template="template_"+str(imgid)+".jpg"
+            
+            new_wcertificatestool = form.save(commit=False)
+            new_wcertificatestool.creation_date = timezone.now()
+            new_wcertificatestool.author =  request.user
+            
+          
+            date = timezone.now().strftime('%Y%m%d%H%M%S')
+            certificatedir_new = MEDIA_ROOT+'\\files\\w_certificates\\'+date
+            zip_all1 ="/static/media/files/w_certificates/w_certificates_"+ date+".zip"
+            zip_all = zipfile.ZipFile(MEDIA_ROOT+"/files/w_certificates/"+"/w_certificates_"+ date+".zip", "w")
+            new_wcertificatestool.filezip =zip_all1
+            
+            form.save()
+
+            try: 
+                os.makedirs(certificatedir_new)
+            except OSError:
+                if not os.path.isdir(certificatedir_new):
+                    raise
+
+
+            for u in eventParticipants:
+                user_obj=User.objects.get(username=u.user)
+                userippc = get_object_or_404(IppcUserProfile, user_id=user_obj.id)
+                name=get_gender(userippc.gender)+' '+userippc.first_name+' '+(userippc.last_name).upper()
+
+                role=u.role
+                roletoprint=''
+                for r in u.role.all():
+                    role_=str(r)
+                    print(role_)
+                    roletoprint=roletoprint+role_
+
+
+             
+                lenghtofname=len(name)
+                xcoord_name=3507-(lenghtofname/2)*100
+                  
+                lenghtofrole=len(roletoprint)
+                xcoordrole=3507-(lenghtofrole/2)*100
+                  
+                lenghtofworkshoptitle=len(workshoptitle)
+                xcoordworkshoptitle=3507-(lenghtofworkshoptitle/2)*100
+                fontfile =MEDIA_ROOT+"\\static\\media\\certificate_template\\times.ttf"
+  
+                font = ImageFont.truetype(fontfile, 200) #Arial.ttf", 48)
+                font1= ImageFont.truetype(fontfile, 100) #Arial.ttf", 48)
+                  
+                img = Image.open(os.path.join(certificatedir_template,img_template))
+                draw = ImageDraw.Draw(img)
+                # font = ImageFont.truetype(<font-file>, <font-size>)
+                # draw.text((x, y),"Sample Text",(r,g,b))
+                draw.text((xcoord_name, 1863),name,(0,119,67),font=font)
+                draw.text((xcoordrole, 2280),roletoprint,(0,119,67),font=font)
+                draw.text((xcoordworkshoptitle, 2745),workshoptitle,(0,119,67),font=font)
+                draw.text((3150, 4250),"Rome, Italy, "+timezone.now().strftime('%Y')+" ",(0,0,0),font=font1)
+                img.save(os.path.join(certificatedir_new,str(u.user)+'.jpg'))
+                strfpath=os.path.join(certificatedir_new,str(u.user)+'.jpg')
+                zip_all.write(strfpath, str(u.user)+'.jpg')
+
+            
+
+            zip_all.close()
+            zip_all=zip_all1
+            
+            shutil.rmtree(certificatedir_new)
+           
+            info(request, _("Workshop Certificates generated."))
+            return redirect("w-certificatestool-detail",new_wcertificatestool.id)
+        else:
+             return render_to_response('certificates/w_certificatestool_create.html', {'form': form,'events_set':events_set,'imga':imgA,'imgb':imgB,'zip_all':zip_all,'fontfile':fontfile},
+             context_instance=RequestContext(request))
+    else:
+        form = WorkshopCertificatesToolForm(instance=WorkshopCertificatesTool())
+        
+      
+    return render_to_response('certificates/w_certificatestool_create.html', {'form': form,'zip_all':zip_all,'events_set':events_set,'imga':imgA,'imgb':imgB,},
+        context_instance=RequestContext(request))
+
+class MembershipListView(ListView):
+    """    Membership List view """
+    context_object_name = 'latest'
+    model = Group
+    date_field = 'date'
+    template_name = 'certificates/membershiptool_list.html'
+    queryset = Group.objects.all()
+
+from django.db.models import Q
+
+class TopicListView(ListView):
+    """
+   Topic
+       
+    """
+    context_object_name = 'latest'
+    model = Topic
+    date_field = 'publish_date'
+    template_name = 'topic/topic_list.html'
+    queryset = Topic.objects.all().order_by('-modify_date', 'title')
+    allow_future = False
+    allow_empty = True
+   # paginate_by = 500
+
+    def get_queryset(self):
+        """ only return a from the  """
+        return Topic.objects.filter()
+    
+    def get_context_data(self, **kwargs): # http://stackoverflow.com/a/15515220
+        context = super(TopicListView, self).get_context_data(**kwargs)
+        
+       
+        topic_table1=[]
+        topic_table2=[]
+        topic_table3=[]
+        topic_table4=[]
+        topic_table5=[]
+        #queryset0=Topic.objects.filter(Q( topic_type = 1)|Q(topic_type = 2)).order_by('id')
+        queryset0=Topic.objects.filter( topic_type = 0,is_version=False).order_by('id')
+            
+        queryset1=Topic.objects.filter(topic_type = 1,is_version=False).order_by('priority', 'topicstatus')
+        queryset2=Topic.objects.filter(topic_type = 2,is_version=False).order_by('priority', 'topicstatus')
+                   
+        for t in queryset0:
+            topic_table1.append(t)
+              
+        for t in queryset1:
+            drafting_body=t.drafting_body
+            for d in drafting_body.all():
+                if d.draftingbody =='EWG' or  d.draftingbody == 'TPFF' or d.draftingbody == 'TPFQ'or d.draftingbody == 'TPPT' or  d.draftingbody == 'N/A':
+                    if t not in topic_table2:
+                        topic_table2.append(t)
+                
+        for t in queryset2:
+            drafting_body=t.drafting_body
+            for d in drafting_body.all():
+                if d.draftingbody == 'TPDP'    :
+                   topic_table3.append(t)
+        
+                elif d.draftingbody == 'TPPT':
+                    topic_table4.append(t)
+        
+                elif d.draftingbody == 'TPG':
+                    topic_table5.append(t)
+   
+        context['topic_table1']=    topic_table1
+        context['topic_table2']=    topic_table2
+        context['topic_table3']=    topic_table3
+        context['topic_table4']=    topic_table4
+        context['topic_table5']=    topic_table5
+        
+        return context
+
+class TopicDetailView(DetailView):
+    """ Topic detail page """
+    model = Topic
+    context_object_name = 'topic'
+    template_name = 'topic/topic_detail.html'
+    queryset = Topic.objects.filter()
+    
+    def get_context_data(self, **kwargs): # http://stackoverflow.com/a/15515220
+        context = super(TopicDetailView, self).get_context_data(**kwargs)
+      
+        p = get_object_or_404(Topic, slug=self.kwargs['slug'])
+        
+        versions= Topic.objects.filter(status=CONTENT_STATUS_PUBLISHED, is_version=True, parent_id=p.id).order_by('-modify_date')
+        context['versions'] = versions
+        return context
+  
+    
+   
+     
+@login_required
+@permission_required('ippc.add_publication', login_url="/accounts/login/")
+def topic_create(request):
+    """ Create topic """
+    user = request.user
+    author = user
+    form = TopicForm(request.POST)
+    tl_form = TopicLeadsFormSet(request.POST or None)
+    ta_form = TopicAssistantsFormSet(request.POST or None)
+        
+    if request.method == "POST":
+        if form.is_valid() and tl_form.is_valid() and ta_form.is_valid():
+            new_topic = form.save(commit=False)
+            new_topic.author = request.user
+            new_topic.author_id = author.id
+            form.save()
+            tl_form.instance = new_topic
+            tl_form.save()
+            ta_form.instance = new_topic
+            ta_form.save()
+            info(request, _("Successfully created Topic."))
+            return redirect("topic-detail",  slug=new_topic.slug)
+        else:
+             return render_to_response('topic/topic_create.html', {'form': form,'tl_form':tl_form,'ta_form':ta_form},
+             context_instance=RequestContext(request))
+    else:
+        form = TopicForm(instance=Topic())
+        tl_form = TopicLeadsFormSet()
+        ta_form = TopicAssistantsFormSet()
+  
+      
+    return render_to_response('topic/topic_create.html', {'form': form,'tl_form':tl_form,'ta_form':ta_form},
+        context_instance=RequestContext(request))
+		
+
+
+@login_required
+@permission_required('ippc.change_publication', login_url="/accounts/login/")
+def topic_edit(request,  id=None, template_name='topic/topic_edit.html'):
+    """ Edit topic """
+    user = request.user
+    author = user
+    if id:
+        topic = get_object_or_404(Topic,  pk=id)
+        old_topic = get_object_or_404(Topic,  pk=id)
+    else:
+        topic = Topic(author=request.user)
+
+    if request.POST:
+        form = TopicForm(request.POST,    instance=topic)
+        tl_form = TopicLeadsFormSet(request.POST, instance=topic)
+        ta_form = TopicAssistantsFormSet(request.POST,  instance=topic)
+       
+        draftingbody=topic.drafting_body
+        arraydraftingbody=[]
+        for d in draftingbody.all():
+               arraydraftingbody.append(d.id)
+        str_obj=topic.strategicobj
+        arraystr_obj=[]
+        for s in str_obj.all():
+               arraystr_obj.append(s.id)
+        topiclead=TopicLeads.objects.filter(topic_id=old_topic.id)
+        arrayleads=[]
+        for d in topiclead.all():
+            arrayl=[]
+            print(d)
+            print(d.user_id)
+            arrayl.append(d.user_id)
+            arrayl.append(d.representing_country_id)
+            arrayl.append(d.meetingassistantassigned)
+            arrayleads.append(arrayl)
+        topicassistants=TopicAssistants.objects.filter(topic_id=old_topic.id)
+        arrayassistants=[]
+        for d in topicassistants.all():
+            arrayl=[]
+            print(d)
+            print(d.user_id)
+            arrayl.append(d.user_id)
+            arrayl.append(d.representing_country_id)
+            arrayl.append(d.meetingassistantassigned)
+            arrayassistants.append(arrayl)
+           
+        if form.is_valid() and tl_form.is_valid() and ta_form.is_valid():
+            form.save()
+           
+            tl_form.instance = topic
+            tl_form.save()
+            ta_form.instance = topic
+            ta_form.save()
+
+            old_topic.pk = None
+            old_topic.is_version = True
+            old_topic.topicnumber_version = topic.topicnumber
+            old_topic.parent_id = id
+            versions= Topic.objects.filter( is_version=True, parent_id=id).count()
+            slug1 = versions+1
+            old_topic.topicnumber = topic.topicnumber+str('-'+str(slug1))
+            old_topic.slug= old_topic.slug+'-'+str(slug1)
+            old_topic.save()
+            db = MySQLdb.connect(DATABASES["default"]["HOST"],DATABASES["default"]["USER"],DATABASES["default"]["PASSWORD"],DATABASES["default"]["NAME"])
+            cursor = db.cursor()
+            
+            str_obj=old_topic.strategicobj
+            print(str_obj)
+            for d in arraydraftingbody:
+                sql = "INSERT INTO ippc_topic_drafting_body(topic_id,draftingbodytype_id) VALUES ("+str(old_topic.id)+", '"+str(d)+"')"
+                print(sql)
+                try:
+                    cursor.execute(sql)
+                    db.commit()
+                except:
+                    db.rollback()
+            for s in arraystr_obj:
+                sql = "INSERT INTO ippc_topic_strategicobj(topic_id,stratigicobjective_id) VALUES ("+str(old_topic.id)+", '"+str(s)+"')"
+                print(sql)
+                try:
+                    cursor.execute(sql)
+                    db.commit()
+                except:
+                    db.rollback()        
+            for d in arrayleads:
+                print(d)
+                sql = "INSERT INTO ippc_topicleads(topic_id,user_id,representing_country_id,meetingassistantassigned) VALUES ("+str(old_topic.id)+", '"+str(d[0])+"', '"+str(d[1])+"', '"+str(d[2])+"')"
+                print(sql)
+                try:
+                    cursor.execute(sql)
+                    db.commit()
+                except:
+                    db.rollback()     
+            for d in arrayassistants:
+                print(d)
+                sql = "INSERT INTO ippc_topicassistants(topic_id,user_id,representing_country_id,meetingassistantassigned) VALUES ("+str(old_topic.id)+", '"+str(d[0])+"', '"+str(d[1])+"', '"+str(d[2])+"')"
+                print(sql)
+                try:
+                    cursor.execute(sql)
+                    db.commit()
+                except:
+                    db.rollback()     
+
+            db.close()
+        
+            # If the save was successful, success message and redirect to another page
+            info(request, _("Successfully updated Topic."))
+            return redirect("topic-detail", slug=topic.slug)
+                             
+    else:
+        form = TopicForm(instance=topic)
+        tl_form = TopicLeadsFormSet(instance=topic)
+        ta_form = TopicAssistantsFormSet(instance=topic)
+  
+       
+    return render_to_response(template_name, {
+        'form': form,'tl_form':tl_form,'ta_form':ta_form, "topic": topic,
+    }, context_instance=RequestContext(request))
+		
+      
+
+# http://stackoverflow.com/a/1854453/412329
+@login_required
+@permission_required('ippc.change_publication', login_url="/accounts/login/")
+def topic_translate(request,lang, id=None, template_name='topic/topic_translate.html'):
+    """ translate topic """
+    user = request.user
+    author = user
+    if id:
+        topic = get_object_or_404(Topic, id=id)
+        try:
+            t_topic = get_object_or_404(TransTopic, translation_id=id,lang=lang)
+        except:
+            t_topic = TransTopic(lang=lang,translation_id=id)        
+    
+
+    if request.POST:
+        transform = TransTopicForm(request.POST, instance=t_topic)
+        if transform.is_valid():
+            transform.save()
+            info(request, _("Successfully translated Topic."))
+            return redirect("topic-detail", slug=topic.slug)
+    else:
+        transform = TransTopicForm(instance=t_topic)
+        
+    return render_to_response(template_name, {
+        'transform':transform,'lang':lang,"topic":topic,"t_topic": t_topic,
+    }, context_instance=RequestContext(request))
+#
+#
+#
+     
+from docx import Document
+from docx.shared import Inches,Pt,Cm
+from docx.enum.style import WD_STYLE_TYPE
+from docx.enum.text import WD_ALIGN_PARAGRAPH
+from django.utils.translation import ugettext, ugettext_lazy as _
+from docx.oxml.ns import nsdecls, qn
+from docx.oxml import parse_xml, OxmlElement
+  
+from docx.enum.section import WD_ORIENT
+
+def get_gender(val):
+    if val!= None:
+        if val == 1:
+            return "Mr."
+        elif val==2: 
+            return "Ms."
+        elif val==3:    
+            return "Mrs."
+        elif val==4:    
+            return "Professor."
+        elif val==5:    
+            return "M."
+        elif val==6:    
+            return "Mme."
+        elif val==7:    
+            return "Dr."
+        elif val==8:    
+            return "Sr."
+        elif val==9:    
+            return "Sra."
+    else:    
+        return ""     
+    
+
+def set_column_width(column, width):
+    column.width = width
+    for cell in column.cells:
+        cell.width = width
+
+from docx.shared import RGBColor
+from docx.enum.section import WD_ORIENT
+
+@login_required
+@permission_required('ippc.change_publication', login_url="/accounts/login/")
+def generate_topiclist(request,lang):
+    """ generate Topic List  """
+    updateddate=timezone.now().strftime('%d-%m-%Y')
+    
+    #document = Document()
+   #windows template_path = MEDIA_ROOT+'\\certificate_template\\init_landscape.docx'
+    template_path = MEDIA_ROOT+'/certificate_template/init_landscape.docx'
+   
+    document = Document(template_path)
+      
+    docx_title="ListOfTopics_"+lang+"_"+updateddate+".docx"
+    #docHeader_image_path = MEDIA_ROOT+'\\certificate_template\\banner_landscape.jpg'
+    #UNIXdocHeader_image_path = MEDIA_ROOT+'/certificate_template/header.jpg'
+   
+    sections = document.sections
+    for section in sections:
+        section.top_margin = Cm(0)
+        section.bottom_margin = Cm(1)
+        section.left_margin = Cm(1.25)
+        section.right_margin = Cm(1.25)
+    
+    style = document.styles['Normal']
+    font = style.font
+    font.name = 'Arial'
+    font.size = Pt(11)
+    
+    obj_styles = document.styles
+    obj_charstyle = obj_styles.add_style('CommentsStyle', WD_STYLE_TYPE.CHARACTER)
+    obj_font = obj_charstyle.font
+    obj_font.size = Pt(11)
+    obj_font.name = 'Arial'
+    
+      
+    #TITLE and sub-titles
+    p= document.add_paragraph("")
+    p.add_run(_("List of Topics for IPPC Standards"), style = 'CommentsStyle').bold = True
+    p.alignment = WD_ALIGN_PARAGRAPH.CENTER
+    p= document.add_paragraph("")
+    p= document.add_paragraph("")
+    p.add_run(_("(Updated "+updateddate+")"), style = 'CommentsStyle').italic = True
+    p.alignment = WD_ALIGN_PARAGRAPH.CENTER
+    p= document.add_paragraph("")
+    p= document.add_paragraph("")
+    p= document.add_paragraph("")
+    p= document.add_paragraph("")
+    p= document.add_paragraph("")
+    p= document.add_paragraph("")
+    p.add_run(_("This List of topics for IPPC standards was last updated on 1 June 2017 and reflects the modifications adopted by the CPM or approved by the SC."), style = 'CommentsStyle').italic = True
+    p.alignment = WD_ALIGN_PARAGRAPH.LEFT
+    p= document.add_paragraph("")
+    p= document.add_paragraph("")
+    
+    p.add_run(_("Table 1: "), style = 'CommentsStyle').bold = True
+    p.alignment = WD_ALIGN_PARAGRAPH.LEFT
+    p.add_run(_("Technical panels and topics for the Technical Panel on Diagnostic Protocols (TPDP), the Technical Panel for the Glossary (TPG) and the Technical Panel on Phytosanitary Treatments (TPPT)"), style = 'CommentsStyle')
+    p.alignment = WD_ALIGN_PARAGRAPH.LEFT
+    p= document.add_paragraph("")
+  
+    p.add_run(_("Table 2: "), style = 'CommentsStyle').bold = True
+    p.alignment = WD_ALIGN_PARAGRAPH.LEFT
+    p.add_run(_("Topics for the Expert Working Groups (EWGs), Technical Panel on Fruit Flies (TPFF), Technical Panel on Forest Quarantine (TPFQ), and Technical Panel on Phytosanitary Treatments (TPPT)"), style = 'CommentsStyle')
+    p.alignment = WD_ALIGN_PARAGRAPH.LEFT
+    p= document.add_paragraph("")
+  
+    p.add_run(_("Table 3: "), style = 'CommentsStyle').bold = True
+    p.alignment = WD_ALIGN_PARAGRAPH.LEFT
+    p.add_run(_("Subjects for the Technical Panel on Diagnostic Protocols (TPDP)"), style = 'CommentsStyle')
+    p.alignment = WD_ALIGN_PARAGRAPH.LEFT
+    p= document.add_paragraph("")
+  
+    p.add_run(_("Table 4: "), style = 'CommentsStyle').bold = True
+    p.alignment = WD_ALIGN_PARAGRAPH.LEFT
+    p.add_run(_("Subjects for the Technical Panel on Phytosanitary Treatments (TPPT)"), style = 'CommentsStyle')
+    p.alignment = WD_ALIGN_PARAGRAPH.LEFT
+    p= document.add_paragraph("")
+  
+    p.add_run(_("Table 5: "), style = 'CommentsStyle').bold = True
+    p.alignment = WD_ALIGN_PARAGRAPH.LEFT
+    p.add_run(_("Subjects for the Technical Panel for the Glossary (TPG)"), style = 'CommentsStyle')
+    p.alignment = WD_ALIGN_PARAGRAPH.LEFT
+    p= document.add_paragraph("")
+    p= document.add_paragraph("")
+    p= document.add_paragraph("")
+    p= document.add_paragraph("")
+    
+   
+    p.add_run(_("IPPC Strategic Objectives"), style = 'CommentsStyle').bold = True
+    p.alignment = WD_ALIGN_PARAGRAPH.LEFT
+    p= document.add_paragraph()
+    p.add_run(_("A: Food Security\nB: Environmental Protection\nC: Trade Facilitation\nD: Capacity Development"), style = 'CommentsStyle')
+    p.alignment = WD_ALIGN_PARAGRAPH.LEFT
+    p= document.add_paragraph("")
+    p= document.add_paragraph("")
+    p= document.add_paragraph("")
+    p= document.add_paragraph("")
+    
+    p.add_run(_("Priority"), style = 'CommentsStyle').bold = True
+    p.alignment = WD_ALIGN_PARAGRAPH.LEFT
+    p= document.add_paragraph()
+    p.add_run(_("Priority 1 to 4 (with 1 being of high priority and 4 being of low priority)"), style = 'CommentsStyle')
+    p.alignment = WD_ALIGN_PARAGRAPH.LEFT
+    p= document.add_paragraph("")
+    p= document.add_paragraph("")
+    p= document.add_paragraph("")
+    p= document.add_paragraph("")
+    p= document.add_paragraph("")
+    p= document.add_paragraph("")
+    p= document.add_paragraph("")
+    p= document.add_paragraph("")
+    p= document.add_paragraph("")
+    p= document.add_paragraph("")
+    p= document.add_paragraph("")
+    p= document.add_paragraph("")
+    p= document.add_paragraph("")
+    p= document.add_paragraph("")
+    
+ 
+    p.add_run(_("Notes: "), style = 'CommentsStyle').bold = True
+    p.alignment = WD_ALIGN_PARAGRAPH.LEFT
+    p.add_run(_("Country names and dates are in ISO format (respectively: ISO 3166-1-alpha-2 code and YYYY-MM)."), style = 'CommentsStyle').italic = True
+    p.add_run(_("The List of topics is presented in order of priority, as requested by CPM-7 (2012)."), style = 'CommentsStyle').italic = True
+    p.alignment = WD_ALIGN_PARAGRAPH.LEFT
+    
+
+      
+    main_tables_array=[]
+    topic_table1=[]
+    topic_table2=[]
+    topic_table3=[]
+    topic_table4=[]
+    topic_table5=[]
+    queryset0=Topic.objects.filter(topic_type = 0,is_version=False).order_by('id')
+    queryset1=Topic.objects.filter(topic_type = 1,is_version=False).order_by('priority', 'topicstatus')
+    queryset2=Topic.objects.filter(topic_type = 2,is_version=False).order_by('priority', 'topicstatus')
+    for t in queryset0:
+        topic_table1.append(t)
+    for t in queryset1:
+        drafting_body=t.drafting_body
+        for d in drafting_body.all():
+            if d.draftingbody =='EWG' or  d.draftingbody == 'TPFF' or d.draftingbody == 'TPFQ'or d.draftingbody == 'TPPT':
+                topic_table2.append(t)
+    for t in queryset2:
+        drafting_body=t.drafting_body
+        for d in drafting_body.all():
+            if d.draftingbody == 'TPDP'    :
+               topic_table3.append(t)
+            elif d.draftingbody == 'TPPT':
+                topic_table4.append(t)
+            elif d.draftingbody == 'TPG':
+                topic_table5.append(t)
+    
+    table_array1=[]            
+    table_array1.append(8)#numcol
+    table_array1.append('0000FF')#bgcolorHeader
+    table_array1.append('8DB3E2')#bgcolorrows
+    table_array1.append(_("Table 1: Technical panels and topics for TPDP, TPG and TPPT"))
+    array_titles1= [_("Topic N."),
+                    _("Current Title"),
+                    _("Drafting Body"),
+                   _("Topic under technical area (if applicable)"),
+                   _("Added to the list"),
+                   _("Lead Steward / TP Lead (Country, Meeting assigned)"),
+                   _("Assistant Stewards (Country, Meeting assigned)"),
+                   _("Spec No")]
+    table_array1.append(array_titles1)    
+    cols_width1= [2,4.5,1.2,3,3,5,5,2]
+    table_array1.append(topic_table1)      
+    table_array1.append(cols_width1)      
+    
+    table_array2=[]            
+    table_array2.append(10)#numcol
+    table_array2.append('008000')#bgcolorHeader
+    table_array2.append('C2D69B')#bgcolorrows
+    table_array2.append(_("Table 2: Topics for EWGs, TPFF, TPFQ and TPPT (sorted by priority, drafting body, then status)"))
+    array_titles2= [_("Topic N."),
+                    _("Current Title"),
+                    _("Priority"),
+                   _("Strategic objective"),
+                    _("Drafting Body"),
+                    _("Added to the list"),
+                    _("Lead Steward / TP Lead (Country, Meeting assigned)"),
+                    _("Assistant Stewards (Country, Meeting assigned)"),
+                    _("Spec No"),
+                    _("Status")]
+    table_array2.append(array_titles2)      
+    cols_width2= [1.8,4.2,1,1,1.2,1.7,5,5,1,4]
+    table_array2.append(topic_table2)      
+    table_array2.append( cols_width2)
+    
+    table_array3=[]            
+    table_array3.append(9)#numcol
+    table_array3.append('7030A0')#bgcolorHeader
+    table_array3.append('CCC0D9')#bgcolorrows
+    table_array3.append(_("Table 3: Subjects for TPDP (sorted by priority, topic under, then status)"))
+    array_titles3= [ _("Topic N."),
+                    _("Current Title"),
+                    _("Priority"),
+                    _("Strategic objective"),
+                    _("Topic under technical area (if applicable)"),
+                    _("Added to the list"),
+                    _("Discipline Lead (Country)"),
+                    _("Referee"),
+                    _("Status")]
+    table_array3.append(array_titles3)      
+    table_array3.append(topic_table3)      
+    cols_width3= [1.8,4.7,1,1,1.5,1.5,4.5,5,4]
+    table_array3.append( cols_width3)
+   
+    table_array4=[]            
+    table_array4.append(9)#numcol
+    table_array4.append('E36C0A')#bgcolorHeader
+    table_array4.append('FBD4B4')#bgcolorrows
+    table_array4.append(_("Table 4:  Subjects for TPPT (sorted by priority, status, then topic number)"))
+    array_titles4= [ _("Topic N."),
+                    _("Current Title"),
+                    _("Priority"),
+                    _("Strategic objective"),
+                    _("Topic under technical area (if applicable)"),
+                    _("Added to the list"),
+                    _("Treatment Lead (Country,Meeting assigned)"),
+                    _("Assistant  Lead (Country,Meeting assigned)"),
+                    _("Status")]
+    table_array4.append(array_titles4)    
+    table_array4.append(topic_table4)     
+    cols_width4= [1.8,5.2,1,1,1.7,5,5,5]
+    table_array4.append( cols_width4)
+  
+    
+    table_array5=[]            
+    table_array5.append(6)#numcol
+    table_array5.append('C00000')#bgcolorHeader
+    table_array5.append('E5B8B7')#bgcolorrows
+    table_array5.append(_("Table 5: Subjects for TPG (sorted in English alphabetical order)"))
+    array_titles5= [ _("Topic N."),
+                    _("Current Title"),
+                    _("Drafting body"),
+                    _("Topic under technical area (if applicable)"),
+                    _("Added to the list"),
+                    _("Status")]
+    table_array5.append(array_titles5) 
+    table_array5.append(topic_table5)      
+    cols_width5= [1.8,6,1,8,1.7,6]
+    table_array5.append( cols_width5)
+  
+    mains_array=[]
+    mains_array.append(table_array1)  
+    mains_array.append(table_array2)  
+    mains_array.append(table_array3)  
+    mains_array.append(table_array4)  
+    mains_array.append(table_array5)
+    print('len='+str(len(mains_array)))
+    ii=1
+
+    for tableT in mains_array:
+        print('ii='+str(ii))
+        if ii==1:
+           sizesplit=14 
+        if ii==2:
+           sizesplit=10 
+        if ii==3:
+           sizesplit=11
+        if ii==4:
+           sizesplit=14 
+        if ii==5:
+           sizesplit=20 
+        
+         
+        num_col = tableT[0]
+        head_color = tableT[1]
+        row_color = tableT[2]
+        t_title = tableT[3]
+        print('title=:'+str(t_title))
+        array_titles =  tableT[4]      
+        tabletopisc = tableT[5]
+        cols_width= tableT[6]
+        
+        tabletopisc_split=[]
+        print('len='+str(len(tabletopisc)))
+        if len(tabletopisc)>=sizesplit:
+             tabletopisc_split = split(tabletopisc,sizesplit) 
+             print(sizesplit)
+        else:
+             tabletopisc_split = split(tabletopisc,len(tabletopisc)) 
+        
+           
+        for tabletopisc in tabletopisc_split:
+            document.add_page_break()    
+
+            p= document.add_paragraph("")
+            p= document.add_paragraph("")
+            table = document.add_table(rows=2, cols=num_col)
+            table.style = document.styles['Table Grid']
+            hdr_cells0 = table.rows[0].cells
+            hdr_cells  = table.rows[1].cells
+            font.size = Pt(8)
+
+            #run = hdr_cells0[0].paragraphs[0].add_run('')
+            
+            run = hdr_cells0[0].paragraphs[0].add_run(t_title)#.bold #= True
+            font = run.font
+            font.color.rgb = RGBColor(255, 255, 255)
+            run.bold=True
+            table.cell(0,0).merge(table.cell(0,num_col-1))
+
+            j=0
+            for tt in array_titles:
+                run = hdr_cells[j].paragraphs[0].add_run(tt)#.bold #= True
+                font = run.font
+                font.color.rgb = RGBColor(255,255,255)
+                run.bold=True
+                j=j+1
+            #num_line=1    
+            for t in tabletopisc:
+                row_cells = table.add_row().cells
+              #  run = row_cells[0].paragraphs[0].add_run(str(ii)+'.'+str(num_line))
+             #   font = run.font
+             #   run.bold=True
+             #   font.color.rgb = RGBColor(0, 0, 255)
+                    
+             #   num_line=num_line+1  
+                drafting_body=''
+                for d in t.drafting_body.all():
+                    dd=''
+                    if lang=='en':
+                        dd=d.draftingbody
+                    elif lang=='es':
+                        dd=d.draftingbody_es
+                        if dd =='':
+                            dd=d.draftingbody
+                    elif lang=='fr':
+                        dd=d.draftingbody_fr
+                        if dd =='':
+                            dd=d.draftingbody
+                    elif lang=='ar':
+                        dd=d.draftingbody_ar
+                        if dd =='':
+                            dd=d.draftingbody
+                    elif lang=='ru':
+                        dd=d.draftingbody_ru
+                        if dd =='':
+                            dd=d.draftingbody
+                    elif lang=='zh':
+                        dd=d.draftingbody_zh
+                        if dd =='':
+                            dd=d.draftingbody
+                    drafting_body=drafting_body+dd+'\n'
+                        
+                    
+                leads=''
+                topiclead=TopicLeads.objects.filter(topic_id=t.id)
+                for d in topiclead.all():
+                    userippc = get_object_or_404(IppcUserProfile, user_id=d.user_id)
+                    leads=leads+(unicode(userippc.first_name))+' '+(unicode(userippc.last_name))
+                    if d.representing_country!=None:
+                        leads=leads+' ('+d.representing_country.iso+', '
+                    if d.meetingassistantassigned!=None:
+                        leads=leads+d.meetingassistantassigned+')\n'
+                assistants=''
+                topicassistants=TopicAssistants.objects.filter(topic_id=t.id)
+                for d in topicassistants.all():
+                    userippc = get_object_or_404(IppcUserProfile, user_id=d.user_id)
+                    assistants=assistants+(unicode(userippc.first_name))+' '+(unicode(userippc.last_name))
+                    if d.representing_country!=None:
+                        assistants=assistants+' ('+d.representing_country.iso+', '
+                    if d.meetingassistantassigned!=None:
+                        assistants=assistants+d.meetingassistantassigned+')\n'
+                addedtolist=''
+                if t.addedtolist != 0:
+                     addedtolist=addedtolist+ugettext(dict(CPMS)[t.addedtolist]+' ('+str(t.addedtolist)+')')+'\n'
+                if t.addedtolist_sc != 0:
+                    addedtolist=addedtolist+ugettext(dict(SC_TYPE_CHOICES)[t.addedtolist_sc])
+                status=  ugettext(dict(TOPIC_STATUS_CHOICES)[t.topicstatus])
+                priority=  ugettext(dict(TOPIC_PRIORITY_CHOICES)[t.priority])
+                str_obj=''
+                for d in t.strategicobj.all():
+                    str_obj=str_obj+d.strategicobj+'\n'
+
+                n=0
+                t_topic=None
+                t_topics=TransTopic.objects.filter(translation_id=t.id)
+                if t_topics.count()>0:
+                    t_topic= get_object_or_404(TransTopic, translation_id=t.id,lang=lang)
+                    
+                for tt in array_titles:
+                    field=''
+                    if tt==_("Topic N."):
+                        field=t.topicnumber
+                    elif  tt==_("Current Title"):
+                        if t_topic!=None:
+                           field= t_topic.title
+                        else:
+                           field= t.title
+                    elif  tt==_("Drafting Body"):
+                      field=drafting_body
+                    elif  tt==_("Topic under technical area (if applicable)"):
+                       if t_topic!=None:
+                           field= t_topic.topic_under
+                       else:
+                           field= t.topic_under
+                    elif  tt==_("Added to the list"):
+                      field=addedtolist
+                    elif  tt==_("Lead Steward / TP Lead (Country, Meeting assigned)") or tt==_("Discipline Lead (Country)") or tt==_("Treatment Lead (Country,Meeting assigned)"):
+                      field=leads
+                    elif  tt==_("Assistant Stewards (Country, Meeting assigned)") or tt==_("Referee")  or tt==_("Assistant  Lead (Country,Meeting assigned)"):
+                      field=assistants
+                    elif  tt==_("Spec No"):
+                        field=t.specification_number
+                    elif  tt==_("Priority"):
+                        field=priority
+                    elif  tt==_("Status"):
+                        field=status
+                    elif  tt==_("Strategic objective"):
+                        field=str_obj
+
+                    run = row_cells[n].paragraphs[0].add_run(field)
+                    font = run.font
+                    font.color.rgb = RGBColor(0, 0, 0)
+                    n=n+1 
+
+            range1=range(0,num_col)
+            k=0
+            for row in table.rows:
+                if k ==0 or k==1:
+                    tr = row._tr
+                    trPr = tr.get_or_add_trPr()
+                    trHeight = OxmlElement('w:trHeight')
+                    trHeight.set(qn('w:val'), "500")
+                    trHeight.set(qn('w:hRule'), "atLeast")
+                    trPr.append(trHeight)
+                    for i in range1 :
+                        tc = row.cells[i]._tc
+                        tcPr = tc.get_or_add_tcPr()
+                        tcVAlign = OxmlElement('w:vAlign')
+                        tcVAlign.set(qn('w:val'), "center")
+                        tcColor = OxmlElement('w:shd')
+                        tcColor.set(qn('w:fill'), head_color)
+                        tcPr.append(tcColor)
+                        tcPr.append(tcVAlign)
+                if k >1:
+                    tr = row._tr
+                    trPr = tr.get_or_add_trPr()
+                    trHeight = OxmlElement('w:trHeight')
+                    trHeight.set(qn('w:val'), "400")
+                    trHeight.set(qn('w:hRule'), "atLeast")
+                    trPr.append(trHeight)
+                    for i in range1 :
+                        tc = row.cells[i]._tc
+                        tcPr = tc.get_or_add_tcPr()
+                        tcVAlign = OxmlElement('w:vAlign')
+                        tcVAlign.set(qn('w:val'), "center")
+                        tcHeight = OxmlElement('w:tcHeight')
+                        tcHeight.set(qn('w:val'), "400")
+                        tcHeight.set(qn('w:hRule'), "atLeast")
+                        tcColor = OxmlElement('w:shd')
+
+                        tcColor.set(qn('w:fill'), row_color)
+                        tcPr.append(tcColor)
+                        tcPr.append(tcVAlign)
+                        tcPr.append(tcHeight)
+                        tcHeight
+                k=k+1
+
+            s=0
+            for c_w in cols_width:
+                set_column_width(table.columns[s], Cm(c_w))
+                s=s+1
+        ii=ii+1   
+           
+        
+           
+
+    response = HttpResponse(content_type='application/vnd.openxmlformats-officedocument.wordprocessingml.document')
+    response['Content-Disposition'] = 'attachment; filename=' + docx_title
+    document.save(response)
+    return response 
+
+
+
+@login_required
+@permission_required('ippc.change_publication', login_url="/accounts/login/")
+def generate_list(request, id=None, type=None):
+    """ generate Participants/membership List  """
+    updateddate=timezone.now().strftime('%d-%m-%Y')
+    
+    event=None
+    eventParticipants=None
+    document_title=''
+    meeting_date= ''
+    location=''
+    all_users=[]
+    numcols=3
+    doc_title=''
+    show_extracols=False
+    group=None
+    template_path=''
+    
+    if type=='participant':#participant list
+        #winodws template_path = MEDIA_ROOT+'\\certificate_template\\init_portrait_ParticipantList.docx'
+        template_path = MEDIA_ROOT+'/certificate_template/init_portrait_ParticipantList.docx'
+  
+        if id:
+            event = get_object_or_404(Event, id=id)
+            eventtitle=slugify(event.title)
+            doc_title="Participants_List_"+str(eventtitle)+".docx"
+         
+            eventParticipants=EventParticipants.objects.filter(event_id=id)
+            all_other_eventParticipants=[]
+            all_observers_eventParticipants=[]
+            for u in eventParticipants:
+                if u.attended:
+                    if u.role.count()>0:
+                        for r in u.role.all():
+                            if r.role == 'Observer':
+                                all_observers_eventParticipants.append(u)
+                            else  :
+                                all_other_eventParticipants.append(u)
+                    else:            
+                        all_other_eventParticipants.append(u)
+
+            for u in all_other_eventParticipants:
+                all_users.append(u)
+            for u in all_observers_eventParticipants:
+                all_users.append(u)
+            for g in event.groups.all():
+                print(g.id)
+                if g.id==4 or g.id==6 or g.id==7 or g.id==8  or g.id==9 or g.id==10 :#4=SC 6=TPDP TPFQ=9  TPPT=7 TPG=8 TPFF=10
+                    show_extracols=True
+                    numcols=5
+                         
+                
+            document_title=(event.title).upper()
+            if event.start.month == event.end.month:
+                meeting_date=str(event.start.day)+'-'+event.end.strftime('%d %B %Y')
+            else:
+                meeting_date=event.start.strftime('%d %B')+'-'+event.end.strftime('%d %B %Y')
+            if event.location!='':
+               location+=str(event.location)+" - "
+            if event.venuecity!='':
+               location+=event.venuecity+", "
+            if event.venuecountry!='':
+               location+=event.venuecountry
+               
+    elif type=='membership':
+        doc_title="Membership_List.docx"
+        numcols=3
+        if id:
+            group=Group.objects.get(id=id)
+            if id=='4' or id=='6' or id=='7'  or id=='8'  or id=='9' or id=='10' or id=='3' or id=='28' :#4=SC 6=TPDP TPFQ=9  TPPT=7 TPG=8 TPFF=10 Bureau=3 FC=28
+                show_extracols=True
+                numcols=5
+            all_users = group.user_set.all()
+            document_title=(group.name).upper()
+            grouptitle=slugify(group.name)
+            doc_title="Membership_List_"+str(grouptitle)+".docx"
+        #windows template_path = MEDIA_ROOT+'\\certificate_template\\init_portrait_MembList.docx'
+        template_path = MEDIA_ROOT+'/certificate_template/init_portrait_MembList.docx'
+      
+    range1=range(0,numcols)         
+    print(numcols)
+    #DOC        
+    document = Document(template_path)
+    #docHeader_image_path = MEDIA_ROOT+'\\certificate_template\\banner_landscape.jpg'
+    #UNIXdocHeader_image_path = MEDIA_ROOT+'/certificate_template/header.jpg'
+   
+    style = document.styles['Normal']
+    font = style.font
+    font.name = 'Arial'
+    font.size = Pt(12)
+    
+    obj_styles = document.styles
+    obj_charstyle = obj_styles.add_style('CommentsStyle', WD_STYLE_TYPE.CHARACTER)
+    obj_font = obj_charstyle.font
+    obj_font.size = Pt(12)
+    obj_font.name = 'Times New Roman'
+    obj_charstyle1 = obj_styles.add_style('CommentsStyle1', WD_STYLE_TYPE.CHARACTER)
+    obj_font1 = obj_charstyle1.font
+    obj_font1.size = Pt(11)
+    obj_font1.name = 'Times New Roman'
+    p= document.add_paragraph("")
+
+    p.add_run(document_title, style = 'CommentsStyle').bold = True
+    
+    p.style = document.styles['Normal']
+    p.alignment = WD_ALIGN_PARAGRAPH.CENTER
+    if type=='participant':
+        p= document.add_paragraph("")
+        p= document.add_paragraph("")
+       
+        p.add_run(meeting_date+'\r'+location, style = 'CommentsStyle').bold = True
+        p.alignment = WD_ALIGN_PARAGRAPH.CENTER
+        p= document.add_paragraph("")
+        p.add_run("PARTICIPANTS LIST", style = 'CommentsStyle').bold = True
+        p.alignment = WD_ALIGN_PARAGRAPH.CENTER
+        #obj_font.size = Pt(11)  
+        p= document.add_paragraph("")
+        #p.add_run(ugettext("A check ("+u"\u2713"+") in column 1 indicates confirmed attendance at the meeting."+'\r'+"Members not attending have been taken off the list."+'\r'), style = 'CommentsStyle')#"The numbers in parenthesis refers to FAO travel funding assistance. (0) No funding; (1) Airfare funding; (2) Airfare and DSA funding."
+        p.add_run(ugettext("List of members attending the meeting."), style = 'CommentsStyle1')
+        p.alignment = WD_ALIGN_PARAGRAPH.CENTER
+    elif type=='membership':
+       #p= document.add_paragraph("")
+       p.add_run(" MEMBERSHIP LIST", style = 'CommentsStyle').bold = True
+       p.alignment = WD_ALIGN_PARAGRAPH.CENTER
+       p= document.add_paragraph("")
+       
+       if show_extracols:
+            p.add_run(ugettext("The numbers in parenthesis refers to FAO travel funding assistance. (0) No funding; (1) Airfare funding; (2) Airfare and DSA funding."), style = 'CommentsStyle1')
+       p.alignment = WD_ALIGN_PARAGRAPH.CENTER
+       
+    p= document.add_paragraph("")
+    p.add_run("(Updated "+updateddate+")", style = 'CommentsStyle1')
+    p.alignment = WD_ALIGN_PARAGRAPH.CENTER
+    document.add_paragraph()
+    
+    firstpage=[]
+    otherpages=[]
+    k=0
+    for users in all_users:
+        if k<3:
+            firstpage.append(users)
+        else:
+            otherpages.append(users)
+        k+=1    
+    users_split2=[]
+    users_split2.append(firstpage)
+    users_split = split(otherpages,4)   
+    for arrayuser in users_split:
+        users_split2.append(arrayuser)  
+    xx=0    
+    for user in users_split2:
+        if xx>0:
+            document.add_page_break()  
+        xx=xx+1    
+        p= document.add_paragraph("")
+        
+        table = document.add_table(rows=1, cols=numcols)
+        table.style = document.styles['Table Grid']
+        hdr_cells = table.rows[0].cells
+        font.size = Pt(9)
+        kk=0
+#        if type=='participant':
+#            run = hdr_cells[kk].paragraphs[0].add_run(' ').bold = True
+#            kk+=1
+        run = hdr_cells[kk].paragraphs[0].add_run('Region/\nRole').bold = True
+        kk+=1
+        run = hdr_cells[kk].paragraphs[0].add_run('Name, mailing, address, telephone').bold = True
+        kk+=1
+        run = hdr_cells[kk].paragraphs[0].add_run('Email address').bold = True
+        kk+=1
+        if show_extracols:
+            run = hdr_cells[kk].paragraphs[0].add_run('Membership Confirmed/Term begins').bold = True
+            kk+=1
+            run = hdr_cells[kk].paragraphs[0].add_run('Term expires').bold = True
+            kk+=1  
+                 
+        for u in user:
+            row_cells = table.add_row().cells
+            if type=='participant':
+                if u.attended == 0:
+                    break
+            if type=='participant':
+                user_obj=User.objects.get(username=u.user)
+            elif type=='membership':
+                user_obj=u
+            
+            userippc = get_object_or_404(IppcUserProfile, user_id=user_obj.id)
+            
+            #attended=''
+            role_region=''
+            name=''
+            name_title_address=''
+            address2f=''
+            splitaddress=userippc.address2.splitlines()
+            for s in splitaddress:
+               if s!='':
+                 address2f+='\r'+s  
+            if type=='participant':
+#                if u.attended == 1:
+#                    attended =u"\u2713"
+                if u.representing_region>0:
+                    if u.representing_region==1:
+                        region="Africa"
+                    elif  u.representing_region==2:
+                        region="Asia"
+                    elif  u.representing_region==3:
+                        region="Europe"
+                    elif  u.representing_region==4: 
+                        region="Latin America and Caribbean"
+                    elif  u.representing_region==5: 
+                        region="Near East"
+                    elif  u.representing_region==6: 
+                        region="North America"
+                    elif  u.representing_region==7: 
+                        region="South West Pacific"  
+                    role_region=role_region+region.upper()    
+                if u.representing_organization!=None:
+                    role_region=role_region+'\r'+str(u.representing_organization)
+                if u.representing_country!=None:
+                    role_region=role_region+'\r'+str(u.representing_country)
+                if u.role.count()>0:
+                    for r in u.role.all():
+                        role_region=role_region+'\r'+str(r)
+
+            elif type=='membership':
+                v=0
+                country=''
+                regionname=''
+                for s in splitaddress:
+                    if s!='':
+                        if v==len(splitaddress)-1:
+                            country=s
+                    v+=1 
+                country=country.strip()
+                countryobj=CountryPage.objects.filter(name=country)
+                if countryobj:
+                   region=countryobj[0].region
+                   regionname=ugettext(dict(REGIONS)[region])
+                role_region=   regionname+'\rMember'
+            
+            name=get_gender(userippc.gender)+' '+userippc.first_name+' '+(userippc.last_name).upper()
+            
+            if userippc.title!=None and  userippc.title!='':
+               name_title_address=name_title_address+'\r'+userippc.title
+            if userippc.address1!='':
+                name_title_address=name_title_address+userippc.address1
+            if address2f!='':
+               name_title_address=name_title_address+address2f
+            if userippc.phone!='':
+               name_title_address=name_title_address+'\rTel:'+userippc.phone
+            if userippc.mobile!='':
+                name_title_address=name_title_address+'\r'+'Mobile:'+userippc.mobile
+            if userippc.fax!='':
+                name_title_address=name_title_address+'\r'+'Fax:'+userippc.fax
+
+            email=user_obj.email
+            if userippc.email_address_alt!='':
+                email+=';\r'+userippc.email_address_alt
+                
+            membership=''
+            cpm=''
+            term=''
+            termexpires=''
+            termbegins=''
+            termends=''
+            term1=''
+            funding=''
+            membership=UserMembershipHistory.objects.filter(user_id=userippc.user_id)
+            if type=='participant':
+                    if membership.count()>0:
+                        for g in user_obj.groups.all():
+                            if g in event.groups.all():
+                                if g.id==4 or g.id==6 or g.id==7 or g.id==8  or g.id==9 or g.id==10 :#4=SC 6=TPDP TPFQ=9  TPPT=7 TPG=8 TPFF=10
+                                    membership1=UserMembershipHistory.objects.filter(user_id=userippc.user_id, group_id=g.id)
+                                    for m in membership1:
+                                        m_sdate=int(m.start_date.year)
+                                        m_edate=int(m.end_date.year)
+                                        termbegins=''
+                                        termexpires=m.end_date.year
+                                        if m_edate-m_sdate<=3:
+                                            term='1st term / 3 years'
+                                        elif m_edate-m_sdate>3:
+                                            term='2nd term / 3 years'
+
+
+                                        if g.id ==4  or g.id ==3 or g.id ==28:#SC
+                                            termbegins=m.start_date.strftime('%Y')
+                                            termends=m.end_date.strftime('%Y')
+                                            if m_edate-m_sdate<=3:
+                                                cpm=ugettext(dict(CPMS)[m_sdate])+'('+str(m_sdate)+')'
+                                            elif m_edate-m_sdate>3:
+                                                cpm=ugettext(dict(CPMS)[m_sdate])+'('+str(m_sdate)+')'+ '\r'+ugettext(dict(CPMS)[m_sdate+3])+'('+str(m_sdate+3)+')'
+                                            term1=cpm+'\r\r'+term
+                                            termexpires=termexpires
+
+                                        elif g.id ==6 or  g.id ==7 or g.id ==8 or g.id ==9 or g.id ==10:#TPFF,etc
+                                            termbegins=m.start_date.strftime('%b-%Y')
+                                            termends=m.end_date.strftime('%b-%Y')
+                                            term1=termbegins+'\r\r'+term
+                                            termexpires=termends
+            elif type=='membership':
+                if membership.count()>0:
+                    for g in user_obj.groups.all():
+                        if g.id == 4:
+                            print(g.id)
+                            print(id)
+                        if g.id==group.id:
+                            membership1=UserMembershipHistory.objects.filter(user_id=userippc.user_id, group_id=g.id)
+                            for m in membership1:
+                                funding=m.funding
+                                m_sdate=int(m.start_date.year)
+                                m_edate=int(m.end_date.year)
+                                termbegins=''
+                                termexpires=m.end_date.year
+                                if m_edate-m_sdate<=3:
+                                    term='1st term / 3 years'
+                                elif m_edate-m_sdate>3:
+                                    term='2nd term / 3 years'
+                                    
+                                
+                                if group.id ==4:#SC
+                                    termbegins=m.start_date.strftime('%Y')
+                                    termends=m.end_date.strftime('%Y')
+                                    if m_edate-m_sdate<=3:
+                                        cpm=ugettext(dict(CPMS)[m_sdate])+'('+str(m_sdate)+')'
+                                    elif m_edate-m_sdate>3:
+                                        cpm=ugettext(dict(CPMS)[m_sdate])+'('+str(m_sdate)+')'+ '\r'+ugettext(dict(CPMS)[m_sdate+3])+'('+str(m_sdate+3)+')'
+                                    term1=cpm+'\r\r'+term
+                                    termexpires=termexpires
+   
+                                elif group.id ==6 or  group.id ==7 or group.id ==8 or group.id ==9 or group.id ==10:#TPFF,etc
+                                    termbegins=m.start_date.strftime('%b-%Y')
+                                    termends=m.end_date.strftime('%b-%Y')
+                                    term1=termbegins+'\r\r'+term
+                                    termexpires=termends
+    
+                                
+                               
+
+            j=0
+#            if type=='participant':
+#                 row_cells[j].text=attended
+#                 j+=1
+
+            run = row_cells[j].paragraphs[0].add_run(role_region)
+            j+=1
+            run = row_cells[j].paragraphs[0].add_run(name).bold = True
+            run = row_cells[j].paragraphs[0].add_run(name_title_address) 
+            row_cells[j].paragraphs[0].alignment=WD_ALIGN_PARAGRAPH.LEFT
+            j+=1
+            row_cells[j].text = email
+            j+=1
+            
+            if type=='membership':
+                if funding!='':
+                    term1= term1+ '\r\r('+str(funding)+')'
+            if show_extracols:
+                row_cells[j].paragraphs[0].add_run(term1)
+                j+=1    
+                row_cells[j].text = str(termexpires)
+
+            k=0
+            for row in table.rows:
+                if k ==0:
+                    tr = row._tr
+                    trPr = tr.get_or_add_trPr()
+                    trHeight = OxmlElement('w:trHeight')
+                    trHeight.set(qn('w:val'), "500")
+                    trHeight.set(qn('w:hRule'), "atLeast")
+                    trPr.append(trHeight)
+                    for i in range1 :
+                        tc = row.cells[i]._tc
+                        tcPr = tc.get_or_add_tcPr()
+                        tcVAlign = OxmlElement('w:vAlign')
+                        tcVAlign.set(qn('w:val'), "center")
+                        tcColor = OxmlElement('w:shd')
+                        tcColor.set(qn('w:fill'), 'e6e6e6')
+                        tcPr.append(tcColor)
+                        tcPr.append(tcVAlign)
+                if k >0:
+                    tr = row._tr
+                    trPr = tr.get_or_add_trPr()
+                    trHeight = OxmlElement('w:trHeight')
+                    trHeight.set(qn('w:val'), "2500")
+                    trHeight.set(qn('w:hRule'), "atLeast")
+                    trPr.append(trHeight)
+
+                    for i in range1 :
+                        tc = row.cells[i]._tc
+                        tcPr = tc.get_or_add_tcPr()
+                        tcVAlign = OxmlElement('w:vAlign')
+                        tcVAlign.set(qn('w:val'), "top")
+                        tcHeight = OxmlElement('w:tcHeight')
+                        tcHeight.set(qn('w:val'), "1500")
+                        tcHeight.set(qn('w:hRule'), "atLeast")
+                        tcPr.append(tcVAlign)
+                        tcPr.append(tcHeight)
+                k=k+1
+            f=0
+#            if type=='participant':
+#               set_column_width(table.columns[f], Cm(0.5))
+#               f+=1
+            set_column_width(table.columns[f], Cm(3.0))
+            f+=1
+            set_column_width(table.columns[f], Cm(6.5))
+            f+=1
+            set_column_width(table.columns[f], Cm(5.0))
+            f+=1
+            if show_extracols:
+                set_column_width(table.columns[f], Cm(2.0))
+                f+=1
+                set_column_width(table.columns[f], Cm(1.5))
+            
+             
+         
+    response = HttpResponse(content_type='application/vnd.openxmlformats-officedocument.wordprocessingml.document')
+    response['Content-Disposition'] = 'attachment; filename=' + doc_title
+    document.save(response)
+    return response 
+
+
+@login_required
+@permission_required('ippc.change_publication', login_url="/accounts/login/")
+def generate_shortlist(request):
+    """ generate Short List SC membership List  """
+    updateddate=timezone.now().strftime('%d-%m-%Y')
+    
+    all_users=[]
+    numcols=4
+    range1=range(0,numcols)  
+    
+    doc_title="Membership_SC_ShortList_"+updateddate+".docx"
+    document_title='Standards Committee Members'
+    group=Group.objects.get(id=4)
+    all_users = group.user_set.all()
+    
+        
+    array_region=[]
+    array_regionmain=[]
+    
+    for k,r in REGIONS:
+        reg = r+''#.lower()
+        array_user_r=[]
+                   
+        for u in all_users:
+            array_u=[]
+            country=''
+            userippc = get_object_or_404(IppcUserProfile, user_id=u.id)
+            splitaddress=userippc.address2.splitlines()
+            
+            v=0
+            print(splitaddress)
+            for s in splitaddress:
+                if s!='':
+                    if v==len(splitaddress)-1:
+                        country=s
+                v+=1 
+            country=country.strip()
+            countryobj=CountryPage.objects.filter(name=country)
+            if countryobj:
+               region=countryobj[0].region
+            else:
+               if country=='Israel':
+                   region=3
+            
+            if region == k:
+                name=get_gender(userippc.gender)+' '+userippc.first_name+' '+(userippc.last_name).upper()
+                term=''
+                membership=UserMembershipHistory.objects.filter(user_id=userippc.user_id, group_id=4)
+                if membership.count()>0:
+                    for m in membership:
+                        term=str(m.end_date.year)
+                array_u.append(country)
+                array_u.append(name)
+                array_u.append(term)        
+                array_user_r.append(array_u)
+        arraya=[]
+        
+        arraya.append(reg)
+        arraya.append(array_user_r)
+        array_region.append(arraya)
+   
+        
+        
+
+           
+    
+    #DOC        
+    #windows 
+    #template_path = MEDIA_ROOT+'\\certificate_template\\init_portrait.docx'
+    template_path = MEDIA_ROOT+'/certificate_template/init_portrait_ShortList.docx'
+    document = Document(template_path)
+     
+    style = document.styles['Normal']
+    font = style.font
+    font.name = 'Arial'
+    font.size = Pt(9)
+    
+  
+    obj_styles = document.styles
+    obj_charstyle = obj_styles.add_style('CommentsStyle', WD_STYLE_TYPE.CHARACTER)
+    obj_font = obj_charstyle.font
+    obj_font.size = Pt(12)
+    obj_font.name = 'Times New Roman'
+    obj_charstyle1 = obj_styles.add_style('CommentsStyle1', WD_STYLE_TYPE.CHARACTER)
+    obj_font1 = obj_charstyle1.font
+    obj_font1.size = Pt(11)
+    obj_font1.name = 'Times New Roman'
+   
+ 
+
+    p= document.add_paragraph("")
+    p.add_run(document_title, style = 'CommentsStyle').bold = True
+    p.style = document.styles['Normal']
+    p.alignment = WD_ALIGN_PARAGRAPH.CENTER
+    
+    p.add_run("  (as of "+updateddate+")", style = 'CommentsStyle1')
+    p.alignment = WD_ALIGN_PARAGRAPH.CENTER
+    document.add_paragraph()
+    
+    p= document.add_paragraph("")
+    p.add_run('Regional representation: ', style = 'CommentsStyle1')
+    for rr in array_region:
+        region=str(rr[0])
+        userscount=len(rr[1])
+        
+        p.add_run(' '+region+'-'+str(userscount)+',', style = 'CommentsStyle1')
+    p.alignment = WD_ALIGN_PARAGRAPH.CENTER
+    document.add_paragraph()
+   
+        
+    
+    table = document.add_table(rows=1, cols=numcols)
+    table.style = document.styles['Table Grid']
+    hdr_cells = table.rows[0].cells
+    font.size = Pt(9)
+
+    run = hdr_cells[0].paragraphs[0].add_run('FAO Region').bold = True
+    run = hdr_cells[1].paragraphs[0].add_run('Country').bold = True
+    run = hdr_cells[2].paragraphs[0].add_run('Name').bold = True
+    run = hdr_cells[3].paragraphs[0].add_run('Term ends').bold = True
+    
+    for rr in array_region:
+         
+        users=rr[1]
+        i=0
+        for u in users: 
+           
+            row_cells = table.add_row().cells
+            regionanme=''
+        
+            if i==0:
+                regionanme= rr[0]
+            i=i+1  
+            region= regionanme   
+            country=u[0]
+            name=u[1]
+            term=u[2]
+            
+
+            run = row_cells[0].paragraphs[0].add_run(region)
+            run = row_cells[1].paragraphs[0].add_run(country)
+            run = row_cells[2].paragraphs[0].add_run(name) 
+            row_cells[2].paragraphs[0].alignment=WD_ALIGN_PARAGRAPH.LEFT
+         
+            run = row_cells[3].paragraphs[0].add_run(term) 
+           
+    k=0
+    for row in table.rows:
+        if k ==0:
+            tr = row._tr
+            trPr = tr.get_or_add_trPr()
+            trHeight = OxmlElement('w:trHeight')
+            trHeight.set(qn('w:val'), "200")
+            trHeight.set(qn('w:hRule'), "atLeast")
+            trPr.append(trHeight)
+            for i in range1 :
+                tc = row.cells[i]._tc
+                tcPr = tc.get_or_add_tcPr()
+                tcVAlign = OxmlElement('w:vAlign')
+                tcVAlign.set(qn('w:val'), "center")
+                tcColor = OxmlElement('w:shd')
+                tcColor.set(qn('w:fill'), 'e6e6e6')
+                tcPr.append(tcColor)
+                tcPr.append(tcVAlign)
+        if k >0:
+            tr = row._tr
+            trPr = tr.get_or_add_trPr()
+            trHeight = OxmlElement('w:trHeight')
+            trHeight.set(qn('w:val'), "400")
+            trHeight.set(qn('w:hRule'), "atLeast")
+            trPr.append(trHeight)
+
+            for i in range1 :
+                tc = row.cells[i]._tc
+                tcPr = tc.get_or_add_tcPr()
+                tcVAlign = OxmlElement('w:vAlign')
+                tcVAlign.set(qn('w:val'), "top")
+                tcHeight = OxmlElement('w:tcHeight')
+                tcHeight.set(qn('w:val'), "400")
+                tcHeight.set(qn('w:hRule'), "atLeast")
+                tcPr.append(tcVAlign)
+                tcPr.append(tcHeight)
+        k=k+1
+    set_column_width(table.columns[0], Cm(4.0))
+    set_column_width(table.columns[1], Cm(4.0))
+    set_column_width(table.columns[2], Cm(6.0))
+    set_column_width(table.columns[3], Cm(3.0))
+            
+    indx=1
+    index2=0
+    for rr in array_region:
+        userscount=len(rr[1]) 
+        print(userscount)
+        if userscount>0:
+            index2=indx+userscount-1
+            table.cell(indx,0).merge(table.cell(index2,0))
+            indx=indx+userscount
+       
+    response = HttpResponse(content_type='application/vnd.openxmlformats-officedocument.wordprocessingml.document')
+    response['Content-Disposition'] = 'attachment; filename=' + doc_title
+    document.save(response)
+    return response 
+
+
+@login_required
+@permission_required('ippc.change_publication', login_url="/accounts/login/")
+def generate_replacementlist(request):
+    """ generate Replacement List SC   """
+    updateddate=timezone.now().strftime('%d-%m-%Y')
+    
+    all_users=[]
+    numcols=5
+    range1=range(0,numcols)  
+    
+    doc_title="Membership_SCReplacements_ContactInfo_"+updateddate+".docx"
+    document_title='SUBSIDIARY BODY OF\nTHE COMMISSION ON PHYTOSANITARY MEASURES\n\nSTANDARDS COMMITTEE POTENTIAL REPLACEMENTS'
+
+    group=Group.objects.get(id=84)
+    all_users = group.user_set.all()
+    
+        
+    array_region=[]
+    array_regionmain=[]
+    
+    for k,r in REGIONS:
+        reg = r+''
+        array_user_r=[]
+        z=1;           
+        for u in all_users:
+            array_u=[]
+            
+            country=''
+            region=0
+            userippc = get_object_or_404(IppcUserProfile, user_id=u.id)
+            name_title_address=''
+            term1=''
+            term2=''
+            email=''
+            address2f=''
+            splitaddress=userippc.address2.splitlines()
+            v=0
+            for s in splitaddress:
+                if s!='':
+                    address2f+='\r'+s  
+                    for s in splitaddress:
+                        if s!='':
+                            if v==len(splitaddress)-1:
+                                country=s
+                        v+=1 
+                country=country.strip()
+                countryobj=CountryPage.objects.filter(name=country)
+                if countryobj:
+                   region=countryobj[0].region
+           
+            
+            if region == k:
+                replace=''
+                if z==1:
+                    replace='(Replacement 1)'
+                else:
+                    replace='(Replacement 2)'
+                name=get_gender(userippc.gender)+' '+userippc.first_name+' '+(userippc.last_name).upper()
+                if userippc.title!=None and  userippc.title!='':
+                    name_title_address=name_title_address+'\r'+userippc.title
+                if userippc.address1!='':
+                    name_title_address=name_title_address+userippc.address1
+                if address2f!='':
+                    name_title_address=name_title_address+address2f
+                if userippc.phone!='':
+                    name_title_address=name_title_address+'\rTel:'+userippc.phone
+                if userippc.mobile!='':
+                    name_title_address=name_title_address+'\r'+'Mobile:'+userippc.mobile
+                if userippc.fax!='':
+                    name_title_address=name_title_address+'\r'+'Fax:'+userippc.fax
+
+                email=u.email
+                if userippc.email_address_alt!='':
+                    email+=';\r'+userippc.email_address_alt    
+                
+                membership1=UserMembershipHistory.objects.filter(user_id=userippc.user_id, group_id=80)
+                for m in membership1:
+                    m_sdate=int(m.start_date.year)
+                    m_edate=int(m.end_date.year)
+                    termbegins=''
+                    term2=m.end_date.year
+                    term=''
+                    if m_edate-m_sdate<=3:
+                        term='1st term / 3 years'
+                    elif m_edate-m_sdate>3:
+                        term='2nd term / 3 years'
+                    termbegins=m.start_date.strftime('%Y')
+                    termends=m.end_date.strftime('%Y')
+                    if m_edate-m_sdate<=3:
+                        cpm=ugettext(dict(CPMS)[m_sdate])+'('+str(m_sdate)+')'
+                    elif m_edate-m_sdate>3:
+                        cpm=ugettext(dict(CPMS)[m_sdate])+'('+str(m_sdate)+')'+ '\r'+ugettext(dict(CPMS)[m_sdate+3])+'('+str(m_sdate+3)+')'
+                    term1=cpm+'\r\r'+term
+                    term2=termexpires
+
+                  
+                array_u.append(replace)
+                array_u.append(name)
+                array_u.append(name_title_address)
+                array_u.append(email)
+                array_u.append(term1) 
+                array_u.append(term2) 
+                array_user_r.append(array_u)
+                z+=1
+                 
+        arraya=[]
+        
+        arraya.append(reg)
+        if len(array_user_r)==0:
+            array_u1=[]
+            array_u1.append('(Replacement 1)')
+            array_u1.append('VACANT')
+            array_u1.append('')
+            array_u1.append('')
+            array_u1.append('') 
+            array_u1.append('') 
+            array_u2=[]
+            array_u2.append('(Replacement 2)')
+            array_u2.append('VACANT')
+            array_u2.append('')
+            array_u2.append('')
+            array_u2.append('') 
+            array_u2.append('') 
+            array_user_r.append(array_u1)
+            array_user_r.append(array_u2)
+        elif len(array_user_r)==1:
+            array_u2=[]
+            array_u2.append('(Replacement 1)')
+            array_u2.append('VACANT')
+            array_u2.append('')
+            array_u2.append('')
+            array_u2.append('') 
+            array_u2.append('') 
+            array_user_r.append(array_u2)    
+        elif len(array_user_r)>1:
+           print('')     
+        arraya.append(array_user_r)
+        array_region.append(arraya)
+   
+        
+        
+   
+    
+    #DOC        
+    #windows 
+   # template_path = MEDIA_ROOT+'\\certificate_template\\init_portrait.docx'
+    #UNIX 
+    template_path = MEDIA_ROOT+'/certificate_template/init_portrait_SC_replaceList.docx'
+   
+    document = Document(template_path)
+     
+    style = document.styles['Normal']
+    font = style.font
+    font.name = 'Arial'
+    font.size = Pt(9)
+    
+    
+    
+    obj_styles = document.styles
+    obj_charstyle = obj_styles.add_style('CommentsStyle', WD_STYLE_TYPE.CHARACTER)
+    obj_font = obj_charstyle.font
+    obj_font.size = Pt(12)
+    obj_font.name = 'Times New Roman'
+    obj_charstyle1 = obj_styles.add_style('CommentsStyle1', WD_STYLE_TYPE.CHARACTER)
+    obj_font1 = obj_charstyle1.font
+    obj_font1.size = Pt(11)
+    obj_font1.name = 'Times New Roman'
+    p= document.add_paragraph("")
+    p= document.add_paragraph("")
+    p.add_run(document_title, style = 'CommentsStyle').bold = True
+    p.alignment = WD_ALIGN_PARAGRAPH.CENTER
+    
+    p.add_run("  (as of "+updateddate+")", style = 'CommentsStyle1')
+    p.alignment = WD_ALIGN_PARAGRAPH.CENTER
+    document.add_paragraph()
+    
+    p= document.add_paragraph("")
+    
+    table = document.add_table(rows=1, cols=numcols)
+    table.style = document.styles['Table Grid']
+    hdr_cells = table.rows[0].cells
+    font.size = Pt(9)
+
+    run = hdr_cells[0].paragraphs[0].add_run('FAO Region').bold = True
+    run = hdr_cells[1].paragraphs[0].add_run('Name, mailing address, telephone').bold = True
+    run = hdr_cells[2].paragraphs[0].add_run('Email address').bold = True
+    run = hdr_cells[3].paragraphs[0].add_run('Membership Confirmed').bold = True
+    run = hdr_cells[4].paragraphs[0].add_run('Term expires').bold = True
+    
+    for rr in array_region:
+        i=0 
+        users=rr[1]
+        for u in users: 
+            row_cells = table.add_row().cells
+            regionanme=''
+            replac=''
+            if i==0:
+                regionanme= rr[0]
+            i=i+1  
+            
+            region = regionanme   
+            replace = u[0]
+            name = u[1]
+            name_title_address = u[2]
+            email = u[3]
+            term1 = u[4]
+            term2 = u[5]
+            
+            run = row_cells[0].paragraphs[0].add_run(region)
+            run = row_cells[1].paragraphs[0].add_run(replace+'\n')
+            run = row_cells[1].paragraphs[0].add_run(name+'\n').bold = True
+            run = row_cells[1].paragraphs[0].add_run(name_title_address) 
+            row_cells[1].paragraphs[0].alignment=WD_ALIGN_PARAGRAPH.LEFT
+         
+            run = row_cells[2].paragraphs[0].add_run(email) 
+            run = row_cells[3].paragraphs[0].add_run(term1) 
+            run = row_cells[4].paragraphs[0].add_run(term2) 
+    height="500"
+    bgcolor='ffffff'
+    k=0
+    for row in table.rows:
+        if k ==0:
+            tr = row._tr
+            trPr = tr.get_or_add_trPr()
+            trHeight = OxmlElement('w:trHeight')
+            trHeight.set(qn('w:val'), "200")
+            trHeight.set(qn('w:hRule'), "atLeast")
+            trPr.append(trHeight)
+            for i in range1 :
+                tc = row.cells[i]._tc
+                tcPr = tc.get_or_add_tcPr()
+                tcVAlign = OxmlElement('w:vAlign')
+                tcVAlign.set(qn('w:val'), "center")
+                tcColor = OxmlElement('w:shd')
+                tcColor.set(qn('w:fill'), 'e6e6e6')
+                tcPr.append(tcColor)
+                tcPr.append(tcVAlign)
+        if k >0:
+            tr = row._tr
+            trPr = tr.get_or_add_trPr()
+            trHeight = OxmlElement('w:trHeight')
+            trHeight.set(qn('w:val'), height)
+            trHeight.set(qn('w:hRule'), "atLeast")
+            trPr.append(trHeight)
+
+            for i in range1 :
+                tc = row.cells[i]._tc
+                vacant=False;
+                if i==1:
+                    splittext=[]
+                    for paragraph in row.cells[i].paragraphs:
+                        text=paragraph.text
+                        splittext=text.splitlines()
+                    for sp in splittext:
+                        if sp!='' and sp=='VACANT':
+                            vacant=True
+
+                if vacant:
+                    height="500"
+                    bgcolor='e6e6e6'
+                else:  
+                     height="1500"
+                     bgcolor='ffffff'
+                
+                tcPr = tc.get_or_add_tcPr()
+                
+                tcVAlign = OxmlElement('w:vAlign')
+                tcVAlign.set(qn('w:val'), "top")
+                tcHeight = OxmlElement('w:tcHeight')
+                tcHeight.set(qn('w:val'), height)
+                tcHeight.set(qn('w:hRule'), "atLeast")
+                tcColor = OxmlElement('w:shd')
+                tcColor.set(qn('w:fill'),bgcolor )
+                tcPr.append(tcColor)
+                tcPr.append(tcVAlign)
+                tcPr.append(tcHeight)
+               
+        k=k+1
+    set_column_width(table.columns[0], Cm(4.0))
+    set_column_width(table.columns[1], Cm(6.0))
+    set_column_width(table.columns[2], Cm(6.0))
+    set_column_width(table.columns[3], Cm(3.0))
+    set_column_width(table.columns[4], Cm(3.0))
+
+    indx=1
+    index2=0
+    for rr in array_region:
+        userscount=len(rr[1]) 
+        if userscount>0:
+            index2=indx+userscount-1
+            table.cell(indx,0).merge(table.cell(index2,0))
+            indx=indx+userscount
+       
+    response = HttpResponse(content_type='application/vnd.openxmlformats-officedocument.wordprocessingml.document')
+    response['Content-Disposition'] = 'attachment; filename=' + doc_title
+    document.save(response)
+    return response 
+
+@login_required
+@permission_required('ippc.delete_publication', login_url="/accounts/login/")
+def my_tool(request):
+    form = MyToolForm(request.POST, request.FILES)
+    if request.method == "POST":
+         if form.is_valid():
+            
+            new_mytool = form.save(commit=False)
+             
+            
+            form.save()
+           
+            info(request, _("Successfully created entry"))
+            
+            return redirect("my_toolres", pk=new_mytool.id)
+         else:
+             return render_to_response('certificates/mytool.html', {'form': form,},
+             context_instance=RequestContext(request))
+       
+    else:
+        form = MyToolForm()
+    return render_to_response('certificates/mytool.html', {'form': form},
+        context_instance=RequestContext(request))
+
+        
+
+class  MyToolDetailView(DetailView):
+    """  MyTool detail page """
+    model =  MyTool
+    context_object_name = 'tool'
+    template_name = 'certificates/mytoolres.html'
+    queryset = MyTool.objects.filter()
+    
+    def get_context_data(self, **kwargs): # http://stackoverflow.com/a/15515220
+        context = super(MyToolDetailView, self).get_context_data(**kwargs)
+        result=''
+        mytool = get_object_or_404(MyTool, id=self.kwargs['pk'])
+        
+     
+        
+        text=mytool.mytext
+        db = MySQLdb.connect(DATABASES["default"]["HOST"],DATABASES["default"]["USER"],DATABASES["default"]["PASSWORD"],DATABASES["default"]["NAME"])
+        cursor = db.cursor()
+
+        sql = text
+        print(sql)
+        try:
+            cursor.execute(sql)
+            str1= cursor.fetchall()
+            result=str1
+           
+           
+          
+            db.commit()
+
+
+
+        except:
+            db.rollback()
+    
+
+       
+
+        db.close()
+
+        context['result'] = result
+        print ('----------------------------------')
+     
+       # print (result)
+        print ('----------------------------------')
+       # context['result'] = result
+        return context
+    
+            
+def my_toolres(request,sel=None):
+    result=''
+    text=sel
+    db = MySQLdb.connect(DATABASES["default"]["HOST"],DATABASES["default"]["USER"],DATABASES["default"]["PASSWORD"],DATABASES["default"]["NAME"])
+    cursor = db.cursor()
+
+    sql = text
+    print(sql)
+    try:
+        cursor.execute(sql)
+        str1= cursor.fetchall()
+
+        for row in str1:
+            print(row)
+            result=result+row
+        db.commit()
+            
+           
+                
+    except:
+        db.rollback()
+    
+
+       
+
+    db.close()
+
+    context = { 'result':result}
+    #context = {}
+    response = render(request, "certificates/mytoolres.html", context)
+    return response
+
+             
+
+    
+        
+         

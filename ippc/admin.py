@@ -16,7 +16,9 @@ CountryNews,CountryNewsFile,CountryNewsUrl,CommodityKeyword,PreferredLanguages, 
 PartnersWebsite,PartnersWebsiteUrl,\
 PartnersNews,PartnersNewsFile,PartnersNewsUrl, \
 EppoCode,IssueKeyword, CommodityKeyword,IssueKeywordsRelate,CommodityKeywordsRelate, ContactType, IppcUserProfile,\
-QAQuestion,QAAnswer,FAQsCategory,FAQsItem,IRSSActivity,IRSSActivityFile,TransFAQsCategory,TransFAQsItem,UserMembershipHistory,MediaKitDocument,PhytosanitaryTreatment,PhytosanitaryTreatmentType#,PhytosanitaryTreatmentFile,PhytosanitaryTreatmentUrl
+QAQuestion,QAAnswer,FAQsCategory,FAQsItem,IRSSActivity,IRSSActivityFile,TransFAQsCategory,TransFAQsItem,UserMembershipHistory,MediaKitDocument,PhytosanitaryTreatment,PhytosanitaryTreatmentType,\
+StratigicObjective,DraftingBodyType,TransTopic,Topic
+
 #,TransReportingObligation
 
 from django.forms.models import inlineformset_factory
@@ -378,8 +380,18 @@ admin.site.register(PestReport, PestReportAdmin)
 
 class PhytosanitaryTreatmentTypeAdmin(admin.ModelAdmin):
     save_on_top = True
-    
 admin.site.register(PhytosanitaryTreatmentType,PhytosanitaryTreatmentTypeAdmin)
+
+class StratigicObjectiveAdmin(admin.ModelAdmin):
+    """Options for the StratigicObjective field of Topic"""
+    save_on_top = True
+admin.site.register(StratigicObjective, StratigicObjectiveAdmin)
+
+class DraftingBodyTypeAdmin(admin.ModelAdmin):
+    """Options for the DraftingBodyType field of Topic"""
+    save_on_top = True
+admin.site.register(DraftingBodyType, DraftingBodyTypeAdmin)
+
 
 
     
@@ -682,9 +694,23 @@ class MediaKitDocumentAdmin(admin.ModelAdmin):
     prepopulated_fields = { 'slug': ['title']}
     search_fields = ['title',  'slug', 'file_en', 'file_es', 'file_ar', 'file_ru', 'file_zh', 'file_fr']
 
-    
-    
 admin.site.register(MediaKitDocument, MediaKitDocumentAdmin)
+
+class TransTopicAdmin(StackedDynamicInlineAdmin):
+    model = TransTopic
+    fields = ("lang","title", "topic_under" ,"specification_number")
+    
+    
+class TopicAdmin(admin.ModelAdmin):
+    save_on_top = True
+    list_display = ('title', 'topicnumber','publish_date')
+    list_filter = ('title', 'topicnumber','publish_date',)
+    inlines = ( TransTopicAdmin,)
+    search_fields = ('title', 'publish_date')
+    prepopulated_fields = { 'slug': ['title'] }
+admin.site.register(Topic, TopicAdmin)
+    
+
 
 # Translatable user-content  -----------------
 if "mezzanine.pages" in settings.INSTALLED_APPS:

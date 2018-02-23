@@ -21,8 +21,9 @@ CountryNews,CountryNewsFile,CountryNewsUrl, EmailUtilityMessage, EmailUtilityMes
 DraftProtocol,DraftProtocolFile,DraftProtocolComments,NotificationMessageRelate,Poll,  Poll_Choice,\
 FAQsCategory,FAQsItem,\
 QAQuestion,QAAnswer,ContactUsEmailMessage,UserAutoRegistration,IRSSActivityFile,IRSSActivity,\
-UserMembershipHistory,PhytosanitaryTreatment,PhytosanitaryTreatmentPestsIdentity,PhytosanitaryTreatmentCommodityIdentity#,PhytosanitaryTreatmentUrl,PhytosanitaryTreatmentFile
-#,TransReportingObligation,Question,Answer
+UserMembershipHistory,PhytosanitaryTreatment,PhytosanitaryTreatmentPestsIdentity,PhytosanitaryTreatmentCommodityIdentity,\
+CertificatesTool,WorkshopCertificatesTool,B_CertificatesTool,Topic,MyTool,TopicAssistants,TopicLeads,TransTopic
+#,TransReportingObligation
 
 
 
@@ -420,11 +421,14 @@ class PhytosanitaryTreatmentForm(forms.ModelForm):
             'treatmeant_link',
             'internationally_approved',
             'countries',
+            'chemical',
+            'duration',
+            'concentration',
             'treatmentschedule',
             'treatment_pestidentity_other',
             'treatment_commodityidentity_other',
             ]
-        exclude = ('author', 'slug', 'publish_date', 'modify_date', 'summary', )
+        exclude = ('author', 'slug', 'publish_date', 'modify_date', 'summary', 'temperature', )
         widgets = {
             'treatment_type': autocomplete_light.ChoiceWidget('PhytosanitaryTreatmentTypeAutocomplete'),
             # 'treatment_pestidentity': autocomplete_light.ChoiceWidget('NamesAutocomplete'),
@@ -441,7 +445,7 @@ class PhytosanitaryTreatmentPestsIdentityForm(forms.ModelForm):
         fields = [
             'pest', 
         ]
-        exclude = ('phytosanitarytreatment', )
+        exclude = ('phytosanitarytreatment', 'pestidentitydescr')
         widgets = {
               'pest': autocomplete_light.ChoiceWidget('NamesAutocomplete'),
         }
@@ -459,7 +463,7 @@ class PhytosanitaryTreatmentCommodityIdentityForm(forms.ModelForm):
         fields = [
             'commodity', 
         ]
-        exclude = ('phytosanitarytreatment', )
+        exclude = ('phytosanitarytreatment','commoditydescr' )
         widgets = {
               'commodity': autocomplete_light.ChoiceWidget('NamesAutocomplete'),
         }
@@ -589,6 +593,8 @@ class EmailUtilityMessageForm(forms.ModelForm):
         exclude = ( 'date','sent', 'groups')      
 EmailUtilityMessageFileFormSet = inlineformset_factory(EmailUtilityMessage,  EmailUtilityMessageFile,extra=1)
 
+
+
 class MassEmailUtilityMessageForm(forms.ModelForm):
 
     class Meta:
@@ -691,4 +697,155 @@ class UserMembershipHistoryForm(forms.ModelForm):
             'start_date': AdminDateWidget(),
             'end_date': AdminDateWidget(),
         }
-       
+      
+class CertificatesToolForm(forms.ModelForm):
+
+    class Meta:
+        model = CertificatesTool
+        fields = [
+           'title',
+           'topicnumber',
+          
+           ]
+           
+        widgets = {
+            
+        }   
+        exclude = ( 'filezip', 'users', 'groups','date') 
+        
+class B_CertificatesToolForm(forms.ModelForm):
+
+    class Meta:
+        model = B_CertificatesTool
+        fields = [
+           'title',
+            'user_name',
+            'role',
+            'text3',
+           ]
+           
+        widgets = {
+            
+        }   
+        exclude = ( 'filezip','groups','date') 
+        
+        
+class WorkshopCertificatesToolForm(forms.ModelForm):
+
+    class Meta:
+        model = WorkshopCertificatesTool
+        fields = [
+           'title',
+          
+           ]
+           
+        widgets = {
+           
+        }   
+        exclude = (  'creation_date','filezip','author', 'workshoptitle',)         
+
+class TopicForm(forms.ModelForm):
+
+    # country = forms.ChoiceField(widget=forms.Select(), initial='country')
+    # =todo: https://docs.djangoproject.com/en/dev/ref/forms/api/#dynamic-initial-values
+
+    class Meta:
+        model = Topic
+        fields = [
+            'title', 
+            'topicnumber', 
+            'topic_type',
+            'drafting_body', 
+            'priority',
+            'strategicobj',
+            'topicstatus', 
+            'addedtolist',
+            'addedtolist_sc',
+            'topic_under',
+            'specification_number',
+           
+         ]
+            
+            
+        exclude = ('author', 'slug', 'publish_date', 'modify_date', 'summary', 'is_version','topicnumber_version', 'parent_id', )
+        widgets = {
+      
+        }
+
+
+
+class TopicLeadsForm(forms.ModelForm):
+
+    # country = forms.ChoiceField(widget=forms.Select(), initial='country')
+    # =todo: https://docs.djangoproject.com/en/dev/ref/forms/api/#dynamic-initial-values
+
+    class Meta:
+        model = TopicLeads
+        fields = [
+            'user', 
+            'representing_country',
+            'meetingassistantassigned', 
+        ]
+        exclude = (  )
+        
+        widgets = {
+              'user': autocomplete_light.ChoiceWidget('UserAutocomplete'),
+        }
+
+
+TopicLeadsFormSet = inlineformset_factory(Topic, TopicLeads,  form=TopicLeadsForm, extra=2)
+
+class TopicAssistantsForm(forms.ModelForm):
+
+    # country = forms.ChoiceField(widget=forms.Select(), initial='country')
+    # =todo: https://docs.djangoproject.com/en/dev/ref/forms/api/#dynamic-initial-values
+
+    class Meta:
+        model = TopicAssistants
+        fields = [
+            'user', 
+            'representing_country',
+            'meetingassistantassigned', 
+        ]
+        exclude = (  )
+        
+        widgets = {
+              'user': autocomplete_light.ChoiceWidget('UserAutocomplete'),
+        }
+
+
+TopicAssistantsFormSet = inlineformset_factory(Topic, TopicAssistants,  form=TopicAssistantsForm, extra=2)
+
+
+
+
+class TransTopicForm(forms.ModelForm):
+    class Meta:
+        model =  TransTopic
+        fields = [
+           'lang', 
+           'title', 
+           'topic_under',
+           'specification_number',
+           
+           ]
+        widgets = {   
+           'lang' : forms.Select(attrs={'readonly':'True'}),
+        }
+
+        
+class MyToolForm(forms.ModelForm):
+
+
+    class Meta:
+        model = MyTool
+        fields = [
+            'title', 
+            'mytext', 
+         ]
+            
+            
+        exclude = ()
+        widgets = {
+            
+        }       

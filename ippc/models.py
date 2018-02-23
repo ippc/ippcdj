@@ -11,6 +11,7 @@ from django_countries.fields import CountryField
 
 from django.contrib.auth.models import User, Group
 
+
 from django.template.defaultfilters import slugify
 from datetime import datetime
 import os.path
@@ -36,9 +37,13 @@ from django.core.exceptions import ValidationError
 
 from mezzanine.utils.models import get_user_model_name
 from mezzanine.generic.models import ThreadedComment
+from django.shortcuts import  get_object_or_404
+import MySQLdb
+from settings import  DATABASES
 from t_eppo.models import Names
 
 
+User._meta.ordering=["username"]
 
 def user_unicode_patch(self):
     return '%s %s' % (self.first_name, self.last_name)
@@ -2022,12 +2027,23 @@ class IRSSActivityFile(models.Model):
         return os.path.basename(self.file.name) 
     def fileextension(self):
         return os.path.splitext(self.file.name)[1]
+   
+FUND_TYPE_0 =0
+FUND_TYPE_1 = 1
+FUND_TYPE_2 =2
+FUNDS = (
+    (FUND_TYPE_0, _("No funding")),
+    (FUND_TYPE_1, _("Airfare funding")),
+    (FUND_TYPE_2, _("Airfare and DSA funding")),
+)  
+
     
 class UserMembershipHistory(models.Model):
     user = models.ForeignKey("auth.User",verbose_name=_("User"), blank=True, null=True)
     group = models.ForeignKey(Group,  blank=True, null=True)
     start_date = models.DateTimeField(_("Nomination start date"), blank=True, null=True, editable=True)
     end_date = models.DateTimeField(_("Nomination end date"), blank=True, null=True, editable=True)
+    funding =  models.IntegerField(_("Funding"), choices=FUNDS, default=None,blank=True, null=True)
     countrypage = models.ForeignKey(CountryPage,blank=True, null=True )
     partnerpage = models.ForeignKey(PartnersPage,blank=True, null=True)
     file = models.FileField(max_length=255,blank=True, help_text='10 MB maximum file size.', verbose_name='Upload a file', upload_to='files/membership/%Y/%m/%d/', validators=[validate_file_extension])
@@ -2174,8 +2190,14 @@ class PhytosanitaryTreatment(Displayable, models.Model):
     treatment_pestidentity_other = models.CharField(_("Other pest"),help_text=_("type the text for the pest here if not found in the DB"),max_length=500,  blank=True, null=True)
     treatment_commodityidentity_other = models.CharField(_("Other commodity"),help_text=_("type the text for the commodity here if not found in the DB"),max_length=500,blank=True, null=True)
     
-    treatmentschedule = models.TextField(_("Treatment schedule"),
+    treatmentschedule = models.TextField(_("Treatment schedule: additional Information"),
         blank=True, null=True)
+        
+    chemical=models.CharField(_("Chemical (active ingredient)"), max_length=250 ,blank=True, null=True)
+    duration=models.CharField(_("Duration and Temperature"), max_length=250, blank=True, null=True)
+    temperature=models.CharField(_("Temperature"), max_length=250, blank=True, null=True)
+    concentration=models.CharField(_("Concentration"), max_length=250, blank=True, null=True)
+        
     countries = models.ManyToManyField(CountryPage, 
         verbose_name=_("Countries"), 
         related_name='pythotreatment_country_page', blank=True, null=True)
@@ -2222,6 +2244,60 @@ class PhytosanitaryTreatment(Displayable, models.Model):
 class PhytosanitaryTreatmentPestsIdentity(models.Model):
     phytosanitarytreatment= models.ForeignKey(PhytosanitaryTreatment)
     pest = models.ForeignKey(Names, null=True, blank=True)
+    pestidentitydescr = models.CharField(_("pestidentitydescr"), max_length=250, blank=True, null=True)
+   
+    
+    def save(self, *args, **kwargs):
+        ''' On save, update timestamps '''
+        if self.pest:
+            eppocodeid=self.pest.id
+            code =''
+            latin=''
+            family =''
+            order =''
+            common=''
+            pestidentity=''
+            if eppocodeid != None:
+                db = MySQLdb.connect(DATABASES["default"]["HOST"],DATABASES["default"]["USER"],DATABASES["default"]["PASSWORD"],DATABASES["default"]["NAME"])
+                cursor = db.cursor()
+
+                code=get_object_or_404(Names, id=eppocodeid).eppocode
+                if code!= '':    
+                    latin=get_object_or_404(Names, eppocode=code,isolang='la', preferred="true").fullname
+                    commonname=Names.objects.filter(eppocode=code,isolang='en',status='A').order_by('-m_date')
+                    if commonname.count()>0:
+                        common=commonname[0].fullname
+
+                    cursor.execute("SELECT eppocode_parent FROM t_eppo_links WHERE eppocode = '"+code+"';")
+                    str1= cursor.fetchall()
+                    codeparent=''
+                    for row in str1:
+                        codeparent=str1[0][0]
+                    cursor.execute("SELECT eppocode_parent FROM t_eppo_links WHERE eppocode = '"+codeparent+"';")
+                    codeparent2=''
+                    str2= cursor.fetchall()
+                    for row in str2:
+                        codeparent2=str2[0][0]
+                    family = get_object_or_404(Names, eppocode=codeparent2,isolang='la', preferred="true").fullname
+
+                    cursor.execute("SELECT eppocode_parent FROM t_eppo_links WHERE eppocode = '"+codeparent2+"';")
+                    codeparent3=''
+                    str3= cursor.fetchall()
+                    if len(str3)>0:
+                          codeparent3=str3[0][0]
+                    order = get_object_or_404(Names, eppocode=codeparent3,isolang='la', preferred="true").fullname
+            db.close()     
+            if  latin!='':
+                pestidentity=pestidentity+'<i>'+latin+"</i>"
+            if  family!='':
+                pestidentity=pestidentity+ "<br>"+ family
+            if  order!='':
+                pestidentity=pestidentity+  " : "+ order
+            if  common!='':
+                pestidentity=pestidentity+  "<br>"+ common
+            pestidentity=pestidentity+ "<br>"+ str(code)+"<br><br>"
+            self.pestidentitydescr=  pestidentity  
+        super(PhytosanitaryTreatmentPestsIdentity, self).save(*args, **kwargs)
    # def __unicode__(self):  
    #     return self  
 #    def name(self):
@@ -2230,12 +2306,634 @@ class PhytosanitaryTreatmentPestsIdentity(models.Model):
 class PhytosanitaryTreatmentCommodityIdentity(models.Model):
     phytosanitarytreatment= models.ForeignKey(PhytosanitaryTreatment)
     commodity = models.ForeignKey(Names, null=True, blank=True)
+    commoditydescr = models.CharField(_("pestidentitydescr"), max_length=250, blank=True, null=True)
+   
+    
+    def save(self, *args, **kwargs):
+        ''' On save, update timestamps '''
+        if self.commodity:
+            eppocodeid=self.commodity.id
+            code =''
+            latin=''
+            family =''
+            order =''
+            common=''
+            commoditydescr=''
+            if eppocodeid != None:
+                db = MySQLdb.connect(DATABASES["default"]["HOST"],DATABASES["default"]["USER"],DATABASES["default"]["PASSWORD"],DATABASES["default"]["NAME"])
+                cursor = db.cursor()
+
+                code=get_object_or_404(Names, id=eppocodeid).eppocode
+                if code!= '':    
+                    latin=get_object_or_404(Names, eppocode=code,isolang='la', preferred="true").fullname
+                    commonname=Names.objects.filter(eppocode=code,isolang='en',status='A').order_by('-m_date')
+                    if commonname.count()>0:
+                        common=commonname[0].fullname
+
+                    cursor.execute("SELECT eppocode_parent FROM t_eppo_links WHERE eppocode = '"+code+"';")
+                    str1= cursor.fetchall()
+                    codeparent=''
+                    for row in str1:
+                        codeparent=str1[0][0]
+                    cursor.execute("SELECT eppocode_parent FROM t_eppo_links WHERE eppocode = '"+codeparent+"';")
+                    codeparent2=''
+                    str2= cursor.fetchall()
+                    for row in str2:
+                        codeparent2=str2[0][0]
+                    family = get_object_or_404(Names, eppocode=codeparent2,isolang='la', preferred="true").fullname
+
+                    cursor.execute("SELECT eppocode_parent FROM t_eppo_links WHERE eppocode = '"+codeparent2+"';")
+                    codeparent3=''
+                    str3= cursor.fetchall()
+                    if len(str3)>0:
+                          codeparent3=str3[0][0]
+                    order = get_object_or_404(Names, eppocode=codeparent3,isolang='la', preferred="true").fullname
+            db.close()     
+            if  latin!='':
+                commoditydescr=commoditydescr+'<i>'+latin+"</i>"
+            if  family!='':
+                commoditydescr=commoditydescr+ "<br>"+ family
+            if  order!='':
+                commoditydescr=commoditydescr+  " : "+ order
+            if  common!='':
+                commoditydescr=commoditydescr+  "<br>"+ common
+            commoditydescr=commoditydescr+ "<br>"+ str(code)+"<br><br>"
+            self.commoditydescr=  commoditydescr  
+        super(PhytosanitaryTreatmentCommodityIdentity, self).save(*args, **kwargs)
+        
     def __unicode__(self):  
         return self.commodity  
     def name(self):
         return self.commodity
+
+
+
+            
+class DraftingBodyType(models.Model):
+    """ TOPIC DraftingBody Type"""
+    draftingbody=models.CharField(_("Drafting Body"), max_length=250)
+    draftingbody_fr = models.CharField(_("draftingbody fr"), max_length=500)
+    draftingbody_es = models.CharField(_("draftingbody es"), max_length=500)
+    draftingbody_ar = models.CharField(_("draftingbody ar"), max_length=500)
+    draftingbody_ru = models.CharField(_("draftingbody ru"), max_length=500)
+    draftingbody_zh = models.CharField(_("draftingbody zh"), max_length=500)
+    
+    def __unicode__(self):
+        return self.draftingbody
+#    
+#TOPIC_STATUS_01 = -1
+#TOPIC_STATUS_0 = 0
+#TOPIC_STATUS_1 = 1
+#TOPIC_STATUS_2 = 2
+#TOPIC_STATUS_3 = 3
+#TOPIC_STATUS_4 = 4
+#TOPIC_STATUS_5 = 5
+#TOPIC_STATUS_6 = 6
+#TOPIC_STATUS_7 = 7
+#TOPIC_STATUS_8 = 8
+#TOPIC_STATUS_9 = 9
+#TOPIC_STATUS_10 = 10
+#TOPIC_STATUS_11 = 11
+#TOPIC_STATUS_12 = 12
+#TOPIC_STATUS_13 = 13
+#TOPIC_STATUS_14 = 14
+#TOPIC_STATUS_15 = 15
+#TOPIC_STATUS_16 = 16
+#TOPIC_STATUS_17 = 17
+#TOPIC_STATUS_18 = 18
+#TOPIC_STATUS_19 = 18
+#TOPIC_STATUS_20 = 20
+#TOPIC_STATUS_21 = 21
+#TOPIC_STATUS_22 = 22
+#TOPIC_STATUS_23 = 23
+#TOPIC_STATUS_24 = 24
+#TOPIC_STATUS_25 = 25
+#TOPIC_STATUS_26 = 26
+#TOPIC_STATUS_27 = 27
+#TOPIC_STATUS_28 = 28
+#TOPIC_STATUS_29 = 29
+#TOPIC_STATUS_30 = 30
+#TOPIC_STATUS_31 = 31
+#TOPIC_STATUS_32 = 32
+#TOPIC_STATUS_33 = 33
+#TOPIC_STATUS_34 = 34
+#TOPIC_STATUS_35 = 35
+#TOPIC_STATUS_36 = 36
+#TOPIC_STATUS_37 = 37
+#TOPIC_STATUS_38 = 38
+#TOPIC_STATUS_39 = 39
+#TOPIC_STATUS_40 = 40
+#TOPIC_STATUS_41 = 41
+#TOPIC_STATUS_42 = 42
+#TOPIC_STATUS_43 = 43
+#TOPIC_STATUS_44 = 44
+#TOPIC_STATUS_45 = 45
+#TOPIC_STATUS_46 = 46
+
+
+
+	
+	
+
+
+#REMOVE:
+#    (TOPIC_STATUS_2, _("01. Added to the List of Topics by CPM")),
+#      (TOPIC_STATUS_18, _("01. Added to list of topics")),
+#   (TOPIC_STATUS_3, _("02. Draft specification approved by SC for Consultation")),
+#    (TOPIC_STATUS_19, _("02. Draft PT under development ")),
+#    (TOPIC_STATUS_20, _("02. Author selected")),
+#    (TOPIC_STATUS_5, _("03. Draft term to SC for removal from list of topics")),
+#   
+#    (TOPIC_STATUS_7, _("03. Draft DP under  development")),
+#    (TOPIC_STATUS_21, _("03. Draft PT approved by SC for first consultation")),
+#(TOPIC_STATUS_8, _("04. Experts selected")),
+#    (TOPIC_STATUS_23, _("04. Draft PT to second consultation")),
+#    (TOPIC_STATUS_24, _("04. Draft DP under Expert Consultation")),
+#    (TOPIC_STATUS_25, _("04. Draft term to SC for first consultation")),
+#  (TOPIC_STATUS_9, _("05. Draft ISPM under development by Drafting Group / review by steward")), 
+#    (TOPIC_STATUS_10, _("05. Draft DP to SC for first consultation")),
+#    (TOPIC_STATUS_11, _("05. Draft term approved by SC for first consultation")),
+#    (TOPIC_STATUS_27, _("05. Draft PT member comments being reviewed by TPPT ")),
+#    
   
+#    (TOPIC_STATUS_12, _("06. Draft ISPM approved by SC for first consultation")), 
+#    (TOPIC_STATUS_28, _("06. Draft ISPM to second or subsequent consultation ")),
+#    (TOPIC_STATUS_29, _("06. Draft PT with TPPT comments to SC for recommendation to CPM ")),
+#    (TOPIC_STATUS_30, _("06. Draft term consultation comments being reviewed by TPG  ")),
+#   
+    
+#    (TOPIC_STATUS_15, _("07. Draft term to second consultation")),
+#    (TOPIC_STATUS_31, _("07. Draft ISPM recommended for adoption")),  
+#    (TOPIC_STATUS_32, _("07. Draft PT recommended by SC to CPM")),  
+#    (TOPIC_STATUS_33, _("07. Draft DP, member comments being reviewed by TPDP")),   
+#
+#
+#     (TOPIC_STATUS_34, _("08. ISPM adopted")),
+#
+#    (TOPIC_STATUS_35, _("08. Draft DP recommended by TPDP to SC for adoption on behalf of the CPM")),
+#    (TOPIC_STATUS_36, _("08. Draft term to additional consultation")),
+    
+#    (TOPIC_STATUS_37, _("09. Topic removed from the List of topics")),
+#    (TOPIC_STATUS_38, _("09. PT adopted")),
+#    (TOPIC_STATUS_39, _("09. Draft term to SC for recommendation to CPM")),
+#  
+#    (TOPIC_STATUS_40, _("10. DP adopted by SC on behalf of CPM")),
+#    (TOPIC_STATUS_41, _("10. Draft term recommended by SC to CPM for adoption")),
+      
+	
+#    
+#
+#    (TOPIC_STATUS_42, _("11. SC / TPDP reviewing objection")),
+#    (TOPIC_STATUS_43, _("11. Draft term to CPM for a vote")),
+#
+#    (TOPIC_STATUS_44, _("12. TPG to do a across ISPM review")),
+#    (TOPIC_STATUS_45, _("13. TPG noted term in the general recommendations on consistency")),
+#    (TOPIC_STATUS_46, _("14. Term adopted")),
+TOPIC_STATUS_01 = -1
+TOPIC_STATUS_0 = 0
+TOPIC_STATUS_1 = 1
+TOPIC_STATUS_4 = 4
+TOPIC_STATUS_6 = 6
+TOPIC_STATUS_13 = 13
+TOPIC_STATUS_14 = 14
+TOPIC_STATUS_16 = 16
+TOPIC_STATUS_17 = 17
+TOPIC_STATUS_22 = 22
+TOPIC_STATUS_26 = 26
+
+TOPIC_STATUS_CHOICES = (
+   (TOPIC_STATUS_01, _("-- select --")),
+   (TOPIC_STATUS_0, _("00. Pending")),
+   (TOPIC_STATUS_1, _("01. Topic added to the List of topics")),
+   (TOPIC_STATUS_4, _("02. Draft specification to consultation")),
+   (TOPIC_STATUS_6, _("03. Specification approved")),
+   (TOPIC_STATUS_22, _("04. Draft ISPM under development")),
+   (TOPIC_STATUS_26, _("05. Draft DP to expert consultation")),
+   (TOPIC_STATUS_13, _("06. Draft ISPM to first consultation")),
+   (TOPIC_STATUS_14, _("07. Draft ISPM to second or subsequent consultation")),   
+   (TOPIC_STATUS_16, _("08. Draft ISPM recommended for adoption")),
+   (TOPIC_STATUS_17, _("09. ISPM adopted")),
+    )
+
+
+
+
+
+
+
+
+
+
+
+
+TOPIC_PRIORITY_01 = -1
+TOPIC_PRIORITY_0 = 0
+TOPIC_PRIORITY_1 = 1
+TOPIC_PRIORITY_2 = 2
+TOPIC_PRIORITY_3 = 3
+TOPIC_PRIORITY_4 = 4
+
+
+TOPIC_PRIORITY_CHOICES = (
+    (TOPIC_PRIORITY_01, _("-- please select --")),
+    (TOPIC_PRIORITY_0, _("N/A")),    
+    (TOPIC_PRIORITY_1, _("1")),
+    (TOPIC_PRIORITY_2, _("2")),
+    (TOPIC_PRIORITY_3, _("3")),
+    (TOPIC_PRIORITY_4, _("4")),
+    
+)
+ 
+TOPIC_TYPE_0 = 0
+TOPIC_TYPE_1 = 1
+TOPIC_TYPE_2 = 2
+TOPIC_TYPE_CHOICES = (
+    (TOPIC_TYPE_0, _("Technical Area for TPs and Topics for TPDP")),
+    (TOPIC_TYPE_1, _("Topics for EWGs, TPFF, TPFQ, TPPT")),
+    (TOPIC_TYPE_2, _("Subjects for  TPs")),
+)
+
+
+CPM_0=0
+CPM_1998 = 1998
+CPM_1999 = 1999
+CPM_2001 = 2001
+CPM_2002 = 2002
+CPM_2003 = 2003
+CPM_2004 = 2004
+CPM_2005 = 2005
+CPM_2006 = 2006
+CPM_2007 = 2007
+CPM_2008 = 2008
+CPM_2009 = 2009
+CPM_2010 = 2010
+CPM_2011 = 2011
+CPM_2012 = 2012
+CPM_2013 = 2013
+CPM_2014 = 2014
+CPM_2015 = 2015
+CPM_2016 = 2016
+CPM_2017 = 2017
+CPM_2018 = 2018
+CPM_2019 = 2019
+CPM_2020 = 2020
+CPM_2021 = 2021
+CPM_2022 = 2022
+CPM_1994 = 1994
+CPMS = (
+    (CPM_0, _("-- select --")),
+    (CPM_1994, ("1994")),
+    (CPM_1998, ("ICPM 01")),
+    (CPM_1999, _("ICPM 02")),
+    (CPM_2001, _("ICPM 03")),
+    (CPM_2002, _("ICPM 04")),
+    (CPM_2003, _("ICPM 05")),
+    (CPM_2004, _("ICPM 06")),
+    (CPM_2005, _("ICPM 07")),
+    (CPM_2006, _("CPM 01")),
+    (CPM_2007, _("CPM 02")),
+    (CPM_2008, _("CPM 03")),
+    (CPM_2009, _("CPM 04")),
+    (CPM_2010, _("CPM 05")),
+    (CPM_2011, _("CPM 06")),
+    (CPM_2012, _("CPM 07")),
+    (CPM_2013, _("CPM 08")),
+    (CPM_2014, _("CPM 09")),
+    (CPM_2015, _("CPM 10")),
+    (CPM_2016, _("CPM 11")),
+    (CPM_2017, _("CPM 12")),
+    (CPM_2018, _("CPM 13")),
+    (CPM_2019, _("CPM 14")),
+    (CPM_2020, _("CPM 15")),
+    (CPM_2021, _("CPM 16")),
+    (CPM_2022, _("CPM 17")),
+)
+
+SC_TYPE_0 = 0
+SC_TYPE_1 = 1
+SC_TYPE_2 = 2
+SC_TYPE_3 = 3
+SC_TYPE_4 = 4
+SC_TYPE_5 = 5
+SC_TYPE_6 = 6
+SC_TYPE_7 = 7
+SC_TYPE_8 = 8
+SC_TYPE_9 = 9
+SC_TYPE_10 = 10
+SC_TYPE_11 = 11
+SC_TYPE_12 = 12
+SC_TYPE_13 = 13
+SC_TYPE_14 = 14
+SC_TYPE_15 = 15
+SC_TYPE_16 = 16
+SC_TYPE_17 = 17
+SC_TYPE_18 = 18
+SC_TYPE_19 = 19
+SC_TYPE_20 = 20
+SC_TYPE_21 = 21
+SC_TYPE_22 = 22
+SC_TYPE_23 = 23
+SC_TYPE_24 = 24
+SC_TYPE_25 = 25
+SC_TYPE_26 = 26
+SC_TYPE_27 = 27
+SC_TYPE_28 = 28
+SC_TYPE_29 = 29
+SC_TYPE_30 = 30
+SC_TYPE_31 = 31
+SC_TYPE_32 = 32
+SC_TYPE_33 = 33
+SC_TYPE_34 = 34
+SC_TYPE_35 = 35
+SC_TYPE_36 = 36
+SC_TYPE_37 = 37
+SC_TYPE_38 = 38
+SC_TYPE_CHOICES = (
+    (SC_TYPE_0, _("-- select --")),
+    (SC_TYPE_1, _("2004-05 SC")),
+    (SC_TYPE_2, _("2004-11 SC")),
+    (SC_TYPE_3, _("2005-04 SC")),
+    (SC_TYPE_4, _("2005-11 SC")),
+    (SC_TYPE_5, _("2006-05 SC")),
+    (SC_TYPE_6, _("2006-11 SC")),
+    (SC_TYPE_7, _("2007-04 SC")),
+    (SC_TYPE_8, _("2007-11 SC")),
+    (SC_TYPE_9, _("2008-04 SC")),
+    (SC_TYPE_10, _("2008-11 SC")),
+    (SC_TYPE_11, _("2009-04 SC")),
+    (SC_TYPE_12, _("2009-11 SC")),
+    (SC_TYPE_13, _("2010-04 SC")),
+    (SC_TYPE_14, _("2010-11 SC")),
+    (SC_TYPE_15, _("2011-04 SC")),
+    (SC_TYPE_16, _("2011-11 SC")),
+    (SC_TYPE_17, _("2012-04 SC")),
+    (SC_TYPE_18, _("2013-11 SC")),
+    (SC_TYPE_19, _("2013-05 SC")),
+    (SC_TYPE_20, _("2013-11 SC")),
+    (SC_TYPE_21, _("2014-05 SC")),
+    (SC_TYPE_22, _("2014-11 SC")),
+    (SC_TYPE_23, _("2015-05 SC")),
+    (SC_TYPE_24, _("2015-11 SC")),
+    (SC_TYPE_25, _("2016-05 SC")),
+    (SC_TYPE_26, _("2016-11 SC")),
+    (SC_TYPE_27, _("2017-05 SC")),
+    (SC_TYPE_28, _("2017-11 SC")),
+    (SC_TYPE_29, _("2018-05 SC")),
+    (SC_TYPE_30, _("2018-11 SC")),
+    (SC_TYPE_31, _("2019-05 SC")),
+    (SC_TYPE_32, _("2019-11 SC")),
+    (SC_TYPE_33, _("2020-05 SC")),
+    (SC_TYPE_34, _("2020-11 SC")),
+    (SC_TYPE_35, _("2021-05 SC")),
+    (SC_TYPE_36, _("2021-11 SC")),
+    (SC_TYPE_37, _("2022-05 SC")),
+    (SC_TYPE_38, _("2022-11 SC")),
+    
+)
+class StratigicObjective(models.Model):
+    """ StratigicObjective """
+    strategicobj = models.CharField(_("Stratigic objective"), max_length=500)
+    description = models.CharField(_("Description"), max_length=500)
+    strategicobj_fr = models.CharField(_("strategicobj fr"), max_length=500)
+    strategicobj_es = models.CharField(_("strategicobj es"), max_length=500)
+    strategicobj_ar = models.CharField(_("strategicobj ar"), max_length=500)
+    strategicobj_ru = models.CharField(_("strategicobj ru"), max_length=500)
+    strategicobj_zh = models.CharField(_("strategicobj zh"), max_length=500)
+    def __unicode__(self):
+        return self.strategicobj
         
+    class Meta:
+        verbose_name_plural = _("StratigicObjectives")
+    pass    
+
+class Topic(Displayable, models.Model):
+    """  Topic """
+
+    # slug - provided by mezzanine.core.models.slugged (subclassed by displayable)
+    # title - provided by mezzanine.core.models.slugged (subclassed by displayable)
+    # status - provided by mezzanine.core.models.displayable
+    # publish_date - provided by mezzanine.core.models.displayable
+    
+    modify_date = models.DateTimeField(_("Modified date"),
+        blank=True, null=True, editable=False)
+    summary = models.TextField(_("Summary or Short Description"),
+        blank=True, null=True)
+
+    topicnumber = models.CharField(_("Topic number"),help_text=_("Topic number (e.g. 2008-01)"),max_length=50,  blank=False, null=False,unique=True)
+    
+    topic_type =models.IntegerField(_("Topic type"),choices=TOPIC_TYPE_CHOICES, default=TOPIC_TYPE_0,help_text=_("Choose:\nTechnical Area for TPs and Topics for TPDP [Table 1]\rTopics for EWGs, TPFF, TPFQ, TPPT [Table 2: select Drafting body 'EWG' or 'TPFF' or 'TPFQ' or 'TPPT']<br>Subjects for  TPs [Table 3: select Drafting body 'TPDP' | Table 4: select Drafting body 'TPPT' | Table 5: select Drafting body 'TPG']"))
+    #topic_sub_type =models.IntegerField(_("Subject"),choices=TOPIC_SUB_CHOICES, default=TOPIC_TYPE_0,help_text=_("Chose a topic sub-type such as 'Subject' for the Table 3,4 and 5 of topics"))
+    
+    drafting_body = models.ManyToManyField(DraftingBodyType,
+        verbose_name=_("Drafting Body"),
+        related_name='drafting_body+', blank=True, null=True,
+        help_text=_("Select all that apply."))
+    priority =models.IntegerField(_("Priority"),choices=TOPIC_PRIORITY_CHOICES, default=TOPIC_PRIORITY_0)
+    topicstatus =models.IntegerField(_("Status"), choices=TOPIC_STATUS_CHOICES, default=TOPIC_STATUS_0)
+    strategicobj = models.ManyToManyField(StratigicObjective,verbose_name=_("Stratigic Objectives"), blank=True, null=True,help_text=_("Select all that apply."),)
+    addedtolist =models.IntegerField(_("Added to the list at CPM"),  choices=CPMS, default=None)
+    addedtolist_sc =models.IntegerField(_("Added to the list at SC"),choices=SC_TYPE_CHOICES, default=SC_TYPE_0)
+    
+    specification_number = models.CharField(_("Specification number"),max_length=500,  blank=True, null=True)
+    topic_under = models.CharField(_("Topic under technical area (if applicable)"), max_length=500,  blank=True, null=True)
+    
+
+    is_version = models.BooleanField(verbose_name=_("oldversion"),
+                                        default=False)
+    parent_id = models.CharField(max_length=50,blank=True, null=True,)  
+    topicnumber_version = models.CharField(_("Topic number Version"),max_length=50,  blank=True, null=True)
+    
+    objects = SearchableManager()
+    search_fields = ("title", "summary")
+
+    class Meta:
+        verbose_name_plural = _("Topics")
+    #abstract = True
+
+    def __unicode__(self):
+        return self.topicnumber
+       
+   
+    def priority_verbose(self):
+        return dict(TOPIC_PRIORITY_CHOICES)[self.priority]
+    def topicstatus_verbose(self):
+        return dict(TOPIC_STATUS_CHOICES)[self.topicstatus]
+    def addedtolist_verbose(self):
+        return dict(CPMS)[self.addedtolist]
+    def topic_type_verbose(self):
+        return dict(TOPIC_TYPE_CHOICES)[self.topic_type]
+    def addedtolist_sc_verbose(self):
+        return dict(SC_TYPE_CHOICES)[self.addedtolist_sc]
+
+      
+    # http://devwiki.beloblotskiy.com/index.php5/Django:_Decoupling_the_URLs  
+    @models.permalink # or: get_absolute_url = models.permalink(get_absolute_url) below
+    def get_absolute_url(self): # "view on site" link will be visible in admin interface
+        """Construct the absolute URL for a it."""
+        return ('topic-detail', (), {
+                            'slug': self.slug})
+            
+    def save(self, *args, **kwargs):
+        ''' On save, update timestamps '''
+        if not self.id:
+            self.publish_date = datetime.today()
+            # Newly created object, so set slug
+            self.slug = slugify(self.title)
+        self.modify_date = datetime.now()
+        super(Topic, self).save(*args, **kwargs)
+        
+class TopicLeads(models.Model):
+    topic = models.ForeignKey(Topic, verbose_name=_("topic"))
+    
+    user = models.ForeignKey(User,verbose_name=_("User"), blank=True, null=True)
+    representing_country = models.ForeignKey(CountryPage,  verbose_name=_("Representing Country "), blank=True, null=True )
+    meetingassistantassigned = models.CharField(_("Date assigned"), max_length=500,  blank=True, null=True)
+  
+    class Meta:
+        verbose_name = _("TopicLeads")
+        verbose_name_plural = _("TopicLeads")
+    
+ 
+        
+    
+    def __unicode__(self):
+        name=''
+        if self.user!=None:
+            userippc = get_object_or_404(IppcUserProfile, user_id=self.user.id)
+            val=userippc.gender
+            gender=''
+            if val!= None:
+                if val == 1:
+                    gender= "Mr."
+                elif val==2: 
+                    gender= "Ms."
+                elif val==3:    
+                    gender= "Mrs."
+                elif val==4:    
+                    gender= "Professor."
+                elif val==5:    
+                    gender= "M."
+                elif val==6:    
+                    gender= "Mme."
+                elif val==7:    
+                    gender= "Dr."
+                elif val==8:    
+                    gender= "Sr."
+                elif val==9:    
+                    gender= "Sra."
+        
+            name=gender+' '+userippc.first_name+' '+(userippc.last_name).upper()
+       
+        return name
+         
+        
+class TopicAssistants(models.Model):
+    topic = models.ForeignKey(Topic, verbose_name=_("topic"))
+    
+    user = models.ForeignKey(User,verbose_name=_("User"), blank=True, null=True)
+    representing_country = models.ForeignKey(CountryPage,  verbose_name=_("Representing Country "), blank=True, null=True )
+    meetingassistantassigned = models.CharField(_("Date assigned"), max_length=500,  blank=True, null=True)
+  
+    class Meta:
+        verbose_name = _("TopicAssistants")
+        verbose_name_plural = _("TopicAssistants")
+        
+    def __unicode__(self):
+        name=''
+        if self.user!=None:
+            userippc = get_object_or_404(IppcUserProfile, user_id=self.user.id)
+            val=userippc.gender
+            gender=''
+            if val!= None:
+                if val == 1:
+                    gender= "Mr."
+                elif val==2: 
+                    gender= "Ms."
+                elif val==3:    
+                    gender= "Mrs."
+                elif val==4:    
+                    gender= "Professor."
+                elif val==5:    
+                    gender= "M."
+                elif val==6:    
+                    gender= "Mme."
+                elif val==7:    
+                    gender= "Dr."
+                elif val==8:    
+                    gender= "Sr."
+                elif val==9:    
+                    gender= "Sra."
+        
+            name=gender+' '+userippc.first_name+' '+(userippc.last_name).upper()
+       
+        return name  
+          
+class WorkshopCertificatesTool(models.Model):
+    title = models.CharField(_("Title"),help_text=_("title of the workshop certificates tool item "), blank=True, null=True, max_length=250)
+    workshoptitle = models.CharField(_("Workshop title"), max_length=200,help_text=_("Text that will appear in the Certitificate"))
+    creation_date = models.DateTimeField('Creation date')
+    filezip = models.FileField(max_length=255,blank=True, help_text='10 MB maximum file size.', verbose_name='Upload a file', upload_to='files/w_certificates/%Y/%m/%d/', validators=[validate_file_extension])
+    author = models.ForeignKey(User, related_name="authorwcertificate")
+    def save(self, *args, **kwargs):
+        ''' On save, update timestamps '''
+        if not self.id:
+            self.creation_date = datetime.today()
+            
+        super(WorkshopCertificatesTool, self).save(*args, **kwargs)
+    
+ 
+            
+class CertificatesTool(models.Model):
+    title = models.CharField(_("Title"), help_text=_("Text appearing in the certificate in the TITLE place"), blank=True, null=True, max_length=250)
+    topicnumber = models.ForeignKey(Topic,help_text=_("Select from the list the 'Topic' of discussion in meetings"),blank=True, null=True)
+    date = models.DateTimeField('date')
+    creation_date = models.DateTimeField('creationdate')
+    filezip = models.FileField(max_length=255,blank=True, help_text='10 MB maximum file size.', verbose_name='Upload a file', upload_to='files/certificates/%Y/%m/%d/', validators=[validate_file_extension])
+    author = models.ForeignKey(User, related_name="authorcertificate")
+    
+               
+    users = models.ManyToManyField(User,
+            verbose_name=_("Select  single users:"),help_text=_("CTRL/Command+mouseclick for more than 1 selection"),
+            related_name='certificatesusers', blank=True, null=True)
+    groups = models.ManyToManyField(Group,
+            verbose_name=_("Select groups:"),help_text=_("CTRL/Command+mouseclick for more than 1 selection"),
+            related_name='certificatesgroups', blank=True, null=True)
+
+    def save(self, *args, **kwargs):
+        ''' On save, update timestamps '''
+        if not self.id:
+            self.date = datetime.today()
+            self.creation_date = datetime.today()
+            
+        super(CertificatesTool, self).save(*args, **kwargs)
+
+            
+class B_CertificatesTool(models.Model):
+    title = models.CharField(_("Title"), help_text=_("Text appearing in the certificate"), blank=True, null=True, max_length=250)
+    date = models.DateTimeField('date')
+    filezip = models.FileField(max_length=255,blank=True, help_text='10 MB maximum file size.', verbose_name='Upload a file', upload_to='files/b_certificates/%Y/%m/%d/', validators=[validate_file_extension])
+    author = models.ForeignKey(User, related_name="authorbcertificate")
+
+    user_name = models.CharField(_("User name"), help_text=_("Text of the user appearing in the certificate"), blank=True, null=True, max_length=250)
+    role = models.CharField(_("Role"), help_text=_("Text of the role appearing in the certificate"), blank=True, null=True, max_length=250)
+    text3 = models.CharField(_("Meeting/Committee name"), help_text=_("Text of the Meeting/Committee appearing in the certificate"), blank=True, null=True, max_length=250)
+               
+    groups = models.ManyToManyField(Group,
+            verbose_name=_("Select groups:"),help_text=_("CTRL/Command+mouseclick for more than 1 selection"),
+            related_name='cbertificatesgroups', blank=True, null=True)
+
+    def save(self, *args, **kwargs):
+        ''' On save, update timestamps '''
+        if not self.id:
+            self.date = datetime.today()
+            
+        super(B_CertificatesTool, self).save(*args, **kwargs)
+        
+class MyTool(models.Model):
+    title = models.CharField(_("Title"), help_text=_("Text appearing in the certificate"), blank=True, null=True, max_length=250)
+    mytext =models.CharField(_("mytext"), help_text=_("Text appearing"), blank=True, null=True, max_length=250)
+        
+                
 class Translatable(models.Model):
     """ Translations of user-generated content - https://gist.github.com/renyi/3596248"""
     lang = models.CharField(max_length=5, choices=settings.LANGUAGES)
@@ -2348,7 +3046,17 @@ class TransFAQsItem(Translatable, RichText, Slugged):
         verbose_name_plural = _("Translated FAQsItems")
         ordering = ("lang",)
 
-       
+
+#
+class TransTopic(Translatable,   Slugged):
+    translation = models.ForeignKey(Topic, related_name="translation")
+    topic_under = models.CharField(max_length=1000, blank=True)
+    specification_number = models.CharField(max_length=1000, blank=True)
+
+    class Meta:
+        verbose_name = _("Translated Topic")
+        verbose_name_plural = _("Translated Topics")
+        ordering = ("lang",)
 
 #
 #class TransReportingObligation(Translatable,   Slugged):
