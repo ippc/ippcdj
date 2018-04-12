@@ -1,6 +1,10 @@
 {% load ippc_tags pages_tags translate_tags mezzanine_tags i18n future staticfiles accounts_tags %}
 
-<form action="">
+
+
+<form action=""  method="POST" enctype="multipart/form-data" >
+{% csrf_token %}
+    
 <select data-placeholder="Go to Country..." tabindex="3" class="chosen-select" id="selectcountry">
   <option value="">{% trans "Go to Country" %}</option>
   {% get_latest ippc.CountryPage 250 as country_pages %}

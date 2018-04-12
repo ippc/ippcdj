@@ -153,17 +153,7 @@ $(function() {
 });
 </script>
 <script src='{% static "/static/canvasjs/canvasjs.min.js" %}'></script>
-  <p>
- <b>Select year for statistics:</b><br>
-  <form action="" >
-<select data-placeholder="Go to year..." tabindex="3"  id="sel_year" >
- <option value="">{% trans "Go to year ... " %}</option>
-  {% for i in selyear_range %}
-     <option  {% if curryear == i %}selected{% endif %} value="/countries/statistics/year-legislations/{{i}}">{{i}}</option>    
- {% endfor %}
-</select>
-</form>
- </p>
+  
 <p><b>{% trans "Date generated" %}: </b>  {{ dategenerate|date:"d M Y, H:m" }}</p><br>
 <p>{% trans "The tables below show the detailed breakdown by region of Phytosanitary legislation  made available by Contracting Parties on the IPP in the 'NRO year of Pest reports' " %}:  1 {% trans "April" %} {{prevyear}} - 31 {% trans "March" %} {{curryear}}</p>
 

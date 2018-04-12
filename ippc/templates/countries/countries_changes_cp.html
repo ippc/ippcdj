@@ -116,7 +116,8 @@ chart.render();
   </h1> 
   <p>
  <b>Select year for statistics:</b><br>
-  <form action="" >
+  <form action="" method="POST">
+        {% csrf_token %}
 <select data-placeholder="Go to year..." tabindex="3"  id="sel_year" >
  <option value="">{% trans "Go to year ... " %}</option>
   {% for i in selyear_range %}
