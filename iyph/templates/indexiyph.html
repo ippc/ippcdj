@@ -1,0 +1,335 @@
+{% extends "baseiyph.html" %}
+{% load i18n future mezzanine_tags iyph_tags keyword_tags disqus_tags %}
+
+{% block meta_title %}{% if page %}{{ page.richtextpage.meta_title }}{% else %}{% trans "Iyph" %}{% endif %}{% endblock %}
+
+{% block meta_keywords %}{% metablock %}
+{% keywords_for page as keywords %}
+{% for keyword in keywords %}
+    {% if not forloop.first %}, {% endif %}
+    {{ keyword }}
+{% endfor %}
+{% endmetablock %}{% endblock %}
+
+{% block meta_description %}{% metablock %}
+{{ page.description }}
+{% endmetablock %}{% endblock %}
+
+{% block title %}
+{% if page %}
+{# {% editable page.title %}{{ page.title }}{% endeditable %} #}
+{{ page.title }}
+{% else %}
+{% trans " " %}
+{% endif %}
+{% endblock %}
+
+{% block breadcrumb_menu %}
+
+{% endblock %}
+
+{% block main %}
+
+
+
+
+
+ <script type="text/javascript">
+     //<![CDATA[ 
+        $(window).load(function() {
+           // $('.carousel').carousel({
+        $('#myCarousel, #myCarousel1').carousel({                         
+             interval: 5000
+            })
+        });//]]>  
+</script>
+<div class="row-fluid">
+<div class="span12">
+        <div id="myCarousel" class="carousel slide vertical" data-ride="carousel">
+           
+            <div class="carousel-inner" role="listbox">
+                <div class="item active">
+                           <img src="/static/img/iyph-stc/elements/foto1.jpg">
+                        </div>
+                    <div class="item">
+                         <img src="/static/img/iyph-stc/elements/foto2b.jpg">
+                        </div>
+                    <div class="item">
+                         <img src="/static/img/iyph-stc/elements/foto3.jpg">
+                        </div>
+                 <div class="item">
+                         <img src="/static/img/iyph-stc/elements/foto4.jpg">
+                        </div>
+                 <div class="item">
+                         <img src="/static/img/iyph-stc/elements/foto5.jpg">
+                        </div>
+
+                </div>   
+            </div>
+        </div>   
+</div>
+                    
+                    
+
+
+
+
+
+
+<div class="container-fluid">	
+<div class="row-fluid">
+    <div class="span8 middle" >
+    <div style="background-color:#e3f1ea; margin-top:20px; padding: 10px ">
+    <p>Healthy plants constitute the foundation for all life on earth, making up the oxygen we breathe and over 80% of the food we eat. Plant health is the key to the sustainable intensification of agriculture to feed the growing global population by 2050. Thus, recognition, advocacy and support for the promotion of plant health is of paramount importance if the international community is to guarantee plant resources for a food secure world based on stable and sustainable ecosystems. With this in mind, in July 2017 the FAO Conference approved a draft resolution requesting the General Assembly of the United Nations to consider declaring 2020 as the International Year of Plant Health (IYPH).</p>
+      </div>
+    
+     
+<!--h4><br>IYPH Steering Committee</h4>
+<div class="span7" style=" margin-left: 0 ">
+ <ul id="regionsmap2"> 
+        <li id="africa2"><a><span><b><u>Africa:</u></b><br><br>
+                    <img width="38px" src="/static/img/iyph-stc/kenneth_msiska.jpg"/><br>
+                    <b>Mr Kenneth Kajarayekha MSISKA</b><br>
+                    msiska12@yahoo.co.uk<br><br>
+                    <img width="38px" src="/static/img/iyph-stc/xxx.jpg"/><br>
+                   <b>Mr Abdoulaye Moussa ABDERAMAN</b><br>
+                   charafa2009@gmail.com</span></a></li>
+                    
+        <li id="asia2"><a><span><b><u>Asia:</u></b> <br><br>
+                    <img width="38px" src="/static/img/iyph-stc/kyu_ock.jpg"/><br>
+                    <b>Ms Kyu-Ock YIM</b><br>
+                    koyim@korea.kr</span></a></li>
+                    
+        <li id="europe2"><a><span><b><u>Europe:</u></b><br><br>
+                    <img width="38px" src="/static/img/iyph-stc/ralf_lopian.jpg"/><br>
+                    <b>Mr Ralf LOPIAN</b><br>
+                    ralf.lopian@mmm.fi<br><br>
+                    <img width="38px" src="/static/img/iyph-stc/xxx.jpg"/><br>
+                    <b>Ms Christine HERMENING</b><br>
+                    Christine.Hermening@bmel.bund.de<br>
+                    </span></a></li>
+                    
+        <li id="latinamericacaribbean2"><a><span><b><u>Latin America and Caribbean:</u></b><br><br>
+                    <img width="38px" src="/static/img/iyph-stc/alvaro_sepulveda.jpg"/><br>
+                    <b>Mr &Aacute;lvaro SEP&Uacute;LVEDA LUQUE</b><br>
+                    alvaro.sepulveda@sag.gob.cl<br><br>
+                    <img width="38px" src="/static/img/iyph-stc/ryan_amselm.jpg"/><br>
+                    <b>Mr Ryan ANSELM</b><br>
+                    anselmr@dominica.gov.dm</span></a></li>
+                    
+        <li id="neareast2"><a><span><b><u>Near East:</u></b><br><br>
+                <img width="38px" src="/static/img/iyph-stc/pauline_eid.jpg"/><br>
+                <b>Ms Pauline EID</b><br>
+                peid@agriculture.gov.lb<br><br>
+                <img width="38px" src="/static/img/iyph-stc/anwar_gamel.jpg"/><br>
+                <b>Mr Gamil Anwar Mohammed RAMADHAN</b><br>
+                      abuameerm21@gmail.com
+             </a></li>
+        <li id="northamerica2"><a>
+                <span>
+                    <b><u>North America</u></b><br><br>
+                      <img width="38px" src="/static/img/iyph-stc/xxx.jpg"/><br>
+                     <b>Ms Heather CURLETT</b><br>
+                    Heather.L.Curlett@aphis.usda.gov<br>
+                     </span></a></li>
+        <li id="southwestpacific2"><a><span><b><u>South West Pacific:</u></b><br><br>
+                   <img width="38px" src="/static/img/iyph-stc/Viliami_Kami.jpg"/><br>
+                   <b>Mr Viliami Kami</b><br>
+                    maf-ento@kalianet.to<br><br>
+                   <img width="38px" src="/static/img/iyph-stc/lois_ransom.jpg"/><br>
+                   <b>Ms Lois RANSOM</b><br>
+                   Lois.ransom@agriculture.gov.au <br>
+                </span></a></li>
+          <li id="ippc2"><a><span><b><u>IPPC SC:</u></b><br><br>
+                    <img width="38px" src="/static/img/iyph-stc/xxx.jpg"/><br>
+                    <b>Mr Jesulindo NERI DE SOUZA JUNIOR</b><br>
+                    jesulindo.junior@agricultura.gov.br<br><br>
+                    <img width="38px" src="/static/img/iyph-stc/shaza_omar.jpg"/><br>
+                    <b>Ms Shaza OMAR</b><br>
+                    shaza.roshdy@gmail.com<br><br>     
+                    <img width="38px" src="/static/img/iyph-stc/xxx.jpg"/><br>
+                    <b>Mr Martin WARD</b><br>
+                    martin.ward@eppo.int<br><br>
+                    <img width="38px" src="/static/img/iyph-stc/xxx.jpg"/><br>
+                    <b> Mr Lucien KOUAME KONAN </b><br>
+                    l_kouame@yahoo.fr<br><br>
+                    <img width="38px" src="/static/img/iyph-stc/xxx.jpg"/><br>
+                    <b> Mr Dominique PELLETIER</b><br>
+                   dominique.pelletier@inspection.gc.ca<br><br> </span></a></li>   
+        
+        
+    </ul></div-->
+<h4><br>IYPH Steering Committee</h4>
+<div class="span7" style=" margin-left: 0 "><!--img src="/static/img/iyph-stc/elements/map.png"-->
+<ul id="regionsmap2"> 
+        <li id="africa2"><a><span><h6>Africa</h6>
+                    <img width="38px" src="/static/img/iyph-stc/kenneth_msiska.jpg"><br>
+                    <b>Mr Kenneth Kajarayekha MSISKA</b><br>
+                    msiska12@yahoo.co.uk<br><br><p style="clear:both"></p>
+                    <img width="38px" src="/static/img/iyph-stc/xxx.jpg"><br>
+                   <b>Mr Abdoulaye Moussa ABDERAMAN</b><br>
+                   charafa2009@gmail.com</span></a></li>
+                    
+        <li id="asia2"><a><span><h6>Asia</h6>
+                    <img width="38px" src="/static/img/iyph-stc/kyu_ock.jpg"><br>
+                    <b>Ms Kyu-Ock YIM</b><br>
+                    koyim@korea.kr</span></a></li>
+                    
+        <li id="europe2"><a><span><h6>Europe</h6>
+                    <img width="38px" src="/static/img/iyph-stc/ralf_lopian.jpg"><br>
+                    <b>Mr Ralf LOPIAN</b><br>
+                    ralf.lopian@mmm.fi<br><br><br><br>
+                    <img width="38px" src="/static/img/iyph-stc/xxx.jpg"><br>
+                    <b>Ms Christine HERMENING</b><br>
+                    Christine.Hermening@bmel.bund.de<br>
+                    </span></a></li>
+                    
+        <li id="latinamericacaribbean2"><a><span><h6>Latin America and Caribbean</h6>
+                    <img width="38px" src="/static/img/iyph-stc/alvaro_sepulveda.jpg"><br>
+                    <b>Mr &Aacute;lvaro SEP&Uacute;LVEDA LUQUE</b><br>
+                    alvaro.sepulveda@sag.gob.cl<br>
+                    <p style="clear:both"></p>
+                    <img width="38px" src="/static/img/iyph-stc/ryan_amselm.jpg"><br>
+                    <b>Mr Ryan ANSELM</b><br>
+                    anselmr@dominica.gov.dm</span></a></li>
+                    
+        <li id="neareast2"><a><span><h6>Near East</h6>
+                <img width="38px" src="/static/img/iyph-stc/pauline_eid.jpg"><br>
+                <b>Ms Pauline EID</b><br>
+                peid@agriculture.gov.lb
+                                                <p style="clear:both"></p>
+                <img width="38px" src="/static/img/iyph-stc/anwar_gamel.jpg"><br>
+                <b>Mr Gamil Anwar Mohammed RAMADHAN</b><br>
+                      abuameerm21@gmail.com
+             </span></a></li>
+        <li id="northamerica2"><a>
+                <span>
+                    <h6>North America</h6>
+                      <img width="38px" src="/static/img/iyph-stc/xxx.jpg"><br>
+                     <b>Ms Heather CURLETT</b><br>
+                    Heather.L.Curlett@aphis.usda.gov<br>
+                     </span></a></li>
+        <li id="southwestpacific2"><a><span><h6>South West Pacific</h6>
+                   <img width="38px" src="/static/img/iyph-stc/Viliami_Kami.jpg"><br>
+                   <b>Mr Viliami Kami</b><br>
+                    maf-ento@kalianet.to
+                                                <p style="clear:both"></p>
+                   <img width="38px" src="/static/img/iyph-stc/lois_ransom.jpg"><br>
+                   <b>Ms Lois RANSOM</b><br>
+                   Lois.ransom@agriculture.gov.au <br>
+                </span></a></li>
+          <li id="ippc2"><a><span><h6>IPPC SC</h6>
+                    <img width="38px" src="/static/img/iyph-stc/xxx.jpg"><br>
+                    <b>Mr Jesulindo NERI DE SOUZA JUNIOR</b><br>
+                    jesulindo.junior@agricultura.gov.br<br><br>
+                    <img width="38px" src="/static/img/iyph-stc/shaza_omar.jpg"><br>
+                    <b>Ms Shaza OMAR</b><br>
+                    shaza.roshdy@gmail.com<br><br>     
+                    <img width="38px" src="/static/img/iyph-stc/xxx.jpg"><br>
+                    <b>Mr Martin WARD</b><br>
+                    martin.ward@eppo.int<br><br>
+                    <img width="38px" src="/static/img/iyph-stc/xxx.jpg"><br>
+                    <b> Mr Lucien KOUAME KONAN </b><br>
+                    l_kouame@yahoo.fr<br><br>
+                    <img width="38px" src="/static/img/iyph-stc/xxx.jpg"><br>
+                    <b> Mr Dominique PELLETIER</b><br>
+                   dominique.pelletier@inspection.gc.ca<br><br> </span></a></li>        
+    </ul></div>
+		
+<div class="span5" >
+ {% iyph_recent_resources as recent_resources %}
+ {% if recent_resources %}
+    <div class="span2" ><img src="/static/img/iyph-stc/elements/1list.png" > </div>
+    <div class="span7 docs">
+    {% for recent_resource in recent_resources %}
+        {% if recent_resource.title == 'IYPH Steering Committee Membership list' %}
+          <p><a href="/static/media/{{ recent_resource.file }}">Membership list</a></p>
+        {% endif%}
+    {% endfor %}
+    </div>
+    <div class=" row" style="padding:10px "></div>
+    <div class="span2" style=" margin-left:0 " ><img src="/static/img/iyph-stc/elements/2docs.png" > </div>
+    <div class="span7 docs">
+        <p><strong>Related documents</strong></p>
+        {% for recent_resource in recent_resources %}
+            {% if recent_resource.title != 'IYPH Steering Committee Membership list' %}
+                <p><a href="/static/media/{{ recent_resource.file }}">{{ recent_resource.title }}</a> </p>
+            {% endif%}
+        {% endfor %}
+        <p class="more"><a href="/iyph/iyph-committee/">[... more]</a></p>
+    </div>
+  {% endif%}
+</div>
+
+
+
+<div class="row" style="padding:30px "></div>
+<div class="span12" style="background-color: #efefef; padding:10px;margin-left:0 " >
+   <img src="/static/img/iyph-stc/elements/map-tab.png">
+        </div> 		
+{% iyph_tool_categories as iyph_tool_cats %}
+
+{% if iyph_tool_cats %}
+    <div class="row" style="padding:10px "></div>
+    <h4>Resources </h4>
+    <div class="clearfix">
+    
+    {% for category in iyph_tool_cats %}
+        {%if  forloop.counter == 3 %}
+            <div class="row" style="padding:10px;"></div>
+        {% endif %}
+        {{category|richtext_filter|safe}}
+    {% endfor %}
+    </div>
+	
+
+{% endif %}
+          
+            
+            
+
+</div>
+	
+ <div class="span4 right">
+{% iyph_recent_posts limit=100 as iyph_posts %}     
+{% if iyph_posts %}
+<div class="panel">
+  <h3>News</h3>
+  {% for entry in iyph_posts|slice:":3" %}
+    <h5><a href="{{ entry.get_absolute_url }}">{% with entry|get_object_translation as translated_page %}{{ translated_page.title|safe}}{% endwith %}</a></h5>
+    <h6>{% trans "Posted " %}{% blocktrans with sometime=entry.publish_date|timesince %}{{ sometime }} ago{% endblocktrans %}</h6>
+    <p>{% with entry|get_object_translation as translated_page %}
+       {{ translated_page.content|richtext_filter|safe |truncatewords_html:30 }}
+      {% endwith %}
+    </p>
+   {% endfor%}
+   <p class="more"><a href="/iyph/postlist">[... more]</a></p>
+{% endif%}
+</div>
+
+
+
+<div class=" row" style="padding:10px "></div>
+{% iyph_recent_chronology as recent_chronology %}
+{% if recent_chronology %}
+    <div class="panel">
+    <h3>{% trans "Upcoming events" %}</h3>
+        <ul class="unstyled recent-posts">
+        {% for chronology in recent_chronology %}
+            <li><b><p>{{chronology.publish_date|date:"M Y" }}</p></a></b></li>
+            <li><a href="{% url 'chronology-detail' chronology.slug %}"> {% with chronology|get_object_translation as translated_page %}
+            {{ translated_page.title|safe }}
+    {% endwith %}</a></li>
+        {% endfor %}
+        </ul>
+    <p class="more"><a href="/iyph/chronology/list">[... more]</a></p>
+    </div>
+    {% endif %}
+</div> 
+
+</div> 
+</div> 
+
+{% endblock %}
+
+
