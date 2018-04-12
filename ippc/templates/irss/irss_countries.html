@@ -24,7 +24,8 @@ Country Profiles provide economic, phytosanitary and trade-related data for each
 
 
 
-<form action="">
+<form action="" method="POST">
+        {% csrf_token %}
 <select data-placeholder="Go to Country..." tabindex="3" class="chosen-select" id="selectcountry">
   <option value="">Go to Country</option>
   <option value="/countries/-">-</option>
