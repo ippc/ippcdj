@@ -33,6 +33,8 @@ $(function() {
     {% else %}
     {% fields_for unposted_comment_form %}
     {% endif %}
+     
+        {% csrf_token %}
     <label for="id_commentfile">Upload a file</label>
     <input id="id_commentfile" name="id_commentfile" type="file" />
     <div class="form-actions">
