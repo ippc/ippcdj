@@ -411,6 +411,12 @@ class EventParticipants(models.Model):
             return dict(FUNDS)[self.funding]
         else:
             return ''
+    def representing_region_verbose(self):
+        if self.representing_region != None:
+            return dict(REGIONS)[self.representing_region]
+        else:
+            return ''    
+        
         
   
 class EventRelationManager(models.Manager):
