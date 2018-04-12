@@ -207,18 +207,19 @@ Viale delle Terme di Caracalla - Room B767B<br>
                                     <h6><a href="/{{ LANGUAGE_CODE }}/core-activities/governance/">{% blocktrans %}Governance &amp; Strategies{% endblocktrans %}</a></h6>
                                     <ul class="unstyled">
                                         <li><a href="/{{ LANGUAGE_CODE }}/core-activities/governance/cpm/">{% blocktrans %}CPM{% endblocktrans %}</a></li>
-                                        <li><a href="/{{ LANGUAGE_CODE }}/core-activities/governance/bureau/">{% blocktrans %}Bureau{% endblocktrans %}</a> - <a href="/{{ LANGUAGE_CODE }}/core-activities/governance/bureau/ippc-financial-committee-fc/">{% blocktrans %}FC{% endblocktrans %}</a> - <a href="/{{ LANGUAGE_CODE }}/core-activities/governance/strategic-planning-group/">{% blocktrans %}SPG{% endblocktrans %}</a></li>
+                                        <li><a href="/{{ LANGUAGE_CODE }}/core-activities/governance/bureau/">{% blocktrans %}Bureau{% endblocktrans %}</a> - <a href="/{{ LANGUAGE_CODE }}/core-activities/governance/bureau/ippc-financial-committee-fc/">{% blocktrans %}FC{% endblocktrans %}</a> </li>
+                                        <li><a href="/{{ LANGUAGE_CODE }}/core-activities/governance/strategic-planning-group/">{% blocktrans %}SPG - Strategic Planning Group{% endblocktrans %}</a></li>
                                         <li><a href="/{{ LANGUAGE_CODE }}/core-activities/standards-setting/standards-committee/">{% blocktrans %}SC - Standards Committee{% endblocktrans %}</a></li>
-                                        <li><a href="/{{ LANGUAGE_CODE }}/core-activities/capacity-development/capacity-development-committee">{% blocktrans %}CDC - Capacity Development{% endblocktrans %}</a></li>
-                                        <li><a href="/{{ LANGUAGE_CODE }}/core-activities/dispute-avoidance-dispute-settlement/subsidiary-body-dispute-settlement/">{% blocktrans %}SBDS - Dispute Settlement{% endblocktrans %}</a></li>
+                                        <li><a href="/{{ LANGUAGE_CODE }}/core-activities/capacity-development/capacity-development-committee">{% blocktrans %}IC - Implementation Committee{% endblocktrans %}</a></li>
+                                        <!--li><a href="/{{ LANGUAGE_CODE }}/core-activities/dispute-avoidance-dispute-settlement/subsidiary-body-dispute-settlement/">{% blocktrans %}SBDS - Dispute Settlement{% endblocktrans %}</a></li-->
                                     </ul>
                                 </div>
                                 <div class="span4">       
                                     <h6><a href="/{{ LANGUAGE_CODE }}/core-activities/standards-and-implementation/">{% blocktrans %}Standards &amp; Implementation{% endblocktrans %}</a></h6>
                                     <ul class="unstyled">
                                         <li><a href="/{{ LANGUAGE_CODE }}/core-activities/standards-setting/">{% blocktrans %}Standard Setting{% endblocktrans %}</a></li>
-                                        <li><a href="/{{ LANGUAGE_CODE }}/core-activities/capacity-development/">{% blocktrans %}Capacity Development{% endblocktrans %}</a></li>
-                                        <li><a href="/{{ LANGUAGE_CODE }}/core-activities/implementation-review-and-support-system/">{% blocktrans %}Implementation{% endblocktrans %}</a></li>
+                                        <li><a href="/{{ LANGUAGE_CODE }}/core-activities/capacity-development/">{% blocktrans %}Implementation and Facilitation{% endblocktrans %}</a></li>
+                                        <li><a href="/{{ LANGUAGE_CODE }}/core-activities/implementation-review-and-support-system/">{% blocktrans %}IRSS{% endblocktrans %}</a></li>
                                         <li><a href="/{{ LANGUAGE_CODE }}/core-activities/dispute-settlement/">{% blocktrans %}Dispute Avoidance{% endblocktrans %}</a></li>
                                         <li><a href="/{{ LANGUAGE_CODE }}/ephyto">{% trans "ePhyto" %}</a></li>
                                     </ul>
@@ -453,11 +454,11 @@ Viale delle Terme di Caracalla - Room B767B<br>
            
             <div class="panel">
                 <h4>{% trans "Links" %}</h4>
-                <form action="">
-                    <select data-placeholder="RPPOs" tabindex="3" class="chosen-select" id="selectrppos">
+              
+                   <select data-placeholder="RPPOs" tabindex="3" class="chosen-select" id="selectrppos">
                         <option value="">{% trans "RPPOs" %}</option>
                         <option value="http://www.apppc.org">{% trans "Asia and Pacific Plant Protection Commission (APPPC)" %}</option>
-                        <option value="http://www.comunidadandina.org">{% trans "Comunidad Andina (CA)" %}</option>
+                        <option value="http://www.comunidadandina.org">{% trans "Comunidad Andina (CAN)" %}</option>
                         <option value="http://www.cosave.org">{% trans "Comite de Sanidad Vegetal del Cono Sur (COSAVE)" %}</option>
                         <option value="http://www.eppo.int">{% trans "European and Mediterranean Plant Protection Organization (EPPO)" %}</option>
                         <option value="http://www.au-iapsc.org/">{% trans "Inter-African Phytosanitary Council (IAPSC)" %}</option>>
@@ -466,35 +467,33 @@ Viale delle Terme di Caracalla - Room B767B<br>
                         <option value="http://www.oirsa.org/portal/index.html">{% trans "Organismo Internacional Regional de Sanidad Agropecuaria (OIRSA)" %}</option>
                         <option value="http://www.spc.int/lrd/plantprotectionorganisation-/pppo">{% trans "Pacific Plant Protection Organization (PPPO)" %}</option>
                     </select>                 
-                </form> 
-                <form action="">
+                <h6></h6>   
+               
                     <select data-placeholder="Technical" tabindex="3" class="chosen-select" id="selecttec">
                         <option value="">{% trans "Technical" %}</option>
                         <option value="http://www.fao.org">{% trans "FAO" %}</option>    
                         <option value="https://www.iaea.org/">{% trans "IAEA" %}</option>    
 
                     </select>                 
-                </form>   
+                 
+<h6></h6>  
 
 
-
-                <form action="">
+               
                     <select data-placeholder="Trade" tabindex="3" class="chosen-select" id="trade">
                         <option value="">{% trans "Trade" %}</option>
                         <option value="https://www.wto.org/">{% trans "WTO" %}</option>
                         <option value="http://www.oie.int/">{% trans "OIE" %}</option>
                         <option value="http://www.codexalimentarius.org/">{% trans "Codex" %}</option>
-                    </select>                 
-                </form>
-                <form action="">
+                    </select>  
+<h6></h6>  
                     <select data-placeholder="Environment" tabindex="3" class="chosen-select" id="environment">
                         <option value="">{% trans "Environment" %}</option>
                         <option value="http://www.planttreaty.org/">{% trans "The International Treaty on Plant Genetic Resources for Food and Agriculture" %}</option>
                         <option value="http://www.cbd.int/">{% trans "CBD" %}</option>
-                    </select>                 
-                </form>
-                  <form action="">
-                    <select data-placeholder="Stakeholders" tabindex="3" class="chosen-select" id="stakeholders">
+                    </select>
+<h6></h6>  
+                     <select data-placeholder="Stakeholders" tabindex="3" class="chosen-select" id="stakeholders">
                         <option value="">{% trans "Stakeholders" %}</option>
                         <option value="http://www.unog.ch/80256EE600585943/(httpPages)/04FBBDD6315AC720C1257180004B1B2F?OpenDocument">{% trans "BWC" %}</option>
                         <option value="http://www.iica.int/es">{% trans "IICA" %}</option>
@@ -507,7 +506,7 @@ Viale delle Terme di Caracalla - Room B767B<br>
                         <option value="http://www.standardsfacility.org">{% trans "Standard Trade and Development Facility" %}</option>
 
                     </select>                 
-                </form>
+              
             </div>
       
         </div>
