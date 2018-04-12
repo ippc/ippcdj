@@ -4,7 +4,7 @@ from django.conf.urls import patterns, url
 from mezzanine.conf import settings
 from mezzanine.pages.models import RichTextPage
 
-from .views import ChronologyListView,ChronologyDetailView,Page1View
+from .views import ChronologyListView,ChronologyDetailView,Page1View,Page2View
 
 # Leading and trailing slahes for urlpatterns based on setup.
 # _slashes = (
@@ -29,9 +29,16 @@ urlpatterns = patterns("iyph.views",
     url(r"^chronology/list/$", view=ChronologyListView.as_view(), name='chronology-list'),
     url(r"^chronology/list/(?P<slug>.*)/$", view=ChronologyDetailView.as_view(), name='chronology-detail'),
     url(r"^iyph-toolbox/$", view=Page1View.as_view(), name='page-detail'),
+    url(r"^iyph-committee/$", view=Page2View.as_view(), name='page-2-detail'),
+    
     
     url(r"^(?P<slug>.*)/$", "iyph_post_detail", name="iyph_post_detail"),
-    url(r"^$", "iyph_post_list", name="iyph_post_list"),
-  
+    url(r"^$", "homeview", name="homeview"),
+    #url(r"^postlist$", "iyph_post_list", name="iyph_post_list_l"),
+    url(r"^postlist$", "iyph_post_list", name="iyph_post_list_l"),
+   
+    
+    #url("^$", direct_to_template, {"template": "index1.html"}, name="hoame"),
+
     
 )

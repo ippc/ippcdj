@@ -3,7 +3,7 @@ from datetime import datetime
 from django.db.models import Count, Q
 
 from iyph.forms import IyphPostForm
-from iyph.models import IyphPost, IyphCategory, IYPHSteeringCommitteeResource,IYPHToolBoxItem,IYPHToolBoxCategory
+from iyph.models import IyphPost, IyphCategory, IYPHSteeringCommitteeResource,IYPHToolBoxItem,IYPHToolBoxCategory,Chronology
 from mezzanine.generic.models import Keyword
 from mezzanine import template
 from mezzanine.utils.models import get_user_model
@@ -99,7 +99,7 @@ def iyph_recent_resources():
     """
     iyph_resources = IYPHSteeringCommitteeResource.objects.published().order_by('id')
     title_or_slug = lambda s: Q(title=s) | Q(slug=s)
-   
+    
     return list(iyph_resources[:100])
 
 @register.as_tag
@@ -124,28 +124,65 @@ def iyph_tool_categories(*args):
     Put a list of categories for iyph posts into the template context.
     """
     results=[]
+    aaa=''
     iyphtoolboxitem = IYPHToolBoxItem.objects.published()
-    
     categories = IYPHToolBoxCategory.objects.all().order_by('id')
-    print(categories)
+    h=0
     for c in categories:
-        print(c)
+        imgsrc=''
+        if c.title=='Advocacy':
+            imgsrc='3docs'
+        elif c.title=='Presentations':
+            imgsrc='4presentation'
+        elif c.title=='Videos':
+            imgsrc='5videos'
+        elif c.title=='Articles':
+            imgsrc='6articles'
+         
+        if h==0:
+           aaa='<div class="span6 resources box" style="background-color: #efefef; margin-left:0;" >'
+        elif h ==1:
+            aaa='<div class="span6 resources box" style="background-color: #efefef;" >'
+        elif h ==2:
+            aaa='<div class="span6 resources box" style="background-color: #efefef; margin-left:0;" >'
+        elif h ==3:
+            aaa='<div class="span6 resources box" style="background-color: #efefef;" >'
+        
+        aaa+='<div class="span2" ><img src="/static/img/iyph-stc/elements/'+imgsrc+'.png" > </div>'
+        aaa+='<div class="span10 docs">'
+        aaa+='<p><strong>'+str(c)+'</strong></p>'
         items = iyphtoolboxitem.filter(categories=c).order_by('id')
-        aaa="<b>"+str(c)+":</b><ul class='unstyled recent-posts'>"
+        y=0
         for itm in items:
             url=''
             if itm.url != "":
                 url=itm.url
             else:
                 url='/static/media/'+str(itm.file)
-            aaa=aaa+"<li><a href='"+str(url)+"'>"+str(itm.title)+"</a></li>"
-        aaa=aaa+"</ul> "
-  
-
+            if y<3:
+                aaa+="<p> <a href='"+str(url)+"'>"+str(itm.title)+"</a></p>"
+            y+=1
+             
+        aaa=aaa+'<p class="more"><a href="/iyph/iyph-toolbox/">[... more]</a></p></div> '
         results.append(aaa)
-
+        h+=1
     return results
 
+@register.as_tag
+def iyph_recent_chronology():
+    """
+    Put a list of recently published iyph_recentchronology   into the template
+    context. 
+
+    Usage::
+
+        {% iyph_recent_resources 5 as iyph_recent_resources %}
+     
+    """
+    iyph_chronology = Chronology.objects.published().order_by('id')
+    title_or_slug = lambda s: Q(title=s) | Q(slug=s)
+   
+    return list(iyph_chronology[:3])
 
 @register.inclusion_tag("admin/includes/quick_iyph.html", takes_context=True)
 def quick_iyph(context):
