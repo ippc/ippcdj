@@ -25,17 +25,64 @@
 <p>{% trans "Thank you!<br>IPPC Secretariat" %}</p>
     
  <p class="pull-right">
-  <a href="javascript:history.go(-1)">{% trans "« Go back" %}</a>
+  <a href="javascript:history.go(-1)">{% trans "Â« Go back" %}</a>
   {% if user.is_superuser  %}
       <br> <small><a class="btn btn-small btn-info" href="/admin/ippc/mediakitdocument/add/">+ {% trans "Add new" %}</a></small>
   {% endif %}
 </p>
 
-{% for obj in latest %}
+<script src="https://code.jquery.com/jquery-2.1.4.js"></script>
    
+  <style id="jsbin-css">
+.left{
+  /*width:496px;*/
+}
+
+.left .box{
+  display:inline-block;
+  width:120px;
+  height:120px;
+  background:#D4E0E4;
+  color:#fff;
+  font-size: 12pt;
+  transition:0.3s;
+  margin-bottom:4px;
+  padding:10px;
+}
+.left .box:hover{
+  background:orange;
+  cursor:pointer;
+}
+
+.right .box{
+  padding:10px;
+}
+.right .box + .box{
+  display:none;
+}
+</style>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+
+
+
+    <div class="left">
+      <div class="box"><b><i class="fa fa-map-o" style="font-size:24px"></i> <br>Brochures<br> </b></div>
+      <div class="box"><b><i class="fa fa-book" style="font-size:24px"></i><br>Manuals <br>& Reports </b></div>
+      <div class="box"><b><i class="fa fa-file-text-o " style="font-size:24px"></i><br>Factsheets<br> </b></div>
+      <div class="box"><b><i class="fa fa-image" style="font-size:24px"></i><br>Posters<br> </b></div>
+      <div class="box"><b><i class="fa fa-calendar" style="font-size:24px"></i><br>Calendars<br> </b></div>
+      <div class="box"><b><i class="fa fa-graduation-cap" style="font-size:24px"></i><br>E-Learning<br></b></div>
+      <div class="box"><b> <br>Logo</b></div>
+    </div>
+
+    <div class="right">
+     
+         
+{% for obj in latest %}
+    <div class="box" style="display: none;">
 <table class="table table-condensed  " id="publications">
     <tr>
-        <th  style="background-color: #356B76;; color: white">{{obj.0}}</th> 
+        <th  style="background-color: #356B76;color: white">{{obj.0}}</th> 
     </tr> 
     <tr>
        <td>
@@ -43,15 +90,21 @@
     
         {% for o in obj.1 %}
             {% if forloop.counter|divisibleby:2 %}{% else %}<tr>{% endif %}
-            <td style="background-color: #D4E0E4;; width: 50px" >{% if o.image %}<img  src='{{ MEDIA_URL }}{{o.image}}' width="40px" height="20px">{%endif%}&#160;</td>
-            <td style="background-color: #fafae6; width: 250px"><b style="vertical-align: top;">{{o.title}}</b>{% if user.is_superuser %}&#160;<a class="small" href="/admin/ippc/mediakitdocument/{{ o.id }}"><i class="icon-edit"></i> Edit as Admin</a>{% endif %}<br><br>
-            <span class="icon icon-download-alt"></span>&#160;&#160;
-            {%if o.file_en %}<a href="{{ MEDIA_URL }}{{ o.file_en }}">English</a>&#160;&#160;{% endif %}
-            {%if o.file_es %}<a href="{{ MEDIA_URL }}{{ o.file_es }}">Espa&ntilde;ol</a>&#160;&#160;{% endif %}
-            {%if o.file_fr %}<a href="{{ MEDIA_URL }}{{ o.file_fr }}">Fran&ccedil;ais</a>&#160;&#160;{% endif %}
-            {%if o.file_ru %}<a href="{{ MEDIA_URL }}{{ o.file_ru }}">&Rcy;&ucy;&scy;&scy;&kcy;&icy;&jcy;</a>&#160;&#160;{% endif %}
-            {%if o.file_ar %}<a href="{{ MEDIA_URL }}{{ o.file_ar }}">العربية</a>&#160;&#160;{% endif %}&#160;&#160;
-            {%if o.file_zh %}<a href="{{ MEDIA_URL }}{{ o.file_zh }}">中文</a>&#160;&#160;{% endif %}
+            <td style="background-color: #D4E0E4; width: 20px;" align="center">{% if o.image %}<img  src='{{ MEDIA_URL }}{{o.image}}' width="40px" height="20px">{%endif%}&#160;</td>
+            <td style="background-color: #eee; width: 250px"><b style="vertical-align: top;">{{o.title}}</b>{% if user.is_superuser %}&#160;<a class="small" href="/admin/ippc/mediakitdocument/{{ o.id }}"><i class="icon-edit"></i> Edit as Admin</a>{% endif %}<br><br>
+            <span class="fa fa-download"></span>&#160;&#160;
+            {%if o.file_en %}<a href="{{ MEDIA_URL }}{{ o.file_en }}">En</a>&#160;&#160;{% endif %}
+            {%if o.link_en %}<a href="{{ o.link_en }}">En</a>&#160;&#160;{% endif %}
+            {%if o.file_es %}<a href="{{ MEDIA_URL }}{{ o.file_es }}">Es</a>&#160;&#160;{% endif %}
+            {%if o.link_es %}<a href="{{ o.link_es }}">Es</a>&#160;&#160;{% endif %}
+            {%if o.file_fr %}<a href="{{ MEDIA_URL }}{{ o.file_fr }}">Fr</a>&#160;&#160;{% endif %}
+            {%if o.link_fr %}<a href="{{ o.link_fr }}">Fr</a>&#160;&#160;{% endif %}
+            {%if o.file_ru %}<a href="{{ MEDIA_URL }}{{ o.file_ru }}">Ru</a>&#160;&#160;{% endif %}
+            {%if o.link_ru %}<a href="{{ o.link_ru }}">Rs</a>&#160;&#160;{% endif %}
+            {%if o.file_ar %}<a href="{{ MEDIA_URL }}{{ o.file_ar }}">Ar</a>&#160;&#160;{% endif %}
+            {%if o.link_ar %}<a href="{{ o.link_ar }}">Ar</a>&#160;&#160;{% endif %}
+            {%if o.file_zh %}<a href="{{ MEDIA_URL }}{{ o.file_zh }}">Zh</a>&#160;&#160;{% endif %}
+            {%if o.link_zh %}<a href="{{ o.link_zh }}">Zh</a>&#160;&#160;{% endif %}
             </td>
            {% if forloop.counter|divisibleby:2 %}</tr>{% else %}{% endif %}
         {% endfor %}
@@ -59,10 +112,26 @@
       </td>
   </tr>
 </table>
-
+</div>
  {% endfor %}
+   </div>
 
-<script src="{% static "js/jquery.dataTables.js" %}"></script>
+      
+        <script>try {var $rightBox = $(".right .box");
+$(".left .box").hover(function(){
+  $rightBox.hide();
+  $rightBox.eq($(this).index()).show();
+});
+$(".left .box").mouseleave(function(){
+  $rightBox.hide();
+  $rightBox.eq($(this).index()).show();//.style.display.block;
+});
+} catch (error) { throw error; }
+
+//# sourceURL=xehefu.js
+</script>
+
+      <script src="{% static "js/jquery.dataTables.js" %}"></script>
   <script src="{% static "js/DT_bootstrap.js" %}"></script>
 
 

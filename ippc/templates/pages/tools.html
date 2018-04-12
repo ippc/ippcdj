@@ -11,7 +11,7 @@
    </tr>
 
 
-{% if user.is_superuser %} 
+{% if user.is_superuser %}  
    <tr><td><i class="icon-user"></i> Create new account</td><td><a  class="btn btn-small btn-info" href="/account/signup/"><i class="icon-edit icon-white"></i> Create new account</a> </td><td>  </td></tr>
    <tr><td><i class="icon-user"></i> Check auto-registered users pending approval</td><td> </td><td><a href="/accounts/pendingapproval/"> See list </a> </td></tr>
    <tr><td><i class="icon-envelope"></i> Email utility</td><td> <a  class="btn btn-small btn-info" href="/emailutility/send/"><i class="icon-edit icon-white"></i> Create new message</a></td><td><a href="/emailutility/all/"> See list of sent messages</a></li></tr>
