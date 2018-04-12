@@ -1,0 +1,78 @@
+{% extends "baseiyph.html" %}
+{% load i18n future mezzanine_tags iyph_tags keyword_tags disqus_tags %}
+
+{% block meta_title %}{% if page %}{{ page.richtextpage.meta_title }}{% else %}{% trans "Iyph Resources list" %}{% endif %}{% endblock %}
+
+{% block meta_keywords %}{% metablock %}
+{% keywords_for page as keywords %}
+{% for keyword in keywords %}
+{% if not forloop.first %}, {% endif %}
+{{ keyword }}
+{% endfor %}
+{% endmetablock %}{% endblock %}
+
+{% block meta_description %}{% metablock %}
+{{ page.description }}
+{% endmetablock %}{% endblock %}
+
+{% block title %}
+{% if page %}
+{# {% editable page.title %}{{ page.title }}{% endeditable %} #}
+
+{% else %}
+{% trans " " %}
+{% endif %}
+{% endblock %}
+
+{% block breadcrumb_menu %}
+<li><a href="/{{ LANGUAGE_CODE }}/iyph">{% trans "Home" %}</a><span class="divider">/</span></li>
+<li class="active">IYPH Resources</li>
+{% endblock %}
+
+{% block main %}
+    <h1>{% trans "IYPH Resources" %}</h1>
+        
+
+		
+
+{% if results %}
+    <div class="row" style="padding:30px "></div>
+
+    <div class="clearfix">
+    
+    {% for category in results %}{{category|richtext_filter|safe}}{% endfor %}
+    </div>
+	
+
+{% endif %}
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</div> 
+
+
+
+
+
+
+
+{% endblock %}
+
+
+{% block pageinfo %}{% endblock pageinfo %}

@@ -31,7 +31,147 @@
 {% endblock %}
 
 {% block main %}
-<h1>{% trans "CHRONOLOGY OF IYPH 2020 DEVELOPMENTS" %}</h1>
+
+
+
+ <script type="text/javascript">
+      var tl;
+            var startProj = SimileAjax.DateTime.parseIso8601DateTime("2014-03");
+            var endProj = SimileAjax.DateTime.parseIso8601DateTime("2020");
+            
+            var event_data = 
+              {
+              "dateTimeFormat": "iso8601",
+              "events":[
+                    {% autoescape off %} 
+                        {{data}}
+                     {% endautoescape %}  
+                     ]
+              };
+
+            function onLoad() {
+                var tl_el = document.getElementById("tl");
+                var eventSource = new Timeline.DefaultEventSource();
+                var theme = Timeline.ClassicTheme.create();
+                theme.autoWidth = false; // Set the Timeline's "width" automatically.
+                theme.autoWidthMargin=10;
+                theme.event.bubble.width = 400;
+                theme.event.bubble.height = 120;
+
+                theme.ether.backgroundColors = ["#E6E6E6","#F7F7F7"];
+
+                theme.timeline_start = startProj;
+                theme.timeline_stop  = endProj;
+
+                theme.event.track.height = "5";
+                theme.event.tape.height = 5; // px
+                theme.event.track.height = theme.event.tape.height + 6;
+
+                var d = SimileAjax.DateTime.parseIso8601DateTime("2018-01");
+                var bandInfos = [
+
+                    Timeline.createBandInfo({
+                        layout:         'original',// original, overview, detailed
+                        eventSource:    eventSource,
+                        date:           d,
+                        width:          200,
+                        intervalUnit:  Timeline.DateTime.MONTH,
+                        intervalPixels: 50,
+                        trackHeight: 10,
+                        theme :theme
+
+                    }),
+                    Timeline.createBandInfo({
+                        layout:         'overview',
+                        date:           d,
+                        trackHeight:    0.5,
+                        trackGap:       0.2,
+                        eventSource:    eventSource,
+                        width:          40,
+                        intervalUnit:   Timeline.DateTime.YEAR,
+                        //showEventText:  false,
+                        intervalPixels: 150,
+                        theme :theme
+                    })
+
+                ];
+
+                bandInfos[1].highlight = true;
+                bandInfos[1].syncWith = 0;
+
+
+
+                bandInfos[1].decorators = [
+                    new Timeline.SpanHighlightDecorator({
+                        startDate:  startProj,
+                        endDate:    endProj,
+                        inFront:    false,
+                        color:      "red",
+                        opacity:    30,
+                        startLabel: "",
+                        endLabel:   "",
+                        theme:      theme
+                    })
+                ];
+
+
+                tl = Timeline.create(tl_el, bandInfos, Timeline.HORIZONTAL);
+                // show loading message
+                tl.showLoadingMessage();
+
+                eventSource.loadJSON(event_data, document.location.href);
+
+                // dismiss loading message
+                tl.hideLoadingMessage();
+
+                // setup highlight filters
+                setupFilterHighlightControls(document.getElementById("controls"), tl, [0,1], theme);
+
+            }
+            function centerProjStart() {
+                tl.getBand(1).setCenterVisibleDate(startProj);
+            }
+            
+            function centerProjEnd() {
+                tl.getBand(1).setCenterVisibleDate(endProj);
+            }
+
+            var resizeTimerID = null;
+            function onResize() {
+                if(resizeTimerID == null) {
+                    resizeTimerID = window.setTimeout(function() {
+                        resizeTimerID = null;
+                        tl.layout();
+                    }, 500);
+                }
+            }
+   
+   </script>
+    <style type="text/css">
+            .special_event2 {}
+            .tape-dashed, .small-dashed {border-top: dashed 5px ;background-color:transparent;margin-top:3px;}
+            .tape-dotted, .small-dotted {border-top: dotted 9px ;background-color:transparent;margin-top:3px;}
+            /*.tape-special_event2{border:2px outset;margin-top:-2px;}*/
+            .tape-backimage{background-image: url("bar.png");}
+            .clear { clear: both; }
+            .aquamarine{color: #045FB4;}
+            .brown{color:#A52A2A;}
+            .timeline-event-bubble-time{display:none;}
+            .timeline-band-0 .timeline-ether-bg{background-color:#EBB52D}
+            .timeline-band-1 .timeline-ether-bg{background-color:#088A68}
+            .timeline-band-2 .timeline-ether-bg{background-color:#CEF6CE}
+        </style>
+      <h1>{% trans "Chronology of events of IYPH 2020 developments" %}</h1>
+
+</h4>
+
+        <div id="tl" class="timeline-default" style="height: 250px; border: 1px solid #aaa;"></div>
+      
+        <br>
+        
+
+
+
   {% for chronology in latest %} 
    <p> 
        <div class="span2">
@@ -43,7 +183,7 @@
     </div>
     <div class="span8">
         <div class="panel panel-default">
-            <div class="panel-body">
+            <div class="panel-body" style="background-color: #efefef;    padding: 10px 20px;">
                 <h5>{% with chronology|get_object_translation as translated_page %}
             {{ translated_page.title|safe }}
     {% endwith %}</h5>

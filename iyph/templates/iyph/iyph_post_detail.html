@@ -24,7 +24,7 @@
 
 {% block breadcrumb_menu %}
 {{ block.super }}
-<li class="active">
+<li class="active"><span class="divider">/</span>
 
  {% with iyph_post|get_object_translation as translated_page %}
             {{ translated_page.title|safe }}
@@ -42,32 +42,15 @@
     </div>
 {% endif %}
 {% block iyph_post_detail_postedby %}
-{# {% editable iyph_post.publish_date %} #}
 <h6>
     {% trans "Posted " %}
     {% with iyph_post.user as author %}
-    <!--a href="{% url "iyph_post_list_author" author %}">{{ author.get_full_name|default:author.username }}</a-->
     {% endwith %}
     {# {% blocktrans with sometime=iyph_post.publish_date|timesince %}{{ sometime }} ago{% endblocktrans %} #}
     {% blocktrans with sometime=iyph_post.publish_date|date:"D, d M Y, H:i" %}on {{ sometime }}{% endblocktrans %}    
 </h6>
-{# {% endeditable %} #}
+
 {% endblock %}
-{# {% block iyph_post_detail_commentlink %} #}
-{# <p> #}
-{#     {% if iyph_post.allow_comments %} #}
-{#         {% if settings.COMMENTS_DISQUS_SHORTNAME %} #}
-{#             (<a href="{{ iyph_post.get_absolute_url }}#disqus_thread" #}
-{#                 data-disqus-identifier="{% disqus_id_for iyph_post %}">{% spaceless %} #}
-{#                 {% trans "Comments" %} #}
-{#             {% endspaceless %}</a>) #}
-{#         {% else %}(<a href="#comments">{% spaceless %} #}
-{#             {% blocktrans count comments_count=iyph_post.comments_count %}{{ comments_count }} comment{% plural %}{{ comments_count }} comments{% endblocktrans %} #}
-{#             {% endspaceless %}</a>) #}
-{#         {% endif %} #}
-{#     {% endif %} #}
-{# </p> #}
-{# {% endblock %} #}
 
 {% block iyph_post_detail_featured_image %}
 {% if  iyph_post.featured_image %} {#settings.IYPH_USE_FEATURED_IMAGE and#}
@@ -75,17 +58,12 @@
 {% endif %}
 {% endblock %}
 
-{# {% if settings.COMMENTS_DISQUS_SHORTNAME %} #}
-{# {% include "generic/includes/disqus_counts.html" %} #}
-{# {% endif %} #}
 
 {% block iyph_post_detail_content %}
-{# {% editable iyph_post.content %} #}
 
  {% with iyph_post|get_object_translation as translated_page %}
             {{ translated_page.content|richtext_filter|safe  }}
     {% endwith %}
-{# {% endeditable %} #}
 {% endblock %}
 
 {% block iyph_post_detail_keywords %}
@@ -102,7 +80,6 @@
 {% endif %}
 {% endblock %}
 
-{# {% rating_for iyph_post %} #}
 
 {% block iyph_post_detail_sharebuttons %}
 {% set_short_url_for iyph_post %}

@@ -1,0 +1,63 @@
+{% extends "baseiyph.html" %}
+{% load i18n future mezzanine_tags iyph_tags keyword_tags disqus_tags %}
+
+{% block meta_title %}{% if page %}{{ page.richtextpage.meta_title }}{% else %}{% trans "Iyph Resources list" %}{% endif %}{% endblock %}
+
+{% block meta_keywords %}{% metablock %}
+{% keywords_for page as keywords %}
+{% for keyword in keywords %}
+{% if not forloop.first %}, {% endif %}
+{{ keyword }}
+{% endfor %}
+{% endmetablock %}{% endblock %}
+
+{% block meta_description %}{% metablock %}
+{{ page.description }}
+{% endmetablock %}{% endblock %}
+
+{% block title %}
+{% if page %}
+{# {% editable page.title %}{{ page.title }}{% endeditable %} #}
+
+{% else %}
+{% trans " " %}
+{% endif %}
+{% endblock %}
+
+{% block breadcrumb_menu %}
+<li><a href="/{{ LANGUAGE_CODE }}/iyph">{% trans "Home" %}</a><span class="divider">/</span></li>
+<li class="active">IYPH Steering Committee</li>
+{% endblock %}
+
+{% block main %}
+<h1>IYPH Steering Committee</h1>
+ {% if iyph_resources %}
+     <div class=" row" style="padding:10px "></div>
+   <div class="span1" style=" margin-left:0 "><img src="/static/img/iyph-stc/elements/1list.png" > </div>
+    <div class="span7 docs">
+    {% for recent_resource in iyph_resources %}
+        {% if recent_resource.title == 'IYPH Steering Committee Membership list' %}
+          <p><a href="/static/media/{{ recent_resource.file }}">Membership list</a></p>
+        {% endif%}
+    {% endfor %}
+    </div>
+    <div class=" row" style="padding:10px "></div>
+    <div class="span1" style=" margin-left:0 " ><img src="/static/img/iyph-stc/elements/2docs.png" > </div>
+    <div class="span7 docs">
+        <p><strong>Related documents</strong></p>
+        {% for recent_resource in iyph_resources %}
+            {% if recent_resource.title != 'IYPH Steering Committee Membership list' %}
+                <p><a href="/static/media/{{ recent_resource.file }}">{{ recent_resource.title }}</a> </p>
+            {% endif%}
+        {% endfor %}
+    
+    </div>
+  {% endif%}
+
+
+
+
+{% endblock %}
+
+
+{% block pageinfo %}{% endblock pageinfo %}
