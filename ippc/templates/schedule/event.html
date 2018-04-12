@@ -55,9 +55,10 @@
     {% else %}    
         {% if is_secretariat or user.is_superuser%}
             <a class="btn btn-small btn-info" href="{% url "edit_event" 'event' event.calendar.slug event.id %}"><i class="icon-edit icon-white"></i>Edit</a><br>
-            <a class="btn btn-small btn-info" href="{% url 'resend-invite' event.id %}"><i class="icon-edit icon-white"></i>Re-send Invitation Email</a>(it will be sent only to not-registered)<br>
+            <a class="btn btn-small btn-info" href="{% url 'resend-invite' event.id %}"><i class="icon-edit icon-white"></i>Re-send Invitation Email</a>(it will be sent only to not-registered)<br><br>
             <!--a class="btn btn-small btn-info" href="/work-area/membershiptool/participant/create/{{event.id}}"><i class="icon-edit icon-white"></i> Generate Participants List</a-->
-      <a class="btn btn-small btn-info" href="{% url 'generate-list' 'participant' event.id %}"><i class="icon-edit icon-white"></i> Generate Participants List</a>
+      <a class="btn btn-small btn-info" href="{% url 'generate-list' event.id %}"><i class="icon-edit icon-white"></i> Generate Participants List</a><br>
+      <a class="btn btn-small btn-info" href="/work-area/participantshortlist/{{event.id }}/create/"><i class="icon-edit icon-white"></i> Generate Participants Short List</a>
  
        
             {% endif %}
@@ -245,7 +246,7 @@
         <td>{{f.participant_registered_verbose}}  </td>
         <td>{{f.registered_date|date:"d M Y"}}  </td>
         <td>{% if f.representing_country != None %} {{f.representing_country}} {% endif %} </td>
-        <td>{% if f.representing_organization != None %} {{f.representing_organization}} {% endif %} </td>
+        <td>{% if f.representing_organization != None %} {{f.representing_organization}} {% endif %}</td>
         <td>{% if f.representing_region != None %} {{f.representing_region_verbose}} {% endif %} </td>
      
 {% endfor %}
