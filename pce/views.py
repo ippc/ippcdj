@@ -186,7 +186,6 @@ def check_and_addUser(firstname,lastname,email,grp,num,country,user_country_slug
             message1 = mail.EmailMessage(subject1,msg1,'ippc@fao.org', ['paola.sentinelli@fao.org'], ['paola.sentinelli@fao.org'])
             message1.content_subtype = "html"
             message1.send()
-            ##print('ERROR sending')
                         
 def canEdit(sessionid,country,user,module):
     can_edit=0
@@ -3386,6 +3385,7 @@ def module_sendtovalidator(request, country, sessionid=None,module=None,id=None 
                 notifificationmessage.content_subtype = "html"
                 try:
                     sent =notifificationmessage.send()
+                    
                 except:
                     print('ERROR sending')
 
@@ -10957,7 +10957,7 @@ def generate_report(request, country,sessionid=None):
                     hdr_cells = table.rows[0].cells
                     hdr_cells[0].text =_("Activities") 
                     hdr_cells[1].text = _("Estimated costs") 
-                    hdr_cells[2].text = _("Desponsible Person") 
+                    hdr_cells[2].text = _("Responsible Person") 
                     hdr_cells[3].text = _("deadline") 
                     #hdr_cells[4].text = 'Target'
                     #hdr_cells[5].text = 'Source'
