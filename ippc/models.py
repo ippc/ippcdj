@@ -257,6 +257,10 @@ class NotificationMessageRelate(models.Model):
         related_name='notificatiopartners', blank=True, null=True)
     notifysecretariat =  models.BooleanField( verbose_name=_("Notify Secretariat"),help_text=_("check if you want to notify Secretariat"),)
     notify =  models.BooleanField( verbose_name=_("Notify"),help_text=_("check if you want to send out the notification"))
+    link = models.CharField(_("Link"), blank=True, null=True, max_length=250)
+    new_or_updated = models.CharField(_("New or Updated"), blank=True, null=True, max_length=250)
+    updated_last = models.DateTimeField(_("Last updated"), blank=True, null=True, editable=True)
+    sent_date = models.DateTimeField(_("Sent date"), blank=True, null=True, editable=True)
         
 
 def validate_file_extension(value):
@@ -2057,26 +2061,37 @@ class UserMembershipHistory(models.Model):
 
 
 # used by MediaKitDocument type
-MEDIAKIT_TYPE_1 = 1
-MEDIAKIT_TYPE_2 = 2
-MEDIAKIT_TYPE_3 = 3
-MEDIAKIT_TYPE_4 = 4
-MEDIAKIT_TYPE_5 = 5
-MEDIAKIT_TYPE_6 = 6
-MEDIAKIT_TYPE_7 = 7
-MEDIAKIT_TYPE_CHOICES = (
-    (MEDIAKIT_TYPE_1, _("Brochures")), 
-    (MEDIAKIT_TYPE_2, _("Publications")),
-    (MEDIAKIT_TYPE_3, _("Quick Guides")),
-    (MEDIAKIT_TYPE_4, _("Factsheets")),
-    (MEDIAKIT_TYPE_5, _("Posters")),
-    (MEDIAKIT_TYPE_6, _("Videos")),
-    (MEDIAKIT_TYPE_7, _("Logos")),
-)
+#MEDIAKIT_TYPE_1 = 1
+#MEDIAKIT_TYPE_2 = 2
+#MEDIAKIT_TYPE_3 = 3
+#MEDIAKIT_TYPE_4 = 4
+#MEDIAKIT_TYPE_5 = 5
+#MEDIAKIT_TYPE_6 = 6
+#MEDIAKIT_TYPE_7 = 7
+#MEDIAKIT_TYPE_CHOICES = (
+#    (MEDIAKIT_TYPE_1, _("Brochures")), 
+#    (MEDIAKIT_TYPE_2, _("Manual & Reports")),
+#    (MEDIAKIT_TYPE_3, _("Posters")),
+#    (MEDIAKIT_TYPE_4, _("Factsheets")),
+#    (MEDIAKIT_TYPE_5, _("Calendars")),
+#    (MEDIAKIT_TYPE_6, _("E-Learning")),
+#    (MEDIAKIT_TYPE_7, _("Logos")),
+#)
 
 
 
-   
+class MediaKitCategory(models.Model):
+    """ Participant Role """
+    category = models.CharField(_("Category"), max_length=500)
+
+    def __unicode__(self):
+        return self.category
+        
+    class Meta:
+        verbose_name = _("Category")
+        verbose_name_plural = _("Categories")
+        app_label = 'ippc'
+    pass   
   
 class MediaKitDocument(Orderable):
     """Single publication to add in a publication library."""
@@ -2086,7 +2101,9 @@ class MediaKitDocument(Orderable):
         verbose_name_plural = _("MediaKitDocuments")
         
     title = models.CharField(_("Title"), blank=True, null=True, max_length=250)
-    mediakit_type = models.IntegerField(_("MediaKit Document  Type"), choices=MEDIAKIT_TYPE_CHOICES, default=None)
+    #mediakit_type = models.IntegerField(_("MediaKit Document  Type"), choices=MEDIAKIT_TYPE_CHOICES, default=None)
+    mediakit_type = models.ForeignKey(MediaKitCategory,verbose_name=_("Type"), blank=True, null=True)
+   
     image = models.ImageField(_("Image of document"), upload_to="files/mediakitdocument/images/%Y/%m/", blank=True)
     file_en = models.FileField(_("File - English"), 
             upload_to=upload_to("galleries.GalleryImage.file", "files/mediakitdocument/en/%Y/%m/"),
@@ -2112,6 +2129,15 @@ class MediaKitDocument(Orderable):
             upload_to=upload_to("galleries.GalleryImage.file", "files/mediakitdocument/zh/%Y/%m/"),
             unique_for_date='modify_date', max_length=204, 
             blank=True, null=True)        
+   
+    link_en = models.URLField(verbose_name=_("Link En"), help_text=_("type the correct URL e.g. http://www.test.com"),blank=True, null=True)
+    link_es = models.URLField(verbose_name=_("Link Es"), help_text=_("type the correct URL e.g. http://www.test.com"),blank=True, null=True)
+    link_fr = models.URLField(verbose_name=_("Link Fr"), help_text=_("type the correct URL e.g. http://www.test.com"),blank=True, null=True)
+    link_ru = models.URLField(verbose_name=_("Link Ru"), help_text=_("type the correct URL e.g. http://www.test.com"),blank=True, null=True)
+    link_ar = models.URLField(verbose_name=_("Link Ar"), help_text=_("type the correct URL e.g. http://www.test.com"),blank=True, null=True)
+    link_zh = models.URLField(verbose_name=_("Link Zh"), help_text=_("type the correct URL e.g. http://www.test.com"),blank=True, null=True)
+           
+            
     slug = models.SlugField(max_length=200, blank=True, null=True,
             unique_for_date='modify_date')
     status = models.IntegerField(_("Status"), choices=PUBLICATION_STATUS_CHOICES, default=IS_PUBLIC)
