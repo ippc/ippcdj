@@ -44,9 +44,11 @@ ContactUsEmailMessageListView,   ContactUsEmailMessageDetailView , contactus_ema
 IRSSActivityListView,IRSSActivityDetailView,irss_activity_create,irss_activity_edit   ,CountryStatisticsTotalNroByYearListView,subscribe_to_news,NewsStatisticsByYearListView,\
 UserMembershipHistoryListView,UserMembershipHistoryDetailView,usermembershiphistory_create,usermembershiphistory_edit,MediaKitDocumentListView,CountryStatsSingleLegislationsListView,\
 PhytosanitaryTreatmentDetailView,PhytosanitaryTreatmentListView ,phytosanitarytreatment_create,phytosanitarytreatment_edit,\
-CertificatesToolListView,CertificatesToolDetailView,generate_certificates,MembershipListView,generate_list,generate_shortlist,generate_replacementlist,\
+CertificatesToolListView,CertificatesToolDetailView,generate_certificates,MembershipListView,generate_list,generate_replacementlist,generate_listNEW,\
 TopicDetailView,TopicListView,topic_create,topic_edit,topic_translate,WorkshopCertificatesToolListView,WorkshopCertificatesToolDetailView,generate_workshopcertificates,\
-B_CertificatesToolListView,B_CertificatesToolDetailView,generate_b_certificates,my_tool,MyToolDetailView,generate_topiclist
+B_CertificatesToolListView,B_CertificatesToolDetailView,generate_b_certificates,my_tool,MyToolDetailView,generate_topiclist,\
+MembershipShortListView,generate_shortlist,generate_shortlistparticipant,generate_listNEW1,\
+generate_b_certificatesnew,generate_certificatesnew
 
 #reporting_obligation_translate,
 from schedule.periods import Year, Month, Week, Day
@@ -314,6 +316,7 @@ urlpatterns = patterns("",
     url(r'^work-area/certificatestool/all/$',view=CertificatesToolListView.as_view(), name='certificatestool-list'),
     url(r'^work-area/certificatestool/(?P<pk>\d+)/$',CertificatesToolDetailView.as_view(), name='certificatestool-detail'),
     url(r'^work-area/certificatestool/create/$',view=generate_certificates, name='certificatestool-create'),
+    url(r'^work-area/certificatestoolnew/create/$',view=generate_certificatesnew, name='certificatestoolnew-create'),
     #--------------------------------------#
     # Workshop CERTIFICATES:    
     url(r'^work-area/w-certificatestool/all/$',view=WorkshopCertificatesToolListView.as_view(), name='w-certificatestool-list'),
@@ -324,12 +327,22 @@ urlpatterns = patterns("",
     url(r'^work-area/b-certificatestool/all/$',view=B_CertificatesToolListView.as_view(), name='b-certificatestool-list'),
     url(r'^work-area/b-certificatestool/(?P<pk>\d+)/$',B_CertificatesToolDetailView.as_view(), name='b-certificatestool-detail'),
     url(r'^work-area/b-certificatestool/create/$',view=generate_b_certificates, name='b-certificatestool-create'),
+    url(r'^work-area/b-certificatestoolnew/create/$',view=generate_b_certificatesnew, name='b-certificatestoolnew-create'),
     
     #MEMBERSHIT LIST TOOL
     url(r'^work-area/membershiptool/$',      view=MembershipListView.as_view(),     name='membership-list'),###
-    url(r'^work-area/membershiptool/(?P<type>[\w-]+)/create/(?P<id>\d+)/$',      view=generate_list,     name='generate-list'),###
-    #url(r'^generate-participants-list/(?P<id>\d+)/$','ippc.views.generate_participantslist',  name='generate-participants-list'),    
+    #url(r'^work-area/membershiptool/(?P<type>[\w-]+)/create/(?P<id>\d+)/$',      view=generate_list,     name='generate-list'),###
+    url(r'^work-area/membershiptool/create/(?P<id>\d+)/$',      view=generate_listNEW1,     name='generate-list'),###
+    url(r'^work-area/membershiplisttool/create/(?P<id>\d+)/$',      view=generate_listNEW,     name='generate-listnew'),###
+    
     url(r'^generate-participants-list/(?P<type>\d+)/(?P<id>\d+)/$' , view=generate_list,   name='generate-list'),    
+    #SHORT LIST
+    url(r'^work-area/membershipshorttool/$', view=MembershipShortListView.as_view(),     name='membership-shortlist'),###paoalnew
+    url(r'^work-area/membershiptoolshort/(?P<type>[\w-]+)/create/(?P<id>\d+)/$',      view=generate_shortlist,     name='generate-shortlist'),###
+    url(r'^work-area/participantshortlist/(?P<id>\d+)/create/$',      view=generate_shortlistparticipant,     name='generate-shortlistparticipant'),###
+    url(r'^generate-participants-shortlist/(?P<type>\d+)/(?P<id>\d+)/$' , view=generate_shortlist,   name='generate-shortlist'),    
+    
+    #url(r'^generate-participants-list/(?P<id>\d+)/$','ippc.views.generate_participantslist',  name='generate-participants-list'),    
     #url(r'^work-area/sss/(?P<id>\d+)/$',      view=generate_membershiplist,     name='generate_membershiplist'),###
     url(r'^work-area/mytool/$',view= my_tool , name='my_tool'),
     url(r'^work-area/mytoolres/(?P<pk>\d+)/$',view= MyToolDetailView.as_view() , name='my_toolres'),
@@ -727,7 +740,7 @@ url(r'^external-cooperation/organizations-page-in-ipp/(?P<partner>[\w-]+)/$',   
         url(r'^core-activities/standards-setting/list-topics-ippc-standards/topic/translate/(?P<lang>[\w-]+)/(?P<id>\d+)/$',
         view=topic_translate,
         name='topic-translate'),    
-#  PRINT WORD      
+#  PRINT WORD      http://test.ippc.int/en/work-area/generate-lot/en
   url(r'^work-area/generate-lot/(?P<lang>[\w-]+)$',      view=generate_topiclist,     name='generate-topiclist'),###
   
   url(r'^work-area/generate-sc-shortlist/$',view=generate_shortlist, name='generate-sc-shortlist'),
