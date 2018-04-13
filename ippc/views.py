@@ -5540,8 +5540,8 @@ class CountryStatsSingleLegislationsListView(ListView):
                     cns+=c.title+', '
                     
                 countP+=p_count
-                cNewP+=pests1.count()
-                cUpP+=pests2.count()
+                #cNewP+=pests1.count()
+                #cUpP+=pests2.count()
                 
                 if pests1.count()>0:
                     for p in pests1:
@@ -5550,6 +5550,7 @@ class CountryStatsSingleLegislationsListView(ListView):
                         if p_date==4:
                           #print(p_date)  
                           cNewP_4=cNewP_4+1
+                          cNewP+=1
                           #print(c.title)  
                           if c.title in cnsP_4:
                               print("NO")
@@ -5558,66 +5559,77 @@ class CountryStatsSingleLegislationsListView(ListView):
                     
                         elif   p_date==5:
                           cNewP_5=cNewP_5+1
+                          cNewP+=1
                           if c.title in cnsP_5:
                               print("NO")
                           else:    
                              cnsP_5=cnsP_5+c.title+', '
                         elif   p_date==6:
                               cNewP_6=cNewP_6+1
+                              cNewP+=1
                               if c.title in cnsP_6:
                                 print("NO")
                               else:    
                                 cnsP_6=cnsP_6+c.title+', '
                         elif   p_date==5:
                               cNewP_7=cNewP_7+1
+                              cNewP+=1
                               if c.title in cnsP_7:
                                   print("NO")
                               else:    
                                cnsP_7=cnsP_7+c.title+', '
                         elif   p_date==8:
                               cNewP_8=cNewP_8+1
+                              cNewP+=1
                               if c.title in cnsP_8:
                                   print("NO")
                               else:    
                                 cnsP_8=cnsP_8+c.title+', '
                         elif   p_date==9:
                               cNewP_9=cNewP_9+1
+                              cNewP+=1
                               if c.title in cnsP_9:
                                 print("NO")
                               else:    
                                 cnsP_9=cnsP_9+c.title+', '
                         elif   p_date==10:
                               cNewP_10=cNewP_10+1
+                              cNewP+=1
                               if c.title in cnsP_10:
                                 print("NO")
                               else:    
                                 cnsP_10=cnsP_10+c.title+', '
                         elif   p_date==11:
                               cNewP_11=cNewP_11+1
+                              cNewP+=1
                               if c.title in cnsP_11:
                                  print("NO")
                               else:    
                                 cnsP_11=cnsP_11+c.title+', '
                         elif   p_date==12:
                               cNewP_12=cNewP_12+1
+                              cNewP+=1
                               if c.title in cnsP_12:
                                   print("NO")
                               else:    
                                 cnsP_12=cnsP_12+c.title+', '
                         elif   p_date==1:
                               cNewP_1=cNewP_1+1
+                              cNewP+=1
                               if c.title in cnsP_1:
                                  print("NO")
                               else:    
                                  cnsP_1=cnsP_1+c.title+', '
                         elif   p_date==2:
                               cNewP_2=cNewP_2+1
+                              cNewP+=1
                               if c.title in cnsP_2:
                                  print("NO")
                               else:    
                                 cnsP_2=cnsP_2+c.title+', '
                         elif   p_date==3:
                               cNewP_3=cNewP_3+1
+                              cNewP+=1
                               if c.title in cnsP_3:
                                 print("NO")
                               else:    
@@ -5628,12 +5640,14 @@ class CountryStatsSingleLegislationsListView(ListView):
                         p_date=p.modify_date.month
                         if   p_date==4 and p.modify_date != p.publication_date:
                            cUpP_4= cUpP_4+1
+                           cUpP+=1
                            if c.title in cnsUpP_4:
                               print("NO")
                            else:    
                             cnsUpP_4=cnsUpP_4+c.title+', '
                         elif   p_date==5 and p.modify_date != p.publication_date:
                            cUpP_5= cUpP_5+1
+                           cUpP+=1
                            if c.title in cnsUpP_5:
                               print("NO")
                            else:    
@@ -5641,18 +5655,21 @@ class CountryStatsSingleLegislationsListView(ListView):
 
                         elif   p_date==6 and p.modify_date != p.publication_date:
                                cUpP_6= cUpP_6+1
+                               cUpP+=1
                                if c.title in cnsUpP_6:
                                  print("NO")
                                else:    
                                   cnsUpP_6=cnsUpP_6+c.title+', '
                         elif   p_date==7 and p.modify_date != p.publication_date:
                                cUpP_7= cUpP_7+1
+                               cUpP+=1
                                if c.title in cnsUpP_7:
                                  print("NO")
                                else:    
                                  cnsUpP_7=cnsUpP_7+c.title+', '
                         elif   p_date==8 and p.modify_date != p.publication_date:
                                cUpP_8= cUpP_8+1
+                               cUpP+=1
                                #print('****************************')
                                #print('****************************cUpP_8='+str(cUpP_8))
                                if c.title in cnsUpP_8:
@@ -5661,42 +5678,49 @@ class CountryStatsSingleLegislationsListView(ListView):
                                   cnsUpP_8=cnsUpP_8+c.title+', '
                         elif   p_date==9 and p.modify_date != p.publication_date:
                                cUpP_9= cUpP_9+1
+                               cUpP+=1
                                if c.title in cnsUpP_9:
                                  print("NO")
                                else:    
                                  cnsUpP_9=cnsUpP_9+c.title+', '
                         elif   p_date==10 and p.modify_date != p.publication_date:
                                cUpP_10= cUpP_10+1
+                               cUpP+=1
                                if c.title in cnsUpP_10:
                                  print("NO")
                                else:    
                                   cnsUpP_10=cnsUpP_10+c.title+', '
                         elif   p_date==11 and p.modify_date != p.publication_date:
                                cUpP_11= cUpP_11+1
+                               cUpP+=1
                                if c.title in cnsUpP_11:
                                 print("NO")
                                else:    
                                  cnsUpP_11=cnsUpP_11+c.title+', '
                         elif   p_date==12 and p.modify_date != p.publication_date:
                                cUpP_12= cUpP_12+1
+                               cUpP+=1
                                if c.title in cnsUpP_12:
                                 print("NO")
                                else:    
                                  cnsUpP_12=cnsUpP_12+c.title+', '
                         elif   p_date==1 and p.modify_date != p.publication_date:
                                cUpP_1= cUpP_1+1
+                               cUpP+=1
                                if c.title in cnsUpP_1:
                                 print("NO")
                                else:    
                                  cnsUpP_1=cnsUpP_1+c.title+', '
                         elif   p_date==2 and p.modify_date != p.publication_date:
                                cUpP_2= cUpP_2+1
+                               cUpP+=1
                                if c.title in cnsUpP_2:
                                     print("NO")
                                else:    
                                      cnsUpP_2=cnsUpP_2+c.title+', '
                         elif   p_date==3 and p.modify_date != p.publication_date:
                                cUpP_3= cUpP_3+1 
+                               cUpP+=1
                                if c.title in cnsUpP_3:
                                 print("NO")
                                else:    
@@ -5787,6 +5811,7 @@ class CountryStatsSingleLegislationsListView(ListView):
             countP=0
             cnsP=0
             cUpP=0
+            cNewP=0
             cns=''
             
         
@@ -5850,21 +5875,21 @@ class CountryStatsSingleLegislationsListView(ListView):
                 array_cns_pu_=[]
                 array_cns_n_=[]
                 array_cns_u_=[]
-                
-                pests= ReportingObligation.objects.filter(country=c.id,reporting_obligation_type=4,is_version=False,publication_date__gte=startstartdate,publication_date__lte=enddate)
-                p_count=pests.count()
-                
-                pests1= ReportingObligation.objects.filter(country=c.id,reporting_obligation_type=4,is_version=False,publication_date__gte=startdate,publication_date__lte=enddate)
-                pests2= ReportingObligation.objects.filter(country=c.id,reporting_obligation_type=4,is_version=False,modify_date__gte=startdate,modify_date__lte=enddate)
-           
-           
-                if p_count>0:
-                    numRepPAll+=1    
-                if pests1.count()>0 or pests2.count()>0:
-                    cns+=c.title+', '
-                countP+=p_count
-                cNewP+=pests1.count()
-                cUpP+=pests2.count()
+                if c.id !=199:
+                    pests= ReportingObligation.objects.filter(country=c.id,reporting_obligation_type=4,is_version=False,publication_date__gte=startstartdate,publication_date__lte=enddate)
+                    p_count=pests.count()
+
+                    pests1= ReportingObligation.objects.filter(country=c.id,reporting_obligation_type=4,is_version=False,publication_date__gte=startdate,publication_date__lte=enddate)
+                    pests2= ReportingObligation.objects.filter(country=c.id,reporting_obligation_type=4,is_version=False,modify_date__gte=startdate,modify_date__lte=enddate)
+
+
+                    if p_count>0:
+                        numRepPAll+=1    
+                    if pests1.count()>0 or pests2.count()>0:
+                        cns+=c.title+', '
+                    countP+=p_count
+                    #cNewP+=pests1.count()
+                    #cUpP+=pests2.count()
                 
                 if pests1.count()>0:
                     for p in pests1:
@@ -5872,6 +5897,7 @@ class CountryStatsSingleLegislationsListView(ListView):
                        
                         if  p_date==4:
                           cNewP_4=cNewP_4+1
+                          cNewP+=1
                           if c.title in cnsP_4:
                               print("NO")
                           else:    
@@ -5879,18 +5905,22 @@ class CountryStatsSingleLegislationsListView(ListView):
                     
                         elif   p_date==5:
                           cNewP_5=cNewP_5+1
+                          cNewP+=1
                           if c.title in cnsP_5:
                               print("NO")
                           else:    
                              cnsP_5=cnsP_5+c.title+', '
                         elif   p_date==6:
                               cNewP_6=cNewP_6+1
+                              cNewP+=1
                               if c.title in cnsP_6:
                                 print("NO")
                               else:    
                                 cnsP_6=cnsP_6+c.title+', '
                         elif   p_date==7:
+                            
                               cNewP_7=cNewP_7+1
+                              cNewP+=1
                               if c.title in cnsP_7:
                                   print("NO")
                               else:    
@@ -5901,6 +5931,7 @@ class CountryStatsSingleLegislationsListView(ListView):
                               #print("p_date"+str(p_date))
                               print("")
                               cNewP_8=cNewP_8+1
+                              cNewP+=1
                               if c.title in cnsP_8:
                                   print("NO")
                               else:    
@@ -5911,42 +5942,49 @@ class CountryStatsSingleLegislationsListView(ListView):
                               print("")
                         elif   p_date==9:
                               cNewP_9=cNewP_9+1
+                              cNewP+=1
                               if c.title in cnsP_9:
                                 print("NO")
                               else:    
                                 cnsP_9=cnsP_9+c.title+', '
                         elif   p_date==10:
                               cNewP_10=cNewP_10+1
+                              cNewP+=1
                               if c.title in cnsP_10:
                                 print("NO")
                               else:    
                                 cnsP_10=cnsP_10+c.title+', '
                         elif   p_date==11:
                               cNewP_11=cNewP_11+1
+                              cNewP+=1
                               if c.title in cnsP_11:
                                  print("NO")
                               else:    
                                 cnsP_11=cnsP_11+c.title+', '
                         elif   p_date==12:
                               cNewP_12=cNewP_12+1
+                              cNewP+=1
                               if c.title in cnsP_12:
                                   print("NO")
                               else:    
                                 cnsP_12=cnsP_12+c.title+', '
                         elif   p_date==1:
                               cNewP_1=cNewP_1+1
+                              cNewP+=1
                               if c.title in cnsP_1:
                                  print("NO")
                               else:    
                                  cnsP_1=cnsP_1+c.title+', '
                         elif   p_date==2:
                               cNewP_2=cNewP_2+1
+                              cNewP+=1
                               if c.title in cnsP_2:
                                  print("NO")
                               else:    
                                 cnsP_2=cnsP_2+c.title+', '
                         elif   p_date==3:
                               cNewP_3=cNewP_3+1
+                              cNewP+=1
                               if c.title in cnsP_3:
                                 print("NO")
                               else:    
@@ -5957,6 +5995,7 @@ class CountryStatsSingleLegislationsListView(ListView):
                         p_date=p.modify_date.month
                         if   p_date==4 and p.modify_date != p.publication_date:
                            cUpP_4= cUpP_4+1
+                           cUpP+=1
                            if c.title in cnsUpP_4:
                                 print("NO")
                            else:    
@@ -5964,6 +6003,7 @@ class CountryStatsSingleLegislationsListView(ListView):
 
                         elif   p_date==5 and p.modify_date != p.publication_date:
                            cUpP_5= cUpP_5+1
+                           cUpP+=1
                            if c.title in cnsUpP_5:
                                 print("NO")
                            else:    
@@ -5971,6 +6011,7 @@ class CountryStatsSingleLegislationsListView(ListView):
 
                         elif   p_date==6 and p.modify_date != p.publication_date:
                                cUpP_6= cUpP_6+1
+                               cUpP+=1
                                if c.title in cnsUpP_6:
                                 print("NO")
                                else:    
@@ -5978,6 +6019,7 @@ class CountryStatsSingleLegislationsListView(ListView):
 
                         elif   p_date==7 and p.modify_date != p.publication_date:
                                cUpP_7= cUpP_7+1
+                               cUpP+=1
                                if c.title in cnsUpP_7:
                                 print("NO")
                                else:    
@@ -5985,6 +6027,7 @@ class CountryStatsSingleLegislationsListView(ListView):
 
                         elif   p_date==8 and p.modify_date != p.publication_date:
                                cUpP_8= cUpP_8+1
+                               cUpP+=1
                                if c.title in cnsUpP_8:
                                 print("NO")
                                else:    
@@ -5992,6 +6035,7 @@ class CountryStatsSingleLegislationsListView(ListView):
 
                         elif   p_date==9 and p.modify_date != p.publication_date:
                                cUpP_9= cUpP_9+1
+                               cUpP+=1
                                if c.title in cnsUpP_9:
                                 print("NO")
                                else:    
@@ -5999,6 +6043,7 @@ class CountryStatsSingleLegislationsListView(ListView):
 
                         elif   p_date==10 and p.modify_date != p.publication_date:
                                cUpP_10= cUpP_10+1
+                               cUpP+=1
                                if c.title in cnsUpP_10:
                                 print("NO")
                                else:    
@@ -6006,6 +6051,7 @@ class CountryStatsSingleLegislationsListView(ListView):
 
                         elif   p_date==11 and p.modify_date != p.publication_date:
                                cUpP_11= cUpP_11+1
+                               cUpP+=1
                                if c.title in cnsUpP_11:
                                 print("NO")
                                else:    
@@ -6013,6 +6059,7 @@ class CountryStatsSingleLegislationsListView(ListView):
 
                         elif   p_date==12 and p.modify_date != p.publication_date:
                                cUpP_12= cUpP_12+1
+                               cUpP+=1
                                if c.title in cnsUpP_12:
                                 print("NO")
                                else:    
@@ -6020,6 +6067,7 @@ class CountryStatsSingleLegislationsListView(ListView):
 
                         elif   p_date==1 and p.modify_date != p.publication_date:
                                cUpP_1= cUpP_1+1
+                               cUpP+=1
                                if c.title in cnsUpP_1:
                                 print("NO")
                                else:    
@@ -6027,6 +6075,7 @@ class CountryStatsSingleLegislationsListView(ListView):
 
                         elif   p_date==2 and p.modify_date != p.publication_date:
                                cUpP_2= cUpP_2+1
+                               cUpP+=1
                                if c.title in cnsUpP_2:
                                 print("NO")
                                else:    
@@ -6034,6 +6083,7 @@ class CountryStatsSingleLegislationsListView(ListView):
 
                         elif   p_date==3 and p.modify_date != p.publication_date:
                                cUpP_3= cUpP_3+1 
+                               cUpP+=1
                                if c.title in cnsUpP_3:
                                  print("NO")
                                else:    
@@ -6119,6 +6169,7 @@ class CountryStatsSingleLegislationsListView(ListView):
         tot2=0
         tot4=0
         tot5=0
+        
         for x in  regionsPCP[0]:
             tot+= x[2]
             tot2+= x[3]
@@ -6302,6 +6353,7 @@ class CountryStatsSingleLegislationsListView(ListView):
         totarray_months_n_all.append(tot_n_9)
         totarray_months_n_all.append(tot_n_10)
         totarray_months_n_all.append(tot_n_11)
+        totarray_months_n_all.append(tot_n_12)
         totarray_months_n_all.append(tot_n_1)
         totarray_months_n_all.append(tot_n_2)
         totarray_months_n_all.append(tot_n_3)
@@ -6314,6 +6366,7 @@ class CountryStatsSingleLegislationsListView(ListView):
         totarray_months_u_all.append(tot_u_9)
         totarray_months_u_all.append(tot_u_10)
         totarray_months_u_all.append(tot_u_11)
+        totarray_months_u_all.append(tot_u_12)
         totarray_months_u_all.append(tot_u_1)
         totarray_months_u_all.append(tot_u_2)
         totarray_months_u_all.append(tot_u_3)
