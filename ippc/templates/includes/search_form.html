@@ -1,6 +1,7 @@
 {% load mezzanine_tags i18n future %}
 
-<form action="{% url "search" %}"  method="POST" enctype="multipart/form-data" class="navbar-search pull-right input-append" >
+<form action="{% url "search" %}" class="navbar-search pull-right input-append">
+
 {% csrf_token %}
 <input placeholder="{% trans "Search" %}" type="text" name="q" value="{{ request.REQUEST.q }}" class="search-query">
 
