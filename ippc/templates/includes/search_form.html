@@ -2,7 +2,7 @@
 
 <form action="{% url "search" %}" class="navbar-search pull-right input-append">
 
-{% csrf_token %}
+{% csrf_token %}  
 <input placeholder="{% trans "Search" %}" type="text" name="q" value="{{ request.REQUEST.q }}" class="search-query">
 
 {% if search_model_choices %}
