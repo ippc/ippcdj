@@ -1,0 +1,243 @@
+{% extends "base.html" %}
+{% load pages_tags mezzanine_tags i18n future staticfiles accounts_tags %}
+
+{% block meta_title %}
+  {% trans "Countries Stats" %}: 
+  {{ page.title }}
+{% endblock %}
+
+{% block body_class %}wide{% endblock %}
+
+{% block breadcrumb_menu %}
+<li><a href="/{{ LANGUAGE_CODE }}/">{% trans "Home" %}</a><span class="divider">/</span></li>
+<li>
+  <a href="/countries/">Countries</a>
+  <span class="divider">/</span>
+</li>
+<li>
+    <a href="/nro-reports-and-statistics/">Statistics</a>
+    <span class="divider">/</span> 
+</li>
+
+<li class="active">{% trans "Summary of NROs from selection of countries in a choosen date " %} </li>
+{% endblock %}
+
+{% block local_nav %}
+{% endblock local_nav %}
+
+{% block pageinfo %}
+{% endblock pageinfo %}
+
+{% block main %}
+
+<p class="pull-right">
+  <a href="javascript:history.go(-1)">{% trans "« Go back" %}</a>
+</p>
+    
+    
+    
+<h1>
+{% trans "Summary of NROs for selected Countries, before and after training" %}  <br>
+</h1> 
+    
+
+<h3>Total number of "REPORTING OBLIGATIONS"  uploaded by selected countries:</h3>
+<div>
+{%if datetraining_checked%}    
+<span style="width: 20px;height: 20px;background-color: #94e27a">&#160;&#160;&#160;&#160;</span> <b>Total number of uploaded reports before Workshop/Training on {{ datetraining|date:"d M Y" }} </b><br>
+<span style="width: 20px;height: 20px;background-color: #409a22">&#160;&#160;&#160;&#160;</span> <b>Total number of uploaded reports until  {{ date1|date:"d M Y" }}</b><br>
+<span style="width: 20px;height: 20px;background-color: #a2dee2">&#160;&#160;&#160;&#160;</span> <b>Total number of NEW uploaded reports after Workshop/Training on {{ datetraining|date:"d M Y" }} until  {{ date1|date:"d M Y" }}  </b><br>
+<span style="width: 20px;height: 20px;background-color: #EBB52D">&#160;&#160;&#160;&#160;</span> <b>Total number of UPDATED reports  after Workshop/Training on {{ datetraining|date:"d M Y" }} until  {{ date1|date:"d M Y" }} </b><br>
+{%else%}    
+<span style="width: 20px;height: 20px;background-color: #94e27a">&#160;&#160;&#160;&#160;</span>Total number of uploaded reports until  {{ date1|date:"d M Y" }}</b><br>
+     {% endif %}
+</div>
+   <table class="table table-condensed" border="1">
+    <thead>
+        <tr>
+            <th colspan="1"  style="background:#f2f2f2; text-align: center;"><center>Country</center></th>
+            <th {%if datetraining_checked%}   colspan="4" {%else%}   colspan="1"{%endif%}  style="background:#f2f2f2; text-align: center;"><center>Entry Points</center></th>
+            <th {%if datetraining_checked%}   colspan="4" {%else%}   colspan="1"{%endif%}  style="background:#f2f2f2; text-align: center;"><center>Description of the NPPO</center></th>
+            <th {%if datetraining_checked%}   colspan="4" {%else%}   colspan="1"{%endif%}  style="background:#f2f2f2; text-align: center;"><center>List of Regulated Pests</center></th>
+            <th {%if datetraining_checked%}   colspan="4" {%else%}   colspan="1"{%endif%}  style="background:#f2f2f2; text-align: center;"><center>Legislation</center></th>
+        </tr> 
+        <tr>
+            <th colspan="1"  style="background:#f2f2f2; text-align: center;"><center>&#160;</center></th>
+            <th colspan="1"  style="background:#94e27a; text-align: center;"><center>Total {%if datetraining_checked%} before {{ datetraining|date:"d M Y" }}       {% endif %} </center></th>
+            {%if datetraining_checked%} 
+                <th colspan="1"  style="background:#409a22; text-align: center;"><center> Total after {{ datetraining|date:"d M Y" }}  </center></th>
+                <th colspan="1"  style="background:#a2dee2; text-align: center;"><center>Added  after {{ datetraining|date:"d M Y" }} </center></th>
+                <th colspan="1"  style="background:#EBB52D; text-align: center;"><center>Updated after {{ datetraining|date:"d M Y" }} </center></th>
+             {% endif %}
+                <th colspan="1"  style="background:#94e27a; text-align: center;"><center>Total {%if datetraining_checked%} before {{ datetraining|date:"d M Y" }}       {% endif %} </center></th>
+             {%if datetraining_checked%} 
+                <th colspan="1"  style="background:#409a22; text-align: center;"><center> Total after {{ datetraining|date:"d M Y" }}  </center></th>
+                <th colspan="1"  style="background:#a2dee2; text-align: center;"><center>Added  after {{ datetraining|date:"d M Y" }} </center></th>
+                <th colspan="1"  style="background:#EBB52D; text-align: center;"><center>Updated after {{ datetraining|date:"d M Y" }} </center></th>
+             {% endif %}
+             <th colspan="1"  style="background:#94e27a; text-align: center;"><center>Total {%if datetraining_checked%} before {{ datetraining|date:"d M Y" }}       {% endif %} </center></th>
+             {%if datetraining_checked%} 
+                <th colspan="1"  style="background:#409a22; text-align: center;"><center> Total after {{ datetraining|date:"d M Y" }}  </center></th>
+                <th colspan="1"  style="background:#a2dee2; text-align: center;"><center>Added  after {{ datetraining|date:"d M Y" }} </center></th>
+                <th colspan="1"  style="background:#EBB52D; text-align: center;"><center>Updated after {{ datetraining|date:"d M Y" }} </center></th>
+             {% endif %}
+               <th colspan="1"  style="background:#94e27a; text-align: center;"><center>Total {%if datetraining_checked%} before {{ datetraining|date:"d M Y" }}       {% endif %} </center></th>
+             {%if datetraining_checked%} 
+                <th colspan="1"  style="background:#409a22; text-align: center;"><center> Total after {{ datetraining|date:"d M Y" }}  </center></th>
+                <th colspan="1"  style="background:#a2dee2; text-align: center;"><center>Added  after {{ datetraining|date:"d M Y" }} </center></th>
+                <th colspan="1"  style="background:#EBB52D; text-align: center;"><center>Updated after {{ datetraining|date:"d M Y" }} </center></th>
+             {% endif %}
+        </tr> 
+        
+    </thead>
+    <tbody>
+    {% for cnarray in country_array_rep_tot%}
+        <tr> 
+        {% for object in cnarray %}
+           {%if  forloop.counter == 1 %}
+                    <th style="background:#f2f2f2; text-align: center;"> {{object}}</th>
+           {%else %}  {% if object != '-' %} <td style="text-align: center;"> {{object}} </td> {% endif %}  
+           {% endif %} 
+              
+          
+        {%endfor%} 
+        </tr>
+    {% endfor %}
+         
+    </tbody>
+        
+</table>
+ 
+ <hr style="border: 2px solid #009926;">
+<h3>Total number of "EVENT REPORTING"  uploaded by selected countries:</h3>
+<div>
+{%if datetraining_checked%}    
+<span style="width: 20px;height: 20px;background-color: #94e27a">&#160;&#160;&#160;&#160;</span> <b>Total number of uploaded reports before Workshop/Training on {{ datetraining|date:"d M Y" }} </b><br>
+<span style="width: 20px;height: 20px;background-color: #409a22">&#160;&#160;&#160;&#160;</span> <b>Total number of uploaded reports until  {{ date1|date:"d M Y" }}</b><br>
+<span style="width: 20px;height: 20px;background-color: #a2dee2">&#160;&#160;&#160;&#160;</span> <b>Total number of NEW uploaded reports after Workshop/Training on {{ datetraining|date:"d M Y" }} until  {{ date1|date:"d M Y" }}  </b><br>
+<span style="width: 20px;height: 20px;background-color: #EBB52D">&#160;&#160;&#160;&#160;</span> <b>Total number of UPDATED reports  after Workshop/Training on {{ datetraining|date:"d M Y" }} until  {{ date1|date:"d M Y" }} </b><br>
+{%else%}    
+<span style="width: 20px;height: 20px;background-color: #94e27a">&#160;&#160;&#160;&#160;</span>Total number of uploaded reports until  {{ date1|date:"d M Y" }}</b><br>
+     {% endif %}
+</div>
+   <table class="table table-condensed table-striped" border="1">
+    <thead>
+        <tr>
+            <th colspan="1"  style="background:#f2f2f2; text-align: center;"><center>Country</center></th>
+            <th {%if datetraining_checked%}   colspan="4" {%else%}   colspan="1"{%endif%} style="background:#f2f2f2; text-align: center;"><center>Emergency Actions</center></th>
+            <th {%if datetraining_checked%}   colspan="4" {%else%}   colspan="1"{%endif%}  style="background:#f2f2f2; text-align: center;"><center>Non-compliance</center></th>
+            <th {%if datetraining_checked%}   colspan="4" {%else%}   colspan="1"{%endif%} style="background:#f2f2f2; text-align: center;"><center>Organizational Arrangements</center></th>
+            <th {%if datetraining_checked%}   colspan="4" {%else%}   colspan="1"{%endif%}  style="background:#f2f2f2; text-align: center;"><center>Pest status</center></th>
+            <th {%if datetraining_checked%}   colspan="4" {%else%}   colspan="1"{%endif%} style="background:#f2f2f2; text-align: center;"><center>Rationale for Phytosanitary Requirements</center></th>
+
+          
+        </tr> 
+        <tr>
+            <th colspan="1"  style="background:#f2f2f2; text-align: center;"><center>&#160;</center></th>
+            <th colspan="1"  style="background:#94e27a; text-align: center;"><center>Total {%if datetraining_checked%} before {{ datetraining|date:"d M Y" }}       {% endif %} </center></th>
+            {%if datetraining_checked%} 
+                <th colspan="1"  style="background:#409a22; text-align: center;"><center> Total after {{ datetraining|date:"d M Y" }}  </center></th>
+                <th colspan="1"  style="background:#a2dee2; text-align: center;"><center>Added  after {{ datetraining|date:"d M Y" }} </center></th>
+                <th colspan="1"  style="background:#EBB52D; text-align: center;"><center>Updated after {{ datetraining|date:"d M Y" }} </center></th>
+             {% endif %}
+                <th colspan="1"  style="background:#94e27a; text-align: center;"><center>Total {%if datetraining_checked%} before {{ datetraining|date:"d M Y" }}       {% endif %} </center></th>
+             {%if datetraining_checked%} 
+                <th colspan="1"  style="background:#409a22; text-align: center;"><center> Total after {{ datetraining|date:"d M Y" }}  </center></th>
+                <th colspan="1"  style="background:#a2dee2; text-align: center;"><center>Added  after {{ datetraining|date:"d M Y" }} </center></th>
+                <th colspan="1"  style="background:#EBB52D; text-align: center;"><center>Updated after {{ datetraining|date:"d M Y" }} </center></th>
+             {% endif %}
+             <th colspan="1"  style="background:#94e27a; text-align: center;"><center>Total {%if datetraining_checked%} before {{ datetraining|date:"d M Y" }}       {% endif %} </center></th>
+             {%if datetraining_checked%} 
+                <th colspan="1"  style="background:#409a22; text-align: center;"><center> Total after {{ datetraining|date:"d M Y" }}  </center></th>
+                <th colspan="1"  style="background:#a2dee2; text-align: center;"><center>Added  after {{ datetraining|date:"d M Y" }} </center></th>
+                <th colspan="1"  style="background:#EBB52D; text-align: center;"><center>Updated after {{ datetraining|date:"d M Y" }} </center></th>
+             {% endif %}
+               <th colspan="1"  style="background:#94e27a; text-align: center;"><center>Total {%if datetraining_checked%} before {{ datetraining|date:"d M Y" }}       {% endif %} </center></th>
+             {%if datetraining_checked%} 
+                <th colspan="1"  style="background:#409a22; text-align: center;"><center> Total after {{ datetraining|date:"d M Y" }}  </center></th>
+                <th colspan="1"  style="background:#a2dee2; text-align: center;"><center>Added  after {{ datetraining|date:"d M Y" }} </center></th>
+                <th colspan="1"  style="background:#EBB52D; text-align: center;"><center>Updated after {{ datetraining|date:"d M Y" }} </center></th>
+             {% endif %}
+                  <th colspan="1"  style="background:#94e27a; text-align: center;"><center>Total {%if datetraining_checked%} before {{ datetraining|date:"d M Y" }}       {% endif %} </center></th>
+             {%if datetraining_checked%} 
+                <th colspan="1"  style="background:#409a22; text-align: center;"><center> Total after {{ datetraining|date:"d M Y" }}  </center></th>
+                <th colspan="1"  style="background:#a2dee2; text-align: center;"><center>Added  after {{ datetraining|date:"d M Y" }} </center></th>
+                <th colspan="1"  style="background:#EBB52D; text-align: center;"><center>Updated after {{ datetraining|date:"d M Y" }} </center></th>
+             {% endif %}
+        </tr> 
+          
+        </tr> 
+        
+    </thead>
+    <tbody>
+   {% for cnarray in country_array_ev_tot%}
+        <tr> 
+        {% for object in cnarray %}
+           {%if  forloop.counter == 1 %}
+                    <th style="background:#f2f2f2; text-align: center;"> {{object}}</th>
+           {%else %}  {% if object != '-' %} <td style="text-align: center;"> {{object}} </td> {% endif %}  
+           {% endif %} 
+              
+          
+        {%endfor%} 
+        </tr>
+    {% endfor %}
+         
+    </tbody>
+        
+</table>
+ 
+ <hr style="border: 2px solid #009926;">
+<h3>Total number of "PEST REPORTS"  uploaded by selected countries:{{ date1|date:"d M Y" }}</h3>
+<div>
+{%if datetraining_checked%}    
+<span style="width: 20px;height: 20px;background-color: #94e27a">&#160;&#160;&#160;&#160;</span> <b>Total number of uploaded reports before Workshop/Training on {{ datetraining|date:"d M Y" }} </b><br>
+<span style="width: 20px;height: 20px;background-color: #409a22">&#160;&#160;&#160;&#160;</span> <b>Total number of uploaded reports until  {{ date1|date:"d M Y" }}</b><br>
+<span style="width: 20px;height: 20px;background-color: #a2dee2">&#160;&#160;&#160;&#160;</span> <b>Total number of NEW uploaded reports after Workshop/Training on {{ datetraining|date:"d M Y" }} until  {{ date1|date:"d M Y" }}  </b><br>
+<span style="width: 20px;height: 20px;background-color: #EBB52D">&#160;&#160;&#160;&#160;</span> <b>Total number of UPDATED reports  after Workshop/Training on {{ datetraining|date:"d M Y" }} until  {{ date1|date:"d M Y" }} </b><br>
+{%else%}    
+<span style="width: 20px;height: 20px;background-color: #94e27a">&#160;&#160;&#160;&#160;</span>Total number of uploaded reports until  {{ date1|date:"d M Y" }}</b><br>
+     {% endif %}
+</div>
+   <table class="table table-condensed table-striped" border="1">
+    <thead>
+        <tr>
+            <th colspan="1"  style="background:#f2f2f2; text-align: center;"><center>Country</center></th>
+            <th {%if datetraining_checked%}   colspan="4" {%else%}   colspan="1"{%endif%}  style="background:#f2f2f2; text-align: center;"><center>Pest reports</center></th>
+
+          
+        </tr> 
+        <tr>
+            <th colspan="1"  style="background:#f2f2f2; text-align: center;"><center>&#160;</center></th>
+            <th colspan="1"  style="background:#94e27a; text-align: center;"><center>Total {%if datetraining_checked%} before {{ datetraining|date:"d M Y" }}       {% endif %} </center></th>
+            {%if datetraining_checked%} 
+                <th colspan="1"  style="background:#409a22; text-align: center;"><center> Total after {{ datetraining|date:"d M Y" }}  </center></th>
+                <th colspan="1"  style="background:#a2dee2; text-align: center;"><center>Added  after {{ datetraining|date:"d M Y" }} </center></th>
+                <th colspan="1"  style="background:#EBB52D; text-align: center;"><center>Updated after {{ datetraining|date:"d M Y" }} </center></th>
+             {% endif %}
+
+        
+          
+        </tr> 
+        
+    </thead>
+    <tbody>
+   {% for cnarray in country_array_pest_tot%}
+        <tr> 
+        {% for object in cnarray %}
+           {%if  forloop.counter == 1 %}
+                    <th style="background:#f2f2f2; text-align: center;"> {{object}}</th>
+           {%else %}  {% if object != '-' %} <td style="text-align: center;"> {{object}} </td> {% endif %}  
+           {% endif %} 
+              
+          
+        {%endfor%} 
+        </tr>
+    {% endfor %}
+         
+    </tbody>
+        
+</table>
+
+
+{% endblock %}

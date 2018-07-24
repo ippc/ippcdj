@@ -1,0 +1,83 @@
+{% extends "base.html" %}
+{% load pages_tags translate_tags mezzanine_tags i18n future staticfiles accounts_tags %}
+
+{% block meta_title %}{% trans "New NROs Statistics" %} {% endblock %}
+
+{% block body_class %}wide{% endblock %}
+
+{% block breadcrumb_menu %}
+<li>
+  <a href="/home">{% trans "Home" %}</a><span class="divider">/</span></li>
+  <li><a href="/work-area/">Workarea</a><span class="divider">/</span></li>
+ <li class="active">{% trans "Create New NROs Statistics" %}</li>
+
+{% endblock %}
+
+{% block local_nav %}
+{% endblock local_nav %}
+
+{% block pageinfo %}
+{% endblock pageinfo %}
+
+{% block main %}
+
+<p class="pull-right">
+  <a href="javascript:history.go(-1)">{% trans "« Cancel and go back" %}</a>
+</p>
+
+<h1><span class="normal">{% trans "NROs from selection of countries in a choosen date" %}</span> </h1>
+
+<p class="alert alert-warning">To generate NRO statics:
+    <br/>- insert a title
+    <br/>- select the date
+    <br/>- select countries <br/>
+    click on 'Submit'</p>
+  <script type="text/javascript">
+function  checkNotify(theform){
+    var elementlength=theform.elements.length;
+    var val  ="";
+    for( i=1;  i  < elementlength ; i++ ) {
+        if(theform.elements[i].type=="checkbox" && theform.elements[i].checked  && theform.elements[i].value!='on'){
+            val=val+ theform.elements[i].value+",";
+        }
+    }
+    theform.elements['selcns1'].value=val;
+ 
+    
+}
+</script>
+
+<form class="customform" method="POST" action="" enctype="multipart/form-data">
+    {% csrf_token %}
+
+   {% if form.non_field_errors or form.errors or  f_form.errors %}
+    <div class="alert alert-error">{% trans "Please correct the errors below." %}
+        <ul>
+          {% for error in form.non_field_errors %}
+                   <li>{{ error }}</li>
+        {% endfor %}
+         {% for error in form.errors %}
+               <li>{{ error }}</li>
+        {% endfor %}
+        </ul>
+    </div>
+    {% endif %}
+
+
+<input type="hidden"   name="selcns1">
+{% fields_for form %}
+Select countries:<br>
+<table cellpadding=2>
+    {% for cn in countries %}
+    <tr>
+        <td><input onchange="javascript:checkNotify(this.form);" type="checkbox" name="cn_{(cn.id}}" value="{{cn.id}}"/> {{cn}}<br/></td>
+     </tr>
+    {% endfor %}
+
+</table>
+<div class="form-actions">
+    <button type="submit" class="btn btn-info btn-large" tabindex="7">{% trans "Submit" %}</button> or <a href="javascript:history.go(-1)">{% trans "Cancel" %}</a>
+</div>
+</form>
+
+{% endblock %}
