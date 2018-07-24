@@ -16,10 +16,10 @@
 </li>
 <li>
     <a href="/nro-reports-and-statistics/">Statistics</a>
-    <span class="divider">/</span>
+    <span class="divider">/</span> 
 </li>
 
-<li class="active">{% trans "Summary of NRO year of Phytosanitary legislation " %} </li>
+<li class="active">{% trans "Summary of NRO year of List of regulated pests " %} </li>
 {% endblock %}
 
 {% block local_nav %}
@@ -37,7 +37,7 @@
     
     
 <h1>
-{% trans "Summary of Phytosanitary legislation " %} 1 {% trans "April" %} {{prevyear}} - 31 {% trans "March" %} {{curryear}} <br>
+{% trans "Summary of List of regulated pests " %} 1 {% trans "April" %} {{prevyear}} - 31 {% trans "March" %} {{curryear}} <br>
   </h1> 
 
 
@@ -52,7 +52,7 @@
     var chart2 = new CanvasJS.Chart("chartContainer2",
     {
       title:{
-	text: "Comulative number of Phytosanitary legislation in each year",
+	text: "Comulative number of List of regulated pests in each year",
         fontSize: 20
 			
         
@@ -99,7 +99,7 @@
   var chart3 = new CanvasJS.Chart("chartContainer3",
     {
       title:{
-	text: "Number of Phytosanitary legislation in each year",
+	text: "Number of List of regulated pests in each year",
         fontSize: 20
 			
         
@@ -155,14 +155,14 @@ $(function() {
 <script src='{% static "/static/canvasjs/canvasjs.min.js" %}'></script>
   
 <p><b>{% trans "Date generated" %}: </b>  {{ dategenerate|date:"d M Y, H:m" }}</p><br>
-<p>{% trans "The tables below show the detailed breakdown by region of Phytosanitary legislation  made available by Contracting Parties on the IPP in the 'NRO year of Phytosanitary legislation' " %}:  1 {% trans "April" %} {{prevyear}} - 31 {% trans "March" %} {{curryear}}</p>
+<p>{% trans "The tables below show the detailed breakdown by region of List of regulated pests made available by Contracting Parties on the IPP in the 'NRO year of List of regulated pests' " %}:  1 {% trans "April" %} {{prevyear}} - 31 {% trans "March" %} {{curryear}}</p>
 
-<h3>Phytosanitary legislation  by Contracting Parties overall state to 31 {% trans "March" %} {{curryear}}</h3>
+<h3>List of regulated pests by Contracting Parties overall state to 31 {% trans "March" %} {{curryear}}</h3>
         
 <table class="table table-condensed table-striped">
    <thead>
         <tr>
-            <th colspan="4"  style="background:#cccccc; text-align: center;"><center>Phytosanitary legislation </center></th>
+            <th colspan="4"  style="background:#cccccc; text-align: center;"><center>List of regulated pests</center></th>
         </tr> 
         <tr>
             <th style="background:#f2f2f2;">Region</th>
@@ -190,7 +190,7 @@ $(function() {
     </tbody>
         
 </table>   
-<h3>Phytosanitary legislation  by Contracting Parties changes during 1 {% trans "April" %} {{prevyear}} - 31 {% trans "March" %} {{curryear}}</h3>
+<h3>List of regulated pests by Contracting Parties changes during 1 {% trans "April" %} {{prevyear}} - 31 {% trans "March" %} {{curryear}}</h3>
     <table class="table table-condensed" border="1">
                 <thead>
                   
@@ -354,15 +354,15 @@ $(function() {
    
    
    
-<p>{% trans "The tables below show the detailed breakdown by region of Phytosanitary legislation  made available by all countries on the IPP in the 'NRO year of Phytosanitary legislation' " %}:  1 {% trans "April" %} {{prevyear}} - 31 {% trans "March" %} {{curryear}}</p>
+<p>{% trans "The tables below show the detailed breakdown by region of List of regulated pests made available by all countries on the IPP in the 'NRO year of List of regulated pests' " %}:  1 {% trans "April" %} {{prevyear}} - 31 {% trans "March" %} {{curryear}}</p>
 
 
-<h3>Phytosanitary legislation  by all countries overall state to 31 {% trans "March" %} {{curryear}}</h3>
+<h3>List of regulated pests by all countries overall state to 31 {% trans "March" %} {{curryear}}</h3>
         
 <table class="table table-condensed table-striped">
    <thead>
         <tr>
-            <th colspan="4"  style="background:#cccccc; text-align: center;"><center>Phytosanitary legislation </center></th>
+            <th colspan="4"  style="background:#cccccc; text-align: center;"><center>List of regulated pests</center></th>
         </tr> 
         <tr>
             <th style="background:#f2f2f2;">Region</th>
@@ -390,7 +390,7 @@ $(function() {
     </tbody>
         
 </table>   
-<h3>Phytosanitary legislation  by all countries changes during 1 {% trans "April" %} {{prevyear}} - 31 {% trans "March" %} {{curryear}}</h3>
+<h3>List of regulated pests by all countries changes during 1 {% trans "April" %} {{prevyear}} - 31 {% trans "March" %} {{curryear}}</h3>
    <table class="table table-condensed" border="1">
                 <thead>
                   
@@ -550,40 +550,10 @@ $(function() {
                  
                 
             </table> 
-<!--table class="table table-condensed">
-                <thead>
-                    <tr>
-                     <th colspan="1"  style="background:#cccccc; text-align: center;"><center>Phytosanitary legislation </center></th>
-                     <th colspan="1"  style="background:#cccccc; text-align: center;"><center>Country</center></th>
-                     <th colspan="2"  style="background:#cccccc; text-align: center;"><center> {{curryear}}</center></th>
-                    </tr> 
-                    <tr>
-                        <th style="background:#f2f2f2;">Region</th>
-                        <th style="background:#f2f2f2;">Countries</th>
-                        <th style="background:#f2f2f2;">New reports</th>
-                        <th style="background:#f2f2f2;">Updated reports</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {% for object in regionsAll.0 %}
-                    <tr>
-                        <th style="background:#f2f2f2;">{{ object.0 }} </th>
-                            <td>{{ object.6 }} </td>
-                        <td>{{ object.4 }} </td>
-                        <td>{{ object.5 }}</td>    
-                    </tr>
-                    {% endfor %}
-                     <tr>
-                        <th style="background:#f2f2f2;">Total</th>
-                        <th>   </th>
-                        <th>  {{regionsALLTot.0.2}} </th>
-                        <th>  {{regionsALLTot.0.3}} </th>
-                    </tr>
-                </tbody>
-            </table--> 
+
 
 <hr style="border: 4px solid #009926;"/>
-<h4>The cumulative total of Phytosanitary legislation made available by all countries through the IPP for the years 2005 - {{curryear}}.</h4>
+<h4>The cumulative total of List of regulated pests made available by all countries through the IPP for the years 2005 - {{curryear}}.</h4>
 
 <table class="table table-condensed table-striped">
 <thead>
@@ -603,7 +573,7 @@ $(function() {
 <tbody>
 
 <tr>
-    <td>Phytosanitary legislation </td>
+    <td>List of regulated pests</td>
     {% for object in pest_array.0 %}
        <td>{{object }} </td>
     {% endfor %}
@@ -621,7 +591,7 @@ $(function() {
 
 
 
-<h4>The number of new Phytosanitary legislation made available by all countries on the IPP every year (2005 - {{curryear}}). </h4>
+<h4>The number of new List of regulated pests made available by all countries on the IPP every year (2005 - {{curryear}}). </h4>
 
 <table class="table table-condensed table-striped">
 <thead>
@@ -640,7 +610,7 @@ $(function() {
 </thead>
 <tbody>
 <tr>
-    <td>Phytosanitary legislation</td>
+    <td>List of regulated pests</td>
     {% for object in pest_array1.0 %}
        <td>{{object }} </td>
     {% endfor %}
