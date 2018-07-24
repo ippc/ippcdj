@@ -99,17 +99,32 @@ class NewsPostAdmin(DisplayableAdmin):
                user_obj=User.objects.get(username=u)
                user_email=user_obj.email
                emailto_all.append(str(user_email))
-               print(user_email)
-       
-            category=get_object_or_404(NewsCategory, id=request.POST['categories']).title 
-            if(category == 'Announcements' or category == 'IPPC news' ):
+               #print(user_email)
+            category=None
+            try:
+                category=get_object_or_404(NewsCategory, id=request.POST['categories']).title 
+            except:
+                print("###################error in category ")
+                
+                    
+            
+            if(category!=None and (category == 'Announcements' or category == 'IPPC news' )):
                 pdate= request.POST['publish_date_0']
                 d = datetime.strptime(pdate, '%Y-%m-%d')
                 day_string = d.strftime('%d-%m-%Y')
-
-                subject='IPPC News: a new '+category+' has been posted'       
-                text='<html><body><p>Dear IPPC User,</p><p>a new "'+str(category)+'" has been posted in IPPC:<br><br> <b>'+ request.POST['title']+'</b></p><p>You can view it from '+day_string+' at the following url: <a href="http://www.ippc.int/news/'+news_slug+'">https://www.ippc.int/news/'+news_slug+'</s></p><p><br>International Plant Protection Convention team </p></body></html>'
-            
+                subject=''
+                text=''
+               #subject='IPPC News: a new '+category+' has been posted'      
+          
+                if  category == 'IPPC news':
+                    subject='IPPC News has been posted'     
+                    text='<html><body><p>Dear IPPC User,</p><p>a new IPPC News has been posted on the International Phytosanitary Portal (IPP):<br><br> <b>'+ request.POST['title']+'</b></p><p>You can view it from '+day_string+' at the following url: <a href="http://www.ippc.int/news/'+news_slug+'">https://www.ippc.int/news/'+news_slug+'</s></p><p><br>Kind regards,<br><br>The International Plant Protection Convention Secretariat</p></body></html>'
+                elif  category == 'Announcements':
+                    subject='IPPC announcement has been posted'   
+                    text='<html><body><p>Dear IPPC User,</p><p>a new IPPC announcement has been posted on the International Phytosanitary Portal (IPP):<br><br> <b>'+ request.POST['title']+'</b></p><p>You can view it from '+day_string+' at the following url: <a href="http://www.ippc.int/news/'+news_slug+'">https://www.ippc.int/news/'+news_slug+'</s></p><p><br>Kind regards,<br><br>The International Plant Protection Convention Secretariat</p></body></html>'
+                
+             
+                
                 notifificationmessage = mail.EmailMessage(subject,text,'ippc@fao.org',  emailto_all, ['paola.sentinelli@fao.org'])
                 notifificationmessage.content_subtype = "html"  
                 sent =notifificationmessage.send()
