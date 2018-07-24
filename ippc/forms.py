@@ -22,7 +22,7 @@ DraftProtocol,DraftProtocolFile,DraftProtocolComments,NotificationMessageRelate,
 FAQsCategory,FAQsItem,\
 QAQuestion,QAAnswer,ContactUsEmailMessage,UserAutoRegistration,IRSSActivityFile,IRSSActivity,\
 UserMembershipHistory,PhytosanitaryTreatment,PhytosanitaryTreatmentPestsIdentity,PhytosanitaryTreatmentCommodityIdentity,\
-CertificatesTool,WorkshopCertificatesTool,B_CertificatesTool,Topic,MyTool,TopicAssistants,TopicLeads,TransTopic
+CertificatesTool,WorkshopCertificatesTool,B_CertificatesTool,Topic,MyTool,TopicAssistants,TopicLeads,TransTopic,NROStats
 #,TransReportingObligation
 
 
@@ -848,4 +848,26 @@ class MyToolForm(forms.ModelForm):
         exclude = ()
         widgets = {
             
-        }       
+        }      
+        
+        
+
+class NROStatsForm(forms.ModelForm):
+
+    class Meta:
+        model = NROStats
+        fields = [
+           'title',
+           'datetraining',
+           'datetraining_checked',
+           'date', 
+          
+        ]
+        exclude = ( 'selcns')
+        widgets = {
+             'date': AdminDateWidget(),
+              'datetraining': AdminDateWidget(),
+        }   
+
+
+

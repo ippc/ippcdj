@@ -19,7 +19,7 @@ ContactUsEmailMessage,FAQsItem,FAQsCategory,QAQuestion, QAAnswer,UserAutoRegistr
 TransFAQsCategory,TransFAQsItem,MassEmailUtilityMessage,MassEmailUtilityMessageFile,\
 OCPHistory, PartnersContactPointHistory,CnEditorsHistory,PartnersEditorHistory,UserMembershipHistory,MediaKitDocument,MyTool,\
 PhytosanitaryTreatment,PhytosanitaryTreatmentPestsIdentity,PhytosanitaryTreatmentCommodityIdentity,CertificatesTool,WorkshopCertificatesTool,CPMS,TOPIC_PRIORITY_CHOICES,\
-Topic,TopicAssistants,TopicLeads,TransTopic,TOPIC_STATUS_CHOICES,SC_TYPE_CHOICES,B_CertificatesTool
+Topic,TopicAssistants,TopicLeads,TransTopic,TOPIC_STATUS_CHOICES,SC_TYPE_CHOICES,B_CertificatesTool,NROStats
          
 #TransReportingObligation,
 from mezzanine.core.models import Displayable, CONTENT_STATUS_DRAFT, CONTENT_STATUS_PUBLISHED
@@ -38,7 +38,7 @@ CountryNewsUrlFormSet,CountryNewsForm, CountryNewsFileFormSet,NotificationMessag
 DraftProtocolForm,  DraftProtocolFileFormSet,DraftProtocolCommentsForm,IppcUserProfileForm,\
 ContactUsEmailMessageForm,FAQsItemForm,FAQsCategoryForm,QAQuestionForm, QAAnswerForm,UserAutoRegistrationForm,IRSSActivityForm,IRSSActivityFileFormSet,\
 UserMembershipHistoryForm,PhytosanitaryTreatmentForm,PhytosanitaryTreatmentPestsIdentityFormSet,PhytosanitaryTreatmentCommodityIdentityFormSet,\
-CertificatesToolForm,WorkshopCertificatesToolForm, TopicForm ,TransTopicForm, TopicLeadsFormSet,TopicAssistantsFormSet,B_CertificatesToolForm   ,MyToolForm
+CertificatesToolForm,WorkshopCertificatesToolForm, TopicForm ,TransTopicForm, TopicLeadsFormSet,TopicAssistantsFormSet,B_CertificatesToolForm   ,MyToolForm,NROStatsForm
 ##TansReportingObligationForm , UserForm,
 
 from schedule.models import Event, EventParticipants
@@ -2215,7 +2215,7 @@ def pest_report_edit(request, country, id=None, template_name='countries/pest_re
             files=PestReportFile.objects.filter(pestreport_id=pest_report.id)
             urls=PestReportUrl.objects.filter(pestreport_id=pest_report.id)
             for f in files:
-                sql = "INSERT INTO ippc_pestreportfile(pestreport_id,description,file) VALUES ("+str(old_pest_report.id)+", '"+ugettext(f.description)+"', '"+str(f)+"')"
+                sql = "INSERT INTO ippc_pestreportfile(pestreport_id,description,file) VALUES ("+str(old_pest_report.id)+", '"+ugettext(f.description)+"', '"+PestReportFile.name(f)+"')"
                 #print(sql)
                 try:
                     cursor.execute(sql)
@@ -2588,7 +2588,7 @@ def reporting_obligation_edit(request, country, id=None, template_name='countrie
             files=ReportingObligation_File.objects.filter(reportingobligation_id=reporting_obligation.id)
             urls=ReportingObligationUrl.objects.filter(reportingobligation_id=reporting_obligation.id)
             for f in files:
-                sql = "INSERT INTO ippc_reportingobligation_file(reportingobligation_id,description,file) VALUES ("+str(old_reporting_obligation.id)+", '"+ugettext(f.description)+"', '"+str(f)+"')"
+                sql = "INSERT INTO ippc_reportingobligation_file(reportingobligation_id,description,file) VALUES ("+str(old_reporting_obligation.id)+", '"+ugettext(f.description)+"', '"+ReportingObligation_File.name(f)+"')"
                 #print(sql)
                 try:
                     cursor.execute(sql)
@@ -2827,10 +2827,10 @@ def event_reporting_create(request, country,type):
             
             notification_instance = notifyrelateform.save(commit=False)
             notification_instance.content_object = new_event_reporting
-            notify_instance.new_or_updated = 'NEW'
-            notify_instance.link = user_country_slug+'/eventreporting/'+str(new_event_reporting.publish_date.strftime("%Y"))+'/'+str(new_event_reporting.publish_date.strftime("%m"))+'/'+new_event_reporting.slug+'/'
+            notification_instance.new_or_updated = 'NEW'
+            notification_instance.link = user_country_slug+'/eventreporting/'+str(new_event_reporting.publish_date.strftime("%Y"))+'/'+str(new_event_reporting.publish_date.strftime("%m"))+'/'+new_event_reporting.slug+'/'
           
-            notify_instance.updated_last = new_event_reporting.publish_date
+            notification_instance.updated_last = new_event_reporting.publish_date
             notification_instance.save()
             notifyrelateform.save_m2m()
             
@@ -2941,7 +2941,7 @@ def event_reporting_edit(request, country, id=None, template_name='countries/eve
             files=EventreportingFile.objects.filter(eventreporting_id=event_reporting.id)
             urls=EventreportingUrl.objects.filter(eventreporting_id=event_reporting.id)
             for f in files:
-                sql = "INSERT INTO ippc_eventreportingfile(eventreporting_id,description,file) VALUES ("+str(old_event_reporting.id)+", '"+ugettext(f.description)+"', '"+str(f)+"')"
+                sql = "INSERT INTO ippc_eventreportingfile(eventreporting_id,description,file) VALUES ("+str(old_event_reporting.id)+", '"+ugettext(f.description)+"', '"+EventreportingFile.name(f)+"')"
                 #print(sql)
                 try:
                     cursor.execute(sql)
@@ -3003,10 +3003,10 @@ def event_reporting_edit(request, country, id=None, template_name='countries/eve
        
             notification_instance = notifyrelateform.save(commit=False)
             notification_instance.content_object = event_reporting
-            notify_instance.new_or_updated = 'UPDATE'
-            notify_instance.link = user_country_slug+'/eventreporting/'+str(event_reporting.publish_date.strftime("%Y"))+'/'+str(event_reporting.publish_date.strftime("%m"))+'/'+event_reporting.slug+'/'
+            notification_instance.new_or_updated = 'UPDATE'
+            notification_instance.link = user_country_slug+'/eventreporting/'+str(event_reporting.publish_date.strftime("%Y"))+'/'+str(event_reporting.publish_date.strftime("%m"))+'/'+event_reporting.slug+'/'
           
-            notify_instance.updated_last = datetime.today()
+            notification_instance.updated_last = datetime.today()
             notification_instance.save()
             notifyrelateform.save_m2m()
             
@@ -5397,6 +5397,1044 @@ from datetime import date
 
 
 
+class CountryStatsSingleListOfRegulatesPestsListView(ListView):
+    """   stat  """
+    context_object_name = 'latest'
+    model = CountryPage
+    template_name = 'countries/countries_year_of_listofregulatedpests.html'
+    queryset = CountryPage.objects.all().order_by('title')
+   
+    def get_context_data(self, **kwargs): # http://stackoverflow.com/a/15515220
+        context = super(CountryStatsSingleListOfRegulatesPestsListView, self).get_context_data(**kwargs)
+        context['dategenerate']=timezone.now()
+        context['selyear_range']=range(2010,timezone.now().year+1)
+       
+        curryear=0
+        prevyear=0
+        num_years=0
+        
+        #if 'year' in self.kwargs:
+        #    curryear=int(self.kwargs['year'])
+        #else:   
+            #curryear=timezone.now().year+1
+        curryear=2019   
+        prevyear=curryear-1
+        num_years=curryear-2005
+        
+        startstartdate = datetime(1999, 1, 1, 00, 01,00)
+        startdate = datetime(prevyear, 4, 1, 00, 01,00)
+        enddate = datetime(curryear, 3, 31, 23, 59,00)
+      
+        
+        regionsPCP = []
+        totNumReg=CountryPage.objects.filter(cp_ncp_t_type='CP').count()
+        region_cp_p = []
+        numRepP=0
+           
+        for k,v in REGIONS:
+            reg = v+''
+            numRepP=0
+            countriesperregioncp=CountryPage.objects.filter(region=k,cp_ncp_t_type='CP')
+            numCP_P = []
+            numCP_P.append(reg)
+            numCP_P.append(countriesperregioncp.count())
+            countP=0
+            cNewP=0
+            cUpP=0
+            cns=''
+            
+            cns_4=''
+            cns_5=''
+            cns_6=''
+            cns_7=''
+            cns_8=''
+            cns_9=''
+            cns_10=''
+            cns_11=''
+            cns_12=''
+            cns_1=''
+            cns_2=''
+            cns_3=''
+            tot_4=''
+            tot_5=''
+            tot_6=''
+            tot_7=''
+            tot_8=''
+            tot_9=''
+            tot_10=''
+            tot_11=''
+            tot_12=''
+            tot_1=''
+            tot_2=''
+            tot_3=''
+            p_count=0
+            
+            cNewP_4=0
+            cNewP_5=0
+            cNewP_6=0
+            cNewP_7=0
+            cNewP_8=0
+            cNewP_9=0
+            cNewP_10=0
+            cNewP_11=0
+            cNewP_12=0
+            cNewP_1=0
+            cNewP_2=0
+            cNewP_3=0
+            cUpP_4=0
+            cUpP_5=0
+            cUpP_6=0
+            cUpP_7=0
+            cUpP_8=0
+            cUpP_9=0
+            cUpP_10=0
+            cUpP_11=0
+            cUpP_12=0
+            cUpP_1=0
+            cUpP_2=0
+            cUpP_3=0
+           
+            cnsP_4=""
+            cnsP_5=""
+            cnsP_6=""
+            cnsP_7=""
+            cnsP_8=""
+            cnsP_9=""
+            cnsP_10=""
+            cnsP_11=""
+            cnsP_12=""
+            cnsP_1=""
+            cnsP_2=""
+            cnsP_3=""
+            cnsUpP_4=""
+            cnsUpP_5=""
+            cnsUpP_6=""
+            cnsUpP_7=""
+            cnsUpP_8=""
+            cnsUpP_9=""
+            cnsUpP_10=""
+            cnsUpP_11=""
+            cnsUpP_12=""
+            cnsUpP_1=""
+            cnsUpP_2=""
+            cnsUpP_3=""
+           
+            array_cns_p=[]
+            for c in countriesperregioncp:
+                array_cns_p_up_new=[]
+                array_cns_pn_=[]
+                array_cns_pu_=[]
+                array_cns_n_=[]
+                array_cns_u_=[]
+                pests= ReportingObligation.objects.filter(country=c.id,reporting_obligation_type=3,is_version=False,publication_date__gte=startstartdate,publication_date__lte=enddate)
+                p_count=pests.count()
+                
+                pests1= ReportingObligation.objects.filter(country=c.id,reporting_obligation_type=3,is_version=False,publication_date__gte=startdate,publication_date__lte=enddate)
+                pests2= ReportingObligation.objects.filter(country=c.id,reporting_obligation_type=3,is_version=False,modify_date__gte=startdate,modify_date__lte=enddate)
+           
+           
+                if p_count>0:
+                    numRepP+=1    
+                if pests1.count()>0 or pests2.count()>0:
+                    cns+=c.title+', '
+                    
+                countP+=p_count
+                #cNewP+=pests1.count()
+                #cUpP+=pests2.count()
+                
+                if pests1.count()>0:
+                    for p in pests1:
+                        p_date=p.publication_date.month
+                       
+                        if p_date==4:
+                          #print(p_date)  
+                          cNewP_4=cNewP_4+1
+                          cNewP+=1
+                          #print(c.title)  
+                          if c.title in cnsP_4:
+                              print("NO")
+                          else:    
+                             cnsP_4=cnsP_4+c.title+', '
+                    
+                        elif   p_date==5:
+                          cNewP_5=cNewP_5+1
+                          cNewP+=1
+                          if c.title in cnsP_5:
+                              print("NO")
+                          else:    
+                             cnsP_5=cnsP_5+c.title+', '
+                        elif   p_date==6:
+                              cNewP_6=cNewP_6+1
+                              cNewP+=1
+                              if c.title in cnsP_6:
+                                print("NO")
+                              else:    
+                                cnsP_6=cnsP_6+c.title+', '
+                        elif   p_date==5:
+                              cNewP_7=cNewP_7+1
+                              cNewP+=1
+                              if c.title in cnsP_7:
+                                  print("NO")
+                              else:    
+                               cnsP_7=cnsP_7+c.title+', '
+                        elif   p_date==8:
+                              cNewP_8=cNewP_8+1
+                              cNewP+=1
+                              if c.title in cnsP_8:
+                                  print("NO")
+                              else:    
+                                cnsP_8=cnsP_8+c.title+', '
+                        elif   p_date==9:
+                              cNewP_9=cNewP_9+1
+                              cNewP+=1
+                              if c.title in cnsP_9:
+                                print("NO")
+                              else:    
+                                cnsP_9=cnsP_9+c.title+', '
+                        elif   p_date==10:
+                              cNewP_10=cNewP_10+1
+                              cNewP+=1
+                              if c.title in cnsP_10:
+                                print("NO")
+                              else:    
+                                cnsP_10=cnsP_10+c.title+', '
+                        elif   p_date==11:
+                              cNewP_11=cNewP_11+1
+                              cNewP+=1
+                              if c.title in cnsP_11:
+                                 print("NO")
+                              else:    
+                                cnsP_11=cnsP_11+c.title+', '
+                        elif   p_date==12:
+                              cNewP_12=cNewP_12+1
+                              cNewP+=1
+                              if c.title in cnsP_12:
+                                  print("NO")
+                              else:    
+                                cnsP_12=cnsP_12+c.title+', '
+                        elif   p_date==1:
+                              cNewP_1=cNewP_1+1
+                              cNewP+=1
+                              if c.title in cnsP_1:
+                                 print("NO")
+                              else:    
+                                 cnsP_1=cnsP_1+c.title+', '
+                        elif   p_date==2:
+                              cNewP_2=cNewP_2+1
+                              cNewP+=1
+                              if c.title in cnsP_2:
+                                 print("NO")
+                              else:    
+                                cnsP_2=cnsP_2+c.title+', '
+                        elif   p_date==3:
+                              cNewP_3=cNewP_3+1
+                              cNewP+=1
+                              if c.title in cnsP_3:
+                                print("NO")
+                              else:    
+                                  cnsP_3=cnsP_3+c.title+', '
+                if pests2.count()>0:
+                    for p in pests2:
+                        # @type p 
+                        p_date=p.modify_date.month
+                        if   p_date==4 and p.modify_date != p.publication_date:
+                           cUpP_4= cUpP_4+1
+                           cUpP+=1
+                           if c.title in cnsUpP_4:
+                              print("NO")
+                           else:    
+                            cnsUpP_4=cnsUpP_4+c.title+', '
+                        elif   p_date==5 and p.modify_date != p.publication_date:
+                           cUpP_5= cUpP_5+1
+                           cUpP+=1
+                           if c.title in cnsUpP_5:
+                              print("NO")
+                           else:    
+                            cnsUpP_5=cnsUpP_5+c.title+', '
+
+                        elif   p_date==6 and p.modify_date != p.publication_date:
+                               cUpP_6= cUpP_6+1
+                               cUpP+=1
+                               if c.title in cnsUpP_6:
+                                 print("NO")
+                               else:    
+                                  cnsUpP_6=cnsUpP_6+c.title+', '
+                        elif   p_date==7 and p.modify_date != p.publication_date:
+                               cUpP_7= cUpP_7+1
+                               cUpP+=1
+                               if c.title in cnsUpP_7:
+                                 print("NO")
+                               else:    
+                                 cnsUpP_7=cnsUpP_7+c.title+', '
+                        elif   p_date==8 and p.modify_date != p.publication_date:
+                               cUpP_8= cUpP_8+1
+                               cUpP+=1
+                               #print('****************************')
+                               #print('****************************cUpP_8='+str(cUpP_8))
+                               if c.title in cnsUpP_8:
+                                 print("NO")
+                               else:    
+                                  cnsUpP_8=cnsUpP_8+c.title+', '
+                        elif   p_date==9 and p.modify_date != p.publication_date:
+                               cUpP_9= cUpP_9+1
+                               cUpP+=1
+                               if c.title in cnsUpP_9:
+                                 print("NO")
+                               else:    
+                                 cnsUpP_9=cnsUpP_9+c.title+', '
+                        elif   p_date==10 and p.modify_date != p.publication_date:
+                               cUpP_10= cUpP_10+1
+                               cUpP+=1
+                               if c.title in cnsUpP_10:
+                                 print("NO")
+                               else:    
+                                  cnsUpP_10=cnsUpP_10+c.title+', '
+                        elif   p_date==11 and p.modify_date != p.publication_date:
+                               cUpP_11= cUpP_11+1
+                               cUpP+=1
+                               if c.title in cnsUpP_11:
+                                print("NO")
+                               else:    
+                                 cnsUpP_11=cnsUpP_11+c.title+', '
+                        elif   p_date==12 and p.modify_date != p.publication_date:
+                               cUpP_12= cUpP_12+1
+                               cUpP+=1
+                               if c.title in cnsUpP_12:
+                                print("NO")
+                               else:    
+                                 cnsUpP_12=cnsUpP_12+c.title+', '
+                        elif   p_date==1 and p.modify_date != p.publication_date:
+                               cUpP_1= cUpP_1+1
+                               cUpP+=1
+                               if c.title in cnsUpP_1:
+                                print("NO")
+                               else:    
+                                 cnsUpP_1=cnsUpP_1+c.title+', '
+                        elif   p_date==2 and p.modify_date != p.publication_date:
+                               cUpP_2= cUpP_2+1
+                               cUpP+=1
+                               if c.title in cnsUpP_2:
+                                    print("NO")
+                               else:    
+                                     cnsUpP_2=cnsUpP_2+c.title+', '
+                        elif   p_date==3 and p.modify_date != p.publication_date:
+                               cUpP_3= cUpP_3+1 
+                               cUpP+=1
+                               if c.title in cnsUpP_3:
+                                print("NO")
+                               else:    
+                                cnsUpP_3=cnsUpP_3+c.title+', '
+
+                
+                array_cns_pn_.append(cNewP_4)
+                array_cns_pn_.append(cNewP_5)
+                array_cns_pn_.append(cNewP_6)
+                array_cns_pn_.append(cNewP_7)
+                array_cns_pn_.append(cNewP_8)
+                array_cns_pn_.append(cNewP_9)
+                array_cns_pn_.append(cNewP_10)
+                array_cns_pn_.append(cNewP_11)
+                array_cns_pn_.append(cNewP_12)
+                array_cns_pn_.append(cNewP_1)
+                array_cns_pn_.append(cNewP_2)
+                array_cns_pn_.append(cNewP_3)
+
+                array_cns_pu_.append( cUpP_4)
+                array_cns_pu_.append( cUpP_5)
+                array_cns_pu_.append( cUpP_6)
+                array_cns_pu_.append( cUpP_7)
+                array_cns_pu_.append( cUpP_8)
+                array_cns_pu_.append( cUpP_9)
+                array_cns_pu_.append( cUpP_10)
+                array_cns_pu_.append( cUpP_11)
+                array_cns_pu_.append( cUpP_12)
+                array_cns_pu_.append( cUpP_1)
+                array_cns_pu_.append( cUpP_2)
+                array_cns_pu_.append( cUpP_3)
+
+                array_cns_n_.append(cnsP_4)
+                array_cns_n_.append(cnsP_5)
+                array_cns_n_.append(cnsP_6)
+                array_cns_n_.append(cnsP_7)
+                array_cns_n_.append(cnsP_8)
+                array_cns_n_.append(cnsP_9)
+                array_cns_n_.append(cnsP_10)
+                array_cns_n_.append(cnsP_11)
+                array_cns_n_.append(cnsP_12)
+                array_cns_n_.append(cnsP_1)
+                array_cns_n_.append(cnsP_2)
+                array_cns_n_.append(cnsP_3)
+
+
+                array_cns_u_.append(cnsUpP_4)
+                array_cns_u_.append(cnsUpP_5)
+                array_cns_u_.append(cnsUpP_6)
+                array_cns_u_.append(cnsUpP_7)
+                array_cns_u_.append(cnsUpP_8)
+                array_cns_u_.append(cnsUpP_9)
+                array_cns_u_.append(cnsUpP_10)
+                array_cns_u_.append(cnsUpP_11)
+                array_cns_u_.append(cnsUpP_12)
+                array_cns_u_.append(cnsUpP_1)
+                array_cns_u_.append(cnsUpP_2)
+                array_cns_u_.append(cnsUpP_3)
+
+                array_cns_p_up_new.append(array_cns_pn_)#0
+                
+                array_cns_p_up_new.append(array_cns_pu_)#1
+
+                array_cns_p_up_new.append(array_cns_n_)#2
+                array_cns_p_up_new.append(array_cns_u_)#3
+ 
+            numCP_P.append(numRepP)
+            numCP_P.append(countP)
+            numCP_P.append(cNewP)
+            numCP_P.append(cUpP)
+            numCP_P.append(cns)
+            numCP_P.append(array_cns_p_up_new)#7
+            region_cp_p.append(numCP_P)
+        regionsPCP.append(region_cp_p)
+
+        #-----------------ALL COUNTRIES---------
+        regionsAll = []
+        totALLcn=countriesperregioncp=CountryPage.objects.filter().count()
+        region_all_p = []
+        numRepPAll=0
+        for k,v in REGIONS:
+            reg = v+''
+            numRepPAll=0
+            countriesperregioncp=CountryPage.objects.filter(region=k)
+            numCP_P = []
+            numCP_P.append(reg)
+            numCP_P.append(countriesperregioncp.count())
+            countP=0
+            cnsP=0
+            cUpP=0
+            cNewP=0
+            cns=''
+            
+        
+
+            p_count=0
+            
+            cNewP_4=0
+            cNewP_5=0
+            cNewP_6=0
+            cNewP_7=0
+            cNewP_8=0
+            cNewP_9=0
+            cNewP_10=0
+            cNewP_11=0
+            cNewP_12=0
+            cNewP_1=0
+            cNewP_2=0
+            cNewP_3=0
+            cUpP_4=0
+            cUpP_5=0
+            cUpP_6=0
+            cUpP_7=0
+            cUpP_8=0
+            cUpP_9=0
+            cUpP_10=0
+            cUpP_11=0
+            cUpP_12=0
+            cUpP_1=0
+            cUpP_2=0
+            cUpP_3=0
+            
+            cnsP_4=""
+            cnsP_5=""
+            cnsP_6=""
+            cnsP_7=""
+            cnsP_8=""
+            cnsP_9=""
+            cnsP_10=""
+            cnsP_11=""
+            cnsP_12=""
+            cnsP_1=""
+            cnsP_2=""
+            cnsP_3=""
+            cnsUpP_4=""
+            cnsUpP_5=""
+            cnsUpP_6=""
+            cnsUpP_7=""
+            cnsUpP_8=""
+            cnsUpP_9=""
+            cnsUpP_10=""
+            cnsUpP_11=""
+            cnsUpP_12=""
+            cnsUpP_1=""
+            cnsUpP_2=""
+            cnsUpP_3=""
+           
+            array_cns_p=[]
+            for c in countriesperregioncp:
+                array_cns_p_up_new=[]
+                array_cns_pn_=[]
+                array_cns_pu_=[]
+                array_cns_n_=[]
+                array_cns_u_=[]
+                if c.id !=199:
+                    pests= ReportingObligation.objects.filter(country=c.id,reporting_obligation_type=3,is_version=False,publication_date__gte=startstartdate,publication_date__lte=enddate)
+                    p_count=pests.count()
+
+                    pests1= ReportingObligation.objects.filter(country=c.id,reporting_obligation_type=3,is_version=False,publication_date__gte=startdate,publication_date__lte=enddate)
+                    pests2= ReportingObligation.objects.filter(country=c.id,reporting_obligation_type=3,is_version=False,modify_date__gte=startdate,modify_date__lte=enddate)
+
+
+                    if p_count>0:
+                        numRepPAll+=1    
+                    if pests1.count()>0 or pests2.count()>0:
+                        cns+=c.title+', '
+                    countP+=p_count
+                    #cNewP+=pests1.count()
+                    #cUpP+=pests2.count()
+                
+                if pests1.count()>0:
+                    for p in pests1:
+                        p_date=p.publication_date.month
+                       
+                        if  p_date==4:
+                          cNewP_4=cNewP_4+1
+                          cNewP+=1
+                          if c.title in cnsP_4:
+                              print("NO")
+                          else:    
+                             cnsP_4=cnsP_4+c.title+', '
+                    
+                        elif   p_date==5:
+                          cNewP_5=cNewP_5+1
+                          cNewP+=1
+                          if c.title in cnsP_5:
+                              print("NO")
+                          else:    
+                             cnsP_5=cnsP_5+c.title+', '
+                        elif   p_date==6:
+                              cNewP_6=cNewP_6+1
+                              cNewP+=1
+                              if c.title in cnsP_6:
+                                print("NO")
+                              else:    
+                                cnsP_6=cnsP_6+c.title+', '
+                        elif   p_date==7:
+                            
+                              cNewP_7=cNewP_7+1
+                              cNewP+=1
+                              if c.title in cnsP_7:
+                                  print("NO")
+                              else:    
+                               cnsP_7=cnsP_7+c.title+', '
+                        elif   p_date==8:
+                              print("")
+                              print("")
+                              #print("p_date"+str(p_date))
+                              print("")
+                              cNewP_8=cNewP_8+1
+                              cNewP+=1
+                              if c.title in cnsP_8:
+                                  print("NO")
+                              else:    
+                                cnsP_8=cnsP_8+c.title+', '
+                              print("")
+                              #print(cnsP_8)
+                              #print(cnsP_8)
+                              print("")
+                        elif   p_date==9:
+                              cNewP_9=cNewP_9+1
+                              cNewP+=1
+                              if c.title in cnsP_9:
+                                print("NO")
+                              else:    
+                                cnsP_9=cnsP_9+c.title+', '
+                        elif   p_date==10:
+                              cNewP_10=cNewP_10+1
+                              cNewP+=1
+                              if c.title in cnsP_10:
+                                print("NO")
+                              else:    
+                                cnsP_10=cnsP_10+c.title+', '
+                        elif   p_date==11:
+                              cNewP_11=cNewP_11+1
+                              cNewP+=1
+                              if c.title in cnsP_11:
+                                 print("NO")
+                              else:    
+                                cnsP_11=cnsP_11+c.title+', '
+                        elif   p_date==12:
+                              cNewP_12=cNewP_12+1
+                              cNewP+=1
+                              if c.title in cnsP_12:
+                                  print("NO")
+                              else:    
+                                cnsP_12=cnsP_12+c.title+', '
+                        elif   p_date==1:
+                              cNewP_1=cNewP_1+1
+                              cNewP+=1
+                              if c.title in cnsP_1:
+                                 print("NO")
+                              else:    
+                                 cnsP_1=cnsP_1+c.title+', '
+                        elif   p_date==2:
+                              cNewP_2=cNewP_2+1
+                              cNewP+=1
+                              if c.title in cnsP_2:
+                                 print("NO")
+                              else:    
+                                cnsP_2=cnsP_2+c.title+', '
+                        elif   p_date==3:
+                              cNewP_3=cNewP_3+1
+                              cNewP+=1
+                              if c.title in cnsP_3:
+                                print("NO")
+                              else:    
+                                  cnsP_3=cnsP_3+c.title+', '
+                if pests2.count()>0:
+                    for p in pests2:
+                        # @type p 
+                        p_date=p.modify_date.month
+                        if   p_date==4 and p.modify_date != p.publication_date:
+                           cUpP_4= cUpP_4+1
+                           cUpP+=1
+                           if c.title in cnsUpP_4:
+                                print("NO")
+                           else:    
+                                cnsUpP_4=cnsUpP_4+c.title+', '
+
+                        elif   p_date==5 and p.modify_date != p.publication_date:
+                           cUpP_5= cUpP_5+1
+                           cUpP+=1
+                           if c.title in cnsUpP_5:
+                                print("NO")
+                           else:    
+                                cnsUpP_5=cnsUpP_5+c.title+', '
+
+                        elif   p_date==6 and p.modify_date != p.publication_date:
+                               cUpP_6= cUpP_6+1
+                               cUpP+=1
+                               if c.title in cnsUpP_6:
+                                print("NO")
+                               else:    
+                                cnsUpP_6=cnsUpP_6+c.title+', '
+
+                        elif   p_date==7 and p.modify_date != p.publication_date:
+                               cUpP_7= cUpP_7+1
+                               cUpP+=1
+                               if c.title in cnsUpP_7:
+                                print("NO")
+                               else:    
+                                cnsUpP_7=cnsUpP_7+c.title+', '
+
+                        elif   p_date==8 and p.modify_date != p.publication_date:
+                               cUpP_8= cUpP_8+1
+                               cUpP+=1
+                               if c.title in cnsUpP_8:
+                                print("NO")
+                               else:    
+                                cnsUpP_8=cnsUpP_8+c.title+', '
+
+                        elif   p_date==9 and p.modify_date != p.publication_date:
+                               cUpP_9= cUpP_9+1
+                               cUpP+=1
+                               if c.title in cnsUpP_9:
+                                print("NO")
+                               else:    
+                                cnsUpP_9=cnsUpP_9+c.title+', '
+
+                        elif   p_date==10 and p.modify_date != p.publication_date:
+                               cUpP_10= cUpP_10+1
+                               cUpP+=1
+                               if c.title in cnsUpP_10:
+                                print("NO")
+                               else:    
+                                cnsUpP_10=cnsUpP_10+c.title+', '
+
+                        elif   p_date==11 and p.modify_date != p.publication_date:
+                               cUpP_11= cUpP_11+1
+                               cUpP+=1
+                               if c.title in cnsUpP_11:
+                                print("NO")
+                               else:    
+                                cnsUpP_11=cnsUpP_11+c.title+', '
+
+                        elif   p_date==12 and p.modify_date != p.publication_date:
+                               cUpP_12= cUpP_12+1
+                               cUpP+=1
+                               if c.title in cnsUpP_12:
+                                print("NO")
+                               else:    
+                                cnsUpP_12=cnsUpP_12+c.title+', '
+
+                        elif   p_date==1 and p.modify_date != p.publication_date:
+                               cUpP_1= cUpP_1+1
+                               cUpP+=1
+                               if c.title in cnsUpP_1:
+                                print("NO")
+                               else:    
+                                cnsUpP_1=cnsUpP_1+c.title+', '
+
+                        elif   p_date==2 and p.modify_date != p.publication_date:
+                               cUpP_2= cUpP_2+1
+                               cUpP+=1
+                               if c.title in cnsUpP_2:
+                                print("NO")
+                               else:    
+                                cnsUpP_2=cnsUpP_2+c.title+', '
+
+                        elif   p_date==3 and p.modify_date != p.publication_date:
+                               cUpP_3= cUpP_3+1 
+                               cUpP+=1
+                               if c.title in cnsUpP_3:
+                                 print("NO")
+                               else:    
+                                 cnsUpP_3=cnsUpP_3+c.title+', '
+
+                
+                array_cns_pn_.append(cNewP_4)
+                array_cns_pn_.append(cNewP_5)
+                array_cns_pn_.append(cNewP_6)
+                array_cns_pn_.append(cNewP_7)
+                array_cns_pn_.append(cNewP_8)
+                array_cns_pn_.append(cNewP_9)
+                array_cns_pn_.append(cNewP_10)
+                array_cns_pn_.append(cNewP_11)
+                array_cns_pn_.append(cNewP_12)
+                array_cns_pn_.append(cNewP_1)
+                array_cns_pn_.append(cNewP_2)
+                array_cns_pn_.append(cNewP_3)
+
+                array_cns_pu_.append( cUpP_4)
+                array_cns_pu_.append( cUpP_5)
+                array_cns_pu_.append( cUpP_6)
+                array_cns_pu_.append( cUpP_7)
+                array_cns_pu_.append( cUpP_8)
+                array_cns_pu_.append( cUpP_9)
+                array_cns_pu_.append( cUpP_10)
+                array_cns_pu_.append( cUpP_11)
+                array_cns_pu_.append( cUpP_12)
+                array_cns_pu_.append( cUpP_1)
+                array_cns_pu_.append( cUpP_2)
+                array_cns_pu_.append( cUpP_3)
+
+                array_cns_n_.append(cnsP_4)
+                array_cns_n_.append(cnsP_5)
+                array_cns_n_.append(cnsP_6)
+                array_cns_n_.append(cnsP_7)
+                array_cns_n_.append(cnsP_8)
+                array_cns_n_.append(cnsP_9)
+                array_cns_n_.append(cnsP_10)
+                array_cns_n_.append(cnsP_11)
+                array_cns_n_.append(cnsP_12)
+                array_cns_n_.append(cnsP_1)
+                array_cns_n_.append(cnsP_2)
+                array_cns_n_.append(cnsP_3)
+
+
+                array_cns_u_.append(cnsUpP_4)
+                array_cns_u_.append(cnsUpP_5)
+                array_cns_u_.append(cnsUpP_6)
+                array_cns_u_.append(cnsUpP_7)
+                array_cns_u_.append(cnsUpP_8)
+                array_cns_u_.append(cnsUpP_9)
+                array_cns_u_.append(cnsUpP_10)
+                array_cns_u_.append(cnsUpP_11)
+                array_cns_u_.append(cnsUpP_12)
+                array_cns_u_.append(cnsUpP_1)
+                array_cns_u_.append(cnsUpP_2)
+                array_cns_u_.append(cnsUpP_3)
+
+                
+                array_cns_p_up_new.append(array_cns_pn_)
+                
+                array_cns_p_up_new.append(array_cns_pu_)
+
+                array_cns_p_up_new.append(array_cns_n_)
+                array_cns_p_up_new.append(array_cns_u_)
+                
+            numCP_P.append(numRepPAll)
+            numCP_P.append(countP)
+            numCP_P.append(cNewP)
+            numCP_P.append(cUpP)
+            numCP_P.append(cns)
+            numCP_P.append(array_cns_p_up_new)#7
+            region_all_p.append(numCP_P)
+        regionsAll.append(region_all_p)
+        
+        
+        #----------------
+        
+        regionsPCPTot=[]
+        totarray=[]
+        tot=0
+        tot2=0
+        tot4=0
+        tot5=0
+        
+        for x in  regionsPCP[0]:
+            tot+= x[2]
+            tot2+= x[3]
+            tot4+= x[4]
+            tot5+= x[5]
+        totarray.append(tot)
+        totarray.append(tot2)
+        totarray.append(tot4)
+        totarray.append(tot5)
+
+        regionsPCPTot.append(totarray)     
+        #----------------
+        totarray_months_n=[]
+        totarray_months_u=[]
+        tot_n_4=0
+        tot_n_5=0
+        tot_n_6=0
+        tot_n_7=0
+        tot_n_8=0
+        tot_n_9=0
+        tot_n_10=0
+        tot_n_11=0
+        tot_n_12=0
+        tot_n_1=0
+        tot_n_2=0
+        tot_n_3=0
+       
+        tot_u_4=0
+        tot_u_5=0
+        tot_u_6=0
+        tot_u_7=0
+        tot_u_8=0
+        tot_u_9=0
+        tot_u_10=0
+        tot_u_11=0
+        tot_u_12=0
+        tot_u_1=0
+        tot_u_2=0
+        tot_u_3=0
+        for x in  regionsPCP[0]:
+            #print('TOT-------------------')
+            #print(x[7][0])
+            tot_n_4+=x[7][0][0]
+            tot_n_5+=x[7][0][1]
+            tot_n_6+=x[7][0][2]
+            tot_n_7+=x[7][0][3]
+            tot_n_8+=x[7][0][4]
+            tot_n_9+=x[7][0][5]
+            tot_n_10+=x[7][0][6]
+            tot_n_11+=x[7][0][7]
+            tot_n_12+=x[7][0][8]
+            tot_n_1+=x[7][0][9]
+            tot_n_2+=x[7][0][10]
+            tot_n_3+=x[7][0][11]
+            
+            #print(x[7][1])
+            tot_u_4+=x[7][1][0]
+            tot_u_5+=x[7][1][1]
+            tot_u_6+=x[7][1][2]
+            tot_u_7+=x[7][1][3]
+            tot_u_8+=x[7][1][4]
+            tot_u_9+=x[7][1][5]
+            tot_u_10+=x[7][1][6]
+            tot_u_11+=x[7][1][7]
+            tot_u_12+=x[7][1][8]
+            tot_u_1+=x[7][1][9]
+            tot_u_2+=x[7][1][10]
+            tot_u_3+=x[7][1][11]
+         
+        totarray_months_n.append(tot_n_4)
+        totarray_months_n.append(tot_n_5)
+        totarray_months_n.append(tot_n_6)
+        totarray_months_n.append(tot_n_7)
+        totarray_months_n.append(tot_n_8)
+        totarray_months_n.append(tot_n_9)
+        totarray_months_n.append(tot_n_10)
+        totarray_months_n.append(tot_n_11)
+        totarray_months_n.append(tot_n_12)
+        totarray_months_n.append(tot_n_1)
+        totarray_months_n.append(tot_n_2)
+        totarray_months_n.append(tot_n_3)
+        
+        totarray_months_u.append(tot_u_4)
+        totarray_months_u.append(tot_u_5)
+        totarray_months_u.append(tot_u_6)
+        totarray_months_u.append(tot_u_7)
+        totarray_months_u.append(tot_u_8)
+        totarray_months_u.append(tot_u_9)
+        totarray_months_u.append(tot_u_10)
+        totarray_months_u.append(tot_u_11)
+        totarray_months_u.append(tot_u_12)
+        totarray_months_u.append(tot_u_1)
+        totarray_months_u.append(tot_u_2)
+        totarray_months_u.append(tot_u_3)
+        
+        #----------------
+        
+        regionsALLTot=[]
+        totarray1=[]
+        tot=0
+        tot2=0
+        tot4=0
+        tot5=0
+        for x in  regionsAll[0]:
+            tot+= x[2]
+            tot2+= x[3]
+            tot4+= x[4]
+            tot5+= x[5]
+        totarray1.append(tot)
+        totarray1.append(tot2)
+        totarray1.append(tot4)
+        totarray1.append(tot5)
+
+        regionsALLTot.append(totarray1)     
+
+
+
+  #----------------
+        totarray_months_n_all=[]
+        totarray_months_u_all=[]
+        tot_n_4=0
+        tot_n_5=0
+        tot_n_6=0
+        tot_n_7=0
+        tot_n_8=0
+        tot_n_9=0
+        tot_n_10=0
+        tot_n_11=0
+        tot_n_12=0
+        tot_n_1=0
+        tot_n_2=0
+        tot_n_3=0
+       
+        tot_u_4=0
+        tot_u_5=0
+        tot_u_6=0
+        tot_u_7=0
+        tot_u_8=0
+        tot_u_9=0
+        tot_u_10=0
+        tot_u_11=0
+        tot_u_12=0
+        tot_u_1=0
+        tot_u_2=0
+        tot_u_3=0
+        for x in  regionsAll[0]:
+            #print('TOT----AOLL---------------')
+            #print(x[7][0])
+            tot_n_4+=x[7][0][0]
+            tot_n_5+=x[7][0][1]
+            tot_n_6+=x[7][0][2]
+            tot_n_7+=x[7][0][3]
+            tot_n_8+=x[7][0][4]
+            tot_n_9+=x[7][0][5]
+            tot_n_10+=x[7][0][6]
+            tot_n_11+=x[7][0][7]
+            tot_n_12+=x[7][0][8]
+            tot_n_1+=x[7][0][9]
+            tot_n_2+=x[7][0][10]
+            tot_n_3+=x[7][0][11]
+            
+            #print(x[7][1])
+            tot_u_4+=x[7][1][0]
+            tot_u_5+=x[7][1][1]
+            tot_u_6+=x[7][1][2]
+            tot_u_7+=x[7][1][3]
+            tot_u_8+=x[7][1][4]
+            tot_u_9+=x[7][1][5]
+            tot_u_10+=x[7][1][6]
+            tot_u_11+=x[7][1][7]
+            tot_u_12+=x[7][1][8]
+            tot_u_1+=x[7][1][9]
+            tot_u_2+=x[7][1][10]
+            tot_u_3+=x[7][1][11]
+         
+        totarray_months_n_all.append(tot_n_4)
+        totarray_months_n_all.append(tot_n_5)
+        totarray_months_n_all.append(tot_n_6)
+        totarray_months_n_all.append(tot_n_7)
+        totarray_months_n_all.append(tot_n_8)
+        totarray_months_n_all.append(tot_n_9)
+        totarray_months_n_all.append(tot_n_10)
+        totarray_months_n_all.append(tot_n_11)
+        totarray_months_n_all.append(tot_n_12)
+        totarray_months_n_all.append(tot_n_1)
+        totarray_months_n_all.append(tot_n_2)
+        totarray_months_n_all.append(tot_n_3)
+        
+        totarray_months_u_all.append(tot_u_4)
+        totarray_months_u_all.append(tot_u_5)
+        totarray_months_u_all.append(tot_u_6)
+        totarray_months_u_all.append(tot_u_7)
+        totarray_months_u_all.append(tot_u_8)
+        totarray_months_u_all.append(tot_u_9)
+        totarray_months_u_all.append(tot_u_10)
+        totarray_months_u_all.append(tot_u_11)
+        totarray_months_u_all.append(tot_u_12)
+        totarray_months_u_all.append(tot_u_1)
+        totarray_months_u_all.append(tot_u_2)
+        totarray_months_u_all.append(tot_u_3)
+
+
+
+
+
+
+
+        context['curryear']=curryear
+        context['prevyear']=prevyear
+        context['regionsPCP']=regionsPCP
+        context['totNumReg']=totNumReg
+        context['regionsPCPTot']=regionsPCPTot
+        
+        context['regionsAll']=regionsAll
+        context['totALLcn']=totALLcn
+        context['regionsALLTot']=regionsALLTot
+        context['totarray_months_n']=totarray_months_n
+        context['totarray_months_u']=totarray_months_u
+        context['totarray_months_n_all']=totarray_months_n_all
+        context['totarray_months_u_all']=totarray_months_u_all
+ 
+       
+        pest_array=[]
+        pest_array1=[]
+     
+        pestreporting_array = []
+        pestreporting_array1 = []
+        p_count=0
+        for y in range(2005,curryear+1):
+            pests= ReportingObligation.objects.filter(reporting_obligation_type=3,is_version=False)
+              
+            p_count1=0
+            for p in pests:
+                if p.publication_date != None and p.publication_date.year == y:
+                    p_count=p_count+1
+                    p_count1=p_count1+1
+            pestreporting_array.append(p_count)
+            pestreporting_array1.append(p_count1)
+            
+        pest_array.append(pestreporting_array)       
+        pest_array1.append(pestreporting_array1)       
+        datachartbis=''
+        datachart1bis=''
+        datachart2=''
+        datachart3=''
+        i=0
+     
+        for y in range(2005,curryear+1 ):
+            datachartbis += '{type: "column", name: "'+str(y)+'", legendText: "'+str(y)+'",showInLegend: true, dataPoints:[{label: "List of Regulated Pests", y: '+str(pest_array[0][i])+'},]},'
+            datachart1bis +='{type: "column", name: "'+str(y)+'", legendText: "'+str(y)+'",showInLegend: true, dataPoints:[{label: "List of Regulated Pests", y: '+str(pest_array1[0][i])+'},]},'
+            
+            datachart2+= '{label: "'+str(y)+'", y: '+str(pest_array[0][i])+'}, '
+            datachart3+= '{label: "'+str(y)+'", y: '+str(pest_array1[0][i])+'}, '
+            i=i+1
+        context['pest_array']=pest_array
+        context['pest_array1']=pest_array1
+        context['num_years_range']=range(2005,curryear+1)
+        context['datachartbis']=datachartbis
+        context['datachart1bis']=datachart1bis
+        context['num_years']=num_years
+        context['datachart2']=datachart2
+        context['datachart3']=datachart3
+        
+        return context    
+
+
 
 class CountryStatsSingleLegislationsListView(ListView):
     """   stat  """
@@ -6418,8 +7456,8 @@ class CountryStatsSingleLegislationsListView(ListView):
         i=0
      
         for y in range(2005,curryear+1 ):
-            datachartbis += '{type: "column", name: "'+str(y)+'", legendText: "'+str(y)+'",showInLegend: true, dataPoints:[{label: "Pest reports", y: '+str(pest_array[0][i])+'},]},'
-            datachart1bis +='{type: "column", name: "'+str(y)+'", legendText: "'+str(y)+'",showInLegend: true, dataPoints:[{label: "Pest reports", y: '+str(pest_array1[0][i])+'},]},'
+            datachartbis += '{type: "column", name: "'+str(y)+'", legendText: "'+str(y)+'",showInLegend: true, dataPoints:[{label: "Legislations", y: '+str(pest_array[0][i])+'},]},'
+            datachart1bis +='{type: "column", name: "'+str(y)+'", legendText: "'+str(y)+'",showInLegend: true, dataPoints:[{label: "Legislations", y: '+str(pest_array1[0][i])+'},]},'
             
             datachart2+= '{label: "'+str(y)+'", y: '+str(pest_array[0][i])+'}, '
             datachart3+= '{label: "'+str(y)+'", y: '+str(pest_array1[0][i])+'}, '
@@ -6642,6 +7680,161 @@ class CountryStatsSinglePestReportsListView(ListView):
         
         return context   
 
+class CountryStatsNROsDetailView(DetailView):
+    """ CountryStatsNROsDetailView detail page """
+    model = NROStats
+    context_object_name = 'nrostats'
+    template_name = 'countries/countries_stats_nros_new.html'
+    queryset = NROStats.objects.filter()
+
+    def get_context_data(self, **kwargs): # http://stackoverflow.com/a/15515220
+        context = super(CountryStatsNROsDetailView, self).get_context_data(**kwargs)
+        nrostat = get_object_or_404(NROStats, id=self.kwargs['pk'])
+        
+        date=nrostat.date
+        datetraining=nrostat.datetraining
+        datetraining_checked=nrostat.datetraining_checked
+        cns=nrostat.selcns
+        
+        context['datetraining_checked']=datetraining_checked
+        context['datetraining']=datetraining
+        context['date1']=date
+        context['cns']=cns
+        
+        startdate = datetime(1999, 1, 1, 00, 01,00)
+        enddate   = datetime(date.year, date.month, date.day+1, 23, 59,00)
+        trainingdate=''
+        if datetraining_checked:
+            trainingdate   = datetime(datetraining.year, datetraining.month, datetraining.day+1, 23, 59,00)
+            
+        
+        cnns=cns.split(",")
+     
+        country_array_pest_tot=[]
+        country_array_rep_tot=[]
+        country_array_ev_tot=[]
+        for cn in cnns :
+            if cn!='':
+                country= get_object_or_404(CountryPage, page_ptr_id=cn )
+                        
+                array_cn_pest_tot=[]
+                array_cn_rep_tot=[]
+                array_cn_ev_tot=[]
+                
+                array_cn_pest_tot.append(country.title)#0
+                array_cn_rep_tot.append(country.title)#0
+                array_cn_ev_tot.append(country.title)#0
+               
+                #PEST
+                pests1= PestReport.objects.filter(country=cn,is_version=False,publish_date__gte=startdate,publish_date__lte=enddate)
+                array_cn_pest_tot.append(pests1.count())
+                if datetraining_checked:
+                    pests2= PestReport.objects.filter(country=cn,is_version=False,publish_date__gte=startdate,publish_date__lte=trainingdate)
+                    array_cn_pest_tot.append(pests2.count())
+                else:
+                    array_cn_pest_tot.append('-')
+                if datetraining_checked:
+                    pests3= PestReport.objects.filter(country=cn,is_version=False,publish_date__gte=trainingdate,publish_date__lte=enddate)
+                    array_cn_pest_tot.append(pests3.count())
+                else:
+                    array_cn_pest_tot.append('-')
+                  
+                if datetraining_checked:
+                    pests4_count=0
+                    pests4= PestReport.objects.filter(country=cn,is_version=False,modify_date__gte=trainingdate,modify_date__lte=enddate)
+                    for p in pests4:
+                        if p.modify_date != p.publish_date:
+                            pests4_count=pests4_count+1
+                    array_cn_pest_tot.append(pests4_count)
+                else:
+                    array_cn_pest_tot.append('-')
+                 
+                #REP       
+                for i in range(1,5):
+                    rep_1= ReportingObligation.objects.filter(country=cn,reporting_obligation_type=i,is_version=False,publish_date__gte=startdate,publish_date__lte=enddate)
+                    array_cn_rep_tot.append(rep_1.count())
+                    if datetraining_checked:
+                        rep_2= ReportingObligation.objects.filter(country=cn,reporting_obligation_type=i,is_version=False,publish_date__gte=startdate,publish_date__lte=trainingdate)
+                        array_cn_rep_tot.append(rep_2.count())
+                    else:    
+                        array_cn_rep_tot.append('-')
+                    if datetraining_checked:
+                        rep_3= ReportingObligation.objects.filter(country=cn,reporting_obligation_type=i,is_version=False,publish_date__gte=trainingdate,publish_date__lte=enddate)
+                        array_cn_rep_tot.append(rep_3.count())
+                    else:    
+                        array_cn_rep_tot.append('-')
+                    if datetraining_checked:
+                        rep4_count=0
+                        rep4= ReportingObligation.objects.filter(country=cn,reporting_obligation_type=i,is_version=False,publish_date__gte=trainingdate,publish_date__lte=trainingdate)
+                        for r in rep4:
+                            if r.modify_date != r.publish_date:
+                                rep4_count=rep4_count+1
+                        array_cn_rep_tot.append(rep4_count)        
+                    else:    
+                        array_cn_rep_tot.append('-')    
+                #EV        
+                for i in range(1,6):
+                    ev_1= EventReporting.objects.filter(country=cn,event_rep_type=i,is_version=False,publish_date__gte=startdate,publish_date__lte=enddate)
+                    array_cn_ev_tot.append(ev_1.count())
+                    if datetraining_checked:
+                        ev_2= EventReporting.objects.filter(country=cn,event_rep_type=i,is_version=False,publish_date__gte=startdate,publish_date__lte=trainingdate)
+                        array_cn_ev_tot.append(ev_2.count())
+                    else:    
+                        array_cn_ev_tot.append('-')
+                    if datetraining_checked:
+                        ev_3= EventReporting.objects.filter(country=cn,event_rep_type=i,is_version=False,publish_date__gte=trainingdate,publish_date__lte=enddate)
+                        array_cn_ev_tot.append(ev_3.count())
+                    else:    
+                        array_cn_ev_tot.append('-')
+                    if datetraining_checked:
+                        ev4_count=0
+                        ev4= EventReporting.objects.filter(country=cn,event_rep_type=i,is_version=False,publish_date__gte=trainingdate,publish_date__lte=trainingdate)
+                        for e in ev4:
+                            if e.modify_date != e.publish_date:
+                                ev4_count=ev4_count+1
+                        array_cn_ev_tot.append(ev4_count)        
+                    else:    
+                        array_cn_ev_tot.append('-')    
+                
+                country_array_pest_tot.append(array_cn_pest_tot)
+                country_array_rep_tot.append(array_cn_rep_tot)
+                country_array_ev_tot.append(array_cn_ev_tot)
+        
+        context['country_array_pest_tot']=country_array_pest_tot
+        context['country_array_rep_tot']=country_array_rep_tot
+        context['country_array_ev_tot']=country_array_ev_tot
+       
+        return context
+
+@login_required
+@permission_required('ippc.add_nrostats', login_url="/accounts/login/")
+def select_cns_nros_stats(request):
+    """ Create nor stats """
+    form = NROStatsForm(request.POST)
+    countries=CountryPage.objects.all().order_by('title')
+    print(PROJECT_ROOT)
+    if request.method == "POST":
+        if form.is_valid():
+            new_nrostats = form.save(commit=False)
+            new_nrostats.selcns=request.POST['selcns1']
+  
+            form.save()
+           
+            info(request, _("NROs Statistics created."))
+            return redirect("nro-stats-detail",new_nrostats.id)
+        else:
+             return render_to_response('countries/countries_stats_nros_select.html', {'form': form,'countries':countries},
+             context_instance=RequestContext(request))
+    else:
+        form = NROStatsForm(instance=NROStats())
+     
+    return render_to_response('countries/countries_stats_nros_select.html', {'form': form ,'countries':countries},
+        context_instance=RequestContext(request))
+
+
+
+   
+  
 
 class CountryStatsSingleReportsListView(ListView):
     """   stat  """
@@ -6662,7 +7855,7 @@ class CountryStatsSingleReportsListView(ListView):
             curryear=int(self.kwargs['year'])
         else :   
              curryear=timezone.now().year-1
-        curryear=2017#timezone.now().year-1
+        #curryear=2017#timezone.now().year-1
           
         #curryear=timezone.now().year-1
         
@@ -10731,7 +11924,7 @@ def send_notificationevent_message(id):
 
     subject='Register to IPPC Meeting: '+event.title
     itemllink="https://www.ippc.int/en/events/event/"+str(id)
-    textmessage =textmessage ='<table bgcolor="#FFFFFF" cellspacing="2" cellpadding="2" valign="top" width="100%" style="border-bottom: 1px solid #10501F;border-top: 1px solid #10501F;border-left: 1px solid #10501F;border-right: 1px solid #10501F"> <tr><td width="100%" bgcolor="#FFFFFF">Dear Sir/Madam, <br><br>Please be informed that the following meeting:<br><br><a href="'+itemllink+'">'+event.title+'</a> ('+itemllink+') <br><br>is now open for registration on the <b>International Phytosanitary Portal</b>.<br><br>Please <b><a href="'+itemllink+'">REGISTER</a></b> before <b>'+str(event.end_register_date)+'</b><br><br>Please check the data in your profile, you can edit your profile yourself <a href="https://www.ippc.int/en/accounts/login/">after login into the IPP</a> (you can change all contact details except your name and job title). <br><br><p>-- International Plant Protection Convention team </p></td></tr></table>'
+    textmessage =textmessage ='<table bgcolor="#FFFFFF" cellspacing="2" cellpadding="2" valign="top" width="100%" style="border-bottom: 1px solid #10501F;border-top: 1px solid #10501F;border-left: 1px solid #10501F;border-right: 1px solid #10501F"> <tr><td width="100%" bgcolor="#FFFFFF">Dear Sir/Madam, <br><br>Please be informed that the following meeting:<br><br><a href="'+itemllink+'">'+event.title+'</a> ('+itemllink+') <br><br>is now open for registration on the <b>International Phytosanitary Portal</b>.<br><br>Please LOGIN to IPPC and <b><a href="'+itemllink+'">REGISTER</a></b> before <b>'+str(event.end_register_date)+'</b><br><br>Please check the data in your profile, you can edit your profile yourself <a href="https://www.ippc.int/en/accounts/login/">after login into the IPP</a> (you can change all contact details except your name and job title). <br><br><p>-- International Plant Protection Convention team </p></td></tr></table>'
 
     message = mail.EmailMessage(subject,textmessage,'ippc@fao.org',#from
         emailto_all, ['paola.sentinelli@fao.org'])#emailto_all for PROD, in TEST all to paola#
@@ -12116,7 +13309,7 @@ def generate_topiclist(request,lang):
     p= document.add_paragraph("")
     p= document.add_paragraph("")
     p= document.add_paragraph("")
-    p.add_run(_("This List of topics for IPPC standards was last updated on 1 June 2017 and reflects the modifications adopted by the CPM or approved by the SC."), style = 'CommentsStyle').italic = True
+    p.add_run(_("This List of topics for IPPC standards was last updated on 28 June 2018 and reflects the modifications adopted by the CPM or approved by the SC."), style = 'CommentsStyle').italic = True
     p.alignment = WD_ALIGN_PARAGRAPH.LEFT
     p= document.add_paragraph("")
     p= document.add_paragraph("")
@@ -12458,7 +13651,8 @@ def generate_topiclist(request,lang):
                 n=0
                 t_topic=None
                 #print('...........1....................')
-                t_topics=TransTopic.objects.filter(translation_id=t.id)
+                #print(t.id)
+                t_topics=TransTopic.objects.filter(translation_id=t.id,lang=lang)
                 if t_topics.count()>0 and lang!='en':
                     t_topic= get_object_or_404(TransTopic, translation_id=t.id,lang=lang)
                     #print('............2...................')
@@ -14951,7 +16145,66 @@ def my_tool(request):
     return render_to_response('certificates/mytool.html', {'form': form},
         context_instance=RequestContext(request))
 
+from django.core.files.storage import FileSystemStorage
+@login_required
+@permission_required('ippc.delete_publication', login_url="/accounts/login/")
+def nro_stats_files(request):
+    prj_dir =PROJECT_ROOT
+    list_files=None
+    list_files1=None
+    
+    if request.method == 'POST':
+        if request.POST['path2']:
+            path2 = request.POST['path2']
+            list_files = os.listdir(path2)
+            info(request, _("Successfully diplaying list of files!"))
+        elif request.POST['path3'] and  request.POST['filenametoremove']:
+            path3 = request.POST['path3']
+            filenametoremove = request.POST['filenametoremove']
+            if os.path.isfile(PROJECT_ROOT+'/'+path3+'/'+filenametoremove)      :
+                msg='File '+PROJECT_ROOT+'/'+path3+'/'+filenametoremove+' exist!<br>'
+                deletedfile=os.remove(PROJECT_ROOT+'/'+path3+'/'+filenametoremove)
+                msg= msg+' Deleted: '+str(deletedfile)+'<br>'
+            
+            info(request, _("Successfully deleted file!"+msg))
+            
+        elif request.FILES['myfile']:
+            myfile = request.FILES['myfile']
+            path = request.POST['path']
+            path1 = request.POST['path1']
+            msg=''
+            if os.path.isfile(PROJECT_ROOT+'/'+path1+'/'+myfile.name)      :
+                msg='File '+PROJECT_ROOT+'/'+path1+'/'+myfile.name+' exist!<br>'
+                stat = os.stat(PROJECT_ROOT+'/'+path1+'/'+myfile.name)
+                date=''
+                try:
+                    date= stat.st_birthtime
+                except AttributeError:
+                    # We're probably on Linux. No easy way to get creation dates here,
+                    # so we'll settle for when its content was last modified.
+                    date= stat.st_mtime
+                msg= msg+' date: '+str(date)+'<br>'
+                deletedfile=os.remove(PROJECT_ROOT+'/'+path1+'/'+myfile.name)
+                msg= msg+' Deleted: '+str(deletedfile)+'<br>'
+              
         
+            fs = FileSystemStorage(location=path) #defaults to   MEDIA_ROOT  
+            filename = fs.save(myfile.name, myfile)
+            os.utime(PROJECT_ROOT+'/'+path1+'/'+myfile.name, (date , date  ))
+            msg= msg+' Saved<br>'
+            list_files1 = os.listdir(path)
+            info(request, _("Successfully saved file!!"+msg))
+        
+        
+        return render_to_response('countries/countries_stats_nros.html', {'list_files':list_files,'list_files1':list_files1,},
+             context_instance=RequestContext(request))
+    else:
+            error(request, _("Error created entry!!"))
+            return render_to_response('countries/countries_stats_nros.html', {'list_files':list_files,'list_files1':list_files1,},
+            context_instance=RequestContext(request))
+    return render_to_response('countries/countries_stats_nros.html', {'list_files':list_files,'list_files1':list_files1,},
+        context_instance=RequestContext(request))
+
 
 class  MyToolDetailView(DetailView):
     """  MyTool detail page """
@@ -14964,15 +16217,14 @@ class  MyToolDetailView(DetailView):
         context = super(MyToolDetailView, self).get_context_data(**kwargs)
         result=''
         mytool = get_object_or_404(MyTool, id=self.kwargs['pk'])
-        
+        msg=''
      
-        
         text=mytool.mytext
         db = MySQLdb.connect(DATABASES["default"]["HOST"],DATABASES["default"]["USER"],DATABASES["default"]["PASSWORD"],DATABASES["default"]["NAME"])
         cursor = db.cursor()
 
         sql = text
-        #print(sql)
+
         try:
             cursor.execute(sql)
             str1= cursor.fetchall()
@@ -14981,23 +16233,17 @@ class  MyToolDetailView(DetailView):
            
           
             db.commit()
-
+            msg='OK'
 
 
         except:
+            msg='NOT OK'
             db.rollback()
-    
-
-       
 
         db.close()
 
         context['result'] = result
-        print ('----------------------------------')
-     
-       # print (result)
-        print ('----------------------------------')
-       # context['result'] = result
+        context['msg']=msg
         return context
     
             
@@ -15014,27 +16260,15 @@ def my_toolres(request,sel=None):
         str1= cursor.fetchall()
 
         for row in str1:
-           #print(row)
-            result=result+row
+            result=result+row+'<br>'
         db.commit()
-            
-           
                 
     except:
         db.rollback()
-    
-
-       
 
     db.close()
-
     context = { 'result':result}
     #context = {}
     response = render(request, "certificates/mytoolres.html", context)
     return response
-
-             
-
-    
-        
-         
+     

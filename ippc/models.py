@@ -2957,8 +2957,20 @@ class B_CertificatesTool(models.Model):
         
 class MyTool(models.Model):
     title = models.CharField(_("Title"), help_text=_("Text appearing in the certificate"), blank=True, null=True, max_length=250)
-    mytext =models.CharField(_("mytext"), help_text=_("Text appearing"), blank=True, null=True, max_length=250)
-        
+    mytext = models.TextField(_("mytext"), blank=True, null=True)
+    
+    
+class NROStats(models.Model):
+    title = models.CharField(_("Title"), help_text=_("Title-"), blank=True, null=True, max_length=250)
+    date = models.DateTimeField('Until the date')
+    datetraining = models.DateTimeField('Date of the Workshop/Training')
+    datetraining_checked = models.BooleanField(verbose_name=_('check this if you inserted a date of a workshop/training'),
+                                        default=False)
+    selcns= models.CharField(_("Selected cns"), max_length=550)        
+    class Meta:
+        verbose_name = _("NROStats")
+        verbose_name_plural = _("NROStats")
+        app_label = 'ippc'        
                 
 class Translatable(models.Model):
     """ Translations of user-generated content - https://gist.github.com/renyi/3596248"""
