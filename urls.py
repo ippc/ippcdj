@@ -35,7 +35,7 @@ MassEmailUtilityMessageDetailView,MassEmailUtilityMessageListView,massemail_send
 DraftProtocolDetailView,  draftprotocol_create, draftprotocol_edit,draftprotocol_compilecomments,\
 draftprotocol_comment_create,draftprotocol_comment_edit,PublicationLibraryView,commenta,contactPointExtractor,\
 CountryRegionsPercentageListView,CountryStatsreportsListView,CountryStatsTotalreportsListView,CountryRegionsUsersListView,CountryTotalUsersListView,CountryStatsChangeInCPsListView,\
-CountryRegionsUsersNeverLoggedListView,CountryRegionsUsersNeverLoggedNewListView,CountryStatsTotalreports1ListView,CountryStatsSinglePestReportsListView,CountryStatsSingleReportsListView,CountryStatsTotalReportsIncreaseListView,\
+CountryRegionsUsersNeverLoggedListView,CountryRegionsUsersNeverLoggedNewListView,CountryStatsTotalreports1ListView,CountryStatsSinglePestReportsListView,CountryStatsNROsDetailView,CountryStatsSingleReportsListView,CountryStatsTotalReportsIncreaseListView,\
 vote_answer_up ,vote_answer_down,reporting_trough_eppo,reporting_trough_eppo1,reminder_to_cn,\
 reporting_obligation_validate,event_reporting_validate,pest_report_validate,\
 QAQuestionListView, QAQuestionDetailView, QAQuestionAnswersView,question_create,answer_create,\
@@ -48,7 +48,7 @@ CertificatesToolListView,CertificatesToolDetailView,generate_certificates,Member
 TopicDetailView,TopicListView,topic_create,topic_edit,topic_translate,WorkshopCertificatesToolListView,WorkshopCertificatesToolDetailView,generate_workshopcertificates,\
 B_CertificatesToolListView,B_CertificatesToolDetailView,generate_b_certificates,my_tool,MyToolDetailView,generate_topiclist,\
 MembershipShortListView,generate_shortlist,generate_shortlistparticipant,generate_listNEW1,\
-generate_b_certificatesnew,generate_certificatesnew
+generate_b_certificatesnew,generate_certificatesnew,CountryStatsSingleListOfRegulatesPestsListView,select_cns_nros_stats,nro_stats_files
 
 #reporting_obligation_translate,
 from schedule.periods import Year, Month, Week, Day
@@ -160,7 +160,8 @@ urlpatterns = patterns("",
     url(r'^news/', include('news.urls')),
     url(r'^iyph/', include('iyph.urls')),
     url(r'^pce/', include('pce.urls')),
-
+   #url(r'^phytosanitary/', include('phytosanitary.urls')),
+   
 
 
     url('^markdown/', include( 'django_markdown.urls')),
@@ -294,7 +295,11 @@ urlpatterns = patterns("",
     url(r'^countries/statistics/year-pestreports/$',    view=CountryStatsSinglePestReportsListView.as_view(), name='regionspercentage'),   ##
     url(r'^countries/statistics/year-legislations/(?P<year>\d+)/$',    view=CountryStatsSingleLegislationsListView.as_view(), name='regionspercentage'),   ##
     url(r'^countries/statistics/year-legislations/$',    view=CountryStatsSingleLegislationsListView.as_view(), name='regionspercentage'),   ##
-   
+    url(r'^countries/statistics/year-regulatedpests/$',    view= CountryStatsSingleListOfRegulatesPestsListView.as_view(), name='regionspercentage'),   ##
+    #url(r'^countries/statistics/nros-by-countries/$',    view= CountryStatsNROsListView.as_view(), name='regionspercentage'),   ##
+    url(r'^countries/statistics/createnrostats/$',view=select_cns_nros_stats, name='select_cns_nros_stats'),
+    url(r'^countries/statistics/(?P<pk>\d+)/$',CountryStatsNROsDetailView.as_view(), name='nro-stats-detail'),
+  
     #-------------------------------------------#    
     #POLL:
     
@@ -346,7 +351,8 @@ urlpatterns = patterns("",
     #url(r'^work-area/sss/(?P<id>\d+)/$',      view=generate_membershiplist,     name='generate_membershiplist'),###
     url(r'^work-area/mytool/$',view= my_tool , name='my_tool'),
     url(r'^work-area/mytoolres/(?P<pk>\d+)/$',view= MyToolDetailView.as_view() , name='my_toolres'),
- 
+    url(r'^work-area/nro_stats_files/$',view= nro_stats_files , name='nro_stats_files'),
+   
   
     # url(r'^aaa/pdf/$', view=CertificatePDFView.as_view(), name='aaa-pdf'),
     
@@ -691,6 +697,10 @@ url(r'^external-cooperation/organizations-page-in-ipp/(?P<partner>[\w-]+)/$',   
         view=PublicationLibraryView.as_view(),
         # view=country_view(),
         name='country'),
+    url(r'^work-area-pages/capacity-development/implementation-and-capacity-development-committee-ic/electronic-decisions-by-ic/$',
+           view=PublicationLibraryView.as_view(),
+           # view=country_view(),
+           name='country'),     
             
         
  
@@ -740,7 +750,6 @@ url(r'^external-cooperation/organizations-page-in-ipp/(?P<partner>[\w-]+)/$',   
         url(r'^core-activities/standards-setting/list-topics-ippc-standards/topic/translate/(?P<lang>[\w-]+)/(?P<id>\d+)/$',
         view=topic_translate,
         name='topic-translate'),    
-#  PRINT WORD      http://test.ippc.int/en/work-area/generate-lot/en
   url(r'^work-area/generate-lot/(?P<lang>[\w-]+)$',      view=generate_topiclist,     name='generate-topiclist'),###
   
   url(r'^work-area/generate-sc-shortlist/$',view=generate_shortlist, name='generate-sc-shortlist'),
