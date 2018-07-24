@@ -1,13 +1,22 @@
 {% load mezzanine_tags staticfiles i18n %}
 
 
-{%if page.publicationlibrary.id == 581 %}
+{%if page.publicationlibrary.id == 581 or page.publicationlibrary.id == 1303 %}
+
 <p>
-This page provides access to a forum and a tool for conducting polls to enable the SC to conduct discussions and make decisions by electronic means. For more information on the electronic decision making process, refer to the excerpt from the SC report (November 2010) click <a href="/work-area-pages/background-e-decisions/">here</a> to open.
-</p>
-<p><strong>POLLs</strong></p>
+{%if page.publicationlibrary.id == 581 %}
+    This page provides access to a forum and a tool for conducting polls to enable the SC to conduct discussions and make decisions by electronic means. For more information on the electronic decision making process, refer to the excerpt from the SC report (November 2010) click <a href="/work-area-pages/background-e-decisions/">here</a> to open.
+{%else%}
+    {% if polls %}
+        This page provides access to a forum and a tool for conducting polls to enable the IC to conduct discussions and make decisions by electronic means. 
+    {%endif%}
+{%endif%}
+</p> 
+
 {% if polls %}
-<table class="table table-condensed table-striped table-bordered" id="publications">
+<p><strong>POLLs</strong></p>
+
+<table class="table table-condensed table-striped table-bordered">
     <thead>
         <tr>
             <th>{% trans "Poll" %}</th>
@@ -16,24 +25,29 @@ This page provides access to a forum and a tool for conducting polls to enable t
         </tr>
     </thead>
     <tbody>
-        <tr><td colspan="3">&#160;</td></tr>
     {% for poll in polls %}
-    <tr>
-        {% if 'admin' == poll.userspoll.all.0.username %}
-        {% else %}
-            {% if poll.is_past_due %}
-                <td >{{ poll.question }}</td>
-                <td>No</td>
-            {% else %} 
-                <td><a href="{% url 'detail' poll.id %}">{{ poll.question }}</a></td>
-                <td>Yes</td>
-            {% endif%}
-            <td><a href="{% url 'results' poll.id %}">Show results</a></td>
-        
-    {% endif%}
-    </tr>    
-{% endfor %}
-</tbody>
+        {% for g in poll.groupspoll.all %}
+           {% if g in page.get_content_model.groups.all  %}
+           <tr>
+               {% if 'admin' == poll.userspoll.all.0.username %}
+
+               {% else %}
+                   {% if poll.is_past_due %}
+                       <td >{{ poll.question }}</td>
+                       <td>No</td>
+                   {% else %} 
+                       <td><a href="{% url 'detail' poll.id %}">{{ poll.question }}</a></td>
+                       <td>Yes</td>
+                   {% endif%}
+                   <td><a href="{% url 'results' poll.id %}">Show results</a></td>
+
+             {% endif%}
+           </tr>  
+           {% endif%} 
+       {% endfor %} 
+    {% endfor %}
+    </tbody>
 </table>
 {%endif%}
+
 {%endif%}
