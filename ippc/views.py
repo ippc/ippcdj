@@ -5421,7 +5421,7 @@ class CountryStatsSingleListOfRegulatesPestsListView(ListView):
         prevyear=curryear-1
         num_years=curryear-2005
         
-        startstartdate = datetime(1999, 1, 1, 00, 01,00)
+        startstartdate = datetime(1970, 1, 1, 00, 01,00)
         startdate = datetime(prevyear, 4, 1, 00, 01,00)
         enddate = datetime(curryear, 3, 31, 23, 59,00)
       
@@ -6460,7 +6460,7 @@ class CountryStatsSingleLegislationsListView(ListView):
         prevyear=curryear-1
         num_years=curryear-2005
         
-        startstartdate = datetime(1999, 1, 1, 00, 01,00)
+        startstartdate = datetime(1972, 1, 1, 00, 01,00)
         startdate = datetime(prevyear, 4, 1, 00, 01,00)
         enddate = datetime(curryear, 3, 31, 23, 59,00)
       
@@ -7497,7 +7497,7 @@ class CountryStatsSinglePestReportsListView(ListView):
         prevyear=curryear-1  
         num_years=curryear-2005
         
-        startstartdate = datetime(1999, 1, 1, 00, 01,00)
+        startstartdate = datetime(1972, 1, 1, 00, 01,00)
         startdate = datetime(prevyear, 4, 1, 00, 01,00)
         enddate = datetime(curryear, 3, 31, 23, 59,00)
         
@@ -7701,7 +7701,7 @@ class CountryStatsNROsDetailView(DetailView):
         context['date1']=date
         context['cns']=cns
         
-        startdate = datetime(1999, 1, 1, 00, 01,00)
+        startdate = datetime(1972, 1, 1, 00, 01,00)
         enddate   = datetime(date.year, date.month, date.day+1, 23, 59,00)
         trainingdate=''
         if datetraining_checked:
@@ -7726,13 +7726,13 @@ class CountryStatsNROsDetailView(DetailView):
                 array_cn_ev_tot.append(country.title)#0
                
                 #PEST
-                pests1= PestReport.objects.filter(country=cn,is_version=False,publish_date__gte=startdate,publish_date__lte=enddate)
-                array_cn_pest_tot.append(pests1.count())
                 if datetraining_checked:
                     pests2= PestReport.objects.filter(country=cn,is_version=False,publish_date__gte=startdate,publish_date__lte=trainingdate)
                     array_cn_pest_tot.append(pests2.count())
                 else:
                     array_cn_pest_tot.append('-')
+                pests1= PestReport.objects.filter(country=cn,is_version=False,publish_date__gte=startdate,publish_date__lte=enddate)
+                array_cn_pest_tot.append(pests1.count())
                 if datetraining_checked:
                     pests3= PestReport.objects.filter(country=cn,is_version=False,publish_date__gte=trainingdate,publish_date__lte=enddate)
                     array_cn_pest_tot.append(pests3.count())
@@ -7751,13 +7751,13 @@ class CountryStatsNROsDetailView(DetailView):
                  
                 #REP       
                 for i in range(1,5):
-                    rep_1= ReportingObligation.objects.filter(country=cn,reporting_obligation_type=i,is_version=False,publish_date__gte=startdate,publish_date__lte=enddate)
-                    array_cn_rep_tot.append(rep_1.count())
                     if datetraining_checked:
                         rep_2= ReportingObligation.objects.filter(country=cn,reporting_obligation_type=i,is_version=False,publish_date__gte=startdate,publish_date__lte=trainingdate)
                         array_cn_rep_tot.append(rep_2.count())
                     else:    
                         array_cn_rep_tot.append('-')
+                    rep_1= ReportingObligation.objects.filter(country=cn,reporting_obligation_type=i,is_version=False,publish_date__gte=startdate,publish_date__lte=enddate)
+                    array_cn_rep_tot.append(rep_1.count())
                     if datetraining_checked:
                         rep_3= ReportingObligation.objects.filter(country=cn,reporting_obligation_type=i,is_version=False,publish_date__gte=trainingdate,publish_date__lte=enddate)
                         array_cn_rep_tot.append(rep_3.count())
@@ -7774,13 +7774,14 @@ class CountryStatsNROsDetailView(DetailView):
                         array_cn_rep_tot.append('-')    
                 #EV        
                 for i in range(1,6):
-                    ev_1= EventReporting.objects.filter(country=cn,event_rep_type=i,is_version=False,publish_date__gte=startdate,publish_date__lte=enddate)
-                    array_cn_ev_tot.append(ev_1.count())
                     if datetraining_checked:
                         ev_2= EventReporting.objects.filter(country=cn,event_rep_type=i,is_version=False,publish_date__gte=startdate,publish_date__lte=trainingdate)
                         array_cn_ev_tot.append(ev_2.count())
                     else:    
                         array_cn_ev_tot.append('-')
+                    ev_1= EventReporting.objects.filter(country=cn,event_rep_type=i,is_version=False,publish_date__gte=startdate,publish_date__lte=enddate)
+                    array_cn_ev_tot.append(ev_1.count())
+                
                     if datetraining_checked:
                         ev_3= EventReporting.objects.filter(country=cn,event_rep_type=i,is_version=False,publish_date__gte=trainingdate,publish_date__lte=enddate)
                         array_cn_ev_tot.append(ev_3.count())
@@ -8304,7 +8305,7 @@ class CountryStatisticsTotalNroByYearListView(ListView):
             reporting_array = []
             reporting_array1 = []
             rep_count=0
-            for y in range(1972,curryear +1):
+            for y in range(1970,curryear +1):
                 reps=ReportingObligation.objects.filter(reporting_obligation_type=i,is_version=False)
                 rep_count1=0
                 for r in reps:##*****check date before 2005  and sum
@@ -8322,7 +8323,7 @@ class CountryStatisticsTotalNroByYearListView(ListView):
             eventreporting_array = []
             eventreporting_array1 = []
             evrep_count=0
-            for y in range(1972,curryear +1):
+            for y in range(1970,curryear +1):
                 evrep=EventReporting.objects.filter(event_rep_type=i,is_version=False)
                 evrep_count1=0 
                 for e in evrep:
