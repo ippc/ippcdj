@@ -270,6 +270,7 @@ INSTALLED_APPS = (
     "calls",
     "news",
     "iyph",
+    #"phytosanitary",
    
     "t_eppo",
     # or, even better, attachments that can be related to any model type
@@ -300,7 +301,7 @@ INSTALLED_APPS = (
     "loginas",
     "pce",
     "easy_pdf",
-)
+    )
 # 
 # NEWSLETTER_CONFIRM_EMAIL = False
 
@@ -406,6 +407,7 @@ AUTH_PROFILE_MODULE = "ippc.IppcUserProfile"
 ACCOUNTS_PROFILE_VIEWS_ENABLED = True
 ACCOUNTS_MIN_PASSWORD_LENGTH = 8
 ACCOUNTS_VERIFICATION_REQUIRED = True
+#ACCOUNTS_VERIFICATION_FORCEOK = True
 # ACCOUNTS_APPROVAL_REQUIRED = False
 # ACCOUNTS_APPROVAL_EMAILS = 'name@email.tld'
    
@@ -426,6 +428,7 @@ ACCOUNTS_PROFILE_FORM_EXCLUDE_FIELDS = (
     "date_account_created",
     "date_contact_registration",
     "preferredlanguage",
+    "modify_date",
 )
 
 RICHTEXT_WIDGET_CLASS = 'mezzanine_pagedown.widgets.PageDownWidget'
