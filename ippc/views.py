@@ -16174,6 +16174,8 @@ def nro_stats_files(request):
             path = request.POST['path']
             path1 = request.POST['path1']
             msg=''
+            date='1330712292'
+    
             if os.path.isfile(PROJECT_ROOT+'/'+path1+'/'+myfile.name)      :
                 msg='File '+PROJECT_ROOT+'/'+path1+'/'+myfile.name+' exist!<br>'
                 stat = os.stat(PROJECT_ROOT+'/'+path1+'/'+myfile.name)
@@ -16184,14 +16186,15 @@ def nro_stats_files(request):
                     # We're probably on Linux. No easy way to get creation dates here,
                     # so we'll settle for when its content was last modified.
                     date= stat.st_mtime
+                    date= '1630712292'
                 msg= msg+' date: '+str(date)+'<br>'
                 deletedfile=os.remove(PROJECT_ROOT+'/'+path1+'/'+myfile.name)
                 msg= msg+' Deleted: '+str(deletedfile)+'<br>'
               
-        
+            date= '1330712292'
             fs = FileSystemStorage(location=path) #defaults to   MEDIA_ROOT  
             filename = fs.save(myfile.name, myfile)
-            os.utime(PROJECT_ROOT+'/'+path1+'/'+myfile.name, (date , date  ))
+            os.utime(PROJECT_ROOT+'/'+path1+'/'+myfile.name, (1630712292 , 1630712292  ))
             msg= msg+' Saved<br>'
             list_files1 = os.listdir(path)
             info(request, _("Successfully saved file!!"+msg))
@@ -16272,4 +16275,103 @@ def my_toolres(request,sel=None):
     #context = {}
     response = render(request, "certificates/mytoolres.html", context)
     return response
+
+import xml.etree.cElementTree as ET
+def contactPointsXML(request):
+    prefixvalue=[]
+   
+    prefixvalue.append("Mr.")
+    prefixvalue.append("Ms.")
+    prefixvalue.append("Mrs.")
+    prefixvalue.append("Professor.")
+    prefixvalue.append("M.")
+    prefixvalue.append("Mme.")
+    prefixvalue.append("Dr.")
+    prefixvalue.append("Sr.")
+    prefixvalue.append("Sra.")
+    
+    cns=CountryPage.objects.all()
+   
+    root = ET.Element("root")
+    contacts = ET.SubElement(root, "contacts")
+    for cn in cns:
+        if cn.id != 199 and cn.id!=-1:
+            country = ET.SubElement(contacts, "country")
+            tree = ET.ElementTree(country) 
+            
+            ET.SubElement(country, "iso2").text = cn.iso
+            ET.SubElement(country, "country_name").text = cn.name
+            ippuser=IppcUserProfile.objects.filter(contact_type='1' , country=cn.id)|IppcUserProfile.objects.filter(contact_type='2' , country=cn.id)|IppcUserProfile.objects.filter(contact_type='3' , country=cn.id)|IppcUserProfile.objects.filter(contact_type='4' , country=cn.id)
+            prefix=''
+            firstanme=''
+            lastname=''
+            email=''
+            altemail=''
+            c_type=''
+            organization=''
+            address=''
+            dateaccountcreated=''
+            dateregistration=''
+            modified=''
+                        
+            if ippuser.count()>0:
+                if ippuser.count()>1:
+                    print('more than one')
+                
+                user=ippuser[0]
+                user_obj=User.objects.get(id=user.user_id)
+                
+                if user.gender!='' and user.gender!=None:
+                    prefix=str(prefixvalue[int(user.gender)-1])
+                firstanme=user.first_name
+                lastname=user.last_name
+                email=user_obj.email
+                altemail=user.email_address_alt
+                dateaccountcreated=str(user.date_account_created)
+                dateregistration= str(user.date_contact_registration)
+                modified= str(user.modify_date)
+                for o in user.contact_type.all():
+                    if o.id==1 or o.id==2 or o.id==3 or o.id==4:
+                        c_type=str(o)
+                        #print(c_type)
+                organization=user.address1
+                address=user.address2
+               
+            else:
+                prefix='-'
+                firstanme='-'
+                lastname='-'
+                email='-'
+                altemail=''
+                dateaccountcreated='-'
+                dateregistration='-'
+                modified='-'
+                c_type='-'
+                organization='-'
+                address='-'
+            ET.SubElement(country, "prefix").text = prefix
+            ET.SubElement(country, "first_name").text = firstanme
+            ET.SubElement(country, "last_name").text = lastname
+            ET.SubElement(country, "email").text = email
+            ET.SubElement(country, "alternate_email").text = altemail
+            ET.SubElement(country, "type").text = c_type
+            ET.SubElement(country, "organization").text = organization
+            ET.SubElement(country, "address").text = address
+            ET.SubElement(country, "account_created_date").text = dateaccountcreated
+            ET.SubElement(country, "nomination_date").text =dateregistration
+            ET.SubElement(country, "last_updates").text =modified
+         
+    
+        tree = ET.ElementTree(contacts) 
+        
+   
+    cp_dir = os.path.join(MEDIA_ROOT,'files')
+    file_path = os.path.join(cp_dir, "contactpoints.xml")
+    tree.write(file_path,encoding='utf-8', xml_declaration=True) 
+    
      
+   # response = HttpResponse(t.render(c),content_type='text/xml; charset=utf-8')
+   # response['Content-Disposition'] = 'attachment; filename="'+file_path+'"'
+   # return response	
+    return redirect('https://www.ippc.int/static/media/files/contactpoints.xml'  )
+    

@@ -518,8 +518,13 @@ class IppcUserProfile(models.Model):
     website = models.URLField(_("Website"),blank=True, null=True)
     date_account_created = models.DateTimeField(_("IPP Member Since"), default=datetime.now, editable=False)
     date_contact_registration = models.DateTimeField(_("Date contact registration"), blank=True, null=True, default=datetime.now, editable=True)
+    modify_date = models.DateTimeField(_("modify_date"), blank=True, null=True, default=None, editable=True)
 
-
+    def save(self, *args, **kwargs):
+        ''' On save, update timestamps '''
+        self.modify_date = datetime.now()
+        super(IppcUserProfile, self).save(*args, **kwargs)
+        
 # this is in mezzanine.core.models.displayable
 # CONTENT_STATUS_DRAFT = 1
 # CONTENT_STATUS_PUBLISHED = 2
