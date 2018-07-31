@@ -118,10 +118,10 @@ class NewsPostAdmin(DisplayableAdmin):
           
                 if  category == 'IPPC news':
                     subject='IPPC News has been posted'     
-                    text='<html><body><p>Dear IPPC User,</p><p>a new IPPC News has been posted on the International Phytosanitary Portal (IPP):<br><br> <b>'+ request.POST['title']+'</b></p><p>You can view it from '+day_string+' at the following url: <a href="http://www.ippc.int/news/'+news_slug+'">https://www.ippc.int/news/'+news_slug+'</s></p><p><br>Kind regards,<br><br>The International Plant Protection Convention Secretariat</p></body></html>'
+                    text='<html><body><p>Dear IPPC User,</p><p>a new IPPC News has been posted on the International Phytosanitary Portal (IPP):<br><br> <b>'+ request.POST['title']+'</b></p><p>You can view it from '+day_string+' at the following url: <a href="http://www.ippc.int/news/'+news_slug+'">https://www.ippc.int/news/'+news_slug+'</a></p><p><br>Kind regards,<br><br>The International Plant Protection Convention Secretariat</p></body></html>'
                 elif  category == 'Announcements':
                     subject='IPPC announcement has been posted'   
-                    text='<html><body><p>Dear IPPC User,</p><p>a new IPPC announcement has been posted on the International Phytosanitary Portal (IPP):<br><br> <b>'+ request.POST['title']+'</b></p><p>You can view it from '+day_string+' at the following url: <a href="http://www.ippc.int/news/'+news_slug+'">https://www.ippc.int/news/'+news_slug+'</s></p><p><br>Kind regards,<br><br>The International Plant Protection Convention Secretariat</p></body></html>'
+                    text='<html><body><p>Dear IPPC User,</p><p>a new IPPC announcement has been posted on the International Phytosanitary Portal (IPP):<br><br> <b>'+ request.POST['title']+'</b></p><p>You can view it from '+day_string+' at the following url: <a href="http://www.ippc.int/news/'+news_slug+'">https://www.ippc.int/news/'+news_slug+'</a></p><p><br>Kind regards,<br><br>The International Plant Protection Convention Secretariat</p></body></html>'
                 
              
                 
