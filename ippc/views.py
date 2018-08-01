@@ -10361,7 +10361,7 @@ def contactus_email_send(request):
     else:
       emailfrom=request.user.email
     if request.method == "POST" :
-        if form.is_valid() and request.POST['captcha'] ==  request.POST['result_element'] :
+        if form.is_valid() and request.POST['captcha'] ==  request.POST['result_element']  and request.POST['captcha2'] ==  request.POST['result2_element'] :
              emails_a=''
              subj1='Contact IPPC: '
              if request.POST['contact_us_type'] == "1":
@@ -10409,34 +10409,42 @@ def contactus_email_send(request):
              message= mail.EmailMessage(subject,request.POST['messagebody'],request.POST['emailfrom'],[emails_a], ['paola.sentinelli@fao.org'])#emailto_all for PROD, in TEST all to paola#
              message.content_subtype = "html"
              messages.append(message)
-             connection = mail.get_connection()
-             connection.open()
-             #print('test-sending')
-             sent=connection.send_messages(messages)#
-             connection.close()
+             if "loans bad" in request.POST['messagebody']:
+                new_contactusemailmessage.sent=False
+             else:
+                connection = mail.get_connection()
+                connection.open()
+                #print('test-sending')
+                sent=connection.send_messages(messages)#
+                connection.close()
+                new_contactusemailmessage.sent=sent
+                form.save()
 #
              #update status SENT/NOT SENT mail message in db
-             new_contactusemailmessage.sent=sent
-             form.save()
+             
             
              info(request, _("Email sent."))
              return redirect("contactus-email-detail",new_contactusemailmessage.id)
         else:
              error_captcha=''
-             if not(request.POST['captcha'] == request.POST['result_element'] ) :
+             if not(request.POST['captcha'] == request.POST['result_element'] ) and not(request.POST['captcha2'] == request.POST['result2_element'] ) :
                    error_captcha='error'
                   
-             return render_to_response('emailcontact_us/emailcontact_us_send.html', {'form': form,'x_element': request.POST['x_element'],'y_element': request.POST['y_element'],'result_element': request.POST['result_element'] ,'error_captcha':error_captcha},
+             return render_to_response('emailcontact_us/emailcontact_us_send.html', {'form': form,'x_element': request.POST['x_element'],'y_element': request.POST['y_element'],'result_element': request.POST['result_element'] ,'z_element':request.POST['z_element'],'t_element':request.POST['t_element'],'result2_element':request.POST['result2_element'],'error_captcha':error_captcha},
              context_instance=RequestContext(request))
     else:
-         x_element=random.randint(1,10)   
-         y_element=random.randint(1,10)
+         x_element=random.randint(1,50)   
+         y_element=random.randint(1,50)
+         z_element=random.randint(1,15)   
+         t_element=random.randint(1,15)
+        
          result_element=x_element+y_element
+         result2_element=z_element*t_element
      
          form = ContactUsEmailMessageForm(instance=ContactUsEmailMessage(emailfrom=emailfrom))
 #
        
-    return render_to_response('emailcontact_us/emailcontact_us_send.html', {'form': form  ,'x_element':x_element,'y_element':y_element,'result_element':result_element},
+    return render_to_response('emailcontact_us/emailcontact_us_send.html', {'form': form  ,'x_element':x_element,'y_element':y_element,'result_element':result_element,'z_element':z_element,'t_element':t_element,'result2_element':result2_element},
          context_instance=RequestContext(request))
 #
 #   
@@ -16151,51 +16159,82 @@ from django.core.files.storage import FileSystemStorage
 @permission_required('ippc.delete_publication', login_url="/accounts/login/")
 def nro_stats_files(request):
     prj_dir =PROJECT_ROOT
+    
     list_files=None
     list_files1=None
-    
+    deleted=''
+    msg='' 
     if request.method == 'POST':
         if request.POST['path2']:
             path2 = request.POST['path2']
             list_files = os.listdir(path2)
-            info(request, _("Successfully diplaying list of files!"))
-        elif request.POST['path3'] and  request.POST['filenametoremove']:
+            msg='path2'
+            info(request, _("Successfully diplaying list of files!"+msg))
+        
+        elif request.POST['path3'] and request.POST['filenametoremove']:
             path3 = request.POST['path3']
             filenametoremove = request.POST['filenametoremove']
+            msg='path3'
             if os.path.isfile(PROJECT_ROOT+'/'+path3+'/'+filenametoremove)      :
-                msg='File '+PROJECT_ROOT+'/'+path3+'/'+filenametoremove+' exist!<br>'
-                deletedfile=os.remove(PROJECT_ROOT+'/'+path3+'/'+filenametoremove)
-                msg= msg+' Deleted: '+str(deletedfile)+'<br>'
+                msg=msg+'File '+PROJECT_ROOT+'/'+path3+'/'+filenametoremove+' exist! - '
+                
+                try:
+                    os.remove(PROJECT_ROOT+'/'+path3+'/'+filenametoremove)
+                    deleted='deleted'
+                except OSError:
+                    deleted='NO-deleted'
+                    pass
+                msg= msg+' Deleted: '+str(deleted)+'<br>'
             
-            info(request, _("Successfully deleted file!"+msg))
+            info(request, _("Successfully deleted file!  "+msg))
             
-        elif request.FILES['myfile']:
+        elif request.FILES['myfile'] and request.POST['path'] and request.POST['path1']:
             myfile = request.FILES['myfile']
-            path = request.POST['path']
             path1 = request.POST['path1']
-            msg=''
-            date='1330712292'
+            path = request.POST['path']
+            msg='path1'
+            
+            date=1532271959 #22 Jul 18
     
             if os.path.isfile(PROJECT_ROOT+'/'+path1+'/'+myfile.name)      :
-                msg='File '+PROJECT_ROOT+'/'+path1+'/'+myfile.name+' exist!<br>'
+                msg=msg+'File '+PROJECT_ROOT+'/'+path1+'/'+myfile.name+' exist! - '
                 stat = os.stat(PROJECT_ROOT+'/'+path1+'/'+myfile.name)
-                date=''
+                date=1532271959
                 try:
                     date= stat.st_birthtime
                 except AttributeError:
                     # We're probably on Linux. No easy way to get creation dates here,
                     # so we'll settle for when its content was last modified.
-                    date= stat.st_mtime
-                    date= '1630712292'
-                msg= msg+' date: '+str(date)+'<br>'
-                deletedfile=os.remove(PROJECT_ROOT+'/'+path1+'/'+myfile.name)
-                msg= msg+' Deleted: '+str(deletedfile)+'<br>'
-              
-            date= '1330712292'
-            fs = FileSystemStorage(location=path) #defaults to   MEDIA_ROOT  
-            filename = fs.save(myfile.name, myfile)
-            os.utime(PROJECT_ROOT+'/'+path1+'/'+myfile.name, (1630712292 , 1630712292  ))
-            msg= msg+' Saved<br>'
+                    try:
+                          date= stat.st_mtime
+                    except AttributeError:
+                        date=1532271959
+                    
+                msg= msg+' Date file: '+str(date)+' - '
+                try:
+                    os.remove(PROJECT_ROOT+'/'+path1+'/'+myfile.name)
+                    msg= msg+' Deleted: YES - '
+                    fs = FileSystemStorage(location=path) #defaults to   MEDIA_ROOT  
+                    filename = fs.save(myfile.name, myfile)
+                    msg= msg+' SAVED : '+str(myfile.name)+' - '
+                    os.utime(PROJECT_ROOT+'/'+path1+'/'+myfile.name, (date , date  ))
+                  
+            
+                except OSError:
+                    msg= msg+' Deleted: NO - '
+                    pass
+            else:    
+                msg='File '+PROJECT_ROOT+'/'+path1+'/'+myfile.name+' NOT exist! - '
+                date=1532271959
+                msg= msg+' Date for new file: '+str(date)+' - '
+                fs = FileSystemStorage(location=path) #defaults to   MEDIA_ROOT  
+                filename = fs.save(myfile.name, myfile)
+                msg= msg+' SAVED : '+str(myfile.name)+' - '
+                os.utime(PROJECT_ROOT+'/'+path1+'/'+myfile.name, (date , date  ))
+
+            
+                
+                
             list_files1 = os.listdir(path)
             info(request, _("Successfully saved file!!"+msg))
         
@@ -16203,9 +16242,8 @@ def nro_stats_files(request):
         return render_to_response('countries/countries_stats_nros.html', {'list_files':list_files,'list_files1':list_files1,},
              context_instance=RequestContext(request))
     else:
-            error(request, _("Error created entry!!"))
-            return render_to_response('countries/countries_stats_nros.html', {'list_files':list_files,'list_files1':list_files1,},
-            context_instance=RequestContext(request))
+           return render_to_response('countries/countries_stats_nros.html', {'list_files':list_files,'list_files1':list_files1,},
+           context_instance=RequestContext(request))
     return render_to_response('countries/countries_stats_nros.html', {'list_files':list_files,'list_files1':list_files1,},
         context_instance=RequestContext(request))
 
