@@ -53,10 +53,17 @@
                  <b>{% trans "Math question" %}:</b>
                  <span style="font-size: 24px; color: green;">{{x_element}} + {{y_element}} = </span>
                  <input id="id_captcha" style="width: 20px" name="captcha" type="text" value=""/> 
-                 {% if error_captcha == 'error'%}{% trans " The answer you entered for the CAPTCHA was not correct!" %} {%endif%}
+                 <br>
+                 <b>{% trans "Math question 2" %}:</b>
+                 <span style="font-size: 24px; color: green;">{{z_element}} * {{t_element}} = </span>
+                 <input id="id_captcha2" style="width: 20px" name="captcha2" type="text" value=""/> 
+                  <br>{% if error_captcha == 'error'%}{% trans " The answer you entered for the CAPTCHA was not correct!" %} {%endif%}
                  <input name="result_element" type="hidden" value="{{result_element}}"/>
+                 <input name="result2_element" type="hidden" value="{{result2_element}}"/>
                  <input name="x_element" type="hidden" value="{{x_element}}"/>
                  <input name="y_element" type="hidden" value="{{y_element}}"/>
+	         <input name="z_element" type="hidden" value="{{z_element}}"/>
+                 <input name="t_element" type="hidden" value="{{t_element}}"/>
 	        </div> 
         </div>			
         <div class="form-actions">
