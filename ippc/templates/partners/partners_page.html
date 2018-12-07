@@ -47,6 +47,12 @@
     {% endfor %}
   <h1>
       {{ page.title }} </h1> 
+    
+    {% if user.is_superuser %}
+    <div class="alert alert-warning"> Last edited by {{edituser}} on {{ modify_date|date:"d M Y" }}  </div>  
+    {% endif %}
+    
+    
   <div>   {{ content|richtext_filter|safe }}</div>
   
   {% if page.get_content_model.contact_point.username %}
