@@ -31,14 +31,20 @@
       <a class="btn btn-mini btn-info" href="/admin/ippc/partnerspage/{{ page.id }}">Edit page as Admin <small>(also contact point &amp; editors relation)</a><br>
   </div>
   {% endif %}
+  
   {% if perms.ippc.change_partnerspage and request.user.get_profile.partner.id == page.id %}
-  <div class="pull-right">
-      <a class="btn btn-mini btn-info" href="/admin/ippc/partnerspage/{{ page.id }}">Edit page</a><br>
+   <div class="pull-right">
+      <a class="btn btn-mini btn-info" href="/partners/page/edit/{{ page.id }}">Edit page</a><br>
   </div>
-      {% endif %}
-  
-  
-
+   
+  {% endif %}
+  {% for group in request.user.groups.all %}
+    {% if group.name == 'IPPC Secretariat' and not user.is_superuser %}
+     <div class="pull-right">
+      <a class="btn btn-mini btn-info" href="/partners/page/edit/{{ page.id }}">Edit page</a><br>
+    </div>
+    {% endif %}
+    {% endfor %}
   <h1>
       {{ page.title }} </h1> 
   <div>   {{ content|richtext_filter|safe }}</div>
@@ -78,15 +84,23 @@
   
  {# LINKs to add #}
  
-  {% if perms.ippc.add_partnerspublication and request.user.get_profile.partner.name == page.get_content_model.name or user.is_superuser %}
+ {% if user.is_superuser %}
  <small><a class="btn btn-small btn-info" href="{% url 'partner-publication-create' page.get_content_model.partner_slug %}">+ {% trans "Add new publication" %}</a></small>
-{% endif %}
- {% if perms.ippc.add_partnersnews and request.user.get_profile.partner.name == page.get_content_model.name or user.is_superuser %}
-   <small>  <a class="btn btn-small btn-info" href="{% url 'partner-news-create' page.get_content_model.partner_slug %}">+ {% trans "Add new news" %}</a>
-   </small>
+ <small><a class="btn btn-small btn-info" href="{% url 'partner-news-create' page.get_content_model.partner_slug %}">+ {% trans "Add new news" %}</a></small>
+ <small><a class="btn btn-small btn-info" href="{% url 'partner-websites-create' page.get_content_model.partner_slug %}">+ {% trans "Add new website" %}</a></small>
  {% endif %}
-
- {% if perms.ippc.add_partnerswebsite and request.user.get_profile.partner.name == page.get_content_model.name or user.is_superuser %}
+ {% for group in request.user.groups.all %}
+    {% if group.name == 'IPPC Secretariat' and not user.is_superuser %}
+<small><a class="btn btn-small btn-info" href="{% url 'partner-publication-create' page.get_content_model.partner_slug %}">+ {% trans "Add new publication" %}</a></small>
+  <small>  <a class="btn btn-small btn-info" href="{% url 'partner-news-create' page.get_content_model.partner_slug %}">+ {% trans "Add new news" %}</a>
+   </small>
+   <small><a class="btn btn-small btn-info" href="{% url 'partner-websites-create' page.get_content_model.partner_slug %}">+ {% trans "Add new website" %}</a></small>
+ {% endif %}
+ {% endfor %}
+  {% if perms.ippc.add_partnerspublication and request.user.get_profile.partner.name == page.get_content_model.name %}
+ <small><a class="btn btn-small btn-info" href="{% url 'partner-publication-create' page.get_content_model.partner_slug %}">+ {% trans "Add new publication" %}</a></small>
+  <small>  <a class="btn btn-small btn-info" href="{% url 'partner-news-create' page.get_content_model.partner_slug %}">+ {% trans "Add new news" %}</a>
+   </small>
    <small><a class="btn btn-small btn-info" href="{% url 'partner-websites-create' page.get_content_model.partner_slug %}">+ {% trans "Add new website" %}</a></small>
  {% endif %}
 
@@ -118,7 +132,12 @@
       {% if user.is_superuser %} 
             <a class="small pull-right" href="/admin/ippc/partnerspublication/{{ object.id }}"><i class="icon-edit"></i> Edit as Admin</a><br>
         {% endif %}
-
+ {% for group in request.user.groups.all %}
+    {% if group.name == 'IPPC Secretariat' and not user.is_superuser %}
+            <a class="small pull-right" href="{% url 'partner-publication-edit' object.partners.partner_slug object.id %}"><i class="icon-edit"></i> Edit</a>
+        {% endif %}
+            {% endfor %}
+    
         {% if perms.ippc.change_partnerspublication and request.user.get_profile.partner.name == page.title %}
             <a class="small pull-right" href="{% url 'partner-publication-edit' object.partners.partner_slug object.id %}"><i class="icon-edit"></i> Edit</a>
          
@@ -140,7 +159,11 @@
         {% if user.is_superuser %} 
             <a class="small pull-right" href="/admin/ippc/partnersnews/{{ object.id }}"><i class="icon-edit"></i> Edit as Admin</a><br>
         {% endif %}
-
+{% for group in request.user.groups.all %}
+    {% if group.name == 'IPPC Secretariat' and not user.is_superuser %}
+            <a class="small pull-right" href="{% url 'partner-news-edit' object.partners.partner_slug object.id %}"><i class="icon-edit"></i> Edit</a>
+        {% endif %}
+            {% endfor %}
         {% if perms.ippc.change_partnersnews and request.user.get_profile.partner.name == page.title %}
             <a class="small pull-right" href="{% url 'partner-news-edit' object.partners.partner_slug object.id %}"><i class="icon-edit"></i> Edit</a>
          
@@ -165,7 +188,11 @@
         {% if user.is_superuser %} 
             <a class="small pull-right" href="/admin/ippc/partnerswebsite/{{ object.id }}"><i class="icon-edit"></i> Edit as Admin</a><br>
         {% endif %}
-
+{% for group in request.user.groups.all %}
+    {% if group.name == 'IPPC Secretariat' and not user.is_superuser %}
+             <a class="small pull-right" href="{% url 'partner-websites-edit' object.partners.partner_slug object.id %}"><i class="icon-edit"></i> Edit</a>
+        {% endif %}
+            {% endfor %}
         {% if perms.ippc.change_partnerswebsite and request.user.get_profile.partner.name == page.title %}
             <a class="small pull-right" href="{% url 'partner-websites-edit' object.partners.partner_slug object.id %}"><i class="icon-edit"></i> Edit</a>
          
