@@ -1,0 +1,52 @@
+
+<script src="//tinymce.cachefly.net/4.2/tinymce.min.js"></script>
+<script>
+tinymce.init({selector: "textarea",    theme: "modern",    plugins: [        "advlist autolink lists link image charmap print preview hr anchor pagebreak",        "searchreplace wordcount visualblocks visualchars code fullscreen",        "insertdatetime media nonbreaking save table contextmenu directionality",        "emoticons template paste textcolor colorpicker textpattern imagetools"    ],    toolbar1: "insertfile undo redo | styleselect | bold italic | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | link image",     image_advtab: true,    templates: [        {title: 'Test template 1', content: 'Test 1'},        {title: 'Test template 2', content: 'Test 2'}    ]});
+</script>
+{% extends "base.html" %}
+{% load pages_tags translate_tags mezzanine_tags ippc_tags i18n future staticfiles accounts_tags %} {# accounts_tags #}
+
+{% block meta_title %}{% trans "Edit Partner Page" %}  {% endblock %}
+
+{% block body_class %}wide{% endblock %}
+
+{% block breadcrumb_menu %}
+<li>
+   <a href="/">{% trans "Home" %}</a> <span class="divider">/</span>
+</li>
+<li class="active">{% trans "Editing Partners page:" %} {{partnerspage.name}} </li>
+{% endblock %}
+
+{% block local_nav %}
+{% endblock local_nav %}
+
+{% block pageinfo %}
+{% endblock pageinfo %}
+
+{% block main %}
+
+<p class="pull-right">
+  <a href="javascript:history.go(-1)">{% trans "« Cancel and go back" %}</a>
+</p>
+
+
+<h1><small class="normal">{% trans "Editing  Partners page:" %}  {{partnerspage.name}}</small></h1>
+
+<form enctype="multipart/form-data" class="customform" method="POST" action="">
+    {% csrf_token %}
+    <fieldset>
+      {% fields_for form %}
+        <div class="form-actions">
+            <button type="submit" class="btn btn-info btn-large">{% trans "Update Page" %}</button> {% trans "or" %} <a href="javascript:history.go(-1)">{% trans "Cancel" %}</a>
+        </div>
+    </fieldset>
+</form>
+
+
+{% endblock %}
+
+
+
+
+
+            
