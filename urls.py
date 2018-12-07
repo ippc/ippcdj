@@ -25,7 +25,7 @@ CountryListView,PublicationFilesListView,CountryRelatedView,\
 AdvancesSearchCNListView,publication_edit,\
 CnPublicationListView,CnPublicationDetailView,country_publication_create,country_publication_edit,\
 PartnersPublicationDetailView,  partner_publication_create,  partner_publication_edit,\
-PartnersWebsiteDetailView,  partner_websites_create,  partner_websites_edit,\
+PartnersWebsiteDetailView,  partner_websites_create,  partner_websites_edit,partner_page_edit,\
 CountryNewsListView,CountryNewsDetailView,countrynews_create,countrynews_edit,\
 CountryNewsListView,CountryNewsDetailView,countrynews_create,countrynews_edit,\
 PartnersNewsDetailView,partners_news_create,partners_news_edit,\
@@ -160,7 +160,7 @@ urlpatterns = patterns("",
     url(r'^news/', include('news.urls')),
     url(r'^iyph/', include('iyph.urls')),
     url(r'^pce/', include('pce.urls')),
-   #url(r'^phytosanitary/', include('phytosanitary.urls')),
+    #PHYTO#url(r'^phytosanitary/', include('phytosanitary.urls')),
    
 
 
@@ -423,7 +423,7 @@ urlpatterns = patterns("",
 #        
         
     # publication list
-    url(r'^publications/$',
+    url(r'^publicationslist/$',
         view=PublicationListView.as_view(),
         name='publication-list'),
 
@@ -630,7 +630,9 @@ url(r'^external-cooperation/organizations-page-in-ipp/(?P<partner>[\w-]+)/$',   
         view=partners_news_edit,
         name='partner-news-edit'),
              
-        
+        url(r'^partners/page/edit/(?P<id>\d+)/$',
+        view=partner_page_edit,
+        name='partner-page-edit'),
       #-------------DPs---------------------------
 
     
@@ -888,7 +890,7 @@ url(r'^external-cooperation/organizations-page-in-ipp/(?P<partner>[\w-]+)/$',   
 #---------------------MEDIA KIT
 
 
-  url(r'^mediakit/$',
+  url(r'^publications/$',
         view=MediaKitDocumentListView.as_view(),
         name='mediakit-list'),
 
