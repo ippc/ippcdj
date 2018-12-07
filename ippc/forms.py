@@ -15,7 +15,7 @@ EventreportingFile, ReportingObligation_File,PestFreeAreaFile, ImplementationISP
 EventreportingUrl, ReportingObligationUrl,PestFreeAreaUrl, ImplementationISPMUrl,PestReportUrl,WebsiteUrl,\
 CnPublication,CnPublicationFile,CnPublicationUrl,\
 PartnersWebsite,PartnersWebsiteUrl,\
-PartnersPublication,PartnersPublicationFile,PartnersPublicationUrl,\
+PartnersPublication,PartnersPublicationFile,PartnersPublicationUrl,PartnersPage,\
 PartnersNews,PartnersNewsFile,PartnersNewsUrl, \
 CountryNews,CountryNewsFile,CountryNewsUrl, EmailUtilityMessage, EmailUtilityMessageFile, MassEmailUtilityMessage, MassEmailUtilityMessageFile,\
 DraftProtocol,DraftProtocolFile,DraftProtocolComments,NotificationMessageRelate,Poll,  Poll_Choice,\
@@ -871,3 +871,18 @@ class NROStatsForm(forms.ModelForm):
 
 
 
+
+class PartnerPageForm(forms.ModelForm):
+   # country = forms.ChoiceField(widget=forms.Select(), initial='country')
+    # =todo: https://docs.djangoproject.com/en/dev/ref/forms/api/#dynamic-initial-values
+    class Meta:
+        model = PartnersPage
+        fields = [
+           'content', 
+           ]
+        exclude = ('name', 'partner_slug', 'contact_point',  'editors','modify_date','edituser')
+        widgets = {
+         
+        }
+        
+   

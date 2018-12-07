@@ -689,8 +689,8 @@ admin.site.register(UserMembershipHistory, UserMembershipHistoryAdmin)
 
 class MediaKitDocumentAdmin(admin.ModelAdmin):
     save_on_top = True
-    list_display = ('title',  'mediakit_type','modify_date')
-    list_filter = ('title', 'mediakit_type',  'modify_date')
+    list_display = ('title',  'mediakit_type','modify_date','_order')
+    list_filter = ('title', 'mediakit_type',  'modify_date','_order')
     prepopulated_fields = { 'slug': ['title']}
     search_fields = ['title',  'slug', 'file_en', 'file_es', 'file_ar', 'file_ru', 'file_zh', 'file_fr']
 

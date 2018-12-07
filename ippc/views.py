@@ -30,7 +30,7 @@ ImplementationISPMForm,IssueKeywordsRelateForm,CommodityKeywordsRelateForm,Event
 ImplementationISPMFileFormSet,PestFreeAreaFileFormSet, PestReportFileFormSet,WebsiteUrlFormSet,WebsiteForm, \
 EventreportingUrlFormSet, ReportingObligationUrlFormSet ,PestFreeAreaUrlFormSet,ImplementationISPMUrlFormSet,PestReportUrlFormSet,\
 CnPublicationUrlFormSet,CnPublicationForm, CnPublicationFileFormSet,\
-PartnersPublicationUrlFormSet,PartnersPublicationForm, PartnersPublicationFileFormSet,\
+PartnersPublicationUrlFormSet,PartnersPublicationForm, PartnersPublicationFileFormSet,PartnerPageForm,\
 PollForm,Poll_ChoiceFormSet,\
 PartnersNewsUrlFormSet,PartnersNewsForm, PartnersNewsFileFormSet,PartnersWebsiteUrlFormSet,PartnersWebsiteForm,\
 EmailUtilityMessageForm,EmailUtilityMessageFileFormSet,MassEmailUtilityMessageForm,MassEmailUtilityMessageFileFormSet,\
@@ -69,7 +69,7 @@ import shutil
 
 import zipfile
 import StringIO
-from settings import PROJECT_ROOT, MEDIA_ROOT,DATABASES,ALLOWED_HOSTS
+from settings import PROJECT_ROOT, PROJECT_DIRNAME, MEDIA_ROOT,DATABASES,ALLOWED_HOSTS
 from django.core.files.storage import default_storage
 
 import getpass, imaplib, email
@@ -3761,7 +3761,10 @@ class PartnersView(TemplateView):
         titleparent=pageparent.title
         titleparent = titleparent.replace(" ", "-").lower()
         context['content']  =page.content
-              
+        context['edituser']  =page.edituser
+        context['modify_date']  =page.modify_date
+       
+          
         context['titleparent']  =pageparent.title
         context['titleparentslug'] = titleparent
         #context['pageslug'] =  page.slug
@@ -3929,7 +3932,40 @@ def partner_publication_edit(request, partners, id=None, template_name='partners
         'form': form, 'f_form':f_form,'u_form': u_form,'issueform': issueform,  'commodityform': commodityform, "partnerspublication": partnerspublication
     }, context_instance=RequestContext(request))            
                         
+ 
+@login_required
+@permission_required('ippc.change_partnerspublication', login_url="/accounts/login/")
+def partner_page_edit(request, id=None, template_name='partners/partners_page_form.html'):
+    """ Edit   partners page """
+    ppage = get_object_or_404(PartnersPage, page_ptr_id=id)
+    page= get_object_or_404(Page, id=id)
+  
+    
+    
+    if request.POST:
+        form =PartnerPageForm(request.POST,   instance=ppage)
+      
+        if form.is_valid():
+            ppage = form.save(commit=False)
+            ppage.edituser = request.user.username
+            ppage.modify_date=datetime.now()
+    
+            form.save()
+        
+            info(request, _("Successfully updated page."))
+           
+            return redirect('https://www.ippc.int/'+str(page.slug)  )
+   
+    else:
+        form = PartnerPageForm(instance=ppage)
+     
+      
+    return render_to_response(template_name, {
+        'form': form, "partnerspage": ppage
+    }, context_instance=RequestContext(request))            
+                        
             
+                       
             
 class PestFreeAreaListView(ListView):
     """    Event Reporting """
@@ -11636,7 +11672,7 @@ class MediaKitDocumentListView(ListView):
     model = MediaKitDocument
     date_field = 'start_date'
     template_name = 'pages/mediakit_list.html'
-    queryset = MediaKitDocument.objects.all().order_by('_order')
+    queryset = MediaKitDocument.objects.all().order_by('-_order')
     allow_future = False
     allow_empty = True
     paginate_by = 500
@@ -11645,7 +11681,7 @@ class MediaKitDocumentListView(ListView):
         """ only  """
         # self.country = get_object_or_404(CountryPage, country=self.kwargs['country'])
         # CountryPage country_slug == country URL parameter keyword argument
-        return MediaKitDocument.objects.all().order_by('_order')
+        return MediaKitDocument.objects.all().order_by('-_order')
     
     def get_context_data(self, **kwargs): # http://stackoverflow.com/a/15515220
         context = super(MediaKitDocumentListView, self).get_context_data(**kwargs)
@@ -11653,50 +11689,35 @@ class MediaKitDocumentListView(ListView):
        
         arraymain=[]
         innerarray1=[]
-        innerarray1.append("Brochures")
-        innerarray1.append(MediaKitDocument.objects.filter(mediakit_type=1).order_by('_order'))
+        innerarray1.append("Reports and Strategies")
+        innerarray1.append(MediaKitDocument.objects.filter(mediakit_type=1).order_by('-_order'))
         arraymain.append(innerarray1)
         
         innerarray2=[]
-        innerarray2.append("Publications")
-        innerarray2.append(MediaKitDocument.objects.filter(mediakit_type=2).order_by('_order'))
+        innerarray2.append("Brochures")
+        innerarray2.append(MediaKitDocument.objects.filter(mediakit_type=2).order_by('-_order'))
         arraymain.append(innerarray2)
         
         innerarray3=[]
-        innerarray3.append("Quickguides")
-        innerarray3.append(MediaKitDocument.objects.filter(mediakit_type=3).order_by('_order'))
+        innerarray3.append("Factsheets")
+        innerarray3.append(MediaKitDocument.objects.filter(mediakit_type=3).order_by('-_order'))
         arraymain.append(innerarray3)
         
         innerarray4=[]
-        innerarray4.append("Factsheets")
-        innerarray4.append(MediaKitDocument.objects.filter(mediakit_type=4).order_by('_order'))
+        innerarray4.append("Advocacy materials")
+        innerarray4.append(MediaKitDocument.objects.filter(mediakit_type=4).order_by('-_order'))
         arraymain.append(innerarray4)
-        
+      
         
         innerarray5=[]
-        innerarray5.append("Posters")
-        innerarray5.append(MediaKitDocument.objects.filter(mediakit_type=5).order_by('_order'))
+        innerarray5.append("E-learning")
+        innerarray5.append(MediaKitDocument.objects.filter(mediakit_type=5).order_by('-_order'))
         arraymain.append(innerarray5)
-        
-        
-        innerarray6=[]
-        innerarray6.append("Videos")
-        innerarray6.append(MediaKitDocument.objects.filter(mediakit_type=6).order_by('_order'))
-        arraymain.append(innerarray6)
-        
-        
-        innerarray7=[]
-        innerarray7.append("Logos")
-        innerarray7.append(MediaKitDocument.objects.filter(mediakit_type=7).order_by('_order'))
-        arraymain.append(innerarray7)
-        
-        
-        
+      
         
         
         context['latest'] =arraymain
        
-        #context['country'] = self.kwargs['country']
         return context  
   
 class PhytosanitaryTreatmentListView(ListView):
@@ -14590,7 +14611,9 @@ def generate_listNEW1(request, id=None):
         if u.representing_country!=None:
             role_region=role_region+'\r'+str(u.representing_country)
             regionname=u.representing_country
+     
         if u.role.count()>0:
+            
             for r in u.role.all():
                 role_region=role_region+'\r'+str(r)  
         
@@ -14608,7 +14631,7 @@ def generate_listNEW1(request, id=None):
         funding=''
         membership=UserMembershipHistory.objects.filter(user_id=userippc.user_id)
         
-        role_region=   str(regionname)+'\rMember'
+        #role_region+=   str(regionname)+' **Member'
         if membership.count()>0:
             for g in user_obj.groups.all():
                 if g in event.groups.all():
@@ -16163,23 +16186,25 @@ def nro_stats_files(request):
     list_files=None
     list_files1=None
     deleted=''
-    msg='' 
+    msg=''
+    
     if request.method == 'POST':
+        #list
         if request.POST['path2']:
             path2 = request.POST['path2']
             list_files = os.listdir(path2)
-            msg='path2'
+            msg='path2'+path2
             info(request, _("Successfully diplaying list of files!"+msg))
         
         elif request.POST['path3'] and request.POST['filenametoremove']:
             path3 = request.POST['path3']
             filenametoremove = request.POST['filenametoremove']
-            msg='path3'
-            if os.path.isfile(PROJECT_ROOT+'/'+path3+'/'+filenametoremove)      :
-                msg=msg+'File '+PROJECT_ROOT+'/'+path3+'/'+filenametoremove+' exist! - '
+            
+            if os.path.isfile(path3+'/'+filenametoremove)      :
+                msg=msg+'--->File '+path3+'/'+filenametoremove+' exist! - '
                 
                 try:
-                    os.remove(PROJECT_ROOT+'/'+path3+'/'+filenametoremove)
+                    os.remove(path3+'/'+filenametoremove)
                     deleted='deleted'
                 except OSError:
                     deleted='NO-deleted'
@@ -16192,45 +16217,44 @@ def nro_stats_files(request):
             myfile = request.FILES['myfile']
             path1 = request.POST['path1']
             path = request.POST['path']
-            msg='path1'
             
             date=1532271959 #22 Jul 18
     
-            if os.path.isfile(PROJECT_ROOT+'/'+path1+'/'+myfile.name)      :
-                msg=msg+'File '+PROJECT_ROOT+'/'+path1+'/'+myfile.name+' exist! - '
-                stat = os.stat(PROJECT_ROOT+'/'+path1+'/'+myfile.name)
-                date=1532271959
+            if os.path.isfile(path1+'/'+myfile.name)      :
+                msg=msg+'File '+path1+'/'+myfile.name+' exist! - '
+                stat = os.stat(path1+'/'+myfile.name)
+#                date=1532271959
+#                try:
+#                    date= stat.st_birthtime
+#                except AttributeError:
+#                    # We're probably on Linux. No easy way to get creation dates here,
+#                    # so we'll settle for when its content was last modified.
+#                    try:
+#                          date= stat.st_mtime
+#                    except AttributeError:
+#                        date=1532271959
+#                    
+#                msg= msg+' Date file: '+str(date)+' - '
                 try:
-                    date= stat.st_birthtime
-                except AttributeError:
-                    # We're probably on Linux. No easy way to get creation dates here,
-                    # so we'll settle for when its content was last modified.
-                    try:
-                          date= stat.st_mtime
-                    except AttributeError:
-                        date=1532271959
-                    
-                msg= msg+' Date file: '+str(date)+' - '
-                try:
-                    os.remove(PROJECT_ROOT+'/'+path1+'/'+myfile.name)
+                    os.remove(path1+'/'+myfile.name)
                     msg= msg+' Deleted: YES - '
                     fs = FileSystemStorage(location=path) #defaults to   MEDIA_ROOT  
                     filename = fs.save(myfile.name, myfile)
                     msg= msg+' SAVED : '+str(myfile.name)+' - '
-                    os.utime(PROJECT_ROOT+'/'+path1+'/'+myfile.name, (date , date  ))
+                   # os.utime(PROJECT_ROOT+'/'+path1+'/'+myfile.name, (date , date  ))
                   
             
                 except OSError:
                     msg= msg+' Deleted: NO - '
                     pass
             else:    
-                msg='File '+PROJECT_ROOT+'/'+path1+'/'+myfile.name+' NOT exist! - '
-                date=1532271959
-                msg= msg+' Date for new file: '+str(date)+' - '
+                msg='File '+path1+'/'+myfile.name+' NOT exist! - '
+                #date=1532271959
+                #msg= msg+' Date for new file: '+str(date)+' - '
                 fs = FileSystemStorage(location=path) #defaults to   MEDIA_ROOT  
                 filename = fs.save(myfile.name, myfile)
                 msg= msg+' SAVED : '+str(myfile.name)+' - '
-                os.utime(PROJECT_ROOT+'/'+path1+'/'+myfile.name, (date , date  ))
+               # os.utime(PROJECT_ROOT+'/'+path1+'/'+myfile.name, (date , date  ))
 
             
                 
@@ -16239,12 +16263,12 @@ def nro_stats_files(request):
             info(request, _("Successfully saved file!!"+msg))
         
         
-        return render_to_response('countries/countries_stats_nros.html', {'list_files':list_files,'list_files1':list_files1,},
+        return render_to_response('countries/countries_stats_nros.html', {'list_files':list_files,'list_files1':list_files1,'prj_dir':prj_dir},
              context_instance=RequestContext(request))
     else:
-           return render_to_response('countries/countries_stats_nros.html', {'list_files':list_files,'list_files1':list_files1,},
+           return render_to_response('countries/countries_stats_nros.html', {'list_files':list_files,'list_files1':list_files1,'prj_dir':prj_dir},
            context_instance=RequestContext(request))
-    return render_to_response('countries/countries_stats_nros.html', {'list_files':list_files,'list_files1':list_files1,},
+    return render_to_response('countries/countries_stats_nros.html', {'list_files':list_files,'list_files1':list_files1,'prj_dir':prj_dir},
         context_instance=RequestContext(request))
 
 

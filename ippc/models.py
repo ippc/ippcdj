@@ -224,6 +224,9 @@ class PartnersPage(Page, RichText):
             verbose_name=_("RPPO Chief Contact Point"), blank=True, null=True)
     editors = models.ManyToManyField(User, verbose_name=_("RPPO Editors"), 
         related_name='rppoeditors+', blank=True, null=True)
+    modify_date = models.DateTimeField(_("Modify date"), blank=True, null=True, editable=True)
+    edituser = models.CharField(max_length=50, unique=True, blank=True, null=True)
+     
    
     def __unicode__(self):
         return u'%s' % (self.name,)
@@ -2107,7 +2110,7 @@ class MediaKitDocument(Orderable):
         
     title = models.CharField(_("Title"), blank=True, null=True, max_length=250)
     #mediakit_type = models.IntegerField(_("MediaKit Document  Type"), choices=MEDIAKIT_TYPE_CHOICES, default=None)
-    mediakit_type = models.ForeignKey(MediaKitCategory,verbose_name=_("Type"), blank=True, null=True)
+    mediakit_type = models.ForeignKey(MediaKitCategory,verbose_name=_("Type"), blank=True, null=True,default=-1)
    
     image = models.ImageField(_("Image of document"), upload_to="files/mediakitdocument/images/%Y/%m/", blank=True)
     file_en = models.FileField(_("File - English"), 
