@@ -153,7 +153,8 @@
             {% if perms.ippc.add_reportingobligation and request.user.get_profile.country.name == page.title or user.is_superuser %}
               <small><a class="btn btn-mini" href="{% url 'reporting-obligation-create' page.title|slugify key %}">+ {% trans "Add new" %}</a></small>
              {% endif %}
-              <a href="/countries/{{page.title|slugify}}/reportingobligation/{{key}}">{{val}}</a>
+              <!--a href="/countries/{{page.title|slugify}}/reportingobligation/{{key}}">{{val}}</a-->
+                 <a href="/{{page.slug}}/reportingobligation/{{key}}">{{val}}</a>
 
                <br>
              {% endfor %} 
@@ -169,7 +170,7 @@
           {% if perms.ippc.add_eventreporting and request.user.get_profile.country.name == page.title or user.is_superuser %}
             <small><a class="btn btn-mini" href="{% url 'event-reporting-create' page.title|slugify key %}">+ {% trans "Add new" %}</a></small>
           {% endif %}
-          <a href="/countries/{{page.title|slugify}}/eventreporting/{{key}}">{{val}}</a>
+          <a href="/{{page.slug}}/eventreporting/{{key}}">{{val}}</a>
           
           <br>
         {% endfor %} 
