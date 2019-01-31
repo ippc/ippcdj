@@ -34,6 +34,8 @@ from django.contrib.contenttypes.models import ContentType
 from django.db.models.signals import post_save
 
 from django.core.exceptions import ValidationError
+from django.core import mail
+from django.core.mail import send_mail
 
 from mezzanine.utils.models import get_user_model_name
 from mezzanine.generic.models import ThreadedComment
@@ -526,6 +528,26 @@ class IppcUserProfile(models.Model):
     def save(self, *args, **kwargs):
         ''' On save, update timestamps '''
         self.modify_date = datetime.now()
+        group_1=Group.objects.get(name="FAO Regional Plant Protection Officers")
+        users_1 = group_1.user_set.all()
+        for u in users_1:
+           user_obj=User.objects.get(username=u)
+           print(user_obj == self.user)   
+         
+        emailto_all = []
+        group=Group.objects.get(name="FAO Regional Officers Notification group")
+        users = group.user_set.all()
+        for u in users:
+           user_obj=User.objects.get(username=u)
+           user_email=user_obj.email
+           print(user_email)   
+           emailto_all.append(str(user_email))
+           subject='IPPC Notification of updates in FAO Regional Plant Protection Officers'       
+           text='<html><body><p>Dear IPPC user,</p><p>a FAO Regional Plant Protection Officers has updated his profile:<br><b>'+ str(self.user)+'</p><br/><br/>-- International Plant Protection Convention team </p></body></html>'
+           notifificationmessage = mail.EmailMessage(subject,text,'ippc@fao.org',  emailto_all, ['paola.sentinelli@fao.org'])
+           notifificationmessage.content_subtype = "html"  
+           sent =notifificationmessage.send()
+            
         super(IppcUserProfile, self).save(*args, **kwargs)
         
 # this is in mezzanine.core.models.displayable

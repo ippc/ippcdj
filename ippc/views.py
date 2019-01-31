@@ -10404,10 +10404,10 @@ def contactus_email_send(request):
                 emails_a='ippc@fao.org'
                 subj1='Contact IPPC: General enquiries - '
              elif request.POST['contact_us_type']== "2":
-                emails_a='Orlando.sosa@fao.org'
+                emails_a='brent.larson@fao.org'
                 subj1='Contact IPPC: Implementation / Capacity Development - '
              elif request.POST['contact_us_type']== "3":
-                 emails_a='Dorota.buzon@fao.org'
+                 emails_a='marko.benovic@fao.org'
                  subj1='Contact IPPC: Registration of ISPM 15 symbol - '
              elif request.POST['contact_us_type']== "4":
                  emails_a='Dorota.buzon@fao.org'
@@ -10416,7 +10416,7 @@ def contactus_email_send(request):
                  emails_a='Craig.Fedchock@fao.org'
                  subj1='Contact IPPC: News / Communications - '
              elif request.POST['contact_us_type']== "6":
-                 emails_a='Shane.Sela@fao.org'
+                 emails_a='Craig.Fedchock@fao.org'
                  subj1='Contact IPPC: ePhyto - '
              elif request.POST['contact_us_type']== "7":
                  emails_a='IPPC-OCS@fao.org'
@@ -10425,7 +10425,7 @@ def contactus_email_send(request):
                  emails_a='Craig.Fedchock@fao.org'
                  subj1='Contact IPPC: Resource Mobilization -'
              elif request.POST['contact_us_type']== "9":
-                 emails_a='brent.larson@fao.org'
+                 emails_a='avetik.nersisyan@fao.org'
                  subj1='Contact IPPC: Standard Setting - '
              elif request.POST['contact_us_type']== "10":
                  emails_a='IPPC-IT@fao.org'
