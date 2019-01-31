@@ -21,6 +21,7 @@
 <link rel="stylesheet" href="{% static "css/mezzanine.css" %}">
 <link rel="stylesheet" href="{% static "css/bootstrap-responsive.css" %}">
 <link rel="stylesheet" href="{% static "css/iyph2017_6.css" %}">
+
 <link rel="stylesheet" href="{% static "css/chosen.css" %}">
 {% if LANGUAGE_BIDI %}
 <link rel="stylesheet" href="{% static "css/rtl.css" %}">
@@ -51,8 +52,8 @@
 <script type="text/javascript" src="/static/admin/js/calendar.js"></script>
 
 <script type="text/javascript" src="https://www.ippc.int/static/admin/js/admin/DateTimeShortcuts.js"></script>
-<script src="http://api.simile-widgets.org/timeline/2.3.1/timeline-api.js?bundle=true" type="text/javascript"></script>
-<script src="https://www.ippc.int/static/js/timeline_2.3.0/timeline_js/timeline-api.js?bundle=true" type="text/javascript"></script>
+<!--script src="http://api.simile-widgets.org/timeline/2.3.1/timeline-api.js?bundle=true" type="text/javascript"></script>
+<script src="https://www.ippc.int/static/js/timeline_2.3.0/timeline_js/timeline-api.js?bundle=true" type="text/javascript"></script-->
  
 
 
@@ -66,40 +67,10 @@
 <script src="{% static "js/html5shiv.js" %}"></script>
 <![endif]-->
 
-{% if f_form.prefix %}
- <script type="text/javascript">
-        $(function() {
-            $(".inline.{{ f_form.prefix }}").formset({
-                prefix: "{{ f_form.prefix }}",
-            })
-        })
-       
-    </script>
- {% endif %}  
- {% if u_form.prefix %}
-     <script type="text/javascript">
-        
-       $(function() {
-            $(".inline.{{ u_form.prefix }}").formset({
-                prefix: "{{ u_form.prefix }}",
-            })
-        })
-    </script>
- {% endif %} 
- {% if c_form.prefix %}
- <script type="text/javascript">
-        $(function() {
-            $(".inline.{{ c_form.prefix }}").formset({
-                prefix: "{{ c_form.prefix }}",
-            })
-        })
-       
-    </script>
- {% endif %} 
  
 </head>
 
-<body id="{% block body_id %}body{% endblock %}" class="{% block body_class %}{% endblock %}"onload="onLoad();" onresize="onResize();">
+<body id="{% block body_id %}body{% endblock %}" class="{% block body_class %}{% endblock %}" >
 
 <div class="navbar navbar-fixed-top">
 <div class="navbar-inner">

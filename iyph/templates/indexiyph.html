@@ -227,7 +227,7 @@
 {% if iyph_posts %}
 <div class="panel">
   <h3>News</h3>
-  {% for entry in iyph_posts|slice:":3" %}
+  {% for entry in iyph_posts|slice:":2" %}
     <h5><a href="{{ entry.get_absolute_url }}">{% with entry|get_object_translation as translated_page %}{{ translated_page.title|safe}}{% endwith %}</a></h5>
     <h6>{% trans "Posted " %}{% blocktrans with sometime=entry.publish_date|timesince %}{{ sometime }} ago{% endblocktrans %}</h6>
     <p>{% with entry|get_object_translation as translated_page %}
@@ -241,20 +241,34 @@
 
 
 
-<div class=" row" style="padding:10px "></div>
-{% iyph_recent_chronology as recent_chronology %}
+<div class=" row" style="padding:1px "></div>
+{% iyph_recent_chronology 1 as recent_chronology %}
 {% if recent_chronology %}
     <div class="panel">
-    <h3>{% trans "Upcoming events" %}</h3>
+    <h3>{% trans "IYPH preparation events" %}</h3>
         <ul class="unstyled recent-posts">
         {% for chronology in recent_chronology %}
-            <li><b><p>{{chronology.publish_date|date:"M Y" }}</p></a></b></li>
-            <li><a href="{% url 'chronology-detail' chronology.slug %}"> {% with chronology|get_object_translation as translated_page %}
+            <li><b>{{chronology.start_date|date:"d M Y" }}:</b>&#160;<a href="{% url 'chronology-detail' chronology.slug %}"> {% with chronology|get_object_translation as translated_page %}
             {{ translated_page.title|safe }}
     {% endwith %}</a></li>
         {% endfor %}
         </ul>
-    <p class="more"><a href="/iyph/chronology/list">[... more]</a></p>
+    <p class="more"><a href="/iyph/chronology/list/1">[... more]</a></p>
+    </div>
+    {% endif %}
+    <div class=" row" style="padding:1px "></div>
+{% iyph_recent_chronology 2 as recent_chronology1 %}
+{% if recent_chronology1 %}
+    <div class="panel">
+    <h3>{% trans "IYPH 2020 programme of events" %}</h3>
+        <ul class="unstyled recent-posts">
+        {% for chronology in recent_chronology1 %}
+            <li><b>{{chronology.start_date|date:"d M Y" }}:</b>&#160;<a href="{% url 'chronology-detail' chronology.slug %}"> {% with chronology|get_object_translation as translated_page %}
+            {{ translated_page.title|safe }}
+    {% endwith %}</a></li>
+        {% endfor %}
+        </ul>
+    <p class="more"><a href="/iyph/chronology/list/2">[... more]</a></p>
     </div>
     {% endif %}
 </div> 
