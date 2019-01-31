@@ -1,9 +1,9 @@
 
 from django import forms
 
-from iyph.models import IyphPost
+from iyph.models import IyphPost,Chronology
 from mezzanine.core.models import CONTENT_STATUS_DRAFT
-
+from django.contrib.admin.widgets import AdminDateWidget 
 
 # These fields need to be in the form, hidden, with default values,
 # since it posts to the blog post admin, which includes these fields
@@ -30,3 +30,26 @@ class IyphPostForm(forms.ModelForm):
         super(IyphPostForm, self).__init__(initial=initial)
         for field in hidden_field_defaults:
             self.fields[field].widget = forms.HiddenInput()
+
+
+class ChronologyForm(forms.ModelForm):
+    class Meta:
+        model = Chronology
+        fields = [
+            'title', 
+            'programme_type',
+            'chron_type',
+            'summary',
+            'start_date', 
+            'end_date', 
+            'venue',
+            'contact',
+            'url_website', 
+            ]
+        exclude = ('author', 'status', 'publish_date', 'modify_date','chron_type')
+        widgets = {
+            'start_date': AdminDateWidget(), 
+            'end_date': AdminDateWidget(), 
+        }
+        
+       

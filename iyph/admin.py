@@ -85,7 +85,7 @@ admin.site.register(IyphCategory, IyphCategoryAdmin)
 
 class ChronologyAdmin(admin.ModelAdmin):
     save_on_top = True
-    list_display = ('title', 'publish_date', 'modify_date', 'status')
+    list_display = ('title', 'publish_date', 'modify_date', 'start_date', 'end_date', 'status')
     list_filter = ('title', 'publish_date', 'modify_date', 'status')
     search_fields = ('title', 'summary')
     prepopulated_fields = { 'slug': ['title'] }

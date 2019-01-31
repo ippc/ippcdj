@@ -1,5 +1,7 @@
 from django.db import models
 from django.utils.translation import ugettext_lazy as _
+from django.contrib.auth.models import User, Group
+
 
 from mezzanine.conf import settings
 from mezzanine.core.fields import FileField
@@ -99,8 +101,27 @@ class IyphCategory(Slugged):
         return ("iyph_post_list_category", (), {"category": self.slug})
     
     
+CHRON_1 = 1
+CHRON_2 = 2
+CHRON_3 = 3
+CHRONS = (
+
+    (CHRON_1, _("Global")),
+    (CHRON_2, _("Regional")),
+    (CHRON_3, _("National")),
+)
+PROGRAM_1 = 1
+PROGRAM_2 = 2
+
+PROGRAMME = (
+
+    (PROGRAM_1, _("IYPH preparation events")),
+    (PROGRAM_2, _("IYPH 2020 programme of events")),
+)
 
 
+
+    
 class Chronology (Displayable, models.Model):
     """ Chronology """
     # slug - provided by mezzanine.core.models.slugged (subclassed by displayable)
@@ -109,6 +130,18 @@ class Chronology (Displayable, models.Model):
     # publish_date - provided by mezzanine.core.models.displayable
     modify_date = models.DateTimeField(_("Modified date"), blank=True, null=True, editable=False)
     summary = models.TextField(_("Summary or Short Description"), blank=True, null=True)
+    author = models.ForeignKey(User, related_name="chron_author")
+    
+    start_date = models.DateTimeField(_("Start date"), blank=True, null=True, default=datetime.now, editable=True)
+    end_date = models.DateTimeField(_("End date"), blank=True, null=True, default=datetime.now, editable=True)
+
+    
+    
+    chron_type = models.IntegerField(_("Type of events"), choices=CHRONS, default=CHRON_1)
+    programme_type = models.IntegerField(_("Programme Type"), choices=PROGRAMME, default=PROGRAM_1)
+    venue = models.CharField(_("Venue"), max_length=250, blank=True, null=True)
+    contact = models.CharField(_("Contact"),max_length=250, blank=True, null=True)
+    url_website = models.URLField(_("Website URL"),blank=True, null=True)
    
     # attachments = AttachmentManager()
     search_fields = ("title", "summary")
@@ -140,6 +173,17 @@ class Chronology (Displayable, models.Model):
             self.slug = slugify(self.title)
         self.modify_date = datetime.now()
         super(Chronology, self).save(*args, **kwargs)
+    
+    def chron_type_verbose(self):
+        typeverbose=''
+        if self.chron_type == 1:
+            typeverbose='G'
+        elif self.chron_type == 2:
+            typeverbose='R'
+        elif self.chron_type == 3:
+            typeverbose='N'
+            
+        return typeverbose
 
 def validate_file_extension(value):
     if not (value.name.endswith('.pdf') or value.name.endswith('.doc')or value.name.endswith('.txt')

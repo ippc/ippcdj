@@ -4,7 +4,7 @@ from django.conf.urls import patterns, url
 from mezzanine.conf import settings
 from mezzanine.pages.models import RichTextPage
 
-from .views import ChronologyListView,ChronologyDetailView,Page1View,Page2View
+from .views import ChronologyListView,ChronologyList1View,ChronologyDetailView,Page1View,Page2View,chronology_create,chronology_edit
 
 # Leading and trailing slahes for urlpatterns based on setup.
 # _slashes = (
@@ -26,11 +26,14 @@ urlpatterns = patterns("iyph.views",
     url(r"^(?P<year>\d{4})/(?P<month>\d{1,2})/(?P<day>\d{1,2})/(?P<slug>.*)/$",        "iyph_post_detail", name="iyph_post_detail_day"),
     url(r"^(?P<year>\d{4})/(?P<month>\d{1,2})/(?P<slug>.*)/$",    "iyph_post_detail", name="iyph_post_detail_month"),
     url(r"^(?P<year>\d{4})/(?P<slug>.*)/$", "iyph_post_detail", name="iyph_post_detail_year"),
-    url(r"^chronology/list/$", view=ChronologyListView.as_view(), name='chronology-list'),
-    url(r"^chronology/list/(?P<slug>.*)/$", view=ChronologyDetailView.as_view(), name='chronology-detail'),
+  
+    url(r'^chronologies/(?P<type>\d+)/create/$', view=chronology_create, name='chronology-create'),
+    url(r'^chronologies/(?P<id>\d+)/edit/$',        view=chronology_edit,        name='chronology-edit'),
+    url(r'^chronology/list/(?P<type>[\w-]+)/$',view=ChronologyListView.as_view(),  name='chronology-list'),
+    url(r"^chronology/(?P<slug>.*)/$", view=ChronologyDetailView.as_view(), name='chronology-detail'),
     url(r"^iyph-toolbox/$", view=Page1View.as_view(), name='page-detail'),
     url(r"^iyph-committee/$", view=Page2View.as_view(), name='page-2-detail'),
-    
+      
     
     url(r"^(?P<slug>.*)/$", "iyph_post_detail", name="iyph_post_detail"),
     url(r"^$", "homeview", name="homeview"),
