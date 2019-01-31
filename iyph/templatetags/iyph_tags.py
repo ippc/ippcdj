@@ -169,7 +169,7 @@ def iyph_tool_categories(*args):
     return results
 
 @register.as_tag
-def iyph_recent_chronology():
+def iyph_recent_chronology(type=None, ):
     """
     Put a list of recently published iyph_recentchronology   into the template
     context. 
@@ -179,7 +179,9 @@ def iyph_recent_chronology():
         {% iyph_recent_resources 5 as iyph_recent_resources %}
      
     """
-    iyph_chronology = Chronology.objects.published().order_by('id')
+    #iyph_chronology = Chronology.objects.published().order_by('-start_date')
+    iyph_chronology = Chronology.objects.filter(programme_type=type).order_by('-start_date')
+   
     title_or_slug = lambda s: Q(title=s) | Q(slug=s)
    
     return list(iyph_chronology[:3])
