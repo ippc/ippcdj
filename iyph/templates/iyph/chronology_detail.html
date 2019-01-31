@@ -26,8 +26,13 @@
 
 {% block breadcrumb_menu %}
 <li><a href="/{{ LANGUAGE_CODE }}/iyph">{% trans "Home" %}</a><span class="divider">/</span></li>
-<li><a href="/{{ LANGUAGE_CODE }}/iyph/chronology/list">{% trans "Chronology List" %}</a><span class="divider">/</span></li>
-<li class="active">Chronology item</li>
+{% if chronology.programme_type == 1 %}
+    <li><a href="/{{ LANGUAGE_CODE }}/iyph/chronology/list/1">{% trans "IYPH Preparation events" %}</a><span class="divider">/</span></li>
+{% else %}
+    <li><a href="/{{ LANGUAGE_CODE }}/iyph/chronology/list/2">{% trans "IYPH 2020 Programme of events" %}</a><span class="divider">/</span></li>
+{% endif %}
+
+<li class="active">Event</li>
 {% endblock %}
 
 {% block main %}
@@ -36,29 +41,57 @@
             {{ translated_page.title|safe }}
     {% endwith %}
     
-    
-    <small  class="pull-right"><a class="btn btn-small btn-info" href="/admin/iyph/chronology/{{ chronology.id }}">Edit as Admin</a></small><br>
+    {% if user.is_superuser %}
+        <small  class="pull-right"><a class="btn btn-small btn-info" href="/admin/iyph/chronology/{{ chronology.id }}">Edit as Admin</a></small><br>
+    {% endif %}
+    {% for g in request.user.groups.all %}
+        {% if g.name == 'IYPH admin' %}
+           <small  class="pull-right"> <a class="btn btn-small btn-info" href="/admin/iyph/chronology/{{ chronology.id }}">Edit as Admin</a></small><br>
+        {% endif %}    
+    {% endfor %}    
+    {% if request.user.id == chronology.author_id %}
+     <small  class="pull-right"> <a class="btn btn-small btn-info" href="/iyph/chronologies/{{chronology.id }}/edit/"><i class="icon-edit"></i>{% trans "Edit" %}</a></small><br>
+    {% endif %}
 </h3>
-<h6>{{chronology.publish_date|date:"M Y" }}</h6>    
 
-<p>{% with chronology|get_object_translation as translated_page %}
-    {{ translated_page.summary|richtext_filter|safe  }}</p>
-{% endwith %}
-</div>
+{% if user.is_superuser %}
+    <h6>Posted: {{chronology.publish_date|date:"M Y" }}, by {{chronology.author}}</h6>    
+    <h6>Updated {{chronology.modify_date|date:"M Y" }}, by {{chronology.author}}</h6>    
+{% endif %}
+
+<h6>{% trans "Start date" %}: {{chronology.start_date|date:"M Y" }}</h6>    
+<h6>{% trans "End date" %}: {{chronology.end_date|date:"M Y" }}</h6>    
+<p>
+    {% with chronology|get_object_translation as translated_page %}
+    {{ translated_page.summary|richtext_filter|safe  }}
+    {% endwith %}
+</p>
+<p>{% if chronology.chron_type %}
+    <b> {% trans "Type of events" %}: </b>
+     {% if  chronology.chron_type == 1 %}
+        <span style="background-color: #E0E4F1; color:#576FB5" width="5%">
+        {% elif  chronology.chron_type == 2 %}
+        <span style="background-color: #DECFD2; color:#428463" width="5%">
+        {% elif  chronology.chron_type == 3 %}
+        <span style="background-color: #E3F1EA; color:#A47B84"  width="5%">
+        {% endif %}
+        <b>{{chronology.chron_type_verbose}}</b>
+        </span><br>
+    {% endif %}
+
+    {% if chronology.venue %}
+ <p>        <b>    {% trans "Venue" %}: </b>  {{chronology.venue}}<br></p>
+   {% endif %}
+    {% if chronology.contact %}
+ <p>  <b>  {% trans "Contact" %}: </b>  {{chronology.contact}} <br></p>
+   {% endif %}
+    {% if chronology.url_website %}
+  <p> <b>  {% trans "Link" %}: </b><a href="{{chronology.url_website}}">{{chronology.url_website}}</a></p>
+   {% endif %}
+    
 
 <div class="span4 right">
 
-    <div class="panel panel-default">
-        <div class="panel-body">
-            <p>   
-                {% if user.is_superuser  or perms.iyph.add_iyphpost  %} 
-
-                <a class="btn btn-small btn-info" href="/admin/iyph/chronology/add/">{% trans "Add new chronology item" %}</a><br>
-
-                {% endif %}
-            </p>
-        </div>
-    </div>
 
 </div>
 
