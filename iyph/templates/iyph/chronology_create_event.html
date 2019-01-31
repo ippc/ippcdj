@@ -1,0 +1,60 @@
+{% extends "baseiyph.html" %}
+{% load i18n future mezzanine_tags iyph_tags keyword_tags disqus_tags %}
+
+{% block meta_title %}{% if page %}{{ page.richtextpage.meta_title }}{% else %}{% trans "Iyph chronology create" %}{% endif %}{% endblock %}
+
+{% block meta_keywords %}{% metablock %}
+{% keywords_for page as keywords %}
+{% for keyword in keywords %}
+{% if not forloop.first %}, {% endif %}
+{{ keyword }}
+{% endfor %}
+{% endmetablock %}{% endblock %}
+
+{% block meta_description %}{% metablock %}
+{{ page.description }}
+{% endmetablock %}{% endblock %}
+
+{% block title %}
+{% if page %}
+{# {% editable page.title %}{{ page.title }}{% endeditable %} #}
+{{ page.title }}
+{% else %}
+{% trans " " %}
+{% endif %}
+{% endblock %}
+
+{% block breadcrumb_menu %}
+<li><a href="/{{ LANGUAGE_CODE }}/iyph">{% trans "Home" %}</a><span class="divider">/</span></li>
+<li class="active">Events - add new</li>
+{% endblock %}
+
+{% block main %}
+
+<p class="pull-right">
+  <a href="javascript:history.go(-1)">{% trans " Cancel and go back" %}</a>
+</p>
+
+<h1><span class="normal">
+{% if type ==  '1' %}
+    {% trans "Create New Global Event" %}
+{% elif  type ==  '2' %}
+    {% trans "Create New Regional Event" %}
+{% elif  type ==  '3' %}
+    {% trans "Create New National Event" %}
+{% endif %}
+</span></h1>
+
+
+
+<form class="customform" method="POST" action="" enctype="multipart/form-data">
+    {% csrf_token %}
+    <fieldset>
+        {% include "iyph/chronology_form.html" %}
+        <div class="form-actions">
+            <button type="submit" class="btn btn-info btn-large" tabindex="7">{% trans "Submit" %}</button> or <a href="javascript:history.go(-1)">{% trans "Cancel" %}</a>
+        </div>
+    </fieldset>
+</form>
+
+{% endblock %}

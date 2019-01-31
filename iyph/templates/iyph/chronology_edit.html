@@ -1,0 +1,52 @@
+{% extends "baseiyph.html" %}
+{% load i18n future mezzanine_tags iyph_tags keyword_tags disqus_tags %}
+
+{% block meta_title %}{% if page %}{{ page.richtextpage.meta_title }}{% else %}{% trans "Iyph chronology create" %}{% endif %}{% endblock %}
+
+{% block meta_keywords %}{% metablock %}
+{% keywords_for page as keywords %}
+{% for keyword in keywords %}
+{% if not forloop.first %}, {% endif %}
+{{ keyword }}
+{% endfor %}
+{% endmetablock %}{% endblock %}
+
+{% block meta_description %}{% metablock %}
+{{ page.description }}
+{% endmetablock %}{% endblock %}
+
+{% block title %}
+{% if page %}
+{# {% editable page.title %}{{ page.title }}{% endeditable %} #}
+{{ page.title }}
+{% else %}
+{% trans " " %}
+{% endif %}
+{% endblock %}
+
+{% block breadcrumb_menu %}
+<li><a href="/{{ LANGUAGE_CODE }}/iyph">{% trans "Home" %}</a><span class="divider">/</span></li>
+<li class="active">Events - edit</li>
+{% endblock %}
+
+{% block main %}
+
+<p class="pull-right">
+  <a href="javascript:history.go(-1)">{% trans " Cancel and go back" %}</a>
+</p>
+
+<h1><small class="normal">{% trans "Editing" %}</small> {{ chronology.title }} <br><small class="normal">{% trans "Last updated on" %} {{chronology.modify_date}}</small></h1>
+
+<form enctype="multipart/form-data" class="customform" method="POST" action="{% url 'chronology-edit' chronology.id %}">
+    {% csrf_token %}
+    <fieldset>
+        {% include "iyph/chronology_form.html" %}
+    
+        <div class="form-actions">
+            <button type="submit" class="btn btn-info btn-large">{% trans "Update event" %}</button> {% trans "or" %} <a href="javascript:history.go(-1)">{% trans "Cancel" %}</a>
+        </div>
+    </fieldset>
+</form>
+
+
+{% endblock %}
