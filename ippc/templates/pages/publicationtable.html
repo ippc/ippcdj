@@ -123,8 +123,13 @@
 
 
 {%if page.publicationlibrary.publications.all%}
+    
+    {%if page.publicationlibrary.id == 963 %}
+        <table class="table table-condensed table-striped table-bordered" id="fcreports">
+    {% else %}
+        <table class="table table-condensed table-striped table-bordered" id="publications">
+    {% endif %}
 
-<table class="table table-condensed table-striped table-bordered" id="publications">
     {# http://datatables.net/blog/Twitter_Bootstrap_2 #}
     <thead>
         <tr>{%if  page.publicationlibrary.show_doc_colums %}
@@ -147,7 +152,7 @@
             <th>{% trans "Files" %}</th>
             <th>{% trans "Publication date" %}</th>
         </tr>
-    </thead> 
+    </thead>
     <tbody>
 
    {% with page.publicationlibrary.publications.all as publications %}
