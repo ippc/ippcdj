@@ -1,280 +1,280 @@
-{% extends "pce/basepce.html" %}
-{% load pages_tags translate_tags mezzanine_tags i18n future staticfiles accounts_tags %}
-{% if context == 'View' or context == 'Edit'%}
-{% block meta_title %}{% trans "Module 5 - NPPO's structure and processes" %} - {{ user.get_profile.country.name}} {% endblock %}
-
-{% block body_class %}wide{% endblock %}
-
-{% block breadcrumb_menu %}
-<li>
-    <a href="/{{ LANGUAGE_CODE }}/pce/{{ user.get_profile.country.name }}/sessions">{% trans "PCE Home" %}</a>
-    <span class="divider">/</span>
-</li>
-<li>
-    <a href="/{{ LANGUAGE_CODE }}/pce/{{ user.get_profile.country.name|slugify }}/session/dashboard/{{sessionid}}">  {% trans "PCE Dashboard for" %} {{ user.get_profile.country.name }}</a>
-    <span class="divider">/</span>
-<li>
-<li class="active">{% trans "Module 5 - NPPO's structure and processes" %}</li>
-{% endblock %}
-
-{% block local_nav %}
-{% endblock local_nav %}
-
-{% block pageinfo %}
-{% endblock pageinfo %}
-
-{%endif%}
-{% block main %}
-    {% block content %}
-    <div id="content">
-<h1><span class="normal">{% trans "Module 5 - NPPO's structure and processes" %}</span></h1>
-{% if can_edit and context == 'Edit' or can_see and context == 'View' or can_see and context == 'Pdf' %}
-  {% if context == 'View' or context == 'Edit'%}
-            <p><a href="/{{ LANGUAGE_CODE }}/pce/{{ user.get_profile.country.name|slugify }}/session/{{sessionid}}/modules"><< {% trans "Back to Module List" %}</a></p>
- 
-            <div class="row-fluid">
-               <div class="span8">
-                 {% include "pce/tools_panel.html" %} 
-                </div>    
-        {%endif%}
-    
-    {% include "pce/userdetails_panel.html" %} 
-     
-    <div class="row-fluid">
-        <div class="span12">
-            <div class="panel panel-info">
-                <div  class="alert alert-success" role="alert">
-                    <h3 class="panel-title"> {% trans "NPPO's structure and processes" %}</h3>
-                      {% if context == 'View' and can_edit  and id != ''%}  
-                        <span  class="pull-right">
-                          <a  class="btn btn-info" href="/{{ LANGUAGE_CODE }}/pce/{{ user.get_profile.country.name|slugify }}/{{sessionid}}/module5/edit/{{id}}">Edit Module</a>
-                        </span>
-                    {%endif%} 
-                    
-                </div>
-                <div class="panel-body">
-                    <p class="alert alert-warning"   {%if context == 'Pdf' %}style="background:#faf2cc;"{%endif%}>{% trans "The structure of an organization is the system of relationships developed to divide and coordinate tasks among people and groups while working toward a common purpose. It involves the division of labor including roles, responsibility, and authority, as well the coordination of labor into units and inter- and intra-unit groupings.<br>Guiding questions for the capacity needs assessment of NPPO's structure and processes<br>Keep the following questions in mind while working through this module:<br>1. What is the existing situation of NPPO's structure and processes?<br>2. What is the desired future situation of NPPO's structure and processes?<br>3. What are the major gaps in the current capacity of NPPO's structure and processes?<br>4. What are the capacity building needs and requirements to create an effective system for NPPO's structure and processes?" %}</p>
-                  {% if context == 'Edit' %}   <form class="customform" method="POST" action="" enctype="multipart/form-data">
-                        {% csrf_token %} {%endif%}
-                        <fieldset>
-                         {% if context == 'Edit' %}       {% if form.non_field_errors or form.errors %}
-                            <div class="alert alert-error">{% trans "Please correct the errors below." %}
-                                <ul>
-                                    {% for error in form.non_field_errors %}
-                                    <li>{{ error }}</li>
-                                    {% endfor %}
-                                    {% for error in form.errors %}
-                                    <li>{{ error }}</li>
-                                    {% endfor %}
-                                </ul>
-                            </div> {%endif%}
-                            {% endif %}
-                         
-                            <table class="table">
-                              
-                                     <tr class="success">
-                                         <td colspan="2" {%if context == 'Pdf' %}width="70%" style="background:#BDBDBD;"{%endif%}><b>{% trans "Current situation assessment" %}</b></td>
-                                    </tr>
-                                    <tr class="success">
-                                         <td colspan="2" {%if context == 'Pdf' %}width="70%" style="background:#BDBDBD;"{%endif%}><b>{% trans "A. NPPO structures" %}</b></td>
-                                    </tr>
-                                   <tr class="success">
-                                        <td {%if context == 'Pdf' %}width="70%" style="background:#BDBDBD;"{%endif%}><b>{% trans "No. Question" %}</b></td>
-                                        <td {%if context == 'Pdf' %}width="30%" style="background:#BDBDBD;"{%endif%}><b>{% trans "Tip" %}</b></td>
-                              
-                                    </tr>
-                                <tbody>
-                                    {% for f in form %}
-                                    {% if not f.is_hidden and not f.name == 'c_m_1' and not f.name == 'c_m_2' and not f.name == 'c_m_3' and not f.name == 'c_m_4' and not f.name == 'c_m_5' and not f.name == 'c_m_6' and not f.name == 'c_m_7' and not f.name == 'c_m_8' and not f.name == 'c_m_9' and not f.name == 'c_m_10' and not f.name == 'c_m_11' and not f.name == 'c_m_12' and not f.name == 'c_m_13' and not f.name == 'c_m_14' and not f.name == 'c_m_15' and not f.name == 'c_m_16' and not f.name == 'c_m_17' and not f.name == 'c_m_18' and not f.name == 'c_m_19' and not f.name == 'c_m_20' and not f.name == 'c_m_21' and not f.name == 'c_m_22' and not f.name == 'c_m_23' and not f.name == 'c_m_24' and not f.name == 'c_m_25'  %}
-                                    <tr>
-                                        <td>
-                                            <div class="control-group">
-                                                <label>{{f.label|safe}}</label>
-                                                <div class="controls">
-                                               {%if f.name == 'm_4' or f.name == 'm_5' or f.name == 'm_6' or f.name == 'm_7' or f.name == 'm_8' or f.name == 'm_9' or f.name == 'm_10' or f.name == 'm_11' or f.name == 'm_12' or f.name == 'm_13' or f.name == 'm_14' or f.name == 'm_15' or f.name == 'm_22' or f.name == 'm_23' or f.name == 'm_24'  %}
-                                              <ul>
-                                                            <li>
-                                                                <label for="id_{{f.name}}_1" class="control-label">
-                                                                <input {% if context == 'View' %}readonly="true"{%endif%} id="id_{{f.name}}_1" name ="{{f.name}}" type="radio" value="True" {% if f.value == True %}checked{%endif%} {%if context == 'Edit' %}onclick="checkRules();"{%endif%} > {%if context == 'Pdf' %}{% if f.value == True %}<b><u>{%endif%}{% trans "Yes" %} {% if f.value == True %} </u> &#10003; </b>{%endif%}{%else%}{% trans "Yes" %}{%endif%}</label>
-
-                                                            </li>
-                                                            <li> 
-                                                               <label for="id_{{f.name}}_2" class="control-label">
-                                                               <input {% if context == 'View' %}readonly="true"{%endif%} id="id_{{f.name}}_2" name ="{{f.name}}" type="radio" value="False" {% if f.value == False %}checked{%endif%} {%if context == 'Edit' %}onclick="checkRules();"{%endif%} > {%if context == 'Pdf' %}{% if f.value == False %}<b><u>{%endif%}{% trans "No" %} {% if f.value == False %} </u> &#10003; </b>{%endif%}{%else%}{% trans "No" %}{%endif%}</label>
-
-                                                            </li>
-                                                        </ul>                                             
-                                                    
-                                              {%else%}
-                                                {% if  context == 'Edit' %}
-                                                       {% if f.name == 'm_3' %}
-                                                                    <select multiple="multiple" class="yyy1" id="id_{{f.name}}" name="{{f.name}}" size="6">
-                                                                        {% for o in M5_3 %}
-                                                                        <option {% if o.id in f.value %}selected="selected"{% endif %} value="{{o.id}}">{% if  LANGUAGE_CODE == 'en' %}{{o}}{% elif  LANGUAGE_CODE == 'es'  %}{{o.name_es}}{% elif  LANGUAGE_CODE == 'fr'  %}{{o.name_fr}}{% elif  LANGUAGE_CODE == 'ru'  %}{{o.name_ru}}{% elif  LANGUAGE_CODE == 'ar'  %}{{o.name_ar}}{% elif  LANGUAGE_CODE == 'zh'  %}{{o.name_zh}}{% else  %}{{o}}{%endif%}</option>
-                                                                        {% endfor %} 
-                                                                    </select>
-                                                        {% else %}
-                                                           {{f}}   
-                                                        {% endif %}
-                                                {% elif  context == 'View' %}
-                                                       {% if f.name == 'm_3' %}
-                                                            <select multiple="multiple" readonly="true"  class="yyy1" id="id_{{f.name}}" name="{{f.name}}" size="6">
-                                                                    {% for o in M5_3 %}
-                                                                        <option {% if o.id in f.value %}selected="selected"{% endif %} value="{{o.id}}">{% if  LANGUAGE_CODE == 'en' %}{{o}}{% elif  LANGUAGE_CODE == 'es'  %}{{o.name_es}}{% elif  LANGUAGE_CODE == 'fr'  %}{{o.name_fr}}{% elif  LANGUAGE_CODE == 'ru'  %}{{o.name_ru}}{% elif  LANGUAGE_CODE == 'ar'  %}{{o.name_ar}}{% elif  LANGUAGE_CODE == 'zh'  %}{{o.name_zh}}{% else  %}{{o}}{%endif%}</option>
-                                                                    {% endfor %} 
-                                                            </select>
-                                                        {% else %}
-                                                           {{f}}   
-                                                        {% endif %}
-                                                    
-                                                    {%else%}
-                        {% if  context == 'Pdf' %}  
-                                 
-                                 {%if f.name == 'm_1'%}
-                                      {% for key, val in ACHIEVE %}
-                                        {% ifequal key f.value %}<b><u>{% endifequal %}{{val}}{% ifequal key f.value %}</u>  &#10003;</b> {% endifequal %} <br>  
-                                      {% endfor %}       
-                                 {%elif f.name == 'm_2'%}
-                                      {% for key, val in CARRY_AC %}
-                                        {% ifequal key f.value %}<b><u>{% endifequal %}{{val}}{% ifequal key f.value %}</u>  &#10003;</b> {% endifequal %} <br>  
-                                      {% endfor %}       
-                                {%elif f.name == 'm_16'%}
-                                      {% for key, val in DEFINED %}
-                                        {% ifequal key f.value %}<b><u>{% endifequal %}{{val}}{% ifequal key f.value %}</u>  &#10003;</b> {% endifequal %} <br>  
-                                      {% endfor %}       
-                                 {%elif f.name == 'm_17'%}
-                                      {% for key, val in CLEAR %}
-                                        {% ifequal key f.value %}<b><u>{% endifequal %}{{val}}{% ifequal key f.value %}</u>  &#10003;</b> {% endifequal %} <br>  
-                                      {% endfor %}           
-                                {%elif f.name == 'm_18'%}
-                                      {% for key, val in EXPEDI %}
-                                        {% ifequal key f.value %}<b><u>{% endifequal %}{{val}}{% ifequal key f.value %}</u>  &#10003;</b> {% endifequal %} <br>  
-                                      {% endfor %}       
-                                 {%elif f.name == 'm_19'%}
-                                      {% for key, val in LINKAGE %}
-                                         {% ifequal key f.value %}<b><u>{% endifequal %}{{val}}{% ifequal key f.value %}</u>  &#10003;</b> {% endifequal %} <br>  
-                                      {% endfor %}           
-                                {%elif f.name == 'm_20'%}
-                                      {% for key, val in POLICY %}
-                                                  {% ifequal key f.value %}<b><u>{% endifequal %}{{val}}{% ifequal key f.value %}</u>  &#10003;</b> {% endifequal %} <br>  
-                   
-                                      {% endfor %}       
-                                 {%elif f.name == 'm_21'%}
-                                      {% for key, val in THEM %}
-                                                    {% ifequal key f.value %}<b><u>{% endifequal %}{{val}}{% ifequal key f.value %}</u>  &#10003;</b> {% endifequal %} <br>  
-                   
-                                      {% endfor %}      
-                                          {%elif f.name == 'm_3' %}
-                                         {% for o in M5_3 %}
-                                            {% if o.id in f.value %}<b> <u> {% endif %}{% if  LANGUAGE_CODE == 'en' %}{{o}}{% elif  LANGUAGE_CODE == 'es'  %}{{o.name_es}}{% elif  LANGUAGE_CODE == 'fr'  %}{{o.name_fr}}{% elif  LANGUAGE_CODE == 'ru'  %}{{o.name_ru}}{% elif  LANGUAGE_CODE == 'ar'  %}{{o.name_ar}}{% elif  LANGUAGE_CODE == 'zh'  %}{{o.name_zh}}{% else  %}{{o}}{%endif%} {% if o.id in f.value %}</u> </b> {% endif %}<br>
-                                                                    {% endfor %} 
-                 
-                                                                    {% endif %}                
-                                                        {%else%}
-                                                    {{f}}
-                                                      {% endif %}
-                                                      {% endif %}                                            
-                         {% endif %}  
-                                                </div>
-                                            </div>
-                                            {% if context == 'Edit' %}
-                                            <a href="#{{f.name}}" onclick="javascript:toggle_visibility('c_{{f.name}}');">{% trans "add comment" %}</a>
-                                          {% endif %}
-                                            <div id="c_{{f.name}}" {% if context == 'Edit' %}style="display:none;"{% endif %} class="pcecomment">       
- <b>{% trans "Comment:" %}</b><br>          
-
-{%if f.name == 'm_1' %}{% for fff in form %}{%if fff.name == 'c_m_1'%}{% if context == 'Edit' %}<textarea class="zzz"  id="id_c_{{f.name}}" name="c_{{f.name}}">{{fff.value}}</textarea>{% else %}{{fff.value}}{% endif %}{%endif%}{%endfor%}{%endif%}
-{%if f.name == 'm_2' %}{% for fff in form %}{%if fff.name == 'c_m_2'%}{% if context == 'Edit' %}<textarea class="zzz"  id="id_c_{{f.name}}" name="c_{{f.name}}">{{fff.value}}</textarea>{% else %}{{fff.value}}{% endif %}{%endif%}{%endfor%}{%endif%}
-{%if f.name == 'm_3' %}{% for fff in form %}{%if fff.name == 'c_m_3'%}{% if context == 'Edit' %}<textarea class="zzz"  id="id_c_{{f.name}}" name="c_{{f.name}}">{{fff.value}}</textarea>{% else %}{{fff.value}}{% endif %}{%endif%}{%endfor%}{%endif%}
-{%if f.name == 'm_4' %}{% for fff in form %}{%if fff.name == 'c_m_4'%}{% if context == 'Edit' %}<textarea class="zzz"  id="id_c_{{f.name}}" name="c_{{f.name}}">{{fff.value}}</textarea>{% else %}{{fff.value}}{% endif %}{%endif%}{%endfor%}{%endif%}
-{%if f.name == 'm_5' %}{% for fff in form %}{%if fff.name == 'c_m_5'%}{% if context == 'Edit' %}<textarea class="zzz"  id="id_c_{{f.name}}" name="c_{{f.name}}">{{fff.value}}</textarea>{% else %}{{fff.value}}{% endif %}{%endif%}{%endfor%}{%endif%}
-{%if f.name == 'm_6' %}{% for fff in form %}{%if fff.name == 'c_m_6'%}{% if context == 'Edit' %}<textarea class="zzz"  id="id_c_{{f.name}}" name="c_{{f.name}}">{{fff.value}}</textarea>{% else %}{{fff.value}}{% endif %}{%endif%}{%endfor%}{%endif%}
-{%if f.name == 'm_7' %}{% for fff in form %}{%if fff.name == 'c_m_7'%}{% if context == 'Edit' %}<textarea class="zzz"  id="id_c_{{f.name}}" name="c_{{f.name}}">{{fff.value}}</textarea>{% else %}{{fff.value}}{% endif %}{%endif%}{%endfor%}{%endif%}
-{%if f.name == 'm_8' %}{% for fff in form %}{%if fff.name == 'c_m_8'%}{% if context == 'Edit' %}<textarea class="zzz"  id="id_c_{{f.name}}" name="c_{{f.name}}">{{fff.value}}</textarea>{% else %}{{fff.value}}{% endif %}{%endif%}{%endfor%}{%endif%}
-{%if f.name == 'm_9' %}{% for fff in form %}{%if fff.name == 'c_m_9'%}{% if context == 'Edit' %}<textarea class="zzz"  id="id_c_{{f.name}}" name="c_{{f.name}}">{{fff.value}}</textarea>{% else %}{{fff.value}}{% endif %}{%endif%}{%endfor%}{%endif%}
-{%if f.name == 'm_10' %}{% for fff in form %}{%if fff.name == 'c_m_10'%}{% if context == 'Edit' %}<textarea class="zzz"  id="id_c_{{f.name}}" name="c_{{f.name}}">{{fff.value}}</textarea>{% else %}{{fff.value}}{% endif %}{%endif%}{%endfor%}{%endif%}
-{%if f.name == 'm_11' %}{% for fff in form %}{%if fff.name == 'c_m_11'%}{% if context == 'Edit' %}<textarea class="zzz"  id="id_c_{{f.name}}" name="c_{{f.name}}">{{fff.value}}</textarea>{% else %}{{fff.value}}{% endif %}{%endif%}{%endfor%}{%endif%}
-{%if f.name == 'm_12' %}{% for fff in form %}{%if fff.name == 'c_m_12'%}{% if context == 'Edit' %}<textarea class="zzz"  id="id_c_{{f.name}}" name="c_{{f.name}}">{{fff.value}}</textarea>{% else %}{{fff.value}}{% endif %}{%endif%}{%endfor%}{%endif%}
-{%if f.name == 'm_13' %}{% for fff in form %}{%if fff.name == 'c_m_13'%}{% if context == 'Edit' %}<textarea class="zzz"  id="id_c_{{f.name}}" name="c_{{f.name}}">{{fff.value}}</textarea>{% else %}{{fff.value}}{% endif %}{%endif%}{%endfor%}{%endif%}
-{%if f.name == 'm_14' %}{% for fff in form %}{%if fff.name == 'c_m_14'%}{% if context == 'Edit' %}<textarea class="zzz"  id="id_c_{{f.name}}" name="c_{{f.name}}">{{fff.value}}</textarea>{% else %}{{fff.value}}{% endif %}{%endif%}{%endfor%}{%endif%}
-{%if f.name == 'm_15' %}{% for fff in form %}{%if fff.name == 'c_m_15'%}{% if context == 'Edit' %}<textarea class="zzz"  id="id_c_{{f.name}}" name="c_{{f.name}}">{{fff.value}}</textarea>{% else %}{{fff.value}}{% endif %}{%endif%}{%endfor%}{%endif%}
-{%if f.name == 'm_16' %}{% for fff in form %}{%if fff.name == 'c_m_16'%}{% if context == 'Edit' %}<textarea class="zzz"  id="id_c_{{f.name}}" name="c_{{f.name}}">{{fff.value}}</textarea>{% else %}{{fff.value}}{% endif %}{%endif%}{%endfor%}{%endif%}
-{%if f.name == 'm_17' %}{% for fff in form %}{%if fff.name == 'c_m_17'%}{% if context == 'Edit' %}<textarea class="zzz"  id="id_c_{{f.name}}" name="c_{{f.name}}">{{fff.value}}</textarea>{% else %}{{fff.value}}{% endif %}{%endif%}{%endfor%}{%endif%}
-{%if f.name == 'm_18' %}{% for fff in form %}{%if fff.name == 'c_m_18'%}{% if context == 'Edit' %}<textarea class="zzz"  id="id_c_{{f.name}}" name="c_{{f.name}}">{{fff.value}}</textarea>{% else %}{{fff.value}}{% endif %}{%endif%}{%endfor%}{%endif%}
-{%if f.name == 'm_19' %}{% for fff in form %}{%if fff.name == 'c_m_19'%}{% if context == 'Edit' %}<textarea class="zzz"  id="id_c_{{f.name}}" name="c_{{f.name}}">{{fff.value}}</textarea>{% else %}{{fff.value}}{% endif %}{%endif%}{%endfor%}{%endif%}
-{%if f.name == 'm_20' %}{% for fff in form %}{%if fff.name == 'c_m_20'%}{% if context == 'Edit' %}<textarea class="zzz"  id="id_c_{{f.name}}" name="c_{{f.name}}">{{fff.value}}</textarea>{% else %}{{fff.value}}{% endif %}{%endif%}{%endfor%}{%endif%}
-{%if f.name == 'm_21' %}{% for fff in form %}{%if fff.name == 'c_m_21'%}{% if context == 'Edit' %}<textarea class="zzz"  id="id_c_{{f.name}}" name="c_{{f.name}}">{{fff.value}}</textarea>{% else %}{{fff.value}}{% endif %}{%endif%}{%endfor%}{%endif%}
-{%if f.name == 'm_22' %}{% for fff in form %}{%if fff.name == 'c_m_22'%}{% if context == 'Edit' %}<textarea class="zzz"  id="id_c_{{f.name}}" name="c_{{f.name}}">{{fff.value}}</textarea>{% else %}{{fff.value}}{% endif %}{%endif%}{%endfor%}{%endif%}
-{%if f.name == 'm_23' %}{% for fff in form %}{%if fff.name == 'c_m_23'%}{% if context == 'Edit' %}<textarea class="zzz"  id="id_c_{{f.name}}" name="c_{{f.name}}">{{fff.value}}</textarea>{% else %}{{fff.value}}{% endif %}{%endif%}{%endfor%}{%endif%}
-{%if f.name == 'm_24' %}{% for fff in form %}{%if fff.name == 'c_m_24'%}{% if context == 'Edit' %}<textarea class="zzz"  id="id_c_{{f.name}}" name="c_{{f.name}}">{{fff.value}}</textarea>{% else %}{{fff.value}}{% endif %}{%endif%}{%endfor%}{%endif%}
-{%if f.name == 'm_25' %}{% for fff in form %}{%if fff.name == 'c_m_25'%}{% if context == 'Edit' %}<textarea class="zzz"  id="id_c_{{f.name}}" name="c_{{f.name}}">{{fff.value}}</textarea>{% else %}{{fff.value}}{% endif %}{%endif%}{%endfor%}{%endif%}
-                </div>     </td>
-                                        <td>{{f.help_text|safe}}</td>
-                                    </tr>
-                                         {% if f.name == 'm_15' %} 
-                                     <tr class="success">
-                                        <td colspan="2" {%if context == 'Pdf' %}width="70%" style="background:#BDBDBD;"{%endif%}><b>{% trans "B. NPPO processes" %}</b></td>
-                                     </tr>
-                                    {% endif %}
-                                  
-                                    {% endif %}
-                                    {% endfor%}
-                                    <tr class="success">
-                                       <td colspan="2" {%if context == 'Pdf' %}width="70%" style="background:#BDBDBD;"{%endif%}><b>{% trans "SECTION III - Weaknesses" %}</b></td>
-                                    </tr>
-                                    <tr>
-                                        <td>
-                                             <div class="control-group">
-                                                <label>{% trans "1. Please identify a maximum of five of the most critical weaknesses in the NPPO's processes in order of priority (1=Highest)" %}</label>
-                                           <div class="controls">  {% if context == 'Edit' %}    {{ form25.management_form }}
-                                            {{ form25.non_form_errors }}     {% endif %}
-                                            {% for form in form25 %}
-                                            <div class="panel panel-default">
-                                                <div class="panel-body">
-                                                    {% for ff in form %}
-                                                    {%if not ff.label == 'Module5' and not ff.label == 'Delete'  and not ff.label == 'Supprimer'  and not ff.label == 'Eliminar'  and not ff.label == 'Удалить' and not ff.label == 'Id'%}
-                                                    {{ff.label}}  {% if context == 'Edit' %}
-                                                            {{ff}} 
-                                                        {% else %} 
-                                                       
-                                                    
-                                                    
-                                                    
-                                                   {% if ff.value == None %}
-                                                                <input type="text" disabled="true" value="">
-                                                            {% else %}
-                                                                <input type="text" disabled="true" value="{{ff.value}}"> {% if context == 'Pdf' %}{{ff.value}} {% endif %}
-                                                            {% endif %}
-                                                        {% endif %}<br>    {% else %}{{ff.as_hidden}}
-                                                    {% endif %}
-                                                    {% endfor %}
-                                                </div></div>
-                                            {% endfor %}   </div>
-                                            </div>  {% if context == 'Edit' %}  
-                                        <a href="#id_25" onclick="javascript:toggle_visibility('c_m_25');">{% trans "add comment" %}</a>
-                                         {% endif %}
-                                            <div id="c_m_25"  {% if context == 'Edit' %}style="display:none;"{% endif %} class="pcecomment">
-                                             <b>{% trans "Comment:" %}</b><br> 
-                                            {% for fff in form %}{%if fff.name == 'c_m_25'%}{% if context == 'Edit' %}<textarea class="zzz"  id="id_c_m_25" name="c_m_25">{{fff.value}}</textarea>{% else %}{{fff.value}}{% endif %}{%endif%}{%endfor%}
-                                            </div> </td>
-                                        <td></td>
-                                    </tr>
-                                 </tbody>        
-                            </table>
-                        {% nevercache %}
-            {% include "pce/submitform_block.html" %}
-            {% endnevercache %}
-                            </fieldset>
-                        </form>
-                        </div>
-
-                    </div>      
-                    </div>
-
-</div> {% else %}{% nevercache %}
-            {% include "pce/permission_block.html" %}
-            {% endnevercache %}
-  {% endif %}
-      </div> 
-    {% endblock %}
+{% extends "pce/basepce.html" %}
+{% load pages_tags translate_tags mezzanine_tags i18n future staticfiles accounts_tags %}
+{% if context == 'View' or context == 'Edit'%}
+{% block meta_title %}{% trans "Module 5 - NPPO's structure and processes" %} - {{ user.get_profile.country.name}} {% endblock %}
+
+{% block body_class %}wide{% endblock %}
+
+{% block breadcrumb_menu %}
+<li>
+    <a href="/{{ LANGUAGE_CODE }}/pce/{{ user.get_profile.country.name }}/sessions">{% trans "PCE Home" %}</a>
+    <span class="divider">/</span>
+</li>
+<li>
+    <a href="/{{ LANGUAGE_CODE }}/pce/{{ user.get_profile.country.name|slugify }}/session/dashboard/{{sessionid}}">  {% trans "PCE Dashboard for" %} {{ user.get_profile.country.name }}</a>
+    <span class="divider">/</span>
+<li>
+<li class="active">{% trans "Module 5 - NPPO's structure and processes" %}</li>
+{% endblock %}
+
+{% block local_nav %}
+{% endblock local_nav %}
+
+{% block pageinfo %}
+{% endblock pageinfo %}
+
+{%endif%}
+{% block main %}
+    {% block content %}
+    <div id="content">
+<h1><span class="normal">{% trans "Module 5 - NPPO's structure and processes" %}</span></h1>
+{% if can_edit and context == 'Edit' or can_see and context == 'View' or can_see and context == 'Pdf' %}
+  {% if context == 'View' or context == 'Edit'%}
+            <p><a href="/{{ LANGUAGE_CODE }}/pce/{{ user.get_profile.country.name|slugify }}/session/{{sessionid}}/modules"><< {% trans "Back to Module List" %}</a></p>
+ 
+            <div class="row-fluid">
+               <div class="span8">
+                 {% include "pce/tools_panel.html" %} 
+                </div>    
+        {%endif%}
+    
+    {% include "pce/userdetails_panel.html" %} 
+     
+    <div class="row-fluid">
+        <div class="span12">
+            <div class="panel panel-info">
+                <div  class="alert alert-success" role="alert">
+                    <h3 class="panel-title"> {% trans "NPPO's structure and processes" %}</h3>
+                      {% if context == 'View' and can_edit  and id != ''%}  
+                        <span  class="pull-right">
+                          <a  class="btn btn-info" href="/{{ LANGUAGE_CODE }}/pce/{{ user.get_profile.country.name|slugify }}/{{sessionid}}/module5/edit/{{id}}">Edit Module</a>
+                        </span>
+                    {%endif%} 
+                    
+                </div>
+                <div class="panel-body">
+                    <p class="alert alert-warning"   {%if context == 'Pdf' %}style="background:#faf2cc;"{%endif%}>{% trans "The structure of an organization is the system of relationships developed to divide and coordinate tasks among people and groups while working toward a common purpose. It involves the division of labor including roles, responsibility, and authority, as well the coordination of labor into units and inter- and intra-unit groupings.<br>Guiding questions for the capacity needs assessment of NPPO's structure and processes<br>Keep the following questions in mind while working through this module:<br>1. What is the existing situation of NPPO's structure and processes?<br>2. What is the desired future situation of NPPO's structure and processes?<br>3. What are the major gaps in the current capacity of NPPO's structure and processes?<br>4. What are the capacity building needs and requirements to create an effective system for NPPO's structure and processes?" %}</p>
+                  {% if context == 'Edit' %}   <form class="customform" method="POST" action="" enctype="multipart/form-data">
+                        {% csrf_token %} {%endif%}
+                        <fieldset>
+                         {% if context == 'Edit' %}       {% if form.non_field_errors or form.errors %}
+                            <div class="alert alert-error">{% trans "Please correct the errors below." %}
+                                <ul>
+                                    {% for error in form.non_field_errors %}
+                                    <li>{{ error }}</li>
+                                    {% endfor %}
+                                    {% for error in form.errors %}
+                                    <li>{{ error }}</li>
+                                    {% endfor %}
+                                </ul>
+                            </div> {%endif%}
+                            {% endif %}
+                         
+                            <table class="table">
+                              
+                                     <tr class="success">
+                                         <td colspan="2" {%if context == 'Pdf' %}width="70%" style="background:#BDBDBD;"{%endif%}><b>{% trans "Current situation assessment" %}</b></td>
+                                    </tr>
+                                    <tr class="success">
+                                         <td colspan="2" {%if context == 'Pdf' %}width="70%" style="background:#BDBDBD;"{%endif%}><b>{% trans "A. NPPO structures" %}</b></td>
+                                    </tr>
+                                   <tr class="success">
+                                        <td {%if context == 'Pdf' %}width="70%" style="background:#BDBDBD;"{%endif%}><b>{% trans "No. Question" %}</b></td>
+                                        <td {%if context == 'Pdf' %}width="30%" style="background:#BDBDBD;"{%endif%}><b>{% trans "Tip" %}</b></td>
+                              
+                                    </tr>
+                                <tbody>
+                                    {% for f in form %}
+                                    {% if not f.is_hidden and not f.name == 'c_m_1' and not f.name == 'c_m_2' and not f.name == 'c_m_3' and not f.name == 'c_m_4' and not f.name == 'c_m_5' and not f.name == 'c_m_6' and not f.name == 'c_m_7' and not f.name == 'c_m_8' and not f.name == 'c_m_9' and not f.name == 'c_m_10' and not f.name == 'c_m_11' and not f.name == 'c_m_12' and not f.name == 'c_m_13' and not f.name == 'c_m_14' and not f.name == 'c_m_15' and not f.name == 'c_m_16' and not f.name == 'c_m_17' and not f.name == 'c_m_18' and not f.name == 'c_m_19' and not f.name == 'c_m_20' and not f.name == 'c_m_21' and not f.name == 'c_m_22' and not f.name == 'c_m_23' and not f.name == 'c_m_24' and not f.name == 'c_m_25'  %}
+                                    <tr>
+                                        <td>
+                                            <div class="control-group">
+                                                <label>{{f.label|safe}}</label>
+                                                <div class="controls">
+                                               {%if f.name == 'm_4' or f.name == 'm_5' or f.name == 'm_6' or f.name == 'm_7' or f.name == 'm_8' or f.name == 'm_9' or f.name == 'm_10' or f.name == 'm_11' or f.name == 'm_12' or f.name == 'm_13' or f.name == 'm_14' or f.name == 'm_15' or f.name == 'm_22' or f.name == 'm_23' or f.name == 'm_24'  %}
+                                              <ul>
+                                                            <li>
+                                                                <label for="id_{{f.name}}_1" class="control-label">
+                                                                <input {% if context == 'View' %}readonly="true"{%endif%} id="id_{{f.name}}_1" name ="{{f.name}}" type="radio" value="True" {% if f.value == True %}checked{%endif%} {%if context == 'Edit' %}onclick="checkRules();"{%endif%} > {%if context == 'Pdf' %}{% if f.value == True %}<b><u>{%endif%}{% trans "Yes" %} {% if f.value == True %} </u> &#10003; </b>{%endif%}{%else%}{% trans "Yes" %}{%endif%}</label>
+
+                                                            </li>
+                                                            <li> 
+                                                               <label for="id_{{f.name}}_2" class="control-label">
+                                                               <input {% if context == 'View' %}readonly="true"{%endif%} id="id_{{f.name}}_2" name ="{{f.name}}" type="radio" value="False" {% if f.value == False %}checked{%endif%} {%if context == 'Edit' %}onclick="checkRules();"{%endif%} > {%if context == 'Pdf' %}{% if f.value == False %}<b><u>{%endif%}{% trans "No" %} {% if f.value == False %} </u> &#10003; </b>{%endif%}{%else%}{% trans "No" %}{%endif%}</label>
+
+                                                            </li>
+                                                        </ul>                                             
+                                                    
+                                              {%else%}
+                                                {% if  context == 'Edit' %}
+                                                       {% if f.name == 'm_3' %}
+                                                                    <select multiple="multiple" class="yyy1" id="id_{{f.name}}" name="{{f.name}}" size="6">
+                                                                        {% for o in M5_3 %}
+                                                                        <option {% if o.id in f.value %}selected="selected"{% endif %} value="{{o.id}}">{% if  LANGUAGE_CODE == 'en' %}{{o}}{% elif  LANGUAGE_CODE == 'es'  %}{{o.name_es}}{% elif  LANGUAGE_CODE == 'fr'  %}{{o.name_fr}}{% elif  LANGUAGE_CODE == 'ru'  %}{{o.name_ru}}{% elif  LANGUAGE_CODE == 'ar'  %}{{o.name_ar}}{% elif  LANGUAGE_CODE == 'zh'  %}{{o.name_zh}}{% else  %}{{o}}{%endif%}</option>
+                                                                        {% endfor %} 
+                                                                    </select>
+                                                        {% else %}
+                                                           {{f}}   
+                                                        {% endif %}
+                                                {% elif  context == 'View' %}
+                                                       {% if f.name == 'm_3' %}
+                                                            <select multiple="multiple" readonly="true"  class="yyy1" id="id_{{f.name}}" name="{{f.name}}" size="6">
+                                                                    {% for o in M5_3 %}
+                                                                        <option {% if o.id in f.value %}selected="selected"{% endif %} value="{{o.id}}">{% if  LANGUAGE_CODE == 'en' %}{{o}}{% elif  LANGUAGE_CODE == 'es'  %}{{o.name_es}}{% elif  LANGUAGE_CODE == 'fr'  %}{{o.name_fr}}{% elif  LANGUAGE_CODE == 'ru'  %}{{o.name_ru}}{% elif  LANGUAGE_CODE == 'ar'  %}{{o.name_ar}}{% elif  LANGUAGE_CODE == 'zh'  %}{{o.name_zh}}{% else  %}{{o}}{%endif%}</option>
+                                                                    {% endfor %} 
+                                                            </select>
+                                                        {% else %}
+                                                           {{f}}   
+                                                        {% endif %}
+                                                    
+                                                    {%else%}
+                        {% if  context == 'Pdf' %}  
+                                 
+                                 {%if f.name == 'm_1'%}
+                                      {% for key, val in ACHIEVE %}
+                                        {% ifequal key f.value %}<b><u>{% endifequal %}{{val}}{% ifequal key f.value %}</u>  &#10003;</b> {% endifequal %} <br>  
+                                      {% endfor %}       
+                                 {%elif f.name == 'm_2'%}
+                                      {% for key, val in CARRY_AC %}
+                                        {% ifequal key f.value %}<b><u>{% endifequal %}{{val}}{% ifequal key f.value %}</u>  &#10003;</b> {% endifequal %} <br>  
+                                      {% endfor %}       
+                                {%elif f.name == 'm_16'%}
+                                      {% for key, val in DEFINED %}
+                                        {% ifequal key f.value %}<b><u>{% endifequal %}{{val}}{% ifequal key f.value %}</u>  &#10003;</b> {% endifequal %} <br>  
+                                      {% endfor %}       
+                                 {%elif f.name == 'm_17'%}
+                                      {% for key, val in CLEAR %}
+                                        {% ifequal key f.value %}<b><u>{% endifequal %}{{val}}{% ifequal key f.value %}</u>  &#10003;</b> {% endifequal %} <br>  
+                                      {% endfor %}           
+                                {%elif f.name == 'm_18'%}
+                                      {% for key, val in EXPEDI %}
+                                        {% ifequal key f.value %}<b><u>{% endifequal %}{{val}}{% ifequal key f.value %}</u>  &#10003;</b> {% endifequal %} <br>  
+                                      {% endfor %}       
+                                 {%elif f.name == 'm_19'%}
+                                      {% for key, val in LINKAGE %}
+                                         {% ifequal key f.value %}<b><u>{% endifequal %}{{val}}{% ifequal key f.value %}</u>  &#10003;</b> {% endifequal %} <br>  
+                                      {% endfor %}           
+                                {%elif f.name == 'm_20'%}
+                                      {% for key, val in POLICY %}
+                                                  {% ifequal key f.value %}<b><u>{% endifequal %}{{val}}{% ifequal key f.value %}</u>  &#10003;</b> {% endifequal %} <br>  
+                   
+                                      {% endfor %}       
+                                 {%elif f.name == 'm_21'%}
+                                      {% for key, val in THEM %}
+                                                    {% ifequal key f.value %}<b><u>{% endifequal %}{{val}}{% ifequal key f.value %}</u>  &#10003;</b> {% endifequal %} <br>  
+                   
+                                      {% endfor %}      
+                                          {%elif f.name == 'm_3' %}
+                                         {% for o in M5_3 %}
+                                            {% if o.id in f.value %}<b> <u> {% endif %}{% if  LANGUAGE_CODE == 'en' %}{{o}}{% elif  LANGUAGE_CODE == 'es'  %}{{o.name_es}}{% elif  LANGUAGE_CODE == 'fr'  %}{{o.name_fr}}{% elif  LANGUAGE_CODE == 'ru'  %}{{o.name_ru}}{% elif  LANGUAGE_CODE == 'ar'  %}{{o.name_ar}}{% elif  LANGUAGE_CODE == 'zh'  %}{{o.name_zh}}{% else  %}{{o}}{%endif%} {% if o.id in f.value %}</u> </b> {% endif %}<br>
+                                                                    {% endfor %} 
+                 
+                                                                    {% endif %}                
+                                                        {%else%}
+                                                    {{f}}
+                                                      {% endif %}
+                                                      {% endif %}                                            
+                         {% endif %}  
+                                                </div>
+                                            </div>
+                                            {% if context == 'Edit' %}
+                                            <a href="#{{f.name}}" onclick="javascript:toggle_visibility('c_{{f.name}}');">{% trans "add comment" %}</a>
+                                          {% endif %}
+                                            <div id="c_{{f.name}}" {% if context == 'Edit' %}style="display:none;"{% endif %} class="pcecomment">       
+ <b>{% trans "Comment:" %}</b><br>          
+
+{%if f.name == 'm_1' %}{% for fff in form %}{%if fff.name == 'c_m_1'%}{% if context == 'Edit' %}<textarea class="zzz"  id="id_c_{{f.name}}" name="c_{{f.name}}">{{fff.value}}</textarea>{% else %}{{fff.value}}{% endif %}{%endif%}{%endfor%}{%endif%}
+{%if f.name == 'm_2' %}{% for fff in form %}{%if fff.name == 'c_m_2'%}{% if context == 'Edit' %}<textarea class="zzz"  id="id_c_{{f.name}}" name="c_{{f.name}}">{{fff.value}}</textarea>{% else %}{{fff.value}}{% endif %}{%endif%}{%endfor%}{%endif%}
+{%if f.name == 'm_3' %}{% for fff in form %}{%if fff.name == 'c_m_3'%}{% if context == 'Edit' %}<textarea class="zzz"  id="id_c_{{f.name}}" name="c_{{f.name}}">{{fff.value}}</textarea>{% else %}{{fff.value}}{% endif %}{%endif%}{%endfor%}{%endif%}
+{%if f.name == 'm_4' %}{% for fff in form %}{%if fff.name == 'c_m_4'%}{% if context == 'Edit' %}<textarea class="zzz"  id="id_c_{{f.name}}" name="c_{{f.name}}">{{fff.value}}</textarea>{% else %}{{fff.value}}{% endif %}{%endif%}{%endfor%}{%endif%}
+{%if f.name == 'm_5' %}{% for fff in form %}{%if fff.name == 'c_m_5'%}{% if context == 'Edit' %}<textarea class="zzz"  id="id_c_{{f.name}}" name="c_{{f.name}}">{{fff.value}}</textarea>{% else %}{{fff.value}}{% endif %}{%endif%}{%endfor%}{%endif%}
+{%if f.name == 'm_6' %}{% for fff in form %}{%if fff.name == 'c_m_6'%}{% if context == 'Edit' %}<textarea class="zzz"  id="id_c_{{f.name}}" name="c_{{f.name}}">{{fff.value}}</textarea>{% else %}{{fff.value}}{% endif %}{%endif%}{%endfor%}{%endif%}
+{%if f.name == 'm_7' %}{% for fff in form %}{%if fff.name == 'c_m_7'%}{% if context == 'Edit' %}<textarea class="zzz"  id="id_c_{{f.name}}" name="c_{{f.name}}">{{fff.value}}</textarea>{% else %}{{fff.value}}{% endif %}{%endif%}{%endfor%}{%endif%}
+{%if f.name == 'm_8' %}{% for fff in form %}{%if fff.name == 'c_m_8'%}{% if context == 'Edit' %}<textarea class="zzz"  id="id_c_{{f.name}}" name="c_{{f.name}}">{{fff.value}}</textarea>{% else %}{{fff.value}}{% endif %}{%endif%}{%endfor%}{%endif%}
+{%if f.name == 'm_9' %}{% for fff in form %}{%if fff.name == 'c_m_9'%}{% if context == 'Edit' %}<textarea class="zzz"  id="id_c_{{f.name}}" name="c_{{f.name}}">{{fff.value}}</textarea>{% else %}{{fff.value}}{% endif %}{%endif%}{%endfor%}{%endif%}
+{%if f.name == 'm_10' %}{% for fff in form %}{%if fff.name == 'c_m_10'%}{% if context == 'Edit' %}<textarea class="zzz"  id="id_c_{{f.name}}" name="c_{{f.name}}">{{fff.value}}</textarea>{% else %}{{fff.value}}{% endif %}{%endif%}{%endfor%}{%endif%}
+{%if f.name == 'm_11' %}{% for fff in form %}{%if fff.name == 'c_m_11'%}{% if context == 'Edit' %}<textarea class="zzz"  id="id_c_{{f.name}}" name="c_{{f.name}}">{{fff.value}}</textarea>{% else %}{{fff.value}}{% endif %}{%endif%}{%endfor%}{%endif%}
+{%if f.name == 'm_12' %}{% for fff in form %}{%if fff.name == 'c_m_12'%}{% if context == 'Edit' %}<textarea class="zzz"  id="id_c_{{f.name}}" name="c_{{f.name}}">{{fff.value}}</textarea>{% else %}{{fff.value}}{% endif %}{%endif%}{%endfor%}{%endif%}
+{%if f.name == 'm_13' %}{% for fff in form %}{%if fff.name == 'c_m_13'%}{% if context == 'Edit' %}<textarea class="zzz"  id="id_c_{{f.name}}" name="c_{{f.name}}">{{fff.value}}</textarea>{% else %}{{fff.value}}{% endif %}{%endif%}{%endfor%}{%endif%}
+{%if f.name == 'm_14' %}{% for fff in form %}{%if fff.name == 'c_m_14'%}{% if context == 'Edit' %}<textarea class="zzz"  id="id_c_{{f.name}}" name="c_{{f.name}}">{{fff.value}}</textarea>{% else %}{{fff.value}}{% endif %}{%endif%}{%endfor%}{%endif%}
+{%if f.name == 'm_15' %}{% for fff in form %}{%if fff.name == 'c_m_15'%}{% if context == 'Edit' %}<textarea class="zzz"  id="id_c_{{f.name}}" name="c_{{f.name}}">{{fff.value}}</textarea>{% else %}{{fff.value}}{% endif %}{%endif%}{%endfor%}{%endif%}
+{%if f.name == 'm_16' %}{% for fff in form %}{%if fff.name == 'c_m_16'%}{% if context == 'Edit' %}<textarea class="zzz"  id="id_c_{{f.name}}" name="c_{{f.name}}">{{fff.value}}</textarea>{% else %}{{fff.value}}{% endif %}{%endif%}{%endfor%}{%endif%}
+{%if f.name == 'm_17' %}{% for fff in form %}{%if fff.name == 'c_m_17'%}{% if context == 'Edit' %}<textarea class="zzz"  id="id_c_{{f.name}}" name="c_{{f.name}}">{{fff.value}}</textarea>{% else %}{{fff.value}}{% endif %}{%endif%}{%endfor%}{%endif%}
+{%if f.name == 'm_18' %}{% for fff in form %}{%if fff.name == 'c_m_18'%}{% if context == 'Edit' %}<textarea class="zzz"  id="id_c_{{f.name}}" name="c_{{f.name}}">{{fff.value}}</textarea>{% else %}{{fff.value}}{% endif %}{%endif%}{%endfor%}{%endif%}
+{%if f.name == 'm_19' %}{% for fff in form %}{%if fff.name == 'c_m_19'%}{% if context == 'Edit' %}<textarea class="zzz"  id="id_c_{{f.name}}" name="c_{{f.name}}">{{fff.value}}</textarea>{% else %}{{fff.value}}{% endif %}{%endif%}{%endfor%}{%endif%}
+{%if f.name == 'm_20' %}{% for fff in form %}{%if fff.name == 'c_m_20'%}{% if context == 'Edit' %}<textarea class="zzz"  id="id_c_{{f.name}}" name="c_{{f.name}}">{{fff.value}}</textarea>{% else %}{{fff.value}}{% endif %}{%endif%}{%endfor%}{%endif%}
+{%if f.name == 'm_21' %}{% for fff in form %}{%if fff.name == 'c_m_21'%}{% if context == 'Edit' %}<textarea class="zzz"  id="id_c_{{f.name}}" name="c_{{f.name}}">{{fff.value}}</textarea>{% else %}{{fff.value}}{% endif %}{%endif%}{%endfor%}{%endif%}
+{%if f.name == 'm_22' %}{% for fff in form %}{%if fff.name == 'c_m_22'%}{% if context == 'Edit' %}<textarea class="zzz"  id="id_c_{{f.name}}" name="c_{{f.name}}">{{fff.value}}</textarea>{% else %}{{fff.value}}{% endif %}{%endif%}{%endfor%}{%endif%}
+{%if f.name == 'm_23' %}{% for fff in form %}{%if fff.name == 'c_m_23'%}{% if context == 'Edit' %}<textarea class="zzz"  id="id_c_{{f.name}}" name="c_{{f.name}}">{{fff.value}}</textarea>{% else %}{{fff.value}}{% endif %}{%endif%}{%endfor%}{%endif%}
+{%if f.name == 'm_24' %}{% for fff in form %}{%if fff.name == 'c_m_24'%}{% if context == 'Edit' %}<textarea class="zzz"  id="id_c_{{f.name}}" name="c_{{f.name}}">{{fff.value}}</textarea>{% else %}{{fff.value}}{% endif %}{%endif%}{%endfor%}{%endif%}
+{%if f.name == 'm_25' %}{% for fff in form %}{%if fff.name == 'c_m_25'%}{% if context == 'Edit' %}<textarea class="zzz"  id="id_c_{{f.name}}" name="c_{{f.name}}">{{fff.value}}</textarea>{% else %}{{fff.value}}{% endif %}{%endif%}{%endfor%}{%endif%}
+                </div>     </td>
+                                        <td>{{f.help_text|safe}}</td>
+                                    </tr>
+                                         {% if f.name == 'm_15' %} 
+                                     <tr class="success">
+                                        <td colspan="2" {%if context == 'Pdf' %}width="70%" style="background:#BDBDBD;"{%endif%}><b>{% trans "B. NPPO processes" %}</b></td>
+                                     </tr>
+                                    {% endif %}
+                                  
+                                    {% endif %}
+                                    {% endfor%}
+                                    <tr class="success">
+                                       <td colspan="2" {%if context == 'Pdf' %}width="70%" style="background:#BDBDBD;"{%endif%}><b>{% trans "SECTION III - Weaknesses" %}</b></td>
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                             <div class="control-group">
+                                                <label>{% trans "1. Please identify a maximum of five of the most critical weaknesses in the NPPO's processes in order of priority (1=Highest)" %}</label>
+                                           <div class="controls">  {% if context == 'Edit' %}    {{ form25.management_form }}
+                                            {{ form25.non_form_errors }}     {% endif %}
+                                            {% for form in form25 %}
+                                            <div class="panel panel-default">
+                                                <div class="panel-body">
+                                                    {% for ff in form %}
+                                                    {%if not ff.label == 'Module5' and not ff.label == 'Delete'  and not ff.label == 'Supprimer'  and not ff.label == 'Eliminar'  and not ff.label == 'Удалить' and not ff.label == 'Id'%}
+                                                    {{ff.label}}  {% if context == 'Edit' %}
+                                                            {{ff}} 
+                                                        {% else %} 
+                                                       
+                                                    
+                                                    
+                                                    
+                                                   {% if ff.value == None %}
+                                                                <input type="text" disabled="true" value="">
+                                                            {% else %}
+                                                                <input type="text" disabled="true" value="{{ff.value}}"> {% if context == 'Pdf' %}{{ff.value}} {% endif %}
+                                                            {% endif %}
+                                                        {% endif %}<br>    {% else %}{{ff.as_hidden}}
+                                                    {% endif %}
+                                                    {% endfor %}
+                                                </div></div>
+                                            {% endfor %}   </div>
+                                            </div>  {% if context == 'Edit' %}  
+                                        <a href="#id_25" onclick="javascript:toggle_visibility('c_m_25');">{% trans "add comment" %}</a>
+                                         {% endif %}
+                                            <div id="c_m_25"  {% if context == 'Edit' %}style="display:none;"{% endif %} class="pcecomment">
+                                             <b>{% trans "Comment:" %}</b><br> 
+                                            {% for fff in form %}{%if fff.name == 'c_m_25'%}{% if context == 'Edit' %}<textarea class="zzz"  id="id_c_m_25" name="c_m_25">{{fff.value}}</textarea>{% else %}{{fff.value}}{% endif %}{%endif%}{%endfor%}
+                                            </div> </td>
+                                        <td></td>
+                                    </tr>
+                                 </tbody>        
+                            </table>
+                        {% nevercache %}
+            {% include "pce/submitform_block.html" %}
+            {% endnevercache %}
+                            </fieldset>
+                        </form>
+                        </div>
+
+                    </div>      
+                    </div>
+
+</div> {% else %}{% nevercache %}
+            {% include "pce/permission_block.html" %}
+            {% endnevercache %}
+  {% endif %}
+      </div> 
+    {% endblock %}
     {% endblock %}
