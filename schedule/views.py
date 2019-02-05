@@ -69,6 +69,7 @@ def calendar_by_year(request, calendar_slug, year=None, template_name="schedule/
         can_add=1
    
     calendar = get_object_or_404(Calendar, slug=calendar_slug)
+    
     event_list= calendar.event_set.filter(start__year=date.year,country=-1).order_by('start')
     event_list2=[]
     months_list = []
@@ -91,6 +92,7 @@ def calendar_by_year(request, calendar_slug, year=None, template_name="schedule/
         'event_list': event_list,
         'months_list': months_list,
         'event_list2': event_list2,
+        'current_year': date.year,
         'can_add': can_add,
         'here': quote(request.get_full_path()),
     }, context_instance=RequestContext(request), )
