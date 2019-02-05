@@ -1,0 +1,149 @@
+{% extends "base.html" %}
+{% load pages_tags translate_tags mezzanine_tags i18n future staticfiles accounts_tags %}
+
+{% block meta_title %}
+  {% trans "IRSS Activities" %}
+{% endblock %}
+ 
+
+{% block breadcrumb_menu %}
+<li>
+  <a href="/{{ LANGUAGE_CODE }}/">{% trans "Home" %}</a>
+  <span class="divider">/</span>
+</li>
+<li>
+	<a href="/irss/">{% trans "IRSS" %}</a>
+	<span class="divider">/</span>
+</li>
+<li class="active">
+	{% trans "Activities" %}
+</li>
+{% endblock breadcrumb_menu %}
+
+{% block mainspansize %}12{% endblock mainspansize %}
+{% block sidebarspansize %}12{% endblock sidebarspansize %}
+
+{% block main %}www
+
+<h1>Activities</h1>
+<p><img alt="" class="pull-right" src="/static/img/irss/fruits.jpg" style="padding:0.5em 0 0.5em 2em;" /></p>
+<p class="clearfix">IRSS produces yearly reports and studies throughout its 3-year project cycle. These activities will feed into the Triennial Review response publication which will summarize the situation of the implementation of the IPPC and its standards by contracting parties. Below, You can find IRSS activity information, read regional workshop reports, ISPM review reports as well as publications related to plant protection. <br><small class="alert-info">To download PDFs you may need to right-click on the link and choose Save As</small></p>
+</div>
+
+<div class="row">
+<div class="span6">
+<h2 id="activesurveys">News and Updates</h2>
+<p><b>Survey: Guidelines on lists of regulated pests (ISPM19:2003) and Pest reporting (ISPM17:2002)</b></p>
+<p><b class ="highlight-red">New!</b> This report presents the analytical findings from the IRSS survey which reviewed NPPO Contact Points' experiences implementing Lists of regulated pests and Pest reporting IPPC standards.</p>
+<p><a class="icn-pdf" href="http://ippc.int/largefiles/2014/Survey-Analysis-NPPOs-17-19.pdf">Report (En)</a></p>
+<p><b>General IPPC Survey Report, January 2014</b></p>
+<p><b class ="highlight-red">New!</b> This report is the IPPCs first baseline review of the Contracting Parties' implementation of the IPPC and its International Standards for Phytosanitary Measures (ISPMs). We thank contracting parties for their participation in this IRSS activity.</p>
+<p><a class="icn-pdf" href="http://ippc.int/largefiles/2014/IRSS-IPPC-General-Survey-review-2014.pdf">Report (En)</a></p>
+<h2 id="studies">Studies</h2>
+<p><b>Internet Trade (e-Commerce) in Plants: Potential Phytosanitary Risks</b></p>
+<p>A preliminary scoping study on global trends in internet trade of plants with some pressing findings for the global phytosanitary community.</p>
+<p><a class="icn-pdf" href="http://www.ippc.int/largefiles/2013/Internet_trade_of_plants.pdf">Report (En)</a> <span class="vertline"></span> <a class="icn-ppt" href="http://www.ippc.int/largefiles/2013/Internet_Trade_Presentation.ppt">Presentation (En)</a></p>
+<hr>
+<p><b>Aquatic Plants:Their Uses and Risks - A review of the global status of aquatic plants</b></p>
+<p><a class="icn-pdf" href="http://www.ippc.int/largefiles/2012/IPPC-IRSS_Aquatic_Plants_Study_2012-Final.pdf">Report (En)</a></p>
+<hr>
+<p><b>Diversion from Intended Use: Consideration of the extend of the issue</b></p>
+<p>A review of the issue of diversion after import of plants, plant products and other regulated articles from their intended use, which is the declared purpose for which these items are imported. The objective of the study was to determine whether this practice is widespread and whether it is of significance to plant health. </p>
+<p><a class="icn-pdf" href="http://www.ippc.int/static/media/uploads/ippc-irss_diversion_from_intended_use.pdf">Report (En)</a></p>
+
+<h2 id="workshopsandsymposiums">Workshops &amp; Symposiums<br /></h2>
+<p><b> Indicators Roundtable Meeting Report, October 2013 </b></p>
+<p><b class="highlight-red">New!</b> A small group of results-based management experts met in Windsor, UK to discuss developing indicators of IPPC implementation and assessing impact of the IPPC.</p>
+<p><a class="icn-pdf" href="http://ippc.int/largefiles/2013/IPPC_Indicators_Meeting_Report.pdf">Report (En)</a></p>
+<hr />
+<p><b>ISPM 6 APPPC Pest Surveillance Symposium Oct 27th- Nov 3rd 2012 - Seoul, Korea<br /></b></p>
+<p>Hosted and organized by the APPPC this Symposium aims to assist with the process of prioritizing and developing manuals that will assist countries with implementation of standards.
+</p>
+<p><a class="icn-pdf" href="http://ippc.int/largefiles/REPORT_OF_THE_GLOBAL_SYMPOSIUM_ON_PLANT_PEST_SURVEILLANCE.pdf">Report (En)</a></p>
+<p><b>Regional workshop reports for the review of phytosanitary surveillance in the context of ISPM6 - January to February 2012</b></p>
+<ul><li><a class="icn-pdf" href="http://ippc.int/largefiles/1331627549_INFORME_TALLER_NIMF_N%C2%BA_6_VF.pdf" target="_blank">Santiago, Chile, February 2012</a></li>
+<li><a class="icn-pdf" href="http://ippc.int/largefiles/1329314587_IPPC_-ISPM_6____6-8_FEBRUARY_-_f.pdf" target="_blank">Accra, Ghana, February 2012 (En)</a> <span class="vertline"></span><a class="icn-pdf" href="http://ippc.int/largefiles/1329314433_COMPTE_RENDU_3_atelier_Accra_sur.pdf" target="_blank">Fr</a></li>
+<li><a class="icn-pdf" href="http://ippc.int/largefiles/1329207285_report_of_the_APPPC_workshop_on_.pdf" target="_blank">Chiang Rai, Thailand, January-February 2012</a></li>
+<li><a class="icn-pdf" href="http://ippc.int/largefiles/1327941229_Final_Report_-_Caribbean_Regiona.pdf" target="_blank">Bridgetown, Barbados, January 2012</a></li>
+<li><a class="icn-pdf" href="http://ippc.int/largefiles/1327941077_Report_on_Regional_workshop_ISPM.pdf" target="_blank">Yerevan, Armenia, January 2012</a></li>
+<li><a class="icn-pdf" href="http://ippc.int/largefiles/1329209850_Final_Report_of_the_Worhshop.pdf" target="_blank">Cairo, Egypt, January 2012</a></li>
+<li><a class="icn-ppt" href="http://ippc.int/largefiles/1332418489_Global_Review_ISPM6_Presentation.ppt" target="_blank">Global Review ISPM6 Presentation CPM7</a></li>
+</ul>  
+</div>
+<div class="span6">
+<h2 id="surveys">Surveys</h2>
+<p><b>Survey: Guidelines on lists of regulated pests (ISPM19:2003) and Pest reporting (ISPM17:2002)</b></p>
+<p>Based on past survey results, IPPC subsidiary bodies and the CPM Bureau expressed interest in a deeper analysis of the extent to which Contacting Parties are establishing, updating and making available their lists of regulated pests as well as the extent to which contracting parties are reporting pests. As part of this analysis, the IRSS has prepared a combined survey on ISPM19: 2003 (Guidelines on lists of regulated pests) and ISPM17: 2002 (Pest Reporting) in cooperation with the Standards Committee, Capacity Development Committee, Subsidiary Body on Dispute Settlement, and the CPM Bureau.</p>
+<p>Report:</p>
+
+<p><a class="icn-pdf" href="http://ippc.int/largefiles/2014/Survey-Analysis-NPPOs-17-19.pdf">En</a></p>
+
+<p>Questionnaire:</p>
+
+<p><a class="icn-pdf" href="http://ippc.int/largefiles/2013/Survey24JuneTo16September2013/English-ISPM-17-19-Questionnaire.pdf">En</a> <span class="vertline"></span>
+<a class="icn-pdf" href="http://ippc.int/largefiles/2013/Survey24JuneTo16September2013/French-ISPM-17-19-Questionnaire.pdf">Fr</a> <span class="vertline"></span>
+<a class="icn-pdf" href="http://ippc.int/largefiles/2013/Survey24JuneTo16September2013/Espanol-ISPM-17-19-Questionnaire.pdf">Es</a> <span class="vertline"></span>
+<a class="icn-pdf" href="http://ippc.int/largefiles/2013/Survey24JuneTo16September2013/Russian-ISPM-17-19-Questionnaire.pdf">Ru</a> <span class="vertline"></span>
+<a class="icn-pdf" href="http://ippc.int/largefiles/2013/Survey24JuneTo16September2013/Arabic-ISPM-17-19-Questionnaire.pdf">Ar</a></p>
+
+<hr>
+
+<p><b>General IPPC Survey 2012-2013</b></p>
+
+<p>This study will serve as a baseline review of the Contracting Parties' implementation of the IPPC and its International Standards for Phytosanitary Measures (ISPMs). Survey responses have been recieved and are currently being compiled and analyzed. We thank contracting parties for their participation in this IRSS activity.</p>
+
+<p><a class="icn-pdf" href="http://ippc.int/largefiles/2014/IRSS-IPPC-General-Survey-review-2014.pdf">Report (En)</a></p>
+
+<p>Questionnaire:</p>
+
+<p><a class="icn-pdf" href="http://ippc.int/largefiles/2012/IPPC-General-Survey-2012.pdf">En</a> 
+<a class="icn-doc" href="http://ippc.int/largefiles/2012/IPPC-General-Survey-2012.docx">En</a> <span class="vertline"></span>
+<a class="icn-pdf" href="http://ippc.int/largefiles/2012/IPPC-General-Survey-2012-fr.pdf">Fr</a> 
+<a class="icn-doc" href="http://ippc.int/largefiles/2012/IPPC-General-Survey-2012-fr.doc">Fr</a> <span class="vertline"></span> 
+<a class="icn-pdf" href="http://ippc.int/largefiles/2012/IPPC-General-Survey-2012-ar.pdf">Ar</a> 
+<a class="icn-doc" href="http://ippc.int/largefiles/2012/IPPC-General-Survey-2012-ar.docx">Ar</a> <span class="vertline"></span>
+<a class="icn-pdf" href="http://ippc.int/largefiles/2012/IPPC-General-Survey-2012-ru.pdf">Ru</a> 
+<a class="icn-doc" href="http://ippc.int/largefiles/2012/IPPC-General-Survey-2012-ru.docx">Ru</a> <span class="vertline"></span>
+<a class="icn-doc" href="http://ippc.int/largefiles/2012/IPPC-General--Survey-2012-es.docx">Es</a> 
+<a class="icn-pdf" href="http://ippc.int/largefiles/2012/IPPC-General-Survey-2012-es.pdf">Es</a></p>
+
+<hr>
+
+<p><b>Analysis of survey results on implementation of ISPM13:2001 - Guidelines on the notification of non-compliance and emergency action: Catalogueing Challenges and Opportunities</b></p>
+
+<p>The IPPC Subsidiary Body on Dispute Settlement (SBDS) requested a study of contracting parties' experiences implementing ISPM 13:2001. This was a response to concerns raised at CPM-6 (2011) in regards to communication weaknesses in notifications of non-compliance exchanges between contracting parties. The purpose of this IRSS study has been to contribute to the SBDS' review of its roles and functions as proposed by the SBDS and agreed to by the Bureau. The IRSS collaborated with the SBDS and the IPPC to develop a questionnaire that was sent to all IPPC Contact Points. The questionnaire was also sent to the 9 Regional Plant Protection Organizations and shared with FAO regional plant protection officers and other FAO staff that work on plant protection issues. The findings and recommendations of this review have been presented to the Capacity Development Committee (CDC) in December 2012, the Standards Committee (SC) in November 2012, and the Subsidiary Body on Dispute Settlement (SBDS) in July of 2013.</p>
+
+<p><a class="icn-pdf" href="/static/media/uploads/irss/IRSS-ISPM13-Final-Report-Final-Clearance.pdf">Report (En)</a> <span class="vertline"></span>
+<a class="icn-doc" href="/static/media/uploads/irss/IRSS-ISPM13-Final-Report-Final-Clearance.docx">Report (En)</a></p>
+
+<p>Questionnaire:</p>
+
+<p><a class="icn-doc" href="/static/media/uploads/irss/ISPM13_Questionnaire.doc" title="ISPM 13 Questionnaire">En</a> 
+<a class="icn-pdf" href="/static/media/uploads/irss/IPPC-General-Survey-2012.pdf" title="ISPM 13 Questionnaire">En</a> <span class="vertline"></span>
+<a class="icn-doc" href="http://www.ippc.int/file_uploaded/1340008657_ISPM13_Questionnaire_-_FR.doc">Fr</a> <span class="vertline"></span>
+<a class="icn-doc" href="http://www.ippc.int/file_uploaded/1340008536_Arabic_ISPM_13_final.doc">Ar</a> <span class="vertline"></span>
+<a class="icn-doc" href="http://www.ippc.int/file_uploaded/1340287389_ISPM13_Questionnaire_-_Final_dra.doc">Ru</a> <span class="vertline"></span>
+<a class="icn-doc" href="http://www.ippc.int/file_uploaded/1340008599_Cuestionario_NIMF13.doc">Es</a></p>
+
+<hr>
+
+<p><b>Review of the Implementation of ISPM-6: Challenges and Best Practices</b></p>
+
+<p><a class="icn-pdf" href="http://www.ippc.int/largefiles/2013/IRSS-ISPM6-Summary-Report.pdf">Summary Report (En)</a> <span class="vertline"></span>
+<a class="icn-pdf" href="http://www.ippc.int/largefiles/2013/ISPM-6-Consolidated-Report2012.pdf">Full Report (En)</a> <span class="vertline"></span> <a class="icn-ppt" href="http://www.ippc.int/largefiles/2013/Global_Review_ISPM6_Presentation.ppt">Presentation (En)</a></p>
+
+<hr>
+
+<p><b>Review of the Implementation of ISPM- 4: Cataloguing Challenges and Opportunities</b></p>
+
+<p><a class="icn-pdf" href="http://www.ippc.int/largefiles/2013/ISPM4-IRSS_report.pdf">Report (En)</a></p>
+
+<hr>
+
+<p><b>Review of the Implementation of ISPM-8: Cataloguing Challenges and Opportunities</b></p>
+
+<p><a class="icn-pdf" href="http://www.ippc.int/largefiles/2013/ISPM8-IRSS_report.pdf">Report (En)</a></p>
+
+</div>
+</div>
+{% endblock %}

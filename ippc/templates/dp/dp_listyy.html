@@ -1,0 +1,88 @@
+{% load pages_tags mezzanine_tags i18n future staticfiles accounts_tags %}
+
+{% block main %}
+
+<p class="pull-right">
+  {% if  perms.ippc.change_publication or   user.is_superuser%}
+  <br>
+  <small><a class="btn btn-small btn-info" href="{% url 'draftprotocol-create' %}">+ {% trans "Add new Draft Protocol" %}</a></small>
+  <br>
+  {% else %}
+  {% endif %}
+</p>
+
+<h1>
+  <small class="normal">{% trans "Draft Protocols" %}</small>
+</h1> 
+{% if latest1 %}
+<table class="table table-condensed table-striped" id="publications">
+  <thead>
+    <tr>
+      <th>{% trans "Title" %}</th>
+      <th>{% trans "Status" %}</th>
+      <th>{% trans "Closing Date" %}</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for object in latest1 %}
+     {% if user.is_superuser or perms.ippc.add_publication  %} 
+            <tr>
+                <td><a href="{% url 'draftprotocol-detail' object.publish_date|date:'Y' object.publish_date|date:'m'  object.slug %}">{{ object.title }}</a></td>
+                <td>{% if object.is_past_due %}
+                  CLOSED
+                    {% else %}
+                   OPEN
+                   {% endif %}</td>
+                           <td><a href="{% url 'draftprotocol-detail' object.publish_date|date:'Y' object.publish_date|date:'m'  object.slug %}">{{ object.closing_date|date:"d M Y" }}</a>
+                  {% if user.is_superuser %} 
+                      <a class="small pull-right" href="/admin/ippc/draftprotocol/{{ object.id }}"><i class="icon-edit"></i> Edit as Admin</a><br>
+                  {% endif %}
+                  {% if user.is_superuser or perms.ippc.add_publication  %}
+                      <a class="small pull-right" href="{% url 'draftprotocol-edit' object.id %}"><i class="icon-edit"></i> Edit</a>
+                  {% else %}
+                  {% endif %}
+                  </td>
+              </tr>
+              
+           {% endif %}
+           {% for g in request.user.groups.all %}
+        
+          {% if g.name == 'TPDP'  %}
+             {% if object.is_past_due %}       
+             {% else %}
+             <tr>
+                <td><a href="{% url 'draftprotocol-detail' object.publish_date|date:'Y' object.publish_date|date:'m'  object.slug %}">{{ object.title }}</a></td>
+                <td>OPEN</td>
+                <td><a href="{% url 'draftprotocol-detail' object.publish_date|date:'Y' object.publish_date|date:'m'  object.slug %}">{{ object.closing_date|date:"d M Y" }}</a></td>
+              </tr>
+           {% endif %}
+          {% endif %} 
+          {% endfor %}
+          {% if request.user in object.users.all %}
+           {% if object.is_past_due %}       
+             {% else %}
+             <tr>
+                <td><a href="{% url 'draftprotocol-detail' object.publish_date|date:'Y' object.publish_date|date:'m'  object.slug %}">{{ object.title }}</a></td>
+                <td>OPEN</td>
+                <td><a href="{% url 'draftprotocol-detail' object.publish_date|date:'Y' object.publish_date|date:'m'  object.slug %}">{{ object.closing_date|date:"d M Y" }}</a></td>
+              </tr>
+           {% endif %}
+          {% endif %} 
+
+  
+    
+
+ 
+ 
+
+
+
+
+{% endfor %}  </tbody>
+</table>
+
+{% else %}
+<p>No draftprotocol reports available.</p>
+{% endif %}
+
+{% endblock %}
