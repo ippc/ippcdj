@@ -16,7 +16,7 @@ class IyphPost(Displayable, Ownable, RichText, AdminThumbMixin):
     """
 
     categories = models.ManyToManyField("IyphCategory",
-                                        verbose_name=_("Categories"),
+                                        verbose_name=_("Categories"), 
                                         blank=True, related_name="iyphposts")
     allow_comments = models.BooleanField(verbose_name=_("Allow comments"),
                                          default=True)
