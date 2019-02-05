@@ -1,35 +1,28 @@
 {% extends "base.html" %}
 {% load pages_tags mezzanine_tags i18n future staticfiles accounts_tags %}
 
-{% block meta_title %}{% trans "Media-kit page" %} {% endblock %}
+{% block meta_title %}{% trans "Publications page" %} {% endblock %}
 
 {% block body_class %}wide{% endblock %}
  
 {% block breadcrumb_menu %}
 <li><a href="/{{ LANGUAGE_CODE }}/">{% trans "Home" %}</a><span class="divider">/</span></li>
-<li><a href="/{{ LANGUAGE_CODE }}/structure/">{% trans "About" %}</a><span class="divider">/</span></li>
-
-
-<li class="active">{% trans "Media Kit" %}</li>
+<li><a href="/{{ LANGUAGE_CODE }}/resources/">{% trans "Resources" %}</a><span class="divider">/</span></li>
+<li class="active">{% trans "Publications" %}</li>
 {% endblock %}
 
 {% block main %}  
-{% if user.is_superuser or perms.ippc.change_publication  %}
- <h1>{% trans "Media Kit" %}</h1>
+
+ <h1>{% trans "Publications" %}</h1>
     <p>{% trans "All IPPC media are available here subject to the following terms and conditions:" %}</p>
  <ol>
      <li>{% trans "No material obtained from this website may be used for the purpose of monetary gain or promotion of products and services;" %}</li>
      <li>{% trans "Copyright of all material remains that of <a href='http://www.fao.org/home/en/'>FAO</a>, and should be treated as such;" %}</li>
-     <li>{% trans "We are notified how and where this material is utliized so that we can create links and make it more widely available." %}</li>
+     <li>{% trans "The IPPC Secretariat is notified how and where this material is utilized." %}</li>
  </ol>
 <p>{% trans "Thank you!<br>IPPC Secretariat" %}</p>
     
- <p class="pull-right">
-  <a href="javascript:history.go(-1)">{% trans "Â« Go back" %}</a>
-  {% if user.is_superuser  %}
-      <br> <small><a class="btn btn-small btn-info" href="/admin/ippc/mediakitdocument/add/">+ {% trans "Add new" %}</a></small>
-  {% endif %}
-</p>
+
 
 <script src="https://code.jquery.com/jquery-2.1.4.js"></script>
    
@@ -43,7 +36,7 @@
   width:120px;
   height:120px;
   background:#D4E0E4;
-  color:#fff;
+  color:#356B76;
   font-size: 12pt;
   transition:0.3s;
   margin-bottom:4px;
@@ -51,6 +44,23 @@
 }
 .left .box:hover{
   background:orange;
+  color:#fff;
+  cursor:pointer;
+}
+.left .box1{
+  display:inline-block;
+  width:120px;
+  height:120px;
+  background:#D4E0E4;
+  color:#356B76;
+  font-size: 12pt;
+  transition:0.3s;
+  margin-bottom:4px;
+  padding:10px;
+}
+.left .box1:hover{
+  background:orange;
+  color:#fff;
   cursor:pointer;
 }
 
@@ -58,7 +68,7 @@
   padding:10px;
 }
 .right .box + .box{
-  display:none;
+  /*display:none;*/
 }
 </style>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
@@ -66,20 +76,21 @@
 
 
     <div class="left">
-      <div class="box"><b><i class="fa fa-map-o" style="font-size:24px"></i> <br>Brochures<br> </b></div>
-      <div class="box"><b><i class="fa fa-book" style="font-size:24px"></i><br>Manuals <br>& Reports </b></div>
-      <div class="box"><b><i class="fa fa-file-text-o " style="font-size:24px"></i><br>Factsheets<br> </b></div>
-      <div class="box"><b><i class="fa fa-image" style="font-size:24px"></i><br>Posters<br> </b></div>
-      <div class="box"><b><i class="fa fa-calendar" style="font-size:24px"></i><br>Calendars<br> </b></div>
-      <div class="box"><b><i class="fa fa-graduation-cap" style="font-size:24px"></i><br>E-Learning<br></b></div>
-      <div class="box"><b> <br>Logo</b></div>
+      <div class="box1"><b><i class="fa fa-bars" style="font-size:24px"></i><br><br>All publications<br>&#160;</b></b></div>
+      <div class="box"><b><i class="fa fa-book" style="font-size:24px"></i><br><br>Reports  & <br>Strategies</b></div>
+      <div class="box"><b><i class="fa fa-map-o" style="font-size:24px"></i><br><br>Brochures<br>&#160;</b></div>
+      <div class="box"><b><i class="fa fa-file-text-o " style="font-size:24px"></i><br><br>Factsheets<br>&#160;</b></div>
+      <div class="box"><b><i class="fa fa-image" style="font-size:24px"></i><br><br>Advocacy materials</b></div>
+      <div class="box"><b><i class="fa fa-graduation-cap" style="font-size:24px"></i><br><br>E-Learning<br>&#160;</b></div>
+      <!--div class="box"><b><i class="fa fa-calendar" style="font-size:24px"></i><br>Calendars<br> </b></div>
+      <div class="box"><b> <br>Logo</b></div-->
     </div>
 
     <div class="right">
      
          
 {% for obj in latest %}
-    <div class="box" style="display: none;">
+    <div class="box">
 <table class="table table-condensed  " id="publications">
     <tr>
         <th  style="background-color: #356B76;color: white">{{obj.0}}</th> 
@@ -88,23 +99,24 @@
        <td>
         <table class="table table-condensed">
     
-        {% for o in obj.1 %}
+          {% for o in obj.1 %}
             {% if forloop.counter|divisibleby:2 %}{% else %}<tr>{% endif %}
             <td style="background-color: #D4E0E4; width: 20px;" align="center">{% if o.image %}<img  src='{{ MEDIA_URL }}{{o.image}}' width="40px" height="20px">{%endif%}&#160;</td>
             <td style="background-color: #eee; width: 250px"><b style="vertical-align: top;">{{o.title}}</b>{% if user.is_superuser %}&#160;<a class="small" href="/admin/ippc/mediakitdocument/{{ o.id }}"><i class="icon-edit"></i> Edit as Admin</a>{% endif %}<br><br>
-            <span class="fa fa-download"></span>&#160;&#160;
-            {%if o.file_en %}<a href="{{ MEDIA_URL }}{{ o.file_en }}">En</a>&#160;&#160;{% endif %}
-            {%if o.link_en %}<a href="{{ o.link_en }}">En</a>&#160;&#160;{% endif %}
-            {%if o.file_es %}<a href="{{ MEDIA_URL }}{{ o.file_es }}">Es</a>&#160;&#160;{% endif %}
-            {%if o.link_es %}<a href="{{ o.link_es }}">Es</a>&#160;&#160;{% endif %}
-            {%if o.file_fr %}<a href="{{ MEDIA_URL }}{{ o.file_fr }}">Fr</a>&#160;&#160;{% endif %}
-            {%if o.link_fr %}<a href="{{ o.link_fr }}">Fr</a>&#160;&#160;{% endif %}
-            {%if o.file_ru %}<a href="{{ MEDIA_URL }}{{ o.file_ru }}">Ru</a>&#160;&#160;{% endif %}
-            {%if o.link_ru %}<a href="{{ o.link_ru }}">Rs</a>&#160;&#160;{% endif %}
-            {%if o.file_ar %}<a href="{{ MEDIA_URL }}{{ o.file_ar }}">Ar</a>&#160;&#160;{% endif %}
-            {%if o.link_ar %}<a href="{{ o.link_ar }}">Ar</a>&#160;&#160;{% endif %}
-            {%if o.file_zh %}<a href="{{ MEDIA_URL }}{{ o.file_zh }}">Zh</a>&#160;&#160;{% endif %}
-            {%if o.link_zh %}<a href="{{ o.link_zh }}">Zh</a>&#160;&#160;{% endif %}
+            {%if o.file_en  or o.link_en or o.file_es  or o.link_es or o.file_fr  or o.link_fr or o.file_ru  or o.link_ru or o.file_ar  or o.link_ar or o.file_zh  or o.link_zh %}
+             <span class="fa fa-download"></span>&#160;&#160;{% endif %}
+            {%if o.file_en %}<a href="{{ MEDIA_URL }}{{ o.file_en }}">English</a>&#160;&#160;{% endif %}
+            {%if o.link_en %}<a href="{{ o.link_en }}">English</a>&#160;&#160;{% endif %}
+            {%if o.file_es %}<a href="{{ MEDIA_URL }}{{ o.file_es }}">Espa&ntilde;ol</a>&#160;&#160;{% endif %}
+            {%if o.link_es %}<a href="{{ o.link_es }}">Espa&ntilde;ol</a>&#160;&#160;{% endif %}
+            {%if o.file_fr %}<a href="{{ MEDIA_URL }}{{ o.file_fr }}">Fran&ccedil;ais</a>&#160;&#160;{% endif %}
+            {%if o.link_fr %}<a href="{{ o.link_fr }}">Fran&ccedil;ais</a>&#160;&#160;{% endif %}
+            {%if o.file_ru %}<a href="{{ MEDIA_URL }}{{ o.file_ru }}">Русский</a>&#160;&#160;{% endif %}
+            {%if o.link_ru %}<a href="{{ o.link_ru }}">Русский</a>&#160;&#160;{% endif %}
+            {%if o.file_ar %}<a href="{{ MEDIA_URL }}{{ o.file_ar }}">العربية</a>&#160;&#160;{% endif %}
+            {%if o.link_ar %}<a href="{{ o.link_ar }}">العربية</a>&#160;&#160;{% endif %}
+            {%if o.file_zh %}<a href="{{ MEDIA_URL }}{{ o.file_zh }}">中文</a>&#160;&#160;{% endif %}
+            {%if o.link_zh %}<a href="{{ o.link_zh }}">中文</a>&#160;&#160;{% endif %}
             </td>
            {% if forloop.counter|divisibleby:2 %}</tr>{% else %}{% endif %}
         {% endfor %}
@@ -118,13 +130,17 @@
 
       
         <script>try {var $rightBox = $(".right .box");
+$(".left .box1").hover(function(){
+  $rightBox.show();
+  /*$rightBox.eq($(this).index()).show();*/
+});
 $(".left .box").hover(function(){
   $rightBox.hide();
-  $rightBox.eq($(this).index()).show();
+  $rightBox.eq($(this).index()-1).show();
 });
 $(".left .box").mouseleave(function(){
   $rightBox.hide();
-  $rightBox.eq($(this).index()).show();//.style.display.block;
+  $rightBox.eq($(this).index()-1).show();//.style.display.block;
 });
 } catch (error) { throw error; }
 
@@ -136,7 +152,8 @@ $(".left .box").mouseleave(function(){
 
 
 
-{% endif%}
+
+
   
 {% endblock %}
 
