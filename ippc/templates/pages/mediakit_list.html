@@ -76,14 +76,14 @@
 
 
     <div class="left">
-      <div class="box1"><b><i class="fa fa-bars" style="font-size:24px"></i><br><br>All publications<br>&#160;</b></b></div>
-      <div class="box"><b><i class="fa fa-book" style="font-size:24px"></i><br><br>Reports  & <br>Strategies</b></div>
-      <div class="box"><b><i class="fa fa-map-o" style="font-size:24px"></i><br><br>Brochures<br>&#160;</b></div>
-      <div class="box"><b><i class="fa fa-file-text-o " style="font-size:24px"></i><br><br>Factsheets<br>&#160;</b></div>
-      <div class="box"><b><i class="fa fa-image" style="font-size:24px"></i><br><br>Advocacy materials</b></div>
-      <div class="box"><b><i class="fa fa-graduation-cap" style="font-size:24px"></i><br><br>E-Learning<br>&#160;</b></div>
-      <!--div class="box"><b><i class="fa fa-calendar" style="font-size:24px"></i><br>Calendars<br> </b></div>
-      <div class="box"><b> <br>Logo</b></div-->
+      <div class="box1"><b><i class="fa fa-bars" style="font-size:24px"></i><br><br><br>All publications<br>&#160;</b></b></div>
+      <div class="box"><b><i class="fa fa-book" style="font-size:24px"></i><br><br><br>Annual Reports<br>& Strategies</b></div>
+      <div class="box"><b><i class="fa fa-book" style="font-size:24px"></i><br><br><br>Meeting Reports</b></div>
+      <div class="box"><b><i class="fa fa-map-o" style="font-size:24px"></i><br><br><br>Brochures<br>&#160;</b></div>
+      <div class="box"><b><i class="fa fa-file-text-o " style="font-size:24px"></i><br><br><br>Factsheets<br>&#160;</b></div>
+      <div class="box"><b><i class="fa fa-image" style="font-size:24px"></i><br><br><br>Advocacy materials</b></div>
+      <div class="box"><b><i class="fa fa-leanpub" style="font-size:24px"></i><br><br>Guides &<br>Training resources</b></div>
+      <div class="box"><b><i class="fa fa-graduation-cap" style="font-size:24px"></i><br><br><br>Training kits<br>&#160;</b></div>
     </div>
 
     <div class="right">
@@ -99,7 +99,7 @@
        <td>
         <table class="table table-condensed">
     
-          {% for o in obj.1 %}
+        {% for o in obj.1 %}
             {% if forloop.counter|divisibleby:2 %}{% else %}<tr>{% endif %}
             <td style="background-color: #D4E0E4; width: 20px;" align="center">{% if o.image %}<img  src='{{ MEDIA_URL }}{{o.image}}' width="40px" height="20px">{%endif%}&#160;</td>
             <td style="background-color: #eee; width: 250px"><b style="vertical-align: top;">{{o.title}}</b>{% if user.is_superuser %}&#160;<a class="small" href="/admin/ippc/mediakitdocument/{{ o.id }}"><i class="icon-edit"></i> Edit as Admin</a>{% endif %}<br><br>
