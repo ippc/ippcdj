@@ -19,7 +19,7 @@ ContactUsEmailMessage,FAQsItem,FAQsCategory,QAQuestion, QAAnswer,UserAutoRegistr
 TransFAQsCategory,TransFAQsItem,MassEmailUtilityMessage,MassEmailUtilityMessageFile,\
 OCPHistory, PartnersContactPointHistory,CnEditorsHistory,PartnersEditorHistory,UserMembershipHistory,MediaKitDocument,MyTool,\
 PhytosanitaryTreatment,PhytosanitaryTreatmentPestsIdentity,PhytosanitaryTreatmentCommodityIdentity,CertificatesTool,WorkshopCertificatesTool,CPMS,TOPIC_PRIORITY_CHOICES,\
-Topic,TopicAssistants,TopicLeads,TransTopic,TOPIC_STATUS_CHOICES,SC_TYPE_CHOICES,B_CertificatesTool,NROStats
+Topic,TopicAssistants,TopicLeads,TransTopic,TOPIC_STATUS_CHOICES,SC_TYPE_CHOICES,B_CertificatesTool,NROStats#,COOPTYPE_CHOICES,
          
 #TransReportingObligation,
 from mezzanine.core.models import Displayable, CONTENT_STATUS_DRAFT, CONTENT_STATUS_PUBLISHED
@@ -1461,7 +1461,94 @@ class PublicationLibraryView(ListView):
     #queryset = DraftProtocol.objects.all()
     def get_context_data(self, **kwargs): # http://stackoverflow.com/a/15515220
         context = super(PublicationLibraryView, self).get_context_data(**kwargs)
-       
+#        print('--------------------------------------------------')
+#        print('--------------------------------------------------')
+#        tot_array = []
+#   
+#        for k,v in COOPTYPE_CHOICES:
+#            print(k)
+#            single_array = []
+#            single_array.append(k)
+#            single_array.append(str(ugettext((v))))
+#            cooperations= PartnersPage.objects.filter(coop_type=k).order_by('table_id')
+#            single_array3=[]
+#            for coop in cooperations:
+#                single_array2=[]
+#                single_array2.append(coop.table_id)
+#                single_array2.append(coop.title)
+#                single_array2.append(coop.acronym)
+#                responsable_sec=''
+#                i=0
+#                for cc in coop.responsable_sec.all():
+#                    if i>0:
+#                        responsable_sec+=' / '
+#                    if cc !=None:
+#                        user_obj=User.objects.get(username=cc)
+#                        userippc = get_object_or_404(IppcUserProfile, user_id=user_obj.id)
+#                        val=userippc.gender
+#                        gender=''
+#                        if val!= None:
+#                            if val == 1:
+#                                gender= "Mr."
+#                            elif val==2: 
+#                                gender= "Ms."
+#                            elif val==3:    
+#                                gender= "Mrs."
+#                            elif val==4:    
+#                                gender= "Professor."
+#                            elif val==5:    
+#                                gender= "M."
+#                            elif val==6:    
+#                                gender= "Mme."
+#                            elif val==7:    
+#                                gender= "Dr."
+#                            elif val==8:    
+#                                gender= "Sr."
+#                            elif val==9:    
+#                                gender= "Sra."
+#
+#                        responsable_sec+=(unicode(gender))+' '+(unicode(userippc.first_name))+' '+(unicode(userippc.last_name))  
+#                    i=i+1
+#                  
+#                single_array2.append(responsable_sec)
+#                cp=''
+#                if coop.contact_point != None:
+#                    user_obj2=User.objects.get(username=coop.contact_point)
+#                    userippc2 = get_object_or_404(IppcUserProfile, user_id=user_obj2.id)
+#                    val=userippc2.gender
+#                    gender=''
+#                    if val!= None:
+#                        if val == 1:
+#                            gender= "Mr."
+#                        elif val==2: 
+#                            gender= "Ms."
+#                        elif val==3:    
+#                            gender= "Mrs."
+#                        elif val==4:    
+#                            gender= "Professor."
+#                        elif val==5:    
+#                            gender= "M."
+#                        elif val==6:    
+#                            gender= "Mme."
+#                        elif val==7:    
+#                            gender= "Dr."
+#                        elif val==8:    
+#                            gender= "Sr."
+#                        elif val==9:    
+#                            gender= "Sra."
+#
+#                    cp=(unicode(gender))+' '+(unicode(userippc2.first_name))+' '+(unicode(userippc2.last_name))
+#
+#                single_array2.append(cp)
+#                single_array3.append(single_array2)
+#            single_array.append(single_array3)
+#            tot_array.append(single_array)  
+#            
+#        print(tot_array)
+#        context['coop']=tot_array
+#        print('--------------------------------------------------')
+#        print('--------------------------------------------------')o
+#       
         context['polls']=Poll.objects.order_by('-pub_date').all
         
         
@@ -1635,11 +1722,13 @@ class PublicationLibraryView(ListView):
         context['users_tpg']=users_tpg
         context['users_tpfq']=users_tpfq
         context['users_esg']=users_esg
+        
+       # print( self.kwargs['id'])
         return context
     def get_queryset(self):
         queryset = DraftProtocol.objects.all()
         return  queryset 
-
+ 
 
 class CountryRelatedView(TemplateView):
     """ 
@@ -10076,17 +10165,30 @@ class MassEmailUtilityMessageDetailView(DetailView):
         emailto=[]
         sentto=[]
         not_sentto=[]
-        if mail.emailto != None and mail.emailto!='':
-            emailto=mail.emailto.split(",") 
-        if mail.sentto != None and mail.sentto!='':
-            sentto=mail.sentto.split(",") 
-        if mail.not_sentto != None and mail.not_sentto!='':
-            not_sentto=mail.not_sentto.split(",") 
-        for m in emailto:
-            if m in not_sentto:
-                aaa+='<span style="color: red;">'+m+'</span>,  '
-            if m in  sentto:   
-                aaa+='<span style="color: green;">'+m+'</span>,  '
+        if mail.mass_merge ==0:
+            if mail.emailto != None and mail.emailto!='':
+                emailto=mail.emailto.split(",") 
+            if mail.sentto != None and mail.sentto!='':
+                sentto=mail.sentto.split(",") 
+            if mail.not_sentto != None and mail.not_sentto!='':
+                not_sentto=mail.not_sentto.split(",") 
+            for m in emailto:
+                if m in not_sentto:
+                    aaa+='<span style="color: red;">'+m+'</span>,  '
+                if m in  sentto:   
+                    aaa+='<span style="color: green;">'+m+'</span>,  '
+        elif mail.mass_merge ==1: 
+            if mail.emailtoISO3 != None and mail.emailtoISO3!='':
+                emailto=mail.emailtoISO3.split(",") 
+            if mail.senttoISO3 != None and mail.senttoISO3!='':
+                sentto=mail.senttoISO3.split(",") 
+            if mail.not_senttoISO3 != None and mail.not_senttoISO3!='':
+                not_sentto=mail.not_senttoISO3.split(",") 
+            for m in emailto:
+                if m in not_sentto:
+                    aaa+='<span style="color: red;">'+m+'</span>,  '
+                if m in  sentto:   
+                    aaa+='<span style="color: green;">'+m+'</span>,  '            
         context['aaa']=aaa
        #print(aaa)
         
@@ -10127,71 +10229,159 @@ def massemailutility_to_send(request):
     emails_to_send = MassEmailUtilityMessage.objects.filter(sent=0,status=1)
     for email in emails_to_send :
         log_report.write("["+ timezone.now().strftime('%Y%m%d%H%M%S')+" - email id  [ID:"+str(email.id)+"] \n")
-        email_not_sentto=email.not_sentto
-        email_sent=email.sentto
-        emailfrom=email.emailfrom
-        subject=email.subject
-        messagebody=email.messagebody
-       
+        text_+="["+ timezone.now().strftime('%Y%m%d%H%M%S')+" - email id  [ID:"+str(email.id)+"] \n"
+        if email.mass_merge == 0:
+            email_not_sentto=email.not_sentto
+            email_sent=email.sentto
+            emailfrom=email.emailfrom
+            subject=email.subject
+            messagebody=email.messagebody
+            email_not_sentto1=email_not_sentto.split(",") 
+            email_sent1=''  
+            eee=''
+            if email_sent!= None and email_sent!='':
+                 aaa=email_sent
+                 email_sent1=email_sent 
+            for y in range(0,len(email_not_sentto1)):
+                if y > 5:
+                    eee+=email_not_sentto1[y]+','
+                else:
+                   message = mail.EmailMessage(subject,messagebody,emailfrom,[email_not_sentto1[y]], ['paola.sentinelli@fao.org'])#/**/
+                   fileset= MassEmailUtilityMessageFile.objects.filter(emailmessage_id=email.id)
+                   for f in fileset:
+                       pf=MEDIA_ROOT+str(f.file)
+                       message.attach_file(pf) 
+                   message.content_subtype = "html"
+                   sent =message.send()
 
-        email_not_sentto1=email_not_sentto.split(",") 
-        email_sent1=''  
-        
-       #print('--------------------------------------- NO SENT:-----------------------------')
-       #print(email_not_sentto1)
-       #print('-----------------sent---------------------------------------------')
-       #print(email_sent1)
-       #print('--------------------------------------------------------------')
-        eee=''
-        if email_sent!= None and email_sent!='':
-             aaa=email_sent
-             email_sent1=email_sent 
+                   if sent:
+                       email_sent1+=email_not_sentto1[y]+','
+                       text_+='sent to: '+email_not_sentto1[y]+'<br>'
+                       log_report.write("sent to: "+email_not_sentto1[y]+":\n")
+                   else:
+                       eee+=email_not_sentto1[y]+','
 
-    
+            email.not_sentto = eee
+            email.sentto = email_sent1
+            text_+='Sent email:'+subject+'<br>'
+
+            if email_not_sentto1 ==  [u''] or email_not_sentto1 == '' :
+                email.sent = True
+                messages=[]
+                bodytext='Please note that the mass email message has been sent out to all recipients: https://www.ippc.int/massemailutility/'+str(email.id)
+                message = mail.EmailMessage('Notification mass email sent: '+ugettext(subject),bodytext,emailfrom,[email.author.email], ['paola.sentinelli@fao.org'])
+                message.content_subtype = "html"
+                messages.append(message) 
+                connection = mail.get_connection()
+                connection.open()
+                #print('test-sending')
+                sent=connection.send_messages(messages)#
+                connection.close()
+            email.save()
+            
+        elif email.mass_merge ==1:    
+            subject=email.subject
+            emailfrom=email.emailfrom
+            emailcc=email.emailcc
+            email_cc=emailcc.split(",")
+            email_not_sentto=email.not_senttoISO3
+            email_sent=email.senttoISO3
+            #MSG
+            message_split=email.messagebody.split("XXXXXXXXXX")
+            message_part_0=message_split[0]
+            message_split2=message_split[1].split("YYYYYYYYYY")
+            message_part_1=message_split2[0]
+            message_part_2=message_split2[1]
+            #CSV
+            csv_file_name=str(email.csv_file).split("/")[2]
+            csv_path = os.path.join(MEDIA_ROOT, 'files')
+            csv_path1 = os.path.join(csv_path, 'email')
+            csv_path_final = os.path.join(csv_path1, csv_file_name)
+
+            csv_dictionary = {}
+            with open(csv_path_final, "r") as ins:
+                for line in ins:
+                    line_0 = line.split(",")
+                    text_+='line:'+str(line_0)
+                    cn_0=line_0[1]
+                    text_+='cn_0:'+str(cn_0)
+                    if len(cn_0)>3:
+                       cn_0= cn_0[0:3]
+                    csv_dictionary[cn_0]=line_0[0]
         
-        for y in range(0,len(email_not_sentto1)):
-            if y > 5:
-                eee+=email_not_sentto1[y]+','
-            else:
-               message = mail.EmailMessage(subject,messagebody,emailfrom,[email_not_sentto1[y]], ['paola.sentinelli@fao.org'])#/**/
-               fileset= MassEmailUtilityMessageFile.objects.filter(emailmessage_id=email.id)
-               for f in fileset:
-                   pf=MEDIA_ROOT+str(f.file)
-                   message.attach_file(pf) 
-               message.content_subtype = "html"
-               #print('test-sending')
-               sent =message.send()
-               
-               if sent:
-                   email_sent1+=email_not_sentto1[y]+','
-                   text_+='sent to: '+email_not_sentto1[y]+'<br>'
-                   log_report.write("sent to: "+email_not_sentto1[y]+":\n")
-               else:
-                   eee+=email_not_sentto1[y]+','
-                  
-        email.not_sentto = eee
-        email.sentto = email_sent1
-        text_+='Sent email:'+subject+'<br>'
-        
-        if email_not_sentto1 ==  [u''] or email_not_sentto1 == '' :
-            email.sent = True
-            messages=[]
-            bodytext='Please note that the mass email message has been sent out to all recipients: https://www.ippc.int/massemailutility/'+str(email.id)
-            message = mail.EmailMessage('Notification mass email sent: '+ugettext(subject),bodytext,emailfrom,[email.author.email], ['paola.sentinelli@fao.org'])
-            message.content_subtype = "html"
-            messages.append(message) 
-            connection = mail.get_connection()
-            connection.open()
-            #print('test-sending')
-            sent=connection.send_messages(messages)#
-            connection.close()
-        email.save()
+            email_not_sentto1=email_not_sentto.split(",") 
+            email_sent1=''  
+            eee=''
+            if email_sent!= None and email_sent!='':
+                 aaa=email_sent.split(",") 
+                 email_sent1=email_sent.split(",")  
+
+            for y in range(0,len(email_not_sentto1)):
+                if y > 5:
+                    eee+=email_not_sentto1[y]+','
+                else:
+                   email_to_cn=email_not_sentto1[y]
+                   if email_to_cn !='':
+                        cn = get_object_or_404(CountryPage,iso3=email_to_cn)
+                        cn_cpid=cn.contact_point_id
+                        user_obj=User.objects.get(id=cn_cpid)
+                        cp=get_object_or_404(IppcUserProfile,user_id=cn_cpid)
+                        username=get_gender(cp.gender)+' '+(unicode(cp.first_name))+' '+(unicode(cp.last_name))
+                        cp_email=user_obj.email
+                        cp_alternateemail=cp.email_address_alt
+                        cplink_to_replace=''
+                        cplink_to_replace=csv_dictionary.get(email_to_cn, "none")
+                        text_+='<br>cp_alternateemail:'+cp_alternateemail+'<br>cp_email<br>:'+cp_email
+                        messagebodyfinal=message_part_0+' '+username+',<br>'+message_part_1+ '<a href="'+str(cplink_to_replace)+'">'+str(cplink_to_replace)+'</a><br>'+message_part_2
+                        text_+=messagebodyfinal
+                        emailtTo=[]
+                        emailtTo.append(cp_email)
+                        if cp_alternateemail!='':
+                          email_cc.append(cp_alternateemail)
                         
+                        message = mail.EmailMessage(subject,messagebodyfinal,emailfrom,emailtTo, email_cc)
+                        fileset= MassEmailUtilityMessageFile.objects.filter(emailmessage_id=email.id)
+                        for f in fileset:
+                            pf=MEDIA_ROOT+str(f.file)
+                            message.attach_file(pf) 
+                        message.content_subtype = "html"
+                        sent =message.send()
+                    
+                        if sent:
+                            email_sent1+=email_not_sentto1[y]+','
+                            text_+='sent to: '+email_not_sentto1[y]+'<br>'
+                            log_report.write("sent to: "+email_not_sentto1[y]+":\n")
+                        else:
+                             eee+=email_not_sentto1[y]+','
+
+            email.not_senttoISO3 = eee
+            email.senttoISO3 = email_sent1
+            text_+='Sent email:'+subject+'<br>'
+           
+          
+          
+            
+            if email_not_sentto1 ==  [u''] or email_not_sentto1 == '' :
                 
+                email.sent = True
+                messages=[]
+                bodytext='Please note that the Merge email messages have been sent out to all recipients: https://www.ippc.int/massemailutility/'+str(email.id)
+                text_+=bodytext
+                message = mail.EmailMessage('Notification Merge email messages sent: '+ugettext(subject),bodytext,emailfrom,[email.author.email], ['paola.sentinelli@fao.org'])
+                message.content_subtype = "html"
+                messages.append(message) 
+                connection = mail.get_connection()
+                connection.open()
+
+                sent=connection.send_messages(messages)#
+                connection.close()
+            email.save()
+                        
         
     log_report.close()     
     context = {'aa':text_}
     response = render(request, "emailutility/sendemail_system.html", context)
+   
     return response
 
 
@@ -10244,6 +10434,7 @@ def massemail_send(request):
     cp_set=[]      
     for h in range(2,5):
         users_all=[]
+        users_all_iso=[]
         cp=IppcUserProfile.objects.filter(contact_type=h)
         cpname = get_object_or_404(ContactType,id=h)
         users_all.append(str(cpname))
@@ -10257,20 +10448,15 @@ def massemail_send(request):
                users_u.append(' ('+(unicode(u.first_name))+' '+(unicode(u.last_name))+') ')
                users_u.append(str(user_obj.email))
                users_all.append(users_u)
-
         cp_set.append(users_all)
-   
     
     emaile2=[]
     users_all_e=[]
     for g in Group.objects.filter():
-       
         if g.name == 'Country editor':
             users = g.user_set.all()
-           
             for u in users:
                 users_u=[]
-                
                 user_obj=User.objects.get(username=u)
                 if user_obj.is_active:
                     userippc = get_object_or_404(IppcUserProfile, user_id=user_obj.id)
@@ -10286,17 +10472,20 @@ def massemail_send(request):
     j=j+1
     for x in users_all_e:
         users_all_e_2.append(x)
-
     emaile2.append(users_all_e_2)
             
-   
-           
     if request.method == "POST":
         f_form =MassEmailUtilityMessageFileFormSet(request.POST, request.FILES)
         if form.is_valid() and f_form.is_valid():
+            
+            emailto_all_last=''
+            emailto_cc_last=''
+            emailto_to_iso=''
+            emailto_notsentto_iso=''
+            emailto_sent_iso=''
+          
             emailto_all1 = str(request.POST['emailto'])
-            emailto_all2=emailto_all1[3:-4]
-            emailto_all=[emailto_all2]
+            emailto_all=[emailto_all1]
             for u in request.POST.getlist('users'):
                 user_obj=User.objects.get(id=u)
                 user_email=user_obj.email
@@ -10314,29 +10503,170 @@ def massemail_send(request):
                   for uemail in request.POST.getlist('usere1_'+str(h)+'_0'):
                      emailto_all.append(str(uemail))                        
 
-            new_emailmessage = form.save(commit=False)
-            new_emailmessage.author = request.user
-            new_emailmessage.date=timezone.now()
-    
             emailto_all_clean=[]
             for ee in emailto_all:
                 if ee in emailto_all_clean:
                     print('no')
                 else:    
                     emailto_all_clean.append(ee)    
-            
-            emailto_all_last=''
+
             for ee in emailto_all_clean:
-               #print(ee)
-                emailto_all_last=emailto_all_last+ee+','
-            new_emailmessage.emailto=emailto_all_last
-            new_emailmessage.not_sentto=emailto_all_last
+                    emailto_all_last=emailto_all_last+ee+','
+                
+           
+            new_emailmessage = form.save(commit=False)
+            new_emailmessage.author = request.user
+            new_emailmessage.date=timezone.now()
             new_emailmessage.sent=0
             new_emailmessage.status=0
+            
+            new_emailmessage.emailto=emailto_all_last
+            new_emailmessage.not_sentto=emailto_all_last
+            
+            new_emailmessage.emailcc=emailto_cc_last
+            new_emailmessage.emailtoISO3=emailto_to_iso
+            new_emailmessage.not_senttoISO3=  emailto_notsentto_iso
+
             form.save()
             #save file to message in db
             f_form.instance = new_emailmessage
             f_form.save()
+            
+            
+            messages=[]
+            message = mail.EmailMessage('COPY MASS email: '+ugettext(request.POST['subject']),request.POST['messagebody'],request.POST['emailfrom'],[request.user.email], ['paola.sentinelli@fao.org'])
+            fileset= MassEmailUtilityMessageFile.objects.filter(emailmessage_id=new_emailmessage.id)
+            for f in fileset:
+                pf=MEDIA_ROOT+str(f.file)
+                message.attach_file(pf) 
+            message.content_subtype = "html"
+            messages.append(message) 
+            connection = mail.get_connection()
+            connection.open()
+            #print('test-sending')
+            sent=connection.send_messages(messages)#
+            connection.close()
+            form.save()
+            
+            info(request, _("MASS Email stored as draft, check the copy message in your inbox, change the status in 'TO BE SENT' and it would be sent out in the next hours."))
+           
+            return redirect("mass-email-detail",new_emailmessage.id)
+        else:
+             return render_to_response('emailutility/massemailutility_send.html', {'form': form,'f_form': f_form,'emailgroups':g_set,'emailcp':cp_set,'emailcp2':cp_set0,'emaile2':emaile2,},
+             context_instance=RequestContext(request))
+    else:
+        form = MassEmailUtilityMessageForm(instance=MassEmailUtilityMessage())
+        f_form =MassEmailUtilityMessageFileFormSet()
+      
+    return render_to_response('emailutility/massemailutility_send.html', {'form': form  ,'f_form': f_form,'emailgroups':g_set,'emailcp':cp_set,'emailcp2':cp_set0,'emaile2':emaile2,},#'emailcpu':cpu_set,'emailcpi':cpi_set,'emailcpl':cpl_set
+        context_instance=RequestContext(request))
+
+
+@login_required
+@permission_required('ippc.add_massemailutilitymessage', login_url="/accounts/login/")
+def mergemassemail_send(request):
+    """ Create  mass email to send """
+    form = MassEmailUtilityMessageForm(request.POST, request.FILES)
+    cp_setiso=[] 
+    for h in range(2,5):
+        users_all_iso=[]
+        cp=IppcUserProfile.objects.filter(contact_type=h)
+        cpname = get_object_or_404(ContactType,id=h)
+        users_all_iso.append(str(cpname))
+        users_all_iso.append(str(h))
+        cp=IppcUserProfile.objects.filter(contact_type=h)
+        for u in cp:
+               users_u_iso=[]
+               user_obj=User.objects.get(id=u.user_id)
+               cn = get_object_or_404(CountryPage,id=u.country_id)
+               users_u_iso.append(str(cn.iso3))
+               users_u_iso.append(' - '+(unicode(cn)+' ['+(unicode(u.first_name))+' '+(unicode(u.last_name))+' - '+str(user_obj.email)+'] '))
+               users_all_iso.append(users_u_iso)
+        cp_setiso.append(users_all_iso)
+    ##ISO CP
+    cpname = get_object_or_404(ContactType,id=1)
+    cp_set0iso=[]
+    j=0
+    users_alliso=[]
+    users_alliso.append(str(cpname))
+    users_alliso.append(str(j))
+    countriesList=CountryPage.objects.filter(cp_ncp_t_type='CP').exclude(id='-1').order_by('name')
+    for cn in countriesList :
+	users_u=[]
+        cn_iso3=cn.iso3
+        cn_cpid=cn.contact_point_id
+        user_obj=User.objects.get(id=cn_cpid)
+        cp=get_object_or_404(IppcUserProfile,user_id=cn_cpid)
+        users_u.append(str(cn_iso3))
+        users_u.append(' - '+(unicode(cn.name)+' ['+(unicode(cp.first_name))+' '+(unicode(cp.last_name))+' - '+str(user_obj.email)+']'))
+        users_alliso.append(users_u)     
+    cp_set0iso.append(users_alliso)    
+    
+    if request.method == "POST":
+        f_form =MassEmailUtilityMessageFileFormSet(request.POST, request.FILES)
+        if form.is_valid() and f_form.is_valid():
+            
+            emailto_all_last=''
+            emailto_cc_last=''
+            emailto_to_iso=''
+            emailto_notsentto_iso=''
+            emailto_sent_iso=''
+            
+
+            #CC
+            emailto_cc_clean=[]
+            email_cc = str(request.POST['emailcc']).split(',');
+            for e_cc in email_cc:
+                if e_cc !='':
+                    if e_cc in emailto_cc_clean:
+                        print('no')
+                    else:    
+                        emailto_cc_clean.append(e_cc)    
+            emailto_cc_clean.append('paola.sentinelli@fao.org')
+            for e_cc1 in emailto_cc_clean:
+                emailto_cc_last=emailto_cc_last+e_cc1+','
+
+            #TO
+            emailto_all=[]
+            for h in range(2,5):
+                  for uemail in request.POST.getlist('usercp_'+str(h)+'_0'):
+                     emailto_all.append(str(uemail))
+            for h in range(0,6):
+                  for uemail in request.POST.getlist('usercp1_'+str(h)+'_0'):
+                     emailto_all.append(str(uemail)) 
+            emailto_all_last=''
+            emailto_all_clean=[]
+            for ee in emailto_all:
+                if ee!='':
+                    if ee in emailto_all_clean:
+                        print('no')
+                    else:    
+                        emailto_all_clean.append(ee)    
+            for ee in emailto_all_clean:
+                emailto_all_last=emailto_all_last+ee+','
+
+            emailto_to_iso =emailto_all_last
+            emailto_notsentto_iso =emailto_all_last
+            emailto_all_last=''
+            new_emailmessage = form.save(commit=False)
+            new_emailmessage.author = request.user
+            new_emailmessage.date=timezone.now()
+            new_emailmessage.sent=0
+            new_emailmessage.status=0
+            
+            new_emailmessage.emailto=emailto_all_last
+            new_emailmessage.not_sentto=emailto_all_last
+            
+            new_emailmessage.emailcc=emailto_cc_last
+            new_emailmessage.emailtoISO3=emailto_to_iso
+            new_emailmessage.not_senttoISO3=  emailto_notsentto_iso
+
+            form.save()
+            #save file to message in db
+            f_form.instance = new_emailmessage
+            f_form.save()
+            
+            
             messages=[]
             message = mail.EmailMessage('COPY email: '+ugettext(request.POST['subject']),request.POST['messagebody'],request.POST['emailfrom'],[request.user.email], ['paola.sentinelli@fao.org'])
             fileset= MassEmailUtilityMessageFile.objects.filter(emailmessage_id=new_emailmessage.id)
@@ -10351,20 +10681,21 @@ def massemail_send(request):
             sent=connection.send_messages(messages)#
             connection.close()
             form.save()
+            
+            info(request, _("MERGE Email stored as draft, check the copy message in your inbox, change the status in 'TO BE SENT' and it would be sent out in the next hours."))
            
-            info(request, _(" Mass Email stored, it would be sent out in the next hours."))
             return redirect("mass-email-detail",new_emailmessage.id)
         else:
-             return render_to_response('emailutility/massemailutility_send.html', {'form': form,'f_form': f_form,'emailgroups':g_set,'emailcp':cp_set,'emailcp2':cp_set0,'emaile2':emaile2},
+             return render_to_response('emailutility/mergemassemailutility_send.html', {'form': form,'f_form': f_form,'emailcpiso':cp_set0iso,'emailcp2iso':cp_setiso,},
              context_instance=RequestContext(request))
     else:
         form = MassEmailUtilityMessageForm(instance=MassEmailUtilityMessage())
         f_form =MassEmailUtilityMessageFileFormSet()
       
-    return render_to_response('emailutility/massemailutility_send.html', {'form': form  ,'f_form': f_form,'emailgroups':g_set,'emailcp':cp_set,'emailcp2':cp_set0,'emaile2':emaile2},#'emailcpu':cpu_set,'emailcpi':cpi_set,'emailcpl':cpl_set
+    return render_to_response('emailutility/mergemassemailutility_send.html', {'form': form  ,'f_form': f_form,'emailcpiso':cp_set0iso,'emailcp2iso':cp_setiso,},#'emailcpu':cpu_set,'emailcpi':cpi_set,'emailcpl':cpl_set
         context_instance=RequestContext(request))
 
-      
+            
 #
 class ContactUsEmailMessageListView(ListView):
     """    ContactUsEmailMessageListView List view """
@@ -11689,30 +12020,39 @@ class MediaKitDocumentListView(ListView):
        
         arraymain=[]
         innerarray1=[]
-        innerarray1.append("Reports and Strategies")
+        innerarray1.append("Annual Reports and Strategies")
         innerarray1.append(MediaKitDocument.objects.filter(mediakit_type=1).order_by('-_order'))
         arraymain.append(innerarray1)
         
         innerarray2=[]
-        innerarray2.append("Brochures")
-        innerarray2.append(MediaKitDocument.objects.filter(mediakit_type=2).order_by('-_order'))
+        innerarray2.append("Meeting reports")
+        innerarray2.append(MediaKitDocument.objects.filter(mediakit_type=7).order_by('-_order'))
         arraymain.append(innerarray2)
         
         innerarray3=[]
-        innerarray3.append("Factsheets")
-        innerarray3.append(MediaKitDocument.objects.filter(mediakit_type=3).order_by('-_order'))
+        innerarray3.append("Brochures")
+        innerarray3.append(MediaKitDocument.objects.filter(mediakit_type=2).order_by('-_order'))
         arraymain.append(innerarray3)
         
         innerarray4=[]
-        innerarray4.append("Advocacy materials")
-        innerarray4.append(MediaKitDocument.objects.filter(mediakit_type=4).order_by('-_order'))
+        innerarray4.append("Factsheets")
+        innerarray4.append(MediaKitDocument.objects.filter(mediakit_type=3).order_by('-_order'))
         arraymain.append(innerarray4)
-      
         
         innerarray5=[]
-        innerarray5.append("E-learning")
-        innerarray5.append(MediaKitDocument.objects.filter(mediakit_type=5).order_by('-_order'))
+        innerarray5.append("Advocacy materials")
+        innerarray5.append(MediaKitDocument.objects.filter(mediakit_type=4).order_by('-_order'))
         arraymain.append(innerarray5)
+      
+        innerarray6=[]
+        innerarray6.append("Guides and Training resources")
+        innerarray6.append(MediaKitDocument.objects.filter(mediakit_type=6).order_by('-_order'))
+        arraymain.append(innerarray6)
+      
+        innerarray7=[]
+        innerarray7.append("Training kits")
+        innerarray7.append(MediaKitDocument.objects.filter(mediakit_type=5).order_by('-_order'))
+        arraymain.append(innerarray7)
       
         
         
@@ -16436,4 +16776,3 @@ def contactPointsXML(request):
    # response['Content-Disposition'] = 'attachment; filename="'+file_path+'"'
    # return response	
     return redirect('https://www.ippc.int/static/media/files/contactpoints.xml'  )
-    

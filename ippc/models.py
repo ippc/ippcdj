@@ -206,8 +206,24 @@ class CnEditorsHistory(models.Model):
     end_date = models.DateTimeField(_("Nomination end date"), blank=True, null=True, editable=True)
     
         
-    
-    
+COOPTYPE_0 = 0    
+COOPTYPE_1 = 1
+COOPTYPE_2 = 2
+COOPTYPE_3 = 3
+COOPTYPE_4 = 4
+COOPTYPE_5 = 5
+
+
+COOPTYPE_CHOICES = (
+    (COOPTYPE_0, _("N/A")),
+    (COOPTYPE_1, _("UN Organizations")),
+    (COOPTYPE_2, _("International Organizations")),
+    (COOPTYPE_3, _("Industry/NGOs")),
+    (COOPTYPE_4, _("Academia/Research")),
+    (COOPTYPE_5, _("Resource Organizations")),
+  
+)
+
     
 class PartnersPage(Page, RichText):
     """ PartnersPage with definable names, slugs, editors and rppo contact point"""
@@ -228,6 +244,15 @@ class PartnersPage(Page, RichText):
         related_name='rppoeditors+', blank=True, null=True)
     modify_date = models.DateTimeField(_("Modify date"), blank=True, null=True, editable=True)
     edituser = models.CharField(max_length=50, unique=True, blank=True, null=True)
+    #responsable_sec = models.ManyToManyField(User, verbose_name=_("Responsable IPPC Secretariat"), 
+    #    related_name='resp_sec+', blank=True, null=True)
+ 
+  
+   # coop_type = models.IntegerField(_("Cooperation type"),
+    #choices=COOPTYPE_CHOICES, default=COOPTYPE_0)
+   # table_id = models.PositiveIntegerField()
+   # acronym = models.CharField(max_length=50, unique=True, blank=True, null=True)
+ 
      
    
     def __unicode__(self):
@@ -528,30 +553,30 @@ class IppcUserProfile(models.Model):
     def save(self, *args, **kwargs):
         ''' On save, update timestamps '''
         self.modify_date = datetime.now()
-        group_1=Group.objects.get(name="FAO Regional Plant Protection Officers")
-        users_1 = group_1.user_set.all()
-        for u in users_1:
-           user_obj=User.objects.get(username=u)
-           print(user_obj == self.user)   
-         
-        emailto_all = []
-        group=Group.objects.get(name="FAO Regional Officers Notification group")
-        users = group.user_set.all()
-        for u in users:
-           user_obj=User.objects.get(username=u)
-           user_email=user_obj.email
-           print(user_email)   
-           emailto_all.append(str(user_email))
-           subject='IPPC Notification of updates in FAO Regional Plant Protection Officers'       
-           text='<html><body><p>Dear IPPC user,</p><p>a FAO Regional Plant Protection Officers has updated his profile:<br><b>'+ str(self.user)+'</p><br/><br/>-- International Plant Protection Convention team </p></body></html>'
-           notifificationmessage = mail.EmailMessage(subject,text,'ippc@fao.org',  emailto_all, ['paola.sentinelli@fao.org'])
-           notifificationmessage.content_subtype = "html"  
-           sent =notifificationmessage.send()
+#        group_1=Group.objects.get(name="FAO Regional Plant Protection Officers")
+#        users_1 = group_1.user_set.all()
+#        for u in users_1:
+#           user_obj=User.objects.get(username=u)
+#           print(user_obj == self.user)   
+#         
+#        emailto_all = []
+#        group=Group.objects.get(name="FAO Regional Officers Notification group")
+#        users = group.user_set.all()
+#        for u in users:
+#           user_obj=User.objects.get(username=u)
+#           user_email=user_obj.email
+#           print(user_email)   
+#           emailto_all.append(str(user_email))
+#           subject='IPPC Notification of updates in FAO Regional Plant Protection Officers'       
+#           text='<html><body><p>Dear IPPC user,</p><p>a FAO Regional Plant Protection Officers has updated his profile:<br><b>'+ str(self.user)+'</p><br/><br/>-- International Plant Protection Convention team </p></body></html>'
+#           notifificationmessage = mail.EmailMessage(subject,text,'ippc@fao.org',  emailto_all, ['paola.sentinelli@fao.org'])
+#           notifificationmessage.content_subtype = "html"  
+#           sent =notifificationmessage.send()
             
         super(IppcUserProfile, self).save(*args, **kwargs)
         
 # this is in mezzanine.core.models.displayable
-# CONTENT_STATUS_DRAFT = 1
+# CONTENT_STATUS_DRAFT = 1 
 # CONTENT_STATUS_PUBLISHED = 2
 # CONTENT_STATUS_CHOICES = (
 #     (CONTENT_STATUS_DRAFT, _("Draft")),
@@ -1759,10 +1784,24 @@ class EmailUtilityMessageFile(models.Model):
         return os.path.basename(self.file.name) 
     def fileextension(self):
         return os.path.splitext(self.file.name)[1]
-
+    
+BOOL_CHOICES_0 = 0  
+BOOL_CHOICES_1 = 1
+BOOL_CHOICES = (
+    (BOOL_CHOICES_0, _("MASS EMAIL")),
+    (BOOL_CHOICES_1, _("MERGE Email")),
+) 
+def validate_csvfile_extension(value):
+    if not (value.name.endswith('.xls')   or value.name.endswith('.csv') or value.name.endswith('.xlsx')):
+        raise ValidationError(u'You can only upload files:  csv xls  xlsx')
+  
+  
 class MassEmailUtilityMessage(models.Model):
     emailfrom = models.CharField(_("From: "),max_length=200,default=_("ippc@fao.org"),help_text=_("The email will be sent from ippc@fao.org, if you want you can specify an other sender email address."))
-    emailto = models.TextField(_("Send to users that are not registered in IPPC: "),default=_("ippc@fao.org"),help_text=_("Please leave ippc@fao.org for the form to work, and enter email addresses of addition recipients, separated by comma. Example: ippc@fao.org, someone@somewhere.tld, etc@etc.tld"))
+    emailto = models.CharField(_("Send to users that are not registered in IPPC: "),max_length=500,default=_("ippc@fao.org"),blank=True, null=True,help_text=_("Enter email addresses of additional recipients, separated by comma. Example: ippc@fao.org, someone@somewhere.tld, etc@etc.tld"))
+    #emailto = models.TextField(_("Send to users that are not registered in IPPC: "),default=_("ippc@fao.org"),help_text=_("Please leave ippc@fao.org for the form to work, and enter email addresses of addition recipients, separated by comma. Example: ippc@fao.org, someone@somewhere.tld, etc@etc.tld"))
+    emailtoISO3 = models.TextField(_("TO: "),default=_(""),help_text=_(""))
+    emailcc = models.CharField(_("CC: "),default=_("ippc@fao.org"),max_length=500,blank=True, null=True, help_text=_("enter email addresses of CC recipients, separated by comma. Example: ippc@fao.org,someone@somewhere.tld,etc@etc.tld"))
     subject = models.CharField(_("Subject: "),max_length=200)
     messagebody = models.TextField(_("Message: "),max_length=500,blank=True, null=True)
     date = models.DateTimeField('date')
@@ -1770,8 +1809,14 @@ class MassEmailUtilityMessage(models.Model):
     status =  models.BooleanField()
     not_sentto = models.TextField(_("notsent: "),blank=True, null=True)
     sentto = models.TextField(_("sent: "),blank=True, null=True)
+    not_senttoISO3 = models.TextField(_("notsent: "),blank=True, null=True)
+    senttoISO3 = models.TextField(_("sent: "),blank=True, null=True)
     author = models.ForeignKey(User, related_name="author")
-     #User.__unicode__ = user_unicode_patch
+    
+    csv_file = models.FileField(_("Attach CSV file conteining the specific entries"), upload_to='files/email/', validators=[validate_csvfile_extension], blank=True,help_text=_("Follow the instructions on top of this page."))
+    mass_merge = models.NullBooleanField(_("Select if this is a MASS or MERGE mail"), choices=BOOL_CHOICES,default=0, help_text=_(" "),)
+ 
+    #User.__unicode__ = user_unicode_patch
     users = models.ManyToManyField(User,
             verbose_name=_("Send to single users:"),help_text=_("CTRL/Command+mouseclick for more than 1 selection"),
             related_name='massemailusers', blank=True, null=True)
@@ -1780,6 +1825,9 @@ class MassEmailUtilityMessage(models.Model):
             related_name='massemailgroups', blank=True, null=True)
     def __unicode__(self):  
          return self.subject 
+     
+     
+     
     
 class MassEmailUtilityMessageFile(models.Model):
     emailmessage = models.ForeignKey(MassEmailUtilityMessage)
@@ -1793,8 +1841,7 @@ class MassEmailUtilityMessageFile(models.Model):
         return os.path.basename(self.file.name) 
     def fileextension(self):
         return os.path.splitext(self.file.name)[1]
-
-             
+    
 QA_STATUS_1 = 1
 QA_STATUS_2 = 2
 QA_STATUS_3 = 3

@@ -600,14 +600,22 @@ class MassEmailUtilityMessageForm(forms.ModelForm):
     class Meta:
         model = MassEmailUtilityMessage
         fields = [
-           'emailfrom',
+          'mass_merge',
+          'emailfrom',
            'subject', 
            'messagebody',
            'emailto',
            'users',
+            'emailcc',
+            'csv_file',
+    
            ]
-       
-        exclude = ( 'date','sent', 'groups','not_sentto','sentto','author','status')       
+        widgets = {
+         'mass_merge': forms.RadioSelect,
+        }
+
+        exclude = ( 'date','sent', 'groups','not_sentto','sentto','author','status','emailtoISO3','not_senttoISO3','senttoISO3')       
+        
 MassEmailUtilityMessageFileFormSet = inlineformset_factory(MassEmailUtilityMessage,  MassEmailUtilityMessageFile,extra=1)
 
 ##NEW
