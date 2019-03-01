@@ -95,10 +95,30 @@
                                 {% for key,value in m_ids.items %}
                                    {% if key == i %}
                                        {% if key in filled_stakeh_array %}
-                                            {% if value != '' %}
-                                                <td><a href="/{{ LANGUAGE_CODE }}/pce/{{ user.get_profile.country.name|slugify }}/{{sessionid}}/module{{key}}/edit/{{value}}"><span class="label label-success">&#160;&#160;&#160;{{key}}&#160;&#160;&#160;</span></a></td>
-                                              {% else %}
-                                                <td><a href="/{{ LANGUAGE_CODE }}/pce/{{ user.get_profile.country.name|slugify }}/{{sessionid}}/module{{key}}/edit"><span class="label label-success">&#160;&#160;&#160;{{key}}&#160;&#160;&#160;</span></a></td>
+                                            {%  if key == 2 %}
+                                                {%  if m2_ids.0 != '' or m2_ids.1 != '' %}
+                                                    <td>
+                                                    {%  if m2_ids.0 != ''%}
+                                                            <a href="/{{ LANGUAGE_CODE }}/pce/{{ user.get_profile.country.name|slugify }}/{{sessionid}}/module2_1/edit/{{m2_ids.0}}"><span class="label label-success">&#160;&#160;&#160;2 (part 1)&#160;&#160;&#160;</span></a>
+                                                    {% else %}
+                                                            <a href="/{{ LANGUAGE_CODE }}/pce/{{ user.get_profile.country.name|slugify }}/{{sessionid}}/module2_1/edit"><span class="label label-success">&#160;&#160;&#160;2 (part 1)&#160;&#160;&#160;</span></a>
+                                                    {% endif %}
+                                                    {%  if m2_ids.1 != '' %}
+                                                            <br><a href="/{{ LANGUAGE_CODE }}/pce/{{ user.get_profile.country.name|slugify }}/{{sessionid}}/module2_2/edit/{{m2_ids.1}}"><span class="label label-success">&#160;&#160;&#160;2 (part 2)&#160;&#160;&#160;</span></a>
+                                                    {% else %}
+                                                    <br><a href="/{{ LANGUAGE_CODE }}/pce/{{ user.get_profile.country.name|slugify }}/{{sessionid}}/module2_2/edit"><span class="label label-success">&#160;&#160;&#160;2 (part 2)&#160;&#160;&#160;</span></a>
+                                                    {% endif %}
+                                                    </td>
+                                                 {% endif %}
+                                       
+                                       
+                                       
+                                            {%else%}
+                                                {% if value != '' %}
+                                                        <td><a href="/{{ LANGUAGE_CODE }}/pce/{{ user.get_profile.country.name|slugify }}/{{sessionid}}/module{{key}}/edit/{{value}}"><span class="label label-success">&#160;&#160;&#160;{{key}}&#160;&#160;&#160;</span></a></td>
+                                                {% else %}
+                                                         <td><a href="/{{ LANGUAGE_CODE }}/pce/{{ user.get_profile.country.name|slugify }}/{{sessionid}}/module{{key}}/edit"><span class="label label-success">&#160;&#160;&#160;{{key}}&#160;&#160;&#160;</span></a></td>
+                                                {% endif %}
                                             {% endif %}
                                           {% else %}
                                             <td><span class="label label-success">&#160;&#160;&#160;{{key}}&#160;&#160;&#160;</span></td>
@@ -140,18 +160,35 @@
                         {% for i in range %}
                             {% if i in  chosen_modules %}
                                 {% for key,value in m_ids.items %}
-                                   {% if key == i %}
-                                       {% if key in filled_stakeh_array %}
-                                            {% if value != '' %}
-                                                <td><a href="/{{ LANGUAGE_CODE }}/pce/{{ user.get_profile.country.name|slugify }}/{{sessionid}}/module{{key}}/view/{{value}}">{% trans "View" %}</a></td>
-                                              {% else %}
-                                                <td><a href="/{{ LANGUAGE_CODE }}/pce/{{ user.get_profile.country.name|slugify }}/{{sessionid}}/module{{key}}/empty">{% trans "View" %}</a></td>
+                                    {% if key == i %}
+                                        {% if key in filled_stakeh_array %}
+                                            {%  if key == 2 %}
+                                                {%  if m2_ids.0 != '' or m2_ids.1 != '' %}
+                                                    <td>
+                                                    {%  if m2_ids.0 != None%}
+                                                        <a href="/{{ LANGUAGE_CODE }}/pce/{{ user.get_profile.country.name|slugify }}/{{sessionid}}/module2_1/view/{{m2_ids.0}}">{% trans "View (part 1) " %}</a>
+                                                    {% else %}
+                                                        <a href="/{{ LANGUAGE_CODE }}/pce/{{ user.get_profile.country.name|slugify }}/{{sessionid}}/module2_1/empty">{% trans "View (part 1)" %}</a>
+                                                    {% endif %}
+                                                    {%  if m2_ids.1 != None %}
+                                                        <br><a href="/{{ LANGUAGE_CODE }}/pce/{{ user.get_profile.country.name|slugify }}/{{sessionid}}/module2_2/view/{{m2_ids.1}}">{% trans "View (part 2)" %}</a>
+                                                    {% else %}
+                                                    <br><a href="/{{ LANGUAGE_CODE }}/pce/{{ user.get_profile.country.name|slugify }}/{{sessionid}}/module2_2/empty">{% trans "View (part 2)" %}</a>
+                                                    {% endif %}
+                                                    </td>
+                                                {% endif %}
+                                            {% else %}
+                                                {% if value != '' %}
+                                                    <td><a href="/{{ LANGUAGE_CODE }}/pce/{{ user.get_profile.country.name|slugify }}/{{sessionid}}/module{{key}}/view/{{value}}">{% trans "View" %}</a></td>
+                                                {% else %}
+                                                    <td><a href="/{{ LANGUAGE_CODE }}/pce/{{ user.get_profile.country.name|slugify }}/{{sessionid}}/module{{key}}/empty">{% trans "View" %}</a></td>
+                                                {% endif %}
                                             {% endif %}
-                                          {% else %}
+                                        {% else %}
                                             <td>{% trans "View" %}</td>
                                         {% endif %}      
-                                      {% endif %} 
-                                   {% endfor %}       
+                                    {% endif %} 
+                                {% endfor %}       
                             {% else %}
                               <td>&#160;</td>
                            {% endif %}      
@@ -251,42 +288,121 @@
                                        {% if value == 100 and sessionstatus == 1 %}
                                       {% for key1,value1 in m_status.items %}
                                       {% if key1 == key %}
-                                         {% if value1 == 4 %}
-                                            <span class="label label-warning"><small>{% trans "validated" %}</small></span>
-                                            
+                                         
+                                        {% if key == 2 %}
+                                       
+                                        
+                                         
+                                        
+                                        
+                                            {% if m2_status.1 == 4 %}
+                                              <span class="label label-warning"><small>{% trans "validated" %}</small></span>
+
+                                                    {% if can_validate %}
+                                                      {% for key2,value2 in m_ids.items %}
+                                                          {% if key2 == key %}
+
+                                                              <a class="label label-warning" href="/{{ LANGUAGE_CODE }}/pce/{{ user.get_profile.country.name|slugify }}/{{sessionid}}/module{{key}}/unvalidate/{{m2_ids.1}}"><small>{% trans "unvalidate" %}</small></a>
+                                                          {% endif %}  
+                                                      {% endfor %} 
+
+                                                  {% endif %}
+
+
+                                           {% else %}
                                                   {% if can_validate %}
-                                                    {% for key2,value2 in m_ids.items %}
-                                                        {% if key2 == key %}
-                                                            <a class="label label-warning" href="/{{ LANGUAGE_CODE }}/pce/{{ user.get_profile.country.name|slugify }}/{{sessionid}}/module{{key}}/unvalidate/{{value2}}"><small>{% trans "unvalidate" %}</small></a>
-                                                        {% endif %}  
-                                                    {% endfor %} 
-                                            
-                                                {% endif %}
-                                                
-                                                
-                                         {% else %}
-                                                {% if can_validate %}
-                                                    {% if value1 == 3 %}
-                                                        <span class="label label-warning">{% trans "SENT to validator" %}</span><br>
-                                                    {% endif %} 
-                                                    {% for key2,value2 in m_ids.items %}
-                                                        {% if key2 == key %}
-                                                            <a class="btn btn-small btn-info" href="/{{ LANGUAGE_CODE }}/pce/{{ user.get_profile.country.name|slugify }}/{{sessionid}}/module{{key}}/validate/{{value2}}">{% trans "Validate" %}</a>
-                                                        {% endif %}  
-                                                    {% endfor %} 
-                                                {% elif can_sendtovalidator %}
-                                                    {% if value1 == 3 %}
-                                                       <span class="label label-warning">{% trans "SENT to validator" %}</span>
-                                                    {%else%}    
-                                                        {% for key2,value2 in m_ids.items %}
-                                                            {% if key2 == key %}
-                                                            <a class="btn btn-small btn-info" href="/{{ LANGUAGE_CODE }}/pce/{{ user.get_profile.country.name|slugify }}/{{sessionid}}/module{{key}}/send/{{value2}}">{% trans "Send to Validator" %}</a>
-                                                            {% endif %}  
-                                                        {% endfor %}   
-                                                    {% endif %} 
-                                                {% endif %}
-                                          {% endif %}   
-                                       {% endif %}   
+                                                      {% if m2_status.1 == 3 %}
+                                                          <span class="label label-warning">{% trans "SENT to validator" %}</span><br>
+                                                      {% endif %} 
+                                                      {% for key2,value2 in m_ids.items %}
+                                                          {% if key2 == key %}
+                                                              {% if key == 2 %}
+                                                                  <a class="btn btn-small btn-info" href="/{{ LANGUAGE_CODE }}/pce/{{ user.get_profile.country.name|slugify }}/{{sessionid}}/module2/validate/{{m2_ids.1}}">{% trans "Validate" %}</a>
+                                                                  {% else %}
+                                                                      <a class="btn btn-small btn-info" href="/{{ LANGUAGE_CODE }}/pce/{{ user.get_profile.country.name|slugify }}/{{sessionid}}/module{{key}}/validate/{{value2}}">{% trans "Validate" %}</a>
+                                                              {% endif %}  
+
+
+                                                          {% endif %}  
+                                                      {% endfor %} 
+                                                  {% elif can_sendtovalidator %}
+                                                      {% if m2_status.1 == 3 %}
+                                                         <span class="label label-warning">{% trans "SENT to validator" %}</span>
+                                                      {%else%}    
+                                                          {% for key2,value2 in m_ids.items %}
+                                                              {% if key2 == key %}
+                                                              <a class="btn btn-small btn-info" href="/{{ LANGUAGE_CODE }}/pce/{{ user.get_profile.country.name|slugify }}/{{sessionid}}/module{{key}}/send/{{value2}}">{% trans "Send to Validator" %}</a>
+                                                              {% endif %}  
+                                                          {% endfor %}   
+                                                      {% endif %} 
+                                                  {% endif %}
+                                            {% endif %}   
+                                      
+                                        
+                                        
+                                        
+                                        
+                                        
+                                        
+                                        
+                                        
+                                        
+                                        
+                                        
+                                        
+                                        
+                                        
+                                        
+                                        
+                                        
+                                         
+                                    
+                                        {% else %}
+                                            {% if value1 == 4 %}
+                                              <span class="label label-warning"><small>{% trans "validated" %}</small></span>
+
+                                                    {% if can_validate %}
+                                                      {% for key2,value2 in m_ids.items %}
+                                                          {% if key2 == key %}
+
+                                                              <a class="label label-warning" href="/{{ LANGUAGE_CODE }}/pce/{{ user.get_profile.country.name|slugify }}/{{sessionid}}/module{{key}}/unvalidate/{{value2}}"><small>{% trans "unvalidate" %}</small></a>
+                                                          {% endif %}  
+                                                      {% endfor %} 
+
+                                                  {% endif %}
+
+
+                                           {% else %}
+                                                  {% if can_validate %}
+                                                      {% if value1 == 3 %}
+                                                          <span class="label label-warning">{% trans "SENT to validator" %}</span><br>
+                                                      {% endif %} 
+                                                      {% for key2,value2 in m_ids.items %}
+                                                          {% if key2 == key %}
+                                                              {% if key == 2 %}
+                                                                  <a class="btn btn-small btn-info" href="/{{ LANGUAGE_CODE }}/pce/{{ user.get_profile.country.name|slugify }}/{{sessionid}}/module2/validate/{{m2_ids.1}}">{% trans "Validate" %}</a>
+                                                                  {% else %}
+                                                                      <a class="btn btn-small btn-info" href="/{{ LANGUAGE_CODE }}/pce/{{ user.get_profile.country.name|slugify }}/{{sessionid}}/module{{key}}/validate/{{value2}}">{% trans "Validate" %}</a>
+                                                              {% endif %}  
+
+
+                                                          {% endif %}  
+                                                      {% endfor %} 
+                                                  {% elif can_sendtovalidator %}
+                                                      {% if value1 == 3 %}
+                                                         <span class="label label-warning">{% trans "SENT to validator" %}</span>
+                                                      {%else%}    
+                                                          {% for key2,value2 in m_ids.items %}
+                                                              {% if key2 == key %}
+                                                              <a class="btn btn-small btn-info" href="/{{ LANGUAGE_CODE }}/pce/{{ user.get_profile.country.name|slugify }}/{{sessionid}}/module{{key}}/send/{{value2}}">{% trans "Send to Validator" %}</a>
+                                                              {% endif %}  
+                                                          {% endfor %}   
+                                                      {% endif %} 
+                                                  {% endif %}
+                                            {% endif %}   
+                                         {% endif %}   
+                                        {% endif %}
+                                       
                                     {% endfor %} 
                                          
                                      
