@@ -11,7 +11,7 @@
 <li class="active">{% trans "Publications" %}</li>
 {% endblock %}
 
-{% block main %}  
+{% block main %}    
 
  <h1>{% trans "Publications" %}</h1>
     <p>{% trans "All IPPC media are available here subject to the following terms and conditions:" %}</p>
@@ -111,12 +111,12 @@
             {%if o.link_es %}<a href="{{ o.link_es }}">Espa&ntilde;ol</a>&#160;&#160;{% endif %}
             {%if o.file_fr %}<a href="{{ MEDIA_URL }}{{ o.file_fr }}">Fran&ccedil;ais</a>&#160;&#160;{% endif %}
             {%if o.link_fr %}<a href="{{ o.link_fr }}">Fran&ccedil;ais</a>&#160;&#160;{% endif %}
-            {%if o.file_ru %}<a href="{{ MEDIA_URL }}{{ o.file_ru }}">Русский</a>&#160;&#160;{% endif %}
-            {%if o.link_ru %}<a href="{{ o.link_ru }}">Русский</a>&#160;&#160;{% endif %}
-            {%if o.file_ar %}<a href="{{ MEDIA_URL }}{{ o.file_ar }}">العربية</a>&#160;&#160;{% endif %}
-            {%if o.link_ar %}<a href="{{ o.link_ar }}">العربية</a>&#160;&#160;{% endif %}
-            {%if o.file_zh %}<a href="{{ MEDIA_URL }}{{ o.file_zh }}">中文</a>&#160;&#160;{% endif %}
-            {%if o.link_zh %}<a href="{{ o.link_zh }}">中文</a>&#160;&#160;{% endif %}
+            {%if o.file_ru %}<a href="{{ MEDIA_URL }}{{ o.file_ru }}">Ð ÑƒÑ�Ñ�ÐºÐ¸Ð¹</a>&#160;&#160;{% endif %}
+            {%if o.link_ru %}<a href="{{ o.link_ru }}">Ð ÑƒÑ�Ñ�ÐºÐ¸Ð¹</a>&#160;&#160;{% endif %}
+            {%if o.file_ar %}<a href="{{ MEDIA_URL }}{{ o.file_ar }}">Ø§Ù„Ø¹Ø±Ø¨ÙŠØ©</a>&#160;&#160;{% endif %}
+            {%if o.link_ar %}<a href="{{ o.link_ar }}">Ø§Ù„Ø¹Ø±Ø¨ÙŠØ©</a>&#160;&#160;{% endif %}
+            {%if o.file_zh %}<a href="{{ MEDIA_URL }}{{ o.file_zh }}">ä¸­æ–‡</a>&#160;&#160;{% endif %}
+            {%if o.link_zh %}<a href="{{ o.link_zh }}">ä¸­æ–‡</a>&#160;&#160;{% endif %}
             </td>
            {% if forloop.counter|divisibleby:2 %}</tr>{% else %}{% endif %}
         {% endfor %}
