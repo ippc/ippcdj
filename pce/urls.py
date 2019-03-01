@@ -10,15 +10,15 @@ from .views import PceDashboardListView,PceVersionDetailView,PceSessionListView,
     problemanalysis_create,problemanalysis_edit,ProblemAnalysisListView,\
     swotanalysis_create,swotanalysis_edit,SwotAnalysisListView,\
     logicalframework_create,logicalframework_edit,LogicalFrameworkListView,\
-    module1_create,module1_edit,module2_create,module2_edit, module3_create,module3_edit,module4_create,module4_edit,\
+    module1_create,module1_edit,module2_create,module2_edit,module2_1_create,module2_2_create,module2_1_edit,module2_2_edit, module3_create,module3_edit,module4_create,module4_edit,\
     module5_create,module5_edit,module6_create,module6_edit,module7_create,module7_edit,module8_create,module8_edit,\
     module9_create,module9_edit,module10_create,module10_edit,module11_create,module11_edit,\
     module12_create,module12_edit, module13_create,module13_edit,\
     pceversion_close,module_validate,module_unvalidate,module_sendtovalidator,\
-    Module1ListView,Module2ListView,Module3ListView,Module4ListView,Module5ListView,Module6ListView,\
+    Module1ListView,Module2ListView,Module2_1ListView,Module2_2ListView,Module3ListView,Module4ListView,Module5ListView,Module6ListView,\
     Module7ListView,Module8ListView,Module9ListView,Module10ListView,Module11ListView,Module12ListView,Module13ListView,\
     generate_report,pceversion_completed,StakeholdersListPDFView,ProblemAnalysisListPDFView,SwotAnalysisListPDFView,LogicalFrameworkListPDFView,\
-    Module1ListPDFView,Module2ListPDFView ,Module4ListPDFView,Module5ListPDFView,Module6ListPDFView,Module7ListPDFView,Module8ListPDFView,\
+    Module1ListPDFView,Module2ListPDFView ,Module2_1ListPDFView,Module2_2ListPDFView,Module4ListPDFView,Module5ListPDFView,Module6ListPDFView,Module7ListPDFView,Module8ListPDFView,\
     Module9ListPDFView,Module10ListPDFView,Module11ListPDFView,Module12ListPDFView,Module13ListPDFView,Module3ListPDFView
 
 #-------------- PCE ---------------------------------#
@@ -70,6 +70,20 @@ urlpatterns = patterns("pce.views",
     url(r'^(?P<country>[\w-]+)/(?P<sessionid>\d+)/module2/empty/$', view=Module2ListView.as_view(), name='module2-view'),
     url(r'^(?P<country>[\w-]+)/(?P<sessionid>\d+)/module2/pdf/(?P<id>\d+)/$', view=Module2ListPDFView.as_view(), name='module2-pdf'),
     url(r'^(?P<country>[\w-]+)/(?P<sessionid>\d+)/module2/pdf_empty/$', view=Module2ListPDFView.as_view(), name='module2-pdf-empty'),
+  #MODULE 2 part 1:
+    url(r'^(?P<country>[\w-]+)/(?P<sessionid>\d+)/module2_1/edit/$', view=module2_1_create, name='module2-1-create'),
+    url(r'^(?P<country>[\w-]+)/(?P<sessionid>\d+)/module2_1/edit/(?P<id>\d+)/$', view=module2_1_edit, name='module2-1-edit'),
+    url(r'^(?P<country>[\w-]+)/(?P<sessionid>\d+)/module2_1/view/(?P<id>\d+)/$', view=Module2_1ListView.as_view(), name='module2-1-view'),
+    url(r'^(?P<country>[\w-]+)/(?P<sessionid>\d+)/module2_1/empty/$', view=Module2_1ListView.as_view(), name='module2-1-view'),
+    url(r'^(?P<country>[\w-]+)/(?P<sessionid>\d+)/module2_1/pdf/(?P<id>\d+)/$', view=Module2_1ListPDFView.as_view(), name='module2-1-pdf'),
+    url(r'^(?P<country>[\w-]+)/(?P<sessionid>\d+)/module2_1/pdf_empty/$', view=Module2_1ListPDFView.as_view(), name='module2-1-pdf-empty'),
+   #MODULE 2 part 2:
+   url(r'^(?P<country>[\w-]+)/(?P<sessionid>\d+)/module2_2/edit/$', view=module2_2_create, name='module2-2-create'),
+    url(r'^(?P<country>[\w-]+)/(?P<sessionid>\d+)/module2_2/edit/(?P<id>\d+)/$', view=module2_2_edit, name='module2-2-edit'),
+    url(r'^(?P<country>[\w-]+)/(?P<sessionid>\d+)/module2_2/view/(?P<id>\d+)/$', view=Module2_2ListView.as_view(), name='module2-2-view'),
+    url(r'^(?P<country>[\w-]+)/(?P<sessionid>\d+)/module2_2/empty/$', view=Module2_2ListView.as_view(), name='module2-2-view'),
+    url(r'^(?P<country>[\w-]+)/(?P<sessionid>\d+)/module2_2/pdf/(?P<id>\d+)/$', view=Module2_2ListPDFView.as_view(), name='module2-2-pdf'),
+    url(r'^(?P<country>[\w-]+)/(?P<sessionid>\d+)/module2_2/pdf_empty/$', view=Module2_2ListPDFView.as_view(), name='module2-2-pdf-empty'),
    
    #MODULE 3:
     url(r'^(?P<country>[\w-]+)/(?P<sessionid>\d+)/module3/edit/$', view=module3_create, name='module3-create'),

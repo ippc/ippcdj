@@ -18,7 +18,7 @@ from .models import ROLE,INSUFF0, INTEREST,  IMPORTANCE,  PARTICIPANT, LEVEL,PRI
     SwotAnalysis, SwotAnalysis1,SwotAnalysis2,SwotAnalysis3,SwotAnalysis4,SwotAnalysis5,\
     LogicalFramework,LogicalFrameworkAct1,LogicalFrameworkAct2,LogicalFrameworkAct3,LogicalFrameworkAct4,LogicalFrameworkAct5,\
     Module1,Module1Aid,Module1MajorCrops,Module1MajorExports,Module1MajorImports,Module1MajorPartenerImport,Module1MajorPartenerExport,\
-    Module2,Module2Weaknesses,Module3,Module3Grid,Module3Weaknesses,Module4,Module4Weaknesses,\
+    Module2,Module2Weaknesses, Module2_1, Module2_2,Module2_2Weaknesses,Module3,Module3Grid,Module3Weaknesses,Module4,Module4Weaknesses,\
     Module5,Module5Weaknesses, Module6,Module6Weaknesses,\
     Module7,Module7Weaknesses, Module7Grid,Module7Matrix23,Module7Matrix37,Module7Matrix39,Module7Matrix41,Module7Matrix43,Module7Matrix45,\
     Module8,Module8Weaknesses,Module8Grid3,Module8Grid18,Module8Matrix30,\
@@ -44,8 +44,8 @@ from .forms import  PceVersionForm,PceVersionForm2,PceVersionForm1,PceVersionFor
     Module12Form,Module12WeaknessesFormSet,Module12Grid2FormSet,Module12Grid3FormSet,Module12Grid29FormSet,Module12Matrix22FormSet,\
     Module13Form, Module13WeaknessesFormSet,Module13Grid2FormSet,Module13Grid3FormSet,Module13Grid22FormSet,Module13Grid29FormSet,Module13Grid31FormSet,Module13Matrix47FormSet,\
     Module11Form,Module11WeaknessesFormSet,Module11Grid2FormSet,Module11Grid3FormSet,Module11Grid12FormSet,Module11Grid14FormSet,Module11Grid33FormSet,Module11Matrix42FormSet,\
-    Module2Form,Module2WeaknessesFormSet,\
-    Module1FormView,Module2FormView,Module3FormView,Module4FormView,Module5FormView,Module6FormView,\
+    Module2Form,Module2WeaknessesFormSet, Module2_1Form,Module2_2Form,Module2_2WeaknessesFormSet,\
+    Module1FormView,Module2FormView,Module2_1FormView,Module2_2FormView,Module3FormView,Module4FormView,Module5FormView,Module6FormView,\
     Module7FormView,Module8FormView,Module9FormView,Module10FormView,Module11FormView,Module12FormView,Module13FormView        
 
 from django.views.generic import ListView, MonthArchiveView, YearArchiveView, DetailView, TemplateView, CreateView
@@ -211,7 +211,7 @@ def canEdit(sessionid,country,user,module):
             if module1==1:
                 modulemod = get_object_or_404(Module1, session=sessionid)
             elif module1==2:
-               modulemod = get_object_or_404(Module2, session=sessionid)
+               modulemod = get_object_or_404(Module2_1, session=sessionid)
             elif module1==3:
                modulemod = get_object_or_404(Module3, session=sessionid)
             elif module1==4:
@@ -385,8 +385,8 @@ def getModuleNameAndId(modulenum,sessionid):
            module = get_object_or_404(Module1, session=sessionid)
            modulename='module1'
         elif modulenum ==2:
-           module = get_object_or_404(Module2, session=sessionid)
-           modulename='module2'
+           module = get_object_or_404(Module2_2, session=sessionid)
+           modulename='module2_2'
         elif modulenum ==3:
            module = get_object_or_404(Module3, session=sessionid)
            modulename='module3'
@@ -435,8 +435,8 @@ def getWeakenessFromModuleNameAndId(modulenum,sessionid):
    
     try: 
         if modulenum ==2:
-           module = get_object_or_404(Module2, session=sessionid)
-           weaknesses=get_object_or_404(Module2Weaknesses, module2_id=module.id)
+           module = get_object_or_404(Module2_2, session=sessionid)
+           weaknesses=get_object_or_404(Module2_2Weaknesses, module2_id=module.id)
           
         elif modulenum ==3:
            module = get_object_or_404(Module3, session=sessionid)
@@ -610,269 +610,535 @@ def get_percentage_module_filled(num_mod,version):
                 i=i+1
         percent=(i*100/tot_num_fields)
        
+#    if num_mod == 2:
+#        tot_num_fields=122
+#        i=0
+#        modules = Module2.objects.filter(session_id=version).count()
+#        if modules>0:
+#            module = Module2.objects.filter(session_id=version)[0]
+#            
+#            if  module.m_22==True:
+#               tot_num_fields=tot_num_fields-1
+#            if  module.m_37==False:
+#               tot_num_fields=tot_num_fields-2
+#            if  module.m_103==False:
+#               tot_num_fields=tot_num_fields-4
+#            
+#            if  module.m_5==True or module.m_5==False:
+#                i=i+1
+#            if  module.m_8==True or module.m_8==False:
+#                    i=i+1
+#            if  module.m_16==True or module.m_16==False:
+#                    i=i+1
+#            if  module.m_17==True or module.m_17==False:
+#                    i=i+1
+#            if  module.m_19==True or module.m_19==False:
+#                    i=i+1
+#            if  module.m_20==True or module.m_20==False:
+#                    i=i+1
+#            if  module.m_21==True or module.m_21==False:
+#                    i=i+1
+#            if  module.m_22==True or module.m_22==False:
+#                    i=i+1
+#            if  module.m_24==True or module.m_24==False:
+#                    i=i+1
+#            if  module.m_25==True or module.m_25==False:
+#                    i=i+1
+#            if  module.m_26==True or module.m_26==False:
+#                    i=i+1
+#            if  module.m_27==True or module.m_27==False:
+#                    i=i+1
+#            if  module.m_28==True or module.m_28==False:
+#                    i=i+1
+#            if  module.m_29==True or module.m_29==False:
+#                    i=i+1
+#            if  module.m_30==True or module.m_30==False:
+#                    i=i+1
+#            if  module.m_31==True or module.m_31==False:
+#                    i=i+1
+#            if  module.m_32==True or module.m_32==False:
+#                    i=i+1
+#            if  module.m_33==True or module.m_33==False:
+#                    i=i+1
+#            if  module.m_34==True or module.m_34==False:
+#                    i=i+1
+#            if  module.m_35==True or module.m_35==False:
+#                    i=i+1
+#            if  module.m_36==True or module.m_36==False:
+#                    i=i+1
+#            if  module.m_37==True or module.m_37==False:
+#                    i=i+1
+#            if  module.m_38==True or module.m_38==False:
+#                    i=i+1
+#            if  module.m_40==True or module.m_40==False:
+#                    i=i+1
+#            if  module.m_41==True or module.m_41==False:
+#                    i=i+1
+#            if  module.m_42==True or module.m_42==False:
+#                    i=i+1
+#            if  module.m_43==True or module.m_43==False:
+#                    i=i+1
+#            if  module.m_44==True or module.m_44==False:
+#                    i=i+1
+#            if  module.m_45==True or module.m_45==False:
+#                    i=i+1
+#            if  module.m_46==True or module.m_46==False:
+#                    i=i+1
+#            if  module.m_47==True or module.m_47==False:
+#                    i=i+1
+#            if  module.m_48==True or module.m_48==False:
+#                    i=i+1
+#            if  module.m_49==True or module.m_49==False:
+#                    i=i+1
+#            if  module.m_50==True or module.m_50==False:
+#                    i=i+1
+#            if  module.m_51==True or module.m_51==False:
+#                    i=i+1
+#            if  module.m_52==True or module.m_52==False:
+#                    i=i+1
+#            if  module.m_53==True or module.m_53==False:
+#                    i=i+1
+#            if  module.m_54==True or module.m_54==False:
+#                    i=i+1
+#            if  module.m_55==True or module.m_55==False:
+#                    i=i+1
+#            if  module.m_56==True or module.m_56==False:
+#                    i=i+1
+#            if  module.m_57==True or module.m_57==False:
+#                    i=i+1
+#            if  module.m_58==True or module.m_58==False:
+#                    i=i+1
+#            if  module.m_59==True or module.m_59==False:
+#                    i=i+1
+#            if  module.m_60==True or module.m_60==False:
+#                    i=i+1
+#            if  module.m_61==True or module.m_61==False:
+#                    i=i+1
+#            if  module.m_62==True or module.m_62==False:
+#                    i=i+1
+#            if  module.m_63==True or module.m_63==False:
+#                    i=i+1
+#            if  module.m_64==True or module.m_64==False:
+#                    i=i+1
+#            if  module.m_65==True or module.m_65==False:
+#                    i=i+1
+#            if  module.m_66==True or module.m_66==False:
+#                    i=i+1
+#            if  module.m_67==True or module.m_67==False:
+#                    i=i+1
+#            if  module.m_68==True or module.m_68==False:
+#                    i=i+1
+#            if  module.m_69==True or module.m_69==False:
+#                    i=i+1
+#            if  module.m_70==True or module.m_70==False:
+#                    i=i+1
+#            if  module.m_71==True or module.m_71==False:
+#                    i=i+1
+#            if  module.m_72==True or module.m_72==False:
+#                    i=i+1
+#            if  module.m_73==True or module.m_73==False:
+#                    i=i+1
+#            if  module.m_74==True or module.m_74==False:
+#                    i=i+1
+#            if  module.m_75==True or module.m_75==False:
+#                    i=i+1
+#            if  module.m_76==True or module.m_76==False:
+#                    i=i+1
+#            if  module.m_77==True or module.m_77==False:
+#                    i=i+1
+#            if  module.m_78==True or module.m_78==False:
+#                    i=i+1
+#            if  module.m_79==True or module.m_79==False:
+#                    i=i+1
+#            if  module.m_80==True or module.m_80==False:
+#                    i=i+1
+#            if  module.m_81==True or module.m_81==False:
+#                    i=i+1
+#            if  module.m_82==True or module.m_82==False:
+#                    i=i+1
+#            if  module.m_83==True or module.m_83==False:
+#                    i=i+1
+#            if  module.m_84==True or module.m_84==False:
+#                    i=i+1
+#            if  module.m_85==True or module.m_85==False:
+#                    i=i+1
+#            if  module.m_86==True or module.m_86==False:
+#                    i=i+1
+#            if  module.m_87==True or module.m_87==False:
+#                    i=i+1
+#            if  module.m_88==True or module.m_88==False:
+#                    i=i+1
+#            if  module.m_89==True or module.m_89==False:
+#                    i=i+1
+#            if  module.m_90==True or module.m_90==False:
+#                    i=i+1
+#            if  module.m_91==True or module.m_91==False:
+#                    i=i+1
+#            if  module.m_92==True or module.m_92==False:
+#                    i=i+1
+#            if  module.m_93==True or module.m_93==False:
+#                    i=i+1
+#            if  module.m_94==True or module.m_94==False:
+#                    i=i+1
+#            if  module.m_95==True or module.m_95==False:
+#                    i=i+1
+#            if  module.m_96==True or module.m_96==False:
+#                    i=i+1
+#            if  module.m_97==True or module.m_97==False:
+#                    i=i+1
+#            if  module.m_98==True or module.m_98==False:
+#                    i=i+1
+#            if  module.m_99==True or module.m_99==False:
+#                    i=i+1
+#            if  module.m_100==True or module.m_100==False:
+#                    i=i+1
+#            if  module.m_101==True or module.m_101==False:
+#                    i=i+1
+#            if  module.m_102==True or module.m_102==False:
+#                    i=i+1
+#            if  module.m_103==True or module.m_103==False:
+#                    i=i+1
+#            if  module.m_104==True or module.m_104==False:
+#                    i=i+1
+#            if  module.m_105==True or module.m_105==False:
+#                    i=i+1
+#            if  module.m_106==True or module.m_106==False:
+#                    i=i+1
+#            if  module.m_107==True or module.m_107==False:
+#                    i=i+1
+#            if  module.m_108==True or module.m_108==False:
+#                    i=i+1
+#            if  module.m_109==True or module.m_109==False:
+#                    i=i+1
+#            if  module.m_110==True or module.m_110==False:
+#                    i=i+1
+#            if  module.m_111==True or module.m_111==False:
+#                    i=i+1
+#            if  module.m_112==True or module.m_112==False:
+#                    i=i+1
+#            if  module.m_113==True or module.m_113==False:
+#                    i=i+1
+#            if  module.m_114==True or module.m_114==False:
+#                    i=i+1
+#            if  module.m_115==True or module.m_115==False:
+#                    i=i+1
+#            if  module.m_116==True or module.m_116==False:
+#                    i=i+1
+#            if  module.m_117==True or module.m_117==False:
+#                    i=i+1
+#            if  module.m_118==True or module.m_118==False:
+#                    i=i+1
+#            if  module.m_119==True or module.m_119==False:
+#                    i=i+1
+#            if  module.m_120==True or module.m_120==False:
+#                    i=i+1
+#            if  module.m_121==True or module.m_121==False:
+#                    i=i+1
+#            if  module.m_122==True or module.m_122==False:
+#                    i=i+1
+#            if module.m_23!='':
+#                    i=i+1
+#            if module.m_39!='':
+#                    i=i+1
+#            if module.m_14!='':
+#                    i=i+1
+#            if module.m_2!='':
+#                    i=i+1
+#            if module.m_3!='':
+#                    i=i+1
+#            if module.m_4!='':
+#                    i=i+1
+#            if module.m_6!='':
+#                    i=i+1
+#            if module.m_7!='':
+#                    i=i+1
+#            if module.m_9!='':
+#                    i=i+1
+#            if module.m_10!='':
+#                i=i+1
+#            if module.m_1>0:
+#                    i=i+1
+#            if module.m_11>0:
+#                    i=i+1
+#            if module.m_12>0:
+#                    i=i+1
+#            if module.m_13>0:
+#                    i=i+1
+#            if module.m_15>0:
+#                    i=i+1
+#            if module.m_18>0 :
+#                    i=i+1
+#            if Module2Weaknesses.objects.filter(module2=module.id).count()>0 :
+#                    i=i+1
+#           
+#        percent=(i*100/tot_num_fields)
     if num_mod == 2:
         tot_num_fields=122
         i=0
-        modules = Module2.objects.filter(session_id=version).count()
-        if modules>0:
-            module = Module2.objects.filter(session_id=version)[0]
+        module2_1=None
+        module2_2=None
+        module2_1s = Module2_1.objects.filter(session_id=version).count()
+        if module2_1s>0:
+            module2_1 = Module2_1.objects.filter(session_id=version)[0]
+        module2_2s = Module2_2.objects.filter(session_id=version).count()
+        if module2_2s>0:
+            module2_2 = Module2_2.objects.filter(session_id=version)[0]
             
-            if  module.m_22==True:
+            if  module2_1  != None and module2_1.m_22==True:
                tot_num_fields=tot_num_fields-1
-            if  module.m_37==False:
+            if  module2_1  != None and module2_1.m_37==False:
                tot_num_fields=tot_num_fields-2
-            if  module.m_103==False:
+            if module2_2 != None and module2_2.m_103==False:
                tot_num_fields=tot_num_fields-4
             
-            if  module.m_5==True or module.m_5==False:
+            if module2_1  != None and (module2_1.m_5==True or module2_1.m_5==False):
                 i=i+1
-            if  module.m_8==True or module.m_8==False:
+            if module2_1  != None and (module2_1.m_8==True or module2_1.m_8==False):
                     i=i+1
-            if  module.m_16==True or module.m_16==False:
+            if module2_1  != None and (module2_1.m_16==True or module2_1.m_16==False):
                     i=i+1
-            if  module.m_17==True or module.m_17==False:
+            if module2_1  != None and (module2_1.m_17==True or module2_1.m_17==False):
                     i=i+1
-            if  module.m_19==True or module.m_19==False:
+            if module2_1  != None and (module2_1.m_19==True or module2_1.m_19==False):
                     i=i+1
-            if  module.m_20==True or module.m_20==False:
+            if module2_1  != None and (module2_1.m_20==True or module2_1.m_20==False):
                     i=i+1
-            if  module.m_21==True or module.m_21==False:
+            if module2_1  != None and (module2_1.m_21==True or module2_1.m_21==False):
                     i=i+1
-            if  module.m_22==True or module.m_22==False:
+            if module2_1  != None and (module2_1.m_22==True or module2_1.m_22==False):
                     i=i+1
-            if  module.m_24==True or module.m_24==False:
+            if module2_1  != None and (module2_1.m_24==True or module2_1.m_24==False):
                     i=i+1
-            if  module.m_25==True or module.m_25==False:
+            if module2_1  != None and (module2_1.m_25==True or module2_1.m_25==False):
                     i=i+1
-            if  module.m_26==True or module.m_26==False:
+            if module2_1  != None and (module2_1.m_26==True or module2_1.m_26==False):
                     i=i+1
-            if  module.m_27==True or module.m_27==False:
+            if module2_1  != None and (module2_1.m_27==True or module2_1.m_27==False):
                     i=i+1
-            if  module.m_28==True or module.m_28==False:
+            if module2_1  != None and (module2_1.m_28==True or module2_1.m_28==False):
                     i=i+1
-            if  module.m_29==True or module.m_29==False:
+            if module2_1  != None and (module2_1.m_29==True or module2_1.m_29==False):
                     i=i+1
-            if  module.m_30==True or module.m_30==False:
+            if module2_1  != None and (module2_1.m_30==True or module2_1.m_30==False):
                     i=i+1
-            if  module.m_31==True or module.m_31==False:
+            if module2_1  != None and (module2_1.m_31==True or module2_1.m_31==False):
                     i=i+1
-            if  module.m_32==True or module.m_32==False:
+            if module2_1  != None and (module2_1.m_32==True or module2_1.m_32==False):
                     i=i+1
-            if  module.m_33==True or module.m_33==False:
+            if module2_1  != None and (module2_1.m_33==True or module2_1.m_33==False):
                     i=i+1
-            if  module.m_34==True or module.m_34==False:
+            if module2_1  != None and (module2_1.m_34==True or module2_1.m_34==False):
                     i=i+1
-            if  module.m_35==True or module.m_35==False:
+            if module2_1  != None and (module2_1.m_35==True or module2_1.m_35==False):
                     i=i+1
-            if  module.m_36==True or module.m_36==False:
+            if module2_1  != None and (module2_1.m_36==True or module2_1.m_36==False):
                     i=i+1
-            if  module.m_37==True or module.m_37==False:
+            if module2_1  != None and (module2_1.m_37==True or module2_1.m_37==False):
                     i=i+1
-            if  module.m_38==True or module.m_38==False:
+            if module2_1  != None and (module2_1.m_38==True or module2_1.m_38==False):
                     i=i+1
-            if  module.m_40==True or module.m_40==False:
+            if module2_1  != None and (module2_1.m_40==True or module2_1.m_40==False):
                     i=i+1
-            if  module.m_41==True or module.m_41==False:
+            if module2_1  != None and (module2_1.m_41==True or module2_1.m_41==False):
                     i=i+1
-            if  module.m_42==True or module.m_42==False:
+            if module2_1  != None and (module2_1.m_42==True or module2_1.m_42==False):
                     i=i+1
-            if  module.m_43==True or module.m_43==False:
+            if module2_1  != None and (module2_1.m_43==True or module2_1.m_43==False):
                     i=i+1
-            if  module.m_44==True or module.m_44==False:
+            if module2_1  != None and (module2_1.m_44==True or module2_1.m_44==False):
                     i=i+1
-            if  module.m_45==True or module.m_45==False:
+            if module2_1  != None and (module2_1.m_45==True or module2_1.m_45==False):
                     i=i+1
-            if  module.m_46==True or module.m_46==False:
+            if module2_1  != None and (module2_1.m_46==True or module2_1.m_46==False):
                     i=i+1
-            if  module.m_47==True or module.m_47==False:
+            if module2_1  != None and (module2_1.m_47==True or module2_1.m_47==False):
                     i=i+1
-            if  module.m_48==True or module.m_48==False:
+            if module2_1  != None and (module2_1.m_48==True or module2_1.m_48==False):
                     i=i+1
-            if  module.m_49==True or module.m_49==False:
+            if module2_1  != None and (module2_1.m_49==True or module2_1.m_49==False):
                     i=i+1
-            if  module.m_50==True or module.m_50==False:
+            if module2_1  != None and (module2_1.m_50==True or module2_1.m_50==False):
                     i=i+1
-            if  module.m_51==True or module.m_51==False:
+            if module2_1  != None and (module2_1.m_51==True or module2_1.m_51==False):
                     i=i+1
-            if  module.m_52==True or module.m_52==False:
+            if module2_1  != None and (module2_1.m_52==True or module2_1.m_52==False):
                     i=i+1
-            if  module.m_53==True or module.m_53==False:
+            if module2_1  != None and (module2_1.m_53==True or module2_1.m_53==False):
                     i=i+1
-            if  module.m_54==True or module.m_54==False:
+            if module2_1  != None and (module2_1.m_54==True or module2_1.m_54==False):
                     i=i+1
-            if  module.m_55==True or module.m_55==False:
+            if module2_1  != None and (module2_1.m_55==True or module2_1.m_55==False):
                     i=i+1
-            if  module.m_56==True or module.m_56==False:
+            if module2_1  != None and (module2_1.m_56==True or module2_1.m_56==False):
                     i=i+1
-            if  module.m_57==True or module.m_57==False:
+            if module2_1  != None and (module2_1.m_57==True or module2_1.m_57==False):
                     i=i+1
-            if  module.m_58==True or module.m_58==False:
+            if module2_1  != None and (module2_1.m_58==True or module2_1.m_58==False):
                     i=i+1
-            if  module.m_59==True or module.m_59==False:
+            if module2_1  != None and (module2_1.m_59==True or module2_1.m_59==False):
                     i=i+1
-            if  module.m_60==True or module.m_60==False:
+            if module2_2  != None and (module2_2.m_60==True or module2_2.m_60==False):
                     i=i+1
-            if  module.m_61==True or module.m_61==False:
+            if module2_2  != None and (module2_2.m_61==True or module2_2.m_61==False):
                     i=i+1
-            if  module.m_62==True or module.m_62==False:
+            if module2_2  != None and (module2_2.m_62==True or module2_2.m_62==False):
                     i=i+1
-            if  module.m_63==True or module.m_63==False:
+            if module2_2  != None and (module2_2.m_63==True or module2_2.m_63==False):
                     i=i+1
-            if  module.m_64==True or module.m_64==False:
+            if module2_2  != None and (module2_2.m_64==True or module2_2.m_64==False):
                     i=i+1
-            if  module.m_65==True or module.m_65==False:
+            if module2_2  != None and (module2_2.m_65==True or module2_2.m_65==False):
                     i=i+1
-            if  module.m_66==True or module.m_66==False:
+            if module2_2  != None and (module2_2.m_66==True or module2_2.m_66==False):
                     i=i+1
-            if  module.m_67==True or module.m_67==False:
+            if module2_2  != None and (module2_2.m_67==True or module2_2.m_67==False):
                     i=i+1
-            if  module.m_68==True or module.m_68==False:
+            if module2_2  != None and (module2_2.m_68==True or module2_2.m_68==False):
                     i=i+1
-            if  module.m_69==True or module.m_69==False:
+            if module2_2  != None and (module2_2.m_69==True or module2_2.m_69==False):
                     i=i+1
-            if  module.m_70==True or module.m_70==False:
+            if module2_2  != None and (module2_2.m_70==True or module2_2.m_70==False):
                     i=i+1
-            if  module.m_71==True or module.m_71==False:
+            if module2_2  != None and (module2_2.m_71==True or module2_2.m_71==False):
                     i=i+1
-            if  module.m_72==True or module.m_72==False:
+            if module2_2  != None and (module2_2.m_72==True or module2_2.m_72==False):
                     i=i+1
-            if  module.m_73==True or module.m_73==False:
+            if module2_2  != None and (module2_2.m_73==True or module2_2.m_73==False):
                     i=i+1
-            if  module.m_74==True or module.m_74==False:
+            if module2_2  != None and (module2_2.m_74==True or module2_2.m_74==False):
                     i=i+1
-            if  module.m_75==True or module.m_75==False:
+            if module2_2  != None and (module2_2.m_75==True or module2_2.m_75==False):
                     i=i+1
-            if  module.m_76==True or module.m_76==False:
+            if module2_2  != None and (module2_2.m_76==True or module2_2.m_76==False):
                     i=i+1
-            if  module.m_77==True or module.m_77==False:
+            if module2_2  != None and (module2_2.m_77==True or module2_2.m_77==False):
                     i=i+1
-            if  module.m_78==True or module.m_78==False:
+            if module2_2  != None and (module2_2.m_78==True or module2_2.m_78==False):
                     i=i+1
-            if  module.m_79==True or module.m_79==False:
+            if module2_2  != None and (module2_2.m_79==True or module2_2.m_79==False):
                     i=i+1
-            if  module.m_80==True or module.m_80==False:
+            if module2_2  != None and (module2_2.m_80==True or module2_2.m_80==False):
                     i=i+1
-            if  module.m_81==True or module.m_81==False:
+            if module2_2  != None and (module2_2.m_81==True or module2_2.m_81==False):
                     i=i+1
-            if  module.m_82==True or module.m_82==False:
+            if module2_2  != None and (module2_2.m_82==True or module2_2.m_82==False):
                     i=i+1
-            if  module.m_83==True or module.m_83==False:
+            if module2_2  != None and (module2_2.m_83==True or module2_2.m_83==False):
                     i=i+1
-            if  module.m_84==True or module.m_84==False:
+            if module2_2  != None and (module2_2.m_84==True or module2_2.m_84==False):
                     i=i+1
-            if  module.m_85==True or module.m_85==False:
+            if module2_2  != None and (module2_2.m_85==True or module2_2.m_85==False):
                     i=i+1
-            if  module.m_86==True or module.m_86==False:
+            if module2_2  != None and (module2_2.m_86==True or module2_2.m_86==False):
                     i=i+1
-            if  module.m_87==True or module.m_87==False:
+            if module2_2  != None and (module2_2.m_87==True or module2_2.m_87==False):
                     i=i+1
-            if  module.m_88==True or module.m_88==False:
+            if module2_2  != None and (module2_2.m_88==True or module2_2.m_88==False):
                     i=i+1
-            if  module.m_89==True or module.m_89==False:
+            if module2_2  != None and (module2_2.m_89==True or module2_2.m_89==False):
                     i=i+1
-            if  module.m_90==True or module.m_90==False:
+            if module2_2  != None and (module2_2.m_90==True or module2_2.m_90==False):
                     i=i+1
-            if  module.m_91==True or module.m_91==False:
+            if module2_2  != None and (module2_2.m_91==True or module2_2.m_91==False):
                     i=i+1
-            if  module.m_92==True or module.m_92==False:
+            if module2_2  != None and (module2_2.m_92==True or module2_2.m_92==False):
                     i=i+1
-            if  module.m_93==True or module.m_93==False:
+            if module2_2  != None and (module2_2.m_93==True or module2_2.m_93==False):
                     i=i+1
-            if  module.m_94==True or module.m_94==False:
+            if module2_2  != None and (module2_2.m_94==True or module2_2.m_94==False):
                     i=i+1
-            if  module.m_95==True or module.m_95==False:
+            if module2_2  != None and (module2_2.m_95==True or module2_2.m_95==False):
                     i=i+1
-            if  module.m_96==True or module.m_96==False:
+            if module2_2  != None and (module2_2.m_96==True or module2_2.m_96==False):
                     i=i+1
-            if  module.m_97==True or module.m_97==False:
+            if module2_2  != None and (module2_2.m_97==True or module2_2.m_97==False):
                     i=i+1
-            if  module.m_98==True or module.m_98==False:
+            if module2_2  != None and (module2_2.m_98==True or module2_2.m_98==False):
                     i=i+1
-            if  module.m_99==True or module.m_99==False:
+            if module2_2  != None and (module2_2.m_99==True or module2_2.m_99==False):
                     i=i+1
-            if  module.m_100==True or module.m_100==False:
+            if module2_2  != None and (module2_2.m_100==True or module2_2.m_100==False):
                     i=i+1
-            if  module.m_101==True or module.m_101==False:
+            if module2_2  != None and (module2_2.m_101==True or module2_2.m_101==False):
                     i=i+1
-            if  module.m_102==True or module.m_102==False:
+            if module2_2  != None and (module2_2.m_102==True or module2_2.m_102==False):
                     i=i+1
-            if  module.m_103==True or module.m_103==False:
+            if module2_2  != None and (module2_2.m_103==True or module2_2.m_103==False):
                     i=i+1
-            if  module.m_104==True or module.m_104==False:
+            if module2_2  != None and (module2_2.m_104==True or module2_2.m_104==False):
                     i=i+1
-            if  module.m_105==True or module.m_105==False:
+            if module2_2  != None and (module2_2.m_105==True or module2_2.m_105==False):
                     i=i+1
-            if  module.m_106==True or module.m_106==False:
+            if module2_2  != None and (module2_2.m_106==True or module2_2.m_106==False):
                     i=i+1
-            if  module.m_107==True or module.m_107==False:
+            if module2_2  != None and (module2_2.m_107==True or module2_2.m_107==False):
                     i=i+1
-            if  module.m_108==True or module.m_108==False:
+            if module2_2  != None and (module2_2.m_108==True or module2_2.m_108==False):
                     i=i+1
-            if  module.m_109==True or module.m_109==False:
+            if module2_2  != None and (module2_2.m_109==True or module2_2.m_109==False):
                     i=i+1
-            if  module.m_110==True or module.m_110==False:
+            if module2_2  != None and (module2_2.m_110==True or module2_2.m_110==False):
                     i=i+1
-            if  module.m_111==True or module.m_111==False:
+            if module2_2  != None and (module2_2.m_111==True or module2_2.m_111==False):
                     i=i+1
-            if  module.m_112==True or module.m_112==False:
+            if module2_2  != None and (module2_2.m_112==True or module2_2.m_112==False):
                     i=i+1
-            if  module.m_113==True or module.m_113==False:
+            if module2_2  != None and (module2_2.m_113==True or module2_2.m_113==False):
                     i=i+1
-            if  module.m_114==True or module.m_114==False:
+            if module2_2  != None and (module2_2.m_114==True or module2_2.m_114==False):
                     i=i+1
-            if  module.m_115==True or module.m_115==False:
+            if module2_2  != None and (module2_2.m_115==True or module2_2.m_115==False):
                     i=i+1
-            if  module.m_116==True or module.m_116==False:
+            if module2_2  != None and (module2_2.m_116==True or module2_2.m_116==False):
                     i=i+1
-            if  module.m_117==True or module.m_117==False:
+            if module2_2  != None and (module2_2.m_117==True or module2_2.m_117==False):
                     i=i+1
-            if  module.m_118==True or module.m_118==False:
+            if module2_2  != None and (module2_2.m_118==True or module2_2.m_118==False):
                     i=i+1
-            if  module.m_119==True or module.m_119==False:
+            if module2_2  != None and (module2_2.m_119==True or module2_2.m_119==False):
                     i=i+1
-            if  module.m_120==True or module.m_120==False:
+            if module2_2  != None and (module2_2.m_120==True or module2_2.m_120==False):
                     i=i+1
-            if  module.m_121==True or module.m_121==False:
+            if module2_2  != None and (module2_2.m_121==True or module2_2.m_121==False):
                     i=i+1
-            if  module.m_122==True or module.m_122==False:
+            if module2_2  != None and (module2_2.m_122==True or module2_2.m_122==False):
                     i=i+1
-            if module.m_23!='':
+            if module2_1  != None and module2_1.m_23!='':
                     i=i+1
-            if module.m_39!='':
+            if module2_1  != None and module2_1.m_39!='':
                     i=i+1
-            if module.m_14!='':
+            if module2_1  != None and module2_1.m_14!='':
                     i=i+1
-            if module.m_2!='':
+            if module2_1  != None and  module2_1.m_2!='':
                     i=i+1
-            if module.m_3!='':
+            if module2_1  != None and module2_1.m_3!='':
                     i=i+1
-            if module.m_4!='':
+            if module2_1  != None and module2_1.m_4!='':
                     i=i+1
-            if module.m_6!='':
+            if module2_1  != None and module2_1.m_6!='':
                     i=i+1
-            if module.m_7!='':
+            if module2_1  != None and module2_1.m_7!='':
                     i=i+1
-            if module.m_9!='':
+            if module2_1  != None and module2_1.m_9!='':
                     i=i+1
-            if module.m_10!='':
+            if module2_1  != None and module2_1.m_10!='':
                 i=i+1
-            if module.m_1>0:
+            if module2_1  != None and module2_1.m_1>0:
                     i=i+1
-            if module.m_11>0:
+            if module2_1  != None and module2_1.m_11>0:
                     i=i+1
-            if module.m_12>0:
+            if module2_1  != None and module2_1.m_12>0:
                     i=i+1
-            if module.m_13>0:
+            if module2_1  != None and module2_1.m_13>0:
                     i=i+1
-            if module.m_15>0:
+            if module2_1  != None and module2_1.m_15>0:
                     i=i+1
-            if module.m_18>0 :
+            if module2_1  != None and module2_1.m_18>0 :
                     i=i+1
-            if Module2Weaknesses.objects.filter(module2=module.id).count()>0 :
+            if module2_2  != None and Module2_2Weaknesses.objects.filter(module2=module2_2.id).count()>0 :
                     i=i+1
            
-        percent=(i*100/tot_num_fields)
-       
+        percent=(i*100/tot_num_fields)   
     if num_mod == 3:
         tot_num_fields=33
         i=0
@@ -2448,6 +2714,8 @@ class ModuleListView(ListView):
                 full_pce={}
                 m_ids={}
                 m_status={}
+                m2_ids={}
+                m2_status={}
                 m_names={}
                 modifydate_ids={}
                 for i in items:
@@ -2458,6 +2726,7 @@ class ModuleListView(ListView):
                         chosen_modules_array.append(y)
                         percentage_module=0
                         module=None
+                       
                         percentage_module=get_percentage_module_filled(y,self.kwargs['id'])
                         if  percentage_module==100:  
                                 filled_m_array.append(y)        
@@ -2575,7 +2844,29 @@ class ModuleListView(ListView):
                             lf_ids[y] = ''
                         #fullpce    
                         full_pce[y] =  get_percentage_module(session.id,y)
-                       
+                 ####MOD2
+                module2_1=None
+                module2_2=None 
+                for i in items:
+                    if i!='' and i=='2':
+                        y=int(i)
+                        try:
+                            if y==2:
+                                module2_1 = get_object_or_404(Module2_1, session=self.kwargs['id'])
+                                module2_2 = get_object_or_404(Module2_2, session=self.kwargs['id'])
+                        except:
+                            module=None 
+                            percentage_module=0
+                            
+                        if module2_1!=None:
+                            m2_ids[0] =module2_1.id
+                            m2_status[0] =module2_1.status
+                        if module2_2!=None:
+                           m2_ids[1] =module2_2.id
+                           m2_status[1] =module2_2.status
+
+                        
+                               
                           
                        
                 context['chosen_modules'] = chosen_modules_array
@@ -2590,6 +2881,8 @@ class ModuleListView(ListView):
                 context['filled_m_array'] = filled_m_array
                 context['m_ids'] = m_ids
                 context['m_status'] = m_status
+                context['m2_ids'] = m2_ids
+                context['m2_status'] = m2_status
                 context['modifydate_ids'] = modifydate_ids
                 context['sessionid'] = session.id
                 context['m_names'] = m_names
@@ -2690,7 +2983,7 @@ class PceDashboardListView(ListView):
         context = super(PceDashboardListView, self).get_context_data(**kwargs)
         context['country'] = self.kwargs['country']
         context['sessionid'] =  self.kwargs['id']
-       
+        
         user = self.request.user
         
         can_see=0
@@ -2737,7 +3030,7 @@ class PceDashboardListView(ListView):
                         can_configure=0
                         can_sendtovalidator=0
                         
-                    
+           
                 context['range']= range(1,14)
                 context['version_number'] = session.version_number
                 context['sessionstatus'] = session.status
@@ -2753,26 +3046,32 @@ class PceDashboardListView(ListView):
                 lf_ids={}
                 full_pce={}
                 m_ids={}
+                m2_ids={}
                 m_status={}
+                m2_status={}
                
                 
                 module=None
+                module2_1=None
+                module2_2=None
                 items=[]
                 if session.chosen_modules!=None:
                     items = session.chosen_modules.split(',')
                 for i in items:
                     if i!='':
                         y=int(i)
+                  
                         chosen_modules_array.append(y)
                         percentage_module=0
                         percentage_module=get_percentage_module_filled(y,self.kwargs['id'])
                         if  percentage_module==100:  
                            filled_m_array.append(y)
                         try:
+                            print(y)
                             if y==1:
                                 module = get_object_or_404(Module1, session=self.kwargs['id'])
                             elif y==2:
-                                module = get_object_or_404(Module2, session=self.kwargs['id'])
+                                 module = get_object_or_404(Module2, session=self.kwargs['id'])
                             elif y==3:
                                 module = get_object_or_404(Module3, session=self.kwargs['id'])
                             elif y==4:
@@ -2797,7 +3096,8 @@ class PceDashboardListView(ListView):
                                 module = get_object_or_404(Module13, session=self.kwargs['id'])
                         except:
                             module=None 
-                            percentage_module=0          
+                            percentage_module=0
+                        
                             
                         if module!=None:
                             m_ids[y] =module.id
@@ -2853,6 +3153,28 @@ class PceDashboardListView(ListView):
                         #fullpce  
                         #print('               DAHS    get percentage mod')
                         full_pce[y] =  get_percentage_module(session.id,y)
+                ####MOD2
+                for i in items:
+                    if i!='' and i=='2':
+                        y=int(i)
+                        try:
+                            if y==2:
+                                module2_1 = get_object_or_404(Module2_1, session=self.kwargs['id'])
+                                module2_2 = get_object_or_404(Module2_2, session=self.kwargs['id'])
+                        except:
+                            module=None 
+                            percentage_module=0
+                            
+                        if module2_1!=None:
+                            m2_ids[0] =module2_1.id
+                            m2_status[0] =module2_1.status
+                        if module2_2!=None:
+                           m2_ids[1] =module2_2.id
+                           m2_status[1] =module2_2.status
+
+                        
+                        
+                       
                                     
                 context['chosen_modules'] = chosen_modules_array
                 context['filled_stakeh_array'] = filled_stakeh_array
@@ -2866,6 +3188,8 @@ class PceDashboardListView(ListView):
                 context['filled_m_array'] = filled_m_array
                 context['m_ids'] = m_ids
                 context['m_status'] = m_status
+                context['m2_ids'] = m2_ids
+                context['m2_status'] = m2_status
                 context['full_pce'] =full_pce
                 #print('               DAHS    get_tot_percentage')
                 context['tot_percentage'] = get_tot_percentage(session.id)
@@ -3226,20 +3550,28 @@ def module_validate(request, country, sessionid=None,module=None,id=None ):
     """ VALIDATE Module """
     user = request.user
     author = user
+    
     country1=country
     country=user.get_profile().country
     user_country_slug = lower(slugify(country))
     modnum='module'+str(module)
-    
+    print(modnum)
     if id and module:
+        
          if user.groups.filter(name='Admin') or (country1 == user_country_slug and user.groups.filter(name='PCE Manager/Validator')) :
             moduletovalidate=None
+            
+            moduletovalidate2_1=None
+            moduletovalidate2_2=None
+            
             percentage_module=get_percentage_module(sessionid,int(module))
+            
             try:
                 if modnum == 'module1':
                     moduletovalidate = get_object_or_404(Module1, id=id)
                 elif modnum=='module2':
-                    moduletovalidate = get_object_or_404(Module2, id=id)
+                   moduletovalidate2_1 = get_object_or_404(Module2_1, id=id)
+                   moduletovalidate2_2 = get_object_or_404(Module2_2, id=id)
                 elif modnum=='module3':
                     moduletovalidate = get_object_or_404(Module3, id=id)
                 elif modnum=='module4':
@@ -3266,9 +3598,15 @@ def module_validate(request, country, sessionid=None,module=None,id=None ):
                 print('--------------ERROR --')
             
             if percentage_module == 100:
-                moduletovalidate.status=4
-                moduletovalidate.save()
-
+               
+                if modnum=='module2':
+                   moduletovalidate2_1.status=4
+                   moduletovalidate2_1.save()
+                   moduletovalidate2_2.status=4
+                   moduletovalidate2_2.save()
+                else:   
+                    moduletovalidate.status=4
+                    moduletovalidate.save()
                 info(request, _("Successfully VALIDATED Module: "+str(module)+"."))
                 return redirect("pceversion-list", country=user_country_slug,  id=sessionid)
        
@@ -3286,12 +3624,15 @@ def module_unvalidate(request, country, sessionid=None,module=None,id=None ):
     if id and module:
          if user.groups.filter(name='Admin') or (country1 == user_country_slug and user.groups.filter(name='PCE Manager/Validator')) :
             moduletovalidate=None
+            moduletovalidate2_1=None
+            moduletovalidate2_2=None
             percentage_module=get_percentage_module(sessionid,int(module))
             try:
                 if modnum == 'module1':
                     moduletovalidate = get_object_or_404(Module1, id=id)
                 elif modnum=='module2':
-                    moduletovalidate = get_object_or_404(Module2, id=id)
+                    moduletovalidate2_1 = get_object_or_404(Module2_1, id=id)
+                    moduletovalidate2_2 = get_object_or_404(Module2_2, id=id)
                 elif modnum=='module3':
                     moduletovalidate = get_object_or_404(Module3, id=id)
                 elif modnum=='module4':
@@ -3318,9 +3659,14 @@ def module_unvalidate(request, country, sessionid=None,module=None,id=None ):
                 print('--------------ERROR --')
             
             if percentage_module == 100:
-                moduletovalidate.status=2
-                moduletovalidate.save()
-
+                if modnum=='module2':
+                   moduletovalidate2_1.status=2
+                   moduletovalidate2_1.save()
+                   moduletovalidate2_2.status=2
+                   moduletovalidate2_2.save()
+                else:   
+                    moduletovalidate.status=2
+                    moduletovalidate.save()
                 info(request, _("Successfully UN-VALIDATED Module: "+str(module)+"."))
                 return redirect("pceversion-list", country=user_country_slug,  id=sessionid)
 
@@ -3337,12 +3683,15 @@ def module_sendtovalidator(request, country, sessionid=None,module=None,id=None 
     if id and module:
          if canEdit(sessionid,country,user,module):
             moduletovalidate=None
+            moduletovalidate2_1=None
+            moduletovalidate2_2=None
             percentage_module=get_percentage_module(sessionid,int(module))
             try:
                 if modnum == 'module1':
                     moduletovalidate = get_object_or_404(Module1, id=id)
                 elif modnum=='module2':
-                    moduletovalidate = get_object_or_404(Module2, id=id)
+                    moduletovalidate2_1 = get_object_or_404(Module2_1, id=id)
+                    moduletovalidate2_2 = get_object_or_404(Module2_2, id=id)
                 elif modnum=='module3':
                     moduletovalidate = get_object_or_404(Module3, id=id)
                 elif modnum=='module4':
@@ -3368,8 +3717,14 @@ def module_sendtovalidator(request, country, sessionid=None,module=None,id=None 
             except:
                 print('--------------ERROR --')
             if percentage_module == 100:
-                moduletovalidate.status=3
-                moduletovalidate.save()
+                if modnum=='module2':
+                   moduletovalidate2_1.status=3
+                   moduletovalidate2_1.save()
+                   moduletovalidate2_2.status=3
+                   moduletovalidate2_2.save()
+                else:  
+                    moduletovalidate.status=3
+                    moduletovalidate.save()
                 idcountry=user.get_profile().country_id
                 pce_validators=IppcUserProfile.objects.filter(country=idcountry)
                 validator_email = []
@@ -4262,6 +4617,730 @@ def module2_edit(request, country, id=None,sessionid=None, template_name='pce/mo
       'context':'Edit','form': form,'form123': form123,'sessionid':sessionid,'can_edit':can_edit,'m_percentage':m_percentage,'tot_percentage':tot_percentage,'is_st_filled':is_st_filled,'is_pa_filled':is_pa_filled,'is_sa_filled':is_sa_filled,'is_lf_filled':is_lf_filled,'st_id':st_id,'pa_id':pa_id,'sa_id':sa_id,'lf_id':lf_id,'module':2,
 
     }, context_instance=RequestContext(request))
+
+### #MODULE 2 part1:
+class Module2_1ListView(ListView):
+    context_object_name = 'latest'
+    model = Module2_1
+    date_field = 'publish_date'
+    template_name = 'pce/module_2_1.html'
+    queryset = Module2_1.objects.all().order_by('-modify_date', 'title')
+    allow_future = False
+    allow_empty = True
+    paginate_by = 500
+
+    def get_queryset(self):
+        """ only return Module2_1 from the specific id """
+        self.id=None
+        if  'id' in self.kwargs:
+            self.id = self.kwargs['id']
+        return Module2_1.objects.filter(id= self.id)
+    
+    def get_context_data(self, **kwargs): # http://stackoverflow.com/a/15515220
+        context = super(Module2_1ListView, self).get_context_data(**kwargs)
+        context['country'] = self.kwargs['country']
+        context['sessionid'] = self.kwargs['sessionid']
+        context['context'] = 'View'
+        id=''
+        if  'id' in self.kwargs:
+            id = self.kwargs['id']
+        context['id'] = id
+        can_edit=0
+        can_see=0
+        st_id=''
+        pa_id=''
+        sa_id=''
+        lf_id=''
+       
+        session = get_object_or_404(PceVersion,  pk= self.kwargs['sessionid'])
+    
+        if canSee(session.id,session.country,self.request.user,'2'):
+            can_see=1
+        if canEdit(session.id,session.country,self.request.user,'2') and session.status==1:
+            can_edit=1
+        if  can_see or can_edit:  
+            module= 2
+            form   = Module2_1FormView()
+            module2=None
+            if id!='':
+                module2 = get_object_or_404(Module2_1,  id=self.kwargs['id'])
+                form   = Module2FormView(instance=module2)
+               
+            context['form']=form
+            context['module2']=module2
+           
+            context['module']='2'
+            context['modulestr']='2 part 1'
+            context['version_number'] = session.version_number
+            context['sessionstatus'] = session.status
+            context['tot_percentage'] = get_tot_percentage(self.kwargs['sessionid'])
+            context['m_percentage'] = get_percentage_module_filled(2,self.kwargs['sessionid'])
+            context['is_st_filled'] = is_stakeholder_filled(self.kwargs['sessionid'],2)
+            context['is_pa_filled'] = is_problemanalysis_filled(self.kwargs['sessionid'],2)
+            context['is_sa_filled'] = is_swotanalysis_filled(self.kwargs['sessionid'],2)
+            context['is_lf_filled'] = is_logicalframework_filled(self.kwargs['sessionid'],2)
+      
+            if context['is_st_filled']:
+                st_id =  get_object_or_404(Stakeholders, session_id=self.kwargs['sessionid'],module=2).id
+            if context['is_pa_filled']:
+                pa_id =  get_object_or_404(ProblemAnalysis, session_id=self.kwargs['sessionid'],module=2).id
+            if context['is_sa_filled']:
+                sa_id =  get_object_or_404(SwotAnalysis, session_id=self.kwargs['sessionid'],module=2).id
+            if context['is_lf_filled']:
+                lf_id =  get_object_or_404(LogicalFramework, session_id=self.kwargs['sessionid'],module=2).id
+
+      
+        context['can_see'] = can_see
+        context['can_edit'] = can_edit
+        context['st_id'] = st_id
+        context['pa_id'] = pa_id
+        context['sa_id'] = sa_id
+        context['lf_id'] = lf_id
+        
+        return context
+    
+    
+class Module2_1ListPDFView(PDFTemplateView):
+    context_object_name = 'latest'
+    model = Module2_1
+    date_field = 'publish_date'
+    template_name = 'pce/module_2_1.html'
+    
+    def get_context_data(self, **kwargs): # http://stackoverflow.com/a/15515220
+        context = super(Module2_1ListPDFView, self).get_context_data(**kwargs)
+        context['country'] = self.kwargs['country']
+        context['sessionid'] = self.kwargs['sessionid']
+        context['context'] = 'Pdf'   
+     
+        DEFINITIONS = (
+            (0, _("--- Please select ---")),
+            (1, _("Not at all")),
+            (2, _("Major improvements required")),
+            (3, _("Mostly")),
+            (4, _("Minor modifications needed")),
+            (5, _("Totally")),
+        ) 
+       
+        DEFINITIONS1 = (
+            (0, _("--- Please select ---")),
+            (1, _("Not at all")),
+            (2, _("Major improvements required")),
+            (3, _("Mostly")),
+            (4, _("Minor improvements needed")),
+            (5, _("Totally")),
+        ) 
+     
+        ACT = (
+            (0, _("--- Please select ---")),
+            (1, _("Not updated")),
+            (2, _("Under revision")),
+            (3, _("For Cabinet consideration")),
+            (4, _("For consideration at Parliament")),
+            (5, _("Updated to IPPC 1997")),
+        )
+    
+        CIVIL = (
+            (0, _("--- Please select ---")),
+            (1, _("Civil law system")),
+            (2, _("Common law system")),
+            (3, _("Religious law")),
+            (44, _("Pluralistic system")),
+        )
+        
+      
+        YEAR = (
+        (0, _("--Please Select--")),
+        (1, _("1901")),
+        (2, _("1902")),
+        (3, _("1903")),
+        (4, _("1904")),
+        (5, _("1905")),
+        (6, _("1906")),
+        (7, _("1907")),
+        (8, _("1908")),
+        (9, _("1909")),
+        (10, _("1910")),
+        (11, _("1911")),
+        (12, _("1912")),
+        (13, _("1913")),
+        (14, _("1914")),
+        (15, _("1915")),
+        (16, _("1916")),
+        (17, _("1917")),
+        (18, _("1918")),
+        (19, _("1919")),
+        (20, _("1920")),
+        (21, _("1921")),
+        (22, _("1922")),
+        (23, _("1923")),
+        (24, _("1924")),
+        (25, _("1925")),
+        (26, _("1926")),
+        (27, _("1927")),
+        (28, _("1928")),
+        (29, _("1929")),
+        (30, _("1930")),
+        (31, _("1931")),
+        (32, _("1932")),
+        (33, _("1933")),
+        (34, _("1934")),
+        (35, _("1935")),
+        (36, _("1936")),
+        (37, _("1937")),
+        (38, _("1938")),
+        (39, _("1939")),
+        (40, _("1940")),
+        (41, _("1941")),
+        (42, _("1942")),
+        (43, _("1943")),
+        (44, _("1944")),
+        (45, _("1945")),
+        (46, _("1946")),
+        (47, _("1947")),
+        (48, _("1948")),
+        (49, _("1949")),
+        (50, _("1950")),
+        (51, _("1951")),
+        (52, _("1952")),
+        (53, _("1953")),
+        (54, _("1954")),
+        (55, _("1955")),
+        (56, _("1956")),
+        (57, _("1957")),
+        (58, _("1958")),
+        (59, _("1959")),
+        (60, _("1960")),
+        (61, _("1961")),
+        (62, _("1962")),
+        (63, _("1963")),
+        (64, _("1964")),
+        (65, _("1965")),
+        (66, _("1966")),
+        (67, _("1967")),
+        (68, _("1968")),
+        (69, _("1969")),
+        (70, _("1970")),
+        (71, _("1971")),
+        (72, _("1972")),
+        (73, _("1973")),
+        (74, _("1974")),
+        (75, _("1975")),
+        (76, _("1976")),
+        (77, _("1977")),
+        (78, _("1978")),
+        (79, _("1979")),
+        (80, _("1980")),
+        (81, _("1981")),
+        (82, _("1982")),
+        (83, _("1983")),
+        (84, _("1984")),
+        (85, _("1985")),
+        (86, _("1986")),
+        (87, _("1987")),
+        (88, _("1988")),
+        (89, _("1989")),
+        (90, _("1990")),
+        (91, _("1991")),
+        (92, _("1992")),
+        (93, _("1993")),
+        (94, _("1994")),
+        (95, _("1995")),
+        (96, _("1996")),
+        (97, _("1997")),
+        (98, _("1998")),
+        (99, _("1999")),
+        (100, _("2000")),
+        (101, _("2001")),
+        (102, _("2002")),
+        (103, _("2003")),
+        (104, _("2004")),
+        (105, _("2005")),
+        (106, _("2006")),
+        (107, _("2007")),
+        (108, _("2008")),
+        (109, _("2009")),
+        (110, _("2010")),
+        (111, _("2011")),
+        (112, _("2012")),
+        (113, _("2013")),
+        (114, _("2014")),
+        (115, _("2015")),
+        )
+        THEM1 = (
+            (0, _("--- Please select ---")),
+            (1,_("None of them")),
+            (2,_("One of them")),
+            (3,_("Two of them")),
+            (4,_("All of them")),
+        )
+        context['DEFINITIONS'] =DEFINITIONS
+        context['DEFINITIONS1'] =DEFINITIONS1
+        context['ACT'] =ACT
+        context['CIVIL'] =CIVIL
+        context['YEAR'] =YEAR
+        context['THEM1'] =THEM1
+        
+        id=''
+        context['latest']= ''
+        if  'id' in self.kwargs:
+            id = self.kwargs['id']
+            context['latest']=  Module2_1.objects.filter(id=id)
+    
+        context['id'] = id
+    
+        can_see=0
+       
+        session = get_object_or_404(PceVersion,  pk= self.kwargs['sessionid'])
+    
+        if canSee(session.id,session.country,self.request.user,'2'):
+            can_see=1
+        print('can see')    
+        if  can_see:  
+            module= 2
+            form   = Module2_1FormView()
+            module2=Module2_1
+            if id!='':
+                module2 = get_object_or_404(Module2_1,  id=self.kwargs['id'])
+                form   = Module2_1FormView(instance=module2)
+            
+            context['module2']=module2
+            context['form']=form
+            context['module']=module
+            context['version_number'] = session.version_number
+            context['sessionstatus'] = session.status
+            context['tot_percentage'] = get_tot_percentage(self.kwargs['sessionid'])
+            context['m_percentage'] = get_percentage_module_filled(2,self.kwargs['sessionid'])
+         
+        context['can_see'] = can_see
+        
+        return context
+    
+    
+    
+@login_required
+@permission_required('pce.add_pceversion', login_url="/accounts/login/")
+def module2_1_create(request, country,sessionid=None):
+    """ Create module2  """
+    user = request.user
+    author = user
+    country=user.get_profile().country
+    user_country_slug = lower(slugify(country))
+    pceversion = get_object_or_404(PceVersion,  pk=sessionid)
+    module2_count= Module2_1.objects.filter(session=sessionid).order_by('-modify_date').count()
+    
+    
+    ###ID of MOD2 part 2
+    idmod2_2=-1
+    module2_2= Module2_2.objects.filter(session=sessionid).order_by('-modify_date')
+    if module2_2.count()>0:
+        idmod2_2=module2_2[0].id
+        
+    can_edit=0
+    m_percentage=0   
+    tot_percentage=''
+    st_id=''
+    pa_id=''
+    sa_id=''
+    lf_id=''
+    is_st_filled = is_stakeholder_filled(sessionid,2)
+    is_pa_filled = is_problemanalysis_filled(sessionid,2)
+    is_sa_filled = is_swotanalysis_filled(sessionid,2)
+    is_lf_filled = is_logicalframework_filled(sessionid,2)
+
+    if module2_count>0:
+        can_edit=0
+    else:
+        if is_st_filled:
+            if pceversion.status==1 and  canEdit(sessionid,pceversion.country,user,2):   
+                can_edit=1
+                m_percentage=get_percentage_module_filled(2,sessionid)
+                tot_percentage=get_tot_percentage(sessionid)
+                if is_st_filled:
+                    st_id =  get_object_or_404(Stakeholders, session_id=sessionid,module=2).id
+                if is_pa_filled:
+                    pa_id =  get_object_or_404(ProblemAnalysis, session_id=sessionid,module=2).id
+                if is_sa_filled:
+                    sa_id =  get_object_or_404(SwotAnalysis, session_id=sessionid,module=2).id
+                if is_lf_filled:
+                    lf_id =  get_object_or_404(LogicalFramework, session_id=sessionid,module=2).id
+            
+    if request.method == "POST":
+        form = Module2_1Form(request.POST, request.FILES)
+        form2 = Module2_2Form(initial={'country': country,'session': pceversion.id})
+        form_2_123= Module2_2WeaknessesFormSet()
+        
+        if form.is_valid() :
+            new_mod2 = form.save(commit=False)
+            new_mod2.author = request.user
+            new_mod2.session=pceversion
+            if idmod2_2>0:
+                new_mod2.id= idmod2_2
+                new_mod2.site_id= 1
+            form.save()
+            
+           
+            pceversion.modify_date=timezone.now()
+            pceversion.save()
+                 
+            info(request, _("Successfully saved Module 2 Part 1."))
+            return redirect("module-list",country=user_country_slug,id=pceversion.id,)
+        else:
+             return render_to_response('pce/module_2_1.html', {'context':'Edit','form': form,'sessionid':sessionid,'can_edit':can_edit,'m_percentage':m_percentage,'tot_percentage':tot_percentage,'is_st_filled':is_st_filled,'is_pa_filled':is_pa_filled,'is_sa_filled':is_sa_filled,'is_lf_filled':is_lf_filled,'st_id':st_id,'pa_id':pa_id,'sa_id':sa_id,'lf_id':lf_id,'module':'2','modulestr':'2 part 1'},
+             context_instance=RequestContext(request))
+    else:
+        form = Module2_1Form(initial={'country': country,'session': pceversion.id})
+      
+    return render_to_response('pce/module_2_1.html', {'context':'Edit','form': form,'sessionid':sessionid,'can_edit':can_edit,'m_percentage':m_percentage,'tot_percentage':tot_percentage,'is_st_filled':is_st_filled,'is_pa_filled':is_pa_filled,'is_sa_filled':is_sa_filled,'is_lf_filled':is_lf_filled,'st_id':st_id,'pa_id':pa_id,'sa_id':sa_id,'lf_id':lf_id,'module':'2','modulestr':'2 part 1',},
+            context_instance=RequestContext(request))
+
+@login_required
+@permission_required('pce.add_pceversion', login_url="/accounts/login/")
+def module2_1_edit(request, country, id=None,sessionid=None, template_name='pce/module_2_1.html'):
+    """ Edit module_2_1 """
+    user = request.user
+    author = user
+    country=user.get_profile().country
+    user_country_slug = lower(slugify(country))
+    pceversion = get_object_or_404(PceVersion,  pk=sessionid)
+
+    can_edit=0
+    m_percentage=0   
+    tot_percentage=''
+    st_id=''
+    pa_id=''
+    sa_id=''
+    lf_id=''
+    is_st_filled = is_stakeholder_filled(sessionid,2)
+    is_pa_filled = is_problemanalysis_filled(sessionid,2)
+    is_sa_filled = is_swotanalysis_filled(sessionid,2)
+    is_lf_filled = is_logicalframework_filled(sessionid,2)          
+    
+    if id:
+        module2 = get_object_or_404(Module2_1, pk=id)
+        if pceversion.status==1 and  canEdit(sessionid,pceversion.country,user,2):
+            can_edit=1
+            m_percentage=get_percentage_module_filled(2,sessionid)
+            tot_percentage=get_tot_percentage(sessionid)
+            if is_st_filled:
+                st_id =  get_object_or_404(Stakeholders, session_id=sessionid,module=2).id
+            if is_pa_filled:
+                pa_id =  get_object_or_404(ProblemAnalysis, session_id=sessionid,module=2).id
+            if is_sa_filled:
+                sa_id =  get_object_or_404(SwotAnalysis, session_id=sessionid,module=2).id
+            if is_lf_filled:
+                lf_id =  get_object_or_404(LogicalFramework, session_id=sessionid,module=2).id
+    else:
+        module2 = Module2_1()
+  
+    if request.POST:
+        form = Module2_1Form(request.POST,  request.FILES, instance=module2)
+        if form.is_valid():    
+            form.save()
+          
+           
+            pceversion.modify_date=timezone.now()
+            pceversion.save()
+           
+            info(request, _("Successfully saved Module 2 Part 1"))
+            return redirect("module-list",country=user_country_slug,id=pceversion.id,)
+    else:
+        form = Module2_1Form(instance=module2)
+      
+    return render_to_response(template_name, {
+      'context':'Edit','form': form,'sessionid':sessionid,'can_edit':can_edit,'m_percentage':m_percentage,'tot_percentage':tot_percentage,'is_st_filled':is_st_filled,'is_pa_filled':is_pa_filled,'is_sa_filled':is_sa_filled,'is_lf_filled':is_lf_filled,'st_id':st_id,'pa_id':pa_id,'sa_id':sa_id,'lf_id':lf_id,'module':'2','modulestr':'2 part 1',
+
+    }, context_instance=RequestContext(request))
+
+
+
+### #MODULE 2 part2:
+class Module2_2ListView(ListView):
+    context_object_name = 'latest'
+    model = Module2_2
+    date_field = 'publish_date'
+    template_name = 'pce/module_2_2.html'
+    queryset = Module2_2.objects.all().order_by('-modify_date', 'title')
+    allow_future = False
+    allow_empty = True
+    paginate_by = 500
+
+    def get_queryset(self):
+        """ only return Module2_2 from the specific id """
+        self.id=None
+        if  'id' in self.kwargs:
+            self.id = self.kwargs['id']
+        return Module2_2.objects.filter(id= self.id)
+    
+    def get_context_data(self, **kwargs): # http://stackoverflow.com/a/15515220
+        context = super(Module2_2ListView, self).get_context_data(**kwargs)
+        context['country'] = self.kwargs['country']
+        context['sessionid'] = self.kwargs['sessionid']
+        context['context'] = 'View'
+        id=''
+        if  'id' in self.kwargs:
+            id = self.kwargs['id']
+        context['id'] = id
+        can_edit=0
+        can_see=0
+        st_id=''
+        pa_id=''
+        sa_id=''
+        lf_id=''
+       
+        session = get_object_or_404(PceVersion,  pk= self.kwargs['sessionid'])
+    
+        if canSee(session.id,session.country,self.request.user,'2'):
+            can_see=1
+        if canEdit(session.id,session.country,self.request.user,'2') and session.status==1:
+            can_edit=1
+        if  can_see or can_edit:  
+            module= 2
+            form   = Module2_2FormView()
+            form123= Module2_2WeaknessesFormSet()
+            module2=None
+            if id!='':
+                module2 = get_object_or_404(Module2_2,  id=self.kwargs['id'])
+                form   = Module2_2FormView(instance=module2)
+                form123= Module2_2WeaknessesFormSet(instance=module2)
+      
+            context['form']=form
+            context['form123']=form123
+            context['module2']=module2
+           
+            context['module']='2'
+            modulestr['module']='2 part 2'
+     
+            context['version_number'] = session.version_number
+            context['sessionstatus'] = session.status
+            context['tot_percentage'] = get_tot_percentage(self.kwargs['sessionid'])
+            context['m_percentage'] = get_percentage_module_filled(2,self.kwargs['sessionid'])
+            context['is_st_filled'] = is_stakeholder_filled(self.kwargs['sessionid'],2)
+            context['is_pa_filled'] = is_problemanalysis_filled(self.kwargs['sessionid'],2)
+            context['is_sa_filled'] = is_swotanalysis_filled(self.kwargs['sessionid'],2)
+            context['is_lf_filled'] = is_logicalframework_filled(self.kwargs['sessionid'],2)
+      
+            if context['is_st_filled']:
+                st_id =  get_object_or_404(Stakeholders, session_id=self.kwargs['sessionid'],module=2).id
+            if context['is_pa_filled']:
+                pa_id =  get_object_or_404(ProblemAnalysis, session_id=self.kwargs['sessionid'],module=2).id
+            if context['is_sa_filled']:
+                sa_id =  get_object_or_404(SwotAnalysis, session_id=self.kwargs['sessionid'],module=2).id
+            if context['is_lf_filled']:
+                lf_id =  get_object_or_404(LogicalFramework, session_id=self.kwargs['sessionid'],module=2).id
+
+      
+        context['can_see'] = can_see
+        context['can_edit'] = can_edit
+        context['st_id'] = st_id
+        context['pa_id'] = pa_id
+        context['sa_id'] = sa_id
+        context['lf_id'] = lf_id
+        
+        return context
+    
+    
+class Module2_2ListPDFView(PDFTemplateView):
+    context_object_name = 'latest'
+    model = Module2_2
+    date_field = 'publish_date'
+    template_name = 'pce/module_2_2.html'
+    
+    def get_context_data(self, **kwargs): # http://stackoverflow.com/a/15515220
+        context = super(Module2_2ListPDFView, self).get_context_data(**kwargs)
+        context['country'] = self.kwargs['country']
+        context['sessionid'] = self.kwargs['sessionid']
+        context['context'] = 'Pdf'   
+        THEM1 = (
+            (0, _("--- Please select ---")),
+            (1,_("None of them")),
+            (2,_("One of them")),
+            (3,_("Two of them")),
+            (4,_("All of them")),
+        )
+        
+        context['THEM1'] =THEM1
+        
+        id=''
+        context['latest']= ''
+        if  'id' in self.kwargs:
+            id = self.kwargs['id']
+            context['latest']=  Module2_2.objects.filter(id=id)
+    
+        context['id'] = id
+    
+        can_see=0
+       
+        session = get_object_or_404(PceVersion,  pk= self.kwargs['sessionid'])
+    
+        if canSee(session.id,session.country,self.request.user,'2'):
+            can_see=1
+        if  can_see:  
+            module= 2
+            form   = Module2_2FormView()
+            form123= Module2_2WeaknessesFormSet()
+            module2=None
+            if id!='':
+                module2 = get_object_or_404(Module2_2,  id=self.kwargs['id'])
+                form   = Module2_2FormView(instance=module2)
+                form123= Module2_2WeaknessesFormSet(instance=module2)
+      
+            context['module2']=module2
+            context['form']=form
+            context['form123']=form123
+            context['module2']=module2
+            context['module']=module
+            context['version_number'] = session.version_number
+            context['sessionstatus'] = session.status
+            context['tot_percentage'] = get_tot_percentage(self.kwargs['sessionid'])
+            context['m_percentage'] = get_percentage_module_filled(2,self.kwargs['sessionid'])
+         
+        context['can_see'] = can_see
+        
+        return context
+    
+    
+    
+@login_required
+@permission_required('pce.add_pceversion', login_url="/accounts/login/")
+def module2_2_create(request, country,sessionid=None):
+    """ Create module2  """
+    user = request.user
+    author = user
+    country=user.get_profile().country
+    user_country_slug = lower(slugify(country))
+    pceversion = get_object_or_404(PceVersion,  pk=sessionid)
+    module2_count= Module2_2.objects.filter(session=sessionid).order_by('-modify_date').count()
+    
+    
+    
+    ###ID of MOD2 part 1
+    idmod2_1=-1
+    module2_1= Module2_1.objects.filter(session=sessionid).order_by('-modify_date')
+    if module2_1.count()>0:
+        idmod2_1=module2_1[0].id
+    
+    can_edit=0
+    m_percentage=0   
+    tot_percentage=''
+    st_id=''
+    pa_id=''
+    sa_id=''
+    lf_id=''
+    is_st_filled = is_stakeholder_filled(sessionid,2)
+    is_pa_filled = is_problemanalysis_filled(sessionid,2)
+    is_sa_filled = is_swotanalysis_filled(sessionid,2)
+    is_lf_filled = is_logicalframework_filled(sessionid,2)
+
+    if module2_count>0:
+        can_edit=0
+    else:
+        if is_st_filled:
+            if pceversion.status==1 and  canEdit(sessionid,pceversion.country,user,2):   
+                can_edit=1
+                m_percentage=get_percentage_module_filled(2,sessionid)
+                tot_percentage=get_tot_percentage(sessionid)
+                if is_st_filled:
+                    st_id =  get_object_or_404(Stakeholders, session_id=sessionid,module=2).id
+                if is_pa_filled:
+                    pa_id =  get_object_or_404(ProblemAnalysis, session_id=sessionid,module=2).id
+                if is_sa_filled:
+                    sa_id =  get_object_or_404(SwotAnalysis, session_id=sessionid,module=2).id
+                if is_lf_filled:
+                    lf_id =  get_object_or_404(LogicalFramework, session_id=sessionid,module=2).id
+            
+    if request.method == "POST":
+        form = Module2_2Form(request.POST, request.FILES)
+        form123= Module2_2WeaknessesFormSet(request.POST)
+      
+        if form.is_valid() and form123.is_valid():
+            new_mod2 = form.save(commit=False)
+            new_mod2.author = request.user
+            new_mod2.session=pceversion
+            if idmod2_1>0:
+                new_mod2.id= idmod2_1
+                new_mod2.site_id= 1
+            form.save()
+            
+            form123.instance = new_mod2
+            form123.save()
+            pceversion.modify_date=timezone.now()
+            pceversion.save()
+                 
+            info(request, _("Successfully saved Module 2 part 2."))
+            return redirect("module-list",country=user_country_slug,id=pceversion.id,)
+        else:
+             return render_to_response('pce/module_2_2.html', {'context':'Edit','form': form,'form123': form123,'sessionid':sessionid,'can_edit':can_edit,'m_percentage':m_percentage,'tot_percentage':tot_percentage,'is_st_filled':is_st_filled,'is_pa_filled':is_pa_filled,'is_sa_filled':is_sa_filled,'is_lf_filled':is_lf_filled,'st_id':st_id,'pa_id':pa_id,'sa_id':sa_id,'lf_id':lf_id,       'module':'2','modulestr':'2 part 2'},
+             context_instance=RequestContext(request))
+    else:
+        form = Module2_2Form(initial={'country': country,'session': pceversion.id})
+        form123= Module2_2WeaknessesFormSet()
+
+    return render_to_response('pce/module_2_2.html', {'context':'Edit','form': form,'form123': form123,'sessionid':sessionid,'can_edit':can_edit,'m_percentage':m_percentage,'tot_percentage':tot_percentage,'is_st_filled':is_st_filled,'is_pa_filled':is_pa_filled,'is_sa_filled':is_sa_filled,'is_lf_filled':is_lf_filled,'st_id':st_id,'pa_id':pa_id,'sa_id':sa_id,'lf_id':lf_id,  'module':'2','modulestr':'2 part 2',},
+            context_instance=RequestContext(request))
+
+@login_required
+@permission_required('pce.add_pceversion', login_url="/accounts/login/")
+def module2_2_edit(request, country, id=None,sessionid=None, template_name='pce/module_2_2.html'):
+    """ Edit module_2_2 """
+    user = request.user
+    author = user
+    country=user.get_profile().country
+    user_country_slug = lower(slugify(country))
+    pceversion = get_object_or_404(PceVersion,  pk=sessionid)
+
+    can_edit=0
+    m_percentage=0   
+    tot_percentage=''
+    st_id=''
+    pa_id=''
+    sa_id=''
+    lf_id=''
+    is_st_filled = is_stakeholder_filled(sessionid,2)
+    is_pa_filled = is_problemanalysis_filled(sessionid,2)
+    is_sa_filled = is_swotanalysis_filled(sessionid,2)
+    is_lf_filled = is_logicalframework_filled(sessionid,2)          
+    
+    if id:
+        module2 = get_object_or_404(Module2_2, pk=id)
+        if pceversion.status==1 and  canEdit(sessionid,pceversion.country,user,2):
+            can_edit=1
+            m_percentage=get_percentage_module_filled(2,sessionid)
+            tot_percentage=get_tot_percentage(sessionid)
+            if is_st_filled:
+                st_id =  get_object_or_404(Stakeholders, session_id=sessionid,module=2).id
+            if is_pa_filled:
+                pa_id =  get_object_or_404(ProblemAnalysis, session_id=sessionid,module=2).id
+            if is_sa_filled:
+                sa_id =  get_object_or_404(SwotAnalysis, session_id=sessionid,module=2).id
+            if is_lf_filled:
+                lf_id =  get_object_or_404(LogicalFramework, session_id=sessionid,module=2).id
+    else:
+        module2 = Module2_2()
+  
+    if request.POST:
+        form = Module2_2Form(request.POST,  request.FILES, instance=module2)
+        form123= Module2_2WeaknessesFormSet(request.POST,  request.FILES, instance=module2)
+        if form.is_valid() and form123.is_valid():    
+            form.save()
+          
+            form123.instance = module2
+            form123.save()
+            pceversion.modify_date=timezone.now()
+            pceversion.save()
+           
+            info(request, _("Successfully saved Module 2 part 2"))
+            return redirect("module-list",country=user_country_slug,id=pceversion.id,)
+    else:
+        form = Module2_2Form(instance=module2)
+        form123= Module2_2WeaknessesFormSet(instance=module2)
+      
+    return render_to_response(template_name, {
+      'context':'Edit','form': form,'form123': form123,'sessionid':sessionid,'can_edit':can_edit,'m_percentage':m_percentage,'tot_percentage':tot_percentage,'is_st_filled':is_st_filled,'is_pa_filled':is_pa_filled,'is_sa_filled':is_sa_filled,'is_lf_filled':is_lf_filled,'st_id':st_id,'pa_id':pa_id,'sa_id':sa_id,'lf_id':lf_id,  'module':'2','modulestr':'2 part 2',
+
+    }, context_instance=RequestContext(request))
+
+
+
 
 #MODULE 3
 class Module3ListView(ListView):
@@ -10270,7 +11349,8 @@ def generate_report(request, country,sessionid=None):
                         if y==1:
                             module1 = get_object_or_404(Module1, session_id=sessionid)
                         elif y==2:
-                            module2 = get_object_or_404(Module2, session_id=sessionid)
+                            module2_1 = get_object_or_404(Module2_1, session_id=sessionid)
+                            module2_2 = get_object_or_404(Module2_2, session_id=sessionid)
                             w2=getWeakenessFromModuleNameAndId(2,sessionid)
                         elif y==3:
                             module3 = get_object_or_404(Module3, session_id=sessionid)
@@ -10307,6 +11387,7 @@ def generate_report(request, country,sessionid=None):
                             w13=getWeakenessFromModuleNameAndId(13,sessionid)
                     except:
                         module1=None
+                        
                         module2=None
                         module3=None
                         module4=None
@@ -10319,7 +11400,8 @@ def generate_report(request, country,sessionid=None):
                         module11=None
                         module12=None
                         module13=None
-                        
+              
+                      
             md1m7 = Module1MajorCrops.objects.filter(module1_id=module1.id)
             for o in md1m7:
                 cc=o.crops#get_object_or_404(Crops, id=o.crops)

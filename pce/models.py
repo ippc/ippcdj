@@ -2423,7 +2423,336 @@ class Module2Weaknesses(models.Model):
     def name(self):
         return self.w1       
     
+### SPLIT MODULE 2    
+ 
+class Module2_1(Displayable, models.Model):
+    """Single version of the pce module for a country."""
+    # slug - provided by mezzanine.core.models.slugged (subclassed by displayable)
+    # title - provided by mezzanine.core.models.slugged (subclassed by displayable)
+    # status - provided by mezzanine.core.models.displayable
+    # publish_date - provided by mezzanine.core.models.displayable
     
+    class Meta:
+        verbose_name = _("Module 2 -  National phytosanitary legislation Part 1")
+        verbose_name_plural = _("Module 2 -  National phytosanitary legislation Part 1")
+  
+    session = models.ForeignKey(PceVersion)
+    modify_date = models.DateTimeField(_("Modified date"), blank=True, null=True, editable=False)
+    m_1 = models.IntegerField(_("1.1. What is the legal system of the country?"), choices=CIVIL, default=None,help_text=_("Civil legislation system, which has its roots in Roman legislation and which is based on written legal codes. Napoleonic Code: Based on the primacy of statutes enacted by the legislature. These statutes are integrated into a comprehensive code designed to be applied by the courts with a minimum of judicial interpretation. Common Legislation: A system of legislation that is derived from judges' decisions (which arise from the judicial branch of government), rather than statutes or constitutions (which are derived from the legislative branch of government).  Source: <a href='https://www.law.berkeley.edu/library/robbins/pdf/CommonLawCivilLawTraditions.pdf'>click here</a> for Common Legislation. Islamic Legislation, which is derived from the Koran and can be found in the Middle East and in some African countries Source: <a href='http://www.islamicsupremecouncil.org/understanding-islam/legal-rulings/52-understanding-islamic-law.html'>click here</a> for the Islamic legislation."),)
+    m_2 = models.TextField(_("1.2. How is legislation and regulations developed and enacted?"), blank=True, null=True,help_text=_("List the major steps (drafting to enactment) for a piece of legislation to be approved nationally for implementation."),)
+    m_3 = models.TextField(_("1.3. How are legislative and executive functions and responsibilities distributed with government institutions and at different levels?"), blank=True, null=True,help_text=_(" "),)
+    m_4 = models.TextField(_("1.4. Which existing policy frameworks (agriculture, decentralization, privatization, globalization, biosecurity, trade etc.) provide context for the development of the national phytosanitary legislation?"), blank=True, null=True,help_text=_(" "),)
+    m_5 = models.NullBooleanField(_("1.5. Does the present legislation have overlaps or conflict of institutional responsibilities in phytosanitary matters?"), choices=BOOL_CHOICES,blank=True, null=True, help_text=_(" "),)
+    m_6 = models.TextField(_("1.6. List the main gaps concerning institutional responsibilities on phytosanitary matters."), blank=True, null=True,help_text=_(" "),)
+    m_7 = models.TextField(_("1.7. List other existing laws and regulations that reference any current phytosanitary legislation or regulations."), blank=True, null=True,help_text=_(" "),)
+    m_8 = models.NullBooleanField(_("2.1. Is there a National Plant Protection Organization mandated in national lgislation, in accordance with provisions of IPPC Art.IV para.1?"), choices=BOOL_CHOICES,blank=True, null=True, help_text=_("This may be stated in the national Phytosanitary Law/Act or in subsidiary legislation or other legal instruments or documented procedures."),)
+    m_9 = models.TextField(_("2.2. Enter the name, address and contact details of the national plant protection organization."), blank=True, null=True,help_text=_(" "),)
+    m_10 = models.TextField(_("2.3. Name the Act that established the NPPO."), blank=True, null=True,help_text=_(" "),)
+    m_11 = models.IntegerField(_("2.4. Year the Act was enacted."), choices=YEAR, default=None,help_text=_(" "),)
+    m_12 = models.IntegerField(_("2.5. Year of the most recent revision of the Act."), choices=YEAR, default=None,help_text=_(" "),)
+    m_13 = models.IntegerField(_("2.6. Current status of the Act"), choices=ACT, default=None,help_text=_("The ideal situation is that the legislation is updated to the last revision of the IPPC. "),)
+    m_14 = models.TextField(_("2.7. List any implementing or enabling legislation, with date of enactment, which relate to implementation of the phytosanitary law/act."), blank=True, null=True,help_text=_("This includes phytosanitary regulations. "),)
+    m_15 = models.IntegerField(_("3.1. Is the scope of the present legislation (act and regulations) consistent with all the provisions of the Art.1 par. 1 of the revised text of the IPPC (1997) and with those of <a href='https://www.ippc.int/en/publications/596/' target='_blank'>ISPM 1</a> secs. 1.1 and 1.2 ?"), choices=DEFINITIONS, default=None,help_text=_("IPPC (1997), Art.1 par. 1, with the purpose of securing common and effective action to prevent the spread and introduction of pests of plants and plant products, and to promote appropriate measures for their control, the contracting parties undertake to adopt the legislative, technical and administrative measures specified in this Convention and in supplementary agreements pursuant to Article XVI. <a href='https://www.ippc.int/en/publications/596/' target='_blank'>ISPM 1</a> Sec.1&2, Basic principles concerning sovereignty and necessity. "),)
+    m_16 = models.NullBooleanField(_("3.2. Does the legislation provide for the control of all plant pests (including weeds, forestry pests, LMOs, biological control agents, IAS) as well as all plant, plant products and other regulated articles (including wood packaging materials and conveyance)?"), choices=BOOL_CHOICES,blank=True, null=True,help_text=_("This refers to not just regulated pests or quarantine pests - it is all plant pests. "),)
+    m_17 = models.NullBooleanField(_("3.3. Does the legislation cover both locally produced and imported plants, plant products and other regulated articles?"), choices=BOOL_CHOICES,blank=True, null=True, help_text=_(" "),)
+    m_18 = models.IntegerField(_("4.1. Are the definitions utilized in the legislation and regulations, consistent with the ones established in the SPS Annex A and in the IPPC Art II, and <a href='https://www.ippc.int/en/publications/622/' target='_blank'>ISPM No.5</a>?"), choices=DEFINITIONS1, default=None,help_text=_(" "),)
+    m_19 = models.NullBooleanField(_("4.2. Does the definitions section of the legislation include a general statement specifying that any term not specifically defined shall have its normally accepted meaning, except that any term which also appears in the IPPC shall be defined by reference to that Convention and its associated documentation?"), choices=BOOL_CHOICES,blank=True, null=True,help_text=_("Note that the ISPM 5 Glossary of phytosanitary terms is updated annually. "),)
+    m_20 = models.NullBooleanField(_("5.1. Is the NPPO responsible for the issuance of phytosanitary certificates to comply with the phytosanitary regulations of the importing country for consignments of plants, plant products and other regulated articles? (IPPC Art IV.2(a), <a href='https://www.ippc.int/en/publications/596/' target='_blank'>ISPM 1</a> Section 2.8 and 2.9)"), choices=BOOL_CHOICES,blank=True, null=True, help_text=_("Also see ISPMs <a href='https://www.ippc.int/en/publications/613/' target='_blank'>7</a> and <a href='https://www.ippc.int/en/publications/609/' target='_blank'>12</a>  "),)
+    m_21 = models.NullBooleanField(_("5.2. Is the NPPO responsible for arranging for phytosanitary certification, in conformity with the certifying statement to be made pursuant to paragraph 2(b) of Article V of the new revised text of the IPPC?"), choices=BOOL_CHOICES,blank=True, null=True, help_text=_("Refers to the model phytosanitary certificate in the annex of the IPPC convention text "),)
+    m_22 = models.NullBooleanField(_("5.3. Is the NPPO responsible for the surveillance for plant pests on growing plants, including both areas under cultivation (e.g. fields, plantations, nurseries, gardens, greenhouses and laboratories) and wild flora, and of plants and plant products in storage or in transportation, particularly with the object of reporting the occurrence, outbreak and spread of pests, and of controlling those pests? (IPPC Art. IV.2b, and 2e and VII.2j and <a href='https://www.ippc.int/en/publications/596/' target='_blank'>ISPM 1</a> Section 2.6 and ISPMs:<a href='https://www.ippc.int/en/publications/615/' target='_blank'>No. 6</a> and <a href='https://www.ippc.int/en/publications/612/' target='_blank'>No. 8</a> )."), choices=BOOL_CHOICES,blank=True, null=True, help_text=_("List the current mandate of the agency designated to carry out the functions of the NPPO. Identify the responsibilities in terms of surveillance by other agencies other than the NPPO in the next question below. <br> <br> <br><i>If answer is <b>Yes</b> go to question <b>5.5.</b></i>"),)
+    m_23 = models.TextField(_("5.4. If no, is there another government department or agency responsible for pest surveillance activities? If so, name the organization and its relationship to the NPPO."), blank=True, null=True,help_text=_("If the relationship is formal and has legislation or documented procedure to reinforce it please enter the title of the reinforcing legislation in Question 2.7 above. "),)
+    m_24 = models.NullBooleanField(_("5.5. Is the NPPO responsible for the inspection of consignments of plants and plant products moving in international traffic and, where appropriate, the inspection of other regulated articles , particularly with the object of preventing the introduction and/or spread of pests? (IPPC Art.IV.2c <a href='https://www.ippc.int/en/publications/596/' target='_blank'>ISPM 1</a> and ISPM No.20)"), choices=BOOL_CHOICES,blank=True, null=True, help_text=_(" "),)
+    m_25 = models.NullBooleanField(_("5.6. Is the NPPO responsible for the disinfestation or disinfection of consignments of plants, plant products and other regulated articles moving in international traffic, to ensure phytosanitary requirements are met? IPPC Art.IV.2d"), choices=BOOL_CHOICES,blank=True, null=True, help_text=_(" "),)
+    m_26 = models.NullBooleanField(_("5.7. Is the NPPO responsible for the protection of endangered areas and the designation, maintenance and surveillance of pest free areas and areas of low pest prevalence? (IPPC IV.2.e and <a href='https://www.ippc.int/en/publications/596/' target='_blank'>ISPM 1</a> (2.3) and ISPM 4,8,10 and 22)"), choices=BOOL_CHOICES,blank=True, null=True, help_text=_(" "),)
+    m_27 = models.NullBooleanField(_("5.8. Is the NPPO responsible for conducting pest risk analysis? (IPPC IV.2f and VII.2g, and ISPMs: <a href='https://www.ippc.int/en/publications/592/' target='_blank'>No.2</a>, <a href='https://www.ippc.int/en/publications/622/' target='_blank'>No. 5</a> (including supplement No. 2), No.11 and No.21."), choices=BOOL_CHOICES,blank=True, null=True, help_text=_(" "),)
+    m_28 = models.NullBooleanField(_("5.9. Is the NPPO responsible for ensuring through appropriate procedures that the phytosanitary security of consignments after certification regarding composition, substitution and re-infestation is maintained prior to export? (IPPC IV.2g. Art. V and <a href='https://www.ippc.int/en/publications/596/' target='_blank'>ISPM 1</a> Section 2.9 and ISPMs 7 and 12)"), choices=BOOL_CHOICES,blank=True, null=True, help_text=_(" "),)
+    m_29 = models.NullBooleanField(_("5.10. Is the NPPO responsible for training and development of staff? (IPPC Art IV.2h)"), choices=BOOL_CHOICES,blank=True, null=True, help_text=_(" "),)
+    m_30 = models.NullBooleanField(_("5.11. Is the NPPO responsible for the distribution of information, within the territory of the contracting party, regarding regulated pests and the means of their prevention and control? (IPPC IV.3a)"), choices=BOOL_CHOICES,blank=True, null=True, help_text=_("within the territory of the contracting party refers to your country."),)
+    m_31 = models.NullBooleanField(_("5.12. Is the NPPO involved in research and investigation in the field of plant protection? (IPPC Art. IV.3)"), choices=BOOL_CHOICES,blank=True, null=True, help_text=_(" "),)
+    m_32 = models.NullBooleanField(_("5.13. Is the NPPO responsible for the issuance of phytosanitary regulations? (IPPC Art IV.3c)"), choices=BOOL_CHOICES,blank=True, null=True, help_text=_(" "),)
+    m_33 = models.NullBooleanField(_("5.14. Is the NPPO directly responsible for submission of a description of its official national plant protection organization and of changes in such organization to the Secretary of the IPPC? (IPPC Art IV.4)"), choices=BOOL_CHOICES,blank=True, null=True, help_text=_(" "),)
+    m_34 = models.NullBooleanField(_("5.15. Does the legislation mandate the Phytosanitary Authority to designate a contact point for the IPPC? (IPPC Article VIII.2, <a href='https://www.ippc.int/en/publications/596/' target='_blank'>ISPM 1</a> Section. 2.16)"), choices=BOOL_CHOICES,blank=True, null=True, help_text=_(" "),)
+    m_35 = models.NullBooleanField(_("5.16. Does the legislation specify the NPPOs responsibility for providing justification concerning phytosanitary measures to other countries, if required? (IPPC Article VII.2c)"), choices=BOOL_CHOICES,blank=True, null=True, help_text=_(" "),)
+    m_36 = models.NullBooleanField(_("5.17. Does the legislation specify the NPPO responsibility for providing information, where requested, by national, regional or international organizations regarding import and export regulations in force and regarding the technical requirements for plant material and other regulated articles? (IPPC Article VII.2c; <a href='https://www.ippc.int/en/publications/596/' target='_blank'>ISPM 1</a> Section 1.5)"), choices=BOOL_CHOICES,blank=True, null=True, help_text=_(" "),)
+    m_37 = models.NullBooleanField(_("6.1. Does the legislation contain a provision for stakeholder participation in NPPO matters?"), choices=BOOL_CHOICES,blank=True, null=True, help_text=_("Stakeholders include persons or agencies or groups that are beneficiaries of the services of the NPPO or function as partners in the delivery of services or in decision making.  <br> <br> <br><i>If answer is <b>No</b> go to question <b>7.1</b></i>"),)
+    m_38 = models.NullBooleanField(_("6.2. Are stakeholders' roles, responsibilities and rights defined in the legislation?"), choices=BOOL_CHOICES,blank=True, null=True, help_text=_("Stakeholders include persons or agencies or groups that are beneficiaries of the services of the NPPO or function as partners in the delivery of services or in decision making. "),)
+    m_39 = models.TextField(_("6.3. What arrangements are in place to ensure stakeholder participation in NPPO matters?"), blank=True, null=True,help_text=_("Particularly if there is no provision in the legislation for ensuring appropriate stakeholder participation. Stakeholders include persons or agencies or groups that are beneficiaries of the services of the NPPO or function as partners in the delivery of services or in decision making. "),)
+    m_40 = models.NullBooleanField(_("7.1. Does the law, or its subsidiary legislation, establish the minimum requirements in terms of qualifications and skills of inspectors? <a href='https://www.ippc.int/en/publications/602/' target='_blank'>ISPM 20</a>  Section 5.2.1 and <a href='https://www.ippc.int/en/publications/613/' target='_blank'>ISPM 7</a> Section 3.1"), choices=BOOL_CHOICES,blank=True, null=True, help_text=_(" "),)
+    m_41 = models.NullBooleanField(_("7.2. Does the legislation allow the responsible ministry or agency to use not only its own employees but also employees of other authorities (public - or private, so long as there is no conflict of interest)? <a href='https://www.ippc.int/en/publications/602/' target='_blank'>ISPM 20</a> Section 5.1.7"), choices=BOOL_CHOICES,blank=True, null=True, help_text=_("This does not include the function of issuance of phytosanitary certificates, refer to the IPPC (1997) Art V 2a. "),)
+    m_42 = models.NullBooleanField(_("7.3. Does the legislation require that, whenever the NPPO authorizes other government services, non-governmental organizations, agencies or persons, to act on its behalf, the NPPO must maintain its responsibility and establish operational and audit procedures, for corrective actions, system review and withdrawal of authorization? (<a href='https://www.ippc.int/en/publications/602/' target='_blank'>ISPM 20</a> 5.1.7)"), choices=BOOL_CHOICES,blank=True, null=True, help_text=_(" "),)
+    m_43 = models.NullBooleanField(_("7.4. Is the mandate of an appointed or designated inspector subject to limitations set out in the written instrument of appointment?"), choices=BOOL_CHOICES,blank=True, null=True, help_text=_(" "),)
+    m_44 = models.NullBooleanField(_("7.5. Does the legislation explicitly assign the issuance of phytosanitary certificates for export to NPPO inspectors appointed or designated only? (IPPC Art V 2a.)"), choices=BOOL_CHOICES,blank=True, null=True, help_text=_(" "),)
+    m_45 = models.NullBooleanField(_("8.1. Does the legislation specify that the inspector has a duty to perform inspection of plants or plant products under cultivation, in the wild, in storage or in transit in order to report the existence, outbreak and spread of pests? (IPPC Art IV. 2b and VIII 1a)"), choices=BOOL_CHOICES,blank=True, null=True, help_text=_("Pests refers to all pests and not just those regulated or identified as quarantine pests. "),)
+    m_46 = models.NullBooleanField(_("8.2. Does the legislation specify the duty of the inspectors to perform the inspection, test or take samples (including for analysis which may result in the destruction of the sample) of consignments of plants, plant products or other regulated articles designated for import or export from the country? <a href='https://www.ippc.int/en/publications/602/' target='_blank'>ISPM 20</a> Section 4.6, <a href='https://www.ippc.int/en/publications/598/' target='_blank'>ISPM 23</a> sec. 1.3"), choices=BOOL_CHOICES,blank=True, null=True, help_text=_(" "),)
+    m_47 = models.NullBooleanField(_("8.3. Does the legislation specify the duties of the inspectors to perform the inspection of storage and transport facilities? <a href='https://www.ippc.int/en/publications/602/' target='_blank'>ISPM 20</a> Section 4.6"), choices=BOOL_CHOICES,blank=True, null=True, help_text=_(" "),)
+    m_48 = models.NullBooleanField(_("8.4. Does the legislation specify the duty of the inspectors to perform the disinfection of consignments (either directly or through direct supervision of the NPPO)?"), choices=BOOL_CHOICES,blank=True, null=True, help_text=_(" "),)
+    m_49 = models.NullBooleanField(_("8.5. Does the legislation specify the duty of the inspectors to detain, treat or require treatment, refuse or take emergency action on imported consignments of plants, plant products or other regulated articles? <a href='https://www.ippc.int/en/publications/602/' target='_blank'>ISPM 20</a> Section 4.6"), choices=BOOL_CHOICES,blank=True, null=True, help_text=_(" "),)
+    m_50 = models.NullBooleanField(_("8.6. Does the legislation specify the duty of the inspectors to perform the control of waste being disposed of from aircraft and ships or from premises which process or wash imported plant material to reduce phytosanitary risk (includes forestry)?"), choices=BOOL_CHOICES,blank=True, null=True, help_text=_(" "),)
+    m_51 = models.NullBooleanField(_("8.7. Does the legislation specify the duty of the inspectors to issue phytosanitary certificates (on behalf of the NPPO)?"), choices=BOOL_CHOICES,blank=True, null=True, help_text=_(" "),)
+    m_52 = models.NullBooleanField(_("8.8. Does the legislation make clear the respective roles of the minister, the head of the NPPO and the inspectors and others?"), choices=BOOL_CHOICES,blank=True, null=True, help_text=_(" "),)
+    m_53 = models.NullBooleanField(_("9.1. Does the phytosanitary legislation clearly outline the scope of the inspectors' powers?"), choices=BOOL_CHOICES,blank=True, null=True, help_text=_(" "),)
+    m_54 = models.NullBooleanField(_("9.2. Does the phytosanitary legislation grant the inspectors power to enter and search any area or premises and require any person to produce any supporting documentation required by legislation?"), choices=BOOL_CHOICES,blank=True, null=True, help_text=_(" "),)
+    m_55 = models.NullBooleanField(_("9.3. Does the phytosanitary legislation grant the inspectors power to inspect, examine and make copies of such documentation, or take extracts of registers or records and seize the same?"), choices=BOOL_CHOICES,blank=True, null=True, help_text=_(" "),)
+    m_56 = models.NullBooleanField(_("9.4. Does the phytosanitary legislation grant the inspectors power to stop and search any person, baggage, packaging, conveyance or any other regulated article, upon entry into, movement within or exit from the country?"), choices=BOOL_CHOICES,blank=True, null=True, help_text=_(" "),)
+    m_57 = models.NullBooleanField(_("9.5. Does the phytosanitary legislation grant the inspectors power to stop the distribution, sale or use of any plant, plant product or any other regulated article, which the inspector has reason to believe is harboring a regulated pest, for a specific time period?"), choices=BOOL_CHOICES,blank=True, null=True, help_text=_(" "),)
+    m_58 = models.NullBooleanField(_("9.6. Does the phytosanitary legislation grant the inspectors power to seize, destroy, detain, treat or otherwise dispose of any plants, plant products or other regulated articles, or order that any such action be taken?"), choices=BOOL_CHOICES,blank=True, null=True, help_text=_(" "),)
+    m_59 = models.NullBooleanField(_("10.1. Are inspectors protected from personal liability for official decisions made pursuant to the enforcement of the phytosanitary legislation?"), choices=BOOL_CHOICES,blank=True, null=True, help_text=_(" "),)
+    #m_123
+    #m_comment = models.TextField(_("Comment"), blank=True, null=True,help_text='Please put your comments here.')
+    c_m_1= models.TextField(_("Comment"), blank=True, null=True,help_text=' ')
+    c_m_2= models.TextField(_("Comment"), blank=True, null=True,help_text=' ');
+    c_m_3= models.TextField(_("Comment"), blank=True, null=True,help_text=' ');
+    c_m_4= models.TextField(_("Comment"), blank=True, null=True,help_text=' ');
+    c_m_5= models.TextField(_("Comment"), blank=True, null=True,help_text=' ');
+    c_m_6= models.TextField(_("Comment"), blank=True, null=True,help_text=' ');
+    c_m_7= models.TextField(_("Comment"), blank=True, null=True,help_text=' ');
+    c_m_8= models.TextField(_("Comment"), blank=True, null=True,help_text=' ');
+    c_m_9= models.TextField(_("Comment"), blank=True, null=True,help_text=' ');
+    c_m_10= models.TextField(_("Comment"), blank=True, null=True,help_text=' ');
+    c_m_11= models.TextField(_("Comment"), blank=True, null=True,help_text=' ');
+    c_m_12= models.TextField(_("Comment"), blank=True, null=True,help_text=' ');
+    c_m_13= models.TextField(_("Comment"), blank=True, null=True,help_text=' ');
+    c_m_14= models.TextField(_("Comment"), blank=True, null=True,help_text=' ');
+    c_m_15= models.TextField(_("Comment"), blank=True, null=True,help_text=' ');
+    c_m_16= models.TextField(_("Comment"), blank=True, null=True,help_text=' ');
+    c_m_17= models.TextField(_("Comment"), blank=True, null=True,help_text=' ');
+    c_m_18= models.TextField(_("Comment"), blank=True, null=True,help_text=' ');
+    c_m_19= models.TextField(_("Comment"), blank=True, null=True,help_text=' ');
+    c_m_20= models.TextField(_("Comment"), blank=True, null=True,help_text=' ');
+    c_m_21= models.TextField(_("Comment"), blank=True, null=True,help_text=' ');
+    c_m_22= models.TextField(_("Comment"), blank=True, null=True,help_text=' ');
+    c_m_23= models.TextField(_("Comment"), blank=True, null=True,help_text=' ');
+    c_m_24= models.TextField(_("Comment"), blank=True, null=True,help_text=' ');
+    c_m_25= models.TextField(_("Comment"), blank=True, null=True,help_text=' ');
+    c_m_26= models.TextField(_("Comment"), blank=True, null=True,help_text=' ');
+    c_m_27= models.TextField(_("Comment"), blank=True, null=True,help_text=' ');
+    c_m_28= models.TextField(_("Comment"), blank=True, null=True,help_text=' ');
+    c_m_29= models.TextField(_("Comment"), blank=True, null=True,help_text=' ');
+    c_m_30= models.TextField(_("Comment"), blank=True, null=True,help_text=' ');
+    c_m_31= models.TextField(_("Comment"), blank=True, null=True,help_text=' ');
+    c_m_32= models.TextField(_("Comment"), blank=True, null=True,help_text=' ');
+    c_m_33= models.TextField(_("Comment"), blank=True, null=True,help_text=' ');
+    c_m_34= models.TextField(_("Comment"), blank=True, null=True,help_text=' ');
+    c_m_35= models.TextField(_("Comment"), blank=True, null=True,help_text=' ');
+    c_m_36= models.TextField(_("Comment"), blank=True, null=True,help_text=' ');
+    c_m_37= models.TextField(_("Comment"), blank=True, null=True,help_text=' ');
+    c_m_38= models.TextField(_("Comment"), blank=True, null=True,help_text=' ');
+    c_m_39= models.TextField(_("Comment"), blank=True, null=True,help_text=' ');
+    c_m_40= models.TextField(_("Comment"), blank=True, null=True,help_text=' ');
+    c_m_41= models.TextField(_("Comment"), blank=True, null=True,help_text=' ');
+    c_m_42= models.TextField(_("Comment"), blank=True, null=True,help_text=' ');
+    c_m_43= models.TextField(_("Comment"), blank=True, null=True,help_text=' ');
+    c_m_44= models.TextField(_("Comment"), blank=True, null=True,help_text=' ');
+    c_m_45= models.TextField(_("Comment"), blank=True, null=True,help_text=' ');
+    c_m_46= models.TextField(_("Comment"), blank=True, null=True,help_text=' ');
+    c_m_47= models.TextField(_("Comment"), blank=True, null=True,help_text=' ');
+    c_m_48= models.TextField(_("Comment"), blank=True, null=True,help_text=' ');
+    c_m_49= models.TextField(_("Comment"), blank=True, null=True,help_text=' ');
+    c_m_50= models.TextField(_("Comment"), blank=True, null=True,help_text=' ');
+    c_m_51= models.TextField(_("Comment"), blank=True, null=True,help_text=' ');
+    c_m_52= models.TextField(_("Comment"), blank=True, null=True,help_text=' ');
+    c_m_53= models.TextField(_("Comment"), blank=True, null=True,help_text=' ');
+    c_m_54= models.TextField(_("Comment"), blank=True, null=True,help_text=' ');
+    c_m_55= models.TextField(_("Comment"), blank=True, null=True,help_text=' ');
+    c_m_56= models.TextField(_("Comment"), blank=True, null=True,help_text=' ');
+    c_m_57= models.TextField(_("Comment"), blank=True, null=True,help_text=' ');
+    c_m_58= models.TextField(_("Comment"), blank=True, null=True,help_text=' ');
+    c_m_59= models.TextField(_("Comment"), blank=True, null=True,help_text=' ');
+       
+    def __unicode__(self):
+        return self.title
+
+    def save(self, *args, **kwargs):
+        ''' On save, update timestamps '''
+        if not self.id:
+            self.publish_date = datetime.today()
+        self.modify_date = datetime.now()
+        super(Module2_1, self).save(*args, **kwargs)
+        
+   
+    @models.permalink # or: get_absolute_url = models.permalink(get_absolute_url) below
+    def get_absolute_url(self): # "view on site" link will be visible in admin interface
+        """Construct the absolute URL for a PCE Version."""
+        return ('pceversion-detail', (), {
+                            'country': self.country.name, # =todo: get self.country.name working
+                            'year': self.publish_date.strftime("%Y"),
+                            'session': self.version_number})
+             
+     
+class Module2_2(Displayable, models.Model):
+    """Single version of the pce module for a country."""
+    # slug - provided by mezzanine.core.models.slugged (subclassed by displayable)
+    # title - provided by mezzanine.core.models.slugged (subclassed by displayable)
+    # status - provided by mezzanine.core.models.displayable
+    # publish_date - provided by mezzanine.core.models.displayable
+    
+    class Meta:
+        verbose_name = _("Module 2 -  National phytosanitary legislation Part 2")
+        verbose_name_plural = _("Module 2 -  National phytosanitary legislation Part 2")
+  
+    session = models.ForeignKey(PceVersion)
+    modify_date = models.DateTimeField(_("Modified date"), blank=True, null=True, editable=False)
+    m_60 = models.NullBooleanField(_("11.1. Does the legislation grant the NPPO the power to prescribe and adopt phytosanitary measures concerning the importation of plants, plant products and other regulated articles, including for example, inspection, prohibition on importation, or treatment?"), choices=BOOL_CHOICES,blank=True, null=True, help_text=_(" "),)
+    m_61 = models.NullBooleanField(_("11.2. Does the legislation specify that the phytosanitary measures shall not be applied for non-regulated pests?"), choices=BOOL_CHOICES,blank=True, null=True, help_text=_(" "),)
+    m_62 = models.NullBooleanField(_("11.3. Does the legislation specify that the phytosanitary measures prescribed by the NPPO shall be technically justified through pest risk analysis or based on international standards?"), choices=BOOL_CHOICES,blank=True, null=True, help_text=_(" "),)
+    m_63 = models.NullBooleanField(_("11.4. Does the legislation establish that phytosanitary measures shall be adopted in accordance with the international phytosanitary principles in <a href='https://www.ippc.int/en/publications/596/' target='_blank'>ISPM 1</a>?"), choices=BOOL_CHOICES,blank=True, null=True, help_text=_("Refer to <a href='https://www.ippc.int/en/publications/596/' target='_blank'>ISPM 1</a> "),)
+    m_64 = models.NullBooleanField(_("11.5. Does the NPPO have legal authority to refuse entry or detain, or require treatment, destruction or removal from the country of plants, plant products and other regulated articles or consignments thereof, that do not comply with the prescribed phytosanitary measures?"), choices=BOOL_CHOICES,blank=True, null=True, help_text=_(" "),)
+    m_65 = models.NullBooleanField(_("11.6. Has the NPPO the legal power to prohibit or restrict the movement of regulated pests, including those LMOs and IAS that are pests of plants?"), choices=BOOL_CHOICES,blank=True, null=True, help_text=_(" "),)
+    m_66 = models.NullBooleanField(_("11.7. Does the legislation give the power to the NPPO to prohibit or restrict the movement of biological control agents and other organisms of phytosanitary concern, claimed to be beneficial?"), choices=BOOL_CHOICES,blank=True, null=True, help_text=_(" "),)
+    m_67 = models.NullBooleanField(_("11.8. Is the NPPO the sole official service responsible for the operation and/or organization and management of the phytosanitary import regulatory system?"), choices=BOOL_CHOICES,blank=True, null=True, help_text=_(" "),)
+    m_68 = models.NullBooleanField(_("12.1. Does the legislation confer powers to require that importers know and comply with the import phytosanitary requirements established by the NPPO?"), choices=BOOL_CHOICES,blank=True, null=True, help_text=_("This extends also to passengers that may be carrying plant material and arriving at a point of entry.  "),)
+    m_69 = models.NullBooleanField(_("12.2. Does the legislation establish that plants, plant products and regulated articles may only be imported at official points of entry designated by the NPPO?"), choices=BOOL_CHOICES,blank=True, null=True, help_text=_("Note that contracting parties are obligated to publish and communicate official points of entry for specified consignments, see IPPC (1997) Art VII 2d.  "),)
+    m_70 = models.NullBooleanField(_("12.3. Does the legislation establish that all consignments of plant, plant products or other regulated articles that arrive to the country are under phytosanitary detention until officially released by the NPPO?"), choices=BOOL_CHOICES,blank=True, null=True, help_text=_(" "),)
+    m_71 = models.NullBooleanField(_("12.4. Does the legislation give the NPPO the power to approve/accredit transitional facilities owned and operated by third parties (official or private), to be used for inspection, treatment, or storage of consignments of plants, plant products and other regulated articles that still are pending phytosanitary release?"), choices=BOOL_CHOICES,blank=True, null=True, help_text=_(" "),)
+    m_72 = models.NullBooleanField(_("12.5. Does the legislation allow the NPPO to, after assessment of the phytosanitary risk and operational feasibility, authorize that consignments of plants, plant products or other regulated articles can be inspected at their final destination or in a transitional facility, instead of the point of entry, if requested by the importer, and if consignments are properly sealed and marked?"), choices=BOOL_CHOICES,blank=True, null=True, help_text=_(" "),)
+    m_73 = models.NullBooleanField(_("12.6. Does the legislation provide for the adoption of emergency actions that may be necessary if the inspector detects a pest which is determined by the NPPO to be regulated and not listed as being associated with the commodity from the exporting country, or if the inspector detects other organisms posing a potential phytosanitary threat?"), choices=BOOL_CHOICES,blank=True, null=True, help_text=_(" "),)
+    m_74 = models.NullBooleanField(_("12.7. In case of emergency actions or pest interception, does the legislation provide for the notification of the pest interception or the emergency actions to the exporting contracting party (IPPC Art. VII.6; <a href='https://www.ippc.int/en/publications/608/' target='_blank'>ISPM 13</a>)?"), choices=BOOL_CHOICES,blank=True, null=True, help_text=_(" "),)
+    m_75 = models.NullBooleanField(_("12.8. In case of the importation of infected plants or plant products, does the legislation specify who pays for reshipment, destruction, treatment and disinfection?"), choices=BOOL_CHOICES,blank=True, null=True, help_text=_(" "),)
+    m_76 = models.NullBooleanField(_("13.1. Does the legislation address the situation of consignments of plants, plant products or other regulated articles that enter into the country in transit to another?"), choices=BOOL_CHOICES,blank=True, null=True, help_text=_(" "),)
+    m_77 = models.NullBooleanField(_("14.1. Does the legislation address the obligation of persons entering into the country to declare plants, plant products or other regulated articles?"), choices=BOOL_CHOICES,blank=True, null=True, help_text=_(" "),)
+    m_78 = models.NullBooleanField(_("14.2. Does the legislation define the functions and duties of employees of the postal service, private shipping agents, officials of customs department and port authorities or law enforcement who are involved or have responsibilities to exercise when plants or plant products arrive in the country?"), choices=BOOL_CHOICES,blank=True, null=True, help_text=_(" "),)
+    m_79 = models.NullBooleanField(_("14.3. Does the legislation include the requirement to inform the NPPO of the arrival of plants or plant products in the country, and to store consignments of plants or plant products until phytosanitary inspectors can take custody of them?"), choices=BOOL_CHOICES,blank=True, null=True, help_text=_(" "),)
+    m_80 = models.NullBooleanField(_("15.1. Does the legislation require that the NPPO only provides certification of plants, plant products and other regulated articles after verification of compliance with the phytosanitary requirements of the importing country?"), choices=BOOL_CHOICES,blank=True, null=True, help_text=_(" "),)
+    m_81 = models.NullBooleanField(_("15.2. Does the legislation require a phytosanitary certificate to be issued in accordance with the IPPC model? <a href='https://www.ippc.int/en/publications/613/' target='_blank'>ISPM 7</a> sec. 4"), choices=BOOL_CHOICES,blank=True, null=True, help_text=_(" "),)
+    m_82 = models.NullBooleanField(_("15.3. Does the legislation specify who pays for any treatment required by the NPPO as a condition to issue the PC?"), choices=BOOL_CHOICES,blank=True, null=True, help_text=_(" "),)
+    m_83 = models.NullBooleanField(_("15.4. Does the legislation identify the exporter obligation and the NPPO's responsibility to guarantee the phytosanitary security of a consignment after certification and until it actually leaves the country?"), choices=BOOL_CHOICES,blank=True, null=True, help_text=_(" "),)
+    m_84 = models.NullBooleanField(_("15.5. Does the legislation allow the NPPO to approve/accredit phytosanitary service providers to act under the responsibility of the NPPO in diverse functions/steps of the certification process?"), choices=BOOL_CHOICES,blank=True, null=True, help_text=_("Phytosanitary service providers are those agencies whether public or private that have been contracted or delegated to perform functions of the NPPO except issuance of the phytosanitary certificate. "),)
+    m_85 = models.NullBooleanField(_("15.6. Does the legislation establish that the public officers in charge of the issuance of phytosanitary certificates shall be technically qualified and duly authorized by the NPPO?"), choices=BOOL_CHOICES,blank=True, null=True, help_text=_(" "),)
+    m_86 = models.NullBooleanField(_("15.7. Does the legislation provide the NPPO with the authority to establish and enforce the application of phytosanitary procedures necessary for the assurance of the identity and traceability to the place of origin (e.g. Pest Free Areas), of export consignments when this is required by the importing country?"), choices=BOOL_CHOICES,blank=True, null=True, help_text=_(" "),)
+    m_87 = models.NullBooleanField(_("15.8. Does the legislation specify that a re-export certificate, following the model of the IPPC, should be used when an imported consignment that has been exposed to infestation or split up, or combined with other consignments or repackaged, is re-exported?"), choices=BOOL_CHOICES,blank=True, null=True, help_text=_(" "),)
+    m_88 = models.NullBooleanField(_("16.1. Does the phytosanitary legislation provide for the determination and identification of PFA?"), choices=BOOL_CHOICES,blank=True, null=True, help_text=_(" "),)
+    m_89 = models.NullBooleanField(_("16.2. Does the phytosanitary legislation provide for the determination and identification of areas of low pest prevalence (ALPP)?"), choices=BOOL_CHOICES,blank=True, null=True, help_text=_(" "),)
+    m_90 = models.NullBooleanField(_("17.1. Does the phytosanitary legislation provide for pest surveillance to be undertaken by the NPPO? (IPPC Art. IV 2.b)"), choices=BOOL_CHOICES,blank=True, null=True, help_text=_("Refer also to <a href='https://www.ippc.int/en/publications/615/' target='_blank'>ISPM 6</a>  for details regarding pest surveillance.  "),)
+    m_91 = models.NullBooleanField(_("17.2. Does the phytosanitary legislation require phytosanitary inspectors, other national and local government agencies, research institutions, universities, scientific societies (including amateur specialists), producers, consultants, museums, and the general public to report the appearance of new pests or certain pests as required by the NPPO? (<a href='https://www.ippc.int/en/publications/615/' target='_blank'>ISPM 6</a> Section 1.1)"), choices=BOOL_CHOICES,blank=True, null=True, help_text=_("to cooperate with one another to the fullest practicable extent in achieving the aims of this Convention (Article VIII.1), and in particular to cooperate in the exchange of information on plant pests, particularly the reporting of the occurrence, outbreak or spread of pests that may be of immediate or potential danger, in accordance with such procedures as may be established by the Commission ...(Article VIII.1a). "),)
+    m_92 = models.NullBooleanField(_("17.3. Does the phytosanitary legislation require anyone who publishes the occurrence of a new pest in the country to concurrently submit that publication to the NPPO?"), choices=BOOL_CHOICES,blank=True, null=True, help_text=_("This is not a provision for the NPPO to approve or discredit a publication but a procedure to be informed duly in order to take measures to mitigate risks or perform surveillance to verify occurrence of a pest as soon as possible.  "),)
+    m_93 = models.NullBooleanField(_("18.1. Does the NPPO have the legal authority to declare an area to be under quarantine, and impose temporary restrictions on the exercise of rights by citizens and legal entities and impose additional phytosanitary measures (e.g. limiting the movement of plants, plant products and other regulated articles, destruction, treatments, etc)?"), choices=BOOL_CHOICES,blank=True, null=True, help_text=_(" "),)
+    m_94 = models.NullBooleanField(_("18.2. Does the phytosanitary legislation establish a procedure for review of areas under quarantine and the lifting of quarantine where the situation has changed?"), choices=BOOL_CHOICES,blank=True, null=True, help_text=_(" "),)
+    m_95 = models.NullBooleanField(_("18.3. Does the phytosanitary legislation impose a duty on the owner or occupier, and if necessary on owners or occupiers of nearby land, ordering them to take whatever measures the inspector considers appropriate to control a pest?"), choices=BOOL_CHOICES,blank=True, null=True, help_text=_(" "),)
+    m_96 = models.NullBooleanField(_("18.4. Does the legislation establish that where a land owner does not carry out the ordered treatment within the required time period, the NPPO may carry out the treatment, but the land owner retains the obligation to pay?"), choices=BOOL_CHOICES,blank=True, null=True, help_text=_(" "),)
+    m_97 = models.NullBooleanField(_("19.1. Does the legislation specify what can be considered as a phytosanitary emergency situation?"), choices=BOOL_CHOICES,blank=True, null=True, help_text=_(" "),)
+    m_98 = models.NullBooleanField(_("19.2. Does the legislation specify who the competent authority is to declare an emergency phytosanitary situation?"), choices=BOOL_CHOICES,blank=True, null=True, help_text=_("Competent authority: Refer to <a href='https://www.ippc.int/en/publications/622/' target='_blank'>ISPM 5</a> Supplement 1 Para. 5.7 "),)
+    m_99 = models.NullBooleanField(_("19.3. Does the legislation establish the obligation of other government agencies to collaborate with the NPPO under a phytosanitary emergency situation?"), choices=BOOL_CHOICES,blank=True, null=True, help_text=_(" "),)
+    m_100 = models.NullBooleanField(_("19.4. Does the legislation contain provisions for economic compensation to the owners affected by eradication procedures?"), choices=BOOL_CHOICES,blank=True, null=True, help_text=_(" "),)
+    m_101 = models.NullBooleanField(_("19.5. Does the legislation allow for the destruction of plants that may not be infested but that have been exposed to the pest infestation, in buffer zones surrounding the infested plants?"), choices=BOOL_CHOICES,blank=True, null=True, help_text=_(" "),)
+    m_102 = models.NullBooleanField(_("19.6. Does the legislation create a Phytosanitary Emergency Fund to be solely utilized in case of a declaration of a phytosanitary emergency?"), choices=BOOL_CHOICES,blank=True, null=True, help_text=_(" "),)
+    m_103 = models.NullBooleanField(_("20.1. Does the legislation establish the collection of fees by the NPPO services?"), choices=BOOL_CHOICES,blank=True, null=True, help_text=_("Fees are generally charged to recover costs of services offered by NPPOs. These fees may be charged by some NPPOs to cover costs of sampling, inspection, PRA, export certification, pest diagnostics, as well as to owners of pest free places or sites of production among other possible services.   <br> <br> <br><i>If answer is <b>No</b> go to question <b>21.1.</b></i> "),)
+    m_104 = models.NullBooleanField(_("20.2. Does the legislation allow for the NPPO to access the fees and fines collected, to improve its services?"), choices=BOOL_CHOICES,blank=True, null=True, help_text=_(" "),)
+    m_105 = models.NullBooleanField(_("20.3. Are the NPPO fees non-discriminatory and non-protectionist?"), choices=BOOL_CHOICES,blank=True, null=True, help_text=_("Fees should follow the principle of national treatment and not become impediments to trade. Refer to Agreement on Sanitary and Phytosanitary Meaures of the WTO Annex C. 1f.  "),)
+    m_106 = models.NullBooleanField(_("20.4. Are the NPPOs fees based on the actual cost of the services?"), choices=BOOL_CHOICES,blank=True, null=True, help_text=_("Refer to Agreement on Sanitary and Phytosanitary Meaures of the WTO Annex C. 1f. "),)
+    m_107 = models.NullBooleanField(_("20.5. Does the legislation allow for the fees charged by the NPPO to be openly and transparently accessible to the general public?"), choices=BOOL_CHOICES,blank=True, null=True, help_text=_(" "),)
+    m_108 = models.NullBooleanField(_("21.1. Does the legislation identify as an offense importing or exporting plants or plant products without the proper documentation or through an unapproved port of entry?"), choices=BOOL_CHOICES,blank=True, null=True, help_text=_(" "),)
+    m_109 = models.NullBooleanField(_("21.2. Does the legislation identify as an offense obstructing or hindering an inspector in the performance of his or her official functions or failing to comply with an inspector's instruction?"), choices=BOOL_CHOICES,blank=True, null=True, help_text=_(" "),)
+    m_110 = models.NullBooleanField(_("21.3. Does the legislation identify as an offense knowingly or recklessly providing false information to an official of the NPPO?"), choices=BOOL_CHOICES,blank=True, null=True, help_text=_("Official of the NPPO includes an employee for the NPPO or any officer delegated by the NPPO to perform its official functions."),)
+    m_111 = models.NullBooleanField(_("21.4. Does the legislation identify as an offense breaking the seal on a sealed container containing plants, plant products or other regulated articles except in the presence of an inspector?"), choices=BOOL_CHOICES,blank=True, null=True, help_text=_(" "),)
+    m_112 = models.NullBooleanField(_("21.5. Does the legislation identify as an offense intentionally permitting or causing the introduction or spread of a pest?"), choices=BOOL_CHOICES,blank=True, null=True, help_text=_(" "),)
+    m_113 = models.NullBooleanField(_("21.6. Does the legislation identify as an offense failing to safeguard the phytosanitary security of a consignment after issuance of a phytosanitary certificate?"), choices=BOOL_CHOICES,blank=True, null=True, help_text=_(" "),)
+    m_114 = models.IntegerField(_("21.7. Does the legislation identify as an offense if committed by inspectors or other representatives of the NPPO: seizing plants or plant products for any reason other than that they are likely to introduce or spread a pest: - disclosing to any other person any information acquired in the exercise of official functions under the legislation;-directly or indirectly asking for or taking any personal payment or other reward, or abstaining from doing an official action for improper reasons?"), choices=THEM1, default=None,help_text=_(" "),)
+    m_115 = models.NullBooleanField(_("21.8. Does the phytosanitary legislation include provisions for the seizure of plants, plant products and regulated articles where an offence has been committed, as well as anything else that may have been used in the commission of an offence?"), choices=BOOL_CHOICES,blank=True, null=True, help_text=_(" "),)
+    m_116 = models.NullBooleanField(_("21.9. Are there provisions in the legislation for penalties to be updated and applied proportionally to the offence and according to a neutral economic parameter?"), choices=BOOL_CHOICES,blank=True, null=True, help_text=_(" "),)
+    m_117 = models.NullBooleanField(_("21.10. Does the legislation have a system of fixed penalties or 'spot fines,' which can be imposed immediately by inspectors according to the established procedures?"), choices=BOOL_CHOICES,blank=True, null=True, help_text=_(" "),)
+    m_118 = models.NullBooleanField(_("21.11. Does the legislation include a system of administrative penalties (e.g. suspension of the operators register, or cancelling the accreditation as phytosanitary service provider)?"), choices=BOOL_CHOICES,blank=True, null=True, help_text=_(" "),)
+    m_119 = models.NullBooleanField(_("22.1. Does the phytosanitary legislation specify the duty of other organizations and persons (e.g. customs, police, etc) to cooperate with the NPPO, for the enforcement of the legislation?"), choices=BOOL_CHOICES,blank=True, null=True, help_text=_(" "),)
+    m_120 = models.NullBooleanField(_("22.2. Does the legislation give the Phytosanitary Authority the power to issue and amend subsidiary instruments and thus to act upon new developments and as conditions change either within or outside the country?"), choices=BOOL_CHOICES,blank=True, null=True, help_text=_("For example where pest status has altered, and the phytosanitary requirements must change accordingly.  "),)
+    m_121 = models.NullBooleanField(_("22.3. Does the legislation give the NPPO the power to establish and maintain its own internal operation manuals?"), choices=BOOL_CHOICES,blank=True, null=True, help_text=_(" "),)
+    m_122 = models.NullBooleanField(_("22.4. Does the legislation give the NPPO the power to establish and maintain registers of operators (importers, exporters, farmers, phytosanitary service providers)?"), choices=BOOL_CHOICES,blank=True, null=True, help_text=_(" "),)
+    #m_123
+    #m_comment = models.TextField(_("Comment"), blank=True, null=True,help_text='Please put your comments here.')
+    c_m_60= models.TextField(_("Comment"), blank=True, null=True,help_text=' ');
+    c_m_61= models.TextField(_("Comment"), blank=True, null=True,help_text=' ');
+    c_m_62= models.TextField(_("Comment"), blank=True, null=True,help_text=' ');
+    c_m_63= models.TextField(_("Comment"), blank=True, null=True,help_text=' ');
+    c_m_64= models.TextField(_("Comment"), blank=True, null=True,help_text=' ');
+    c_m_65= models.TextField(_("Comment"), blank=True, null=True,help_text=' ');
+    c_m_66= models.TextField(_("Comment"), blank=True, null=True,help_text=' ');
+    c_m_67= models.TextField(_("Comment"), blank=True, null=True,help_text=' ');
+    c_m_68= models.TextField(_("Comment"), blank=True, null=True,help_text=' ');
+    c_m_69= models.TextField(_("Comment"), blank=True, null=True,help_text=' ');
+    c_m_70= models.TextField(_("Comment"), blank=True, null=True,help_text=' ');
+    c_m_71= models.TextField(_("Comment"), blank=True, null=True,help_text=' ');
+    c_m_72= models.TextField(_("Comment"), blank=True, null=True,help_text=' ');
+    c_m_73= models.TextField(_("Comment"), blank=True, null=True,help_text=' ');
+    c_m_74= models.TextField(_("Comment"), blank=True, null=True,help_text=' ');
+    c_m_75= models.TextField(_("Comment"), blank=True, null=True,help_text=' ');
+    c_m_76= models.TextField(_("Comment"), blank=True, null=True,help_text=' ');
+    c_m_77= models.TextField(_("Comment"), blank=True, null=True,help_text=' ');
+    c_m_78= models.TextField(_("Comment"), blank=True, null=True,help_text=' ');
+    c_m_79= models.TextField(_("Comment"), blank=True, null=True,help_text=' ');
+    c_m_80= models.TextField(_("Comment"), blank=True, null=True,help_text=' ');
+    c_m_81= models.TextField(_("Comment"), blank=True, null=True,help_text=' ');
+    c_m_82= models.TextField(_("Comment"), blank=True, null=True,help_text=' ');
+    c_m_83= models.TextField(_("Comment"), blank=True, null=True,help_text=' ');
+    c_m_84= models.TextField(_("Comment"), blank=True, null=True,help_text=' ');
+    c_m_85= models.TextField(_("Comment"), blank=True, null=True,help_text=' ');
+    c_m_86= models.TextField(_("Comment"), blank=True, null=True,help_text=' ');
+    c_m_87= models.TextField(_("Comment"), blank=True, null=True,help_text=' ');
+    c_m_88= models.TextField(_("Comment"), blank=True, null=True,help_text=' ');
+    c_m_89= models.TextField(_("Comment"), blank=True, null=True,help_text=' ');
+    c_m_90= models.TextField(_("Comment"), blank=True, null=True,help_text=' ');
+    c_m_91= models.TextField(_("Comment"), blank=True, null=True,help_text=' ');
+    c_m_92= models.TextField(_("Comment"), blank=True, null=True,help_text=' ');
+    c_m_93= models.TextField(_("Comment"), blank=True, null=True,help_text=' ');
+    c_m_94= models.TextField(_("Comment"), blank=True, null=True,help_text=' ');
+    c_m_95= models.TextField(_("Comment"), blank=True, null=True,help_text=' ');
+    c_m_96= models.TextField(_("Comment"), blank=True, null=True,help_text=' ');
+    c_m_97= models.TextField(_("Comment"), blank=True, null=True,help_text=' ');
+    c_m_98= models.TextField(_("Comment"), blank=True, null=True,help_text=' ');
+    c_m_99= models.TextField(_("Comment"), blank=True, null=True,help_text=' ');
+    c_m_100= models.TextField(_("Comment"), blank=True, null=True,help_text=' ');
+    c_m_101= models.TextField(_("Comment"), blank=True, null=True,help_text=' ');
+    c_m_102= models.TextField(_("Comment"), blank=True, null=True,help_text=' ');
+    c_m_103= models.TextField(_("Comment"), blank=True, null=True,help_text=' ');
+    c_m_104= models.TextField(_("Comment"), blank=True, null=True,help_text=' ');
+    c_m_105= models.TextField(_("Comment"), blank=True, null=True,help_text=' ');
+    c_m_106= models.TextField(_("Comment"), blank=True, null=True,help_text=' ');
+    c_m_107= models.TextField(_("Comment"), blank=True, null=True,help_text=' ');
+    c_m_108= models.TextField(_("Comment"), blank=True, null=True,help_text=' ');
+    c_m_109= models.TextField(_("Comment"), blank=True, null=True,help_text=' ');
+    c_m_110= models.TextField(_("Comment"), blank=True, null=True,help_text=' ');
+    c_m_111= models.TextField(_("Comment"), blank=True, null=True,help_text=' ');
+    c_m_112= models.TextField(_("Comment"), blank=True, null=True,help_text=' ');
+    c_m_113= models.TextField(_("Comment"), blank=True, null=True,help_text=' ');
+    c_m_114= models.TextField(_("Comment"), blank=True, null=True,help_text=' ');
+    c_m_115= models.TextField(_("Comment"), blank=True, null=True,help_text=' ');
+    c_m_116= models.TextField(_("Comment"), blank=True, null=True,help_text=' ');
+    c_m_117= models.TextField(_("Comment"), blank=True, null=True,help_text=' ');
+    c_m_118= models.TextField(_("Comment"), blank=True, null=True,help_text=' ');
+    c_m_119= models.TextField(_("Comment"), blank=True, null=True,help_text=' ');
+    c_m_120= models.TextField(_("Comment"), blank=True, null=True,help_text=' ');
+    c_m_121= models.TextField(_("Comment"), blank=True, null=True,help_text=' ');
+    c_m_122= models.TextField(_("Comment"), blank=True, null=True,help_text=' ');
+    c_m_123= models.TextField(_("Comment"), blank=True, null=True,help_text=' ');   
+    def __unicode__(self):
+        return self.title
+
+    def save(self, *args, **kwargs):
+        ''' On save, update timestamps '''
+        if not self.id:
+            self.publish_date = datetime.today()
+        self.modify_date = datetime.now()
+        super(Module2_2, self).save(*args, **kwargs)
+        
+   
+    @models.permalink # or: get_absolute_url = models.permalink(get_absolute_url) below
+    def get_absolute_url(self): # "view on site" link will be visible in admin interface
+        """Construct the absolute URL for a PCE Version."""
+        return ('pceversion-detail', (), {
+                            'country': self.country.name, # =todo: get self.country.name working
+                            'year': self.publish_date.strftime("%Y"),
+                            'session': self.version_number})
+                            
+class Module2_2Weaknesses(models.Model):
+    module2 = models.ForeignKey(Module2_2)
+    w1 = models.CharField(_("1"), blank=True, null=True, max_length=250,)
+    w2 = models.CharField(_("2"), blank=True, null=True,max_length=250,)
+    w3 = models.CharField(_("3"), blank=True, null=True,max_length=250,)
+    w4 = models.CharField(_("4"), blank=True, null=True,max_length=250,)
+    w5 = models.CharField(_("5"), blank=True, null=True,max_length=250,)
+
+    def __unicode__(self):  
+        return self.w1
+    def name(self):
+        return self.w1  
+### end SPLI module 2
 class M3_1(models.Model):
     """ M3_1 """
     name = models.CharField(_("name"), max_length=500)
