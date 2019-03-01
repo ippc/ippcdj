@@ -31,7 +31,7 @@ CountryNewsListView,CountryNewsDetailView,countrynews_create,countrynews_edit,\
 PartnersNewsDetailView,partners_news_create,partners_news_edit,\
 PollListView,PollResultsView,PollDetailView,vote_poll,poll_edit,poll_create,\
 email_send,EmailUtilityMessageDetailView,EmailUtilityMessageListView,ReminderMessageDetailView,ReminderMessageListView,\
-MassEmailUtilityMessageDetailView,MassEmailUtilityMessageListView,massemail_send,massemailutility_to_send,massemailutility_setstatus,\
+MassEmailUtilityMessageDetailView,MassEmailUtilityMessageListView,massemail_send,massemailutility_to_send,massemailutility_setstatus,mergemassemail_send,\
 DraftProtocolDetailView,  draftprotocol_create, draftprotocol_edit,draftprotocol_compilecomments,\
 draftprotocol_comment_create,draftprotocol_comment_edit,PublicationLibraryView,commenta,contactPointExtractor,\
 CountryRegionsPercentageListView,CountryStatsreportsListView,CountryStatsTotalreportsListView,CountryRegionsUsersListView,CountryTotalUsersListView,CountryStatsChangeInCPsListView,\
@@ -161,7 +161,7 @@ urlpatterns = patterns("",
     url(r'^iyph/', include('iyph.urls')),
     url(r'^pce/', include('pce.urls')),
     #PHYTO#url(r'^phytosanitary/', include('phytosanitary.urls')),
-   
+    
 
 
     url('^markdown/', include( 'django_markdown.urls')),
@@ -381,6 +381,9 @@ urlpatterns = patterns("",
     url(r'^massemailutility/status/(?P<pk>\d+)/(?P<status>\d+)/$',view=massemailutility_setstatus, name='mass-email-status'),
     url(r'^massemailutility_to_send/sendout/$', massemailutility_to_send, name='massemailutility-to-send'),
      
+   #--------------------------------------#
+    # MERGE EMAIL:    
+    url(r'^mergemassemailutility/send/$',view=mergemassemail_send, name='mass-email-send'),
     #------- CONTACT US EMAIL--------------------------------------#
     url(r'^contactusemail/all/$', view=ContactUsEmailMessageListView.as_view(),  name='contactus-email-list'),
     url(r'^contactusemail/(?P<pk>\d+)/$',ContactUsEmailMessageDetailView.as_view(), name='contactus-email-detail'),
@@ -706,7 +709,10 @@ url(r'^external-cooperation/organizations-page-in-ipp/(?P<partner>[\w-]+)/$',   
            view=PublicationLibraryView.as_view(),
            # view=country_view(),
            name='country'),     
-            
+    ##    url(r'^core-activities/external-cooperation/$',
+    ##    view=PublicationLibraryView.as_view(),
+    ##    # view=country_view(),
+    ##    name='country'),        
         
  
     #-------------DPs Comments---------------------------
