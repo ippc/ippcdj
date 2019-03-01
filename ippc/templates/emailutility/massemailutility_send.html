@@ -1,7 +1,8 @@
 {% extends "base.html" %}
-{% load pages_tags translate_tags mezzanine_tags i18n future staticfiles accounts_tags %}
 
-{% block meta_title %}{% trans "New email utility message" %} {% endblock %}
+{% load pages_tags translate_tags mezzanine_tags ippc_tags i18n future staticfiles accounts_tags %}
+
+{% block meta_title %}{% trans "New Mass Email utility message" %} {% endblock %}
 
 {% block body_class %}wide{% endblock %}
 
@@ -24,26 +25,261 @@
 {% endblock pageinfo %}
 
 {% block main %}
-<div class="alert alert-success">
-<p class="pull-right">
-  <a href="javascript:history.go(-1)">{% trans "« Cancel and go back" %}</a>
-</p>
+<script type="text/javascript">
+  function toggle_visibility() {
+        var e = document.getElementById('instruction');
+        if (e.style.display == 'block'){
+            e.style.display = 'none';
+        }
+        else{
+            e.style.display = 'block';
+        }
+    }
+function viewMemb(id){
+    section = document.getElementById(id);
+    if (section.style.display=="inline") {
+        section.style.display="none";
+    } else {
+        section.style.display="inline";
+    }
+}
+      	   
+function isChecked(theform,name,group){
+     var elementlength=theform.elements.length;
+     var item="group"+name+"_"+group;;
+     for( i=1;  i  < elementlength ; i++ ) {
+         if(theform.elements[i].name==item ){
+             if (theform.elements[i].checked ==true){
+                 return true;
+             }else{
+                 return false;
+             }
 
-<h1><span class="normal">{% trans "Create New Mass Email message" %}</span> </h1>
-<p class="alert alert-warning"> You can select multiple groups.<br>
-    The message will be stored and sent out in the next hours. At the end you will receive a notification.</p>
-<p class="alert alert-warning"> Be careful when you edit the text:
-    <br/>- don't copy the text from Word documents, but write the text directly in the text box or paste the content from Word first to a simple text editor as Notepad
-    <br/>- when you write a link in the text change the link from <b>https</b> to  <b>http</b>, otherwise link won't work</p>
-<p>Emails can be sent to any number of recipients, either selecting specific members, groups of members, or entering the email addresses of individuals that are not in the system.</p>
-<form class="customform" method="POST" action="" enctype="multipart/form-data">
+         }
+    }
+    return false;
+}
+
+function  checkmembers(theform,name,nameisck,group,id){
+    var elementlength=theform.elements.length;
+    var prefix=name+"_"+group+"_";
+    
+    var isC=isChecked(theform,nameisck,group);
+    for( i=1;  i  < elementlength ; i++ ) {
+        if(theform.elements[i].type=="checkbox"  ){
+            var temp=theform.elements[i].name.substr(0,prefix.length);
+            if( prefix==temp){
+                theform.elements[i].checked=isC;
+            }
+        }
+    }
+    viewMemb(id);
+  }
+
+function  checkNotify(theform,group,field){
+    var elementlength=theform.elements.length;
+    var prefix=""+group;
+    var formObj = window.document.forms.my_form;
+    var val  ="";
+
+    for( i=1;  i  < elementlength ; i++ ) {
+        if(theform.elements[i].type=="checkbox" && theform.elements[i].checked){
+            var temp=theform.elements[i].name.substr(0,prefix.length);
+            if( prefix==temp){
+                     val=val+ theform.elements[i].value+",";
+             }
+        }
+    }
+    formObj[""+field].value=val;
+}
+
+</script>
+
+
+<p class="pull-right"><a href="javascript:history.go(-1)">{% trans "« Cancel and go back" %}</a></p>
+    
+
+<div class="alert alert-success" >
+    <h1><span class="normal"><span id="divtitle">Create New Mass Email message</span> </span> </h1>
+    <div id="istr_button">   <a class="btn btn-warning" onclick="javascript:toggle_visibility();">SHOW / HIDE Instruction</a></div>
+    <div id="instruction" style="display:none;">
+        <p class="alert alert-warning">- before sending a new mass email message check <a href="/massemailutility/all/">here</a> that all the previous messages, not in draft status, where sent (done by you or other users on the same or previous day)
+        <br>- any new message will be stored by default in 'Draft' status
+        <br>- after receiving a copy of the message check that it is correct (check text, mistakes, links working, etc.)
+        <br>- if the message is ok: open it and in the detail page click on the button 'click to set as TO BE SENT'
+        <br>- if the message is not ok, leave it in 'Draft' status  and create a new one
+        <br>- all the message in 'TO BE SENT' status message will be sent automatically in the background to recipients in the next hours, sending a message to several recipients (e.g. Contact Points, RPPOs) in real time will take a few hours
+        <br>- when the message has been sent to all recipients you will get a notification
+        <br>- you can check the status of the message at any moment 
+        <br>- if you note an error in the email and you want to stop the messages to be sent out go to the messages detail page  andclick on the button 'click to set as DRAFT'
+        <br>
+        <br>  
+        <p class="alert alert-warning"> Be careful when you edit the text:   
+        <br/>- don't copy the text from Word documents, but write the text directly in the text box or paste the content from Word first to a simple text editor as Notepad   
+        <br/>- when you write a link in the text change the link from <b>https</b> to  <b>http</b>, otherwise link won't work <br/>
+        Emails can be sent to any number of recipients, either selecting specific members, groups of members, or entering the email addresses of individuals that are not in the system.
+        </p>       
+    </div>  
+
+    <form class="customform" method="POST" action="" enctype="multipart/form-data">
     {% csrf_token %}
+    <script src="//tinymce.cachefly.net/4.2/tinymce.min.js"></script>
+    <script>
+        tinymce.init({selector: "textarea",    theme: "modern",    plugins: [        "advlist autolink lists link image charmap print preview hr anchor pagebreak",        "searchreplace wordcount visualblocks visualchars code fullscreen",        "insertdatetime media nonbreaking save table contextmenu directionality",        "emoticons template paste textcolor colorpicker textpattern imagetools"    ],    toolbar1: "insertfile undo redo | styleselect | bold italic | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | link image",     image_advtab: true,    templates: [        {title: 'Test template 1', content: 'Test 1'},        {title: 'Test template 2', content: 'Test 2'}    ]});
+    </script>
+       
     <fieldset>
-        {% include "emailutility/massemailutility_sendform.html" %}
+        {% if form.non_field_errors or form.errors or  f_form.errors %}
+            <div class="alert alert-error">{% trans "Please correct the errors below." %}
+            <ul>
+            {% for error in form.non_field_errors %}
+            <li>{{ error }}</li>
+            {% endfor %}
+            {% for error in form.errors %}
+            <li>{{ error }}</li>
+            {% endfor %}
+            </ul>
+            </div>
+        {% endif %}
+
+
+    {% for f in form %}
+        {% if not f.is_hidden %}
+            {%if f.name == 'mass_merge' %}
+                  <input name="mass_merge" type="hidden" value="0"/>
+            {%elif f.name == 'emailfrom' or  f.name == 'subject' or   f.name == 'messagebody' or f.name == 'emailto'  or   f.name == 'users'  %}
+               <div class="control-group">   <label>{{f.label |safe}}</label>
+                    <div class="controls">
+                        {{f}}
+                    </div>
+                </div> 
+           {% endif %}
+        {% endif %}
+    {% endfor %}
+    
+   
+    
+    <h3>Send to users of a group:</h3>
+    <i>Click on the icon <img src="/static/leaflet/images/zoom-in.png"/> to see users in the groups.</i>
+<table cellpadding=6>
+    <tr>
+        <td><strong>Groups:</strong><br />
+            <table cellpadding=2>
+                {% for g in emailgroups %}
+                    <tr>
+                        <td width="5"><img title="Open Group" src="/static/leaflet/images/zoom-in.png" onclick="javascript:viewMemb('view_{{g.1}}');"/></td>
+                        <td>  {{g.0}}</td>
+                        <td width="5" title="Check all"><input type="checkbox" onClick="javascript:checkmembers(this.form,'user','',{{g.1}},'view_{{g.1}}');void(0);" name="group_{{g.1}}" value="view_{{g.1}}"/></td>
+                    </tr>
+                    <tr><td/>
+                    <td>
+                    <div style="display:none" id="view_{{g.1}}">
+                    {% for  u in g|slice:"2:" %} 
+                        <input onchange="javascript:checkNotify(this.form,'user_','checkgroups');" type="checkbox" name="user_{{g.1}}_0" value="{{u.2}}"/>{{u.0}} {{u.1}} ({{u.2}})<br/>
+                    {% endfor %}
+                    </div>
+                    </td>
+                 </tr>
+                {% endfor %}
+            </table>
+        <td>
+        <td valign="top"><strong>Contact Points:</strong><br />
+
+            <table cellpadding=2>
+            {% for g in emailcp2 %}
+                    <tr>
+                        <td width="5"><img title="Open Group" src="/static/leaflet/images/zoom-in.png" onclick="javascript:viewMemb('viewc1_{{g.1}}');"/></td>
+                        <td>  {{g.0}}</td>
+                        <td width="5" title="Check all"><input type="checkbox" onClick="javascript:checkmembers(this.form,'usercp1','cp1',{{g.1}},'viewc1_{{g.1}}');void(0);" name="groupcp1_{{g.1}}" value="viewc1_{{g.1}}"/></td>
+                    </tr>
+                    <tr><td/>
+                    <td>
+                    <div style="display:none" id="viewc1_{{g.1}}">
+                    {% for  u in g|slice:"2:" %} 
+                        <input onchange="javascript:checkNotify(this.form,'usercp1_','checkgroups');" type="checkbox" name="usercp1_{{g.1}}_0" value="{{u.2}}"/>{{u.0}} {{u.1}}<br/>
+                    {% endfor %}
+                    </div>
+                    </td>
+                 </tr>
+                {% endfor %}
+
+            </table><br><br>
+            <table cellpadding=2>
+                {% for g in emailcp %}
+                    <tr>
+                        <td width="5"><img title="Open Group" src="/static/leaflet/images/zoom-in.png" onclick="javascript:viewMemb('viewc_{{g.1}}');"/></td>
+                        <td>  {{g.0}}</td>
+                        <td width="5" title="Check all"><input type="checkbox" onClick="javascript:checkmembers(this.form,'usercp','cp',{{g.1}},'viewc_{{g.1}}');void(0);" name="groupcp_{{g.1}}" value="viewc_{{g.1}}"/></td>
+                    </tr>
+                    <tr><td/>
+                    <td>
+                    <div style="display:none" id="viewc_{{g.1}}">
+                    {% for  u in g|slice:"2:" %} 
+                        <input onchange="javascript:checkNotify(this.form,'usercp_','checkgroups');" type="checkbox" name="usercp_{{g.1}}_0" value="{{u.2}}"/>{{u.0}} {{u.1}}<br/>
+                    {% endfor %}
+                    </div>
+                    </td>
+                 </tr>
+                {% endfor %}
+            </table><br /><br />
+            <strong>Country editors:</strong><br />
+            <table cellpadding=2>
+                {% for g in emaile2 %}
+                        <tr>
+                            <td width="5"><img title="Open Group" src="/static/leaflet/images/zoom-in.png" onclick="javascript:viewMemb('viewe1_{{g.1}}');"/></td>
+                            <td>  {{g.0}}</td>
+                            <td width="5" title="Check all"><input type="checkbox" onClick="javascript:checkmembers(this.form,'usere1','e1',{{g.1}},'viewe1_{{g.1}}');void(0);" name="groupe1_{{g.1}}" value="viewe1_{{g.1}}"/></td>
+                        </tr>
+                        <tr><td/>
+                        <td>
+                        <div style="display:none" id="viewe1_{{g.1}}">
+                        {% for  u in g|slice:"2:" %} 
+                            <input onchange="javascript:checkNotify(this.form,'usere1_','checkgroups');" type="checkbox" name="usere1_{{g.1}}_0" value="{{u.2}}"/>{{u.0}} {{u.1}}<br/>
+                        {% endfor %}
+                        </div>
+                        </td>
+                     </tr>
+                    {% endfor %}
+
+                    </table><br>
+                <td>
+            </tr>    
+
+        </table>
+
+
+        <!-- Attachments -->
+        <fieldset>
+        <legend>Attachments</legend>
+            {{ f_form.management_form }}
+            {{ f_form.non_form_errors }}
+            {% for form in f_form %}
+                {{ form.id }}
+                <div class="inline {{ f_form.prefix }}">
+                   {% if  form.errors %}
+                   <div class="alert alert-error"> 
+                   {% endif %}
+
+                    {{ form.description.errors }}
+                    {{ form.description.label_tag }}
+                    {{ form.description }}
+                    {{ form.file.errors }}
+                    {{ form.file.label_tag }}
+                    {{ form.file }}
+                        {% if f_form.can_delete %}
+                            {{ form.DELETE }}
+                        {% endif %}
+                    {% if  f_form.errors %}
+                   </div> 
+                   {% endif %}
+                </div>
+            {% endfor %}
+        </fieldset>
+  
         <div class="form-actions">
             <button type="submit" class="btn btn-info btn-large" tabindex="7">{% trans "Store Message to send" %}</button> or <a href="javascript:history.go(-1)">{% trans "Cancel" %}</a>
         </div>
     </fieldset>
 </form>
 </div>
-{% endblock %}
+ {% endblock %}

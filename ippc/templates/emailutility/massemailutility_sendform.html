@@ -28,7 +28,7 @@ tinymce.init({selector: "textarea",    theme: "modern",    plugins: [        "ad
 
 
 
-{% fields_for form %}
+{# fields_for form #}
 <script type="text/javascript">
 
 function viewMemb(id){
@@ -92,6 +92,52 @@ function  checkNotify(theform,group,field){
 
 
 </script>
+<!-- ALL COMMN FIELDS-->
+{% for f in form %}
+    {% if not f.is_hidden %}
+    
+                 {%if f.name == 'mass_merge'%}
+                 <div class="control-group">   <label>{{f.label |safe}}</label>
+            <div class="controls">
+             <ul>
+                        <li>
+                            <label for="id_{{f.name}}_1" class="control-label">
+                            <input id="id_{{f.name}}_1" name ="{{f.name}}" type="radio" value="True" {% if f.value == True %}checked{%endif%}>  MASS email</label>
+                        </li>
+                        <li> 
+                           <label for="id_{{f.name}}_2" class="control-label">
+                           <input id="id_{{f.name}}_2" name ="{{f.name}}" type="radio" value="False" {% if f.value == False %}checked{%endif%}  > MERGE email</label>
+                        </li>
+                    </ul>    
+               </div>
+            </div> 
+        {%elif f.name == 'emailfrom' or  f.name == 'subject' or   f.name == 'messagebody'  %}
+           <div class="control-group">   <label>{{f.label |safe}}</label>
+            <div class="controls">
+             
+                    {{f}}
+             
+              </div>
+            </div> 
+       {% endif %}
+       
+     {% endif %}
+{% endfor %}
+ 
+ <!-- MASS FIELDS-->
+{%if form.mass_merge.value == 0%}
+    {% for f in form %}
+        {% if not f.is_hidden %}
+            {%if f.name == 'emailto'  or   f.name == 'users'  %}
+              <div class="control-group">   <label>{{f.label |safe}}</label>
+            <div class="controls">
+                 {{f}}
+              </div>
+            </div> 
+            {% endif %}
+        {% endif %}
+    {% endfor %}
+    
 <h3>Send to users of a group:</h3>
     <i>Click on the icon <img src="/static/leaflet/images/zoom-in.png"/> to see users in the groups.</i>
 <table cellpadding=6>
@@ -184,34 +230,87 @@ function  checkNotify(theform,group,field){
     
 </table>
 
-
-
-   <fieldset>
-                <legend>Attachments</legend>
-                {{ f_form.management_form }}
-                {{ f_form.non_form_errors }}
-                {% for form in f_form %}
-                    {{ form.id }}
-                    <div class="inline {{ f_form.prefix }}">
-                       {% if  form.errors %}
-                       <div class="alert alert-error"> 
-                       {% endif %}
-                           
-                        {{ form.description.errors }}
-                        {{ form.description.label_tag }}
-                        {{ form.description }}
-                        {{ form.file.errors }}
-                        {{ form.file.label_tag }}
-                        {{ form.file }}
-                         {% if f_form.can_delete %}
-                {{ form.DELETE }}
+{% else %} <!-- MERGE FIELDS-->
+    {% for f in form %}
+        {% if not f.is_hidden %}
+            {%if  f.name == 'emailcc'  or   f.name == 'csv_file'  %}
+                 <div class="control-group">   <label>{{f.label |safe}}</label>
+                <div class="controls">
+                    {{f}}
+                  </div>
+                </div> 
             {% endif %}
-                        {% if  f_form.errors %}
-                       </div> 
-                       {% endif %}
-                    </div>
-                {% endfor %}
-            </fieldset>
+        {% endif %}
+    {% endfor %}
+    
+<h3>Select the COUNTRIES:</h3>
+<i>Click on the icon <img src="/static/leaflet/images/zoom-in.png"/> to see <strong>Contact Points</strong> in each groups.</i>
+<br><br>
+<table cellpadding=2>
+    {% for g in emailcp2iso %}
+        <tr>
+            <td width="5"><img title="Open Group" src="/static/leaflet/images/zoom-in.png" onclick="javascript:viewMemb('viewc1_{{g.1}}');"/></td>
+            <td>  {{g.0}}</td>
+            <td width="5" title="Check all"><input type="checkbox" onClick="javascript:checkmembers(this.form,'usercp1','cp1',{{g.1}},'viewc1_{{g.1}}');void(0);" name="groupcp1_{{g.1}}" value="viewc1_{{g.1}}"/></td>
+        </tr>
+        <tr><td/>
+        <td>
+        <div style="display:none" id="viewc1_{{g.1}}">
+        {% for  u in g|slice:"2:" %} 
+            <input onchange="javascript:checkNotify(this.form,'usercp1_','checkgroups');" type="checkbox" name="usercp1_{{g.1}}_0" value="{{u.0}}"/> {{u.0}} {{u.1}}<br/>
+        {% endfor %}
+        </div>
+        </td>
+     </tr>
+    {% endfor %}
+</table>
+    {% for g in emailcpiso %}
+    <table>
+        <tr>
+            <td width="5"><img title="Open Group" src="/static/leaflet/images/zoom-in.png" onclick="javascript:viewMemb('viewc_{{g.1}}');"/></td>
+            <td>  {{g.0}}</td>
+            <td width="5" title="Check all"><input type="checkbox" onClick="javascript:checkmembers(this.form,'usercp','cp',{{g.1}},'viewc_{{g.1}}');void(0);" name="groupcp_{{g.1}}" value="viewc_{{g.1}}"/></td>
+        </tr>
+        <tr><td/>
+        <td>
+        <div style="display:none" id="viewc_{{g.1}}">
+        {% for  u in g|slice:"2:" %} 
+            <input onchange="javascript:checkNotify(this.form,'usercp_','checkgroups');" type="checkbox" name="usercp_{{g.1}}_0" value="{{u.0}}"/> {{u.0}} {{u.1}}<br/>
+        {% endfor %}
+        </div>
+        </td>
+     </tr> </table>
+    {% endfor %}
+{% endif %}
+
+
+<!-- Attachments -->
+<fieldset>
+<legend>Attachments</legend>
+    {{ f_form.management_form }}
+    {{ f_form.non_form_errors }}
+    {% for form in f_form %}
+        {{ form.id }}
+        <div class="inline {{ f_form.prefix }}">
+           {% if  form.errors %}
+           <div class="alert alert-error"> 
+           {% endif %}
+
+            {{ form.description.errors }}
+            {{ form.description.label_tag }}
+            {{ form.description }}
+            {{ form.file.errors }}
+            {{ form.file.label_tag }}
+            {{ form.file }}
+                {% if f_form.can_delete %}
+                    {{ form.DELETE }}
+                {% endif %}
+            {% if  f_form.errors %}
+           </div> 
+           {% endif %}
+        </div>
+    {% endfor %}
+</fieldset>
    
    
 

@@ -1,0 +1,252 @@
+{% extends "base.html" %}
+
+{% load pages_tags translate_tags mezzanine_tags ippc_tags i18n future staticfiles accounts_tags %}
+
+{% block meta_title %}{% trans "New Merge Email utility message" %} {% endblock %}
+
+{% block body_class %}wide{% endblock %}
+
+{% block breadcrumb_menu %}
+<li>
+  <a href="/home">{% trans "Home" %}</a><span class="divider">/</span></li>
+  <li><a href="/work-area/">Workarea</a><span class="divider">/</span></li>
+ <li><a href="/massemailutility/all/">Merge Emails</a>
+  <span class="divider">/</span>
+</li>
+
+<li class="active">{% trans "Create New Merge Email Message" %}</li>
+
+{% endblock %}
+
+{% block local_nav %}
+{% endblock local_nav %}
+
+{% block pageinfo %}
+{% endblock pageinfo %}
+
+{% block main %}
+
+<script type="text/javascript">
+
+  function toggle_visibility() {
+        
+        var e = document.getElementById('instruction');
+        if (e.style.display == 'block'){
+            e.style.display = 'none';
+        }
+        else{
+            e.style.display = 'block';
+        }
+    }
+
+function viewMemb(id){
+    section = document.getElementById(id);
+    if (section.style.display=="inline") {
+        section.style.display="none";
+    } else {
+        section.style.display="inline";
+    }
+}
+      	   
+function isChecked(theform,name,group){
+     var elementlength=theform.elements.length;
+     var item="group"+name+"_"+group;;
+     for( i=1;  i  < elementlength ; i++ ) {
+         if(theform.elements[i].name==item ){
+             if (theform.elements[i].checked ==true){
+                 return true;
+             }else{
+                 return false;
+             }
+
+         }
+    }
+    return false;
+}
+
+function  checkmembers(theform,name,nameisck,group,id){
+    var elementlength=theform.elements.length;
+    var prefix=name+"_"+group+"_";
+    
+    var isC=isChecked(theform,nameisck,group);
+    for( i=1;  i  < elementlength ; i++ ) {
+        if(theform.elements[i].type=="checkbox"  ){
+            var temp=theform.elements[i].name.substr(0,prefix.length);
+            if( prefix==temp){
+                theform.elements[i].checked=isC;
+            }
+        }
+    }
+    viewMemb(id);
+  }
+
+function  checkNotify(theform,group,field){
+    var elementlength=theform.elements.length;
+    var prefix=""+group;
+    var formObj = window.document.forms.my_form;
+    var val  ="";
+
+    for( i=1;  i  < elementlength ; i++ ) {
+        if(theform.elements[i].type=="checkbox" && theform.elements[i].checked){
+            var temp=theform.elements[i].name.substr(0,prefix.length);
+            if( prefix==temp){
+                     val=val+ theform.elements[i].value+",";
+             }
+        }
+    }
+    formObj[""+field].value=val;
+}
+
+</script>
+
+
+<p class="pull-right"><a href="javascript:history.go(-1)">{% trans "« Cancel and go back" %}</a></p>
+
+<div  style="background-color: #a2dee2; color: #039;padding: 8px 35px 8px 14px;    margin-bottom: 20px; border: 1px solid #fbeed5;    -webkit-border-radius: 4px;    -moz-border-radius: 4px;    border-radius: 4px;">
+    <h1><span class="normal">{% trans "Create New Merge Email message" %}</span> </h1>
+    <div id="istr_button">   <a class="btn btn-warning" onclick="javascript:toggle_visibility();">SHOW / HIDE Instruction</a></div>
+   
+    <div id="instruction" style="display:none;">
+        <div class="alert alert-warning"> 
+        <p>To create <b>MERGE messages</b>: 
+        <ol>     
+                <li>Type the SUBJECT</li>     
+                <li>Write CC emails adresses separated by commas</li>     
+                <li>Upload a CSV file containg in each row the reference of the specific message to be sent to each Countries. EXAMPLE of the content:         
+                        <p class="alert alert-success">         https://link_to_survey__for_albania,ALB
+                                <br>   https://link_to_survey__for_australia,AUS
+                                <br>   https://link_to_survey__for_newzealand,NZL
+                        </p>     
+                </li>     
+                <li>Select the Countries you need to send the message checking the relevant check-box below </li>     
+                <li>Type the MESSAGE. Example of the message:         
+                <p class="alert alert-success">
+                <i> Dear <span style="color:orange"><b>XXXXXXXXXX</b></span>
+                <br>         this is the message text, please click on the link 
+                <br>    <span style="color:orange"><b>YYYYYYYYYY</b></span>
+                <br>         Thanks...
+                </i>      
+                <BR>
+                <br> the part in the message <b>XXXXXXXXXX</b> will be automatically replaced by the name of the Contact point     <br> the part in the message <b>YYYYYYYYYY</b> will be automatically replaced by the specific LINK for that Country. <br> the email will be sent to the main email address of the ontact point and also to the alternate email address.     
+                <br> Be careful when you edit the text: 
+                <br/>- don't copy the text from Word documents, but write the text directly in the text box or paste the content from Word first to a simple text editor as Notepad 
+                <br/>- when you write a link in the text change the link from <b>https</b> to  <b>http</b>, otherwise link won't work      </p>     
+                </li> 
+        </ol>
+        </p> The message will be stored and sent out in the next hours. At the end you will receive a notification.
+         Emails can be sent to any number of recipients selecting specific countries</p>
+        </div>
+    </div>
+    <form class="customform" method="POST" action="" enctype="multipart/form-data">
+    {% csrf_token %}
+    <script src="//tinymce.cachefly.net/4.2/tinymce.min.js"></script>
+    <script>
+        tinymce.init({selector: "textarea",    theme: "modern",    plugins: [        "advlist autolink lists link image charmap print preview hr anchor pagebreak",        "searchreplace wordcount visualblocks visualchars code fullscreen",        "insertdatetime media nonbreaking save table contextmenu directionality",        "emoticons template paste textcolor colorpicker textpattern imagetools"    ],    toolbar1: "insertfile undo redo | styleselect | bold italic | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | link image",     image_advtab: true,    templates: [        {title: 'Test template 1', content: 'Test 1'},        {title: 'Test template 2', content: 'Test 2'}    ]});
+    </script>
+       
+    <fieldset>
+        {% if form.non_field_errors or form.errors or  f_form.errors %}
+            <div class="alert alert-error">{% trans "Please correct the errors below." %}
+            <ul>
+            {% for error in form.non_field_errors %}
+            <li>{{ error }}</li>
+            {% endfor %}
+            {% for error in form.errors %}
+            <li>{{ error }}</li>
+            {% endfor %}
+            </ul>
+            </div>
+        {% endif %}
+
+
+    {% for f in form %}
+           {%if f.name == 'mass_merge' %}
+              <input name="mass_merge" type="hidden" value="1"/>
+            {%elif f.name == 'emailfrom' or  f.name == 'subject' or   f.name == 'messagebody'  or f.name == 'emailcc'  or   f.name == 'csv_file'%}
+               <div class="control-group">   <label>{{f.label |safe}}</label>
+                    <div class="controls">
+                        {{f}}
+                    </div>
+                </div> 
+      
+        {% endif %}
+    {% endfor %}
+    
+ 
+
+
+
+    <h3>Select the COUNTRIES:</h3>
+    <i>Click on the icon <img src="/static/leaflet/images/zoom-in.png"/> to see <strong>Contact Points</strong> in each groups.</i>
+    <br><br>
+    <table cellpadding=2>
+        {% for g in emailcpiso %}
+            <tr>
+                <td width="5"><img title="Open Group" src="/static/leaflet/images/zoom-in.png" onclick="javascript:viewMemb('viewc1_{{g.1}}');"/></td>
+                <td>  {{g.0}}</td>
+                <td width="5" title="Check all"><input type="checkbox" onClick="javascript:checkmembers(this.form,'usercp1','cp1',{{g.1}},'viewc1_{{g.1}}');void(0);" name="groupcp1_{{g.1}}" value="viewc1_{{g.1}}"/></td>
+            </tr>
+            <tr><td/>
+            <td>
+            <div style="display:none" id="viewc1_{{g.1}}">
+            {% for  u in g|slice:"2:" %} 
+                <input onchange="javascript:checkNotify(this.form,'usercp1_','checkgroups');" type="checkbox" name="usercp1_{{g.1}}_0" value="{{u.0}}"/> {{u.0}} {{u.1}}<br/>
+            {% endfor %}
+            </div>
+            </td>
+         </tr>
+        {% endfor %}
+    </table>
+        {% for g in emailcp2iso %}
+        <table>
+            <tr>
+                <td width="5"><img title="Open Group" src="/static/leaflet/images/zoom-in.png" onclick="javascript:viewMemb('viewc_{{g.1}}');"/></td>
+                <td>  {{g.0}}</td>
+                <td width="5" title="Check all"><input type="checkbox" onClick="javascript:checkmembers(this.form,'usercp','cp',{{g.1}},'viewc_{{g.1}}');void(0);" name="groupcp_{{g.1}}" value="viewc_{{g.1}}"/></td>
+            </tr>
+            <tr><td/>
+            <td>
+            <div style="display:none" id="viewc_{{g.1}}">
+            {% for  u in g|slice:"2:" %} 
+                <input onchange="javascript:checkNotify(this.form,'usercp_','checkgroups');" type="checkbox" name="usercp_{{g.1}}_0" value="{{u.0}}"/> {{u.0}} {{u.1}}<br/>
+            {% endfor %}
+            </div>
+            </td>
+         </tr> </table>
+        {% endfor %}
+ 
+        <!-- Attachments -->
+        <fieldset>
+        <legend>Attachments</legend>
+            {{ f_form.management_form }}
+            {{ f_form.non_form_errors }}
+            {% for form in f_form %}
+                {{ form.id }}
+                <div class="inline {{ f_form.prefix }}">
+                   {% if  form.errors %}
+                   <div class="alert alert-error"> 
+                   {% endif %}
+
+                    {{ form.description.errors }}
+                    {{ form.description.label_tag }}
+                    {{ form.description }}
+                    {{ form.file.errors }}
+                    {{ form.file.label_tag }}
+                    {{ form.file }}
+                        {% if f_form.can_delete %}
+                            {{ form.DELETE }}
+                        {% endif %}
+                    {% if  f_form.errors %}
+                   </div> 
+                   {% endif %}
+                </div>
+            {% endfor %}
+        </fieldset>
+  
+        <div class="form-actions">
+            <button type="submit" class="btn btn-info btn-large" tabindex="7">{% trans "Store Message to send" %}</button> or <a href="javascript:history.go(-1)">{% trans "Cancel" %}</a>
+        </div>
+    </fieldset>
+</form>
+   </div>
+ {% endblock %}

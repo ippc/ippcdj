@@ -31,6 +31,8 @@
   <a href="javascript:history.go(-1)">{% trans "« Go back" %}</a><br>
       {% if perms.ippc.add_massemailutilitymessage or user.is_superuser%}
         <a class="btn btn-small btn-info" href="/massemailutility/send"><i class="icon-edit icon-white"></i> Create New Mass Email Message</a>
+    <br>
+    <a class="btn btn-small btn-info" href="/mergemassemailutility/send"><i class="icon-edit icon-white"></i> Create New Merge Email Message</a>
     {% endif %}
   
  </p>

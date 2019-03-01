@@ -15,6 +15,8 @@
   <p><a href="/massemailutility/all/">« {% trans "Back to" %} {% trans "Mass Email message" %}</a></p>
       {% if perms.ippc.add_massemailutilitymessage or user.is_superuser%}
         <a class="btn btn-small btn-info" href="/massemailutility/send"><i class="icon-edit icon-white"></i> Create New Mass Email Message</a>
+        <br>
+        <a class="btn btn-small btn-info" href="/mergemassemailutility/send"><i class="icon-edit icon-white"></i> Create New Merge Email Message</a>
         
     {% endif %}
   </div>
@@ -30,8 +32,12 @@
 
 <h1>{{ massemailmessage.subject }}</h1> 
 <dl class="dl-horizontal">
+<dt>{% trans "TYPE" %}</dt>
+<dd>{% if massemailmessage.mass_merge == 0 %} MASS email{% elif massemailmessage.mass_merge == 1 %}MERGE email {% endif %}</dd>
+
 <dt>{% trans "Sent date" %}</dt>
 <dd>{{ sometime }}  {{massemailmessage.date|date:"d-m-Y"}} at {{massemailmessage.date|date:"H:m:s"}} CET</dd>
+
 <dt>{% trans "Author" %}</dt>
 <dd>{{massemailmessage.author}}</dd>
 
@@ -43,6 +49,7 @@
 {% endif %}
 
 </dd>
+
 <dt>{% trans "Message status" %}</dt>
 <dd>{% if massemailmessage.sent %}
         &#160; {% if massemailmessage.status == 0 %}
@@ -68,13 +75,18 @@
    
 <dt>{% trans "From" %}</dt>
 <dd>{{ massemailmessage.emailfrom }}</dd>
+ <dt>{% trans "To" %}</dt>
+    <dd>  {% autoescape off %} 
+        {{aaa}}
+     {% endautoescape %}  
+    </dd>
 
-<dt>{% trans "To" %}</dt>
-<dd>  {% autoescape off %} 
-    {{aaa}}
- {% endautoescape %}  
-</dd>
+{% if  massemailmessage.mass_merge == 1%}
 
+    <dt>{% trans "CC" %}</dt>
+<dd>{{ massemailmessage.emailcc }}</dd>
+
+{% endif %}
 
 <dt>{% trans "Subject" %}</dt>
 <dd>{{ massemailmessage.subject }}</dd>
@@ -82,7 +94,12 @@
 <dt>{% trans "Message" %}</dt>
 <dd>    {{ massemailmessage.messagebody|richtext_filter|safe }}
   </dd>
-
+  
+  {% if  massemailmessage.mass_merge == 1%}
+<dt>{% trans "CSV file" %}</dt>
+  <dd><a href="{{MEDIA_URL}}{{massemailmessage.csv_file}}">CSV file</a></dd>
+ {% endif %}
+ 
  <dt>{% trans "Attachments" %}</dt>
    {% for f in massemailmessage.massemailutilitymessagefile_set.all %} 
   <dd><a href="{{MEDIA_URL}}{{f.file.name}}">{{ f.filename }}</a></dd>
