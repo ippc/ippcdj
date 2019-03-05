@@ -1,0 +1,176 @@
+{% extends "baseiyph.html" %}
+{% load i18n future mezzanine_tags forum_tags keyword_tags disqus_tags %}
+
+{% block meta_title %}{% trans "Forum" %}{% endblock %}
+
+{% block meta_keywords %}{% metablock %}
+{% keywords_for page as keywords %}
+{% for keyword in keywords %}
+    {% if not forloop.first %}, {% endif %}
+    {{ keyword }}
+{% endfor %}
+{% endmetablock %}{% endblock %}
+
+{% block meta_description %}{% metablock %}
+{{ page.description }}
+{% endmetablock %}{% endblock %}
+
+{% block title %}
+{% if page %}
+{# {% editable page.title %}{{ page.title }}{% endeditable %} #}
+{% trans "Forum" %}
+{% else %}
+{% trans "Forum" %}
+{% endif %}
+{% endblock %}
+
+{% block breadcrumb_menu %}
+{{ block.super }}
+{% if tag or category or year or month or author %}
+<li>{% spaceless %}
+{% if tag %}
+    {% trans "Tag:" %} {{ tag }}
+{% else %}{% if category %}
+    {{ category }}
+{% else %}{% if year or month %}
+    {% if month %}{{ month }}, {% endif %}{{ year }}
+{% else %}{% if author %}
+    {% trans "Author:" %} {{ author.get_full_name|default:author.username }}
+{% endif %}{% endif %}{% endif %}{% endif %}
+{% endspaceless %}
+</li>
+{% endif %}
+{% endblock %}
+
+{% block main %}
+
+{% if tag or category or year or month or author %}
+    {% block forum_post_list_filterinfo %}
+    <p class="lead">
+    {% if tag %}
+        {% trans "Posts tagged" %} <strong>{{ tag }}</strong>
+    {% else %}{% if category %}
+        {% trans "Posts in the" %} <strong>{{ category }}</strong> {% trans "category" %}
+    {% else %}{% if year or month %}
+        {% trans "Viewing posts from" %} {% if month %}{{ month }}, {% endif %}
+        {{ year }}
+    {% else %}{% if author %}
+        {% trans "Viewing posts by" %}
+        {{ author.get_full_name|default:author.username }}
+    {% endif %}{% endif %}{% endif %}{% endif %}
+    </p>
+    {% endblock %}
+
+{# {% else %} #}
+{#     {% if page %} #}
+{#     {% block forum_post_list_pagecontent %} #}
+{#     {% editable page.richtextpage.content %} #}
+{#     {{ page.richtextpage.content|richtext_filter|safe }} #}
+{#     {% endeditable %} #}
+{#     {% endblock %} #}
+{#     {% endif %} #}
+    {% else %}
+    <p class="lead">
+    Latest Posts
+    </p>  
+{% endif %}
+{% if user.is_superuser or perms.forum.add_forumpost %}
+<ul> 
+  <a class="btn btn-small btn-info" href="/admin/forum/forumpost/add/">+ {% trans "Add new discussion" %}</a>  
+  </ul>
+{% endif %}
+{% if forum_posts.object_list %}
+<table class="table table-condensed table-striped" id="publications">
+  <thead>
+    <tr>
+      <th> </th>
+      <th>{% trans "Topic" %}</th>
+      <th>{% trans "Category" %}</th>
+      <th>{% trans "Posted by" %}</th>
+      <th>{% trans "Date" %}</th>
+      <th>{% trans "Comments" %}</th>
+    </tr>
+  </thead>
+  <tbody>
+   {% for forum_post in forum_posts.object_list %}
+     {% for group in request.user.groups.all %}
+      {% if group in forum_post.groups.all %}
+    <tr>
+        <td>
+            {% if forum_post.allow_comments %}
+                <i class="icon-comment"></i>
+            {% else %}
+                <i class="icon-lock"></i>
+            {% endif%} 
+        </td>
+        <td> <a href="{{ forum_post.get_absolute_url }}">{{ forum_post.title }}</a> 
+            </td> <td>
+    {% with forum_post.categories.all as categories %} 
+     {% if categories %} 
+ 
+     {% for category in categories %} 
+     <a href="{% url "forum_post_list_category" category.slug %}">{{ category }}</a> 
+     {% endfor %} 
+     {% endif %} 
+    {% endwith %} 
+   </td>
+        <td>{% with forum_post.user as author %}
+    <a href="{% url "forum_post_list_author" author %}">{{ author.get_full_name|default:author.username }}</a>
+    {% endwith %}
+    </td>
+    <td>
+        {% blocktrans with sometime=forum_post.publish_date|date:"d M Y" %}{{ sometime }}{% endblocktrans %}
+ 
+     
+    </td><td>  {% if settings.COMMENTS_DISQUS_SHORTNAME %}
+    <a href="{{ forum_post.get_absolute_url }}#disqus_thread"
+        data-disqus-identifier="{% disqus_id_for forum_post %}">
+        {% trans "Comments" %}
+    </a>
+    {% else %}
+    <a href="{{ forum_post.get_absolute_url }}#comments">
+        {% blocktrans count comments_count=forum_post.comments_count %}{{ comments_count }} comment{% plural %}{{ comments_count }} comments{% endblocktrans %}
+    </a>
+    {% endif %}</td>
+    
+    <td>
+      {% if user.is_superuser or perms.forum.add_forumpost  %} {#and request.user.get_profile.user_id  == forum_post.user_id#}
+            <a class="small pull-right" href="/admin/forum/forumpost/{{ forum_post.id }}"><i class="icon-edit"></i> Edit as Admin</a><br>
+        {% endif %}
+    </td>
+    </tr>  {% endif %}  {% endfor %}  
+    {% endfor %}  
+  </tbody>
+</table>
+
+
+{% endif %}
+
+{% pagination_for forum_posts %}
+
+{% if settings.COMMENTS_DISQUS_SHORTNAME %}
+{% include "generic/includes/disqus_counts.html" %}
+{% endif %}
+
+{% endblock %}
+
+{% block right_panel %}
+{% include "forum/includes/filter_panel.html" %}
+{% endblock %}
+
+{% block local_nav %}
+
+{% forum_categories as categories %}
+{% if categories %}
+<!--h3>{% trans "Forum Categories" %}</h3>
+<ul class="unstyled">
+{% for category in categories %}
+<li>
+  <b><a href="{% url "forum_post_list_category" category.slug %}">{{ category }}</a></b> ({{ category.post_count }})</li>
+{% endfor %}
+</ul-->
+{% endif %}
+
+{% endblock %}
+
+{% block pageinfo %}{% endblock %}
