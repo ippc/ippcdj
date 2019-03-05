@@ -51,6 +51,12 @@ def forum_post_list(request, tag=None, year=None, month=None, username=None,
                           settings.MAX_PAGING_LINKS)
     context = {"forum_posts": forum_posts, "year": year, "month": month,
                "tag": tag, "category": category, "author": author}
+    
+    print('====================== CATEGOTY-------------------------')
+    print(category)
+    if category is not None and category.id == 51:
+        template="forum/forum_post_list_iyph.html"
+    print('====================== -------------------------')
     templates.append(template)
     return render(request, templates, context)
 
@@ -69,9 +75,17 @@ def forum_post_detail(request, slug, year=None, month=None, day=None,
     #forum_post_files = get_object_or_404(forum_posts, slug=slug)
     f = get_object_or_404(ForumPost, slug=slug)
     files = ForumPost_Files.objects.filter( forum_post_id=f.id)
-    
     context = {"forum_post": forum_post, "editable_obj": forum_post,"files":files}
-    templates = [u"forum/forum_post_detail_%s.html" % unicode(slug), template]
+    category_id=-1
+    for c in f.categories.all() :
+        if c.id == 51:
+            category_id=51
+            break
+  
+    if category_id == 51:
+        templates = [u"forum/forum_post_detail_%s.html" % unicode(slug), "forum/forum_post_detail_iyph.html"]
+    else:
+        templates = [u"forum/forum_post_detail_%s.html" % unicode(slug), template]
     return render(request, templates, context)
 
 
