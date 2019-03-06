@@ -124,11 +124,9 @@
 <div class="container-fluid">
     {% block bread %}
    <span class="pull-right">
-   {% if request.user.is_authenticated %}
-      {% if user.is_authenticated  %}
-        <a href="/forum/category/iyph-forum/" >{% trans "IYPH Forum" %}</a>&#160;&#160;
-        {% endif %}
-    {% endif %}
+  
+     <a href="/forum/category/iyph-forum/" >{% trans "IYPH Forum" %}</a>&#160;&#160;
+  
   
     
     <a href="/"  >{% trans "IPPC Home" %}</a>
