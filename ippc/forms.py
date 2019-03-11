@@ -600,7 +600,7 @@ class MassEmailUtilityMessageForm(forms.ModelForm):
     class Meta:
         model = MassEmailUtilityMessage
         fields = [
-          'mass_merge',
+          'massmerge',
           'emailfrom',
            'subject', 
            'messagebody',

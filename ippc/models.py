@@ -1787,9 +1787,11 @@ class EmailUtilityMessageFile(models.Model):
     
 BOOL_CHOICES_0 = 0  
 BOOL_CHOICES_1 = 1
+BOOL_CHOICES_2 = 2
 BOOL_CHOICES = (
     (BOOL_CHOICES_0, _("MASS EMAIL")),
     (BOOL_CHOICES_1, _("MERGE Email")),
+    (BOOL_CHOICES_2, _("Forum Notification")),
 ) 
 def validate_csvfile_extension(value):
     if not (value.name.endswith('.xls')   or value.name.endswith('.csv') or value.name.endswith('.xlsx')):
@@ -1814,8 +1816,8 @@ class MassEmailUtilityMessage(models.Model):
     author = models.ForeignKey(User, related_name="author")
     
     csv_file = models.FileField(_("Attach CSV file conteining the specific entries"), upload_to='files/email/', validators=[validate_csvfile_extension], blank=True,help_text=_("Follow the instructions on top of this page."))
-    mass_merge = models.NullBooleanField(_("Select if this is a MASS or MERGE mail"), choices=BOOL_CHOICES,default=0, help_text=_(" "),)
- 
+    #mass_merge = models.NullBooleanField(_("Select if this is a MASS or MERGE mail"), choices=BOOL_CHOICES,default=0, help_text=_(" "),)
+    massmerge = models.IntegerField(_("Select if this is a MASS or MERGE mail"), choices=BOOL_CHOICES, default=BOOL_CHOICES_0, help_text=_(" "),)
     #User.__unicode__ = user_unicode_patch
     users = models.ManyToManyField(User,
             verbose_name=_("Send to single users:"),help_text=_("CTRL/Command+mouseclick for more than 1 selection"),
