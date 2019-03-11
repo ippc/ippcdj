@@ -15,6 +15,8 @@ from django.forms.models import inlineformset_factory
 from django.forms.formsets import formset_factory
 import markdown
 from django.template.defaultfilters import slugify
+from ippc.models import  MassEmailUtilityMessage
+from django.utils import timezone
 
 forumpost_fieldsets = deepcopy(DisplayableAdmin.fieldsets)
 
@@ -88,9 +90,35 @@ class ForumPostAdmin(DisplayableAdmin):
 
             text='<html><body><p>Dear IPPC user,</p><p>a new discussion has been posted in the '+category+' Forum.</p><p><b>Discussion:</b>'+ request.POST['title']+'</p><p><b>Post:</b></p><p>'+bodycontent+'</p><p>You can view it at the following url: https://www.ippc.int/forum/'+slugify(request.POST['title'])+'</p><p>-- International Plant Protection Convention team </p></body></html>'
             
-            notifificationmessage = mail.EmailMessage(subject,text,'ippc@fao.org',  emailto_all, ['paola.sentinelli@fao.org'])
-            notifificationmessage.content_subtype = "html"  
-            sent =notifificationmessage.send()
+            #notifificationmessage = mail.EmailMessage(subject,text,'ippc@fao.org',  emailto_all, ['paola.sentinelli@fao.org'])
+            #notifificationmessage.content_subtype = "html"  
+            #sent =notifificationmessage.send()
+            massmail = MassEmailUtilityMessage()
+        
+            emailto_all_last=''
+            emailto_all_clean=[]
+            for ee in emailto_all:
+                if ee in emailto_all_clean:
+                    print('no')
+                else:    
+                    emailto_all_clean.append(ee)    
+            for ee in emailto_all_clean:
+                    emailto_all_last=emailto_all_last+ee+','
+            massmail.author_id = 1652
+            massmail.emailfrom = 'ippc@fao.org'
+            massmail.date=timezone.now()
+            massmail.sent=0
+            massmail.massmerge=2
+            massmail.status=1
+            massmail.emailto=emailto_all_last
+            massmail.not_sentto=emailto_all_last
+            massmail.emailcc=''
+            massmail.emailtoISO3=''
+            massmail.not_senttoISO3=  ''
+            massmail.subject=subject
+            massmail.messagebody=text
+            massmail.save()
+        
         return DisplayableAdmin.save_form(self, request, form, change)
 
 
