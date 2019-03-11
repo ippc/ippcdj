@@ -145,8 +145,8 @@ function  checkNotify(theform,group,field){
 
     {% for f in form %}
         {% if not f.is_hidden %}
-            {%if f.name == 'mass_merge' %}
-                  <input name="mass_merge" type="hidden" value="0"/>
+            {%if f.name == 'massmerge' %}
+                  <input name="massmerge" type="hidden" value="0"/>
             {%elif f.name == 'emailfrom' or  f.name == 'subject' or   f.name == 'messagebody' or f.name == 'emailto'  or   f.name == 'users'  %}
                <div class="control-group">   <label>{{f.label |safe}}</label>
                     <div class="controls">

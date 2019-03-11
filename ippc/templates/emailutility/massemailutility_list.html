@@ -59,10 +59,41 @@
       <th>{% trans "Sent date" %}</th>
       <th><i class="icon-envelope"></i>  {% trans "Sent" %}</th>
       <th>Status</th>
+       {% if  user.is_superuser %} 
+        <th>Type</th>
+        {% endif %}
     </tr>
   </thead>
   <tbody>
     {% for object in latest %}
+    {% if object.massmerge == 2 %} 
+        {% if  user.is_superuser %}
+         <tr>
+      <td><a href="{% url 'mass-email-detail'  object.id %}">{{ object.subject }}</a></td>
+      <td>{{ object.date|date:"d M Y" }} at {{object.date|date:"H:m:s"}} CET</td>
+      <td>      
+            {% if object.sent %}
+            <i class="icon-ok"></i> 
+            {% else %}
+            <i class="icon-exclamation-sign"> </i> not sent - waiting to be sent
+            {% endif %}
+      </td>
+      <td>{% if object.sent %}
+          &#160;
+          {% else %}  
+            {% if object.status == 1 %}
+                <span class="alert-success"><i class="icon-share"> </i> To be sent</span>
+            {% elif object.status == 0 %}
+            <span class="alert-danger"><i class="icon-edit"> </i> DRAFT</span>
+            {% endif %}
+           {% endif %}
+      </td>
+         {% if  user.is_superuser %} 
+        <td>   <span style="background-color:violet ;  "> Forum notification</span></td>
+        {% endif %}
+    </tr>
+        {% endif %}
+      {% else %}    
     <tr>
       <td><a href="{% url 'mass-email-detail'  object.id %}">{{ object.subject }}</a></td>
       <td>{{ object.date|date:"d M Y" }} at {{object.date|date:"H:m:s"}} CET</td>
@@ -83,7 +114,17 @@
             {% endif %}
            {% endif %}
       </td>
+          {% if  user.is_superuser %} 
+          <td>
+             {% if object.massmerge == 0 %}
+                <span class="alert-success"> MASS email</span>
+             {% elif object.massmerge == 1 %}
+                 <span style="background-color: #a2dee2;  "> MERGE email</span>
+            {% endif %}
+            </td>
+            {% endif %}
     </tr>
+     {% endif %}
     {% endfor %}
   </tbody>
 </table>

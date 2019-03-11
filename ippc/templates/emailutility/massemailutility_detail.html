@@ -33,7 +33,7 @@
 <h1>{{ massemailmessage.subject }}</h1> 
 <dl class="dl-horizontal">
 <dt>{% trans "TYPE" %}</dt>
-<dd>{% if massemailmessage.mass_merge == 0 %} MASS email{% elif massemailmessage.mass_merge == 1 %}MERGE email {% endif %}</dd>
+<dd>{% if massemailmessage.massmerge == 0 %} MASS email{% elif massemailmessage.massmerge == 1 %}MERGE email {% elif massemailmessage.massmerge == 2 %}NOTIFICATION email {% endif %}</dd>
 
 <dt>{% trans "Sent date" %}</dt>
 <dd>{{ sometime }}  {{massemailmessage.date|date:"d-m-Y"}} at {{massemailmessage.date|date:"H:m:s"}} CET</dd>
@@ -81,7 +81,7 @@
      {% endautoescape %}  
     </dd>
 
-{% if  massemailmessage.mass_merge == 1%}
+{% if  massemailmessage.massmerge == 1%}
 
     <dt>{% trans "CC" %}</dt>
 <dd>{{ massemailmessage.emailcc }}</dd>
@@ -95,7 +95,7 @@
 <dd>    {{ massemailmessage.messagebody|richtext_filter|safe }}
   </dd>
   
-  {% if  massemailmessage.mass_merge == 1%}
+  {% if  massemailmessage.massmerge == 1%}
 <dt>{% trans "CSV file" %}</dt>
   <dd><a href="{{MEDIA_URL}}{{massemailmessage.csv_file}}">CSV file</a></dd>
  {% endif %}

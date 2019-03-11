@@ -96,7 +96,7 @@ function  checkNotify(theform,group,field){
 {% for f in form %}
     {% if not f.is_hidden %}
     
-                 {%if f.name == 'mass_merge'%}
+                 {%if f.name == 'massmerge'%}
                  <div class="control-group">   <label>{{f.label |safe}}</label>
             <div class="controls">
              <ul>
@@ -125,7 +125,7 @@ function  checkNotify(theform,group,field){
 {% endfor %}
  
  <!-- MASS FIELDS-->
-{%if form.mass_merge.value == 0%}
+{%if form.massmerge.value == 0%}
     {% for f in form %}
         {% if not f.is_hidden %}
             {%if f.name == 'emailto'  or   f.name == 'users'  %}
