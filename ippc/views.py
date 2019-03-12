@@ -1379,36 +1379,41 @@ def commenta(request, template="generic/comments.html"):
         for tt in splitcommenttext:
             comment_final+=tt+'<br>'
         text=request.POST['name']+' has commented on: '+str(obj) +'<br><hr><br>'+str(ugettext(comment_final))+'<br><hr><br>Forum discussion link: <a href="'+str(ugettext('https://www.ippc.int'+url))+'">'+str(ugettext('https://www.ippc.int'+url))+'</a>'
-        #notifificationmessage = mail.EmailMessage(subject,text,'ippc@fao.org', emailto_all, ['paola.sentinelli@fao.org'])
-        #notifificationmessage.content_subtype = "html"
-        #print('test-sending')
-        #sent =notifificationmessage.send()
-        #changed to massemailmessage with status 1
-        massmail = MassEmailUtilityMessage()
-        
-        emailto_all_last=''
-        emailto_all_clean=[]
-        for ee in emailto_all:
-            if ee in emailto_all_clean:
-                print('no')
-            else:    
-                emailto_all_clean.append(ee)    
-        for ee in emailto_all_clean:
-                emailto_all_last=emailto_all_last+ee+','
-        massmail.author_id = 1652
-        massmail.emailfrom = 'ippc@fao.org'
-        massmail.date=timezone.now()
-        massmail.sent=0
-        massmail.massmerge=2
-        massmail.status=1
-        massmail.emailto=emailto_all_last
-        massmail.not_sentto=emailto_all_last
-        massmail.emailcc=''
-        massmail.emailtoISO3=''
-        massmail.not_senttoISO3=  ''
-        massmail.subject=subject
-        massmail.messagebody=text
-        massmail.save()
+        category_id=-1
+        for c in obj.categories.all() :
+            if c.id == 51:
+                category_id=51
+                break
+		
+	if category_id == 51:
+            massmail = MassEmailUtilityMessage()
+            emailto_all_last=''
+            emailto_all_clean=[]
+            for ee in emailto_all:
+                if ee in emailto_all_clean:
+                    print('no')
+                else:    
+                    emailto_all_clean.append(ee)    
+            for ee in emailto_all_clean:
+                    emailto_all_last=emailto_all_last+ee+','
+            massmail.author_id = 1652
+            massmail.emailfrom = 'ippc@fao.org'
+            massmail.date=timezone.now()
+            massmail.sent=0
+            massmail.massmerge=2
+            massmail.status=1
+            massmail.emailto=emailto_all_last
+            massmail.not_sentto=emailto_all_last
+            massmail.emailcc=''
+            massmail.emailtoISO3=''
+            massmail.not_senttoISO3=  ''
+            massmail.subject=subject
+            massmail.messagebody=text
+            massmail.save()
+        else:
+            notifificationmessage = mail.EmailMessage(subject,text,'ippc@fao.org', emailto_all, ['paola.sentinelli@fao.org'])
+            notifificationmessage.content_subtype = "html"
+            sent =notifificationmessage.send()
         
         response = redirect(myview.add_cache_bypass(comment.get_absolute_url()))
         # Store commenter's details in a cookie for 90 days.
@@ -10191,7 +10196,7 @@ class MassEmailUtilityMessageDetailView(DetailView):
         emailto=[]
         sentto=[]
         not_sentto=[]
-        if mail.massmerge ==0:
+        if mail.massmerge ==0 or mail.massmerge ==2:
             if mail.emailto != None and mail.emailto!='':
                 emailto=mail.emailto.split(",") 
             if mail.sentto != None and mail.sentto!='':
@@ -10256,7 +10261,7 @@ def massemailutility_to_send(request):
     for email in emails_to_send :
         log_report.write("["+ timezone.now().strftime('%Y%m%d%H%M%S')+" - email id  [ID:"+str(email.id)+"] \n")
         text_+="["+ timezone.now().strftime('%Y%m%d%H%M%S')+" - email id  [ID:"+str(email.id)+"] \n"
-        if email.massmerge == 0:
+        if email.massmerge == 0 or email.massmerge == 2:
             email_not_sentto=email.not_sentto
             email_sent=email.sentto
             emailfrom=email.emailfrom
