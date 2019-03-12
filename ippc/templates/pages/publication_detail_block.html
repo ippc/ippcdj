@@ -20,6 +20,7 @@
          {% endif %}
 
        </h1> 
+ 
 {% if publication.is_version %}
 <dl class="dl-horizontal" style="border: 3px double red;    padding: 0.5em;">
     
@@ -202,4 +203,10 @@
           
           
         </dl>
+   {% if publication.id == 86090 %}
+  <iframe src="/static/media/uploads/cpm-participation-guide/index.html" width="1500" height="1000"></iframe>
+{% endif %}  
+  {% if publication.id == 86474 %}
+  <iframe src="/static/media/uploads/cpm-participation-guide/index_es.html" width="1500" height="1000"></iframe>
+{% endif %} 
   {% endif %}
