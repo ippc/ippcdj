@@ -330,33 +330,40 @@
                     {% endblock local_nav %}
 
                     {% if page.id == 3 %}
-                    {% include "pages/menus/tree_key_cn.html" %}
+                         {% include "pages/menus/tree_key_cn.html" %}
                     {% elif page.id == 522 %}
-                    <div class="panel tree">
-                        {% page_menu "pages/menus/tree.html" %}
-                    </div>
-                    {% include "pages/menus/tree_logos.html" %}
+                        <div class="panel tree">
+                            {% page_menu "pages/menus/tree.html" %}
+                        </div>
+                       {% include "pages/menus/tree_logos.html" %}
                     {% elif page.id == 465 or  page.id == 466 or  page.id == 485 or page.parent_id == 466 or page.parent_id == 485 %}
-                    <div class="panel tree">
-                        {% page_menu "pages/menus/tree.html" %}
-                    </div> 
-                    {% include "pages/menus/tree_key_partners.html" %}
+                        <div class="panel tree">
+                            {% page_menu "pages/menus/tree.html" %}
+                        </div> 
+                        {% include "pages/menus/tree_key_partners.html" %}
                     {% elif  page.id == 322 or  page.parent_id == 322 or page.parent_id == 323    or  page.parent_id == 449 or  page.parent_id == 427 or  page.parent_id == 429 or  page.parent_id == 459   or  page.parent_id == 455 or  page.parent_id == 445 %}
-                    <div class="panel tree"<!-- -->
-                        {% page_menu "pages/menus/tree.html" %}
-                    </div> 
-                    {% include "pages/menus/tree_key_core.html" %}
-                {% elif page.id == 345 or   page.parent_id == 345   %}
-                {% if  '/phytosanitary-treatments-tool/' in request.path %}
-                    {% elif	page.id == 1096 %}<!--#530???-->
-                    {% elif	page.id == 530 %}<!--#530???-->
-                   {% elif	page.id == 368 %}<!--#530???-->
-                {% else %}
-                    <div class="panel tree">
-                        {% page_menu "pages/menus/tree.html" %}
-                    </div> 
-                    {% include "pages/menus/tree_key_ssu.html" %}
-                {% endif %}
+                        <div class="panel tree"><!-- -->
+                            {% page_menu "pages/menus/tree.html" %}
+                        </div> 
+                        {% include "pages/menus/tree_key_core.html" %}
+                    {% elif page.id == 345 or   page.parent_id == 345  or page.id == 429 %}
+                        {% if  '/phytosanitary-treatments-tool/' in request.path %}
+                        {% elif  '/contributed-resource-list/' in request.path   %}
+                            <div class="panel tree"><!-- -->
+                              {% page_menu "pages/menus/tree.html" %}
+                          </div> 
+                          {% include "pages/menus/tree_key_core.html" %}
+                        {% elif  '/contributed-resource-detail/' in request.path   %}
+                      
+                        {% elif	page.id == 1096 %}<!--#530???-->
+                        {% elif	page.id == 530 %}<!--#530???-->
+                        {% elif	page.id == 368 %}<!--#530???-->
+                    {% else %}
+                        <div class="panel tree">
+                            {% page_menu "pages/menus/tree.html" %}
+                        </div> 
+                        {% include "pages/menus/tree_key_ssu.html" %}
+                    {% endif %}
                     {# FAQ page show/hide ================= #}
                    
                   
