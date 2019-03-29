@@ -22,7 +22,8 @@ DraftProtocol,DraftProtocolFile,DraftProtocolComments,NotificationMessageRelate,
 FAQsCategory,FAQsItem,\
 QAQuestion,QAAnswer,ContactUsEmailMessage,UserAutoRegistration,IRSSActivityFile,IRSSActivity,\
 UserMembershipHistory,PhytosanitaryTreatment,PhytosanitaryTreatmentPestsIdentity,PhytosanitaryTreatmentCommodityIdentity,\
-CertificatesTool,WorkshopCertificatesTool,B_CertificatesTool,Topic,MyTool,TopicAssistants,TopicLeads,TransTopic,NROStats
+CertificatesTool,WorkshopCertificatesTool,B_CertificatesTool,Topic,MyTool,TopicAssistants,TopicLeads,TransTopic,NROStats,\
+ContributedResource,ContributedResourceFile,ContributedResourceUrl,ContributedResourcePhoto,MyTool2
 #,TransReportingObligation
 
 
@@ -600,7 +601,7 @@ class MassEmailUtilityMessageForm(forms.ModelForm):
     class Meta:
         model = MassEmailUtilityMessage
         fields = [
-          'massmerge',
+         'massmerge',
           'emailfrom',
            'subject', 
            'messagebody',
@@ -611,7 +612,7 @@ class MassEmailUtilityMessageForm(forms.ModelForm):
     
            ]
         widgets = {
-         'mass_merge': forms.RadioSelect,
+         
         }
 
         exclude = ( 'date','sent', 'groups','not_sentto','sentto','author','status','emailtoISO3','not_senttoISO3','senttoISO3')       
@@ -858,8 +859,22 @@ class MyToolForm(forms.ModelForm):
             
         }      
         
+         
+class MyTool2Form(forms.ModelForm):
+    class Meta:
+        model = MyTool2
+        fields = [
+            'title', 
+            'nameh',
+            'name',
+            'mytext', 
+         ]
+            
+        exclude = ()
+        widgets = {
+            
+        }      
         
-
 class NROStatsForm(forms.ModelForm):
 
     class Meta:
@@ -894,3 +909,34 @@ class PartnerPageForm(forms.ModelForm):
         }
         
    
+
+class ContributedResourceForm(forms.ModelForm):
+
+    
+    class Meta:
+        model = ContributedResource
+        fields = [
+            'title', 
+            'short_description',
+           
+            'publication_date',
+            'organization_providing', 
+            'type_of_contact', 
+            'contact_email', 
+            'author',
+            'agree',
+            'ippc_resource',
+            'resource_provide_by',
+            'featured',
+            'tag',
+            
+            
+            ]
+        exclude = ('author', 'slug', 'publish_date', 'modify_date', 'status', )
+        widgets = {
+            'publication_date': AdminDateWidget(),
+        }
+
+ContributedResourceUrlFormSet  = inlineformset_factory(ContributedResource,  ContributedResourceUrl, extra=1)
+ContributedResourceFileFormSet = inlineformset_factory(ContributedResource,  ContributedResourceFile,extra=1)
+ContributedResourcePhotoFormSet = inlineformset_factory(ContributedResource,  ContributedResourcePhoto,extra=1)

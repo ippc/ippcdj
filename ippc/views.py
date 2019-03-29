@@ -1,4 +1,4 @@
-#import autocomplete_light
+import autocomplete_light
 #autocomplete_light.autodiscover()
 
 from django.shortcuts import render
@@ -19,9 +19,9 @@ ContactUsEmailMessage,FAQsItem,FAQsCategory,QAQuestion, QAAnswer,UserAutoRegistr
 TransFAQsCategory,TransFAQsItem,MassEmailUtilityMessage,MassEmailUtilityMessageFile,\
 OCPHistory, PartnersContactPointHistory,CnEditorsHistory,PartnersEditorHistory,UserMembershipHistory,MediaKitDocument,MyTool,\
 PhytosanitaryTreatment,PhytosanitaryTreatmentPestsIdentity,PhytosanitaryTreatmentCommodityIdentity,CertificatesTool,WorkshopCertificatesTool,CPMS,TOPIC_PRIORITY_CHOICES,\
-Topic,TopicAssistants,TopicLeads,TransTopic,TOPIC_STATUS_CHOICES,SC_TYPE_CHOICES,B_CertificatesTool,NROStats#,COOPTYPE_CHOICES,
-         
-#TransReportingObligation,
+Topic,TopicAssistants,TopicLeads,TransTopic,TOPIC_STATUS_CHOICES,SC_TYPE_CHOICES,B_CertificatesTool,NROStats,MyTool2,ContributedResource
+#TransReportingObligation,#COOPTYPE_CHOICES,
+
 from mezzanine.core.models import Displayable, CONTENT_STATUS_DRAFT, CONTENT_STATUS_PUBLISHED
 from mezzanine.pages.models import Page, RichTextPage
 
@@ -38,7 +38,9 @@ CountryNewsUrlFormSet,CountryNewsForm, CountryNewsFileFormSet,NotificationMessag
 DraftProtocolForm,  DraftProtocolFileFormSet,DraftProtocolCommentsForm,IppcUserProfileForm,\
 ContactUsEmailMessageForm,FAQsItemForm,FAQsCategoryForm,QAQuestionForm, QAAnswerForm,UserAutoRegistrationForm,IRSSActivityForm,IRSSActivityFileFormSet,\
 UserMembershipHistoryForm,PhytosanitaryTreatmentForm,PhytosanitaryTreatmentPestsIdentityFormSet,PhytosanitaryTreatmentCommodityIdentityFormSet,\
-CertificatesToolForm,WorkshopCertificatesToolForm, TopicForm ,TransTopicForm, TopicLeadsFormSet,TopicAssistantsFormSet,B_CertificatesToolForm   ,MyToolForm,NROStatsForm
+CertificatesToolForm,WorkshopCertificatesToolForm, TopicForm ,TransTopicForm, TopicLeadsFormSet,TopicAssistantsFormSet,B_CertificatesToolForm  ,MyToolForm,MyTool2Form,NROStatsForm,\
+ContributedResourceForm, ContributedResourceUrlFormSet, ContributedResourceFileFormSet, ContributedResourcePhotoFormSet
+   
 ##TansReportingObligationForm , UserForm,
 
 from schedule.models import Event, EventParticipants
@@ -1379,42 +1381,11 @@ def commenta(request, template="generic/comments.html"):
         for tt in splitcommenttext:
             comment_final+=tt+'<br>'
         text=request.POST['name']+' has commented on: '+str(obj) +'<br><hr><br>'+str(ugettext(comment_final))+'<br><hr><br>Forum discussion link: <a href="'+str(ugettext('https://www.ippc.int'+url))+'">'+str(ugettext('https://www.ippc.int'+url))+'</a>'
-        category_id=-1
-        for c in obj.categories.all() :
-            if c.id == 51:
-                category_id=51
-                break
-		
-	if category_id == 51:
-            massmail = MassEmailUtilityMessage()
-            emailto_all_last=''
-            emailto_all_clean=[]
-            for ee in emailto_all:
-                if ee in emailto_all_clean:
-                    print('no')
-                else:    
-                    emailto_all_clean.append(ee)    
-            for ee in emailto_all_clean:
-                    emailto_all_last=emailto_all_last+ee+','
-            massmail.author_id = 1652
-            massmail.emailfrom = 'ippc@fao.org'
-            massmail.date=timezone.now()
-            massmail.sent=0
-            massmail.massmerge=2
-            massmail.status=1
-            massmail.emailto=emailto_all_last
-            massmail.not_sentto=emailto_all_last
-            massmail.emailcc=''
-            massmail.emailtoISO3=''
-            massmail.not_senttoISO3=  ''
-            massmail.subject=subject
-            massmail.messagebody=text
-            massmail.save()
-        else:
-            notifificationmessage = mail.EmailMessage(subject,text,'ippc@fao.org', emailto_all, ['paola.sentinelli@fao.org'])
-            notifificationmessage.content_subtype = "html"
-            sent =notifificationmessage.send()
-        
+      
+        notifificationmessage = mail.EmailMessage(subject,text,'ippc@fao.org', emailto_all, ['paola.sentinelli@fao.org'])
+        notifificationmessage.content_subtype = "html"
+        sent =notifificationmessage.send()
+
         response = redirect(myview.add_cache_bypass(comment.get_absolute_url()))
         # Store commenter's details in a cookie for 90 days.
         for field in myview.ThreadedCommentForm.cookie_fields:
@@ -10317,12 +10288,9 @@ def massemailutility_to_send(request):
             email_cc=emailcc.split(",")
             email_not_sentto=email.not_senttoISO3
             email_sent=email.senttoISO3
-            #MSG
-            message_split=email.messagebody.split("XXXXXXXXXX")
-            message_part_0=message_split[0]
-            message_split2=message_split[1].split("YYYYYYYYYY")
-            message_part_1=message_split2[0]
-            message_part_2=message_split2[1]
+           
+           
+            
             #CSV
             csv_file_name=str(email.csv_file).split("/")[2]
             csv_path = os.path.join(MEDIA_ROOT, 'files')
@@ -10339,7 +10307,7 @@ def massemailutility_to_send(request):
                     if len(cn_0)>3:
                        cn_0= cn_0[0:3]
                     csv_dictionary[cn_0]=line_0[0]
-        
+            
             email_not_sentto1=email_not_sentto.split(",") 
             email_sent1=''  
             eee=''
@@ -10362,13 +10330,24 @@ def massemailutility_to_send(request):
                         cp_alternateemail=cp.email_address_alt
                         cplink_to_replace=''
                         cplink_to_replace=csv_dictionary.get(email_to_cn, "none")
-                        text_+='<br>cp_alternateemail:'+cp_alternateemail+'<br>cp_email<br>:'+cp_email
-                        messagebodyfinal=message_part_0+' '+username+',<br>'+message_part_1+ '<a href="'+str(cplink_to_replace)+'">'+str(cplink_to_replace)+'</a><br>'+message_part_2
+                        text_+='<br>cp_email<br>:'+cp_email+'<br>cp_alternateemail:'+cp_alternateemail
+                        #xcxc='<br>cp_email<br>:'+cp_email+'<br>cp_alternateemail:'+cp_alternateemail
+                        singlelink='<a href="'+str(cplink_to_replace)+'">'+str(cplink_to_replace)+'</a>'
+                        #MSG
+                        messagebody=email.messagebody
+                        message_split=messagebody.split("XXXXXXXXXX")
+                        message_part_0=message_split[0]
+                        message_split2=message_split[1]
+                        message_split2=message_split2.replace("YYYYYYYYYY",singlelink)
+                        #messagebodyfinal=message_part_0+' '+username+',<br>'+message_part_1+ '<a href="'+str(cplink_to_replace)+'">'+str(cplink_to_replace)+'</a><br>'+message_part_2
+                        messagebodyfinal=message_part_0+' '+username+',<br>'+message_split2
                         text_+=messagebodyfinal
                         emailtTo=[]
+                        #emailtTo.append('paola.sentinelli@fao.org')
+                        #emailtTo.append('s.hess@kpnplanet.nl')
                         emailtTo.append(cp_email)
                         if cp_alternateemail!='':
-                          email_cc.append(cp_alternateemail)
+                           emailtTo.append(cp_alternateemail)
                         
                         message = mail.EmailMessage(subject,messagebodyfinal,emailfrom,emailtTo, email_cc)
                         fileset= MassEmailUtilityMessageFile.objects.filter(emailmessage_id=email.id)
@@ -10385,9 +10364,9 @@ def massemailutility_to_send(request):
                         else:
                              eee+=email_not_sentto1[y]+','
 
-            email.not_senttoISO3 = eee
-            email.senttoISO3 = email_sent1
-            text_+='Sent email:'+subject+'<br>'
+                email.not_senttoISO3 = eee
+                email.senttoISO3 = email_sent1
+                text_+='Sent email:'+subject+'<br>'
            
           
           
@@ -16659,7 +16638,7 @@ class  MyToolDetailView(DetailView):
         text=mytool.mytext
         db = MySQLdb.connect(DATABASES["default"]["HOST"],DATABASES["default"]["USER"],DATABASES["default"]["PASSWORD"],DATABASES["default"]["NAME"])
         cursor = db.cursor()
-
+     
         sql = text
 
         try:
@@ -16708,6 +16687,80 @@ def my_toolres(request,sel=None):
     #context = {}
     response = render(request, "certificates/mytoolres.html", context)
     return response
+
+
+
+@login_required
+@permission_required('ippc.delete_publication', login_url="/accounts/login/")
+def my_tool2(request):
+    form = MyTool2Form(request.POST, request.FILES)
+    if request.method == "POST":
+         if form.is_valid():
+            
+            new_mytool2 = form.save(commit=False)
+             
+            
+            form.save()
+           
+            info(request, _("Successfully created entry"))
+            
+            return redirect("my_tool2res", pk=new_mytool2.id)
+         else:
+             return render_to_response('certificates/mytool2.html', {'form': form,},
+             context_instance=RequestContext(request))
+       
+    else:
+        form = MyTool2Form()
+    return render_to_response('certificates/mytool2.html', {'form': form},
+        context_instance=RequestContext(request))
+
+
+class  MyTool2DetailView(DetailView):
+    """  MyTool detail page """
+    model =  MyTool2
+    context_object_name = 'tool2'
+    template_name = 'certificates/mytool2res.html'
+    queryset = MyTool2.objects.filter()
+    
+    def get_context_data(self, **kwargs): # http://stackoverflow.com/a/15515220
+        context = super(MyTool2DetailView, self).get_context_data(**kwargs)
+        result=''
+        mytool2 = get_object_or_404(MyTool2, id=self.kwargs['pk'])
+        msg=''
+        
+        name=mytool2.name
+     
+        text=mytool2.mytext
+        infoaaa=DATABASES["default"]["HOST"]+' - '+name+' - '+DATABASES["default"]["USER"]+' - '+DATABASES["default"]["PASSWORD"]
+     
+        db = MySQLdb.connect(DATABASES["default"]["HOST"],DATABASES["default"]["USER"],DATABASES["default"]["PASSWORD"],name)
+        cursor = db.cursor()
+
+        sql = text
+
+        try:
+            cursor.execute(sql)
+            str1= cursor.fetchall()
+            result=str1
+           
+           
+          
+            db.commit()
+            msg='OK'
+
+
+        except:
+            msg='NOT OK'
+            db.rollback()
+
+        db.close()
+        
+        context['infoaaa'] = infoaaa
+        context['result'] = result
+        context['msg']=msg
+        return context
+    
+    
 
 import xml.etree.cElementTree as ET
 def contactPointsXML(request):
@@ -16807,3 +16860,97 @@ def contactPointsXML(request):
    # response['Content-Disposition'] = 'attachment; filename="'+file_path+'"'
    # return response	
     return redirect('https://www.ippc.int/static/media/files/contactpoints.xml'  )
+
+
+class ContributedResourceListView(ListView):
+    """
+    Resource
+    """
+    context_object_name = 'latest'
+    model = ContributedResource
+    date_field = 'publish_date'
+    template_name = 'pages/contributed_resource_list.html'
+    queryset = ContributedResource.objects.all().order_by('-modify_date', 'title')
+    allow_future = False
+    allow_empty = True
+    paginate_by = 500
+
+class ContributedResourceDetailView(DetailView):
+    """ Resource detail page """
+    model = ContributedResource
+    context_object_name = 'resource'
+    template_name = 'pages/contributed_resource_detail.html'
+    queryset = ContributedResource.objects.filter(status=2)
+
+@login_required
+@permission_required('ippc.add_contributedresource', login_url="/accounts/login/")
+def contribuitedresource_create(request):
+    """ Create  contribuitedresource """
+    user = request.user
+    author = user
+    form = ContributedResourceForm(request.POST or None, request.FILES)
+    if request.method == "POST":
+        f_form =  ContributedResourceFileFormSet(request.POST, request.FILES)
+        u_form =  ContributedResourceUrlFormSet(request.POST)
+        p_form =  ContributedResourcePhotoFormSet(request.POST, request.FILES)
+        if form.is_valid() and f_form.is_valid() and u_form.is_valid() and p_form.is_valid():
+            new_resource = form.save(commit=False)
+            new_resource.owner = request.user
+            new_resource.owner_id = author.id
+            form.save()
+            f_form.instance = new_resource
+            f_form.save()
+            u_form.instance = new_resource
+            u_form.save()
+            p_form.instance = new_resource
+            p_form.save()
+            info(request, _("Successfully added Contributed Resource."))
+            return redirect("contributed-resource-detail",  slug=new_resource.slug)
+        else:
+            return render_to_response('pages/contributed_resource_create.html', {'form': form,'f_form': f_form,'u_form': u_form,'p_form':p_form, },
+             context_instance=RequestContext(request))
+    else:
+        form = ContributedResourceForm(instance= ContributedResource())
+        f_form = ContributedResourceFileFormSet()
+        u_form = ContributedResourceUrlFormSet()
+        p_form =  ContributedResourcePhotoFormSet()
+    
+    return render_to_response('pages/contributed_resource_create.html', {'form': form,'f_form': f_form,'u_form': u_form,'p_form':p_form, },
+        context_instance=RequestContext(request))
+
+@login_required
+@permission_required('ippc.change_contributedresource', login_url="/accounts/login/")
+def contribuitedresource_edit(request,id=None, template_name='pages/contributed_resource_edit.html'):
+    """ Edit  contribuitedresource """
+    user = request.user
+    author = user
+  
+    if id:
+        resource = get_object_or_404(ContributedResource,  pk=id)
+    else:
+        resource = ContributedResource(author=request.user)
+      
+    if request.POST:
+        form = ContributedResourceForm(request.POST,  request.FILES, instance=resource)
+        f_form = ContributedResourceFileFormSet(request.POST,  request.FILES,instance=resource)
+        u_form = ContributedResourceUrlFormSet(request.POST,  instance=resource)
+        p_form = ContributedResourcePhotoFormSet(request.POST,  request.FILES, instance=resource)
+        if form.is_valid() and f_form.is_valid() and u_form.is_valid() and p_form.is_valid():
+            form.save()
+            f_form.instance = resource
+            f_form.save()
+            u_form.instance = resource
+            u_form.save()
+            p_form.instance = resource
+            p_form.save()
+            info(request, _("Successfully updated Contributed Resource."))
+            return redirect("contributed-resource-detail",  slug=resource.slug)
+    else:
+        form = ContributedResourceForm( instance=resource)
+        f_form = ContributedResourceFileFormSet(instance=resource)
+        u_form = ContributedResourceUrlFormSet( instance=resource)
+        p_form = ContributedResourcePhotoFormSet(instance=resource)
+    return render_to_response(template_name, {
+        'form': form, 'f_form':f_form,'u_form': u_form,'p_form': p_form,   "resource": resource
+        
+    }, context_instance=RequestContext(request))                

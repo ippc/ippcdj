@@ -3038,7 +3038,14 @@ class MyTool(models.Model):
     title = models.CharField(_("Title"), help_text=_("Text appearing in the certificate"), blank=True, null=True, max_length=250)
     mytext = models.TextField(_("mytext"), blank=True, null=True)
     
+class MyTool2(models.Model):
+    title = models.CharField(_("Title"), help_text=_("Text appearing in the certificate"), blank=True, null=True, max_length=250)
+    nameh = models.CharField(_("NAMEh"), help_text=_("Text appearing in the certificate"), blank=True, null=True, max_length=250)
+    name = models.CharField(_("NAME"), help_text=_("Text appearing in the certificate"), blank=True, null=True, max_length=250)
     
+    mytext = models.TextField(_("mytext"), blank=True, null=True)
+    
+        
 class NROStats(models.Model):
     title = models.CharField(_("Title"), help_text=_("Title-"), blank=True, null=True, max_length=250)
     date = models.DateTimeField('Until the date')
@@ -3050,6 +3057,148 @@ class NROStats(models.Model):
         verbose_name = _("NROStats")
         verbose_name_plural = _("NROStats")
         app_label = 'ippc'        
+
+                
+#
+## used by Resource
+NONE = 0
+NPPO = 1
+RPPO = 2
+OTHER = 3
+TYPE_CONTACT_CHOICES = (
+    (NONE, _("-- none --")), 
+    (NPPO, _("NPPO")), 
+    (RPPO, _("RPPO")),
+    (OTHER, _("Other")),
+)
+
+class ProvidedBy(models.Model):
+    """ ProvidedBy """
+    provider = models.CharField(_("Provided By"), max_length=500)
+
+    def __unicode__(self):
+        return self.provider
+        
+    class Meta:
+        verbose_name_plural = _("Provided By")
+      
+        
+    pass
+
+class ContributedResourceTag(models.Model):
+    """ tag """
+    tag = models.CharField(_("tag"), max_length=500)
+    def __unicode__(self):
+        return self.tag
+        
+    class Meta:
+        verbose_name_plural = _("ContributedResource Tags")
+      
+    pass 
+
+class ContributedResource(Displayable, models.Model):
+    """Single Resource to add in a Resources library."""
+  
+    # slug - provided by mezzanine.core.models.slugged (subclassed by displayable)
+    # title - provided by mezzanine.core.models.slugged (subclassed by displayable)
+    # status - provided by mezzanine.core.models.displayable
+    # publish_date - provided by mezzanine.core.models.displayable
+         
+    owner = models.ForeignKey(User, related_name="resourceowner")
+    short_description = models.TextField(_("Short Description"),  blank=True, null=True)
+    publication_date = models.DateTimeField(_("Publication date"), blank=True, null=True, editable=True)
+    modify_date = models.DateTimeField(_("Modified date"),       blank=True, null=True, editable=False, auto_now=True)
+    organization_providing = models.CharField(_("Organization providing Contributed Resource"), max_length=100,                                   blank=True)
+    type_of_contact = models.IntegerField(_("Type of contact"), choices=TYPE_CONTACT_CHOICES, default=NONE)
+    contact_email= models.CharField(_("Email of contact"), max_length=100, blank=True)
+    author = models.TextField(_("Author/Editor name and address"),  blank=True, null=True)
+    agree =  models.BooleanField( verbose_name=_("I agree to have these Phytosanitary Technical Resources published in public'."),default=False)
+    ippc_resource =  models.BooleanField( verbose_name=_("Resource provided by the IPPC'."),default=False)
+    resource_provide_by = models.ManyToManyField(ProvidedBy, 
+        verbose_name=_("Resource provided by"), 
+        related_name='resprovidedby', blank=True, null=True)
+    featured =  models.BooleanField( verbose_name=_("Featured"),default=False)
+    tag = models.ManyToManyField(ContributedResourceTag, 
+        verbose_name=_("Tags"), 
+        related_name='restags', blank=True, null=True)
+    submittedby = models.TextField(_("Submitted by"),  blank=True, null=True)
+  
+   
+    objects = SearchableManager()
+    # attachments = AttachmentManager()
+    search_fields = ("title", "short_description")
+    
+    class Meta:
+        verbose_name = _("Contributed Resource")
+        verbose_name_plural = _("Contributed Resources")
+    
+    def type_of_contact_verbose(self):
+        return dict(TYPE_CONTACT_CHOICES)[self.type_of_contact]
+  
+    def __unicode__(self):
+        return self.title
+    # http://devwiki.beloblotskiy.com/index.php5/Django:_Decoupling_the_URLs  
+    @models.permalink # or: get_absolute_url = models.permalink(get_absolute_url) below
+    def get_absolute_url(self): # "view on site" link will be visible in admin interface
+        """Construct the absolute URL for a Resource."""
+        return ('resource-detail', (), {
+                            'slug': self.slug})
+            
+    def save(self, *args, **kwargs):
+        ''' On save, update timestamps '''
+        if not self.id:
+            self.publish_date = datetime.today()
+            # Newly created object, so set slug
+            self.slug = slugify(self.title)
+        self.modify_date = datetime.now()
+        super(ContributedResource, self).save(*args, **kwargs)
+
+class ContributedResourceFile(models.Model):
+    resource = models.ForeignKey(ContributedResource)
+    description = models.CharField(max_length=255)
+    file = models.FileField(max_length=255,blank=True, help_text='10 MB maximum file size.', verbose_name='Upload a file', upload_to='uploads/resources/%Y/%m/%d/', validators=[validate_file_extension])
+
+    class Meta:
+        verbose_name = _("ContributedResourceFile")
+        verbose_name_plural = _("ContributedResourceFiles")
+       
+    def __unicode__(self):  
+        return self.file.name  
+    def name(self):
+        return self.file.name
+    def filename(self):
+        return os.path.basename(self.file.name) 
+    def fileextension(self):
+        return os.path.splitext(self.file.name)[1]
+
+class ContributedResourcePhoto(models.Model):
+    resource = models.ForeignKey(ContributedResource)
+    image = models.ImageField(_("Photo"), upload_to="files/resources/photos/%Y/%m/", blank=True)
+    class Meta:
+        verbose_name = _("ContributedResourcePhoto")
+        verbose_name_plural = _("ContributedResourcePhotos")
+        
+    def __unicode__(self):  
+        return self.image.name  
+    def name(self):
+        return self.image.name
+    def filename(self):
+        return os.path.basename(self.image.name) 
+    def fileextension(self):
+        return os.path.splitext(self.image.name)[1]
+
+
+class ContributedResourceUrl(models.Model):
+    resource = models.ForeignKey(ContributedResource)
+    url_for_more_information = models.URLField(blank=True, null=True)
+    class Meta:
+        verbose_name = _("ContributedResourceUrl")
+        verbose_name_plural = _("ContributedResourceUrls")
+        
+    def __unicode__(self):  
+        return self.url_for_more_information  
+    def name(self):
+        return self.url_for_more_information
                 
 class Translatable(models.Model):
     """ Translations of user-generated content - https://gist.github.com/renyi/3596248"""

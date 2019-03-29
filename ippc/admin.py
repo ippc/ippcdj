@@ -17,8 +17,8 @@ PartnersWebsite,PartnersWebsiteUrl,\
 PartnersNews,PartnersNewsFile,PartnersNewsUrl, \
 EppoCode,IssueKeyword, CommodityKeyword,IssueKeywordsRelate,CommodityKeywordsRelate, ContactType, IppcUserProfile,\
 QAQuestion,QAAnswer,FAQsCategory,FAQsItem,IRSSActivity,IRSSActivityFile,TransFAQsCategory,TransFAQsItem,UserMembershipHistory,MediaKitDocument,PhytosanitaryTreatment,PhytosanitaryTreatmentType,\
-StratigicObjective,DraftingBodyType,TransTopic,Topic
-
+StratigicObjective,DraftingBodyType,TransTopic,Topic,\
+ContributedResource,  ContributedResourceFile, ContributedResourcePhoto,ContributedResourceUrl,ProvidedBy,ContributedResourceTag
 #,TransReportingObligation
 
 from django.forms.models import inlineformset_factory
@@ -271,7 +271,7 @@ class CountryPageAdmin(PageAdmin):
 
 admin.site.register(CountryPage, CountryPageAdmin)
 
-partnerspages_extra_fieldsets = ((None, {"fields": ("name","content", "short_description", "partner_slug",  "contact_point", "editors", )}),)
+partnerspages_extra_fieldsets = ((None, {"fields": ("name","content", "short_description", "partner_slug",  "contact_point", "editors",)}),)#"coop_type" ,"table_id","responsable_sec"
 
  
 class PartnersContactPointHistoryInline(admin.TabularInline):
@@ -709,8 +709,40 @@ class TopicAdmin(admin.ModelAdmin):
     search_fields = ('title', 'publish_date')
     prepopulated_fields = { 'slug': ['title'] }
 admin.site.register(Topic, TopicAdmin)
-    
 
+class ContributedResourceFileInline(admin.TabularInline):
+    model = ContributedResourceFile
+    formset = inlineformset_factory(ContributedResource,  ContributedResourceFile,extra=1)
+
+class ContributedResourcePhotoInline(admin.TabularInline):
+    model = ContributedResourcePhoto
+    formset = inlineformset_factory(ContributedResource,  ContributedResourcePhoto,extra=1)
+        
+class ContributedResourceUrlInline(admin.TabularInline):
+    model = ContributedResourceUrl
+    formset = inlineformset_factory(ContributedResource, ContributedResourceUrl,extra=1)
+   
+class ContributedResourceAdmin(admin.ModelAdmin):
+    inlines = [ContributedResourceFileInline,ContributedResourcePhotoInline,ContributedResourceUrlInline]
+    save_on_top = True
+    list_display = ('title',  'modify_date')
+    list_filter = ('title',  'modify_date')
+    prepopulated_fields = { 'slug': ['title']}
+    search_fields = ['title', 'short_description', 'slug', ]
+
+    def queryset(self, request):
+        qs = super(ContributedResourceAdmin, self).queryset(request)
+        return qs
+    
+admin.site.register(ContributedResource, ContributedResourceAdmin)
+
+class ProvidedByAdmin(admin.ModelAdmin):
+    save_on_top = True
+admin.site.register(ProvidedBy, ProvidedByAdmin)
+
+class ContributedResourceTagAdmin(admin.ModelAdmin):
+    save_on_top = True
+admin.site.register(ContributedResourceTag, ContributedResourceTagAdmin)
 
 # Translatable user-content  -----------------
 if "mezzanine.pages" in settings.INSTALLED_APPS:
