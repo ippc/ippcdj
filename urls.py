@@ -48,7 +48,8 @@ CertificatesToolListView,CertificatesToolDetailView,generate_certificates,Member
 TopicDetailView,TopicListView,topic_create,topic_edit,topic_translate,WorkshopCertificatesToolListView,WorkshopCertificatesToolDetailView,generate_workshopcertificates,\
 B_CertificatesToolListView,B_CertificatesToolDetailView,generate_b_certificates,my_tool,MyToolDetailView,generate_topiclist,\
 MembershipShortListView,generate_shortlist,generate_shortlistparticipant,generate_listNEW1,\
-generate_b_certificatesnew,generate_certificatesnew,CountryStatsSingleListOfRegulatesPestsListView,select_cns_nros_stats,nro_stats_files,contactPointsXML
+generate_b_certificatesnew,generate_certificatesnew,CountryStatsSingleListOfRegulatesPestsListView,select_cns_nros_stats,nro_stats_files,contactPointsXML,\
+ContributedResourceListView,  ContributedResourceDetailView,contribuitedresource_create,contribuitedresource_edit,my_tool2,MyTool2DetailView
 
 #reporting_obligation_translate,
 from schedule.periods import Year, Month, Week, Day
@@ -160,7 +161,8 @@ urlpatterns = patterns("",
     url(r'^news/', include('news.urls')),
     url(r'^iyph/', include('iyph.urls')),
     url(r'^pce/', include('pce.urls')),
-    #PHYTO#url(r'^phytosanitary/', include('phytosanitary.urls')),
+    #PHYTO#
+    #url(r'^phytosanitary/', include('phytosanitary.urls')),
     
 
 
@@ -354,6 +356,8 @@ urlpatterns = patterns("",
     #url(r'^work-area/sss/(?P<id>\d+)/$',      view=generate_membershiplist,     name='generate_membershiplist'),###
     url(r'^work-area/mytool/$',view= my_tool , name='my_tool'),
     url(r'^work-area/mytoolres/(?P<pk>\d+)/$',view= MyToolDetailView.as_view() , name='my_toolres'),
+    url(r'^work-area/mytool2/$',view= my_tool2 , name='my_tool2'),
+    url(r'^work-area/mytool2res/(?P<pk>\d+)/$',view= MyTool2DetailView.as_view() , name='my_tool2res'),
     url(r'^work-area/nro_stats_files/$',view= nro_stats_files , name='nro_stats_files'),
    
   
@@ -366,13 +370,15 @@ urlpatterns = patterns("",
 #    url(r'^poll/(?P<pk>\d+)/$', PollDetailView.as_view(), name='detail'),
 #    url(r'^poll/(?P<pk>\d+)/results/$', PollResultsView.as_view(), name='results'),
 #    url(r'^poll/(?P<poll_id>\d+)/send/$', vote_poll, name='vote'),
+    # MERGE EMAIL:    
+    url(r'^mergemassemailutility/send/$',view=mergemassemail_send, name='mass-email-send'),
+       #--------------------------------------#
+    
     url(r'^emailutility/all/$',
         view=EmailUtilityMessageListView.as_view(),
         name='email-list'),
     url(r'^emailutility/(?P<pk>\d+)/$',EmailUtilityMessageDetailView.as_view(), name='email-detail'),
-    url(r'^emailutility/send/$',
-        view=email_send,
-        name='email-send'),
+    url(r'^emailutility/send/$',        view=email_send,        name='email-send'),
     #--------------------------------------#
     # MASS EMAIL:    
     url(r'^massemailutility/all/$',view=MassEmailUtilityMessageListView.as_view(), name='mass-email-list'),
@@ -381,9 +387,7 @@ urlpatterns = patterns("",
     url(r'^massemailutility/status/(?P<pk>\d+)/(?P<status>\d+)/$',view=massemailutility_setstatus, name='mass-email-status'),
     url(r'^massemailutility_to_send/sendout/$', massemailutility_to_send, name='massemailutility-to-send'),
      
-   #--------------------------------------#
-    # MERGE EMAIL:    
-    url(r'^mergemassemailutility/send/$',view=mergemassemail_send, name='mass-email-send'),
+
     #------- CONTACT US EMAIL--------------------------------------#
     url(r'^contactusemail/all/$', view=ContactUsEmailMessageListView.as_view(),  name='contactus-email-list'),
     url(r'^contactusemail/(?P<pk>\d+)/$',ContactUsEmailMessageDetailView.as_view(), name='contactus-email-detail'),
@@ -765,8 +769,20 @@ url(r'^external-cooperation/organizations-page-in-ipp/(?P<partner>[\w-]+)/$',   
   
   url(r'^work-area/generate-sc-shortlist/$',view=generate_shortlist, name='generate-sc-shortlist'),
   url(r'^work-area/generate-sc-replacementlist/$',view=generate_replacementlist, name='generate-sc-replacementlist'),
-   
+   #----------------------------------------#
+   #------- CONTRIBUTED RESOURCES------------------#
+    url(r'^core-activities/capacity-development/guides-and-training-materials/contributed-resource-list/$',
+        view=ContributedResourceListView.as_view(),        name='contributed-resource-list'),
+    url(r'^core-activities/capacity-development/guides-and-training-materials/contributed-resource-detail/(?P<slug>[\w-]+)/$',
+        view=ContributedResourceDetailView.as_view(), name="contributed-resource-detail"),
+    #create
+    url(r'^core-activities/capacity-development/guides-and-training-materials/contributed-resource-create/$',
+        view=contribuitedresource_create, name="contribuited-resource-create"),
+    #edit
+        url(r'^core-activities/capacity-development/guides-and-training-materials/contributed-resource-list/edit/(?P<id>\d+)/$',
+        view=contribuitedresource_edit, name="contribuited-resource-edit"),
         
+   
 #-------------------------------------------#
     # CN news list
     url(r'^countries/(?P<country>[\w-]+)/countrynews/$',
