@@ -498,12 +498,17 @@
 
                                                                         <td>{% if context == 'Edit' %}  
                                                                                     {{ff}}
-                                                                            {% elif context == 'View' %} 
+                                                                            {% elif context == 'View' %}
                                                                                 {% if ff.value == None or ff.value == 0 %}
                                                                                     <input type="text" disabled="true" value="" class="zzz">
                                                                                 {% else %}
                                                                                         {% if  ff.label == 'Nstaff' or  ff.label == 'Nstafflab' %}
-                                                                                        <input type="text" disabled="true" value="{{ff.value}}" class="zzz"/>
+                                                                                        {% for key1,value1 in VAL %}
+                                                                                                {%if   ff.value  == key1 %}
+                                                                                                    <input type="text" disabled="true" value="{{value1}}" class="zzz"/>
+                                                                                                {% endif %}
+                                                                                            {% endfor %} 
+                                                                                        <!--input type="text" disabled="true" value="{{ff.value}}" class="zzz"/-->
                                                                                         {% elif  ff.label == 'Support' or  ff.label == 'Managers' %}
                                                                                             {% for key1,value1 in BOOL_CHOICESM_M %}
                                                                                                 {%if   ff.value  == key1 %}
@@ -524,7 +529,11 @@
                                                                                              &#160;
                                                                                         {% else %}
                                                                                           {% if ff.label == 'Nstaff' or  ff.label == 'Nstafflab' %}
-                                                                                              {{ff.value}}
+                                                                                            {% for key1,value1 in VAL %}
+                                                                                                {%if   ff.value  == key1 %}
+                                                                                                   {{value1}}
+                                                                                                {% endif %}
+                                                                                            {% endfor %} 
                                                                                           {% elif  ff.label == 'Support' or  ff.label == 'Managers' %}
                                                                                              {% for key1,value1 in BOOL_CHOICESM_M %}
                                                                                                 {%if   ff.value  == key1 %}
