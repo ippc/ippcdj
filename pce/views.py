@@ -13,7 +13,7 @@ from django.contrib.auth.models import User,Group
 from symbol import except_clause
 from ippc.models import  CountryPage,IppcUserProfile
 
-from .models import ROLE,INSUFF0, INTEREST,  IMPORTANCE,  PARTICIPANT, LEVEL,PRIORITY,TYPE,REGIONS,VAL_AV,BOOL_CHOICESM_M,\
+from .models import ROLE,INSUFF0, INTEREST,  IMPORTANCE,  PARTICIPANT, LEVEL,PRIORITY,TYPE,REGIONS,VAL_AV,VAL,BOOL_CHOICESM_M,\
     PceVersion,Stakeholders,StakeholdersFields,ProblemAnalysis,Crops,\
     SwotAnalysis, SwotAnalysis1,SwotAnalysis2,SwotAnalysis3,SwotAnalysis4,SwotAnalysis5,\
     LogicalFramework,LogicalFrameworkAct1,LogicalFrameworkAct2,LogicalFrameworkAct3,LogicalFrameworkAct4,LogicalFrameworkAct5,\
@@ -7106,6 +7106,7 @@ class Module7ListView(ListView):
         context['sessionid'] = self.kwargs['sessionid']
         context['context'] = 'View'
         context['VAL_AV'] =VAL_AV
+        context['VAL'] =VAL
         context['BOOL_CHOICESM_M'] =BOOL_CHOICESM_M
    
 
@@ -7204,6 +7205,7 @@ class Module7ListPDFView(PDFTemplateView):
         context['country'] = self.kwargs['country']
         context['sessionid'] = self.kwargs['sessionid']
         context['VAL_AV'] =VAL_AV
+        context['VAL'] =VAL
         context['BOOL_CHOICESM_M'] =BOOL_CHOICESM_M
         context['context'] = 'Pdf'   
         
@@ -7601,6 +7603,7 @@ class Module8ListView(ListView):
         context['sessionid'] = self.kwargs['sessionid']
         context['context'] = 'View'
         context['VAL_AV'] =VAL_AV
+        context['VAL'] =VAL
         context['BOOL_CHOICESM_M'] =BOOL_CHOICESM_M
         context['M8_17']=  M8_17.objects.filter()
      
@@ -7689,6 +7692,7 @@ class Module8ListPDFView(PDFTemplateView):
         context['sessionid'] = self.kwargs['sessionid']
         context['context'] = 'Pdf'   
         context['VAL_AV'] =VAL_AV
+        context['VAL'] =VAL
         context['BOOL_CHOICESM_M'] =BOOL_CHOICESM_M
         
         RANGE1=(
@@ -8040,6 +8044,7 @@ class Module9ListView(ListView):
         context['sessionid'] = self.kwargs['sessionid']
         context['context'] = 'View'
         context['VAL_AV'] =VAL_AV
+        context['VAL'] =VAL
         context['BOOL_CHOICESM_M'] =BOOL_CHOICESM_M
         id=''
         if  'id' in self.kwargs:
@@ -8204,6 +8209,7 @@ class Module9ListPDFView(PDFTemplateView):
         )
 
         context['VAL_AV'] =VAL_AV
+        context['VAL'] =VAL
         context['BOOL_CHOICESM_M'] =BOOL_CHOICESM_M
      
         
@@ -8461,6 +8467,7 @@ class Module10ListView(ListView):
         context['sessionid'] = self.kwargs['sessionid']
         context['context'] = 'View'
         context['VAL_AV'] =VAL_AV
+        context['VAL'] =VAL
         context['BOOL_CHOICESM_M'] =BOOL_CHOICESM_M
         id=''
         if  'id' in self.kwargs:
@@ -8555,6 +8562,7 @@ class Module10ListPDFView(PDFTemplateView):
         context['sessionid'] = self.kwargs['sessionid']
         context['context'] = 'Pdf'   
         context['VAL_AV'] =VAL_AV
+        context['VAL'] =VAL
         context['BOOL_CHOICESM_M'] =BOOL_CHOICESM_M
 
 
@@ -8901,6 +8909,7 @@ class Module11ListView(ListView):
         context['sessionid'] = self.kwargs['sessionid']
         context['context'] = 'View'
         context['VAL_AV'] =VAL_AV
+        context['VAL'] =VAL
         context['BOOL_CHOICESM_M'] =BOOL_CHOICESM_M
         id=''
         if  'id' in self.kwargs:
@@ -8993,6 +9002,7 @@ class Module11ListPDFView(PDFTemplateView):
         context['sessionid'] = self.kwargs['sessionid']
         context['context'] = 'Pdf'   
         context['VAL_AV'] =VAL_AV
+        context['VAL'] =VAL
         
         context['BOOL_CHOICESM_M'] =BOOL_CHOICESM_M
         RATHER = (
@@ -9358,6 +9368,7 @@ class Module12ListView(ListView):
         context['context'] = 'View'
         context['vals'] =INSUFF0
         context['VAL_AV'] =VAL_AV
+        context['VAL'] =VAL
         context['BOOL_CHOICESM_M'] =BOOL_CHOICESM_M
         id=''
       
@@ -9444,6 +9455,7 @@ class Module12ListPDFView(PDFTemplateView):
         context['context'] = 'Pdf'   
         context['vals'] =INSUFF0
         context['VAL_AV'] =VAL_AV
+        context['VAL'] =VAL
         context['BOOL_CHOICESM_M'] =BOOL_CHOICESM_M
         RATHER = (
             (0, _("--- Please select ---")),
@@ -9774,6 +9786,7 @@ class Module13ListView(ListView):
         context['sessionid'] = self.kwargs['sessionid']
         context['context'] = 'View'
         context['VAL_AV'] =VAL_AV
+        context['VAL'] =VAL
         context['BOOL_CHOICESM_M'] =BOOL_CHOICESM_M
         id=''
       
@@ -9866,6 +9879,7 @@ class Module13ListPDFView(PDFTemplateView):
         context['sessionid'] = self.kwargs['sessionid']
         context['context'] = 'Pdf'   
         context['VAL_AV'] =VAL_AV
+        context['VAL'] =VAL
         context['BOOL_CHOICESM_M'] =BOOL_CHOICESM_M
     
 
