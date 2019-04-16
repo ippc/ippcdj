@@ -36,7 +36,7 @@
   {% else %} 
 
   {% for group in request.user.groups.all %}
-{% if group in poll.groupspoll.all %}
+{% if group in poll.groupspoll.all or group.name == 'IPPC Secretariat' %}
 <h1>{{ poll.question }}<br>
 <small class="normal">
 {% trans "Publication date" %}: {{ poll.pub_date|date:"d M Y" }}<br>
