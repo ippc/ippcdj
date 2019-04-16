@@ -16,6 +16,7 @@
 {% if polls %}
 <p><strong>POLLs</strong></p>
 
+
 <table class="table table-condensed table-striped table-bordered">
     <thead>
         <tr>
@@ -26,8 +27,10 @@
     </thead>
     <tbody>
     {% for poll in polls %}
+   
         {% for g in poll.groupspoll.all %}
-           {% if g in page.get_content_model.groups.all  %}
+           {% if g in page.get_content_model.groups.all and not g.name == 'IPPC Secretariat' %}
+           
            <tr>
                {% if 'admin' == poll.userspoll.all.0.username %}
 
