@@ -13681,7 +13681,7 @@ def generate_topiclist(request,lang):
     p.alignment = WD_ALIGN_PARAGRAPH.CENTER
     p= document.add_paragraph("")
     p= document.add_paragraph("")
-    p.add_run(_("(Updated "+updateddate+")"), style = 'CommentsStyle').italic = True
+   # p.add_run(_("(Updated "+updateddate+")"), style = 'CommentsStyle').italic = True
     p.alignment = WD_ALIGN_PARAGRAPH.CENTER
     p= document.add_paragraph("")
     p= document.add_paragraph("")
@@ -13689,7 +13689,7 @@ def generate_topiclist(request,lang):
     p= document.add_paragraph("")
     p= document.add_paragraph("")
     p= document.add_paragraph("")
-    p.add_run(_("This List of topics for IPPC standards was last updated on 28 June 2018 and reflects the modifications adopted by the CPM or approved by the SC."), style = 'CommentsStyle').italic = True
+    p.add_run(_("This List of topics for IPPC standards was last updated on April 2019 and reflects the modifications adopted by the CPM or approved by the SC."), style = 'CommentsStyle').italic = True
     p.alignment = WD_ALIGN_PARAGRAPH.LEFT
     p= document.add_paragraph("")
     p= document.add_paragraph("")
@@ -13702,7 +13702,7 @@ def generate_topiclist(request,lang):
   
     p.add_run(_("Table 2: "), style = 'CommentsStyle').bold = True
     p.alignment = WD_ALIGN_PARAGRAPH.LEFT
-    p.add_run(_("Topics for the Expert Working Groups (EWGs), Technical Panel on Fruit Flies (TPFF), Technical Panel on Forest Quarantine (TPFQ), and Technical Panel on Phytosanitary Treatments (TPPT)"), style = 'CommentsStyle')
+    p.add_run(_("Topics for the Expert Working Groups (EWGs), Technical Panel on Forest Quarantine (TPFQ), and Technical Panel on Phytosanitary Treatments (TPPT)"), style = 'CommentsStyle')
     p.alignment = WD_ALIGN_PARAGRAPH.LEFT
     p= document.add_paragraph("")
   
@@ -13812,7 +13812,7 @@ def generate_topiclist(request,lang):
     table_array2.append(10)#numcol
     table_array2.append('008000')#bgcolorHeader
     table_array2.append('C2D69B')#bgcolorrows
-    table_array2.append(_("Table 2: Topics for EWGs, TPFF, TPFQ and TPPT (sorted by priority, drafting body, then status)"))
+    table_array2.append(_("Table 2: Topics for EWGs, TPFQ and TPPT (sorted by priority, drafting body, then status)"))
     array_titles2= [_("Topic N."),
                     _("Current Title"),
                     _("Priority"),
