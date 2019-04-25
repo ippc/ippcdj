@@ -20,7 +20,7 @@
 <link rel="stylesheet" href="{% static "css/bootstrap.css" %}">
 <link rel="stylesheet" href="{% static "css/mezzanine.css" %}">
 <link rel="stylesheet" href="{% static "css/bootstrap-responsive.css" %}">
-<link rel="stylesheet" href="{% static "css/iyph2017_7.css" %}">
+<link rel="stylesheet" href="{% static "css/iyph2017_8.css" %}">
 
 <link rel="stylesheet" href="{% static "css/chosen.css" %}">
 {% if LANGUAGE_BIDI %}
@@ -109,13 +109,20 @@
         <span class="icon-bar"></span>
         <span class="icon-bar"></span>
     </a>
+    <!--img src="/static/img/iyph-stc/IYPH_logo1.png" class="logo"-->
     
     <div class="pull-left" style="clear:left;">
       <a class="brand" href="/{{ LANGUAGE_CODE }}/iyph">
-        <img src="/static/img/iyph-stc/IYPH_logo1.png" class="logo"><!--class="printlogo"-->
-        <strong>{% trans "  The path towards an International Year of Plant Health (IYPH) " %}</strong><br>
-        <em class="small quiet">{% blocktrans %}Protecting the world's plant resources from pests{% endblocktrans %}</em>
-      </a>
+      <table>
+      <tr>
+      <td><img src="/static/img/iyph2020logo.png" class="logo"></td>
+      <td> <strong>&#160;&#160;&#160;&#160;&#160;&#160;{% trans "The path towards an International Year of Plant Health (IYPH) " %}</strong>
+        <br>&#160;&#160;&#160;&#160;&#160;&#160;<em class="small quiet">{% blocktrans %}     Protecting the world's plant resources from pests{% endblocktrans %}</em>
+     </td>
+     </tr>
+     </table>
+        
+       </a>
     </div>
 </div> {# /.navbar navbar-fixed-top #}
 </div> {# /.navbar-inner #}
