@@ -14,10 +14,14 @@
 {% endblock %}
 
 {% block title %}
-      {% with page.publicationlibrary|get_object_translation as translated_page %}
-          {{ translated_page.title|safe }}
-      {% endwith %}
-      {# {{ page.publicationlibrary.title }} #}
+     {% with page.publicationlibrary|get_object_translation as translated_page %}
+             {% if  page.id == 1389 %} 
+                <h4 style="background-color: #E6F5FC; color: #006dcc;padding: 10px">{{ translated_page.title|safe }}</h4>
+            {% else %}
+                {{ translated_page.title|safe }}  
+            {% endif %}
+     {% endwith %}
+      
 {% endblock %}
 
 {% block main %}
@@ -108,16 +112,22 @@
       {# {{ page.publicationlibrary.content|richtext_filter|safe }} #}
       {# {% endeditable %} #}
         {% if  page.id == 321 or  page.id == 350 or  page.id == 339 or  page.id == 356 or  page.id == 355 or page.id == 353 or page.id == 354 or   page.id == 357 or   page.id == 448 %} 
-        {% include "pages/memberstable.html" %} 
-       
+              {% include "pages/memberstable.html" %} 
         {% endif %} 
-         {% if  page.id == 431 %} 
-         {% endif %} 
-      {% include "pages/pce_content.html" %}    
-                 {% if  page.id == 1119 %} 
-        {% include "pages/cooptable.html" %} 
+        {% if  page.id == 431 %} 
+          {% include "pages/pce_content.html" %}    
+        {% endif %} 
+        {% if  page.id == 1119 %} 
+            {% include "pages/cooptable.html" %} 
         {% endif %}
-  {% include "pages/publicationtable.html" %}
+        {% if  page.id == 1389 %} 
+            {% include "pages/symposiumpage.html" %} 
+        {% endif %}
+        {% if  page.id == 1389 %} 
+        {%else%}
+          {% include "pages/publicationtable.html" %}
+        {% endif %}
+        
           {% if  page.id == 370 %}{# DPs #}
              {% include "dp/dp_list.html" %}
         {% endif %} 
