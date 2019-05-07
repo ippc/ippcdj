@@ -1,0 +1,79 @@
+{% extends "learn/baselearn.html" %}
+{% load i18n mezzanine_tags translate_tags  pages_tags   future staticfiles accounts_tags %}
+
+{% block meta_title %}{% trans "IPPC e-Learning" %}{% endblock %}
+
+
+{% block breadcrumb_menu %}
+<li class="active">{% trans "Home: e-Learning" %}</li>
+{% endblock %}
+
+{% block main %}
+
+
+<div class="row-fluid">
+
+    <div class="panel">
+
+      <h3>{% trans "e-Learning Courses" %}</h3>
+        <div>
+           <h5>Is this your first time here?</h5>
+                <p>For full access to courses you'll need to take a minute to create a new account for yourself on this website. Each of the individual courses may also require an enrollment to the course.
+             
+        <ul>
+            <li>Here are the steps if you don't have an IPP account:<br>
+                <ol>
+                <li><a href="/e-learning/accounts/autoregister/" class="btn btn-small btn-info"><strong>Register</strong></a> to create an account to access the courses </li>
+                <li>When your account will be confirmed you will be able to log in</li>
+                <li>Now browse the courses and select the course you want to access</li>
+                <li>Click on 'enroll': this will enroll you in the course </li>
+                <li>You can now access the full course. From now on you will only need to enter your login credential to log in and access the course</li>
+                </ol>
+                    </li><br>
+                 <li>If you have already an IPP account:
+                <ol>
+                    <li> <a href="{% url "login" %}?next={{ request.path }}"  class="btn btn-small btn-info"><strong>{% trans "Log in" %}</strong></a> and 
+                            <a href="/e-learning/accounts/requestaccess/" class="btn btn-small btn-info"><strong> request access</strong></a>
+                        
+                     </li>
+                    <li>When your access will be confirmed you will be able to log in</li>
+                    <li>Now browse the courses and select the course you want to access</li>
+                    <li>Click on 'enroll': this will enroll you in the course </li>
+                    <li>You can now access the full course. From now on you will only need to enter your login credential to log in and access the course</li>
+                    </ol>
+               </li>
+        </div>
+</div>
+</div>
+{% endblock %}
+
+{% block local_nav %}
+<div class="panel">
+    <h4>{% trans "LOGIN TO e-Learning" %}</h4>
+    <p>
+    {% if request.user.is_authenticated %}
+        {% url "profile" request.user.username as profile_url %}
+            {% if profile_url %}
+                <a href="{{ profile_url }}" title="{% trans 'See your IPPC user profile, including contact information.' %}"> {% if request.user.get_profile.first_name or request.user.get_profile.last_name %}{{ request.user.get_profile.first_name }} {{ request.user.get_profile.last_name }}{% else %}{{ request.user.username }}{% endif %}</a>
+            {% else %}
+                <a href="{% url "profile_update" %}">{{ request.user|username_or:"email"|capfirst }}</a>!
+            {% endif %}
+        
+            <a href="/{{ LANGUAGE_CODE }}/e-learning/courses/"
+                class="btn btn-small btn-success btn-account">{% trans "See all Courses " %} </a>
+            <br> <br>
+            <a href="{% url "logout" %}?next={{ request.path }}"
+                class="btn btn-small btn-info btn-account">{% trans "Log out" %}</a>
+            {% else %}
+            <a href="{% url "login" %}?next={{ request.path }}"
+           class="btn btn-small btn-info btn-account">{% trans "Log in" %}</a>
+      
+        {% endif %}
+    </p>
+</div>
+
+
+
+
+
+{% endblock local_nav %}

@@ -1,0 +1,256 @@
+<!DOCTYPE html>
+<html>
+<head>  <meta http-equiv="Content-type" content="text/html; charset=windows-1251">
+{% load pages_tags mezzanine_tags i18n future staticfiles learn_tags %}
+    <title>e-Learning Certificate</title>
+    {% block style_base %}
+        {% block layout_style %}  
+           
+<style type="text/css">
+
+html {
+    font-family:  'Open Sans';
+    font-size: 10px;
+    font-weight: normal;
+    color: #000000;
+    background-color: transparent;
+    /*background: url('http://127.0.0.1:8000/static/img/banner-liaison.jpg') repeat-x 0 0;*/
+    
+    margin: 0;
+    padding: 0;
+    /*line-height: 150%;*/
+    /*border: 1px none;*/
+    display: inline;
+    width: auto;
+    height: auto;
+    white-space: normal;
+}
+
+
+b,strong {
+    font-weight: bold;
+}
+i,em {
+    font-style: italic;
+}
+u {
+    text-decoration: underline;
+}
+s,strike {
+    text-decoration: line-through;
+}
+a {
+    text-decoration: underline;
+    color: blue;
+}
+ins {
+    color: green;
+    text-decoration: underline;
+}
+del {
+    color: red;
+    text-decoration: line-through;
+}
+pre,
+code,
+kbd,
+samp,
+tt {
+    font-family:  'Open Sans';
+}
+h5 {font-size:1.5em;}
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+    font-weight:bold;
+    -pdf-outline: true;
+    -pdf-outline-open: false;
+}
+h1 {
+    /*18px via YUI Fonts CSS foundation*/
+    font-size:138.5%;
+    -pdf-outline-level: 0;
+}
+h2 {
+    /*16px via YUI Fonts CSS foundation*/
+    font-size:123.1%;
+    -pdf-outline-level: 1;
+}
+h3 {
+    /*14px via YUI Fonts CSS foundation*/
+    font-size:108%;
+    -pdf-outline-level: 2;
+}
+h4 {
+    -pdf-outline-level: 3;
+}
+h5 {
+    -pdf-outline-level: 4;
+}
+h6 {
+    -pdf-outline-level: 5;
+}
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+p,
+pre,
+hr {
+    margin:1em 0;
+}
+
+
+ 
+address,
+blockquote,
+body,
+center,
+dl,
+dir,
+div,
+fieldset,
+form,
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+hr,
+isindex,
+menu,
+noframes,
+noscript,
+ol,
+p,
+pre,
+table,
+th,
+tr,
+td,
+ul,
+li,
+dd,
+dt,
+pdftoc {
+    display: block;
+}
+table {
+  /* border:1px solid gray;padding:0px;*/
+}
+td{
+    align:right;
+}
+center {
+    text-align: center;
+}
+big {
+    font-size: 125%;
+}
+small {
+    font-size: 75%;
+}
+noscript {
+    display: none;
+}
+div.header {
+    font-size:56px;
+    margin-top:1.2cm;
+    text-align: center;
+    color:#009900;
+}
+div.textsmall {
+    font-size:14px;
+    /*margin-top: 1cm;*/
+    text-align: center;
+    color:black;
+}
+div.textsmall2 {
+    font-size:14px;
+    margin-top: 0.6cm;
+    text-align: center;
+    color:black;
+}
+div.textsmall3 {
+    font-size:12px;
+    margin-top: 1.0cm;
+    align: right;
+    color:black;
+}
+div.user {
+    font-size:30px;
+    margin-top: 0.6cm;
+    text-align: center;
+    color:black
+}
+div.titlec {
+    font-size:30px;
+    margin-top: 2cm;
+    text-align: center;
+    
+    color:#009900;
+}
+
+
+
+@page {
+    /*size: {{ pagesize|default:"A4" }};*/
+    size: letter landscape; margin:0; 
+    margin-left: 0;
+    margin-right:0;
+    margin-top: 0;
+    margin-bottom:0;
+
+    @frame header {
+        -pdf-frame-content: page-header;
+        margin-top: 0;
+        margin-right: 0;
+        margin-bottom: 0;
+        margin-left: 0;
+    }
+
+    @frame footer {
+        -pdf-frame-content: page-footer;
+        bottom: 0cm;
+        margin-left: 0;
+        margin-right: 0;
+        height: 0;
+    }
+}
+ /* @font-face {
+ font-family: 'Open Sans';  font-weight: 800; src: url({% static "static/img/open-sans-v14-latin-regular.ttf" %});
+  font-family: 'Open Sans';   src: url({% static "img/open-sans-v14-vietnamese_greek_greek-ext_cyrillic_latin-ext_latin_cyrillic-ext-regular.ttf" %});
+
+ }*/
+</style>
+        {%endblock%}
+        {% block extra_style %}{% endblock %}
+    {% endblock %}
+</head>
+<body>
+    {% if cert_ok == 1 %}
+<img src="{{ "http://127.0.0.1:8000/static/img/certbanner.jpg" | get64 }}"/>
+<div class="header">CERTIFICATE OF ACHIEVEMENT</div>
+ <div class="textsmall">This is to certify that</div>   
+<div class="user">{{username}}</div>
+<div class="textsmall2">has completed the course</div>
+<div class="titlec" >International Plant Protection Convention e-learning on<br>{{coursetitle}}</center>
+
+          <div class="textsmall2">Final course grade: <b>{{certgrade}}</b>%
+                        <br><br><br> {{datec}}</div>
+                        <br>&#160;&#160;&#160;&#160;&#160;&#160;
+                     <img src="{{ "http://127.0.0.1:8000/static/img/en.png" | get64 }}" width="350"/>
+          
+        {% else %}
+  {% nevercache %}
+            {% include "learn/permissionblock.html" %}
+            {% endnevercache %}
+       {% endif %}
+</body>
+</html>

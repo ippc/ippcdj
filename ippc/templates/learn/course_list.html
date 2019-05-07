@@ -1,0 +1,88 @@
+{% extends 'learn/baselearn.html' %}
+{% load module_extras %}
+{% load pages_tags translate_tags mezzanine_tags i18n future staticfiles accounts_tags %}
+
+{% block meta_title %}{% trans "e-Learning Courses" %} {% endblock %}
+
+
+
+{% block body_class %}wide{% endblock %}
+
+{% block breadcrumb_menu %}
+
+<li>
+    <a href="/{{ LANGUAGE_CODE }}/e-learning/">{% trans "e-Learning Home" %}</a>
+    <span class="divider">/</span>
+</li>
+<li class="active">
+     {% trans "Courses" %} 
+</li>
+
+{% endblock %}
+
+{% block local_nav %}
+{% endblock local_nav %}
+
+{% block pageinfo %}
+{% endblock pageinfo %}
+
+
+
+{% block main %}
+<script type="text/javascript">
+    function toggle_visibility(id) {
+        var e = document.getElementById(id);
+
+       
+        if (e.style.display == 'block') {
+            e.style.display = 'none';
+        } else {
+
+            e.style.display = 'block';
+        }
+    }
+
+</script>
+   {% if canseecourse %}
+<div class="row-fluid">
+    <div class="span9">
+        <h4>{% trans "e-Learning Courses" %}</h4>
+        <div class="panel panel-default">
+            <div class="panel-body">
+                <p>{% trans "Select the category to see the available courses in each category." %}</p>
+                <p></p>
+            </div>
+        </div>
+       <div class="panel panel-default">
+        <div class="panel-heading">
+            <h4 class="panel-title"> {% trans "Courses categories"%}</h4> 
+        </div>
+        <div class="panel-body">
+            <table class="table">
+                <tr>
+                        <td>  {% autoescape off %} 
+          {{categories}}  {% endautoescape %}  </th>			
+                </tr>
+                <tbody>
+               
+                </tbody>
+            </table>
+        </div>
+    </div>
+    </div> 
+    <div class="span3">
+     {% nevercache %}
+            {% include "learn/userdetailpanel.html" %}
+            {% endnevercache %}
+    </div> 
+     {% else %}
+  {% nevercache %}
+            {% include "learn/permissionblock.html" %}
+            {% endnevercache %}
+   
+   
+      
+{% endif %}
+
+
+{% endblock %}

@@ -1,0 +1,27 @@
+ {% load i18n future mezzanine_tags accounts_tags %}
+   <div class="panel panel-default">
+            <div class="panel-heading">
+                <h4 class="panel-title"> {% trans "User Details" %}</h4>
+            </div>
+            <div class="panel-body">
+                {% if request.user.is_authenticated %}
+                    <b>{% trans "User" %}: </b>{{ request.user.username}}
+                    <br><br>
+                    {%if enrolledcourse%}
+                        <b>{% trans "Enrolled courses" %}: </b>
+                        {% autoescape off %} 
+                             {{enrolledcourse}}
+                        {% endautoescape %}
+                    {% else %}
+                        {%if  canseecourse%}
+                           <b>{% trans "Course" %}: </b>
+                          
+                            
+                <a href="/e-learning/courses/{{course.id}}">{{course}}</a>  <span style="color:orange"><strong>Enrolled</strong></span>
+                        {% endif %}
+                    {% endif %}
+                {% endif %}
+                
+               
+            </div>
+        </div>

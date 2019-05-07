@@ -1,0 +1,30 @@
+ {% load i18n future mezzanine_tags accounts_tags %}
+  <p class="alert alert-warning">
+    You don't have permissions to see this page.<br>
+   
+</p>
+<p>For full access to course:
+        <li>Here are the steps if you don't have an IPP account:<br>
+                <ol>
+                <li>Register to create an account to access the courses <a href="/e-learning/accounts/autoregister/"><strong>here</strong></a></li>
+                <li>When your account will be confirmed you will be able to log in</li>
+                <li>Now browse the courses and select the course you want to access</li>
+                <li>Click on 'enroll': this will enroll you in the course </li>
+                <li>You can now access the full course. From now on you will only need to enter your login credential to log in and access the course</li>
+                </ol>
+                    </li><br>
+                 <li>If you have already an IPP account:
+                <ol>
+                    <li> <a href="{% url "login" %}?next={{ request.path }}"><strong>{% trans "Log in" %}</strong></a> and 
+                        {% if request.user.is_authenticated %}
+                            <a href="/e-learning/accounts/requestaccess/"><strong> request access</strong></a>
+                        {% else %}
+                            <a><strong> request access</strong></a>
+                         {% endif %}
+                     </li>
+                    <li>When your access will be confirmed you will be able to log in</li>
+                    <li>Now browse the courses and select the course you want to access</li>
+                    <li>Click on 'enroll': this will enroll you in the course </li>
+                    <li>You can now access the full course. From now on you will only need to enter your login credential to log in and access the course</li>
+                    </ol>
+               </li>

@@ -1,0 +1,120 @@
+{% extends "learn/baselearn.html" %}
+
+{% load pages_tags translate_tags mezzanine_tags i18n future staticfiles accounts_tags %}
+
+
+    {% block meta_title %}{% trans "eLearning" %} - {{ course.title}} - Modules {% endblock %}
+
+    {% block body_class %}wide{% endblock %}
+
+    {% block breadcrumb_menu %}
+        <li>
+            <a href="/{{ LANGUAGE_CODE }}/e-learning/">{% trans "eLearning Home" %}</a>
+            <span class="divider">/</span>
+        </li>
+        <li>
+            <a href="/{{ LANGUAGE_CODE }}/e-learning/courses/">  {% trans "Courses" %}</a>
+            <span class="divider">/</span>
+        <li>
+        <li class="active"> <a href="/{{ LANGUAGE_CODE }}/e-learning/courses/{{ course.id}}">{{ course.title}}</a>
+            <span class="divider">/</span></li>
+     
+        <li class="active">Modules</li>
+    {% endblock %}
+
+    {% block local_nav %}
+    {% endblock local_nav %}
+
+    {% block pageinfo %}
+    {% endblock pageinfo %}
+
+    
+   
+{% block main %}  
+    {% block content %}
+          
+    <div id="content">
+       {% if canseecourse %}
+    <div class="row-fluid"> 
+    <div class="span9">
+        <div class="panel panel-default"> 
+            <div class="container">
+                    <div class="span9">
+                <h3><span class="normal">{{ course.title}} - Modules</span></h3>
+                {% for mod in modules %}
+                 <div class="panel panel-default">
+                    <div class="panel-heading">
+                    <div class="container">
+                    <h4 class="panel-title"> <a href="/e-learning/courses/{{course.id}}/modules/{{mod.id}}/">{{ mod.title }}</a>
+                       
+                </div>
+                <div  class="panel-body" >
+                    {% autoescape off %} 
+                   {{ mod.modulesummary }}
+                   {% endautoescape %} 
+                </div>
+            </div>
+        </div>  
+                
+                
+            
+               {% endfor %} 
+                    
+                    {% if has_cert == 1 %}
+                 <div class="panel panel-default">
+                    <div class="panel-heading">
+                    <div class="container">
+                    <h4 class="panel-title"> <a href="/e-learning/courses/certificate/{{course.id}}/">Certificate</a>
+                       
+                </div>
+                <div  class="panel-body" >
+                   
+                </div>
+            </div>
+        </div>  
+                
+                
+            
+               {% endif %}   
+                    
+                    
+                    </div>
+            </div>
+        </div>   
+    </div> 
+    <div class="span3">
+      
+        {% nevercache %}
+            {% include "learn/userdetailpanel.html" %}
+        {% endnevercache %}
+       
+  
+     
+      
+    </div>
+     
+  
+{% else %}
+
+  {% nevercache %}
+            {% include "learn/permissionblock.html" %}
+            {% endnevercache %}
+   
+    {% endif %}
+      
+ </div> 
+
+{% endblock %}
+
+{% endblock %}
+
+
+
+
+
+
+
+
+                
+                
+                

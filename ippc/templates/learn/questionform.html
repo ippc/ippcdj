@@ -1,0 +1,161 @@
+{% extends "learn/baselearn.html" %}
+
+{% load pages_tags translate_tags mezzanine_tags i18n future staticfiles accounts_tags %}
+
+
+    {% block meta_title %}{% trans "eLearning" %} - {{ course.title}} - {{quiz.title}} {% endblock %}
+
+    {% block body_class %}wide{% endblock %}
+
+    {% block breadcrumb_menu %}
+        <li>
+            <a href="/{{ LANGUAGE_CODE }}/e-learning/">{% trans "eLearning Home" %}</a>
+            <span class="divider">/</span>
+        </li>
+        <li>
+            <a href="/{{ LANGUAGE_CODE }}/e-learning/courses/">  {% trans "Courses" %}</a>
+            <span class="divider">/</span>
+        <li>
+        <li class="active"> <a href="/{{ LANGUAGE_CODE }}/e-learning/courses/{{ course.id}}">{{ course.title}}</a>
+            <span class="divider">/</span></li>
+        <li class="active"> <a href="/{{ LANGUAGE_CODE }}/e-learning/courses/{{ course.id}}/modules">Modules</a>
+            <span class="divider">/</span></li>
+        <li class="active">{{quiz.title}}</li>
+    {% endblock %}
+
+    {% block local_nav %}
+    {% endblock local_nav %}
+
+    {% block pageinfo %}
+    {% endblock pageinfo %}
+
+    
+   
+{% block main %}  
+{% block content %}
+ <div id="content">
+    
+<div class="row-fluid">     
+  <div class="span9">
+        <div class="panel panel-default"> 
+            <div class="container">
+                <h4><span class="span8">{{question.title}}{{questionM.title}}</span></h4>
+                <div class="span8"> <p>&#160;</p>
+                    {% autoescape off %} 
+                   {{ question.q_summary  }}  {{ questionM.q_summary  }}
+                   {% endautoescape %} <p>&#160;</p> </div>
+                  <div class="span8"> 
+                  <form class="customform" method="POST" action="" enctype="multipart/form-data">
+        {% csrf_token %} 
+        <fieldset>
+            {%if  question.q_type == 1%}
+                {% for ff in question.questionfield_set.all %} 
+                <input type="checkbox" name="q_choice{{ff.id}}"  id="q_choice{{ff.id}}">{{ff.text}}<br>
+                {% endfor %}
+            {%elif  question.q_type == 2%}
+                {% for ff in question.questionfield_set.all %} 
+                <input type="radio" name="q_choice{{question.id}}" value="{{ff.answer}}" id="q_choice{{ff.id}}">{{ff.text}}<br>
+                {% endfor %}
+                                     
+            {%endif%} 
+         
+            {%if  questionM.q_type == 3%}
+          
+           <table class="table">
+                   
+              {% for ff in arrayfields %}
+           <tr>
+             <td>{{ff.0}}</td>
+             <td> 
+                 <select name="sel_{{ff.1}} " value="{{ff.2}}"> 
+                     <option value="" selected disabled hidden>Choose here</option>
+                      {% for fff in ff.3 %}
+                         <option value="{{forloop.counter}}">{{fff}}</option>
+                     {% endfor %}
+                </select>
+             </td>
+         </tr>
+       
+         
+            {% endfor %}
+            </table>
+            {%endif%} 
+            <p>&#160;</p>
+            <p>&#160;</p>
+            <p>&#160;</p>
+            {% if question %}
+            <div class="pull-left" style="clear:left; ">
+                
+            {%if  question.previousq == 0%}
+            {%else%}  
+                <a href="/{{ LANGUAGE_CODE }}/e-learning/courses/{{course.id}}/quiz/{{quiz.id}}/question/{{question.previousq_type }}/{{question.previousq }}/" class="btn btn-small btn-success">back</a>
+            {% endif %}  
+            </div>
+            <div class="pull-right" style="clear:right; padding-bottom: 0.2cm; " >
+                <button type="submit" class="btn btn-small btn-success" tabindex="7" value="next">{%if  question.nextq == 0%}           {% trans "Finish attempt" %}            {%else%} {% trans "Next" %} {% endif %} </button>
+            </div>
+            {% endif %}
+            
+            {% if questionM %}
+                <div class="pull-left" style="clear:left; ">
+
+                    {%if  questionM.previousq == 0%}
+                    {%else%}  
+                        <a href="/{{ LANGUAGE_CODE }}/e-learning/courses/{{course.id}}/quiz/{{quiz.id}}/question/{{questionM.previousq_type }}/{{questionM.previousq }}/" class="btn btn-small btn-success">back</a>
+                    {% endif %}  
+                </div>
+                
+                <div class="pull-right" style="clear:right; padding-bottom: 0.2cm; " >
+                    <button type="submit" class="btn btn-small btn-success" tabindex="7" value="next">{%if  questionM.nextq == 0%}           {% trans "Finish attempt" %}            {%else%} {% trans "Next" %} {% endif %} </button>
+                </div>
+                
+                {% endif %}
+                
+        </fieldset>
+        </form>
+       </div>
+              
+            </div>
+        </div>   
+    </div> 
+    <div class="span3">
+        
+                {% nevercache %}
+            {% include "learn/userdetailpanel.html" %}
+        {% endnevercache %}
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <div class="container">
+                    <h4 class="panel-title"> {% trans "Navigation  " %}  </h4>
+                </div>
+                <div  class="panel-body" >
+                    <div>
+                          <p> {{quiz.title}}        </p>
+                        <br>{% for q in questions %}
+                          
+                           <a  style="border: 1px solid #637C1E; padding: 2px; color: #637C1E; {%if q.id == question.id %}background-color: #C6E746;{%endif%}"
+                             href="/e-learning/courses/{{course.id}}/quiz/{{quiz.id}}/question/1/{{q.id}}/">{{forloop.counter}}</a>
+                            
+                        {% endfor %}
+                         <br>{% for q in questionMs %}
+                          
+                           <a  style="border: 1px solid #637C1E; padding: 2px; color: #637C1E; {%if q.id == questionM.id %}background-color: #C6E746;{%endif%}"
+                             href="/e-learning/courses/{{course.id}}/quiz/{{quiz.id}}/question/2/{{q.id}}/">{{forloop.counter}}</a>
+                            
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+        </div>    
+      
+        
+   
+    </div>
+     
+</div>
+                </div>      
+         
+
+    {% endblock %}
+    {% endblock %}
+

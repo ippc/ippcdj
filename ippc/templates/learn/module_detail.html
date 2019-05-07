@@ -1,0 +1,125 @@
+{% extends "learn/baselearn.html" %}
+
+{% load pages_tags translate_tags mezzanine_tags i18n future staticfiles accounts_tags %}
+
+
+    {% block meta_title %}{% trans "e-Learning" %} - {{ course.title}} - {{module.title}} {% endblock %}
+
+    {% block body_class %}wide{% endblock %}
+
+    {% block breadcrumb_menu %}
+        <li>
+            <a href="/{{ LANGUAGE_CODE }}/e-learning/">{% trans "e-Learning Home" %}</a>
+            <span class="divider">/</span>
+        </li>
+        <li>
+            <a href="/{{ LANGUAGE_CODE }}/e-learning/courses/">  {% trans "Courses" %}</a>
+            <span class="divider">/</span>
+        <li>
+        <li class="active"> <a href="/{{ LANGUAGE_CODE }}/e-learning/courses/{{ course.id}}">{{ course.title}}</a>
+            <span class="divider">/</span></li>
+        <li class="active"> <a href="/{{ LANGUAGE_CODE }}/e-learning/courses/{{ course.id}}/modules"> Modules</a>
+            <span class="divider">/</span></li>
+        <li class="active">{{module.title}}</li>
+    {% endblock %}
+
+    {% block local_nav %}
+    {% endblock local_nav %}
+
+    {% block pageinfo %}
+    {% endblock pageinfo %}
+
+    
+   
+{% block main %}  
+    {% block content %}
+          
+    <div id="content">
+       {% if canseecourse %}
+
+ 
+ 
+<div class="row-fluid"> 
+    <div class="span9">
+        <div class="panel panel-default"> 
+            <div class="container">
+                <h3><span class="normal">{{module.title}}</span></h3>
+                <div class="span8"> 
+                    {% autoescape off %} 
+                        {{ module.modulesummary }}
+                    {% endautoescape %} 
+                </div>
+                <div class="span8"> 
+                    {% for lesson in lessons %}
+                        <img src="/static/img/lessonicon.png"> <a href="/e-learning/courses/{{course.id}}/modules/{{module.id}}/lessons/{{ lesson.id }}/">{{ lesson.title }}</a><br>
+                    {% endfor %} 
+                </div>
+                <div class="span8"> 
+                    {% for q in quiz %}
+                        <img src="/static/img/quizicon.svg"> <a href="/e-learning/courses/{{course.id}}/modules/{{module.id}}/quiz/{{ q.id }}/">{{ q.title }}</a><br>
+                    {% endfor %}
+                </div> 
+                <div class="span8"> 
+                    <div class="pull-left" style="clear:left; ">
+                         {%if  module.previousmodule == 0%}
+                         {%else%}
+                           <a href="/{{ LANGUAGE_CODE }}/e-learning/courses/{{course.id}}/modules/{{module.previousmodule}}/" style="color:#00A000"> <b>< </b>{{module_prev}} </a>
+                         {% endif %}  
+                    </div>
+                    <div class="pull-right" style="clear:right; padding-bottom: 0.2cm; " >
+                        {%if  module.nextmodule == 0%}
+                        {%else%}
+                            <a href="/{{ LANGUAGE_CODE }}/e-learning/courses/{{course.id}}/modules/{{module.nextmodule}}/" style="color:#00A000">{{module_next}} <b>> </b></a>
+                        {% endif %}  
+                    </div> 
+                </div>
+            </div>
+        </div>   
+    </div> 
+    <div class="span3">
+        {% nevercache %}
+            {% include "learn/userdetailpanel.html" %}
+        {% endnevercache %}
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <div class="container">
+                    <h4 class="panel-title"> {% trans "Navigation  " %}  
+                        <button type="button" class="aaa1" data-toggle="collapse" data-target="#demo">
+                    <span class="icon icon-minus"></span> close     </button></h4>
+                </div>
+                <div  class="panel-body" >
+                    <div id="demo" class="in collapse">
+                        {% for m in modules %}
+                           <li><a href="/e-learning/courses/{{course.id}}/modules/{{m.id}}/">{{ m.title }}</a></li>
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+        </div>    
+      
+    </div>
+     
+  
+{% else %}
+
+  {% nevercache %}
+            {% include "learn/permissionblock.html" %}
+            {% endnevercache %}
+       {% endif %}
+      
+ </div> 
+
+{% endblock %}
+
+{% endblock %}
+
+
+
+
+
+
+
+
+                
+                
+                

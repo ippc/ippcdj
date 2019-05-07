@@ -1,0 +1,165 @@
+{% extends "learn/baselearn.html" %}
+{% load pages_tags translate_tags mezzanine_tags i18n future staticfiles accounts_tags %}
+
+    {% block meta_title %}{% trans "eLearning" %} - {{ course.title}} - {{lesson.title}} {% endblock %}
+
+    {% block body_class %}wide{% endblock %}
+
+    {% block breadcrumb_menu %}
+        <li>
+            <a href="/{{ LANGUAGE_CODE }}/e-learning/">{% trans "e-Learning Home" %}</a>
+            <span class="divider">/</span>
+        </li>
+        <li>
+            <a href="/{{ LANGUAGE_CODE }}/e-learning/courses/">  {% trans "Courses" %}</a>
+            <span class="divider">/</span>
+        <li>
+        <li class="active"> 
+            <a href="/{{ LANGUAGE_CODE }}/e-learning/courses/{{ course.id}}">{{ course.title}}</a>
+            <span class="divider">/</span>
+        </li>
+        <li class="active"> 
+            <a href="/{{ LANGUAGE_CODE }}/e-learning/courses/{{ course.id}}/modules"> Modules</a>
+            <span class="divider">/</span>
+        </li>
+        <li class="active"> 
+            <a href="/{{ LANGUAGE_CODE }}/e-learning/courses/{{ course.id}}/modules/{{ module.id}}"> {{module.title}}</a>
+            <span class="divider">/</span>
+        </li>
+        <li class="active">{{lesson.title}}</li>
+    {% endblock %}
+
+    {% block local_nav %}
+    {% endblock local_nav %}
+
+    {% block pageinfo %}
+    {% endblock pageinfo %}
+   
+{% block main %}  
+    {% block content %}
+    {% if canseecourse %}
+
+    <div id="content">
+       
+ 
+    <div class="row-fluid"> 
+        <div class="span9">
+            <div class="panel panel-default"> 
+                <div class="container"> 
+                    {%if module.image != '' %}
+                      <div class="span2" style="background: url(/static/{{module.image}}) no-repeat;height:750px;">
+                         
+                    </div>
+                    <div class="span7" style="background-color: white;padding-top: 50px;  padding-right: 30px;  padding-bottom: 50px;  padding-left: 80px;">
+                   
+                    {%else%}
+                       <div class="span9" style="background-color: white;padding-top: 50px;  padding-right: 30px;  padding-bottom: 50px;  padding-left: 80px;">
+                    {%endif%}
+                    
+                             <h5>{{lesson.title}}</h5>
+                        
+                       {% autoescape off %} 
+                             {{lesson.lessontext}}
+                       {% endautoescape %} 
+                        <p>&#160;</p>
+                        <p>&#160;</p>
+                        <p>&#160;</p>
+                       <div class="pull-left" style="clear:left; ">
+                         {%if  lesson.previouspage == 0%}
+                           {% if module.previousmodule == 0%}
+                               {%else%}
+                                <div class="pull-right" style="clear:right; padding-bottom: 0.2cm; " >
+                                  <a href="/{{ LANGUAGE_CODE }}/e-learning/courses/{{course.id}}/modules/{{module.previousmodule}}/" style="color:#00A000"><b> < </b>Previuos module</a>
+                                </div> 
+                               {% endif %}  
+                         {%else%}
+                           <a href="/{{ LANGUAGE_CODE }}/e-learning/courses/{{course.id}}/modules/{{module.id}}/lessons/{{ lesson.previouspage }}/" class="btn btn-small btn-success">back</a>
+                         {% endif %}  
+                       </div>
+                          {%if  lesson.nextpage == 0%}
+                               {% if module.nextmodule == 0%}
+                               {%else%}
+                                <div class="pull-right" style="clear:right; padding-bottom: 0.2cm; " >
+                                  <a href="/{{ LANGUAGE_CODE }}/e-learning/courses/{{course.id}}/modules/{{module.nextmodule}}/" style="color:#00A000">Next module<b> > </b></a>
+                                </div> 
+                               {% endif %}  
+                       
+                         {%else%}
+                       <div class="pull-right" style="clear:right; padding-bottom: 0.2cm; " >
+                           <a href="/{{ LANGUAGE_CODE }}/e-learning/courses/{{course.id}}/modules/{{module.id}}/lessons/{{ lesson.nextpage }}/" class="btn btn-small btn-success">next</a>
+                       </div> 
+                        {% endif %}  
+                   </div> 
+               </div>    
+            </div> 
+        </div>
+       <div class="span3">
+            {% nevercache %}
+            {% include "learn/userdetailpanel.html" %}
+        {% endnevercache %}
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <div class="container">
+                        <h4 class="panel-title"> {% trans "Navigation  " %}  
+                            <button type="button" class="aaa1" data-toggle="collapse" data-target="#demo">
+                        <span class="icon icon-minus"></span> close
+                        </button></h4>
+                    </div>
+                    <div  class="panel-body" >
+                        <div id="demo" class="in collapse">
+                           {% for m in modules %}
+                                <b><li><a href="/e-learning/courses/{{course.id}}/modules/{{m.id}}/">{{ m.title }}</a></b></li>
+                                {% if m.id == module.id %}
+                                    <ul>
+                                    {% for les in lessons %}
+                                        {%if les.id == lesson.id %}
+                                            <span style="background-color:#DBE8C6;xolor:#8BA95B;">
+                                        {% else %}
+                                            <span>
+                                        {% endif %}
+                                            <img src="/static/img/lessonicon.png"> <a href="/e-learning/courses/{{course.id}}/modules/{{module.id}}/lessons/{{ les.id }}/">{{ les.title }}</a><br>
+                                        </span>
+                                        {% endfor %}
+                                        {% for q in quiz %}
+                                            <img src="/static/img/quizicon.svg"> <a href="/e-learning/courses/{{course.id}}/modules/{{module.id}}/quiz/{{ q.id }}/">{{ q.title }}</a><br>
+                                        {% endfor %} 
+                                    </ul>
+                                {% endif %}
+                            {% endfor %}
+                        </div>
+                    </div>
+                </div>
+            </div>    
+           {% if resource %}
+           <div class="panel panel-default">
+                <div class="panel-heading">
+                    <h4 class="panel-title"> {% trans "Resources  " %}
+                        <button type="button" class="aaa" data-toggle="collapse" data-target="#resource">
+                    <span class="icon icon-minus"></span> close
+                  </button></h4>
+                </div>
+                <div class="panel-body">
+                    <div id="resource" class="in collapse">
+                      {% autoescape off %} 
+                          {{resource.resourcetext}}
+                    {% endautoescape %} 
+                    </div>
+                </div>
+            </div></div>
+              {%endif%}
+    </div>
+     
+  
+
+ </div> 
+{% else %}
+{% nevercache %}
+            {% include "learn/permissionblock.html" %}
+            {% endnevercache %}
+       {% endif %}
+      
+    {% endblock %}
+    {% endblock %}
+
+    
+

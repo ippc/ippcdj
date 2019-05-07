@@ -1,0 +1,137 @@
+{% extends "learn/baselearn.html" %}
+
+{% load pages_tags translate_tags mezzanine_tags i18n future staticfiles accounts_tags %}
+
+
+    {% block meta_title %}{% trans "eLearning" %} - {{ course.title}} - {{module.title}} -{{quiz.title}} {% endblock %}
+
+    {% block body_class %}wide{% endblock %}
+
+    {% block breadcrumb_menu %}
+        <li>
+            <a href="/{{ LANGUAGE_CODE }}/e-learning/">{% trans "eLearning Home" %}</a>
+            <span class="divider">/</span>
+        </li>
+        <li>
+            <a href="/{{ LANGUAGE_CODE }}/e-learning/courses/">  {% trans "Courses" %}</a>
+            <span class="divider">/</span>
+        <li>
+        <li class="active"> <a href="/{{ LANGUAGE_CODE }}/e-learning/courses/{{ course.id}}">{{ course.title}}</a>
+            <span class="divider">/</span></li>
+        <li class="active"> <a href="/{{ LANGUAGE_CODE }}/e-learning/courses/{{ course.id}}/modules"> Modules</a>
+            <span class="divider">/</span></li>
+        <li class="active">{{module.title}}- {{quiz.title}}</li>
+    {% endblock %}
+
+    {% block local_nav %}
+    {% endblock local_nav %}
+
+    {% block pageinfo %}
+    {% endblock pageinfo %}
+
+    
+   
+{% block main %}  
+    {% block content %}
+ <div id="content">
+       {% if canseecourse %}
+
+ 
+<div class="row-fluid"> 
+    <div class="span9">
+        <div class="panel panel-default"> 
+            <div class="container"></div>
+                <div  class="panel-body" >
+                <h3>{{quiz.title}}</h3>
+              
+                    {% autoescape off %} 
+                   {{ quiz.quiztext }}
+                   {% endautoescape %}
+                   
+                   {%if alreadyattempt == 'YES'%}
+                   
+                   <table class="table-condensed table-striped table-bordered">
+                       <tr>
+                           <th>Attempt</th>
+                           <th>Grade/100%</th>
+                       </tr> 
+                       <tr>
+                           <td>Done</td>
+                           <td>{{quizattemptresult}} %</td>
+                       </tr> 
+                   </table>
+                     {% endif %}
+                {% for q in questions %}    
+                    {%if  forloop.counter == 1 %}
+                        <div class="pull-right" style="clear:right; padding-bottom: 0.2cm; " >
+                            
+                           <a href="/{{ LANGUAGE_CODE }}/e-learning/courses/{{course.id}}/quiz/{{ quiz.id }}/question/1/{{q.id}}/" class="btn btn-small btn-success"> {%if alreadyattempt == 'YES'%}Re-{%endif%}Attempt quiz now</a>
+                       </div>           
+                     {% endif %}
+               {% endfor %} 
+                {% for q in questionMs %}    
+                    {%if  forloop.counter == 1 %}
+                        <div class="pull-right" style="clear:right; padding-bottom: 0.2cm; " >
+                            
+                           <a href="/{{ LANGUAGE_CODE }}/e-learning/courses/{{course.id}}/quiz/{{ quiz.id }}/question/2/{{q.id}}/" class="btn btn-small btn-success"> {%if alreadyattempt == 'YES'%}Re-{%endif%}Attempt quiz now</a>
+                       </div>           
+                     {% endif %}
+               {% endfor %}
+                
+            </div>
+        </div>   
+    </div> 
+    <div class="span3">
+        {% nevercache %}
+            {% include "learn/userdetailpanel.html" %}
+        {% endnevercache %}
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <div class="container">
+                    <h4 class="panel-title"> {% trans "Navigation  " %}  
+                        <button type="button" class="aaa1" data-toggle="collapse" data-target="#demo">
+                    <span class="icon icon-minus"></span> close     </button></h4>
+                </div>
+                <div  class="panel-body" >
+                    <div id="demo" class="in collapse">
+                        {% for m in modules %}
+                           <li><a href="/e-learning/courses/{{course.id}}/modules/{{m.id}}/">{{ m.title }}</a></li>
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+        </div>    
+      
+    </div>
+        
+    </div>
+     
+  
+{% else %}
+
+
+  {% nevercache %}
+            {% include "learn/permissionblock.html" %}
+            {% endnevercache %}
+   
+    
+    {% endif %}
+      
+   
+    </div>
+     
+
+{% endblock %}
+
+{% endblock %}
+
+
+
+
+
+
+
+
+                
+                
+                
