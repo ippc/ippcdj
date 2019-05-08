@@ -301,6 +301,7 @@ INSTALLED_APPS = (
     "loginas",
     "pce",
     "easy_pdf",
+    "learn",
     )
 # 
 # NEWSLETTER_CONFIRM_EMAIL = False

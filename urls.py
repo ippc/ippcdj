@@ -163,6 +163,7 @@ urlpatterns = patterns("",
     url(r'^pce/', include('pce.urls')),
     #PHYTO#
     #url(r'^phytosanitary/', include('phytosanitary.urls')),
+    url(r'^e-learning/', include('learn.urls')),
     
 
 
