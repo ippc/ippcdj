@@ -318,11 +318,11 @@
         <div class="container-fluid">
 
             <div class="row-fluid">
-                <div class="span{% block mainspansize %}{% if page.id != None %}{% if  '/phytosanitary-treatments-tool/' in request.path %}12{% elif   page.id == 1389 %}12{% else %}8{% endif %}{% else %}12{% endif %}{% endblock mainspansize %} middle">
+                <div class="span{% block mainspansize %}{% if page.id != None %}{% if  '/phytosanitary-treatments-tool/' in request.path %}12{% elif   page.id == 1389 or page.id == 1393 %}12{% else %}8{% endif %}{% else %}12{% endif %}{% endblock mainspansize %} middle">
                 {% block main %}{% endblock %}
              
                 </div>
-                 {% if page.id != None and page.id == 1389 %}
+                 {% if page.id != None and page.id == 1389  or page.id == 1393%}
                  {%else%}
                 <div class="span{% block sidebarspansize %}{% if page.id != None %}4{% else %}8{% endif %}{% endblock sidebarspansize %} right">
                     {% block local_nav %}
