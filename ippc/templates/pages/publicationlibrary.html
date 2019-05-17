@@ -15,7 +15,7 @@
 
 {% block title %}
      {% with page.publicationlibrary|get_object_translation as translated_page %}
-             {% if  page.id == 1389 %} 
+             {% if  page.id == 1389 or page.id == 1393 %} 
                 <h4 style="background-color: #E6F5FC; color: #006dcc;padding: 10px">{{ translated_page.title|safe }}</h4>
             {% else %}
                 {{ translated_page.title|safe }}  
