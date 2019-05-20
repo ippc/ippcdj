@@ -235,7 +235,7 @@ div.titlec {
 </head>
 <body>
     {% if cert_ok == 1 %}
-<img src="{{ "http://127.0.0.1:8000/static/img/certbanner.jpg" | get64 }}"/>
+<img src="{{ "https://www.ippc.int/static/img/certbanner.jpg" | get64 }}"/>
 <div class="header">CERTIFICATE OF ACHIEVEMENT</div>
  <div class="textsmall">This is to certify that</div>   
 <div class="user">{{username}}</div>
@@ -245,7 +245,7 @@ div.titlec {
           <div class="textsmall2">Final course grade: <b>{{certgrade}}</b>%
                         <br><br><br> {{datec}}</div>
                         <br>&#160;&#160;&#160;&#160;&#160;&#160;
-                     <img src="{{ "http://127.0.0.1:8000/static/img/en.png" | get64 }}" width="350"/>
+                     <img src="{{ "https://www.ippc.int/static/img/en.png" | get64 }}" width="350"/>
           
         {% else %}
   {% nevercache %}
