@@ -63,8 +63,8 @@
       <td> 
           {% if user.is_superuser or perms.ippc.change_userautoregistration  %}
       
-            <a class="btn btn-small btn-info" href="{% url 'auto-register-approve' object.id %}"><i class="icon-edit icon-white"></i> {% trans "APPROVE" %}</a>
-            <a class="btn btn-small btn-info" href="{% url 'auto-register-delete' object.id %}"><i class="icon-edit icon-white"></i> {% trans "DELETE" %}</a>
+            <a class="btn btn-small btn-info" href="/accounts/autoregister/approve/{{object.id }}"><i class="icon-edit icon-white"></i> {% trans "APPROVE" %}</a>
+            <a class="btn btn-small btn-info" href="/accounts/autoregister/delete/{{object.id }}"><i class="icon-edit icon-white"></i> {% trans "DELETE" %}</a>
             {% endif %}
       </td>
     </tr>
