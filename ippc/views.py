@@ -13689,7 +13689,7 @@ def generate_topiclist(request,lang):
     p= document.add_paragraph("")
     p= document.add_paragraph("")
     p= document.add_paragraph("")
-    p.add_run(_("This List of topics for IPPC standards was last updated on April 2019 and reflects the modifications adopted by the CPM or approved by the SC."), style = 'CommentsStyle').italic = True
+    p.add_run(_("This List of topics for IPPC standards was last updated on May 2019 and reflects the modifications adopted by the CPM or approved by the SC."), style = 'CommentsStyle').italic = True
     p.alignment = WD_ALIGN_PARAGRAPH.LEFT
     p= document.add_paragraph("")
     p= document.add_paragraph("")
