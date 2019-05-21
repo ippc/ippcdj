@@ -16549,7 +16549,6 @@ def nro_stats_files(request):
         elif request.POST['path3'] and request.POST['filenametoremove']:
             path3 = request.POST['path3']
             filenametoremove = request.POST['filenametoremove']
-            
             if os.path.isfile(path3+'/'+filenametoremove)      :
                 msg=msg+'--->File '+path3+'/'+filenametoremove+' exist! - '
                 
@@ -16562,7 +16561,21 @@ def nro_stats_files(request):
                 msg= msg+' Deleted: '+str(deleted)+'<br>'
             
             info(request, _("Successfully deleted file!  "+msg))
-            
+        elif request.POST['path4'] and request.POST['dirnametoremove']:
+            path4 = request.POST['path4']
+            dirnametoremove = request.POST['dirnametoremove']
+            if os.path.isdir(path4+'/'+dirnametoremove)      :
+                msg=msg+'--->DIR: '+path4+'/'+dirnametoremove+' exist! - '
+                try:
+                    os.rmdir(path4+'/'+dirnametoremove)
+                    deleted='deleted'
+                except OSError:
+                    deleted='NO-deleted'
+                    pass
+                msg= msg+' Deleted: '+str(deleted)+'<br>'
+
+            info(request, _("Successfully deleted dir!  "+msg))
+    
         elif request.FILES['myfile'] and request.POST['path'] and request.POST['path1']:
             myfile = request.FILES['myfile']
             path1 = request.POST['path1']
