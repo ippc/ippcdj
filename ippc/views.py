@@ -10288,8 +10288,7 @@ def massemailutility_to_send(request):
             email_cc=emailcc.split(",")
             email_not_sentto=email.not_senttoISO3
             email_sent=email.senttoISO3
-           
-           
+            finalemailsent=email_sent
             
             #CSV
             csv_file_name=str(email.csv_file).split("/")[2]
@@ -10301,14 +10300,14 @@ def massemailutility_to_send(request):
             with open(csv_path_final, "r") as ins:
                 for line in ins:
                     line_0 = line.split(",")
-                    text_+='line:'+str(line_0)
+                    #text_+='line:'+str(line_0)
                     cn_0=line_0[1]
-                    text_+='cn_0:'+str(cn_0)
+                    #text_+='cn_0:'+str(cn_0)
                     if len(cn_0)>3:
                        cn_0= cn_0[0:3]
                     csv_dictionary[cn_0]=line_0[0]
             
-            email_not_sentto1=email_not_sentto.split(",") 
+            email_not_sentto1=email_not_sentto.split(",") ##AFG,ALB,....
             email_sent1=''  
             eee=''
             if email_sent!= None and email_sent!='':
@@ -10319,7 +10318,8 @@ def massemailutility_to_send(request):
                 if y > 5:
                     eee+=email_not_sentto1[y]+','
                 else:
-                   email_to_cn=email_not_sentto1[y]
+                   email_to_cn=email_not_sentto1[y]#AFG
+                   
                    if email_to_cn !='':
                         cn = get_object_or_404(CountryPage,iso3=email_to_cn)
                         cn_cpid=cn.contact_point_id
@@ -10359,13 +10359,14 @@ def massemailutility_to_send(request):
                     
                         if sent:
                             email_sent1+=email_not_sentto1[y]+','
+                            finalemailsent+=email_not_sentto1[y]+','
                             text_+='sent to: '+email_not_sentto1[y]+'<br>'
                             log_report.write("sent to: "+email_not_sentto1[y]+":\n")
                         else:
                              eee+=email_not_sentto1[y]+','
 
                 email.not_senttoISO3 = eee
-                email.senttoISO3 = email_sent1
+                email.senttoISO3 = finalemailsent
                 text_+='Sent email:'+subject+'<br>'
            
           
