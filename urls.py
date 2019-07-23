@@ -49,7 +49,7 @@ TopicDetailView,TopicListView,topic_create,topic_edit,topic_translate,WorkshopCe
 B_CertificatesToolListView,B_CertificatesToolDetailView,generate_b_certificates,my_tool,MyToolDetailView,generate_topiclist,\
 MembershipShortListView,generate_shortlist,generate_shortlistparticipant,generate_listNEW1,\
 generate_b_certificatesnew,generate_certificatesnew,CountryStatsSingleListOfRegulatesPestsListView,select_cns_nros_stats,nro_stats_files,contactPointsXML,\
-ContributedResourceListView,  ContributedResourceDetailView,contribuitedresource_create,contribuitedresource_edit,my_tool2,MyTool2DetailView
+ContributedResourceListView,  ContributedResourceDetailView,contribuitedresource_create,contribuitedresource_edit,my_tool2,MyTool2DetailView,nro_stats3_files
 
 #reporting_obligation_translate,
 from schedule.periods import Year, Month, Week, Day
@@ -360,6 +360,7 @@ urlpatterns = patterns("",
     url(r'^work-area/mytool2/$',view= my_tool2 , name='my_tool2'),
     url(r'^work-area/mytool2res/(?P<pk>\d+)/$',view= MyTool2DetailView.as_view() , name='my_tool2res'),
     url(r'^work-area/nro_stats_files/$',view= nro_stats_files , name='nro_stats_files'),
+    url(r'^work-area/nro_stats3_files/$',view= nro_stats3_files , name='nro_stats3_files'),
    
   
     # url(r'^aaa/pdf/$', view=CertificatePDFView.as_view(), name='aaa-pdf'),
