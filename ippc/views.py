@@ -10288,7 +10288,11 @@ def massemailutility_to_send(request):
             email_cc=emailcc.split(",")
             email_not_sentto=email.not_senttoISO3
             email_sent=email.senttoISO3
-            finalemailsent=email_sent
+            if email_sent == None:
+                finalemailsent=''
+            
+            else:
+                finalemailsent=email_sent
             
             #CSV
             csv_file_name=str(email.csv_file).split("/")[2]
@@ -10311,7 +10315,7 @@ def massemailutility_to_send(request):
             email_sent1=''  
             eee=''
             if email_sent!= None and email_sent!='':
-                 aaa=email_sent.split(",") 
+                 #aaa=email_sent.split(",") 
                  email_sent1=email_sent.split(",")  
 
             for y in range(0,len(email_not_sentto1)):
@@ -10362,8 +10366,8 @@ def massemailutility_to_send(request):
                             finalemailsent+=email_not_sentto1[y]+','
                             text_+='sent to: '+email_not_sentto1[y]+'<br>'
                             log_report.write("sent to: "+email_not_sentto1[y]+":\n")
-                        else:
-                             eee+=email_not_sentto1[y]+','
+                        #else:
+                            # eee+=email_not_sentto1[y]+','
 
                 email.not_senttoISO3 = eee
                 email.senttoISO3 = finalemailsent
@@ -16675,6 +16679,109 @@ class  MyToolDetailView(DetailView):
         context['result'] = result
         context['msg']=msg
         return context
+    
+    
+
+
+from zipfile import ZipFile
+
+import subprocess
+from subprocess import Popen, PIPE
+@login_required
+@permission_required('ippc.delete_publication', login_url="/accounts/login/")
+def nro_stats3_files(request):
+    prj_dir =PROJECT_ROOT
+    msg=''
+
+    DB_HOST =DATABASES["default"]["HOST"] 
+    DB_USER = DATABASES["default"]["USER"]
+    DB_USER_PASSWORD = DATABASES["default"]["PASSWORD"]
+    DB_NAME = DATABASES["default"]["NAME"]
+    DATETIME = time.strftime('%d.%m.%Y')
+    BACKUP_PATH =   MEDIA_ROOT+'/files/certificates/'+DATETIME+'/'
+    
+    msg+='DB_HOST: '+DB_HOST+'<br> DB_USER: '+DB_USER+'<br> DB_NAME: '+DB_NAME+'<br><br> BACKUP_PATH: '+BACKUP_PATH+'<br>'
+      
+    if request.method == 'POST':
+        if request.POST['from_p'] and request.POST['to_p']:
+            from_p = request.POST['from_p']
+            to_p = request.POST['to_p']
+            msg+='from_p'+from_p+'<br> to_p'+to_p+'<br>'
+     
+            con = MySQLdb.connect(DATABASES["default"]["HOST"],DATABASES["default"]["USER"],DATABASES["default"]["PASSWORD"],DATABASES["default"]["NAME"])
+            cur = con.cursor()
+
+            cur.execute("SHOW TABLES")
+            data = ""
+            
+            i=0    
+            for table1 in cur.fetchall():
+                table=table1[0]
+                if i>=int(from_p) and i<=int(to_p):
+                    data += "DROP TABLE IF EXISTS `" + str(table) + "`;"
+                    cur.execute("SHOW CREATE TABLE `" + str(table) + "`;")
+                    data += "\n" + str(cur.fetchone()[1]) + ";\n\n"
+                    cur.execute("SELECT * FROM `" + str(table) + "`;")
+                    for row in cur.fetchall():
+                        data += "INSERT INTO `" + str(table) + "` VALUES("
+                        first = True
+                        for field in row:
+                            if not first:
+                                data += ', '
+                            #data += '"' + str(field) + '"'
+                            sss=str(field)
+                            sss1=  sss.replace("'", "''")
+                            data += "'" + sss1 + "'"
+                         
+                            first = False
+                        data += ");\n"
+                    data += "\n\n"
+                i=i+1
+               
+            msg+='tot t: '+str(i)+'<br>'
+            filename_0= 'file_'+from_p+'-'+to_p+'_'+DATETIME+'.sql'
+            filename = BACKUP_PATH+'file_'+from_p+'-'+to_p+'_'+DATETIME+'.sql'
+            try: 
+                os.makedirs(BACKUP_PATH)
+            except OSError:
+                if not os.path.isdir(BACKUP_PATH):
+                    raise
+
+            FILE = open(filename,"w")
+            FILE.writelines(data)
+            FILE.close()
+       
+            zip_all = zipfile.ZipFile(MEDIA_ROOT+"/files/certificates/"+filename_0+".zip", "w",zipfile.ZIP_DEFLATED)
+            zip_all.write(os.path.join(BACKUP_PATH,filename_0),filename_0)
+
+            zip_all.close()
+            shutil.rmtree(BACKUP_PATH)
+            
+            #--------------------------------------#
+            with open(MEDIA_ROOT+'/files/certificates/'+'file_all_'+DATETIME+'.sql','w') as out:
+                subprocess.Popen(["mysqldump", "-u", DATABASES["default"]["USER"], "-p"+DATABASES["default"]["PASSWORD"],
+                           "-h", DATABASES["default"]["HOST"] ,DATABASES["default"]["NAME"]],
+                          stdout=out)
+          
+            
+            #--------------------------------------#
+            
+            
+            msg+='filename: '+filename+' saved <br>'
+            info(request, _("Successfully done file!!"))
+        
+            return render_to_response('countries/countries_stats_nros3.html', {'prj_dir':prj_dir,'msg':msg},
+                context_instance=RequestContext(request))
+        else:        
+            msg='NOT selected pages!'
+            return render_to_response('countries/countries_stats_nros3.html', {'prj_dir':prj_dir,'msg':msg},
+                context_instance=RequestContext(request))
+    else:
+        return render_to_response('countries/countries_stats_nros3.html', {'prj_dir':prj_dir,'msg':msg},
+        context_instance=RequestContext(request))
+    return render_to_response('countries/countries_stats_nros3.html', {'prj_dir':prj_dir,'msg':msg},
+        context_instance=RequestContext(request))
+
     
             
 def my_toolres(request,sel=None):
