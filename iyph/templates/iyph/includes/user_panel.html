@@ -1,0 +1,40 @@
+{% load i18n future mezzanine_tags accounts_tags   pages_tags localeurl_tags %}
+<form action=""  method="POST" enctype="multipart/form-data">
+{% csrf_token %}
+    <select class="lang-select" id="selectlang">
+   {% for lang in LANGUAGES %}
+        
+        <option value="{{ request.path|chlocale:lang.0 }}" style="background-color:#28903B; color:white;" {% ifequal lang.0 LANGUAGE_CODE %}selected  {% endifequal %} >
+                {% if lang.0 == 'en' %}EN
+                {% elif lang.0 == 'es' %}ES
+                {% elif lang.0 == 'fr' %}FR
+                {% elif lang.0 == 'ar' %}AR
+                {% elif lang.0 == 'ru' %}RU
+                {% elif lang.0 == 'zh' %}ZH
+                {% endif%}
+                
+                </option>
+      
+    {% endfor %}
+</select>
+{% if request.user.is_authenticated %}
+  {% if user.is_authenticated and user.is_staff %}
+        <a href="/admin/" class="btn btn-small btn-warning">Admin Area</a>
+  {% endif %}
+  
+   {% url "profile" request.user.username as profile_url %}
+    {% if profile_url %}
+        <a href="{{ profile_url }}" title="{% trans 'See your IPPC user profile, including contact information.' %}"> {% if request.user.get_profile.first_name or request.user.get_profile.last_name %}{{ request.user.get_profile.first_name }} {{ request.user.get_profile.last_name }}{% else %}{{ request.user.username }}{% endif %}</a>
+        
+    {% else %}
+        <a href="{% url "profile_update" %}">{{ request.user|username_or:"email"|capfirst }}</a>!
+    {% endif %}
+    <a href="{% url "logout" %}?next={{ request.path }}"
+        class="btn btn-small btn-success btn-account">{% trans "Log out" %}</a>
+{% else %}
+    <a href="{% url "login" %}?next={{ request.path }}"
+        class="btn btn-small btn-success btn-account">{% trans "Log in" %}</a>
+  
+{% endif %}
+
+</form>
