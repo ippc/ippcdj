@@ -1,0 +1,68 @@
+{% extends "baseiyph.html" %}
+
+{% load mezzanine_tags translate_tags staticfiles i18n %}
+
+{% block extra_css %}
+  <link rel="stylesheet" href="{% static "css/DT_bootstrap.css" %}">
+{% endblock %}
+
+{% block meta_title %}
+ Photo Pending approval
+{% endblock %}
+
+
+{% block title %}
+       {{ photolibrary.title }}
+{% endblock %}
+
+{% block main %}
+    {% if user.is_superuser or perms.ippc.change_publication  %}
+    <div class="span8">  
+        <table class="table table-condensed table-striped table-bordered" id="publications">
+        <thead>
+            <tr>
+             <th>{% trans "Title" %}</th>
+             <th>{% trans "Photo" %}</th>
+             <th>{% trans "Description" %}</th>
+             <th>{% trans "Status" %}</th>
+            <th>{% trans "Agree to publish" %}</th>
+<th> </th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for photo in photos %}
+            <tr id="media-file-{{ photo.id }}">
+                <td><a href="/iyph/photo-hidden/{{ photo.id }}">{{ photo.title}}</td>
+                <td><img src="/static/media/{{ photo.image }}" width='200 px'></td>
+                <td>{{ photo.short_description }}<br>Photographer name: {{ photo.photographer }}</td>
+                <td>{% if photo.status == 1%}<span style="width: 20px;height: 20px;background-color: #FC0"><b>PENDING</b></span> {%else%}<span style="width: 20px;height: 20px;background-color: #62c462"><b>APRROVED</b></span>{%endif%}</td>
+
+                <td>{% if photo.agree == 1%}<i class="icon-ok"></i>{%else%}<i class="icon-ban-circle"></i>{%endif%}</td>
+               {% if user.is_superuser or perms.ippc.change_publication  %}
+                <td><a class="btn btn-small btn-info" href="/admin/iyph/photo/{{photo.id}}"><i class="icon-edit icon-white"></i> Edit as admin</a>  </td>
+              {% endif %}
+            </tr> 
+        {% endfor %} 
+        </tbody>
+        </table>
+    </div>
+    <div class="span4 right">
+        {% include "iyph/how.html" %}
+    </div> 
+ {% endif %} 
+{% endblock main %}
+
+{% block extra_js %}
+  <script src="{% static "js/jquery.dataTables.js" %}"></script>
+  <script src="{% static "js/DT_bootstrap.js" %}"></script>
+{% endblock %}
+
+{% block pageinfo %}
+{% endblock pageinfo %}
+ 
+
+
+
+
+
+

@@ -1,0 +1,55 @@
+{% load pages_tags mezzanine_tags i18n future staticfiles accounts_tags ippc_tags %}
+<div class="row">
+<!-- SX col-------------------------------->
+    <div class="col-8" >
+	<!-- SX box1 -->
+	<div class="padding20">
+            <h2>{{ photo.title }}</h2> 
+            {% if photo.image %} 
+                <img src="/static/media/{{ photo.image}}">
+            {% endif %}
+   
+            {% if photo.short_description %} 
+                <p> <b>{% trans "Description/Caption" %}: </b>{% autoescape off %}{{ photo.short_description|safe }}{% endautoescape %}  </p>
+            {% endif %}
+        </div>
+    </div>
+ <!-- DX col ------------------------------>
+      <div class="col-4" >
+      
+ 
+        
+<!-- DX box1 -->
+       <div class="col-100 gray-box-text event" >
+         <div class="padding20">
+           <h2>{% trans "Related Info" %}</h2> 
+            {% if user.is_superuser or perms.ippc.change_publication  %}
+                <p> <a class="btn btn-small btn-success" href="/admin/iyph/photo/{{photo.id}}" style="color:#fff;"><i class="icon-edit icon-white"></i> {% trans "Edit as admin" %}</a>     </p>
+                {% if photo.modify_date %}
+                    <br><strong>{% trans "Last updated: " %}</strong>{% blocktrans with sometime=photo.modify_date|date:"D, d M Y, H:i" %}{{ sometime }}{% endblocktrans %}
+                {% endif %}
+                {% if photo.owner %}
+                   <br><strong>{% trans "Owner" %}:</strong> {{ owner }}
+                {% endif %}
+            {% endif %}
+            {% if photo.publish_date %}
+                <strong>{% trans "Published" %}:</strong>{ % blocktrans with sometime=photo.publish_date|date:"D, d M Y, H:i" %}{{ sometime }}{% endblocktrans %}
+            {% endif %}
+            {% if photo.photographer %}
+                <br><b>{% trans "Photographer's Name" %}:</b> {{ photo.photographer}}
+            {% endif %}
+            {% if photo.date_taken %}
+                <br><b>{% trans "Date taken" %}: </b> {% blocktrans with sometime=photo.date_taken|date:"Y" %}{{ sometime }}{% endblocktrans %}
+           {% endif %}
+            {% if photo.place_taken %}
+               <br> <b>{% trans "Place/Country Taken" %}: </b>{{ photo.place_taken}}
+           {% endif %}{% if photo.agree %} 
+               <br>  <b>{% trans "Agree to have it public" %}: </b>{% autoescape off %}{{ photo.agree }}{% endautoescape %}
+           {% endif %}
+           {% if photo.status %} 
+               <br>  <b>{% trans "Approved" %}: </b>{% autoescape off %}{{ photo.status }}{% endautoescape %}
+           {% endif %}
+           </div>
+       </div>
+      </div>
+</div>    

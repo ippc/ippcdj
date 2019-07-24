@@ -1,0 +1,65 @@
+{% extends "baseiyph.html" %}
+{% load mezzanine_tags translate_tags staticfiles i18n %}
+{% block extra_css %}
+  <link rel="stylesheet" href="{% static "css/DT_bootstrap.css" %}">
+{% endblock %}
+
+{% block meta_title %}
+  {{ photolibrary.title }} 
+{% endblock %}
+
+
+{% block main %}
+<div class="row">
+<!-- SX col-------------------------------->
+    <div class="col-8" >
+	<!-- SX box1 -->
+        <div class="padding20">
+          <h2 class="font-light green">{{ photolibrary.title }}          </h2> 
+          <p>  {% autoescape off %}
+            {{ photolibrary.short_description|safe }}
+            {% endautoescape %}      
+           </p>
+            {% include "iyph/phototable.html" %}
+        </div>
+    </div>
+     
+ <!-- DX col ------------------------------>
+      <div class="col-4" >
+        <!-- DX box1 -->
+       {% include "iyph/how.html" %}
+       </div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</div> 
+
+
+{% endblock main %}
+
+{% block extra_js %}
+  <script src="{% static "js/jquery.dataTables.js" %}"></script>
+  <script src="{% static "js/DT_bootstrap.js" %}"></script>
+{% endblock %}
+
+{% block pageinfo %}
+{% endblock pageinfo %}

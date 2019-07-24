@@ -1,0 +1,37 @@
+{% extends "baseiyph.html" %}
+{% load pages_tags mezzanine_tags i18n future staticfiles accounts_tags %}
+  {% load ippc_tags %}
+{% block meta_title %}{{ photo.title }}{% endblock %}
+
+
+
+
+{% block breadcrumb_menu %}
+{% endblock %}
+
+{% block local_nav %}
+ 
+{% endblock local_nav %}
+
+{% block pageinfo %}
+{% endblock pageinfo %}
+
+{% block main %}
+    {% load mezzanine_tags staticfiles i18n %}
+          {% if photo.agree == 1 and photo.status == 2%} 
+                {% include "iyph/photo_detail_2.html" %}
+          {% else %}       
+                {% if user.is_superuser or perms.ippc.change_publication  %}
+                     {% include "iyph/photo_detail_2.html" %}
+                {% endif %} 
+        {% endif %}
+           
+    
+    
+    
+    
+  
+  
+{% endblock %}
+ 
+  

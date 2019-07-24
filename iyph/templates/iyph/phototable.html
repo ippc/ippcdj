@@ -1,0 +1,33 @@
+{% load mezzanine_tags staticfiles i18n %}
+
+
+<table class="table table-condensed table-striped table-bordered" id="publications">
+    <thead>
+        <tr>
+            <th>{% trans "Photo" %}</th>
+            <th>{% trans "Description" %}</th>
+            {% if photolibrary.id == 3 %}  
+                <th>{% trans "Prize" %}</th>
+            {% endif %}
+        </tr>
+    </thead>
+    <tbody>
+        {% for photo in photos %}
+         <tr id="media-file-{{ photo.id }}">
+            <td>
+                <a id="title_{{ photo.id }}" href="/iyph/photo/{{ photo.id }}"><img src="/static/media/{{ photo.image }}" width="250px"></a>
+            </td>
+            <td>{{ photo.short_description }}<br>Photographer name: {{ photo.photographer }}</td>
+          {% if photolibrary.id == 3 %}  
+               <td>{{ photo.prize }}</td>
+            {% endif %}
+        </tr> 
+    {% endfor %} 
+  
+    </tbody>
+</table>
+
+
+
+
+
