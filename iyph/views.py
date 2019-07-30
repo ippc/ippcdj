@@ -3,9 +3,11 @@ from calendar import month_name
 from django.http import Http404
 from django.shortcuts import get_object_or_404
 from mezzanine.pages.models import Page, RichTextPage, Link
-from iyph.models import IyphPost, IyphCategory,Chronology,IYPHToolBoxItem,IYPHToolBoxCategory,IYPHSteeringCommitteeResource
-from iyph.forms import ChronologyForm
-
+from django.template.defaultfilters import slugify  
+from django.contrib.auth.models import User,Group
+from iyph.models import IyphPost, IyphCategory,Chronology,IYPHToolBoxItem,IYPHToolBoxCategory,IYPHSteeringCommitteeResource,PhotoLibrary,Photo,IYPHPage,TransIYPHPage
+from iyph.forms import ChronologyForm,PhotoForm,ChronologyFilesFormSet
+from ippc.models import  IppcUserProfile, CountryPage
 from iyph.feeds import PostsRSS, PostsAtom
 from mezzanine.conf import settings
 from mezzanine.generic.models import Keyword
@@ -18,7 +20,9 @@ from django.template import RequestContext
 from django.contrib.messages import info, error
 from django.utils.translation import ugettext_lazy as _
 User = get_user_model()
-
+from django.http import HttpResponseRedirect
+import random 
+from django.core import mail
 
 def iyph_post_list(request, tag=None, year=None, month=None, username=None,
                    category=None, template="iyph/iyph_post_list.html"):
@@ -56,32 +60,6 @@ def iyph_post_list(request, tag=None, year=None, month=None, username=None,
     iyph_posts = paginate(iyph_posts, request.GET.get("page", 1),
                           settings.IYPH_POST_PER_PAGE,
                           settings.MAX_PAGING_LINKS)
-#    chronologies = Chronology.objects.all().order_by('publish_date', 'title')
-#    data= ''
-#    i=1
-#    start_m=''
-#    start_y=''
-#    for chronology in chronologies:
-#        start_d=chronology.publish_date.strftime("%d")
-#        start_b=chronology.publish_date.strftime("%b")
-#        if chronology.publish_date.strftime("%Y")==start_y and chronology.publish_date.strftime("%m") ==start_m:
-#            i=i+1  
-#        else: 
-#            i=1    
-#        start_m=chronology.publish_date.strftime("%m")
-#        
-#        start_y= chronology.publish_date.strftime("%Y")
-#        end_d=int(start_d)+15
-#        start=start_y+"-"+start_m+"-"+start_d
-#        end=start_y+"-"+start_m+"-"+str(end_d)
-#        title=start_b+' '+start_y
-#        
-#        chronology.publish_date.strftime("%b")
-#        text="<a href='/iyph/chronology/list/"+chronology.slug+"'><b>"+chronology.title+"</b></a><br>"+chronology.summary
-#        data= data+'{"start": "'+start+'","instant": false, "title": "'+title+'", "color": "045FB4","textColor": "red", "icon":"/static/img/dark-red-circle.png","caption": "'+chronology.title+'",  "trackNum": '+str(i)+',  "classname": "special_event2 aquamarine", "description": "'+text+'"},'                         
-#        
-#    data = data[:-1]
-    
     context = {"iyph_posts": iyph_posts, "year": year, "month": month,
                "tag": tag, "category": category, "author": author,}#"data": data
     templates.append(template)
@@ -121,69 +99,74 @@ class ChronologyListView(ListView):
     date_field = 'publish_date'
     template_name = 'iyph/chronology_list.html'
     queryset = Chronology.objects.all().order_by('-start_date', 'title')
-   # queryset = Chronology.objects.filter(programme_type=1).order_by('-start_date', 'title')
-   
+
     allow_future = False
     allow_empty = True
     paginate_by =100
     
-#    def get_context_data(self, **kwargs): # http://stackoverflow.com/a/15515220
-#        context = super(ChronologyListView, self).get_context_data(**kwargs)
-#
-#        chronologies = Chronology.objects.all().order_by('-publish_date', 'title')
-#        data= ''
-#        i=1
-#        start_m=''
-#        start_y=''
-#        print(chronologies)
-#        for chronology in chronologies:
-#            start_d=chronology.publish_date.strftime("%d")
-#            start_b=chronology.publish_date.strftime("%b")
-#            if chronology.publish_date.strftime("%Y")==start_y and chronology.publish_date.strftime("%m") ==start_m:
-#                i=i+1  
-#            else: 
-#                i=1    
-#            start_m=chronology.publish_date.strftime("%m")
-#
-#            start_y= chronology.publish_date.strftime("%Y")
-#            end_d=int(start_d)+15
-#            start=start_y+"-"+start_m+"-"+start_d
-#            end=start_y+"-"+start_m+"-"+str(end_d)
-#            title=start_b+' '+start_y
-#
-#            chronology.publish_date.strftime("%b")
-#            text="<a href='/iyph/chronology/list/"+chronology.slug+"'><b>"+chronology.title+"</b></a><br>"+chronology.summary
-#            data= data+'{"start": "'+start+'","instant": false, "title": "'+title+'", "color": "045FB4","textColor": "red", "icon":"/static/img/dark-red-circle.png","caption": "'+chronology.title+'",  "trackNum": '+str(i)+',  "classname": "special_event2 aquamarine", "description": "'+text+'"},'                         
-#
-#        data = data[:-1]
-#        context['data']  =data
-#        return context
 
     def get_context_data(self, **kwargs): # http://stackoverflow.com/a/15515220
         context = super(ChronologyListView, self).get_context_data(**kwargs)
-        chronologies = Chronology.objects.all().order_by('-start_date', 'title')
-        if self.kwargs['type'] == '1':
-             chronologies = Chronology.objects.filter(programme_type=1).order_by('-start_date', 'title')
-        elif self.kwargs['type'] == '2':
-             chronologies = Chronology.objects.filter(programme_type=2).order_by('-start_date', 'title')
-        context['chronologies']  =chronologies
-        context['type']  =self.kwargs['type']
+#        chronologies = Chronology.objects.all().order_by('-start_date', 'title')
+#        if self.kwargs['type'] == '1':
+#             chronologies = Chronology.objects.filter(programme_type=1).order_by('-start_date', 'title')
+#        elif self.kwargs['type'] == '2':
+#             chronologies = Chronology.objects.filter(programme_type=2).order_by('-start_date', 'title')
+        chronologies = Chronology.objects.filter(programme_type=2).order_by('start_date', 'title')
+        context['chronologies'] = chronologies
+#        context['type']  =self.kwargs['type']
+#        typeofview=''
+#        if self.kwargs['view']!= None:
+#            typeofview=self.kwargs['view']
+#        else:
+#            typeofview='all'
+#        context['view']  =typeofview
+#        
+        cns= CountryPage.objects.all()
+        maparray=[]
+
+        tot_p=0
+        for cn in cns:
+              chronologies = Chronology.objects.filter(programme_type=2,country_id=cn.id)
+              p=chronologies.count()
+              tot_p+=p
+              if p>0:
+                  if cn>0:
+                    detail_cron=''  
+                    for chron in   chronologies:
+                        #-
+                        sM = chron.start_date.month
+                        sY = chron.start_date.year
+
+                        eM = chron.end_date.month
+                        eY = chron.end_date.year
+                        date_event=''
+                        if sY == eY:
+                            if eM==sM:
+                              date_event=  str(chron.start_date.strftime('%d'))+' - '+ str(chron.end_date.strftime('%d %b %Y'))
+                            else:  
+                              date_event=  str(chron.start_date.strftime('%d %b'))+' - '+ str(chron.end_date.strftime('%d %b %Y'))
+                        else:      
+                              date_event=  str(chron.start_date.strftime('%d %b %Y'))+' - '+ str(chron.end_date.strftime('%d %b %Y'))
+                        detail_cron=detail_cron+'<p style="color:#000;font-size:0.9rem">'+date_event+'<br><a href="/iyph/chronology/'+str(chron.slug)+'">'+chron.title+'</a> - '+chron.venue +'</p>'
+                    
+                 
+                    maparray.append([str('<b>'+cn.name.encode('utf-8'))+'</b>:<br>'+str(detail_cron)+'',str(cn.cn_lat),str(cn.cn_long)])
+                   
+        
+        context['map']=maparray    
+ 
+#        chronologies = Chronology.objects.filter(programme_type=2)
+#        text=''
+#        start_d=''
+#        for chronology in chronologies:
+#            start_d=chronology.start_date.strftime("%d %b %Y")
+#            text+='<li><div><time> '+start_d+' </time><a href="/iyph/chronology/'+chronology.slug+'">'+chronology.title+'</a><br>'+chronology.venue+', '+str(chronology.country)+'<br>'+chronology.summary+'</div></li>'
+#            
+#            
+#        context['data']  =text
         return context
 
-
-
-class ChronologyList1View(ListView):
-    """    chronology  """
-    context_object_name = 'latest'
-    
-    model = Chronology
-    date_field = 'publish_date'
-    template_name = 'iyph/chronology_list1.html'
-     #Chronology.objects.all().order_by('-start_date', 'title')
-    queryset = Chronology.objects.filter(programme_type=2).order_by('-start_date', 'title')
-    allow_future = False
-    allow_empty = True
-    paginate_by =100
    
 class ChronologyDetailView(DetailView):
     """ chronology_detail page """
@@ -195,23 +178,40 @@ class ChronologyDetailView(DetailView):
     def get_context_data(self, **kwargs): # http://stackoverflow.com/a/15515220
         context = super(ChronologyDetailView, self).get_context_data(**kwargs)
         p = get_object_or_404(Chronology, slug=self.kwargs['slug'])
+        
+        sM = p.start_date.month
+        sY = p.start_date.year
+
+        eM = p.end_date.month
+        eY = p.end_date.year
+        date_event=''
+        if sY == eY:
+            if eM==sM:
+              date_event=  str(p.start_date.strftime('%d'))+'-'+ str(p.end_date.strftime('%d %B %Y'))
+            else:  
+              date_event=  str(p.start_date.strftime('%d %b'))+'-'+ str(p.end_date.strftime('%d %b %Y'))
+        else:      
+              date_event=  str(p.start_date.strftime('%d %b %Y'))+' - '+ str(p.end_date.strftime('%d %b %Y'))
+
+        context['date_event']=date_event             
+                              
         return context
     
-
 
 
 class Page1View(TemplateView):
     """ 
     Individual PageView  
     """
-    #template_name = 'iyphpages/richtextpage.html'
-    template_name = 'iyph/resources_list.html'
-    
+    template_name = 'iyph/resources_list_1.html'
     
     def get_context_data(self, **kwargs): # http://stackoverflow.com/a/15515220
         context = super(TemplateView, self).get_context_data(**kwargs)
-        # page = get_object_or_404(RichTextPage, page_ptr_id=1065)
-        #context['content']  =page.content
+      
+        iyph_resources1 = IYPHSteeringCommitteeResource.objects.published().order_by('id')
+        iyph_resources = iyph_resources1.filter(res_type=1).order_by('id')
+   
+        context['iyph_resources']  = list(iyph_resources[:100])
         results=[]
         aaa=''
         iyphtoolboxitem = IYPHToolBoxItem.objects.published()
@@ -246,12 +246,12 @@ class Page1View(TemplateView):
             results.append(aaa)
        
         context['results']  =results
-        iyph_resources = IYPHSteeringCommitteeResource.objects.published().order_by('id')
-        context['iyph_resources']  = list(iyph_resources[:100])
-
-           
+        context['res_type']='1'
+     
 
         return context
+    
+
 
 class Page2View(TemplateView):
     """ 
@@ -261,10 +261,17 @@ class Page2View(TemplateView):
     
     def get_context_data(self, **kwargs): # http://stackoverflow.com/a/15515220
         context = super(TemplateView, self).get_context_data(**kwargs)
-        iyph_resources = IYPHSteeringCommitteeResource.objects.published().order_by('id')
+       
+        iyph_resources1 = IYPHSteeringCommitteeResource.objects.published().order_by('id')
+        iyph_resources = iyph_resources1.filter(res_type=2).order_by('id')
+   
         context['iyph_resources']  = list(iyph_resources[:100])
+       
+       
+        context['res_type']='2'
+     
 
-        return context
+        return context    
     
 def homeview(request, template="indexiyph.html"):
     """
@@ -273,7 +280,7 @@ def homeview(request, template="indexiyph.html"):
     ``iyph/iyph_post_list_XXX.html`` where ``XXX`` is either the
     category slug or author's username if given.
     """
-    print(' --- SON qui!!!!!!!!!!')
+    
     context = {"iyph_posts": 'iyph_posts',}
    
     templates = []
@@ -289,26 +296,31 @@ def chronology_create(request,type):
     user = request.user
     author = user
    
-    form = ChronologyForm(request.POST)
+    form = ChronologyForm(request.POST,request.FILES)
+       
     if request.method == "POST":
-         if form.is_valid():
+        f_form =ChronologyFilesFormSet(request.POST, request.FILES)
+    
+        if form.is_valid() and f_form.is_valid():
             new_chronology = form.save(commit=False)
             new_chronology.author = request.user
             new_chronology.chron_type = type
-          
-            
             form.save()
-           
+          
+            f_form.instance = new_chronology
+            f_form.save()
+            
             info(request, _("Successfully created event."))
             
             return redirect("chronology-detail", slug=new_chronology.slug)
-         else:
-             return render_to_response('iyph/chronology_create_event.html', {'form': form,'type':type},
+        else:
+             return render_to_response('iyph/chronology_create_event.html', {'form': form,'f_form':f_form,'type':type},
              context_instance=RequestContext(request))
     else:
         form = ChronologyForm(instance=Chronology())
+        f_form =ChronologyFilesFormSet(instance=Chronology())
       
-    return render_to_response('iyph/chronology_create_event.html', {'form': form,'type':type},
+    return render_to_response('iyph/chronology_create_event.html', {'form': form,'f_form':f_form,'type':type},
         context_instance=RequestContext(request))
 
 
@@ -327,17 +339,163 @@ def chronology_edit(request,  id=None, template_name='iyph/chronology_edit.html'
     
     else:
         chronology = Chronology(author=request.user)
+       
   
     if request.POST:
-        form =ChronologyForm(request.POST,instance=chronology)
-        if form.is_valid():
-            """old pestreport save"""
+      
+        form =ChronologyForm(request.POST,request.FILES, instance=chronology)
+        f_form =ChronologyFilesFormSet(request.POST, request.FILES,instance=chronology)
+        if form.is_valid() and f_form.is_valid():
+     
             form.save()
+            f_form.instance = chronology
+           
+            f_form.save()
+            info(request, _("Successfully updated event."))
             return redirect("chronology-detail",  slug=chronology.slug)
     else:
         form = ChronologyForm(instance=chronology)
+        f_form =ChronologyFilesFormSet(instance=chronology)
         
     return render_to_response(template_name, {
-        'form': form, "chronology": chronology
+        'form': form,'f_form':f_form, "chronology": chronology
     }, context_instance=RequestContext(request))
+
         
+
+class PhotoLibraryView(DetailView):
+    """
+    PhotoLibraryView
+        http://stackoverflow.com/questions/8547880/listing-object-with-specific-tag-using-django-taggit
+        http://stackoverflow.com/a/7382708/412329
+    """
+    context_object_name = 'photolibrary'
+    model = PhotoLibrary
+    date_field = 'publish_date'
+    template_name = 'iyph/photolibrary.html'
+    queryset = PhotoLibrary.objects.all().order_by('-modify_date', 'title')
+    allow_future = False
+    allow_empty = True
+    paginate_by = 500
+    
+    def get_context_data(self, **kwargs): # http://stackoverflow.com/a/15515220
+        context = super(PhotoLibraryView, self).get_context_data(**kwargs)
+        slug=self.kwargs['slug']
+        if slug == 'pending-approval':
+            queryset =Photo.objects.filter(status=1).order_by('-modify_date', 'title')
+        else: 
+            library=get_object_or_404(PhotoLibrary, slug=self.kwargs['slug'])
+            print(library.id)
+            if library.id == 2:
+                 queryset =Photo.objects.filter(status=2,library_id=1, agree=1,exibition=1).order_by('-modify_date', 'title')
+            elif library.id == 3:
+                 queryset =Photo.objects.filter(status=2,library_id=1, agree=1,finalist=1).order_by('-prize', 'title')
+            else:
+                queryset =Photo.objects.filter(status=2,library_id=1, agree=1).order_by('-modify_date', 'title')
+        
+        context['photos']=queryset
+        return context
+    
+class PhotoListView(ListView):
+    """    UserAutoRegistration List view """
+    context_object_name = 'latest'
+    model = Photo
+    date_field = 'date'
+    template_name = 'iyph/photo_pendinglist.html'
+    queryset = Photo.objects.all().order_by('-publish_date')
+  
+    def get_context_data(self, **kwargs): # http://stackoverflow.com/a/15515220
+        context = super(PhotoListView, self).get_context_data(**kwargs)
+        queryset =Photo.objects.filter(status=1).order_by('-modify_date', 'title')
+        context['photos']=queryset
+        return context   
+    
+class PhotoDetailView(DetailView):
+    """ Photo detail page """
+    model = Photo
+    context_object_name = 'photo'
+    template_name = 'iyphpages/photo_detail.html'
+    queryset = Photo.objects.filter(status=2)
+    
+class PhotoHiddenDetailView(DetailView):
+    """ Photo detail page """
+    model = Photo
+    context_object_name = 'photo'
+    template_name = 'iyphpages/photo_detail.html'
+    queryset = Photo.objects.filter()
+
+#@login_required
+#@permission_required('iyph.add_photo', login_url="/accounts/login/")
+def photo_create(request):
+    """ Create photo """
+    form = PhotoForm(request.POST,request.FILES)
+    if request.method == "POST":
+        if form.is_valid() and request.POST['captcha'] ==  request.POST['result_element']:
+            new_photo = form.save(commit=False)
+            if new_photo.email == new_photo.emailconfirmation:
+                new_photo.owner = request.user
+                new_photo.status = 1
+                new_photo.library_id=1
+
+                form.save()
+
+                info(request, _("Successfully submitted photo."))
+                return HttpResponseRedirect("/iyph/photo-contest/")
+            else: 
+               return render_to_response('iyph/photo_create.html', {'form': form,'message':"ERROR: the 'Email address' and 'Email address confirmation' do not match."},
+               context_instance=RequestContext(request))  
+        else:
+            error_captcha=''
+            if not(request.POST['captcha'] == request.POST['result_element'] ) :
+                error_captcha='error'
+                  
+            return render_to_response('iyph/photo_create.html', {'form': form,'x_element': request.POST['x_element'],'y_element': request.POST['y_element'],'result_element': request.POST['result_element'] ,'error_captcha':error_captcha},
+             context_instance=RequestContext(request))
+    else:
+         x_element=random.randint(1,10)   
+         y_element=random.randint(1,10)
+         result_element=x_element+y_element
+         
+         form = PhotoForm(instance=Photo())
+      
+    return render_to_response('iyph/photo_create.html', {'form': form,'x_element':x_element,'y_element':y_element,'result_element':result_element},
+        context_instance=RequestContext(request))
+
+              
+
+class IYPHPageView(DetailView):
+    """
+    IYPHPageView
+        http://stackoverflow.com/questions/8547880/listing-object-with-specific-tag-using-django-taggit
+        http://stackoverflow.com/a/7382708/412329
+    """
+    context_object_name = 'iyphpage'
+    model = IYPHPage
+    date_field = 'publish_date'
+    template_name = 'iyph/iyphpage_detail.html'
+    queryset = IYPHPage.objects.all().order_by('-modify_date', 'title')
+    allow_future = False
+    allow_empty = True
+    paginate_by = 500
+    #queryset = DraftProtocol.objects.all()
+    def get_context_data(self, **kwargs): # http://stackoverflow.com/a/15515220
+        context = super(IYPHPageView, self).get_context_data(**kwargs)
+        slug=self.kwargs['slug']
+        langsel=self.request.LANGUAGE_CODE
+       
+        page=get_object_or_404(IYPHPage, slug=self.kwargs['slug'])
+        page_title=page.title
+        page_descr=page.short_description
+        
+        if  langsel!='en' and langsel!='':
+                page_tra=TransIYPHPage.objects.filter(translation_id=page.id,lang=langsel)
+                if page_tra:
+                    page_title=page_tra[0].title
+                    page_descr=page_tra[0].short_description
+                
+             
+        context['page_title']=page_title
+        context['page_descr']=page_descr
+    
+        return context
+    
