@@ -4,12 +4,12 @@
 
 body {
     padding-top:25px;
-    padding-bottom:5em; 
+    padding-bottom:25em; 
     background:#fff;
     color:#000; 
     font-family:verdana, sans-serif;
     text-align:center;
-		background:url(/static/img/iyph_banner.jpg) repeat-x 0 0;
+		background:url(/static/img/phyto_banner.jpg) repeat-x 0 0;
 }
 
 /* typography tweaks ================= */
@@ -388,9 +388,8 @@ div.resources {background-color:#efefef; }
 .panel {background-color: #fff; padding:5; margin-bottom:20px;
         line-height:170%; border:0 solid #eee; border-radius:5px;}
 
-.logo{width:50px; float:left;margin-right:0px }
-.headerlogo{margin-top:50px }
-.brand {padding:30px;float:none;vertical-align: middle;  }
+.logo{width:50px; float:left;margin-right:6px }
+.brand {padding:0;float:none }
 a.brand { margin:0 !important; 
     padding:30px 0 20px 0 !important; 
     line-height:20px; max-width:1200px}
