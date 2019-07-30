@@ -2,7 +2,6 @@
 <html lang="{{ LANGUAGE_CODE }}"{% if LANGUAGE_BIDI %} dir="rtl"{% endif %}>
 {% load pages_tags mezzanine_tags i18n future staticfiles %}
 <head>
-
 <meta http-equiv="Content-type" content="text/html; charset=utf-8">
 <meta name="viewport" content="width=device-width">
 <meta name="robots" content="index,follow">
@@ -17,27 +16,30 @@
 {% endifinstalled %}
 
 {% compress css %}
+<link rel="stylesheet" type="text/css" href="/static/grappelli/css/widgets.css">
 <link rel="stylesheet" href="{% static "css/bootstrap.css" %}">
 <link rel="stylesheet" href="{% static "css/mezzanine.css" %}">
 <link rel="stylesheet" href="{% static "css/bootstrap-responsive.css" %}">
-<link rel="stylesheet" href="{% static "css/iyph2017_8_b.css" %}">
+<!--link rel="stylesheet" href="{% static "css/iyph2019_a.css" %}"-->
 
-<link rel="stylesheet" href="{% static "css/chosen.css" %}">
+<link rel="stylesheet" href="{% static "css/grid/simple-grid.css" %}">
+<link rel="stylesheet" href="{% static "css/grid/components.css" %}">
+<link rel="stylesheet" href="{% static "css/grid/navigation.css" %}">
+<!--link rel="stylesheet" href="{% static "css/iyph2019.css" %}"-->
+
+
+
+<!--link rel="stylesheet" href="{% static "css/chosen.css" %}"-->
 {% if LANGUAGE_BIDI %}
 <link rel="stylesheet" href="{% static "css/rtl.css" %}">
 {% endif %}
-{% ifinstalled cartridge.shop %}
-<link rel="stylesheet" href="{% static "css/cartridge.css" %}">
-{% if LANGUAGE_BIDI %}
-<link rel="stylesheet" href="{% static "css/cartridge.rtl.css" %}">
-{% endif %}
-{% endifinstalled %}
+
 {% block extra_css %}{% endblock %}
 {% endcompress %}
 
 {% compress js %}
 <script src="{% static "mezzanine/js/"|add:settings.JQUERY_FILENAME %}"></script>
- <script src="{% static "js/bootstrap.js" %}"></script>
+<script src="{% static "js/bootstrap.js" %}"></script>
 <script src="{% static "js/bootstrap-extras.js" %}"></script>
 <script src="{% static "js/chosen.jquery.min.js" %}"></script>
 <script src="{% static "js/jquery.min.js" %}"></script>
@@ -45,160 +47,157 @@
 <script type="text/javascript" src="{% url "django.views.i18n.javascript_catalog" %}"></script>
 <script type="text/javascript" src="/static/admin/js/core.js"></script>
 
-<!--script type="text/javascript" src="/static/admin/js/admin/RelatedObjectLookups.js">        </script-->
- <script type="tepxt/javascript" src="/static/admin/js/jquery.min.js"></script> 
- <script type="text/javascript" src="/static/admin/js/jquery.init.js"></script> 
- <script type="text/javascript" src="/static/admin/js/actions.min.js"></script> 
+<script type="tepxt/javascript" src="/static/admin/js/jquery.min.js"></script> 
+<script type="text/javascript" src="/static/admin/js/jquery.init.js"></script> 
+<script type="text/javascript" src="/static/admin/js/actions.min.js"></script> 
 <script type="text/javascript" src="/static/admin/js/calendar.js"></script>
 
 <script type="text/javascript" src="https://www.ippc.int/static/admin/js/admin/DateTimeShortcuts.js"></script>
-<!--script src="http://api.simile-widgets.org/timeline/2.3.1/timeline-api.js?bundle=true" type="text/javascript"></script>
-<script src="https://www.ippc.int/static/js/timeline_2.3.0/timeline_js/timeline-api.js?bundle=true" type="text/javascript"></script-->
- 
-
+<script src="http://127.0.0.1:8000/static/js/timeline_2.3.0/timeline_js/timeline-api.js?bundle=true" type="text/javascript"></script>
 
 {% include 'autocomplete_light/static.html' %}
-{# 'add another' form field functionality #}
+
 <script src="{% static "js/jquery.formset.js" %}"></script>
 
-{# {% block extra_js %}{% endblock %} #} {# MOVED TO BOTTOM #}
 {% endcompress %}
 <!--[if lt IE 9]>
 <script src="{% static "js/html5shiv.js" %}"></script>
 <![endif]-->
 
- 
+<script type="text/javascript" charset="utf-8">
+$(function() {
+      $('#selectlang').change(function() {
+            window.location.href = $(this).val();
+      });
+});
+</script>
+{% if f_form.prefix %}
+    <script type="text/javascript">
+        $(function() {
+            $(".inline.{{ f_form.prefix }}").formset({
+                prefix: "{{ f_form.prefix }}",
+            })
+        })
+
+    </script>
+{% endif %}
+<style>
+    
+    
+.carousel-controlx.right {
+    right: 15px;
+    left: auto;
+}
+.carousel-controlx {
+    position: absolute;
+    top: 40%;
+    left: 15px;
+    width: 40px;
+    height: 40px;
+    margin-top: -20px;
+    font-size: 60px;
+    font-weight: 100;
+    line-height: 30px;
+    color: #ffffff;
+    text-align: center;
+   
+}
+img{
+    box-shadow: 0 0 0px #bbb; 
+}
+
+
+.lang-select {
+    color: #28903B;
+    outline:0px;
+    border:0px;
+    width:60px;
+    -webkit-appearance: none; 
+   -moz-appearance: none;
+   appearance: none;    
+   background: url(/static/img/arrows.png)  100%  no-repeat #F7F7F7;  
+}
+textarea.zzz {width:800px; height:150px;}
+select.zzz {width:800px;}
+input.zzz {width:800px;}
+
+
+</style>
 </head>
 
 <body id="{% block body_id %}body{% endblock %}" class="{% block body_class %}{% endblock %}" >
-
-<div class="navbar navbar-fixed-top">
-<div class="navbar-inner">
-
-<div class="container-fluid">
-
-    {% load localeurl_tags %}
-        <ul class="nav nav-pills small pull-left languagebar">
-    {% for lang in LANGUAGES %}
-        {% ifequal lang.0 LANGUAGE_CODE %}
-            <li class="active"><a href="#">{{ lang.1 }}</a></li>
-        {% else %}
-            <li><a href="{{ request.path|chlocale:lang.0 }}">{{ lang.1 }}</a></li>
-        {% endifequal %}
-    {% endfor %}
-        </ul>
-
-    <div class="nav-collapse collapse">
-        {# toolbar, user panel, login/logout #}
-        <div class="pull-right text-right">
+ 
+<div class="row shadow" >
+    <div class="container">
+        <div class="col-4" style="margin-bottom:0"><img src="/static/img/iyph2020logo__{{ LANGUAGE_CODE }}.png" style="height:100px; width:auto" /></div>
+        <div class="col-8" style="text-align: right">
            {% nevercache %}
            {% ifinstalled mezzanine.accounts %}
-            <div class="muted small">
-
-                {% include "accounts/includes/user_panel.html" %}
-            </div>
+                {% include "iyph/includes/user_panel.html" %}
             {% endifinstalled %}
             {% endnevercache %}
-            {% search_form "iyph.IyphPost" %}
-            {# {% search_form %} #}
+        </div>
+        <div class="col-12" style="margin-bottom:0;"> 
+            <div class="navbar">
+                <a {% if  '/iyph/' ==  request.path %}class='active'{%else%}{%endif%} href="/{{ LANGUAGE_CODE }}/iyph">{% trans "Home"  %}</a>
+                <a {% if  '/iyph/about/' in  request.path %}class='active'{%else%}{%endif%} href="/{{ LANGUAGE_CODE }}/iyph/about">{% trans "About"  %}</a>
+                <!--a {% if  '/iyph/stories/' in  request.path %}class='active'{%else%}{%endif%} href="/{{ LANGUAGE_CODE }}/iyph/stories">{% trans "Stories"  %}</a-->
+                <a {% if  '/iyph/take-action/' in  request.path %}class='active'{%else%}{%endif%} href="/{{ LANGUAGE_CODE }}/iyph/take-action">{% trans "Take Action!"  %}</a>
+                <a {% if  '/iyph/chronology/' in  request.path %}class='active'{%else%}{%endif%} href="/{{ LANGUAGE_CODE }}/iyph/chronology/list">{% trans "Events"  %}</a>
+                <a {% if  '/iyph/resources/' in  request.path %}class='active'{%else%}{%endif%} href="/{{ LANGUAGE_CODE }}/iyph/resources">{% trans "Resources"  %}</a>
+                <!--a {% if  '/iyph/photo-contest/' in  request.path %}class='active'{%else%}{%endif%} href="/{{ LANGUAGE_CODE }}/iyph/photo-contest">{% trans "Photo Contest"  %}</a>
+                <a {% if  '/iyph/partners/' in  request.path %}class='active'{%else%}{%endif%} href="/{{ LANGUAGE_CODE }}/iyph/partners">{% trans "Partners"  %}</a-->
+           </div>
         </div>
     </div>
-        
-    <a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
-        <span class="icon-bar"></span>
-        <span class="icon-bar"></span>
-        <span class="icon-bar"></span>
-    </a>
-    <!--img src="/static/img/iyph-stc/IYPH_logo1.png" class="logo"-->
+</div>
 
-    <div class="pull-left" style="clear:left;">
-      <a class="brand" href="/{{ LANGUAGE_CODE }}/iyph">
-      <table>
-      <tr>
-      <td><img src="/static/img/iyph2020logo.png" class="logo"></td>
-      <td> <strong>&#160;&#160;&#160;&#160;&#160;&#160;{% trans "The path towards an International Year of Plant Health (IYPH) " %}</strong>
-        <br>&#160;&#160;&#160;&#160;&#160;&#160;<em class="small quiet">{% blocktrans %}     Protecting the world's plant resources from pests{% endblocktrans %}</em>
-     </td>
-     </tr>
-     </table>
-     
-       </a>
-    </div>
-</div> {# /.navbar navbar-fixed-top #}
-</div> {# /.navbar-inner #}
-</div> {# /.container-fluid #}
-
-<div class="container-fluid">
-    {% block bread %}
-   <span class="pull-right">
-  
-     <a href="/forum/category/iyph-forum/" >{% trans "IYPH Forum" %}</a>&#160;&#160;
-  
-  
-    
-    <a href="/"  >{% trans "IPPC Home" %}</a>
-    </span>
-    <ul class="breadcrumb">
-    {% spaceless %}
-    {% block breadcrumb_menu %}{% page_menu "iyphpages/breadcrumb.html" %}{% endblock %}
-    {% endspaceless %}
-   
-  </ul>
-    {% endblock bread %}
-
+<div class="container">
     {% nevercache %}
-    {% for message in messages %}
-    <div class="alert alert-{{ message.tags }}" data-alert="alert">
-        <a class="close" href="#" onclick="$(this).parent().fadeOut('fast'); return false;">×</a>
+        {% for message in messages %}
+            <div class="alert alert-{{ message.tags }}" data-alert="alert">
+            <a class="close" href="#" onclick="$(this).parent().fadeOut('fast'); return false;"></a>
                     {% if message.message == "Successfully signed up" %}
                       {{ "You have successfully activated your account! <b style='color:#060;'>Please set a new password below &darr;</b>" }}
-                    {# {% elif message.message == "Item removed from wishlist" %} #}
-                      {# {{ "Item removed from your Favorites" }} #}
                     {% else %}
                             {{ message }}
                     {% endif %}
-    </div>
-    {% endfor %}
+            </div>
+        {% endfor %}
     {% endnevercache %}
+ 
+        {% block main %}
+        {% endblock %}
+     </div>
 
-    <h2>{% block title %}{% endblock %}</h2>
 
-</div> {# /.container-fluid #}
+<div class="row-footer shadow-up" style="background-color:#efefef">
+    <div class="container">
+        <div class="col-12" style="float:none">
+            <div class="col-3">
+                <!--h6>{% trans "WHO WE ARE" %}</h6-->
+                <p><a href="/{{ LANGUAGE_CODE }}/iyph/iyph-international-steering-committee/">{% trans "IYPH International Steering Committee" %}</a></p>
+                <p><a href="/{{ LANGUAGE_CODE }}/iyph/iyph-technical-advisory-board/">{% trans "IYPH Technical Advisory Board" %}</a></p>
+            </div>
 
-<div class="container-fluid">
-	
-<div class="row-fluid">
-    {% block main %}
-{% endblock %}
-</div> {# /.container-fluid #}
-</div> {# /.row-fluid #}
+            <div class="col-3">
+              <h6>{% trans "CONTACT" %}</h6>
+              <p><a href="mailto: iyph@fao.org">IYPH@fao.org</a></p>
+            </div>
+            <div class="col-3">
+                <h6>{% trans "FOLLOW US ON" %}</h6>
+                  <a href="http://www.facebook.com/pages/IPPC-Protecting-the-worlds-plant-resources-from-pests/113230338690380"><img src="/static/img/facebook-128.png" width="24px"/> </a> &#160;&#160;
+                <a href="https://twitter.com/ippcnews" ><img src="/static/img/twitter-128.png" width="24px"/> </a>&#160;&#160;
+                <a href="https://www.linkedin.com/groups/3175642/profile" ><img src="/static/img/linkedin-128.png" width="24px"/> </a>
+            </div>
+            <div class="col-3" style="border-right:0" >
+                  <a href="http://www.fao.org" title="FAO.org" target="_blank"><img  src="/static/img/FAO-logo-black.png" ></a>
+            </div>    
+        </div>
+    </div>
+</div>
 
-<footer>
-	<div class="container-fluid">
-		{% page_menu "pages/menus/footer.html" %}
-			<div class="span6 muted left">
-			    <p class="text-left">{% trans "IPPC on Social Media:" %} <a href="http://www.facebook.com/pages/IPPC-Protecting-the-worlds-plant-resources-from-pests/113230338690380" class="icn-facebook">Facebook</a> | <a href="https://twitter.com/ippcnews" class="icn-twitter">Twitter</a></p>
-			</div> {# /.span6 muted left #}
-    
-			<div class="span5 right muted small">
-                   	    <p class="text-right">
-        		    {% trans "The IPPC Secretariat is hosted &amp; provided by" %} 
-                            	<a style="vertical-align:bottom;" class="imglink" href="http://www.fao.org"><img class="faologo" src="{% static "img/FAO-logo.png" %}" alt="{% trans "Food and Agriculture Organization Logo" %}" height="50" width="306"></a>
-					<br>
-										<a style="margin-right:66px;" href="{% url 'page' 'legal' %}">{% trans "Copyright & Disclaimer" %}</a>
-				</p>
-			</div> {# /.span5 right muted small #}
-	</div>
-</footer> {# /.container-fluid #}
-
-{# {% include "includes/footer_scripts.html" %} #}
 {% compress js %}
-
-{# better country selector using chosen - http://harvesthq.github.io/chosen/ #}
-<script type="text/javascript" charset="utf-8">
-  $(".chosen-select").chosen()  
-</script>
-
 {% block extra_js %}{% endblock %}
 {% endcompress %}
 {% comment %} Google Analytics {% endcomment %}

@@ -17,7 +17,6 @@
  
 {% block title %}
 {% if page %}
-{# {% editable page.title %}{{ page.title }}{% endeditable %} #}
 {{ page.title }}
 {% else %}
 {% trans " " %}
@@ -25,45 +24,119 @@
 {% endblock %}
 
 {% block breadcrumb_menu %}
-<li><a href="/{{ LANGUAGE_CODE }}/iyph">{% trans "Home" %}</a><span class="divider">/</span></li>
-<li class="active">{%if type == '1'%}{% trans "IYPH preparation events" %}{% else %}{% trans "IYPH 2020 Programme of events" %}{% endif %}</li>
+
 {% endblock %}
 {% block main %}
-
-<h1>{%if type == '1'%}{% trans "IYPH preparation events" %}{% else %}{% trans "IYPH 2020 Programme of events" %}{% endif %}</h1>
-    {%if type == '1'%}
-        <p>Click <a href="/iyph/chronology/list/2/"><b>here</b></a> to see the IYPH 2020 Programme of events.</p> 
-    {% else %}
-        <p>Click <a href="/iyph/chronology/list/1/"><b>here</b></a> to see the IYPH  preparation events.</p> 
-    {% endif %}
-
   
-<p>    <small class="pull-right">
+  <link rel="stylesheet" href="/static/css/DT_bootstrap.css"/>
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.5.1/dist/leaflet.css"   integrity="sha512-xwE/Az9zrjBIphAcBb3F6JVqxf46+CDLwfLMHloNu6KEQCAWi6HcDUbeOfBIptF7tcCzusKFjFw2yuvEpDL9wQ=="
+   crossorigin=""/>
+
+     <script src="https://unpkg.com/leaflet@1.5.1/dist/leaflet.js"
+   integrity="sha512-GffPMF3RvMeYyc1LWMHtK8EbPv0iNZ8/oTtHPx9/cc2ILxQ+u905qIwdpULaqDkyBKgOaB57QTMg7ztg8Jm2Og=="
+   crossorigin=""></script>
+   
+<div class="row" >
+    <div class="col-12 gray-box-text" style="margin-top: 0">
+        <div class="padding20">  
+            <h2>{% trans "IYPH 2020 Programme of events" %}</h2> 
+            <p>{% trans "Hundreds  of events are being organized worldwide to promote the International Year of Plant Health 2020. Click on the map below to find an event near you." %}</p>
+        </div>
+    </div>  
+</div>
+<div class="row">
+    <div class="col-12"  style="margin-top: 0">
+        <div id="mapid" style="height: 500px;"></div>
+    </div>
+        
+</div>
+    <script>
+        var greenIcon = L.icon({
+            iconUrl: '/static/leaflet/images/leaf-red.png',
+            shadowUrl: '/static/leaflet/images/leaf-shadow.png',
+
+            iconSize:     [38, 95], // size of the icon
+            shadowSize:   [50, 64], // size of the shadow
+            iconAnchor:   [22, 94], // point of the icon which will correspond to marker's location
+            shadowAnchor: [4, 62],  // the same for the shadow
+            popupAnchor:  [-3, -76] // point from which the popup should open relative to the iconAnchor
+        });
+            var planes = [
+                  {% for a in map %}
+                      {% autoescape off %}
+                           {{a}},
+                      {% endautoescape %}  
+                   {% endfor %}
+               ];
+           var map = L.map('mapid', { center: [3, 28],   zoom: 1.6});
+                mapLink = '<a href="http://openstreetmap.org">OpenStreetMap</a>';
+                L.tileLayer(
+                    'http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+                    attribution: '&copy; ' + mapLink + ' Contributors',
+                    maxZoom: 18,
+                    }).addTo(map);
+
+                        for (var i = 0; i < planes.length; i++) {
+                                marker = new L.marker([planes[i][1],planes[i][2]])
+                                        .bindPopup(planes[i][0])
+                                        .addTo(map);
+                    }
+    </script>
+    <!--link rel="stylesheet" media="screen" href="http://127.0.0.1:8000/static/css/aaastyle.css">
+    
+
+    <section class="timeline" style="height: 500px;overflow: hidden;display: block;">
+          <ol>
+            {% autoescape off %} 
+                {{data}}
+             {% endautoescape %}  
+          </ol>
+
+          <div class="arrows">
+            <button class="arrow arrow__prev disabled" disabled>
+              <img src="https://s3-us-west-2.amazonaws.com/s.cdpn.io/162656/arrow_prev.svg" alt="prev timeline arrow">
+            </button>
+            <button class="arrow arrow__next">
+              <img src="https://s3-us-west-2.amazonaws.com/s.cdpn.io/162656/arrow_next.svg" alt="next timeline arrow">
+            </button>
+          </div>
+        </section>
+ 
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/hammer.js/2.0.8/hammer.min.js"></script>
+  <script type="text/javascript" src="http://127.0.0.1:8000/static/js/timelineindex.js"></script-->
+    
+  
+             
+  
+
+    <div class="col-12">
+
+       <p><p>
+    <span style="width: 20px;height: 20px;background-color: #E0E4F1">&#160;&#160;&#160;&#160;</span> <b>{% trans "Global event " %}</b>
+    <span style="width: 20px;height: 20px;background-color: #DECFD2">&#160;&#160;&#160;&#160;</span> <b>{% trans "Regional event " %}</b>
+    <span style="width: 20px;height: 20px;background-color: #E3F1EA">&#160;&#160;&#160;&#160;</span> <b>{% trans "National event " %}</b>
+</p>    <small class="pull-right">
         {% if user.is_superuser %}
-             <a class="btn btn-small btn-info" href="/admin/iyph/chronology/28">Add new event</a>
+             <a class="btn btn-small btn-success" href="/admin/iyph/chronology/28">{% trans "Add new event" %}</a>
         {% endif %}      
         {% for g in request.user.groups.all %}
             {% if g.name == 'Country Contact Points' %}
-              <a class="btn btn-small btn-info" href="/iyph/chronologies/3/create/">Add new National Event</a>
+              <a class="btn btn-small btn-success" href="/iyph/chronologies/3/create/">{% trans "Add new National Event" %}</a>
             {% endif %}    
             {% if g.name == 'RPPO' %}
-              <a class="btn btn-small btn-info" href="/iyph/chronologies/2/create/">Add new Regional Event</a>
+              <a class="btn btn-small btn-success" href="/iyph/chronologies/2/create/">{% trans "Add new Regional Event" %}</a>
             {% endif %}    
             {% if g.name == 'IPPC Secretariat' %}
-              <a class="btn btn-small btn-info" href="/iyph/chronologies/1/create/">Add new Global Event</a>
+              <a class="btn btn-small btn-success" href="/iyph/chronologies/1/create/">{% trans "Add new Global Event" %}</a>
             {% endif %}    
         {% endfor %}    
     </small>
 </p>   
-     <br><br><br>
-<p>
-    <span style="width: 20px;height: 20px;background-color: #E0E4F1">&#160;&#160;&#160;&#160;</span> <b>Global event </b>
-    <span style="width: 20px;height: 20px;background-color: #DECFD2">&#160;&#160;&#160;&#160;</span> <b>Regional event </b>
-    <span style="width: 20px;height: 20px;background-color: #E3F1EA">&#160;&#160;&#160;&#160;</span> <b>National event </b>
-</p>
-     
-     
-<table  class="table table-bordered" id="publications">
+<br><br><br>
+<h2 class="font-light">{% trans "Key Global IYPH events " %}</h2>
+
+       
+<table class="table table-bordered">
   <thead>
     <tr>
       <th>{% trans "Start date" %}</th>
@@ -71,7 +144,61 @@
       <th>{% trans "Type" %}</th>
       <th>{% trans "Event" %}</th>
       <th>{% trans "Venue" %}</th>
-      <!--th>{% trans "Contact" %}</th-->
+      <th>{% trans "Website" %}</th>
+    </tr>
+  </thead>
+  <tbody>    
+    {% for chronology in chronologies %} 
+    {% if  chronology.is_key_event == 1 %}
+    <tr>
+        <td width="10%">{{chronology.start_date|date:"d M Y" }}</td>
+        <td width="10%">{{chronology.end_date|date:"d M Y" }}</td>
+         {% if  chronology.chron_type == 1 %}
+            <td style="background-color: #E0E4F1; color:#576FB5" width="5%">
+        {% elif  chronology.chron_type == 2 %}
+            <td style="background-color: #DECFD2; color:#428463" width="5%">
+        {% elif  chronology.chron_type == 3 %}
+            <td style="background-color: #E3F1EA; color:#A47B84"  width="5%">
+        {% else %}
+           <td   width="5%">
+        {% endif %}
+            <b><center> {{chronology.chron_type_verbose}}</center></b>
+        </td>
+        <td width="40%">
+            <b><a href="{% url 'chronology-detail' chronology.slug %}"> {% with chronology|get_object_translation as translated_page %}
+               {{ translated_page.title|safe }}
+               {% endwith %}</a></b>
+        </td>
+        <td>{{chronology.venue}}, {{chronology.country}}</td>
+        <td> {% if chronology.url_website %}<a href="{{chronology.url_website}}">Link</a>{% endif%}
+            {% if user.is_superuser %} 
+                <a class="small pull-right" href="/admin/iyph/chronology/{{ chronology.id }}"><i class="icon-edit"></i> {% trans "Edit as Admin" %}</a><br>
+            {% endif %}
+            {% if request.user.id == chronology.author_id %}
+                <a class="small pull-right" href="/iyph/chronologies/{{chronology.id }}/edit/"><i class="icon-edit"></i>{% trans "Edit" %}</a>
+            {% endif %}
+         </td>
+    </tr> {% endif %}
+    {% endfor %}
+    </tbody>  
+</table>
+
+
+<br><br><br>
+
+     
+<h2 class="font-light">{% trans "All events " %}</h2>         
+
+     
+
+<table class="table table-condensed  table-bordered" id="publications">
+  <thead>
+    <tr>
+      <th>{% trans "Start date" %}</th>
+      <th>{% trans "End date" %}</th>
+      <th>{% trans "Type" %}</th>
+      <th>{% trans "Event" %}</th>
+      <th>{% trans "Venue" %}</th>
       <th>{% trans "Website" %}</th>
     </tr>
   </thead>
@@ -80,29 +207,26 @@
     <tr>
         <td width="10%">{{chronology.start_date|date:"d M Y" }}</td>
         <td width="10%">{{chronology.end_date|date:"d M Y" }}</td>
-        {% if  chronology.chron_type == 1 %}
+         {% if  chronology.chron_type == 1 %}
             <td style="background-color: #E0E4F1; color:#576FB5" width="5%">
         {% elif  chronology.chron_type == 2 %}
             <td style="background-color: #DECFD2; color:#428463" width="5%">
         {% elif  chronology.chron_type == 3 %}
             <td style="background-color: #E3F1EA; color:#A47B84"  width="5%">
         {% else %}
-            <td   width="5%">
+           <td   width="5%">
         {% endif %}
-                <b><center> {{chronology.chron_type_verbose}}</center></b>
-            </td>
+            <b><center> {{chronology.chron_type_verbose}}</center></b>
+        </td>
         <td width="40%">
             <b><a href="{% url 'chronology-detail' chronology.slug %}"> {% with chronology|get_object_translation as translated_page %}
                {{ translated_page.title|safe }}
                {% endwith %}</a></b>
-            {% with chronology|get_object_translation as translated_page %}{{ translated_page.summary|richtext_filter|safe  }}{% endwith %}
         </td>
-        <td>{{chronology.venue}}</td>
-        <!--td>{{chronology.contact}}</td-->
-        
+        <td>{{chronology.venue}}, {{chronology.country}}</td>
         <td> {% if chronology.url_website %}<a href="{{chronology.url_website}}">Link</a>{% endif%}
             {% if user.is_superuser %} 
-                <a class="small pull-right" href="/admin/iyph/chronology/{{ chronology.id }}"><i class="icon-edit"></i> Edit as Admin</a><br>
+                <a class="small pull-right" href="/admin/iyph/chronology/{{ chronology.id }}"><i class="icon-edit"></i> {% trans "Edit as Admin" %}</a><br>
             {% endif %}
             {% if request.user.id == chronology.author_id %}
                 <a class="small pull-right" href="/iyph/chronologies/{{chronology.id }}/edit/"><i class="icon-edit"></i>{% trans "Edit" %}</a>
@@ -113,11 +237,7 @@
     </tbody>  
 </table>
 
-
+ </div>
 <script src="/static/js/jquery.dataTables.js"></script> 
-  <script src="/static/js/DT_bootstrap.js"></script>
-
+<script src="/static/js/DT_bootstrap.js"></script>
 {% endblock %}
-
-
-{% block pageinfo %}{% endblock pageinfo %}

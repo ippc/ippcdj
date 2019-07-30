@@ -1,7 +1,7 @@
 {% extends "baseiyph.html" %}
 {% load i18n future mezzanine_tags iyph_tags keyword_tags disqus_tags %}
 
-{% block meta_title %}{% if page %}{{ page.richtextpage.meta_title }}{% else %}{% trans "Iyph Resources list" %}{% endif %}{% endblock %}
+{% block meta_title %}{% if res_type == '1' %}{% trans "IYPH Technical Advisory Board" %}{%elif res_type == '2'%}{% trans "IYPH International Steering Committee" %}{%endif%}{% endblock %}
 
 {% block meta_keywords %}{% metablock %}
 {% keywords_for page as keywords %}
@@ -25,39 +25,116 @@
 {% endblock %}
 
 {% block breadcrumb_menu %}
-<li><a href="/{{ LANGUAGE_CODE }}/iyph">{% trans "Home" %}</a><span class="divider">/</span></li>
-<li class="active">IYPH Steering Committee</li>
+
 {% endblock %}
 
 {% block main %}
-<h1>IYPH Steering Committee</h1>
- {% if iyph_resources %}
-     <div class=" row" style="padding:10px "></div>
+
+<h1 class="font-light green">{% if res_type == '1' %}{% trans "IYPH Technical Advisory Board" %}{%elif res_type == '2'%}{% trans "IYPH International Steering Committee" %}{%endif%}</h1>
+
+<div class="col-12 white-box-text">
+    
+{% if res_type == '1' %}
+    <p>{% trans "The 2015 Commission of Phytosanitary Measures (CPM-10) supported the proposal by Finland to establish an International Year of Plant Health (IYPH) in 2020. The following year, CPM-11 agreed to establish an IPPC IYPH Steering Committee." %}</p>
+    <p><b>></b> {% trans "See the IPPC IYPH Steering Committee's" %} <a href="https://www.ippc.int/static/media/uploads/iyph/2017/11/03/iyph_steering_comm_tors_2016-04-18.docx">{% trans "Terms of Reference " %}</a></p>
+    <p>{% trans "After the official proclamation of the International Year of Plant Health, the Steering Committee became the IYPH Technical Advisory Board (IYPH TAB) and a new Steering Committee was formed. The IYPH TAB provides knowledge and expertise to the new" %} <a href="/iyph/iyph-international-steering-committee/">{% trans "IYPH International Steering Committee" %}</a>. {% trans "It also helps develop communication materials and serves as a programme committee for the "%}<a href="/iyph/chronology/international-conference-on-plant-health/">{% trans " International Plant Health Conference (IPHC)" %}</a>  {% trans " which will be hosted by Finland from 5 to 8 October 2020." %}</p>
+   
+    <h2>{% trans "Membership" %}</h2>
+    <p>{% trans "The IYPH TAB is composed of up to 25 members, including:" %}</p>
+    <ul>
+        <li>{% trans "1 member and 1 alternate from IPPC contracting parties in each of the seven FAO regions" %}</li>
+        <li>{% trans "5 to 7 members from partner organizations, including regional plant protection organizations" %}</li>
+        <li>{% trans "3 representatives from IPPC governance and subsidiary bodies" %}</li>
+        <li>{% trans "1 representative from the IPPC Secretariat. " %}</li>
+
+    </ul>
+    <p>{% trans "The Membership List is available" %} <a href="https://www.ippc.int/static/media/uploads/iyph/2019/03/06/IYPHSteeringCommittee_MembershipList_2019-03-05.pdf">{% trans "here" %}</a>.</p>
+    <h2>{% trans "IYPH TAB Meetings" %}</h2>
+    
+{%elif res_type == '2'%}
+
+    <p>{% trans "The UN General Assembly has declared 2020 as the International Year of Plant Health (IYPH). In 2019, FAO and the International Plant Protection Convention (IPPC) established the IYPH International Steering Committee (ISC) to:" %}</p>  
+    <ul>
+        <li>{% trans "guide the development and implementation of the IYPH action plan;" %}</li>
+        <li>{% trans "stimulate dialogue with partners; and" %} </li>
+        <li>{% trans "help mobilize political and financial support for the IYPH." %}</li>
+    </ul>
+    <h2>{% trans "Membership" %}</h2>
+    <p>{% trans "The IYPH ISC has up to 18 members, including:" %}</p>
+    <ul>
+        <li>{% trans "7 Permanent Representatives from FAO Regional Groups" %}</li>
+        <li>{% trans "2 members of the IPPC IYPH Technical Advisory Board (chair and vice-chair)" %}</li>
+        <li>{% trans "Up to 9 representatives from UN agencies and international organizations; geographic and economic groups of countries; regional plant protection organizations; academia and international agricultural research organizations; civil society organizations and global farmers' organizations; private sector and resource partners." %}</li>
+     </ul>
+    <h2>{% trans "IYPH ISC Meetings" %}</h2>
+
+{%endif%}
+</div>
+
+
+ 
+<div class=" row" style="padding:10px "></div>
+    
+{% if iyph_resources %}
+    <table class="table table-condensed  table-bordered" id="publications">
+      <thead>
+        <tr>
+          <th>{% trans "Date" %}</th>
+          <th>{% trans "Venue" %}</th>
+          <th>{% trans "Report" %}</th>
+        </tr>
+      </thead>
+      <tbody>    
+      {% for recent_resource in iyph_resources %}
+        {% if recent_resource.title != 'IYPH Steering Committee Membership list'  and recent_resource.title != 'IYPH Steering Committee Terms of Reference'  %}
+        <tr>
+            <td width="15%">{{recent_resource.start_date|date:"d" }} - {{recent_resource.end_date|date:"d M Y" }}</td>
+            <td width="15%">{{recent_resource.venue}}</td>
+            <td width="70%"><a href="/static/media/{{ recent_resource.file }}">{{ recent_resource.title }}</a></td>
+        </tr>
+        {% endif%}
+     {% endfor %}
+      </tbody>  
+    </table>
+{% endif%}
+
+ {#% if iyph_resources %#}
+   <!--div class=" row" style="padding:10px "></div>
    <div class="span1" style=" margin-left:0 "><img src="/static/img/iyph-stc/elements/1list.png" > </div>
     <div class="span7 docs">
     {% for recent_resource in iyph_resources %}
         {% if recent_resource.title == 'IYPH Steering Committee Membership list' %}
-          <p><a href="/static/media/{{ recent_resource.file }}">Membership list</a></p>
+          <p><a href="/static/media/{{ recent_resource.file }}">{% trans "Membership list" %}</a></p>
         {% endif%}
     {% endfor %}
     </div>
     <div class=" row" style="padding:10px "></div>
     <div class="span1" style=" margin-left:0 " ><img src="/static/img/iyph-stc/elements/2docs.png" > </div>
     <div class="span7 docs">
-        <p><strong>Related documents</strong></p>
+        <p><strong>{% trans "Related documents" %}</strong></p>
         {% for recent_resource in iyph_resources %}
             {% if recent_resource.title != 'IYPH Steering Committee Membership list' %}
                 <p><a href="/static/media/{{ recent_resource.file }}">{{ recent_resource.title }}</a> </p>
             {% endif%}
         {% endfor %}
     
+    </div-->
+  {#% endif%#}
+
+  
+{# {% if res_type == '1' %} #}
+<!--div class=" row" style="padding:10px "></div>
+<div class="row" style="padding:30px "></div>
+<div class="col-12 white-box-text">
+   <h2>{% trans "IYPH Resources" %}</h2>
+   <p>{% trans "The following materials were produced by the IPPC Secretariat under the auspices of the IYPH Technical Advisory Board." %}</p>
+    {% if results %}
+    <div class="clearfix">
+        {% for category in results %}{{category|richtext_filter|safe}}{% endfor %}
     </div>
-  {% endif%}
-
-
-
+    {% endif %}
+</div-->
+{# {% endif %} #}
 
 {% endblock %}
 
-
-{% block pageinfo %}{% endblock pageinfo %}

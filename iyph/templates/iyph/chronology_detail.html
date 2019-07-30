@@ -25,49 +25,37 @@
 {% endblock %}
 
 {% block breadcrumb_menu %}
-<li><a href="/{{ LANGUAGE_CODE }}/iyph">{% trans "Home" %}</a><span class="divider">/</span></li>
-{% if chronology.programme_type == 1 %}
-    <li><a href="/{{ LANGUAGE_CODE }}/iyph/chronology/list/1">{% trans "IYPH Preparation events" %}</a><span class="divider">/</span></li>
-{% else %}
-    <li><a href="/{{ LANGUAGE_CODE }}/iyph/chronology/list/2">{% trans "IYPH 2020 Programme of events" %}</a><span class="divider">/</span></li>
-{% endif %}
 
-<li class="active">Event</li>
 {% endblock %}
 
-{% block main %}
-<h3>
-    {% with chronology|get_object_translation as translated_page %}
-            {{ translated_page.title|safe }}
-    {% endwith %}
-    
-    {% if user.is_superuser %}
-        <small  class="pull-right"><a class="btn btn-small btn-info" href="/admin/iyph/chronology/{{ chronology.id }}">Edit as Admin</a></small><br>
-    {% endif %}
-    {% for g in request.user.groups.all %}
-        {% if g.name == 'IYPH admin' %}
-           <small  class="pull-right"> <a class="btn btn-small btn-info" href="/admin/iyph/chronology/{{ chronology.id }}">Edit as Admin</a></small><br>
-        {% endif %}    
-    {% endfor %}    
-    {% if request.user.id == chronology.author_id %}
-     <small  class="pull-right"> <a class="btn btn-small btn-info" href="/iyph/chronologies/{{chronology.id }}/edit/"><i class="icon-edit"></i>{% trans "Edit" %}</a></small><br>
-    {% endif %}
-</h3>
+{% block main %} 
 
-{% if user.is_superuser %}
-    <h6>Posted: {{chronology.publish_date|date:"M Y" }}, by {{chronology.author}}</h6>    
-    <h6>Updated {{chronology.modify_date|date:"M Y" }}, by {{chronology.author}}</h6>    
+
+{%if chronology.image != '' %}
+    <div class="col-12" >    
+        <img src="/static/media/{{chronology.image}}" width="100%">
+</div>   
 {% endif %}
-
-<h6>{% trans "Start date" %}: {{chronology.start_date|date:"M Y" }}</h6>    
-<h6>{% trans "End date" %}: {{chronology.end_date|date:"M Y" }}</h6>    
-<p>
-    {% with chronology|get_object_translation as translated_page %}
-    {{ translated_page.summary|richtext_filter|safe  }}
-    {% endwith %}
-</p>
-<p>{% if chronology.chron_type %}
-    <b> {% trans "Type of events" %}: </b>
+<!-- SX col-------------------------------->
+<div class="row">
+<!-- SX col-------------------------------->
+    <div class="col-8" >
+	<!-- SX box1 -->
+       	
+        <div class="padding20">
+          <h2>{% with chronology|get_object_translation as translated_page %}
+            {{ translated_page.title|safe }}
+            {% endwith %}
+          </h2> 
+           <p><b>{{date_event}}, {{chronology.venue}}, {{chronology.country}} </b></p>
+          <p>
+                {% with chronology|get_object_translation as translated_page %}
+                {{ translated_page.summary|richtext_filter|safe  }}
+                {% endwith %}
+           </p>
+         
+    {% if chronology.chron_type %}
+    <p><b> {% trans "Type of events" %}: </b>
      {% if  chronology.chron_type == 1 %}
         <span style="background-color: #E0E4F1; color:#576FB5" width="5%">
         {% elif  chronology.chron_type == 2 %}
@@ -76,24 +64,82 @@
         <span style="background-color: #E3F1EA; color:#A47B84"  width="5%">
         {% endif %}
         <b>{{chronology.chron_type_verbose}}</b>
-        </span><br>
+        </span></p>
     {% endif %}
 
-    {% if chronology.venue %}
- <p>        <b>    {% trans "Venue" %}: </b>  {{chronology.venue}}<br></p>
-   {% endif %}
     {% if chronology.contact %}
- <p>  <b>  {% trans "Contact" %}: </b>  {{chronology.contact}} <br></p>
-   {% endif %}
+        <p><b>{% trans "Contact" %}: </b>  {{chronology.contact}} <br></p>
+    {% endif %}
     {% if chronology.url_website %}
-  <p> <b>  {% trans "Link" %}: </b><a href="{{chronology.url_website}}">{{chronology.url_website}}</a></p>
+        <p><b>{% trans "Link" %}: </b><a href="{{chronology.url_website}}">{{chronology.url_website}}</a></p>
    {% endif %}
+     </div>
+    </div>
+	
+      
+      
+      
+      
+      
+      
+ <!-- DX col ------------------------------>
+      <div class="col-4" >
+      
+ 
+        
+<!-- DX box1 -->
+{% if chronology.chronologyfiles_set.all %}
+       <div class="col-100 gray-box-text event" >
+         <div class="padding20">
+           <h2><a href="#" title="" target="_top">{% trans "Related documents" %}</a></h2> 
+       {% for f in chronology.chronologyfiles_set.all %} 
     
+       <p><a href="{{MEDIA_URL}}{{f.file.name}}">{{ f.description }}</a></p>
+  {% endfor %}
+  
+         </div>
+       </div>
+        
+  {% endif %}
+  {% if chronology.venue_description%}
+<div class="col-100 gray-box-text event" >
+         <div class="padding20">
+           <h2><a href="#" title="" target="_top">{% trans "Venue Location" %}</a></h2> 
+            <p>{% autoescape off %}
+                        {{chronology.venue_description}}
+                   {% endautoescape %}  
+              </p>
+         </div>
+       </div>
+   {% endif %}
+<div class="col-100 gray-box-text event" >
+         <div class="padding20">
+           <h2><a href="#" title="" target="_top">{% trans "Related Info" %}</a></h2> 
+           
+        {% if user.is_superuser %}
+            <h6>Posted: {{chronology.publish_date|date:"M Y" }}, by {{chronology.author}}</h6>    
+            <h6>Updated {{chronology.modify_date|date:"M Y" }}, by {{chronology.author}}</h6>    
+            <a class="btn btn-small btn-success" href="/admin/iyph/chronology/{{ chronology.id }}" style="color:#fff;">Edit as Admin</a><br>
+        {% endif %}
+        {% for g in request.user.groups.all %}
+            {% if g.name == 'IYPH admin' %}
+              <a class="btn btn-small btn-success" href="/admin/iyph/chronology/{{ chronology.id }}" style="color:#fff;">Edit as Admin</a><br>
+            {% endif %}    
+        {% endfor %}    
+        {% if request.user.id == chronology.author_id %}
+        <a class="btn btn-small btn-success" href="/iyph/chronologies/{{chronology.id }}/edit/" style="color:#fff;"><i class="icon-edit"></i>{% trans "Edit" %}</a><br>
+    {% endif %}
+         </div>
+       </div>
+        
 
-<div class="span4 right">
-
-
+       
+      </div>
 </div>
+
+
+
+
 
 
 
