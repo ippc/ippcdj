@@ -102,6 +102,34 @@ def iyph_recent_resources():
     
     return list(iyph_resources[:100])
 
+
+@register.as_tag
+def iyph_recent_resources_general():
+    """
+    Put a list of recently published iyph_recent_resources   into the template
+    context. 
+
+    Usage::
+
+        {% iyph_recent_resources 5 as iyph_recent_resources %}
+     
+    """
+    
+    iyph_resources = IYPHSteeringCommitteeResource.objects.published()
+    recent_res = iyph_resources.filter(res_type=3).order_by('id')
+            
+    #iyph_resources = IYPHSteeringCommitteeResource.filter(res_type=3).order_by('id')
+    title_or_slug = lambda s: Q(title=s) | Q(slug=s)
+    
+    return list(recent_res[:100])
+
+
+
+
+
+
+
+
 @register.as_tag
 def iyph_recent_toolboxitem():
     """
@@ -180,7 +208,7 @@ def iyph_recent_chronology(type=None, ):
      
     """
     #iyph_chronology = Chronology.objects.published().order_by('-start_date')
-    iyph_chronology = Chronology.objects.filter(programme_type=type).order_by('-start_date')
+    iyph_chronology = Chronology.objects.filter(programme_type=type,inhomepage=1).order_by('-start_date')
    
     title_or_slug = lambda s: Q(title=s) | Q(slug=s)
    
