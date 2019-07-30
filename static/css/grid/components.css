@@ -1,0 +1,240 @@
+@charset "utf-8";
+/* CSS Document */
+.height-200 {
+  height: auto;
+  /* Extra small devices (phones, less than 768px) */
+  /* No media query since this is the default in Bootstrap */
+  /* Small devices (tablets, 768px and up) */ }
+  @media (min-width: 768px) {
+    .height-200 {
+      height:200px; } }
+
+.height-300 {
+  height: auto;
+  /* Extra small devices (phones, less than 768px) */
+  /* No media query since this is the default in Bootstrap */
+  /* Small devices (tablets, 768px and up) */ }
+  @media (min-width: 768px) {
+    .height-300 {
+      height: 300px; } }
+.height-350 {
+  height: auto;
+  /* Extra small devices (phones, less than 768px) */
+  /* No media query since this is the default in Bootstrap */
+  /* Small devices (tablets, 768px and up) */ }
+  @media (min-width: 768px) {
+    .height-350 {
+      height: 350px; } }
+
+.height-400 {
+  height: auto;
+  /* Extra small devices (phones, less than 768px) */
+  /* No media query since this is the default in Bootstrap */
+  /* Small devices (tablets, 768px and up) */ }
+  @media (min-width: 768px) {
+    .height-400 {
+      height: 400px; } }
+
+.height-420 {
+  height: auto;
+  /* Extra small devices (phones, less than 768px) */
+  /* No media query since this is the default in Bootstrap */
+  /* Small devices (tablets, 768px and up) */ }
+  @media (min-width: 768px) {
+    .height-420 {
+      height: 420px; } }
+  
+.green-box, .white-box {
+  margin-top: 30px;
+  margin-bottom: 30px; }
+
+.green-box-photo {
+  /* Extra small devices (phones, less than 768px) */
+  /* No media query since this is the default in Bootstrap */
+  float: none;
+  width: 100%;
+  height: auto;
+  /* Medium devices (desktops, 992px and up) */ }
+  @media (min-width: 992px) {
+    .green-box-photo, .green-box-text {
+      float: left;
+      width: 50%;
+      height: 100%; } }
+
+
+  /* GREEN BOX */
+
+.green-box {
+  /* Permalink - use to edit and share this gradient: http://colorzilla.com/gradient-editor/#0d6cac+0,1ea8e1+100 */
+  background: #2e9941;
+  /* Old browsers */
+  background: -moz-linear-gradient(-45deg, #0d6cac 0%, #1ea8e1 100%);
+  /* FF3.6-15 */
+  background: -webkit-linear-gradient(-45deg, #0d6cac 0%, #1ea8e1 100%);
+  /* Chrome10-25,Safari5.1-6 */
+  background: linear-gradient(135deg, #0d6cac 0%, #1ea8e1 100%);
+  /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
+  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#0d6cac', endColorstr='#1ea8e1', GradientType=1);
+  /* IE6-9 fallback on horizontal gradient */ }
+
+.green-box-photo {
+  height: 0;
+  overflow: hidden;
+
+  background-size: cover;
+  background-position: 50% 50%;
+  /* Medium devices (desktops, 992px and up) */ }
+  @media (min-width: 992px) {
+    .green-box-photo {
+      height: 100%; } }
+
+.green-box-text {
+	  background: #2e9941;
+  color: white;
+  -webkit-font-smoothing: antialiased;
+  -moz-font-smoothing: antialiased;
+  -o-font-smoothing: antialiased; }
+.green-box-text a { 
+    color: white; text-decoration:none }
+
+.green-box-text p,.green-box-text li,  .green-box-text H6 {
+    color: white; }
+	
+.green-box-text h1 { font-weight:300
+    color: white; }
+	
+	
+ /* GRAY BOX */	
+	
+.gray-box-text {
+	background: #efefef;
+  -webkit-font-smoothing: antialiased;
+  -moz-font-smoothing: antialiased;
+  -o-font-smoothing: antialiased; margin-top:0 }
+.gray-box-text a { 
+    color: #2e9941; text-decoration:none }
+
+.gray-box-text H6 {
+  }
+.gray-box-text h2 { font-weight:300;
+    color: #2e9941;line-height: 1 }
+	
+
+ /* WHITE BOX */	
+	
+.white-box-text {
+	background: #fff;
+  -webkit-font-smoothing: antialiased;
+  -moz-font-smoothing: antialiased;
+  -o-font-smoothing: antialiased; margin-top:0 }
+.white-box-text a { 
+    color: #2e9941; text-decoration:none }
+
+.white-box-text H6 {
+  }
+.white-box-text h2 { font-weight:300;
+    color: #2e9941; }
+	
+/* WHITE|GREEN BOX */	
+	
+.whitegreen-box-text {
+	background: #2e9941;
+  -webkit-font-smoothing: antialiased;
+  -moz-font-smoothing: antialiased;
+  -o-font-smoothing: antialiased; margin-top:0 }
+.whitegreen-box-text a { 
+    color: #fff; text-decoration:none }
+
+
+
+  .whitegreen-box-text li {
+        color: #fff; font-weight:400;
+  }
+.whitegreen-box-text h2 { font-weight:300;
+    color: #fff; }
+
+
+.box-photo {
+  height: 0;
+  overflow: hidden;
+  background-size: cover;
+  background-position: 80% 80%;
+  /* Medium devices (desktops, 992px and up) */ }
+ 
+   
+   
+    .green-box-photo {
+      height: 100%; } 
+
+
+.boxphoto1 {
+  height: 0;
+  overflow: hidden;
+ 
+  background-size: cover;
+  background-position: 50% 50%;
+  /* Medium devices (desktops, 992px and up) */ }
+  @media (min-width: 992px) {
+    .boxphoto1 {
+      height: 100%; } }
+  
+  div.blue-box {
+    border: 0;
+    background-color: #2e9941;
+    text-transform: uppercase;
+   
+    margin-bottom: 0;
+    min-height: 200px;
+    min-width: 250px;
+   
+}
+  div.blue-box h4{
+   color: #fff;
+    padding: 25px 25px;
+    margin-bottom: 40px;
+    margin-top: 0;
+    transition: all 0.3s ease 0s;
+}
+
+
+
+/* FOOTER */		
+	
+.row-footer .col-12 {
+ /* position: relative;*/
+  width: 96%; 
+ background-color: #efefef; 
+  color:#333; height:150px;
+
+}
+
+.row-footer [class^="col"] {
+  float: left;
+margin: 0.1rem 1%;
+  min-height: 0.125rem; 
+}
+
+.row-footer .col-3 {
+    width: 22%;
+	 float: left;
+  margin: 20px 1%; height:100px;
+  min-height: 0.125rem; border-right:1px solid  #999
+  }
+  
+.row-footer .col-3 H6, .row-footer .col-3 H5, .row-footer .col-3 H4, .row-footer .col-3 H3,.row-footer .col-3 p, .row-footer .col-3 a{ 
+color:#000; font-weight:400;
+  }
+  
+.row-footer .col-3 h6{ margin-bottom:10px; margin-top:5px
+  }
+  
+.row-footer .col-3 p{ margin:5px 0;font-size: 0.9rem;
+  }
+  
+.event p{ margin-top:5px;font-size: 0.9rem;
+  }
+  
+  .event H5{ margin-bottom:5px
+  }
+  
+  
