@@ -210,7 +210,8 @@
 
 .row-footer [class^="col"] {
   float: left;
-margin: 0.1rem 1%;
+  margin: 0.1rem 1%;
+  margin-top: 40px;
   min-height: 0.125rem; 
 }
 
