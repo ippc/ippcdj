@@ -15,7 +15,7 @@
 
 {% block title %}
      {% with page.publicationlibrary|get_object_translation as translated_page %}
-             {% if  page.id == 1389 or page.id == 1393 %} 
+             {% if  page.id == 1389 or page.id == 1393 or page.id == 1114 %} 
                 <h4 style="background-color: #E6F5FC; color: #006dcc;padding: 10px">{{ translated_page.title|safe }}</h4>
             {% else %}
                 {{ translated_page.title|safe }}  
@@ -105,6 +105,9 @@
       {% with page.publicationlibrary|get_object_translation as translated_page %}
           {{ translated_page.content|richtext_filter|safe }}
       {% endwith %}
+      {%if page.publicationlibrary.collapsecontent.all %} 
+      <div>       {% include "pages/page_extra_content.html" %} </div>
+      {% endif %} 
     {% if  page.publicationlibrary.id == 459 %}
                     {% include "pages/irsstext.html" %}
                 {% endif %}    
@@ -114,23 +117,16 @@
         {% if  page.id == 321 or  page.id == 350 or  page.id == 339 or  page.id == 356 or  page.id == 355 or page.id == 353 or page.id == 354 or   page.id == 357  %} 
               {% include "pages/memberstable.html" %} 
         {% endif %} 
-        {% if  page.id == 431 %} 
-          {% include "pages/pce_content.html" %}    
-        {% endif %} 
+       
         {% if  page.id == 1119 %} 
             {% include "pages/cooptable.html" %} 
         {% endif %}
-        {% if  page.id == 1389 %} 
-            {% include "pages/symposiumpage.html" %} 
-        {% endif %}
-        {% if  page.id == 1393  %} 
-            {% include "pages/chinaprj.html" %} 
-        {% endif %}
+       
         
-        {% if  page.id == 1389 or page.id == 1393 %} 
-        {%else%}
+        
+        
           {% include "pages/publicationtable.html" %}
-        {% endif %}
+        
         
           {% if  page.id == 370 %}{# DPs #}
              {% include "dp/dp_list.html" %}

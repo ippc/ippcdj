@@ -318,109 +318,90 @@
         <div class="container-fluid">
 
             <div class="row-fluid">
-                <div class="span{% block mainspansize %}{% if page.id != None %}{% if  '/phytosanitary-treatments-tool/' in request.path %}12{% elif   page.id == 1389 or page.id == 1393 %}12{% else %}8{% endif %}{% else %}12{% endif %}{% endblock mainspansize %} middle">
+                <div class="span{% block mainspansize %}{% if page.id != None %}{% if  '/phytosanitary-treatments-tool/' in request.path %}12{% elif  page.publicationlibrary.fullpage == 1 %}12{% else %}8{% endif %}{% else %}12{% endif %}{% endblock mainspansize %} middle">
                 {% block main %}{% endblock %}
              
                 </div>
-                 {% if page.id != None and page.id == 1389  or page.id == 1393%}
+                 {% if page.id != None and page.publicationlibrary.fullpage == 1 %}
                  {%else%}
-                <div class="span{% block sidebarspansize %}{% if page.id != None %}4{% else %}8{% endif %}{% endblock sidebarspansize %} right">
-                    {% block local_nav %}
-                    {% block trans %}
-                    {% endblock trans %}
-                    {% endblock local_nav %}
+                  <div class="span{% block sidebarspansize %}4{% endblock sidebarspansize %} right" >
+                      {% block local_nav %}
+                        {% block trans %}
+                        {% endblock trans %}
+                        {% endblock local_nav %}
 
-                    {% if page.id == 3 %}
-                         {% include "pages/menus/tree_key_cn.html" %}
-                    {% elif page.id == 522 %}
-                        <div class="panel tree">
-                            {% page_menu "pages/menus/tree.html" %}
-                        </div>
-                       {% include "pages/menus/tree_logos.html" %}
-                    {% elif page.id == 465 or  page.id == 466 or  page.id == 485 or page.parent_id == 466 or page.parent_id == 485 %}
-                        <div class="panel tree">
-                            {% page_menu "pages/menus/tree.html" %}
-                        </div> 
-                        {% include "pages/menus/tree_key_partners.html" %}
-                    {% elif  page.id == 322 or  page.parent_id == 322 or page.parent_id == 323    or  page.parent_id == 449 or  page.parent_id == 427 or  page.parent_id == 429 or  page.parent_id == 459   or  page.parent_id == 455 or  page.parent_id == 445 %}
-                        <div class="panel tree"><!-- -->
-                            {% page_menu "pages/menus/tree.html" %}
-                        </div> 
-                        {% include "pages/menus/tree_key_core.html" %}
-                    {% elif page.id == 345 or   page.parent_id == 345  or page.id == 429 %}
-                        {% if  '/phytosanitary-treatments-tool/' in request.path %}
-                        {% elif  '/contributed-resource-list/' in request.path   %}
-                            <div class="panel tree"><!-- -->
-                              {% page_menu "pages/menus/tree.html" %}
-                          </div> 
-                          {% include "pages/menus/tree_key_core.html" %}
-                        {% elif  '/contributed-resource-detail/' in request.path   %}
-                      
-                        {% elif	page.id == 1096 %}<!--#530???-->
-                        {% elif	page.id == 530 %}<!--#530???-->
-                        {% elif	page.id == 368 %}<!--#530???-->
-                    {% else %}
-                        <div class="panel tree">
-                            {% page_menu "pages/menus/tree.html" %}
-                        </div> 
-                        {% include "pages/menus/tree_key_ssu.html" %}
-                    {% endif %}
-                    {# FAQ page show/hide ================= #}
-                   
-                  
-                 
-                   {% elif	page.id == 858 %} 
-                    <style type="text/css" media="screen">
-                        h2 {margin:1em 0 0;}
-                        h3 {font-size:1.3em; line-height:1.5em;}
-                        h3 a {font-weight:normal;}
-                        .darkheadings a {color:#000; text-decoration:none; font-weight:bold; font-style:italic;}
-                    </style>
-                    {# =todo: Make links to local anchors (other FAQ questions) open the answer div on the same page - http://stackoverflow.com/questions/4648446/jquery-load-retrieve-page-div-by-id-in-anchor-link #}
-                    <script type="text/javascript">
-// SHOW/HIDE/TOGGLE script
-// ============
-            $(document).ready(function() {
-                $("div.answer").hide();
-                $("h3").click(function() {
-                    $(this).next().toggle("fast");
-                    // trying to get the H3 to turn black when clicking: http://api.jquery.com/toggleClass/
-                    $(this).toggleClass("darkheadings");
-                    // stopping local anchor from being followed so the page doesn't jump
-                    // return false;
-                });
+                        {% if page.id == 3 or page.id == 1170%}<!-- country page / stats page -->
+                            {% include "pages/menus/tree_key_cn.html" %}
+                        {% elif page.id == 858 %} <!-- FAQ --> 
+                                <style type="text/css" media="screen">
+                                    h2 {margin:1em 0 0;}
+                                    h3 {font-size:1.3em; line-height:1.5em;}
+                                    h3 a {font-weight:normal;}
+                                    .darkheadings a {color:#000; text-decoration:none; font-weight:bold; font-style:italic;}
+                                </style>
+                                <script type="text/javascript">
+                                    $(document).ready(function() {
+                                        $("div.answer").hide();
+                                        $("h3").click(function() {
+                                            $(this).next().toggle("fast");
+                                            // trying to get the H3 to turn black when clicking: http://api.jquery.com/toggleClass/
+                                            $(this).toggleClass("darkheadings");
+                                            // stopping local anchor from being followed so the page doesn't jump
+                                            // return false;
+                                        });
 
-// http://stackoverflow.com/questions/2848627/use-anchor-to-display-div
-                $(function() {
-                    if (location.hash != "") {
-                        // $(location.hash + ":hidden").toggle('fast').prev("h3").toggleClass('darkheadings');
-                        $(location.hash).next("div").toggle("fast").prev("h3").toggleClass("darkheadings");
-                    }
-                });
+                                        $(function() {
+                                            if (location.hash != "") {
+                                                // $(location.hash + ":hidden").toggle('fast').prev("h3").toggleClass('darkheadings');
+                                                $(location.hash).next("div").toggle("fast").prev("h3").toggleClass("darkheadings");
+                                            }
+                                        });
 
-// http://andylangton.co.uk/jquery-show-hidecomment by morvi on 10.01.2010 at 23:46
-                $("a.hideall").click(function() {
-                    $("div.answer").hide("fast");
-                    $("h3").removeClass("darkheadings");
-                });
-                $("a.showall").click(function() {
-                    $("div.answer").show("fast");
-                    $("h3").addClass("darkheadings");
-                });
+                                        $("a.hideall").click(function() {
+                                            $("div.answer").hide("fast");
+                                            $("h3").removeClass("darkheadings");
+                                        });
+                                        $("a.showall").click(function() {
+                                            $("div.answer").show("fast");
+                                            $("h3").addClass("darkheadings");
+                                        });
+                                    });
+                                </script>
+                                <p class="floatright showhideanswers" style="margin-right:3em;">
+                                    <a class="showall" href="#">Show all answers</a><br>
+                                    <a class="hideall" href="#">Hide all answers</a>
+                                </p>
 
-            });
-                    </script>
-                    <p class="floatright showhideanswers" style="margin-right:3em;">
-                        <a class="showall" href="#">Show all answers</a><br>
-                        <a class="hideall" href="#">Hide all answers</a>
-                    </p>
-                    {% else %}
-                    
-                    <div class="tree">
-                        {% page_menu "pages/menus/tree.html" %}
-                    </div>
-                    {% endif %}
-                </div> 
+                        {% else %} 
+                            <div class="tree">
+                                {% page_menu "pages/menus/sidebox.html" %}
+                                {% if page.id == 1389 or page.id == 1393 %}
+                                 {% else %}
+                                         <div class="panel tree">
+                                    {% page_menu "pages/menus/tree.html" %}
+                                </div>
+                                    {% endif %}
+                              
+                            </div>
+
+                            {% if page.id == 522 %}<!-- logo -->
+                                {% include "pages/menus/tree_logos.html" %}
+                            {% elif page.id == 465 or  page.id == 466 or  page.id == 485 or page.parent_id == 466 or page.parent_id == 485 %}<!-- RPPO -->
+                                {% include "pages/menus/tree_key_partners.html" %}
+                            {% elif  page.id == 322 or  page.parent_id == 322 or page.parent_id == 323    or  page.parent_id == 449 or  page.parent_id == 427 or  page.parent_id == 429 or  page.parent_id == 459   or  page.parent_id == 455 or  page.parent_id == 445 %}<!-- Core activities -->
+                                {% include "pages/menus/tree_key_core.html" %}
+                            {% elif page.id == 345 or   page.parent_id == 345  or page.id == 429 %}<!-- SSU and IFU -->
+                                    {% if  '/phytosanitary-treatments-tool/' in request.path %}
+                                    {% elif  '/contributed-resource-list/' in request.path   %}
+                                        {% include "pages/menus/tree_key_core.html" %}
+                                    {% elif  '/contributed-resource-detail/' in request.path   %}
+                                    {% elif	page.id == 368 %}<!--#530???--><!-- List of Topics -->
+                                    {% else %}
+                                        {% include "pages/menus/tree_key_ssu.html" %}
+                                    {% endif %}
+                            {% endif %}
+                        {% endif %}    
+                    </div> 
                  {%endif%}{# /.span4 right #}
 
             </div> {# /.container-fluid #}
