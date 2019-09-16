@@ -1,0 +1,4 @@
+{% load i18n future pages_tags mezzanine_tags staticfiles %}
+{% if page.publicationlibrary.side_box != '' and page.publicationlibrary.side_box != None %}
+    {{page.publicationlibrary.side_box|safe}}
+{% endif %}
