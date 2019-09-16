@@ -1,0 +1,122 @@
+{% load mezzanine_tags staticfiles i18n %}
+
+{%if page.publicationlibrary.collapsecontent.all %}
+
+<script type="text/javascript">
+   function toggle_visibility(id) {
+        var e = document.getElementById('div' + id);
+        var img = document.getElementById('img' + id);
+        for (var i = 1; i < 10; i++) {
+            if (id != 'div' + i) {
+                var e1 = document.getElementById("div" + i);
+                if (e1 != null ){
+                 e1.style.display = 'none';
+                }
+                var img1 = document.getElementById("img" + i);
+                if (img1 != null ){
+                    img1.src="/static/img/plusicon.png";
+                }
+            }
+        }
+        if (e.style.display == 'block') {
+            e.style.display = 'none';
+            img.src="/static/img/plusicon.png";
+           
+        } else {
+            e.style.display = 'block';
+            img.src="/static/img/minusicon.png";
+            
+        }
+    }
+</script>
+    {% with page.publicationlibrary.collapsecontent.all as collapsecontents %}
+        {% for collapsecontent in collapsecontents %}
+            {% if collapsecontent.collapsed == 1 %}
+                <p><img id="img{{forloop.counter}}" src="/static/img/plusicon.png"/>&#160;&#160;<a href="#a"  onclick="javascript:toggle_visibility('{{forloop.counter}}');"><b>{% if LANGUAGE_CODE != 'en' %}
+        {% if LANGUAGE_CODE == 'es'  and collapsecontent.title_es != '' and collapsecontent.title_es != None %}
+            {{ collapsecontent.title_es }}
+        {% elif LANGUAGE_CODE == 'fr'  and collapsecontent.title_fr != '' and collapsecontent.title_fr != None%}
+            {{ collapsecontent.title_fr }}
+        {% elif LANGUAGE_CODE == 'ru'  and collapsecontent.title_ru != '' and collapsecontent.title_ru != None%}
+            {{ collapsecontent.title_ru }}
+        {% elif LANGUAGE_CODE == 'ar'  and collapsecontent.title_ar != '' and collapsecontent.title_ar != None%}
+            {{ collapsecontent.title_ar }}
+        {% elif LANGUAGE_CODE == 'zh'  and collapsecontent.title_zh != '' and collapsecontent.title_zh != None%}
+            {{ collapsecontent.title_zh }}
+        {% else %}
+            {{ collapsecontent.title }}
+        {% endif %}
+     {% else %}
+        {{ collapsecontent.title }}
+     {% endif %}</b></a></p>
+                <div id="div{{forloop.counter}}" style="display:none;background-color: {{collapsecontent.bg_color_div}}; ">  {% autoescape off %}
+                   {% if LANGUAGE_CODE != 'en' %}
+        {% if LANGUAGE_CODE == 'es'  and collapsecontent.text_es != '' and collapsecontent.text_es != None %}
+            {{collapsecontent.text_es|safe}}
+        {% elif LANGUAGE_CODE == 'fr'  and collapsecontent.text_fr != '' and collapsecontent.text_fr != None%}
+            {{collapsecontent.text_fr|safe}}
+        {% elif LANGUAGE_CODE == 'ru'  and collapsecontent.text_ru != '' and collapsecontent.text_ru != None%}
+            {{collapsecontent.text_ru|safe}}
+        {% elif LANGUAGE_CODE == 'ar'  and collapsecontent.text_ar != '' and collapsecontent.text_ar != None%}
+           {{collapsecontent.text_ar|safe}}
+        {% elif LANGUAGE_CODE == 'zh'  and collapsecontent.text_zh != '' and collapsecontent.text_zh != None%}
+            {{collapsecontent.text_zh|safe}}
+        {% else %}
+            {{collapsecontent.text_en|safe}}
+        {% endif %}
+     {% else %}
+           {{collapsecontent.text_en|safe}}
+     {% endif %} {% endautoescape %}      
+      
+                </div>
+            {% else %}
+                <a><h4>{% if LANGUAGE_CODE != 'en' %}
+        {% if LANGUAGE_CODE == 'es'  and collapsecontent.title_es != '' and collapsecontent.title_es != None %}
+            {{ collapsecontent.title_es }}
+        {% elif LANGUAGE_CODE == 'fr'  and collapsecontent.title_fr != '' and collapsecontent.title_fr != None%}
+            {{ collapsecontent.title_fr }}
+        {% elif LANGUAGE_CODE == 'ru'  and collapsecontent.title_ru != '' and collapsecontent.title_ru != None%}
+            {{ collapsecontent.title_ru }}
+        {% elif LANGUAGE_CODE == 'ar'  and collapsecontent.title_ar != '' and collapsecontent.title_ar != None%}
+            {{ collapsecontent.title_ar }}
+        {% elif LANGUAGE_CODE == 'zh'  and collapsecontent.title_zh != '' and collapsecontent.title_zh != None%}
+            {{ collapsecontent.title_zh }}
+        {% else %}
+            {{ collapsecontent.title }}
+        {% endif %}
+     {% else %}
+        {{ collapsecontent.title }}
+     {% endif %}</h4></a>
+                <p>{% autoescape off %}{% if LANGUAGE_CODE != 'en' %}
+        {% if LANGUAGE_CODE == 'es'  and collapsecontent.text_es != '' and collapsecontent.text_es != None %}
+            {{collapsecontent.text_es|safe}}
+        {% elif LANGUAGE_CODE == 'fr'  and collapsecontent.text_fr != '' and collapsecontent.text_fr != None%}
+            {{collapsecontent.text_fr|safe}}
+        {% elif LANGUAGE_CODE == 'ru'  and collapsecontent.text_ru != '' and collapsecontent.text_ru != None%}
+            {{collapsecontent.text_ru|safe}}
+        {% elif LANGUAGE_CODE == 'ar'  and collapsecontent.text_ar != '' and collapsecontent.text_ar != None%}
+           {{collapsecontent.text_ar|safe}}
+        {% elif LANGUAGE_CODE == 'zh'  and collapsecontent.text_zh != '' and collapsecontent.text_zh != None%}
+            {{collapsecontent.text_zh|safe}}
+        {% else %}
+            {{collapsecontent.text_en|safe}}
+        {% endif %}
+     {% else %}
+           {{collapsecontent.text_en|safe}}
+     {% endif %} {% endautoescape %}      
+      </p>
+                <div id="div{{forloop.counter}}" style="display:none;"> </div>
+            {% endif %}
+        {% endfor %}
+    {% endwith %}  
+{%endif%}
+
+
+
+
+
+
+
+
+
+
