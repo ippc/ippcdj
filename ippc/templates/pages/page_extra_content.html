@@ -14,17 +14,17 @@
                 }
                 var img1 = document.getElementById("img" + i);
                 if (img1 != null ){
-                    img1.src="/static/img/plusicon.png";
+                    img1.src="/static/img/plusicon_1.png";
                 }
             }
         }
         if (e.style.display == 'block') {
             e.style.display = 'none';
-            img.src="/static/img/plusicon.png";
+            img.src="/static/img/plusicon_1.png";
            
         } else {
             e.style.display = 'block';
-            img.src="/static/img/minusicon.png";
+            img.src="/static/img/minusicon_1.png";
             
         }
     }
@@ -32,7 +32,7 @@
     {% with page.publicationlibrary.collapsecontent.all as collapsecontents %}
         {% for collapsecontent in collapsecontents %}
             {% if collapsecontent.collapsed == 1 %}
-                <p><img id="img{{forloop.counter}}" src="/static/img/plusicon.png"/>&#160;&#160;<a href="#a"  onclick="javascript:toggle_visibility('{{forloop.counter}}');"><b>{% if LANGUAGE_CODE != 'en' %}
+                <p><img id="img{{forloop.counter}}" src="/static/img/plusicon_1.png"/>&#160;&#160;<a href="#a"  onclick="javascript:toggle_visibility('{{forloop.counter}}');"><b>{% if LANGUAGE_CODE != 'en' %}
         {% if LANGUAGE_CODE == 'es'  and collapsecontent.title_es != '' and collapsecontent.title_es != None %}
             {{ collapsecontent.title_es }}
         {% elif LANGUAGE_CODE == 'fr'  and collapsecontent.title_fr != '' and collapsecontent.title_fr != None%}
@@ -70,7 +70,8 @@
       
                 </div>
             {% else %}
-                <a><h4>{% if LANGUAGE_CODE != 'en' %}
+              {%if collapsecontent.title == '.'%}{%else%}  <a><h4>
+                        {% if LANGUAGE_CODE != 'en' %}
         {% if LANGUAGE_CODE == 'es'  and collapsecontent.title_es != '' and collapsecontent.title_es != None %}
             {{ collapsecontent.title_es }}
         {% elif LANGUAGE_CODE == 'fr'  and collapsecontent.title_fr != '' and collapsecontent.title_fr != None%}
@@ -86,7 +87,7 @@
         {% endif %}
      {% else %}
         {{ collapsecontent.title }}
-     {% endif %}</h4></a>
+     {% endif %}  </h4> </a>{% endif %}
                 <p>{% autoescape off %}{% if LANGUAGE_CODE != 'en' %}
         {% if LANGUAGE_CODE == 'es'  and collapsecontent.text_es != '' and collapsecontent.text_es != None %}
             {{collapsecontent.text_es|safe}}
