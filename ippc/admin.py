@@ -18,7 +18,7 @@ PartnersNews,PartnersNewsFile,PartnersNewsUrl, \
 EppoCode,IssueKeyword, CommodityKeyword,IssueKeywordsRelate,CommodityKeywordsRelate, ContactType, IppcUserProfile,\
 QAQuestion,QAAnswer,FAQsCategory,FAQsItem,IRSSActivity,IRSSActivityFile,TransFAQsCategory,TransFAQsItem,UserMembershipHistory,MediaKitDocument,PhytosanitaryTreatment,PhytosanitaryTreatmentType,\
 StratigicObjective,DraftingBodyType,TransTopic,Topic,\
-ContributedResource,  ContributedResourceFile, ContributedResourcePhoto,ContributedResourceUrl,ProvidedBy,ContributedResourceTag
+ContributedResource,  ContributedResourceFile, ContributedResourcePhoto,ContributedResourceUrl,ProvidedBy,ContributedResourceTag,CollapseContent
 #,TransReportingObligation
 
 from django.forms.models import inlineformset_factory
@@ -232,8 +232,26 @@ class TransPublicationLibraryPageAdmin(StackedDynamicInlineAdmin):
 
 from django.http import HttpResponseRedirect
 
+class CollapseContentForm(forms.ModelForm):
+    class Meta:
+        model = CollapseContent
+        widgets = { 
+        'text_en':MarkdownWidget() ,
+        'text_es':MarkdownWidget() ,
+        'text_fr':MarkdownWidget() ,
+        'text_ar':MarkdownWidget() ,
+        'text_zh':MarkdownWidget() ,
+        'text_ru':MarkdownWidget() 
+}
+
+    
+    
+class CollapseContentInline(StackedDynamicInlineAdmin):
+    model = CollapseContent
+    form = CollapseContentForm
+    
 class PublicationLibraryAdmin(PageAdmin):
-    inlines = (PublicationInline, TransPublicationLibraryPageAdmin,)
+    inlines = (PublicationInline, CollapseContentInline,TransPublicationLibraryPageAdmin,)
 admin.site.register(PublicationLibrary, PublicationLibraryAdmin)
 
 

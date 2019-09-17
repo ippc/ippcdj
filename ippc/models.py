@@ -69,6 +69,8 @@ class PublicationLibrary(Page, RichText):
     show_agenda_colums =  models.BooleanField( verbose_name=_("Show column for 'Agenda number'."),default=True)
     show_doc_colums =  models.BooleanField( verbose_name=_("Show column for 'Document number'."),default=True)
     show_topicnumber_colums =  models.BooleanField( verbose_name=_("Show column for 'Topic number'."),default=False)
+    side_box = models.TextField(_("Side box"),  blank=True, null=True)
+    
     class Meta:
         verbose_name = _("Publication Library")
         verbose_name_plural = _("Publication Libraries")
@@ -3199,7 +3201,55 @@ class ContributedResourceUrl(models.Model):
         return self.url_for_more_information  
     def name(self):
         return self.url_for_more_information
-                
+class CollapseContent(Orderable):
+    """Single CollapseContent to add in a publication library."""
+
+    class Meta:
+        verbose_name = _("CollapseContent")
+        verbose_name_plural = _("CollapseContents")
+        
+    library = models.ForeignKey("PublicationLibrary", 
+        related_name="collapsecontent") # related_name=committeemeeting...
+        # ..is used in publicationlibrary template
+    title = models.CharField(_("Title"), blank=True, null=True, max_length=250)
+    title_es = models.CharField(_("Title ES"), blank=True, null=True, max_length=250)
+    title_fr = models.CharField(_("Title FR"), blank=True, null=True, max_length=250)
+    title_ru = models.CharField(_("Title RU"), blank=True, null=True, max_length=250)
+    title_ar = models.CharField(_("Title AR"), blank=True, null=True, max_length=250)
+    title_zh = models.CharField(_("Title ZH"), blank=True, null=True, max_length=250)
+    text_en = models.TextField(_("Text en"),  blank=True, null=True)
+    text_es = models.TextField(_("Text es"),  blank=True, null=True)
+    text_fr = models.TextField(_("Text fr"),  blank=True, null=True)
+    text_ar = models.TextField(_("Text ar"),  blank=True, null=True)
+    text_ru = models.TextField(_("Text ru"),  blank=True, null=True)
+    text_zh = models.TextField(_("Text en"),  blank=True, null=True)
+    collapsed =  models.BooleanField( verbose_name=_("Collapsed"),default=True)
+    bg_color_div =  models.CharField(_("Background Color DIV"), blank=True, null=True, max_length=50)
+    
+ 
+    
+    modify_date = models.DateTimeField(_("Modified date"),
+        blank=True, null=True, editable=False, auto_now=True)
+ 
+    def __unicode__(self):
+        return self.title
+
+    def save(self, *args, **kwargs):
+        """
+        If no title is given when created, create one from the
+        file name.
+        """
+        if not self.id and not self.title:
+            name = unquote(self.file_en.url).split("/")[-1].rsplit(".", 1)[0]
+            name = name.replace("'", "")
+            name = "".join([c if c not in punctuation else " " for c in name])
+            # str.title() doesn't deal with unicode very well.
+            # http://bugs.python.org/issue6412
+            name = "".join([s.upper() if i == 0 or name[i - 1] == " " else s
+                            for i, s in enumerate(name)])
+            self.title = name
+        super(CollapseContent, self).save(*args, **kwargs)
+        
 class Translatable(models.Model):
     """ Translations of user-generated content - https://gist.github.com/renyi/3596248"""
     lang = models.CharField(max_length=5, choices=settings.LANGUAGES)
