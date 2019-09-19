@@ -187,7 +187,28 @@
                    {% if recent_resource.res_type == 3 %}
                      <div class="col-3" style="margin-left:20px">
                      <img src="/static/media/{{ recent_resource.image }}" class="cover" />
-                     <h4 class="font-light"><a href="{{ recent_resource.link }}">{{recent_resource.title}}</a> </h4>
+                     <h4 class="font-light">
+                         {% if LANGUAGE_CODE != 'en' %}
+        {% if LANGUAGE_CODE == 'es'  and recent_resource.title_es != '' and recent_resource.title_es != None %}
+               <a href="{{ recent_resource.link_es }}">{{recent_resource.title_es}}</a> 
+        {% elif LANGUAGE_CODE == 'fr'  and recent_resource.title_fr != '' and recent_resource.title_fr != None%}
+              <a href="{{ recent_resource.link_fr }}">{{recent_resource.title_fr}}</a> 
+        {% elif LANGUAGE_CODE == 'ru'  and recent_resource.title_ru != '' and recent_resource.title_ru != None%}
+               <a href="{{ recent_resource.link_ru }}">{{recent_resource.title_ru}}</a> 
+        {% elif LANGUAGE_CODE == 'ar'  and recent_resource.title_ar != '' and recent_resource.title_ar != None%}
+              <a href="{{ recent_resource.link_ar }}">{{recent_resource.title_ar}}</a> 
+        {% elif LANGUAGE_CODE == 'zh'  and recent_resource.title_zh != '' and recent_resource.title_zh != None%}
+            <a href="{{ recent_resource.link_zh }}">{{recent_resource.title_zh}}</a> 
+        {% else %}
+            <a href="{{ recent_resource.link }}">{{recent_resource.title}}</a> 
+        {% endif %}
+     {% else %}
+          <a href="{{ recent_resource.link }}">{{recent_resource.title}}</a> 
+     {% endif %}
+                         
+                         
+                         
+                     </h4>
                  </div>
                  {% endif%}
                {% endfor %}
