@@ -16971,8 +16971,17 @@ def contactPointsXML(request):
     
         tree = ET.ElementTree(contacts) 
         
-   
     cp_dir = os.path.join(MEDIA_ROOT,'files')
+    filenametoremove = "contactpoints.xml"
+    deleted='no'
+    if os.path.isfile(cp_dir+'/'+filenametoremove)      :
+        try:
+            os.remove(cp_dir+'/'+filenametoremove)
+            deleted='deleted'
+        except OSError:
+            deleted='NO-deleted'
+            pass
+                
     file_path = os.path.join(cp_dir, "contactpoints.xml")
     tree.write(file_path,encoding='utf-8', xml_declaration=True) 
     
