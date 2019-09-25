@@ -69,7 +69,7 @@
 
 {% block news_post_detail_featured_image %}
 {% if news_post.featured_image %}{#settings.news_USE_FEATURED_IMAGE and #}
-  <p align="center"><img src="{{ MEDIA_URL }}{% thumbnail news_post.featured_image 500 0 %}"></p>
+  <p align="left"><img src="{{ MEDIA_URL }}{% thumbnail news_post.featured_image 500 0 %}"></p>
 {% endif %}
 {% endblock %}
 
