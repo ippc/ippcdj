@@ -852,7 +852,7 @@ def requestaccess(request ):
     requestor_email.append(user_obj.email)
 
     subject='IPPC request access to e-learning courses'  
-    msg='Dear IPPC,<br><br>this message is to request access to the e-learning courses for the user: '+user.first_name+' '+user.last_name+' '+requestor_email
+    msg='Dear IPPC,<br><br>this message is to request access to the e-learning courses for the user: '+user.first_name+' '+user.last_name+' '+user_obj.email
     notifificationmessage = mail.EmailMessage(subject,msg,'ippc@fao.org',  ['ippc-it@fao.org'], ['ippc-it@fao.org'])
     notifificationmessage.content_subtype = "html"
     try:
