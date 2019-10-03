@@ -117,7 +117,7 @@
     <span style="width: 20px;height: 20px;background-color: #E3F1EA">&#160;&#160;&#160;&#160;</span> <b>{% trans "National event " %}</b>
 </p>    <small class="pull-right">
         {% if user.is_superuser %}
-             <a class="btn btn-small btn-success" href="/admin/iyph/chronology/28">{% trans "Add new event" %}</a>
+             <a class="btn btn-small btn-success" href="/admin/iyph/chronology/add">{% trans "Add new event" %}</a>
         {% endif %}      
         {% for g in request.user.groups.all %}
             {% if g.name == 'Country Contact Points' %}
