@@ -3123,6 +3123,7 @@ class ContributedResource(Displayable, models.Model):
     tag = models.ManyToManyField(ContributedResourceTag, 
         verbose_name=_("Tags"), 
         related_name='restags', blank=True, null=True)
+    issuename=generic.GenericRelation(IssueKeywordsRelate)
     submittedby = models.TextField(_("Submitted by"),  blank=True, null=True)
   
    
@@ -3224,6 +3225,7 @@ class CollapseContent(Orderable):
     text_ru = models.TextField(_("Text ru"),  blank=True, null=True)
     text_zh = models.TextField(_("Text en"),  blank=True, null=True)
     collapsed =  models.BooleanField( verbose_name=_("Collapsed"),default=True)
+    html =  models.BooleanField( verbose_name=_("in HTML"),default=True)
     bg_color_div =  models.CharField(_("Background Color DIV"), blank=True, null=True, max_length=50)
     
  
