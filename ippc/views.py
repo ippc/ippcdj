@@ -16981,7 +16981,7 @@ def contactPointsXML(request):
         except OSError:
             deleted='NO-deleted'
             pass
-                
+   
     file_path = os.path.join(cp_dir, "contactpoints.xml")
     tree.write(file_path,encoding='utf-8', xml_declaration=True) 
     
@@ -17019,6 +17019,8 @@ def contribuitedresource_create(request):
     user = request.user
     author = user
     form = ContributedResourceForm(request.POST or None, request.FILES)
+    issueform =IssueKeywordsRelateForm(request.POST)
+   
     if request.method == "POST":
         f_form =  ContributedResourceFileFormSet(request.POST, request.FILES)
         u_form =  ContributedResourceUrlFormSet(request.POST)
@@ -17028,6 +17030,11 @@ def contribuitedresource_create(request):
             new_resource.owner = request.user
             new_resource.owner_id = author.id
             form.save()
+            issue_instance = issueform.save(commit=False)
+            issue_instance.content_object = new_pest_report
+            issue_instance.save()
+            issueform.save_m2m()
+            
             f_form.instance = new_resource
             f_form.save()
             u_form.instance = new_resource
@@ -17037,15 +17044,17 @@ def contribuitedresource_create(request):
             info(request, _("Successfully added Contributed Resource."))
             return redirect("contributed-resource-detail",  slug=new_resource.slug)
         else:
-            return render_to_response('pages/contributed_resource_create.html', {'form': form,'f_form': f_form,'u_form': u_form,'p_form':p_form, },
+            return render_to_response('pages/contributed_resource_create.html', {'form': form,'f_form': f_form,'u_form': u_form,'p_form':p_form,'issueform':issueform,  },
              context_instance=RequestContext(request))
     else:
         form = ContributedResourceForm(instance= ContributedResource())
+        issueform =IssueKeywordsRelateForm()
+     
         f_form = ContributedResourceFileFormSet()
         u_form = ContributedResourceUrlFormSet()
         p_form =  ContributedResourcePhotoFormSet()
     
-    return render_to_response('pages/contributed_resource_create.html', {'form': form,'f_form': f_form,'u_form': u_form,'p_form':p_form, },
+    return render_to_response('pages/contributed_resource_create.html', {'form': form,'f_form': f_form,'u_form': u_form,'p_form':p_form,'issueform':issueform, },
         context_instance=RequestContext(request))
 
 @login_required
@@ -17062,11 +17071,21 @@ def contribuitedresource_edit(request,id=None, template_name='pages/contributed_
       
     if request.POST:
         form = ContributedResourceForm(request.POST,  request.FILES, instance=resource)
+        if resource.issuename.count()>0:
+            issues = get_object_or_404(IssueKeywordsRelate, pk=resource.issuename.all()[0].id)
+            issueform =IssueKeywordsRelateForm(request.POST,instance=issues)
+        else:
+            issueform =IssueKeywordsRelateForm(request.POST)
         f_form = ContributedResourceFileFormSet(request.POST,  request.FILES,instance=resource)
         u_form = ContributedResourceUrlFormSet(request.POST,  instance=resource)
         p_form = ContributedResourcePhotoFormSet(request.POST,  request.FILES, instance=resource)
         if form.is_valid() and f_form.is_valid() and u_form.is_valid() and p_form.is_valid():
             form.save()
+            issue_instance = issueform.save(commit=False)
+            issue_instance.content_object = resource
+            issue_instance.save()
+            issueform.save_m2m()
+            
             f_form.instance = resource
             f_form.save()
             u_form.instance = resource
@@ -17077,10 +17096,18 @@ def contribuitedresource_edit(request,id=None, template_name='pages/contributed_
             return redirect("contributed-resource-detail",  slug=resource.slug)
     else:
         form = ContributedResourceForm( instance=resource)
+        if resource.issuename.count()>0:
+            issues = get_object_or_404(IssueKeywordsRelate, pk=resource.issuename.all()[0].id)
+            issueform =IssueKeywordsRelateForm( instance=issues)
+        else:
+            issueform =IssueKeywordsRelateForm( )
+            
         f_form = ContributedResourceFileFormSet(instance=resource)
         u_form = ContributedResourceUrlFormSet( instance=resource)
         p_form = ContributedResourcePhotoFormSet(instance=resource)
     return render_to_response(template_name, {
-        'form': form, 'f_form':f_form,'u_form': u_form,'p_form': p_form,   "resource": resource
+        'form': form, 'f_form':f_form,'u_form': u_form,'p_form': p_form,   "resource": resource,"issueform":issueform
         
-    }, context_instance=RequestContext(request))                
+    }, context_instance=RequestContext(request))  
+    
+               
