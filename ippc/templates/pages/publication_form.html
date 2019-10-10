@@ -58,6 +58,9 @@
                            
                         
                         {{ form.url_for_more_information.errors }}
+                        {{ form.description.label_tag }}
+                        {{ form.description }}
+                        
                         {{ form.url_for_more_information.label_tag }}
                         {{ form.url_for_more_information }}
                          {% if u_form.can_delete %}

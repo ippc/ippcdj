@@ -421,6 +421,7 @@ class PublicationFile(models.Model):
 
 class PublicationUrl(models.Model):
     publication = models.ForeignKey(Publication)
+    description = models.CharField(_("Description"),max_length=100, blank=True)
     url_for_more_information = models.URLField(blank=True, null=True)
     def __unicode__(self):  
         return self.url_for_more_information  

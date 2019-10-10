@@ -107,6 +107,19 @@
       
           </dd>
            {% endif %}
+            {% if publication.publicationfile_set.all %}
+     <dt>{% trans "Additional files" %}</dt>
+     {% for f in publication.publicationfile_set.all %} 
+       <dd><a href="{{MEDIA_URL}}{{f.file.name}}">{{ f.description }}</a></dd>
+     {% endfor %}
+   {% endif %}
+
+  {% if publication.publicationurl_set.all %}
+    <dt>{% trans "Links" %}</dt>
+    {% for f in publication.publicationurl_set.all %} 
+      <dd><a href="{{f.url_for_more_information}}">{%if  f.description != NULL and  f.description != ''  %}{{ f.description }}{% else %}{{ f.url_for_more_information }}{% endif %}</a></dd>
+    {% endfor %}
+  {% endif %}
           {% if publication.short_description %}
         
           <dt>{% trans "Description" %}</dt>
@@ -122,19 +135,7 @@
   <dd>{{ publication.contact_for_more_information }}</dd>
   {% endif %}
   
-  {% if publication.publicationfile_set.all %}
-     <dt>{% trans "Additional files" %}</dt>
-     {% for f in publication.publicationfile_set.all %} 
-       <dd><a href="{{MEDIA_URL}}{{f.file.name}}">{{ f.description }}</a></dd>
-     {% endfor %}
-   {% endif %}
-
-  {% if publication.publicationurl_set.all %}
-    <dt>{% trans "Links" %}</dt>
-    {% for f in publication.publicationurl_set.all %} 
-      <dd><a href="{{f.url_for_more_information}}">{{ f.url_for_more_information }}</a></dd>
-    {% endfor %}
-  {% endif %}
+ 
   
   
   
