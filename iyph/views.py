@@ -390,6 +390,8 @@ class PhotoLibraryView(DetailView):
                  queryset =Photo.objects.filter(status=2,library_id=1, agree=1,exibition=1).order_by('-modify_date', 'title')
             elif library.id == 3:
                  queryset =Photo.objects.filter(status=2,library_id=1, agree=1,finalist=1).order_by('-prize', 'title')
+            elif library.id == 4:
+                 queryset =Photo.objects.filter(status=1,library_id=1).order_by('-modify_date', 'title')
             else:
                 queryset =Photo.objects.filter(status=2,library_id=1, agree=1).order_by('-modify_date', 'title')
         

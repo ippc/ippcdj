@@ -403,6 +403,8 @@ class Photo(Displayable, models.Model):
     finalist =  models.BooleanField( verbose_name=_("Finalist"),default=False)
     exibition =  models.BooleanField( verbose_name=_("Selected for exibition"),default=False)
     prize= models.CharField(_("Prize"), max_length=100, blank=True)
+  
+ 
     
     class Meta:
         verbose_name = _("Photo")

@@ -156,7 +156,7 @@ class PhotoAdmin(admin.ModelAdmin):
     
     
 
-    list_display = ('title','image_img','publish_date','status','agree','photographer_first_name','photographer_first_name','email','age','date_taken','place_taken','finalist','exibition','prize' )
+    list_display = ('title','image_img','publish_date','status','agree','photographer_first_name','photographer_last_name','email','age','date_taken','place_taken','finalist','exibition','prize' )
 
     
     list_filter = ('title',  'modify_date','status','agree',)
