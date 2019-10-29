@@ -1,6 +1,38 @@
+
+
 {% load mezzanine_tags staticfiles i18n %}
 
+{%if photolibrary.id == 4%}
+   {% if user.is_superuser or perms.ippc.change_publication  %}
+   <table class="table table-condensed table-striped table-bordered" id="publications">
+    <thead>
+        <tr>
+            <th>{% trans "Photo" %}</th>
+            <th>{% trans "Description" %}</th>
+            <th>{% trans "Edit" %}</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for photo in photos %}
+         <tr id="media-file-{{ photo.id }}">
+            <td>
+                <a id="title_{{ photo.id }}" href="/iyph/photo/{{ photo.id }}"><img src="/static/media/{{ photo.image }}" width="250px"></a>
+            </td>
+            <td>{{ photo.short_description }}<br>Photographer name: {{ photo.photographer }}</td>
+              <td> <a class="btn btn-small btn-success" href="/admin/iyph/photo/{{photo.id}}" style="color:#fff;"><i class="icon-edit icon-white"></i> {% trans "Edit as admin" %}</a>     </p>
+    
+             </td>
+            {% endif %}
+        </tr> 
+    {% endfor %} 
+  
+    </tbody>
+</table>
+{%else%}
+   <div class="col-12">You don't have the permission to see this page.</div>
 
+   {% endif %} 
+{% else %}              
 <table class="table table-condensed table-striped table-bordered" id="publications">
     <thead>
         <tr>
@@ -26,7 +58,8 @@
   
     </tbody>
 </table>
-
+            {% endif %} 
+    
 
 
 
