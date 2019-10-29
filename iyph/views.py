@@ -90,7 +90,7 @@ def iyph_post_feed(request, format, **kwargs):
         raise Http404()
 
 
-
+from django.utils.translation import ugettext
 class ChronologyListView(ListView):
     """    chronology  """
     context_object_name = 'latest'
@@ -148,10 +148,10 @@ class ChronologyListView(ListView):
                               date_event=  str(chron.start_date.strftime('%d %b'))+' - '+ str(chron.end_date.strftime('%d %b %Y'))
                         else:      
                               date_event=  str(chron.start_date.strftime('%d %b %Y'))+' - '+ str(chron.end_date.strftime('%d %b %Y'))
-                        detail_cron=detail_cron+'<p style="color:#000;font-size:0.9rem">'+date_event+'<br><a href="/iyph/chronology/'+str(chron.slug)+'">'+chron.title+'</a> - '+chron.venue +'</p>'
+                        detail_cron=detail_cron+'<p style="color:#000;font-size:0.9rem">'+date_event+'<br><a href="/iyph/chronology/'+str(chron.slug)+'">'+ugettext(chron.title)+'</a> - '+chron.venue +'</p>'
                     
                  
-                    maparray.append([str('<b>'+cn.name.encode('utf-8'))+'</b>:<br>'+str(detail_cron)+'',str(cn.cn_lat),str(cn.cn_long)])
+                    maparray.append([str('<b>'+cn.name.encode('utf-8'))+'</b>:<br>'+str(detail_cron.encode('utf-8'))+'',str(cn.cn_lat),str(cn.cn_long)])
                    
         
         context['map']=maparray    
