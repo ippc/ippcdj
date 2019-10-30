@@ -59,6 +59,9 @@ class PublicationLibrary(Page, RichText):
                 - Table listing multiple Publications which contain...
                     ...multiple Files
     """
+         
+    pagefeatured_image = models.ImageField(_("Page Featured Image"), upload_to="files/largefiles/", blank=True)
+        
     users = models.ManyToManyField(User, 
         verbose_name=_("Users this library is accessible to"), 
         related_name='publicationlibraryusers', blank=True, null=True)

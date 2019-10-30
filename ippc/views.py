@@ -10756,7 +10756,7 @@ def contactus_email_send(request):
                  emails_a='marko.benovic@fao.org'
                  subj1='Contact IPPC: Registration of ISPM 15 symbol - '
              elif request.POST['contact_us_type']== "4":
-                 emails_a='Dorota.buzon@fao.org'
+                 emails_a='paola.sentinelli@fao.org'
                  subj1='Contact IPPC: National Reporting Obligations (NROs) - '
              elif request.POST['contact_us_type']== "5":
                  emails_a='Craig.Fedchock@fao.org'
