@@ -61,7 +61,7 @@
             {% if  page.publicationlibrary.id == 581 or page.publicationlibrary.id == 1303  %}
                 {% include "pages/publicationlibrarypoll.html" %}
             {% endif %}    
-            
+           {% if  page.publicationlibrary.pagefeatured_image != '' %}<img src="/static/{{page.publicationlibrary.pagefeatured_image}}"> {% endif %}
             {% with page.publicationlibrary|get_object_translation as translated_page %}
                 {{ translated_page.content|richtext_filter|safe }}
             {% endwith %}
@@ -103,7 +103,7 @@
   
       {{ block.super }}
       {# {% editable page.publicationlibrary.content %} #}
-
+     {% if  page.publicationlibrary.pagefeatured_image != '' %}<img src="/static/{{page.publicationlibrary.pagefeatured_image}}"> {% endif %}
       {% with page.publicationlibrary|get_object_translation as translated_page %}
           {{ translated_page.content|richtext_filter|safe }}
       {% endwith %}
