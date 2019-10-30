@@ -69,18 +69,18 @@
 
 {% block news_post_detail_featured_image %}
 {% if news_post.featured_image %}{#settings.news_USE_FEATURED_IMAGE and #}
-<div style="position: relative; max-width: 800px; margin: 0 auto;">
+<!--div style="position: relative; max-width: 800px; margin: 0 auto;">
   <img src="{{ MEDIA_URL }}{% thumbnail news_post.featured_image 800 400 %}">
   {%if news_post.caption_image != None and news_post.caption_image != ''%}
   <div style="position: absolute;  bottom: 0;  background: #000;   background: rgba(0, 0, 0, 0.3);   color: #f1f1f1;  font-size:10pt;  width: 770px;  padding: 10px;">
 <i>{{news_post.caption_image}}</i>
   </div>{% endif %}
-</div>
+</div-->
 
 
 
 
-<!--p align="left"><img src="{{ MEDIA_URL }}{% thumbnail news_post.featured_image 800 400 %}">{%if news_post.caption_image != None and news_post.caption_image != ''%}<br><i>{{news_post.caption_image}}</i>{% endif %}</p-->
+<p align="left"><img src="{{ MEDIA_URL }}{% thumbnail news_post.featured_image 800 400 %}">{%if news_post.caption_image != None and news_post.caption_image != ''%}<br><i>{{news_post.caption_image}}</i>{% endif %}</p>
 {% endif %}
 {% endblock %}
 
