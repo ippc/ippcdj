@@ -4,7 +4,7 @@
 {%if page.publicationlibrary.id == 346 %}
 
 {%if page.publicationlibrary.publications.all%}
-
+   
 <table class="table table-condensed table-striped table-bordered" id="publications">
     {# http://datatables.net/blog/Twitter_Bootstrap_2 #}
     <script type="text/javascript">
@@ -236,7 +236,7 @@
         {% endif %}
       {% if publication.publicationurl_set.all %} 
         {% for f in publication.publicationurl_set.all %} 
-            <a href="{{f.url_for_more_information}}">Link</a>
+            <a href="{{f.url_for_more_information}}">{%if  f.description != NULL and  f.description != ''  %}{{ f.description }}{% else %}Link{% endif %}</a>
         {% endfor %}
       {% endif %}
       </td>  
