@@ -18,7 +18,7 @@ from datetime import datetime
 
 class TransNewsPostAdmin(StackedDynamicInlineAdmin):
     model = TransNewsPost
-    fields = ("lang", "title", "content")
+    fields = ("lang", "title","caption_image", "content")
 
 newspost_fieldsets = deepcopy(DisplayableAdmin.fieldsets)
 newspost_fieldsets[0][1]["fields"].insert(1, "categories")

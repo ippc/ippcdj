@@ -111,7 +111,7 @@ class Translatable(models.Model):
 class TransNewsPost(Translatable,   Slugged):
     translation = models.ForeignKey(NewsPost, related_name="translation")
     content = models.TextField(blank=True, null=True)
-    
+    caption_image=models.CharField(blank=True, null=True, max_length=250)
     class Meta:
         verbose_name = _("Translated NewsPost")
         verbose_name_plural = _("Translated NewsPosts")
