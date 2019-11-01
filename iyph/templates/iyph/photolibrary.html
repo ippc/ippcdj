@@ -11,54 +11,39 @@
 
 {% block main %}
 <div class="row">
-<!-- SX col-------------------------------->
-  {%if  photolibrary.id ==  4%} 
-     {% if user.is_superuser or perms.ippc.change_publication  %}
-  <div class="col-8" >
-	<!-- SX box1 -->
-        
+    <div class="col-8" >
         <div class="padding20">
-        
-         <h2 class="font-light green">{{ photolibrary.title }}          </h2> 
-          <p>  {% autoescape off %}
-            {{ photolibrary.short_description|safe }}
-            {% endautoescape %}      
-           </p>
-            {% include "iyph/phototable.html" %}
+            {%if  photolibrary.id ==  4%} 
+                {% if user.is_superuser or perms.ippc.change_publication  %}
+                    <h2 class="font-light green">{{ photolibrary.title }}          </h2> 
+                    <p>  {% autoescape off %}
+                          {{ photolibrary.short_description|safe }}
+                      {% endautoescape %}      
+                    </p>
+                    {% include "iyph/phototable.html" %}
+                {%else%} 
+                 <p>You don't have the permission to see this page.</p>
+                {%endif%} 
+            {%else%} 
+                    <h2 class="font-light green">{{ photolibrary.title }}          </h2> 
+                    <p>  {% autoescape off %}
+                          {{ photolibrary.short_description|safe }}
+                      {% endautoescape %}      
+                    </p>
+                    {% include "iyph/phototable.html" %}
+            {%endif%} 
         </div>
-    </div>
+     </div>
      
- <!-- DX col ------------------------------>
-      <div class="col-4" >
-        <!-- DX box1 -->
-       {% include "iyph/how.html" %}
-       </div>       
-    {%else%} 
-    <div class="col-12">You don't have the permission to see this page.</div>
-      {%endif%} 
-  {%else%} 
-         
-         <div class="col-8" >
-	<!-- SX box1 -->
-        
-        <div class="padding20">
-        
-         <h2 class="font-light green">{{ photolibrary.title }}          </h2> 
-          <p>  {% autoescape off %}
-            {{ photolibrary.short_description|safe }}
-            {% endautoescape %}      
-           </p>
-            {% include "iyph/phototable.html" %}
-        </div>
-    </div>
+       
+    
      
  <!-- DX col ------------------------------>
       <div class="col-4" >
         <!-- DX box1 -->
        {% include "iyph/how.html" %}
        </div>
-         {%endif%} 
-         
+      
     
 </div>
 
