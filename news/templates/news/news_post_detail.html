@@ -80,7 +80,13 @@
 
 
 
-<p align="left"><img src="{{ MEDIA_URL }}{% thumbnail news_post.featured_image 800 400 %}">{%if news_post.caption_image != None and news_post.caption_image != ''%}<br><i>{{news_post.caption_image}}</i>{% endif %}</p>
+<p align="left"><img src="{{ MEDIA_URL }}{% thumbnail news_post.featured_image 800 400 %}">
+     {%if news_post.caption_image != None and news_post.caption_image != ''%}<br>
+     <i>
+    {% with news_post|get_object_translation as translated_page %}
+        {{ translated_page.caption_image}}
+    {% endwith %}  
+    </i>{% endif %}</p>
 {% endif %}
 {% endblock %}
 
