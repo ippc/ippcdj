@@ -14171,7 +14171,7 @@ def generate_listNEW(request, id=None):
         name_title_address=''
         array_u=[]
         country=''
-        
+        countryobj=None
         user_obj=u
         
         userippc = get_object_or_404(IppcUserProfile, user_id=user_obj.id)
