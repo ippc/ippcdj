@@ -27,6 +27,8 @@ class NewsPost(Displayable, Ownable, RichText, AdminThumbMixin):
        
     related_posts = models.ManyToManyField("self",
                                  verbose_name=_("Related posts"), blank=True)
+    related_info = models.TextField(_("Related Info"), blank=True, null=True)
+  
 
     admin_thumb_field = "featured_image"
 
@@ -112,6 +114,7 @@ class TransNewsPost(Translatable,   Slugged):
     translation = models.ForeignKey(NewsPost, related_name="translation")
     content = models.TextField(blank=True, null=True)
     caption_image=models.CharField(blank=True, null=True, max_length=250)
+    related_info = models.TextField(blank=True, null=True)
     class Meta:
         verbose_name = _("Translated NewsPost")
         verbose_name_plural = _("Translated NewsPosts")

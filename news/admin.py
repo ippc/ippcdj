@@ -15,15 +15,20 @@ from django.core.mail import send_mail
 from django.template.defaultfilters import slugify
 
 from datetime import datetime
+from django_markdown.widgets import MarkdownWidget
+from django import forms
+from django_markdown.admin import MarkdownModelAdmin
+from django_markdown.widgets import AdminMarkdownWidget
 
 class TransNewsPostAdmin(StackedDynamicInlineAdmin):
     model = TransNewsPost
-    fields = ("lang", "title","caption_image", "content")
+    fields = ("lang", "title","caption_image", "content","related_info")
 
 newspost_fieldsets = deepcopy(DisplayableAdmin.fieldsets)
 newspost_fieldsets[0][1]["fields"].insert(1, "categories")
 newspost_fieldsets[0][1]["fields"].extend(["caption_image"])
 newspost_fieldsets[0][1]["fields"].extend(["content"])
+newspost_fieldsets[0][1]["fields"].extend(["related_info"])
 
 newspost_list_display = ["title", "user","publish_date", "status", "admin_link"]
 if settings.NEWS_USE_FEATURED_IMAGE:
@@ -35,13 +40,18 @@ newspost_fieldsets.insert(1, (_("Other posts"), {
     "fields": ("related_posts",)}))
 newspost_list_filter = deepcopy(DisplayableAdmin.list_filter) + ("categories",)
 
+class NewsPostAdminForm(forms.ModelForm):
+    class Meta:
+        model = NewsPost
+        widgets = { 'related_info':AdminMarkdownWidget() 
 
+}
 #class NewsPostAdmin(DisplayableAdmin, OwnableAdmin):
 class NewsPostAdmin(DisplayableAdmin):
     """
     Admin class for news posts.
     """
-
+    form = NewsPostAdminForm
     fieldsets = newspost_fieldsets
     list_display = newspost_list_display
     list_filter = newspost_list_filter
