@@ -49,7 +49,7 @@ TopicDetailView,TopicListView,topic_create,topic_edit,topic_translate,WorkshopCe
 B_CertificatesToolListView,B_CertificatesToolDetailView,generate_b_certificates,my_tool,MyToolDetailView,generate_topiclist,\
 MembershipShortListView,generate_shortlist,generate_shortlistparticipant,generate_listNEW1,\
 generate_b_certificatesnew,generate_certificatesnew,CountryStatsSingleListOfRegulatesPestsListView,select_cns_nros_stats,nro_stats_files,contactPointsXML,\
-ContributedResourceListView,  ContributedResourceDetailView,contribuitedresource_create,contribuitedresource_edit,my_tool2,MyTool2DetailView,nro_stats3_files
+ContributedResourceListView,  ContributedResourceDetailView,contribuitedresource_create,contribuitedresource_edit,my_tool2,MyTool2DetailView,nro_stats3_files,AdvancesSearchResourcesListView,PublicationMeetingFilesListView
 
 #reporting_obligation_translate,
 from schedule.periods import Year, Month, Week, Day
@@ -260,7 +260,10 @@ urlpatterns = patterns("",
     url(r'^countriescontacts/cp/$',
         view=contactPointsXML,
         name='countriescontacts'),
-          
+    #----- CAP DEV RES
+    url(r'^resources/capacity-development-resources/resources-by-topic/(?P<type>[\w-]+)/$',
+        view=AdvancesSearchResourcesListView.as_view(),
+        name='advsearch'),
     #-------------------NEWS STATS------------------------    
    
     url(r'^resources/statistics/news-statistics/$',view=NewsStatisticsByYearListView.as_view(), name='newsstatistics'),   
@@ -456,6 +459,10 @@ urlpatterns = patterns("",
     url(r'^publications/(?P<id>\d+)/files/$',
         view=PublicationFilesListView.as_view(),
         name='publication-file-list'),
+# publication list files
+    url(r'^publications-meetings/(?P<id>\d+)/files/$',
+        view=PublicationMeetingFilesListView.as_view(),
+        name='publication-meetings-file-list'),
 
     #-------------------------------------------#
     
