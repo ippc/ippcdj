@@ -14,7 +14,7 @@
     <div class="col-8" >
         <div class="padding20">
             {%if  photolibrary.id ==  4%} 
-                {% if user.is_superuser or perms.ippc.change_publication  %}
+                {% if user.is_superuser or perms.ippc.change_publication or perms.iyph.change_photo  %}
                     <h2 class="font-light green">{{ photolibrary.title }}          </h2> 
                     <p>  {% autoescape off %}
                           {{ photolibrary.short_description|safe }}
