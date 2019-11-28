@@ -59,9 +59,10 @@ class PublicationLibrary(Page, RichText):
                 - Table listing multiple Publications which contain...
                     ...multiple Files
     """
-         
-    pagefeatured_image = models.ImageField(_("Page Featured Image"), upload_to="files/largefiles/", blank=True)
-        
+    pagefeatured_image = models.ImageField(_("Page Featured Image"),help_text=_("Image size 730px x 240px"), upload_to="files/largefiles/", blank=True)
+    embedded_image = models.ImageField(_("Page Embedded Image"), upload_to="files/largefiles/", blank=True)
+    embeddedimage_small =  models.BooleanField( verbose_name=_("Show small Embedded Image"),default=False)
+    embedded_image_caption = models.CharField(_("Embedded Image Caption"), blank=True, null=True, max_length=250)
     users = models.ManyToManyField(User, 
         verbose_name=_("Users this library is accessible to"), 
         related_name='publicationlibraryusers', blank=True, null=True)
@@ -72,6 +73,7 @@ class PublicationLibrary(Page, RichText):
     show_agenda_colums =  models.BooleanField( verbose_name=_("Show column for 'Agenda number'."),default=True)
     show_doc_colums =  models.BooleanField( verbose_name=_("Show column for 'Document number'."),default=True)
     show_topicnumber_colums =  models.BooleanField( verbose_name=_("Show column for 'Topic number'."),default=False)
+    fullpage =  models.BooleanField( verbose_name=_("Show full page"),default=False)
     side_box = models.TextField(_("Side box"),  blank=True, null=True)
     
     class Meta:
@@ -515,6 +517,13 @@ class IppcUserProfile(models.Model):
         (9, _("Sra.")),
         
     )
+    UNITS_CHOICES = (
+        (1, _("IPPC Secretary's Office")),
+        (2, _("Standard Setting Unit")),
+        (3, _("Implementation Facilitation Unit")),
+        (4, _("Integration and Support Team")),
+        (5, _("ePhyto Group")),
+    )
 
 
     user = models.OneToOneField("auth.User")
@@ -555,7 +564,9 @@ class IppcUserProfile(models.Model):
     date_account_created = models.DateTimeField(_("IPP Member Since"), default=datetime.now, editable=False)
     date_contact_registration = models.DateTimeField(_("Date contact registration"), blank=True, null=True, default=datetime.now, editable=True)
     modify_date = models.DateTimeField(_("modify_date"), blank=True, null=True, default=None, editable=True)
-
+    staff_oder = models.IntegerField(_("order"),  blank=True, null=True)
+    unit_team = models.PositiveSmallIntegerField(_("Unit/Team"), choices=UNITS_CHOICES, blank=True, null=True)
+    
     def save(self, *args, **kwargs):
         ''' On save, update timestamps '''
         self.modify_date = datetime.now()
@@ -3206,6 +3217,95 @@ class ContributedResourceUrl(models.Model):
         return self.url_for_more_information  
     def name(self):
         return self.url_for_more_information
+
+
+####---new strut
+
+class CommitteeMeeting(Orderable):
+    """Single CommitteeMeeting to add in a publication library."""
+
+    class Meta:
+        verbose_name = _("CommitteeMeeting")
+        verbose_name_plural = _("CommitteeMeetings")
+        
+    library = models.ForeignKey("PublicationLibrary", 
+        related_name="committeemeeting") # related_name=committeemeeting...
+        # ..is used in publicationlibrary template
+    title = models.CharField(_("Title"), blank=True, null=True, max_length=250)
+    title_es = models.CharField(_("Title ES"), blank=True, null=True, max_length=250)
+    title_fr = models.CharField(_("Title FR"), blank=True, null=True, max_length=250)
+    title_ru = models.CharField(_("Title RU"), blank=True, null=True, max_length=250)
+    title_ar = models.CharField(_("Title AR"), blank=True, null=True, max_length=250)
+    title_zh = models.CharField(_("Title ZH"), blank=True, null=True, max_length=250)
+    link_to_page = models.CharField(_("Link to page"), blank=True, null=True,max_length=250)
+    city = models.CharField(_("City"), blank=True, null=True, max_length=250)
+    country  = models.ForeignKey(CountryPage)
+    start_date  = models.DateTimeField(_("From"), blank=True, null=True, editable=True)
+    end_date = models.DateTimeField(_("To"), blank=True, null=True, editable=True)
+    agenda_link_en = models.CharField(_("Agenda link - English"),blank=True, null=True, max_length=250)
+    agenda_link_es = models.CharField(_("Agenda link - Spanish"),blank=True, null=True, max_length=250)
+    agenda_link_fr = models.CharField(_("Agenda link - French"),blank=True, null=True, max_length=250)
+    agenda_link_ru = models.CharField(_("Agenda link - Russian"),blank=True, null=True, max_length=250)
+    agenda_link_ar = models.CharField(_("Agenda link - Arabic"),blank=True, null=True, max_length=250)
+    agenda_link_zh = models.CharField(_("Agenda link - Chinese"),blank=True, null=True, max_length=250)
+ 
+    report_en = models.FileField(_("Report - English"), 
+            upload_to=upload_to("galleries.GalleryImage.file", "files/publication/en/%Y/%m/"),
+            unique_for_date='modify_date', max_length=204, 
+            blank=True, null=True)        
+    report_es = models.FileField(_("Report - Spanish"), 
+            upload_to=upload_to("galleries.GalleryImage.file", "files/publication/es/%Y/%m/"),
+            unique_for_date='modify_date', max_length=204, 
+            blank=True, null=True)        
+    report_fr = models.FileField(_("Report - French"), 
+            upload_to=upload_to("galleries.GalleryImage.file", "files/publication/fr/%Y/%m/"),
+            unique_for_date='modify_date', max_length=204, 
+            blank=True, null=True)        
+    report_ru = models.FileField(_("Report - Russian"), 
+            upload_to=upload_to("galleries.GalleryImage.file", "files/publication/ru/%Y/%m/"),
+            unique_for_date='modify_date', max_length=204, 
+            blank=True, null=True)        
+    report_ar = models.FileField(_("Report - Arabic"), 
+            upload_to=upload_to("galleries.GalleryImage.file", "files/publication/ar/%Y/%m/"),
+            unique_for_date='modify_date', max_length=204, 
+            blank=True, null=True)        
+    report_zh = models.FileField(_("Report - Chinese"), 
+            upload_to=upload_to("galleries.GalleryImage.file", "files/publication/zh/%Y/%m/"),
+            unique_for_date='modify_date', max_length=204, 
+            blank=True, null=True)        
+    
+    modify_date = models.DateTimeField(_("Modified date"),
+        blank=True, null=True, editable=False, auto_now=True)
+ 
+    def __unicode__(self):
+        return self.title
+
+    def save(self, *args, **kwargs):
+        """
+        If no title is given when created, create one from the
+        file name.
+        """
+        if not self.id and not self.title:
+            name = unquote(self.file_en.url).split("/")[-1].rsplit(".", 1)[0]
+            name = name.replace("'", "")
+            name = "".join([c if c not in punctuation else " " for c in name])
+            # str.title() doesn't deal with unicode very well.
+            # http://bugs.python.org/issue6412
+            name = "".join([s.upper() if i == 0 or name[i - 1] == " " else s
+                            for i, s in enumerate(name)])
+            self.title = name
+        super(CommitteeMeeting, self).save(*args, **kwargs)
+
+    @models.permalink # or: get_absolute_url = models.permalink(get_absolute_url) below
+    def get_absolute_url(self): # "view on site" link will be visible in admin interface
+        """Construct the absolute URL for a Publication."""
+        return ('publication-detail', (), {
+                            # 'country': self.country.name, # =todo: get self.country.name working
+                            # 'year': self.publish_date.strftime("%Y"),
+                            # 'month': self.publish_date.strftime("%m"),
+                            # 'day': self.pub_date.strftime("%d"),
+                            'pk': self.pk})
+                            
 class CollapseContent(Orderable):
     """Single CollapseContent to add in a publication library."""
 
@@ -3256,6 +3356,15 @@ class CollapseContent(Orderable):
             self.title = name
         super(CollapseContent, self).save(*args, **kwargs)
         
+    @models.permalink # or: get_absolute_url = models.permalink(get_absolute_url) below
+    def get_absolute_url(self): # "view on site" link will be visible in admin interface
+        """Construct the absolute URL for a Publication."""
+        return ('publication-detail', (), {
+                            # 'country': self.country.name, # =todo: get self.country.name working
+                            # 'year': self.publish_date.strftime("%Y"),
+                            # 'month': self.publish_date.strftime("%m"),
+                            # 'day': self.pub_date.strftime("%d"),
+                            'pk': self.pk})
 class Translatable(models.Model):
     """ Translations of user-generated content - https://gist.github.com/renyi/3596248"""
     lang = models.CharField(max_length=5, choices=settings.LANGUAGES)
@@ -3342,7 +3451,7 @@ if "mezzanine.galleries" in settings.INSTALLED_APPS:
 
 class TransPublicationLibraryPage(Translatable, RichText, Slugged):
     translation = models.ForeignKey(PublicationLibrary, related_name="translation")
-
+    side_box = models.TextField( blank=True, null=True)
     class Meta:
         verbose_name = _("Translated Publication Library")
         verbose_name_plural = _("Translated Publication Libraries")

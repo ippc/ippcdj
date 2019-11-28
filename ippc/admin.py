@@ -18,7 +18,7 @@ PartnersNews,PartnersNewsFile,PartnersNewsUrl, \
 EppoCode,IssueKeyword, CommodityKeyword,IssueKeywordsRelate,CommodityKeywordsRelate, ContactType, IppcUserProfile,\
 QAQuestion,QAAnswer,FAQsCategory,FAQsItem,IRSSActivity,IRSSActivityFile,TransFAQsCategory,TransFAQsItem,UserMembershipHistory,MediaKitDocument,PhytosanitaryTreatment,PhytosanitaryTreatmentType,\
 StratigicObjective,DraftingBodyType,TransTopic,Topic,\
-ContributedResource,  ContributedResourceFile, ContributedResourcePhoto,ContributedResourceUrl,ProvidedBy,ContributedResourceTag,CollapseContent
+ContributedResource,  ContributedResourceFile, ContributedResourcePhoto,ContributedResourceUrl,ProvidedBy,ContributedResourceTag,CommitteeMeeting,CollapseContent
 #,TransReportingObligation
 
 from django.forms.models import inlineformset_factory
@@ -228,10 +228,13 @@ class PublicationInline(StackedDynamicInlineAdmin):
 
 class TransPublicationLibraryPageAdmin(StackedDynamicInlineAdmin):
     model = TransPublicationLibraryPage
-    fields = ("lang", "title", "content")
+    fields = ("lang", "title", "content", "side_box")
 
 from django.http import HttpResponseRedirect
 
+class CommitteeMeetingInline(StackedDynamicInlineAdmin):
+    model = CommitteeMeeting
+    
 class CollapseContentForm(forms.ModelForm):
     class Meta:
         model = CollapseContent
@@ -251,7 +254,7 @@ class CollapseContentInline(StackedDynamicInlineAdmin):
     form = CollapseContentForm
     
 class PublicationLibraryAdmin(PageAdmin):
-    inlines = (PublicationInline, CollapseContentInline,TransPublicationLibraryPageAdmin,)
+    inlines = (PublicationInline, CollapseContentInline,CommitteeMeetingInline,TransPublicationLibraryPageAdmin,)
 admin.site.register(PublicationLibrary, PublicationLibraryAdmin)
 
 

@@ -19,7 +19,7 @@ ContactUsEmailMessage,FAQsItem,FAQsCategory,QAQuestion, QAAnswer,UserAutoRegistr
 TransFAQsCategory,TransFAQsItem,MassEmailUtilityMessage,MassEmailUtilityMessageFile,\
 OCPHistory, PartnersContactPointHistory,CnEditorsHistory,PartnersEditorHistory,UserMembershipHistory,MediaKitDocument,MyTool,\
 PhytosanitaryTreatment,PhytosanitaryTreatmentPestsIdentity,PhytosanitaryTreatmentCommodityIdentity,CertificatesTool,WorkshopCertificatesTool,CPMS,TOPIC_PRIORITY_CHOICES,\
-Topic,TopicAssistants,TopicLeads,TransTopic,TOPIC_STATUS_CHOICES,SC_TYPE_CHOICES,B_CertificatesTool,NROStats,MyTool2,ContributedResource
+Topic,TopicAssistants,TopicLeads,TransTopic,TOPIC_STATUS_CHOICES,SC_TYPE_CHOICES,B_CertificatesTool,NROStats,MyTool2,ContributedResource,CommitteeMeeting
 #TransReportingObligation,#COOPTYPE_CHOICES,
 
 from mezzanine.core.models import Displayable, CONTENT_STATUS_DRAFT, CONTENT_STATUS_PUBLISHED
@@ -1725,6 +1725,60 @@ class PublicationLibraryView(ListView):
         context['users_tpfq']=users_tpfq
         context['users_esg']=users_esg
         
+        secretariats_final=[]
+        for i in range(1,6):
+            unit=''
+            if i ==  1:
+                unit='IPPC Secretary'
+            if i ==  2:
+                unit='Standard Setting Unit'
+            if i ==  3:
+                unit='Implementation Facilitation Unit'
+            if i ==  4:
+                unit='Integration and Support Team'
+            if i ==  5:
+                unit='ePhyto Group'
+                    
+            secretariats_ss=[]
+            secretariats=IppcUserProfile.objects.filter(contact_type='18',unit_team=i).order_by('staff_oder',)
+            secretariats_ss.append(unit)
+            secretariats_ss.append(secretariats)
+            secretariats_final.append(secretariats_ss) 
+      
+  
+
+
+
+      
+        table_sec='<table class="table table-condensed  table-bordered dataTable">'
+        table_sec+='<tr>'
+        table_sec+='<th style="background-color: #0f405b;color: white" colspan="2">Organizational Structure of the IPPC Secretariat</th>'
+        table_sec+='</tr>'
+
+        
+           
+    
+        i=0
+        for sec in secretariats_final:
+            table_sec+='<tr> <th style="background-color: #E0E0E0" colspan="2">'+sec[0]+'</th></tr>'
+            for userippc in sec[1]:
+                table_sec+='<tr>'
+                user_obj=User.objects.get(id=userippc.user_id)
+                if userippc.profile_photo:
+                     table_sec+='<td><img class="profile-picture" style="margin:0 0 20px 10px;" src="/static/media/'+str(userippc.profile_photo)+'" width="80px"></td>'
+                else:
+                    table_sec+='<td><i class="fas fa-user"> </i></td>'
+                table_sec+='<td>'+(unicode(userippc.first_name))+' '+(unicode(userippc.last_name))+'<br>'+userippc.title
+                table_sec+='<input class="toggle-box" id="identifier-'+str(i)+'" type="checkbox" style="display:none">'
+                table_sec+='<label for="identifier-'+str(i)+'"></label><div>'
+                table_sec+='<i class="far fa-envelope"></i> E-mail <a href="mailto:'+user_obj.email+'">'+user_obj.email+'</a><br>'+unicode(userippc.bio)
+                table_sec+='</div></td>'
+                table_sec+='</tr>'
+                i+=1
+        table_sec+='</table>'
+        context['table_sec']=table_sec
+         
+            
        # print( self.kwargs['id'])
         return context
     def get_queryset(self):
@@ -1832,6 +1886,7 @@ class PestReportDetailView(DetailView):
         context = super(PestReportDetailView, self).get_context_data(**kwargs)
       
         p = get_object_or_404(PestReport, slug=self.kwargs['slug'])
+        context['8col'] = 1
         
         versions= PestReport.objects.filter(country__country_slug=self.kwargs['country'], status=CONTENT_STATUS_PUBLISHED, is_version=True, parent_id=p.id).order_by('-modify_date')
         context['versions'] = versions
@@ -2065,6 +2120,95 @@ class PublicationFilesListView(ListView):
         source = MEDIA_ROOT+"/tmp/"
         
         return context
+            
+class PublicationMeetingFilesListView(ListView):
+    """
+    PublicationMeeting Files List
+    """
+    context_object_name = 'latest'
+    model = Publication
+    date_field = 'modify_date'
+    template_name = 'pages/publicationmeetingfilestable.html'
+    queryset = CommitteeMeeting.objects.filter().order_by('-modify_date', 'title')
+    allow_future = False
+    allow_empty = True
+    paginate_by = 500
+ 
+    def get_context_data(self, **kwargs):
+        context = super(PublicationMeetingFilesListView, self).get_context_data(**kwargs)
+        queryset = CommitteeMeeting.objects.filter(library_id=self.kwargs['id']).order_by('-modify_date', 'title')
+        queryset2 = PublicationLibrary.objects.filter(id=self.kwargs['id'])
+        for p in queryset2:
+            context['titlepage']=p.title
+        filenames_all=[]
+        filenames_en=[]
+        filenames_es=[]
+        filenames_fr=[]
+        filenames_ar=[]
+        filenames_ru=[]
+        filenames_zh=[]
+        
+        langs=[]
+        langs.append(["en",filenames_en])
+        langs.append(["es",filenames_es])
+        langs.append(["fr",filenames_fr])
+        langs.append(["ar",filenames_ar])
+        langs.append(["ru",filenames_ru])
+        langs.append(["zh",filenames_zh])
+        
+        for p in queryset:
+            filenames_all.append(p.report_en)
+            filenames_all.append(p.report_es)
+            filenames_all.append(p.report_fr)
+            filenames_all.append(p.report_ru)
+            filenames_all.append(p.report_zh)
+            filenames_all.append(p.report_ar)
+            filenames_en.append(p.report_en)
+            filenames_es.append(p.report_es)
+            filenames_fr.append(p.report_fr)
+            filenames_ar.append(p.report_ar)
+            filenames_ru.append(p.report_ru)
+            filenames_zh.append(p.report_zh)             
+
+            
+        
+        # The zip compressor
+        date = timezone.now().strftime('%Y%m%d%H%M%S')+"_"+str(self.kwargs['id'])
+        zip_all1 ="/static/media/tmp/"+"archive_all_"+ date+".zip"
+        zip_all = zipfile.ZipFile(MEDIA_ROOT+"/tmp/"+"archive_all_"+ date+".zip", "w")
+        for lang in langs:
+            zip_lang1 = "/static/media/tmp/"+"archive_"+str(lang[0])+"_"+ date+".zip"
+            zip_lang = zipfile.ZipFile(MEDIA_ROOT+"/tmp/"+"archive_"+str(lang[0])+"_"+ date+".zip", "w")
+            for file_path in lang[1]:
+                strfpath=os.path.join('/work/projects/ippcdj-env/public/', '/work/projects/ippcdj-env/public/static/media/')+str(file_path)
+                filename = strfpath.split('/');
+                fname=filename[len(filename)-1]
+                zip_lang.write(strfpath, fname)
+                zip_all.write(strfpath, fname)
+            
+            zip_lang.close()
+            context['zip_'+str(lang[0])]=zip_lang1
+            size=os.path.getsize(zip_lang.filename)
+            if size >182:
+                context['zip_'+str(lang[0])+'_s']=os.path.getsize(zip_lang.filename)
+        
+        zip_all.close()
+        
+        context['zip_all']=zip_all1
+        context['zip_all_s']=os.path.getsize(zip_all.filename)
+        
+       
+        destination = '/work/projects/ippcdj-env/public/static/media/tmp/'
+        src_files = os.listdir(MEDIA_ROOT+"/tmp/")
+        for file_name in src_files:
+            full_file_name = os.path.join(MEDIA_ROOT+"/tmp/", file_name)
+            #if (os.path.isfile(full_file_name)):
+            #     shutil.move(full_file_name, destination)
+        source = MEDIA_ROOT+"/tmp/"
+        
+        return context
+    
+            
             
             
             
@@ -2528,6 +2672,7 @@ class ReportingObligationDetailView(DetailView):
     def get_context_data(self, **kwargs): # http://stackoverflow.com/a/15515220
         context = super(ReportingObligationDetailView, self).get_context_data(**kwargs)
         p = get_object_or_404(ReportingObligation, slug=self.kwargs['slug'])
+        context['8col'] = 1
         
         versions= ReportingObligation.objects.filter(country__country_slug=self.kwargs['country'], is_version=True, parent_id=p.id).order_by('-modify_date')
         context['versions'] = versions
@@ -2874,6 +3019,7 @@ class EventReportingDetailView(DetailView):
     def get_context_data(self, **kwargs): # http://stackoverflow.com/a/15515220
         context = super(EventReportingDetailView, self).get_context_data(**kwargs)
         p = get_object_or_404(EventReporting, slug=self.kwargs['slug'])
+        context['8col'] = 1
         
         versions= EventReporting.objects.filter(country__country_slug=self.kwargs['country'], is_version=True, parent_id=p.id).order_by('-modify_date')
         context['versions'] = versions
@@ -12032,6 +12178,7 @@ class MediaKitDocumentListView(ListView):
     def get_context_data(self, **kwargs): # http://stackoverflow.com/a/15515220
         context = super(MediaKitDocumentListView, self).get_context_data(**kwargs)
         #context['types'] =MEDIAKIT_TYPE_CHOICES
+        context['12col'] = 1
        
         arraymain=[]
         innerarray1=[]
@@ -13393,6 +13540,7 @@ class TopicListView(ListView):
         context['topic_table3']=    topic_table3
         context['topic_table4']=    topic_table4
         context['topic_table5']=    topic_table5
+        context['12col']=    1
         
         return context
 
@@ -13410,6 +13558,8 @@ class TopicDetailView(DetailView):
         
         versions= Topic.objects.filter(status=CONTENT_STATUS_PUBLISHED, is_version=True, parent_id=p.id).order_by('-modify_date')
         context['versions'] = versions
+        context['8col'] = 1
+        
         return context
   
     
@@ -17110,4 +17260,54 @@ def contribuitedresource_edit(request,id=None, template_name='pages/contributed_
         
     }, context_instance=RequestContext(request))  
     
-               
+    
+class AdvancesSearchResourcesListView(ListView):
+    """  AdvancesSearchResourcesListView list  """
+    context_object_name = 'latest'
+    model = ContributedResource
+    template_name = 'pages/res_advsearchresults.html'
+    
+    def get_context_data(self, **kwargs): # http://stackoverflow.com/a/15515220
+        context = super(AdvancesSearchResourcesListView, self).get_context_data(**kwargs)
+        
+        issuename=''
+        
+        if self.kwargs['type'] == 'pra':
+              issuename="Risk  Analysis/PRA"
+        elif self.kwargs['type'] == 'das':
+            issuename="Dispute  Settlement"
+        
+        context['type'] = self.kwargs['type']
+
+        ispms=Publication.objects.filter(is_version=False,status=CONTENT_STATUS_PUBLISHED, library_id=346)
+        ispms_final=[]
+        for ispm in ispms:
+
+            if ispm.issuename.count()>0:
+                for e in ispm.issuename.all():
+                    obj_i=e.content_object.issuename
+                    for o in obj_i.all():
+                        for iss in o.issuename.all():
+                            if iss.name == 'Risk  Analysis/PRA':
+                                ispms_final.append(ispm)
+
+        context['ispms']= ispms_final
+
+
+        other_res=ContributedResource.objects.filter(status=2)
+        other_res_final=[]
+        for res in other_res:
+
+            if res.issuename.count()>0:
+                for e in res.issuename.all():
+                    obj_i=e.content_object.issuename
+                    for o in obj_i.all():
+                        for iss in o.issuename.all():
+                            if iss.name == 'Risk  Analysis/PRA':
+                                other_res_final.append(res)
+
+        context['other_res']= other_res_final
+            
+           
+         
+        return context    
