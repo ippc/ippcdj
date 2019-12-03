@@ -30,8 +30,12 @@
 
 {% block main %}
 <ul style=" display:inline; ">
- <li style=" list-style-type: none;  display:inline; ">
-        <a href="/iyph">{% trans "Home" %}</a>
+  <li style=" list-style-type: none;  display:inline; ">
+        <a href="/">{% trans "IPPC Home" %}</a>
+     <span class="divider">/</span>
+    </li>
+    <li style=" list-style-type: none;  display:inline; ">
+        <a href="/iyph">{% trans "IYPH" %}</a>
      <span class="divider">/</span>
     </li>
     <li style=" list-style-type: none;  display:inline; ">{% if res_type == '1' %}{% trans "IYPH Technical Advisory Board" %}{%elif res_type == '2'%}{% trans "IYPH International Steering Committee" %}{%endif%}</li>

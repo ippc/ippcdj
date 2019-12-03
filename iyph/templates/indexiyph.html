@@ -28,7 +28,12 @@
 {% endblock %}
 
 {% block main %}
-
+<ul style=" display:inline; ">
+  <li style=" list-style-type: none;  display:inline; ">
+        <a href="/">{% trans "IPPC Home" %}</a>
+    </li>
+   
+</ul>
 {% iyph_recent_resources_general as recent_resources %}
 {% iyph_recent_chronology 2 as recent_chronology1 %}
 
@@ -80,14 +85,14 @@
         <div style="padding:20px">
             <h1>{% trans "IPPC and the International Year of Plant Health" %}</h1>
            <p> {% trans 'At the 10th Session of the Commission on Phytosanitary Measures (CPM-10) in 2015, Finland proposed to establish an International Year of Plant Health (IYPH) in the year 2020. The proposal received strong support from the CPM-10, which decided to pursue the proclamation of the IYPH in 2020 under the leadership of Finland. ' %}
-<br><br> {% trans 'CPM-11 (2016) adopted the scope of "plant health in the context of IYPH" and the IYPH objectives, and established an IYPH Steering Committee (IPPC IYPH StC) to secure the IYPH proclamation and start developing programme, roles and responsibilities.' %}
+<br><br> {% trans 'CPM-11 (2016) adopted the scope of plant health in the context of IYPH, "usually considered the discipline that uses a range of measures to control and prevent pests, weeds and disease causing organisms to spread into new areas, especially through human interaction such as international trade", and the IYPH overall objective "to raise awareness of the importance and impacts of plant health in addressing issues of global importance, including hunger, poverty, threats to the environment and economic development". CPM-11 also established an IYPH Steering Committee (IPPC IYPH StC) to secure the IYPH proclamation and start developing programme, roles and responsibilities.' %}
 <br><br> {% trans 'CPM-12 (2017) encouraged IPPC contracting parties to provide extra-budgetary contributions to enable promotional activities to support the IYPH proclamation process and to propose potential IYPH events and activities. ' %}
 <br><br> {% trans 'In July 2017, the 40th Session of the FAO Conference adopted the proposal by Finland and the FAO Director-General submitted the relevant resolution to the Secretary-General of the United Nations with a view to have a resolution on the matter adopted by the United Nations General Assembly (UNGA). ' %}
 <br><br> {% trans 'CPM-13 (2018) agreed to a skeleton of IYPH programme events and their associated estimated costs as developed by the IPPC IYPH StC. It also urged contracting parties to provide extra-budgetary contributions to enable promotional activities to support the IYPH proclamation process and to propose potential IYPH events and activities.' %}
-<br><br> {% trans 'In December 2018, the United Nations General Assembly declared ' %}<b>2020</b>{% trans ' as the ' %}<b>{% trans 'International Year of Plant Health (IYPH)' %}</b>.{% trans 'The year is a once in a lifetime opportunity to raise global awareness on how protecting plant health can help end hunger, reduce poverty, protect the environment, and boost economic development.' %}
-<br><br> {% trans 'The IYPH website is available at the following link: ' %}: <b><a href="http://www.fao.org/plant-health-2020/">www.fao.org/plant-health-2020/</a></b>
+<br><br> {% trans 'In December 2018, the United Nations General Assembly adopted the resolution ' %}<b><a href="https://www.un.org/en/ga/search/view_doc.asp?symbol=A/RES/73/252">A/RES/73/252</a></b> declaring  <b>2020</b>{% trans ' as the ' %}<b>{% trans 'International Year of Plant Health (IYPH)' %}</b>.{% trans 'The year is a once in a lifetime opportunity to raise global awareness on how protecting plant health can help end hunger, reduce poverty, protect the environment, and boost economic development.' %}
 <br><br> {% trans 'In 2019, FAO and the IPPC Secretariat established the ' %}<b><a href="/{{ LANGUAGE_CODE }}/iyph/iyph-international-steering-committee/">{% trans 'IYPH International Steering Committee (ISC)' %}</a></b>.
-<br><br>{% trans 'After the official proclamation of the International Year of Plant Health and the establishment of the IYPH ISC, the IPPC IYPH Steering Committee became the ' %} <b><a href="/{{ LANGUAGE_CODE }}/iyph/iyph-technical-advisory-board/">{% trans 'IYPH Technical Advisory Board (IYPH TAB) ' %}</a></b></p>
+<br><br>{% trans 'After the official proclamation of the International Year of Plant Health and the establishment of the IYPH ISC, the IPPC IYPH Steering Committee became the ' %} <b><a href="/{{ LANGUAGE_CODE }}/iyph/iyph-technical-advisory-board/">{% trans 'IYPH Technical Advisory Board (IYPH TAB) ' %}</a></b>
+<br><br> {% trans 'The IYPH website is available at the following link' %}: <b><a href="http://www.fao.org/plant-health-2020/">www.fao.org/plant-health-2020/</a></b></p>
         </div>
     </div>
 </div>
