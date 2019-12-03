@@ -25,11 +25,17 @@
 {% endblock %}
 
 {% block breadcrumb_menu %}
-
+   
 {% endblock %}
 
 {% block main %}
-
+<ul style=" display:inline; ">
+ <li style=" list-style-type: none;  display:inline; ">
+        <a href="/iyph">{% trans "Home" %}</a>
+     <span class="divider">/</span>
+    </li>
+    <li style=" list-style-type: none;  display:inline; ">{% if res_type == '1' %}{% trans "IYPH Technical Advisory Board" %}{%elif res_type == '2'%}{% trans "IYPH International Steering Committee" %}{%endif%}</li>
+</ul>
 <h1 class="font-light green">{% if res_type == '1' %}{% trans "IYPH Technical Advisory Board" %}{%elif res_type == '2'%}{% trans "IYPH International Steering Committee" %}{%endif%}</h1>
 
 <div class="col-12 white-box-text">
