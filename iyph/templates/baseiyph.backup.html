@@ -129,7 +129,7 @@ input.zzz {width:800px;}
  
 <div class="row shadow" >
     <div class="container">
-        <div class="col-4" style="margin-bottom:0"><a href="http://www.fao.org/plant-health-2020"><img src="/static/img/iyph2020logo__{{ LANGUAGE_CODE }}.png" style="height:100px; width:auto" /></a></div>
+        <div class="col-4" style="margin-bottom:0"><img src="/static/img/iyph2020logo__{{ LANGUAGE_CODE }}.png" style="height:100px; width:auto" /></div>
         <div class="col-8" style="text-align: right">
            {% nevercache %}
            {% ifinstalled mezzanine.accounts %}
@@ -137,17 +137,17 @@ input.zzz {width:800px;}
             {% endifinstalled %}
             {% endnevercache %}
         </div>
-        <!--div class="col-12" style="margin-bottom:0;"> 
+        <div class="col-12" style="margin-bottom:0;"> 
             <div class="navbar">
                 <a {% if  '/iyph/' ==  request.path %}class='active'{%else%}{%endif%} href="/{{ LANGUAGE_CODE }}/iyph">{% trans "Home"  %}</a>
-                <a {% if  '/iyph/about/' in  request.path %}class='active'{%else%}{%endif%} href="/{{ LANGUAGE_CODE }}/iyph/about">{% trans "About"  %}</a-->
+                <a {% if  '/iyph/about/' in  request.path %}class='active'{%else%}{%endif%} href="/{{ LANGUAGE_CODE }}/iyph/about">{% trans "About"  %}</a>
                 <!--a {% if  '/iyph/stories/' in  request.path %}class='active'{%else%}{%endif%} href="/{{ LANGUAGE_CODE }}/iyph/stories">{% trans "Stories"  %}</a-->
-                <!--a {% if  '/iyph/take-action/' in  request.path %}class='active'{%else%}{%endif%} href="/{{ LANGUAGE_CODE }}/iyph/take-action">{% trans "Take Action!"  %}</a>
+                <a {% if  '/iyph/take-action/' in  request.path %}class='active'{%else%}{%endif%} href="/{{ LANGUAGE_CODE }}/iyph/take-action">{% trans "Take Action!"  %}</a>
                 <a {% if  '/iyph/chronology/' in  request.path %}class='active'{%else%}{%endif%} href="/{{ LANGUAGE_CODE }}/iyph/chronology/list">{% trans "Events"  %}</a>
-                <a {% if  '/iyph/resources/' in  request.path %}class='active'{%else%}{%endif%} href="/{{ LANGUAGE_CODE }}/iyph/resources">{% trans "Resources"  %}</a-->
+                <a {% if  '/iyph/resources/' in  request.path %}class='active'{%else%}{%endif%} href="/{{ LANGUAGE_CODE }}/iyph/resources">{% trans "Resources"  %}</a>
                 <!--a {% if  '/iyph/photo-contest/' in  request.path %}class='active'{%else%}{%endif%} href="/{{ LANGUAGE_CODE }}/iyph/photo-contest">{% trans "Photo Contest"  %}</a>
                 <a {% if  '/iyph/partners/' in  request.path %}class='active'{%else%}{%endif%} href="/{{ LANGUAGE_CODE }}/iyph/partners">{% trans "Partners"  %}</a-->
-           <!--/div-->
+           </div>
         </div>
     </div>
 </div>
