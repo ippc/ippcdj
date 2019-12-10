@@ -3345,15 +3345,15 @@ class CollapseContent(Orderable):
         If no title is given when created, create one from the
         file name.
         """
-        if not self.id and not self.title:
-            name = unquote(self.file_en.url).split("/")[-1].rsplit(".", 1)[0]
-            name = name.replace("'", "")
-            name = "".join([c if c not in punctuation else " " for c in name])
-            # str.title() doesn't deal with unicode very well.
-            # http://bugs.python.org/issue6412
-            name = "".join([s.upper() if i == 0 or name[i - 1] == " " else s
-                            for i, s in enumerate(name)])
-            self.title = name
+#        if not self.id and not self.title:
+#            name = unquote(self.file_en.url).split("/")[-1].rsplit(".", 1)[0]
+#            name = name.replace("'", "")
+#            name = "".join([c if c not in punctuation else " " for c in name])
+#            # str.title() doesn't deal with unicode very well.
+#            # http://bugs.python.org/issue6412
+#            name = "".join([s.upper() if i == 0 or name[i - 1] == " " else s
+#                            for i, s in enumerate(name)])
+#            self.title = name
         super(CollapseContent, self).save(*args, **kwargs)
         
     @models.permalink # or: get_absolute_url = models.permalink(get_absolute_url) below
