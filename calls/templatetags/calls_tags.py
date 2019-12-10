@@ -120,6 +120,44 @@ def quick_calls(context):
     context["form"] = CallsPostForm()
     return context
 
+from django.utils import timezone
+from schedule.models import Event,Calendar
+from ippc.models import MediaKitDocument
+
+from django.shortcuts import get_object_or_404
+@register.as_tag
+def events_upcoming(limit=5):
+    calendar = get_object_or_404(Calendar, slug='calendar')
+    event_list= calendar.event_set.filter(country=-1).order_by('start')
+  
+    date = timezone.now()
+   
+    event_list2=[]
+    for ee in event_list:
+        if ee.start >= date  :
+             event_list2.append(ee)
+           
+#    for ee in event_list:
+#        if ee.start.year >= date.year and ee.start.month >= date.month  :
+#            print('----')
+#            print(ee.start.year)
+#            print(ee.start.month)
+#            print('----')
+#            print('')
+#            if ee.start.month == date.month:
+#                 if ee.start.day > date.date:
+#                     event_list2.append(ee)
+#                     print('sss1')
+#            elif ee.start.month > date.month:
+#                     event_list2.append(ee) 
+#                     print('sss2')                 
+    return list(event_list2[:limit])
+
+@register.as_tag
+def latest_resources(limit=5):
+    res_list= MediaKitDocument.objects.filter().order_by('-modify_date')
+    return list(res_list[:limit])
+
 # https://gist.github.com/renyi/3596248
 from django import template
 from django.utils import translation
