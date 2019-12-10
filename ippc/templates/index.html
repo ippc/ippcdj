@@ -122,7 +122,7 @@ Viale delle Terme di Caracalla - Room B767B<br>
                                         {% if entry.featured_image %} 
                                         <a href="{{ entry.get_absolute_url }}">
                                             <!--img src="{{ MEDIA_URL }}{{entry.featured_image}}" style="width:400px;height:220px;"-->
-                                            <img src="{{ MEDIA_URL }}{% thumbnail entry.featured_image 550 250 %}">
+                                            <img src="{{ MEDIA_URL }}{% thumbnail entry.featured_image 500 280 %}">
                                         </a>
                                         <div style="position: relative; bottom: 0; left: 0.5em;  font-weight: bold; color: #fff;"><!--width: 550px;-->
                                             <center><h6> {% with entry|get_object_translation as translated_page %}
