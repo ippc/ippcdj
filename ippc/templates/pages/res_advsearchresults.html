@@ -1,0 +1,184 @@
+{% extends "base.html" %}
+{% load pages_tags mezzanine_tags i18n future staticfiles accounts_tags %}
+{% block extra_css %}
+  <link rel="stylesheet" href="{% static "css/DT_bootstrap.css" %}">
+{% endblock %}
+
+{% block meta_title %}
+  {% trans "Capacity Development Resources - Resources by Topic: Search results " %}: 
+  {{ type_label }}
+{% endblock %}
+
+{% block body_class %}wide{% endblock %}
+
+{% block breadcrumb_menu %}
+<li><a href="/{{ LANGUAGE_CODE }}/">{% trans "Home" %}</a><span class="divider">/</span></li>
+<li><a href="/{{ LANGUAGE_CODE }}/resources/">{% trans "Resources" %}</a><span class="divider">/</span></li>
+<li><a href="/{{ LANGUAGE_CODE }}/resources/capacity-development-resources/">{% trans "Capacity Development Resources" %}</a><span class="divider">/</span></li>
+<li class="active">{% trans "Results" %}</li>
+{% endblock %}
+
+{% block local_nav %}
+{% endblock local_nav %}
+
+{% block pageinfo %}
+
+{% endblock pageinfo %}
+{% block main %}
+
+<p class="pull-right">
+  <a href="javascript:history.go(-1)">{% trans "« Go back" %}</a>
+  </p>
+  <script type="text/javascript">
+        function toggle_visibility(id) {
+            alert(id);
+            var e = document.getElementById(id);
+            alert(e);
+            var e2 = document.getElementById('title_' + id);
+            if (e.style.display == 'block'){
+                e.style.display = 'none';
+                e2.style.display = 'block';
+            }
+            else{
+                e2.style.display = 'none';
+                e.style.display = 'block';
+            }
+        }
+
+    </script>
+  
+<h1>{%if type == 'pra' %}  {% trans "Pest Risk Analysis" %} {% endif%}</h1> 
+<p> {%if type == 'pra' %}  {% trans "Pest risk analysis is the process of evaluating biological or other scientific and economic evidence to determine if an organism is a pest, whether it should be regulated, and the strength of any phytosanitary measure to be taken against it." %} {% endif%} </p>
+
+
+
+    {% if ispms %}
+        <h4> {% trans "Relevant standards" %} </h4> 
+        
+        <table class="table table-condensed table-striped" id="publications">
+          <thead>
+            <tr>
+              <th>{% trans "Reference" %}</th>
+              <th>{% trans "Title" %}</th>
+              <th>{% trans "More info" %}</th>
+            </tr>
+          </thead>
+          <tbody>
+          {% for object in ispms %}
+            <tr>
+              <td><b>{{ object.document_number }}</b></td>
+              <td><a id="title_{{ object.id }}" href="{% url 'publication-detail' object.pk %}">{% if LANGUAGE_CODE != 'en' %}
+                    {% if LANGUAGE_CODE == 'es'  and object.title_es != '' and object.title_es != None %}
+                        {{ object.title_es }}
+                    {% elif LANGUAGE_CODE == 'fr'  and object.title_fr != '' and object.title_fr != None%}
+                        {{ object.title_fr }}
+                    {% elif LANGUAGE_CODE == 'ru'  and object.title_ru != '' and object.title_ru != None%}
+                        {{ object.title_ru }}
+                    {% elif LANGUAGE_CODE == 'ar'  and object.title_ar != '' and object.title_ar != None%}
+                        {{ object.title_ar }}
+                    {% elif LANGUAGE_CODE == 'zh'  and object.title_zh != '' and object.title_zh != None%}
+                        {{ object.title_zh }}
+                    {% else %}
+                        {{ object.title }}
+                    {% endif %}
+                 {% else %}
+                    {{ object.title }}
+                 {% endif %}</a>
+                <div id="{{ object.id }}" style="display:none;">
+                    <a href="{% url 'publication-detail' object.pk %}">{% if LANGUAGE_CODE != 'en' %}
+                    {% if LANGUAGE_CODE == 'es'  and object.title_es != '' and object.title_es != None %}
+                        {{ object.title_es }}
+                    {% elif LANGUAGE_CODE == 'fr'  and object.title_fr != '' and object.title_fr != None%}
+                        {{ object.title_fr }}
+                    {% elif LANGUAGE_CODE == 'ru'  and object.title_ru != '' and object.title_ru != None%}
+                        {{ object.title_ru }}
+                    {% elif LANGUAGE_CODE == 'ar'  and object.title_ar != '' and object.title_ar != None%}
+                        {{ object.title_ar }}
+                    {% elif LANGUAGE_CODE == 'zh'  and object.title_zh != '' and object.title_zh != None%}
+                        {{ object.title_zh }}
+                    {% else %}
+                        {{ object.title }}
+                    {% endif %}
+                 {% else %}
+                    {{ object.title }}
+                 {% endif %}</a><br><hr>
+                    {% if object.file_en %}
+                    <a href="{{ MEDIA_URL }}{{ object.file_en }}">En</a>
+                    {% endif %}
+
+                    {% if object.file_es %}<a href="{{ MEDIA_URL }}{{ object.file_es }}">Es</a>
+                    {% endif %}
+
+                    {% if object.file_fr %}
+                    <a href="{{ MEDIA_URL }}{{ object.file_fr }}"> Fr  </a>
+                    {% endif %}
+
+                    {% if object.file_ru %}
+                    <a href="{{ MEDIA_URL }}{{ object.file_ru }}">Ru</a>
+                    {% endif %}
+
+                    {% if object.file_ar %}
+                    <a href="{{ MEDIA_URL }}{{ object.file_ar }}"> Ar </a>
+                    {% endif %}
+
+                    {% if object.file_zh %}
+                    <a href="{{ MEDIA_URL }}{{ object.file_zh }}">
+                        Zh
+                    </a>
+                    {% endif %}
+                    <br> <br>{{ object.short_description|richtext_filter|safe }}
+                </div>
+              
+              
+              </td>
+
+            <td><a href="#{{ object.id }}" onclick="javascript:toggle_visibility({{ object.id }});">{% trans "show/hide Details" %}</td>
+             </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+    {% endif %}
+    
+    {% if other_res %}
+        <h4>Resources for {%if type == 'pra' %} {% trans "Pest Risk Analysis" %}{% endif%}</h4>
+        <table class="table table-condensed table-striped" id="publications">
+          <thead>
+            <tr>
+              <th>{% trans "Type" %}</th>
+              <th>{% trans "Title" %}</th>
+              <th>{% trans "Contributor" %}</th>
+              <th>{% trans "More info" %}</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for object in other_res %}
+            <tr>
+              <td><a href=""></a></td>
+              <td>{{ object.title}} </td>
+              <td> {% if  object.resource_provide_by.all %}
+                    <ul class="unstyled nomargin">
+                        {% for c in object.resource_provide_by.all %}
+                            <li>{% if  c.provider == 'IPPC' %}<img src="/static/img/phytosanitary/ippc-resource.gif"> {%else%}{{ c.provider  }}{% endif %} <br> </li>
+                            {% empty %}
+                        {% endfor %}
+                    </ul>  
+                    {% endif %}</td>
+
+                    
+             
+             </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+    {% endif %}
+
+
+
+
+
+
+{% endblock %}
+{% block extra_js %}
+  <script src="{% static "js/jquery.dataTables.js" %}"></script>
+  <script src="{% static "js/DT_bootstrap.js" %}"></script>
+{% endblock %}

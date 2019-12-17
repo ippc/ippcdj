@@ -1,0 +1,187 @@
+{% load mezzanine_tags staticfiles i18n %}
+
+{%if page.publicationlibrary.committeemeeting.all %}
+<table class="table table-condensed table-striped table-bordered" id="meetings">
+    <thead>
+        <tr>
+            <th style="width:15%;color: #810343;">{% trans "Meeting" %}</th>
+            <th style="width:15%;color: #810343;">{% trans "Place" %}</th>
+            <th style="width:15%;color: #810343;">{% trans "From" %}</th>
+            <th style="width:15%;color: #810343;">{% trans "to" %}</th>
+            <th style="color: #810343;">{% trans " " %}</th>
+          <th style="color: #810343;"><table>
+                <tr style="background-color: transparent; ">
+                    <td style="width: 42px;border: 0;">EN</td>
+                    {%if page.id == 340 %}{%else%}
+                    <td style="width: 42px;border: 0;">FR</td>
+                    <td style="width: 42px;border: 0;">ES</td>
+                    <td style="width: 42px;border: 0;">AR</td>
+                    <td style="width: 42px;border: 0;">ZH</td>
+                    <td style="width: 42px;border: 0;">RU</td>{%endif%}
+                </tr>
+                </table></th>
+        </tr>
+    </thead>
+    <tbody>
+
+   {% with page.publicationlibrary.committeemeeting.all as committeemeetings %}
+   {% for committeemeeting in committeemeetings %}
+       <tr>
+        <td>
+           {% if committeemeeting.link_to_page != None and  committeemeeting.link_to_page != '' %}
+           <a href="{{committeemeeting.link_to_page}}">
+               {%else%}
+            <a>
+               {%endif%}
+           
+            {% if LANGUAGE_CODE != 'en' %}
+                {% if LANGUAGE_CODE == 'es'  and committeemeeting.title_es != '' and committeemeeting.title_es != None %}
+                    {{ committeemeeting.title_es }}
+                {% elif LANGUAGE_CODE == 'fr'  and committeemeeting.title_fr != '' and committeemeeting.title_fr != None%}
+                    {{ committeemeeting.title_fr }}
+                {% elif LANGUAGE_CODE == 'ru'  and committeemeeting.title_ru != '' and committeemeeting.title_ru != None%}
+                    {{ committeemeeting.title_ru }}
+                {% elif LANGUAGE_CODE == 'ar'  and committeemeeting.title_ar != '' and committeemeeting.title_ar != None%}
+                    {{ committeemeeting.title_ar }}
+                {% elif LANGUAGE_CODE == 'zh'  and committeemeeting.title_zh != '' and committeemeeting.title_zh != None%}
+                    {{ committeemeeting.title_zh }}
+                {% else %}
+                    {{ committeemeeting.title }}
+                {% endif %}
+             {% else %}
+                {{ committeemeeting.title }}
+             {% endif %}
+            </a>
+           
+        </td>
+        <td>{{ committeemeeting.city }}<br>{{ committeemeeting.country }}</td>
+        <td>{{ committeemeeting.start_date|date:"d M Y"  }}</td>
+        <td>{{ committeemeeting.end_date|date:"d M Y"  }}</td>
+        <td>
+            <table>
+                  <tr style="background-color: transparent;  ">
+                    <td style="border: 0;">
+                {% trans "Agenda" %}:</td></tr>
+                <trstyle="background-color: transparent;  "><td style="border: 0;">{% trans "Report" %}:</td> </tr>
+            </table>
+        </td>
+        <td>
+        <table>
+              <tr style="background-color: transparent;  ">
+                   {%if page.id == 340 %}<td style="width: 42px;border: 0;">
+              
+                {% if committeemeeting.agenda_link_en %}
+                    <a href="{{ committeemeeting.agenda_link_en }}"> <span style="font-size: 1.2em; color: #339900;"><i class="fas fa-check"></i></span></a>
+                {%else%}
+                    <span style="font-size: 1.2em; color: #810343;"><i class="fas fa-ban"></i></span></i> 
+                {% endif%} 
+            </td>{%else%}
+                   <td style="width: 42px;border: 0;">
+              
+                {% if committeemeeting.agenda_link_en %}
+                    <a href="{{ committeemeeting.agenda_link_en }}"> <span style="font-size: 1.2em; color: #339900;"><i class="fas fa-check"></i></span></a>
+                {%else%}
+                    <span style="font-size: 1.2em; color: #810343;"><i class="fas fa-ban"></i></span></i> 
+                {% endif%} 
+            </td>
+            <td style="width: 42px;border: 0;">  
+                {% if committeemeeting.agenda_link_fr %}
+                    <a href="{{ committeemeeting.agenda_link_fr }}"> <span style="font-size: 1.2em; color: #339900;"><i class="fas fa-check"></i></span></a>
+                {%else%}
+                    <span style="font-size: 1.2em; color: #810343;"><i class="fas fa-ban"></i></span></i> 
+                {% endif%} 
+            </td>
+              <td style="width: 42px;border: 0;">
+                {% if committeemeeting.agenda_link_es %}
+                    <a href="{{ committeemeeting.agenda_link_es }}"> <span style="font-size: 1.2em; color: #339900;"><i class="fas fa-check"></i></span></a>
+                {%else%}
+                    <span style="font-size: 1.2em; color: #810343;"><i class="fas fa-ban"></i></span></i> 
+                {% endif%} 
+            </td>
+               <td style="width: 42px;border: 0;">
+                {% if committeemeeting.agenda_link_ar %}
+                    <a href="{{ committeemeeting.agenda_link_ar }}"> <span style="font-size: 1.2em; color: #339900;"><i class="fas fa-check"></i></span></a>
+                {%else%}
+                    <span style="font-size: 1.2em; color: #810343;"><i class="fas fa-ban"></i></span></i> 
+                {% endif%} 
+             </td>
+                <td style="width: 42px;border: 0;">
+                {% if committeemeeting.agenda_link_zh %}
+                    <a href="{{ committeemeeting.agenda_link_zh }}"> <span style="font-size: 1.2em; color: #339900;"><i class="fas fa-check"></i></span></a>
+                {%else%}
+                    <span style="font-size: 1.2em; color: #810343;"><i class="fas fa-ban"></i></span></i> 
+                {% endif%} 
+              </td>
+                <td style="width: 42px;border: 0;">
+                {% if committeemeeting.agenda_link_ru %}
+                    <a href="{{ committeemeeting.agenda_link_ru }}"> <span style="font-size: 1.2em; color: #339900;"><i class="fas fa-check"></i></span></a>
+                {%else%}
+                    <span style="font-size: 1.2em; color: #810343;"><i class="fas fa-ban"></i></span></i> 
+                {% endif%} 
+            </td> {% endif%} 
+        </tr>
+         <tr style="background-color: transparent;  ">
+                  {%if page.id == 340 %}    <td style="width: 42px;border: 0;">
+                     {% if committeemeeting.report_en %}
+                    <a href="{{ MEDIA_URL }}{{ committeemeeting.report_en }}"> <span style="font-size: 1.2em; color: #339900;"><i class="fas fa-check"></i></span></a>
+                {%else%}
+                    <span style="font-size: 1.2em; color: #810343;"><i class="fas fa-ban"></i></span></i> 
+                {% endif%} 
+            </td> {%else%}<td style="width: 42px;border: 0;">
+                     {% if committeemeeting.report_en %}
+                    <a href="{{ MEDIA_URL }}{{ committeemeeting.report_en }}"> <span style="font-size: 1.2em; color: #339900;"><i class="fas fa-check"></i></span></a>
+                {%else%}
+                    <span style="font-size: 1.2em; color: #810343;"><i class="fas fa-ban"></i></span></i> 
+                {% endif%} 
+            </td> 
+              <td style="width: 42px;border: 0;">
+                {% if committeemeeting.report_fr %}
+                    <a href="{{ MEDIA_URL }}{{ committeemeeting.report_fr }}"> <span style="font-size: 1.2em; color: #339900;"><i class="fas fa-check"></i></span></a>
+                {%else%}
+                    <span style="font-size: 1.2em; color: #810343;"><i class="fas fa-ban"></i></span></i> 
+                {% endif%}
+            </td>
+             <td style="width: 42px;border: 0;">
+                {% if committeemeeting.report_es %}
+                    <a href="{{ MEDIA_URL }}{{ committeemeeting.report_es }}"> <span style="font-size: 1.2em; color: #339900;"><i class="fas fa-check"></i></span></a>
+                {%else%}
+                    <span style="font-size: 1.2em; color: #810343;"><i class="fas fa-ban"></i></span></i> 
+                {% endif%} 
+            </td>
+               <td style="width: 42px;border: 0;">
+                {% if committeemeeting.report_ar %}
+                    <a href="{{ MEDIA_URL }}{{ committeemeeting.report_ar }}"> <span style="font-size: 1.2em; color: #339900;"><i class="fas fa-check"></i></span></a>
+                {%else%}
+                    <span style="font-size: 1.2em; color: #810343;"><i class="fas fa-ban"></i></span></i> 
+                {% endif%} 
+            </td>
+               <td style="width: 42px;border: 0;">
+                {% if committeemeeting.report_zh %}
+                    <a href="{{ MEDIA_URL }}{{ committeemeeting.report_zh }}"> <span style="font-size: 1.2em; color: #339900;"><i class="fas fa-check"></i></span></a>
+                {%else%}
+                    <span style="font-size: 1.2em; color: #810343;"><i class="fas fa-ban"></i></span></i> 
+                {% endif%}
+            </td>
+               <td style="width: 42px;border: 0;">
+                {% if committeemeeting.report_ru %}
+                    <a href="{{ MEDIA_URL }}{{ committeemeeting.report_ru }}"> <span style="font-size: 1.2em; color: #339900;"><i class="fas fa-check"></i></span></a>
+                {%else%}
+                    <span style="font-size: 1.2em; color: #810343;"><i class="fas fa-ban"></i></span></i> 
+                {% endif%} 
+            </td>  {% endif%} 
+        </tr>
+        </table>
+       
+     
+      
+      </td>  
+    
+    </tr>             
+    {% endfor %}
+</tbody>
+</table>
+<p align='right'>
+    <a href='/publications-meetings/{{page.id}}/files' target='_blank'> <span style="font-size: 1.2em; color: #339900;"><i class="fas fa-download"></i></span> Download multiple files</a></p>
+{% endwith %} 
+{%endif%}
+

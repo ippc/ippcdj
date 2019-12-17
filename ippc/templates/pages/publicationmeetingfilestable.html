@@ -1,0 +1,132 @@
+{% extends "pages/page.html" %}
+
+{% load mezzanine_tags translate_tags staticfiles i18n %}
+
+{% block extra_css %}
+  <link rel="stylesheet" href="{% static "css/DT_bootstrap.css" %}">
+{% endblock %}
+
+{% block meta_title %}
+   {{ titlepage }} 
+{% endblock %}
+
+{% block title %}
+     {{ titlepage }}
+{% endblock %}
+
+{% block main %}
+
+{% if page.publicationlibrary.login_required %}
+
+  {% for group in request.user.groups.all %}
+    {% if group in page.get_content_model.groups.all %}
+      {{ block.super }}
+      {# {% editable page.publicationlibrary.content %} #}
+      {% with page.publicationlibrary|get_object_translation as translated_page %}
+          {{ translated_page.content|richtext_filter|safe }}
+      {% endwith %}
+      
+      {# {{ page.publicationlibrary.content|richtext_filter|safe }} #}
+
+
+
+
+      {# {% endeditable %} #}
+        {% include "pages/publicationtable.html" %}
+    {% endif %} {# group in request.user.groups.all #}
+  {% endfor %} {# group in page.get_content_model.groups.all #}
+  
+  {% else %}
+  
+      {{ block.super }}
+      {# {% editable page.publicationlibrary.content %} #}
+
+      {% with page.publicationlibrary|get_object_translation as translated_page %}
+          {{ translated_page.content|richtext_filter|safe }}
+      {% endwith %}
+
+      {# {{ page.publicationlibrary.content|richtext_filter|safe }} #}
+      {# {% endeditable %} #}
+       
+
+{% load mezzanine_tags staticfiles i18n %}
+<!--h1>{{titlepage}}</h1-->
+<p>You can find in this table the links to download all the files of the page <b>{{titlepage}}</b>.<br>
+You can download the archive containing all the files or a specific language archive.<br>
+Click on <span style="font-size: 1.2em; color: #339900;"><i class="fas fa-download"></i></span> _Download_ to download the selected archive.</p>
+
+
+<table class="table table-condensed table-striped table-bordered" id="publications">
+   <thead>
+     <tr>
+       <th>{% trans "Language" %}</th>
+       <th>{% trans "Archive name" %}</th>
+       <th>{% trans "Download" %}</th>
+     </tr>
+   </thead>
+   <tbody>
+    {% if zip_all_s %}<tr>
+        <td>All</td>
+        <td>Complete archive </td>
+        <td><a href="{{zip_all}}"><span style="font-size: 1.2em; color: #339900;"><i class="fas fa-download"></i></span> Download</a> ({{ zip_all_s|filesizeformat }})
+</a></td>
+    </tr>  {% endif  %}
+    {% if zip_en_s %}
+    <tr>
+        <td>English</td>
+        <td>En archive</td>
+        <td><a href="{{zip_en}}"><span style="font-size: 1.2em; color: #339900;"><i class="fas fa-download"></i></span> Download</a> ({{ zip_en_s|filesizeformat }})</a></td>
+
+    </tr>
+    {% endif  %}
+     {% if zip_es_s %}
+    <tr>
+        <td>Spanish</td>
+        <td>Es archive</td>
+        <td><a href="{{zip_es}}"><span style="font-size: 1.2em; color: #339900;"><i class="fas fa-download"></i></span> Download</a> ({{ zip_es_s|filesizeformat }})
+</a></td>
+    </tr>{% endif  %}
+     {% if zip_fr_s %}
+    <tr>
+        <td>French</td>
+        <td>Fr archive</td>
+        <td><a href="{{zip_fr}}"><span style="font-size: 1.2em; color: #339900;"><i class="fas fa-download"></i></span> Download</a> ({{ zip_fr_s|filesizeformat }})
+</a></td>
+    </tr>{% endif  %}
+     {% if zip_ar_s %}
+    <tr>
+        <td>Arabic</td>
+        <td>Ar archive</td>
+        <td><a href="{{zip_ar}}"><span style="font-size: 1.2em; color: #339900;"><i class="fas fa-download"></i></span> Download</a> ({{ zip_ar_s|filesizeformat }})
+</a></td>
+    </tr>{% endif  %}
+     {% if zip_ru_s %}
+    <tr>
+        <td>Russian</td>
+        <td>Ru archive</td>
+        <td><a href="{{zip_ru}}"><span style="font-size: 1.2em; color: #339900;"><i class="fas fa-download"></i></span> Download</a> ({{ zip_ru_s|filesizeformat }})
+</a></td>
+    </tr>{% endif  %}
+     {% if zip_zh_s %}
+    <tr>
+        <td>Chinese</td>
+        <td>Zh archive</td>
+        <td><a href="{{zip_zh}}"><span style="font-size: 1.2em; color: #339900;"><i class="fas fa-download"></i></span> Download</a> ({{ zip_zh_s|filesizeformat }})
+</a></td>
+    </tr>{% endif  %}
+  </tbody>
+</table>
+{% endif %} {# page.publicationlibrary.login_required #}
+
+{% endblock main %}
+
+{% block extra_js %}
+  <script src="{% static "js/jquery.dataTables.js" %}"></script>
+  <script src="{% static "js/DT_bootstrap.js" %}"></script>
+{% endblock %}
+
+{% block pageinfo %}
+{% endblock pageinfo %}
+
+
+
