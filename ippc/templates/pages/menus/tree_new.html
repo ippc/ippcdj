@@ -1,0 +1,34 @@
+{% load i18n future pages_tags %}
+
+{% spaceless %}
+{% if page_branch_in_menu %}
+
+  {% for page in page_branch %}
+
+  {% if page.in_menu %}
+        {% if page.is_current_child  and '2' in page.in_menus  %}
+            {%if forloop.counter == 1%}
+            <div class="card" style="width: 100%">
+                <div class="card-header">
+                     <h5>{% trans "Sub pages" %}</h5>
+             </div>
+            {% endif %}
+                <li class="list-group-item"><a href="{{ page.get_absolute_url }}" {% if page.is_current %} style="background-color:red;"{% endif %}>{{ page.title }}</li>
+             {%if forloop.last == 1%}
+           
+            </div>
+            {% endif %}
+                
+        {% endif %}
+        {% if page.is_current_or_ascendant %}
+            {% if page.has_children_in_menu %}{% page_menu page %}{% endif %}
+        {% endif %}  
+
+
+  {% endif %}
+
+  {% endfor %}
+
+{% endif %}
+
+{% endspaceless %}
