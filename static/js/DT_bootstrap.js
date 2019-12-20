@@ -166,6 +166,23 @@ if ( $.fn.DataTable.TableTools ) {
   			           "sLengthMenu": ''
   			         }
   			       } );
+                               $('#meetings').dataTable( 
+                                       {
+                                  "sPaginationType": "bootstrap",
+                                   "aaSorting": [[2, 'desc']],
+  			          "oLanguage": {
+  			           "sLengthMenu": ''
+  			         }
+  			       } );
+                                $('#fcreports').dataTable( 
+                                       {
+                                  "sPaginationType": "bootstrap",
+                                   "aaSorting": [[2, 'desc']],
+  			          "oLanguage": {
+  			           "sLengthMenu": ''
+  			         }
+  			       } );
+      
                                   $('#memberstable').dataTable( {
                                                                   "sPaginationType": "bootstrap",
   			         "oLanguage": {
