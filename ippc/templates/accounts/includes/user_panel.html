@@ -2,11 +2,11 @@
 
 {% if request.user.is_authenticated %}
   {% if user.is_authenticated and user.is_staff %}
-        <a href="/admin/" class="btn btn-small btn-warning">Admin Area</a>
+        <a href="/admin/" class="btn btn-small btn-admin" style="width: auto">Admin Area</a>
   {% endif %}
   
   {% if user.is_authenticated and perms.ippc.add_reportingobligation and not user.is_staff %}
-        <a href="/{{ LANGUAGE_CODE }}/countries/{{ user.get_profile.country.name | slugify }}/" class="btn btn-small btn-warning" title="{% trans 'Go to your country page to upload or update information.' %}"> {% trans "Edit Country Information" %}</a> 
+        <a href="/{{ LANGUAGE_CODE }}/countries/{{ user.get_profile.country.name | slugify }}/" class="btn btn-small btn-admin" style="width: auto" title="{% trans 'Go to your country page to upload or update information.' %}"> {% trans "Edit Country Information" %}</a> 
         
   {% endif %}
   
@@ -22,10 +22,10 @@
         <a href="{% url "profile_update" %}">{{ request.user|username_or:"email"|capfirst }}</a>!
     {% endif %}
     <a href="{% url "logout" %}?next={{ request.path }}"
-        class="btn btn-small btn-info btn-account">{% trans "Log out" %}</a>
+        class="btn btn-small  btn-purple">{% trans "Log out" %}</a>
 {% else %}
     <a href="{% url "login" %}?next={{ request.path }}"
-        class="btn btn-small btn-info btn-account">{% trans "Log in" %}</a>
+        class="btn btn-small btn-info">{% trans "Log in" %}</a>
     {# {% trans "or" %} #}
     {# <a href="{% url "signup" %}?next={{ request.path }}" #}
         {# class="btn btn-small btn-account">{% trans "Sign up" %}</a> #}

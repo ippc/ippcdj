@@ -14,97 +14,91 @@
   {% if page.get_content_model.contact_point.get_profile.profile_photo %}
   <img class="pull-left profile-picture" style="margin:0 0 20px 10px;" src="{{ MEDIA_URL }}{% thumbnail page.get_content_model.contact_point.get_profile.profile_photo 128 128 %}">
   {% else %}
-  <a class="pull-left profile-picture" style="height:128px; width:128px; background:#eee;"></a>
+   <span class="pull-left profile-picture" style="font-size:10em; color: #FFF; background-color: #eee;height:128px; width:128px;"><i class="fas fa-user"> </i></span> 
   {% endif %}
 
 
-<dl class="dl-horizontal">
-  {# {% if user.is_superuser or page.get_content_model.contact_point.username == request.user.username %}  #}
-  <!--dt>{% trans "Username" %}</strong> 
-  <dd>{{ page.get_content_model.contact_point.username }}</dd-->
-  {# {% endif %} #}
   
 
 
-  <!--dt>{% trans "Name" %}</dt-->
-  <dd><h6>
+<h6>&#160;&#160;
     {% if page.get_content_model.contact_point.get_profile.get_gender_display %}
 			{{ page.get_content_model.contact_point.get_profile.get_gender_display }}
     {% endif %}
     {# {{ page.get_content_model.contact_point.get_full_name }}  #}
     {{ page.get_content_model.contact_point.get_profile.first_name }} 
     <span class="caps">{{ page.get_content_model.contact_point.get_profile.last_name }}</span>
-  </h6></dd>
+  </h6>
    {% if page.get_content_model.contact_point.get_profile.title %}
   <!--dt>{% trans "Title" %}</dt-->
-  <dd><i>
+  <p><i>&#160;&#160;
     {{ page.get_content_model.contact_point.get_profile.title }} 
-  </i></dd>
+  </i></br>
   {% endif %}
   
   {% if page.get_content_model.contact_point.get_profile.address1 or page.get_content_model.contact_point.get_profile.address2 %}
   <!--dt>{% trans "Address" %}</dt-->
-  <dd>
-    {% if page.get_content_model.contact_point.get_profile.address1 %}{{ page.get_content_model.contact_point.get_profile.address1 }}<br>{% endif %}
-    {% if page.get_content_model.contact_point.get_profile.address2 %}{{ page.get_content_model.contact_point.get_profile.address2 }}<br>{% endif %}
-  </dd>
+
+    {% if page.get_content_model.contact_point.get_profile.address1 %} &#160;&#160;{{ page.get_content_model.contact_point.get_profile.address1 }}<br>{% endif %}
+   {% if page.get_content_model.contact_point.get_profile.address2 %} &#160;&#160;{{ page.get_content_model.contact_point.get_profile.address2 }}<br>{% endif %}
+  
   {% endif %}
   {% if page.get_content_model.contact_point.get_profile.phone %}
   
-  <dd><strong>{% trans "Phone" %}:</strong>
+ &#160;&#160;<strong>{% trans "Phone" %}:</strong>
     {{ page.get_content_model.contact_point.get_profile.phone }} 
-  </dd>
+</br>
   {% endif %}
    {% if page.get_content_model.contact_point.get_profile.mobile %}
 
-  <dd>  <strong>{% trans "Mobile" %}:</strong>
+ &#160;&#160;  <strong>{% trans "Mobile" %}:</strong>
     {{ page.get_content_model.contact_point.get_profile.mobile }} 
-  </dd>
+</br>
   {% endif %}
   {% if page.get_content_model.contact_point.get_profile.fax %}
 
-  <dd>  <strong>{% trans "Fax" %}:</strong>
+ &#160;&#160;  <strong>{% trans "Fax" %}:</strong>
     {{ page.get_content_model.contact_point.get_profile.fax }} 
-  </dd>
+</br>
   {% endif %}
   
 	{% if page.get_content_model.contact_point.email %}
-  <dd><strong>{% trans "Email" %}:</strong> {{ page.get_content_model.contact_point.email }}</dd>
+ &#160;&#160;<strong>{% trans "Email" %}:</strong> {{ page.get_content_model.contact_point.email }}<br>
   {% endif %}
 	
   {% if page.get_content_model.contact_point.get_profile.email_address_alt %}
-  <dd><strong>{% trans "Alternate Email" %}:</strong>
+ &#160;&#160;<strong>{% trans "Alternate Email" %}:</strong>
     {{ page.get_content_model.contact_point.get_profile.email_address_alt }} 
-  </dd>
+</br>
 
   {% endif %}
   {% if page.get_content_model.contact_point.get_profile.preferredlanguage.all %}
-    <dd><strong>{% trans "Preferred languages" %}:</strong>
+   &#160;&#160;<strong>{% trans "Preferred languages" %}:</strong>
   
     {% for entry in page.get_content_model.contact_point.get_profile.preferredlanguage.all %}
         {{entry}}{% if forloop.last %} {% else %},{% endif %}
       {% endfor %}
     
-    </dd>
+  </br>
   {% endif %}
   {% if page.get_content_model.contact_point.get_profile.website %}
-     <dd><strong>{% trans "Website" %}:</strong>
+    &#160;&#160;<strong>{% trans "Website" %}:</strong>
 
        <a href="{{ page.get_content_model.contact_point.get_profile.website }} ">{{ page.get_content_model.contact_point.get_profile.website }}</a>
  
     
-    </dd>
+  </br>
   {% endif %}
   {% if user.is_superuser and page.get_content_model.contact_point.get_profile.date_account_created %}
-  <dd><strong>{% trans "IPP Member Since" %}:</strong>
+ &#160;&#160;<strong>{% trans "IPP Member Since" %}:</strong>
         {% blocktrans with sometime=page.get_content_model.contact_point.get_profile.date_account_created|date:"d M Y" %}{{ sometime }}{% endblocktrans %}
-  </dd>
+</br>
 	
   {% endif %}
   {% if  page.get_content_model.contact_point.get_profile.date_contact_registration %}
-  <dd><strong>{% trans "Date contact registration" %}:</strong>
+ &#160;&#160;<strong>{% trans "Date contact registration" %}:</strong>
         {% blocktrans with sometime=page.get_content_model.contact_point.get_profile.date_contact_registration|date:"d M Y" %}{{ sometime }}{% endblocktrans %}
-  </dd>
+</br>
 	
   {% endif %}
   
@@ -123,7 +117,7 @@
     }
     </script>
 
-  <dd>
+ &#160;&#160;
    <strong>{% trans "Brief Biography" %}</strong> <a href="#" onclick="javascript:toggle_visibility('bio');"><small>{% trans "Click to display" %}</small></a>
    <div id="bio" style="display:none;">{{ page.get_content_model.contact_point.get_profile.bio }}</div></dd>
   {% endif %}
@@ -140,7 +134,7 @@
     }
     </script>
 
-  <dd>
+ &#160;&#160;
    <strong>{% trans "Description/expertise" %}</strong> <a href="#" onclick="javascript:toggle_visibility('exp');"><small>{% trans "Click to display" %}</small></a>
    <div id="exp" style="display:none;">{{ page.get_content_model.contact_point.get_profile.expertise }}</div></dd>
   {% endif %}
@@ -151,7 +145,7 @@
   
   {% if page.get_content_model.contact_point.get_profile.country %}
   <!--dt>{% trans "IPPC Country" %}</strong>
-  <dd>
+  <p>&#160;&#160;
     {% if page.get_content_model.contact_point.get_profile.country.name %}<b>{{ page.get_content_model.contact_point.get_profile.country.name }}</b>{% endif %}
   </dd-->
   {% endif %}

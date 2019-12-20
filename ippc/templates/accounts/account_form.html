@@ -7,19 +7,21 @@
 
 {% block breadcrumb_menu %}
 {{ block.super }}
-<li><b>{% if request.user.get_profile.first_name or request.user.get_profile.last_name %}{{ request.user.get_profile.first_name }} {{ request.user.get_profile.last_name }}{% else %}{{ request.user.username }}{% endif %}</b></li>
+<li  class="breadcrumb-item"><b>{% if request.user.get_profile.first_name or request.user.get_profile.last_name %}{{ request.user.get_profile.first_name }} {{ request.user.get_profile.last_name }}{% else %}{{ request.user.username }}{% endif %}</b></li>
 {% endblock %}
 
-{% block local_nav %}
-		<p class="alert alert-success pull-right"><strong class="label label-important">Note</strong> If this is your first time logging in to the new redesigned IPPC website, you may need to reset your password by going to the <a href="/en/account/password/reset/?next=/en/account/update/">forgot password page</a>, entering the email address associated with your IPPC account and clicking the <em>Password Reset</em> button. <br><br>You will then receive an email with a link you need to click in order to log in and set your password. <br><br>After logging in with this link, please enter your password in the two password fields, scroll down and click <em>Update Profile</em>.</p>
-{% endblock %}
-{% block pageinfo %}
-{% endblock %}
+
 
 {% block main %}
-
+<div class="row">
+    <div class="col-md-12">
+        <h1>Log in</h1>
+    </div>
+    </div>
+<div class="row">
+    <div class="col-md-8">
+        
 <fieldset>
-    {# <legend>IPPC Account Profile</legend> #}
 {% if 'account/signup/' in request.path %} 
 {% else %}
     {% if request.user.get_profile.first_name or request.user.get_profile.last_name %}
@@ -30,11 +32,8 @@
 {% endif %}
     <form method="post"{% if form.is_multipart %} enctype="multipart/form-data"{% endif %}>
       {% csrf_token %}
-      {# {% fields_for userform %} #}
-		
     {% fields_for form %}
 		
-		{# Lets show the forgot password link _by the password field_, goddamit. #}
 		{% if request.user.is_authenticated %}
 		{% else %}
 				{% if request.get_full_path = "/en/account/password/reset/?next=/en/account/update/" %}
@@ -44,25 +43,22 @@
 						<p><a href="{{ password_reset_url }}?next={{ profile_update_url }}">{% trans "Forgot your password" %}</a>?</p>
 				{% endif %}
 		{% endif %}
-		
-		{# Not sure what IF block below is for? —Simon #}
-		{# {% if title %} #}
-		{# 	{% else %} #}
-		{#  <div class="control-group input_id_email"> #}
-		{# 	 <label for="id_email">Email address</label> #}
-		{# 	 <div class="controls"> #}
-		{# 		 <input id="id_email" maxlength="75" name="email" type="text" value="{{email}}"/> #}
-		{# 		 <span class="help-inline"></span> #}
-		{# 	 </div> #}
-		{#  </div> #}
-		{# {% endif %} #}
-  
     <div class="form-actions">
         <input class="btn btn-info btn-large" type="submit" value="{% if title %}{{title}}{% else%}Update{% endif%}">
     </div>
     </form>
 </fieldset>
+        </div>
+      <div class="col-md-4">
+<div class="card" style="width: 100%">
+  <div class="card-header">
+    <h5 class="my-0">Note</h5>
+  </div>
+  <ul class="list-group list-group-flush">
+    <li class="list-group-item"><p>If this is your first time logging in to the new redesigned IPPC website, you may need to reset your password by going to the <a href="/en/account/password/reset/?next=/en/account/update/">forgot password page</a>, entering the email address associated with your IPPC account and clicking the <em>Password Reset</em> button. <br><br>You will then receive an email with a link you need to click in order to log in and set your password. <br><br>After logging in with this link, please enter your password in the two password fields, scroll down and click <em>Update Profile</em>.</p></li>
+  </ul>
+</div>
+{% block pageinfo %}
 {% endblock %}
-
-
-
+</div>
+{% endblock %}
