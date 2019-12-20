@@ -1779,7 +1779,6 @@ class PublicationLibraryView(ListView):
         context['table_sec']=table_sec
          
             
-       # print( self.kwargs['id'])
         return context
     def get_queryset(self):
         queryset = DraftProtocol.objects.all()
@@ -1887,7 +1886,6 @@ class PestReportDetailView(DetailView):
       
         p = get_object_or_404(PestReport, slug=self.kwargs['slug'])
         context['8col'] = 1
-        
         versions= PestReport.objects.filter(country__country_slug=self.kwargs['country'], status=CONTENT_STATUS_PUBLISHED, is_version=True, parent_id=p.id).order_by('-modify_date')
         context['versions'] = versions
         return context
@@ -4003,9 +4001,9 @@ class PartnersView(TemplateView):
        
           
         context['titleparent']  =pageparent.title
-        context['titleparentslug'] = titleparent
-        #context['pageslug'] =  page.slug
-        
+        context['titleparentslug'] = pageparent.slug
+        context['pageparentid'] = pageparent.id
+       
         context['publications'] = PartnersPublication.objects.filter(partners__partner_slug=self.kwargs['partner'],status=2)
         context['news'] = PartnersNews.objects.filter(partners__partner_slug=self.kwargs['partner'],status=2)
         context['websites'] = PartnersWebsite.objects.filter(partners__partner_slug=self.kwargs['partner'],status=2)
@@ -10899,7 +10897,7 @@ def contactus_email_send(request):
                 emails_a='brent.larson@fao.org'
                 subj1='Contact IPPC: Implementation / Capacity Development - '
              elif request.POST['contact_us_type']== "3":
-                 emails_a='marko.benovic@fao.org'
+                 emails_a='qingpo.yang@fao.org'
                  subj1='Contact IPPC: Registration of ISPM 15 symbol - '
              elif request.POST['contact_us_type']== "4":
                  emails_a='paola.sentinelli@fao.org'

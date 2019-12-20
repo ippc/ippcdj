@@ -112,9 +112,7 @@ class IssueKeywordsRelate(models.Model):
     issuename = models.ManyToManyField(IssueKeyword,
         verbose_name=_("Issue Keywords"),
         blank=True, null=True, 
-        help_text=_("Type at least two letters, then select and \
-        press enter to input existing keywords, or write new ones\
-         separated by a comma."))
+        help_text=_("Type at least two letters, then select and press enter to input existing keywords, or write new ones separated by a comma."))
 
 class CommodityKeywordsRelate(models.Model):
     content_type = models.ForeignKey(ContentType)
@@ -123,9 +121,7 @@ class CommodityKeywordsRelate(models.Model):
     commname = models.ManyToManyField(CommodityKeyword,
         verbose_name=_("Commodity Keywords"),
         blank=True, null=True,
-        help_text=_("Type at least two letters, then select and \
-        press enter to input existing keywords, or write new ones\
-         separated by a comma."))
+        help_text=_("Type at least two letters, then select and press enter to input existing keywords, or write new ones  separated by a comma."))
 
         
 
@@ -1819,7 +1815,7 @@ class MassEmailUtilityMessage(models.Model):
     emailfrom = models.CharField(_("From: "),max_length=200,default=_("ippc@fao.org"),help_text=_("The email will be sent from ippc@fao.org, if you want you can specify an other sender email address."))
     emailto = models.CharField(_("Send to users that are not registered in IPPC: "),max_length=500,default=_("ippc@fao.org"),blank=True, null=True,help_text=_("Enter email addresses of additional recipients, separated by comma. Example: ippc@fao.org, someone@somewhere.tld, etc@etc.tld"))
     #emailto = models.TextField(_("Send to users that are not registered in IPPC: "),default=_("ippc@fao.org"),help_text=_("Please leave ippc@fao.org for the form to work, and enter email addresses of addition recipients, separated by comma. Example: ippc@fao.org, someone@somewhere.tld, etc@etc.tld"))
-    emailtoISO3 = models.TextField(_("TO: "),default=_(""),help_text=_(""))
+    emailtoISO3 = models.TextField(_("TO: "),default=_(""),help_text=_("help text"))
     emailcc = models.CharField(_("CC: "),default=_("ippc@fao.org"),max_length=500,blank=True, null=True, help_text=_("enter email addresses of CC recipients, separated by comma. Example: ippc@fao.org,someone@somewhere.tld,etc@etc.tld"))
     subject = models.CharField(_("Subject: "),max_length=200)
     messagebody = models.TextField(_("Message: "),max_length=500,blank=True, null=True)
@@ -2843,7 +2839,7 @@ class Topic(Displayable, models.Model):
 
     topicnumber = models.CharField(_("Topic number"),help_text=_("Topic number (e.g. 2008-01)"),max_length=50,  blank=False, null=False,unique=True)
     
-    topic_type =models.IntegerField(_("Topic type"),choices=TOPIC_TYPE_CHOICES, default=TOPIC_TYPE_0,help_text=_("Choose:\nTechnical Area for TPs and Topics for TPDP [Table 1]\rTopics for EWGs, TPFF, TPFQ, TPPT [Table 2: select Drafting body 'EWG' or 'TPFF' or 'TPFQ' or 'TPPT']<br>Subjects for  TPs [Table 3: select Drafting body 'TPDP' | Table 4: select Drafting body 'TPPT' | Table 5: select Drafting body 'TPG']"))
+    topic_type =models.IntegerField(_("Topic type"),choices=TOPIC_TYPE_CHOICES, default=TOPIC_TYPE_0,help_text=_("Choose: Technical Area for TPs and Topics for TPDP [Table 1] Topics for EWGs, TPFF, TPFQ, TPPT [Table 2: select Drafting body 'EWG' or 'TPFF' or 'TPFQ' or 'TPPT']<br>Subjects for  TPs [Table 3: select Drafting body 'TPDP' | Table 4: select Drafting body 'TPPT' | Table 5: select Drafting body 'TPG']"))
     #topic_sub_type =models.IntegerField(_("Subject"),choices=TOPIC_SUB_CHOICES, default=TOPIC_TYPE_0,help_text=_("Chose a topic sub-type such as 'Subject' for the Table 3,4 and 5 of topics"))
     
     drafting_body = models.ManyToManyField(DraftingBodyType,
