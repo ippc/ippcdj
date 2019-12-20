@@ -20,115 +20,75 @@
     {% endwith %}
 {# {% endeditable %} #}
 {% endblock %}
-
+{% set_short_url_for news_post %}
 {% block breadcrumb_menu %}
 {{ block.super }}
-<li class="active">
- {% with news_post|get_object_translation as translated_page %}
-             {{ translated_page.title|safe}}
-      
-    {% endwith %}</li>
+    <li class="breadcrumb-item" aria-current="page"> 
+        <a href="/{{ LANGUAGE_CODE }}/news/category/{{news_post.categories.all.0.slug}}">
+         {{news_post.categories.all.0}}</a>
+    </li>  
+    <li class="breadcrumb-item active" aria-current="page"><i class="fas fa-angle-double-down"></i></li>
 {% endblock %}
 
 {# =note: the sidebar is in the filter_panel.html include #}
 
 {% block main %}
-{% if user.is_superuser or perms.news.add_newspost %} {# and request.user.get_profile.user_id  == news_post.user_id#}
-    <div class="pull-right">
-        <a class="btn btn-info btn-small" href="/admin/news/newspost/{{ news_post.id }}">Edit as Admin</a><br>
-    </div>
-{% endif %}
-{% block news_post_detail_postedby %}
-{# {% editable news_post.publish_date %} #}
-<h6>
-    {#% trans "Posted by: " %}#}
-    {% trans "Posted " %}
-    {% with news_post.user as author %}
-    <!--a href="{% url "news_post_list_author" author %}">{{ author.get_full_name|default:author.username }}</a-->
-    {% endwith %}
-    {# {% blocktrans with sometime=news_post.publish_date|timesince %}{{ sometime }} ago{% endblocktrans %} #}
-    {% blocktrans with sometime=news_post.publish_date|date:"D, d M Y, H:i" %}on {{ sometime }}{% endblocktrans %}    
-</h6>
-{# {% endeditable %} #}
-{% endblock %}
-{# {% block news_post_detail_commentlink %} #}
-{# <p> #}
-{#     {% if news_post.allow_comments %} #}
-{#         {% if settings.COMMENTS_DISQUS_SHORTNAME %} #}
-{#             (<a href="{{ news_post.get_absolute_url }}#disqus_thread" #}
-{#                 data-disqus-identifier="{% disqus_id_for news_post %}">{% spaceless %} #}
-{#                 {% trans "Comments" %} #}
-{#             {% endspaceless %}</a>) #}
-{#         {% else %}(<a href="#comments">{% spaceless %} #}
-{#             {% blocktrans count comments_count=news_post.comments_count %}{{ comments_count }} comment{% plural %}{{ comments_count }} comments{% endblocktrans %} #}
-{#             {% endspaceless %}</a>) #}
-{#         {% endif %} #}
-{#     {% endif %} #}
-{# </p> #}
-{# {% endblock %} #}
+    {% if user.is_superuser or perms.news.add_newspost %} 
+        <div class="pull-right">
+            <a class="btn btn-info btn-small" href="/admin/news/newspost/{{ news_post.id }}">{% trans "Edit as Admin" %}</a><br>
+        </div>
+    {% endif %}
+    {% block news_post_detail_postedby %}
+        <p>{% trans "Posted " %}  {% blocktrans with sometime=news_post.publish_date|date:"D, d M Y, H:i" %}on {{ sometime }}{% endblocktrans %}</p>
+    {% endblock %}
 
-{% block news_post_detail_featured_image %}
-{% if news_post.featured_image %}{#settings.news_USE_FEATURED_IMAGE and #}
-<!--div style="position: relative; max-width: 800px; margin: 0 auto;">
-  <img src="{{ MEDIA_URL }}{% thumbnail news_post.featured_image 800 400 %}">
-  {%if news_post.caption_image != None and news_post.caption_image != ''%}
-  <div style="position: absolute;  bottom: 0;  background: #000;   background: rgba(0, 0, 0, 0.3);   color: #f1f1f1;  font-size:10pt;  width: 770px;  padding: 10px;">
-<i>{{news_post.caption_image}}</i>
-  </div>{% endif %}
-</div-->
+    {% block news_post_detail_featured_image %}
+        {% if news_post.featured_image %}{#settings.news_USE_FEATURED_IMAGE and #}
+         <!--div style="position: relative; max-width: 800px; margin: 0 auto;">
+          <img src="{{ MEDIA_URL }}{% thumbnail news_post.featured_image 800 400 %}">
+          {%if news_post.caption_image != None and news_post.caption_image != ''%}
+          <div style="position: absolute;  bottom: 0;  background: #000;   background: rgba(0, 0, 0, 0.3);   color: #f1f1f1;  font-size:10pt;  width: 770px;  padding: 10px;">
+        <i>{{news_post.caption_image}}</i>
+          </div>{% endif %}
+        </div-->
+            <img src="{{ MEDIA_URL }}{% thumbnail news_post.featured_image 800 400 %}" class="img-fluid mb-1" alt="Responsive image">
+            {%if news_post.caption_image != None and news_post.caption_image != ''%}
+               <figcaption class="figure-caption text-right">
+                   {% with news_post|get_object_translation as translated_page %}
+                    {{ translated_page.caption_image|richtext_filter|safe }}
+                {% endwith %} 
+               </figcaption>
+            {% endif %}
+        {% endif %}
+    {% endblock %}
 
 
+    {% block news_post_detail_content %}
+        {% with news_post|get_object_translation as translated_page %}
+            {{ translated_page.content|richtext_filter|safe }}
+        {% endwith %}
+    {% endblock %}
+
+    {% block news_post_detail_keywords %}
+    {% keywords_for news_post as tags %}
+    {% if tags %}
+    {% spaceless %}
+    <ul class="unstyled tags">
+        <li>{% trans "Tags" %}:</li>
+        {% for tag in tags %}
+        <li><a href="{% url "news_post_list_tag" tag.slug %}">{{ tag }}</a></li>
+        {% endfor %}
+    </ul>
+    {% endspaceless %}
+    {% endif %}
+    {% endblock %}
 
 
-<p align="left"><img src="{{ MEDIA_URL }}{% thumbnail news_post.featured_image 580 300 %}">
-     {%if news_post.caption_image != None and news_post.caption_image != ''%}<br>
-     <i>
-    {% with news_post|get_object_translation as translated_page %}
-        {{ translated_page.caption_image}}
-    {% endwith %}  
-    </i>{% endif %}</p>
-{% endif %}
-{% endblock %}
-
-{# {% if settings.COMMENTS_DISQUS_SHORTNAME %} #}
-{# {% include "generic/includes/disqus_counts.html" %} #}
-{# {% endif %} #}
-
-{% block news_post_detail_content %}
-{# {% editable news_post.content %} #}
 
 
- {% with news_post|get_object_translation as translated_page %}
-             {{ translated_page.content|richtext_filter|safe }}
-      
-    {% endwith %}
-{# {% endeditable %} #}
-{% endblock %}
-
-{% block news_post_detail_keywords %}
-{% keywords_for news_post as tags %}
-{% if tags %}
-{% spaceless %}
-<ul class="unstyled tags">
-    <li>{% trans "Tags" %}:</li>
-    {% for tag in tags %}
-    <li><a href="{% url "news_post_list_tag" tag.slug %}">{{ tag }}</a></li>
-    {% endfor %}
-</ul>
-{% endspaceless %}
-{% endif %}
-{% endblock %}
-
-{# {% rating_for news_post %} #}
-
-{% block news_post_detail_sharebuttons %}
-{% set_short_url_for news_post %}
-<a class="btn small primary share-twitter" target="_blank" href="http://twitter.com/home?status={{ news_post.short_url|urlencode }}%20{{ news_post.title|urlencode }}">{% trans "Share on Twitter" %}</a>
-<a class="btn small primary share-facebook" target="_blank" href="http://facebook.com/sharer.php?u={{ request.build_absolute_uri }}&amp;t={{ news_post.title|urlencode }}">{% trans "Share on Facebook" %}</a>
-{% endblock %}
 
 {% block news_post_previous_next %}
-<ul class="pager">
+<!--ul class="pager">
 {% with news_post.get_previous_by_publish_date as previous %}
 {% if previous %}
 <li class="previous">
@@ -143,7 +103,7 @@
 </li>
 {% endif %}
 {% endwith %}
-</ul>
+</ul-->
 {% endblock %}
 
 {% block news_post_detail_related_posts %}
@@ -159,8 +119,5 @@
 {% endif %}
 {% endblock %}
 
-{# {% block news_post_detail_comments %} #}
-{# {% if news_post.allow_comments %}{% comments_for news_post %}{% endif %} #}
-{# {% endblock %} #}
 
 {% endblock %}
