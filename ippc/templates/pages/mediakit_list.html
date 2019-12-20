@@ -6,12 +6,13 @@
 {% block body_class %}wide{% endblock %}
  
 {% block breadcrumb_menu %}
-<li><a href="/{{ LANGUAGE_CODE }}/">{% trans "Home" %}</a><span class="divider">/</span></li>
-<li><a href="/{{ LANGUAGE_CODE }}/resources/">{% trans "Resources" %}</a><span class="divider">/</span></li>
-<li class="active">{% trans "Publications" %}</li>
+<!--li class="breadcrumb-item"><a href="/{{ LANGUAGE_CODE }}/">{% trans "Home" %}</a><span class="divider">/</span></li-->
+<li class="breadcrumb-item"><a href="/{{ LANGUAGE_CODE }}/resources/">{% trans "Resources" %}</a></li>
+<!--li class="active">{% trans "Publications" %}</li-->
+<li class="breadcrumb-item active" aria-current="page"><i class="fas fa-angle-double-down"></i></li>
 {% endblock %}
 
-{% block main %}  
+{% block main %}    
 
  <h1>{% trans "Publications" %}</h1>
     <p>{% trans "All IPPC media are available here subject to the following terms and conditions:" %}</p>
@@ -33,39 +34,39 @@
 
 .left .box{
   display:inline-block;
-  width:120px;
-  height:120px;
-  background:#D4E0E4;
-  color:#356B76;
+  width:135px;
+  height:135px;
+  background:/*#D4E0E4;*/#007d3f;
+  color:/*#356B76;*/#fff;
   font-size: 12pt;
   transition:0.3s;
   margin-bottom:4px;
   padding:10px;
 }
 .left .box:hover{
-  background:orange;
+  background:#810343/*orange*/;
   color:#fff;
   cursor:pointer;
 }
 .left .box1{
   display:inline-block;
-  width:120px;
-  height:120px;
-  background:#D4E0E4;
-  color:#356B76;
+  width:135px;
+  height:135px;
+  background:/*#D4E0E4;*//*0f405b*/#007d3f;
+  color:#fff;
   font-size: 12pt;
   transition:0.3s;
   margin-bottom:4px;
   padding:10px;
 }
 .left .box1:hover{
-  background:orange;
+  background:#810343/*orange*/;
   color:#fff;
   cursor:pointer;
 }
 
 .right .box{
-  padding:10px;
+  padding:0;
 }
 .right .box + .box{
   /*display:none;*/
@@ -76,14 +77,14 @@
 
 
     <div class="left">
-      <div class="box1"><b><i class="fa fa-bars" style="font-size:24px"></i><br><br><br>All publications<br>&#160;</b></b></div>
-      <div class="box"><b><i class="fa fa-book" style="font-size:24px"></i><br><br><br>Annual Reports<br>& Strategies</b></div>
-      <div class="box"><b><i class="fa fa-book" style="font-size:24px"></i><br><br><br>Meeting Reports</b></div>
-      <div class="box"><b><i class="fa fa-map-o" style="font-size:24px"></i><br><br><br>Brochures<br>&#160;</b></div>
-      <div class="box"><b><i class="fa fa-file-text-o " style="font-size:24px"></i><br><br><br>Factsheets<br>&#160;</b></div>
-      <div class="box"><b><i class="fa fa-image" style="font-size:24px"></i><br><br><br>Advocacy materials</b></div>
-      <div class="box"><b><i class="fa fa-leanpub" style="font-size:24px"></i><br><br>Guides &<br>Training resources</b></div>
-      <div class="box"><b><i class="fa fa-graduation-cap" style="font-size:24px"></i><br><br><br>Training kits<br>&#160;</b></div>
+      <div class="box1"><b><i class="fa fa-bars" style="font-size:24px"></i><br>All publications<br>&#160;</b></div>
+      <div class="box"><b><i class="fa fa-book" style="font-size:24px"></i><br>Annual Reports<br>& Strategies</b></div>
+      <div class="box"><b><i class="fa fa-book" style="font-size:24px"></i><br><br>Meeting Reports</b></div>
+      <div class="box"><b><i class="fa fa-map-o" style="font-size:24px"></i><br><br>Brochures<br>&#160;</b></div>
+      <div class="box"><b><i class="fa fa-file-text-o " style="font-size:24px"></i><br><br>Factsheets<br>&#160;</b></div>
+      <div class="box"><b><i class="fa fa-image" style="font-size:24px"></i><br><br>Advocacy materials</b></div>
+      <div class="box"><b><i class="fa fa-leanpub" style="font-size:24px"></i><br>Guides &<br>Training resources</b></div>
+      <div class="box"><b><i class="fa fa-graduation-cap" style="font-size:24px"></i><br><br>Training kits<br>&#160;</b></div>
     </div>
 
     <div class="right">
@@ -93,19 +94,19 @@
     <div class="box">
 <table class="table table-condensed  " id="publications">
     <tr>
-        <th  style="background-color: #356B76;color: white">{{obj.0}}</th> 
+        <th  style="background-color: /*#356B76*/#0f405b;color: white">{{obj.0}}</th> 
     </tr> 
     <tr>
-       <td>
-        <table class="table table-condensed">
+       <td style="  padding:0;">
+           <table class="table table-condensed">
     
         {% for o in obj.1 %}
             {% if forloop.counter|divisibleby:2 %}{% else %}<tr>{% endif %}
-            <td style="background-color: #D4E0E4; width: 20px;" align="center">{% if o.image %}<img  src='{{ MEDIA_URL }}{{o.image}}' width="40px" height="20px">{%endif%}&#160;</td>
-            <td style="background-color: #eee; width: 250px"><b style="vertical-align: top;">{{o.title}}</b>{% if user.is_superuser %}&#160;<a class="small" href="/admin/ippc/mediakitdocument/{{ o.id }}"><i class="icon-edit"></i> Edit as Admin</a>{% endif %}<br><br>
+            <td style="background-color:#f8f9fa; width: 20px;" align="center">{% if o.image %}<img  src="{{ MEDIA_URL }}{% thumbnail o.image 60 80 %}">{%endif%}&#160;</td>
+            <td style="background-color: #f8f9fa; width: 250px"><h6>{{o.title}}</h6>{% if user.is_superuser %}&#160;<a class="small" href="/admin/ippc/mediakitdocument/{{ o.id }}"><span style="font-size: 1.2em; color: #339900;"><i class="fas fa-edit"></i></span> Edit as Admin</a>{% endif %}<br><br>
             {%if o.file_en  or o.link_en or o.file_es  or o.link_es or o.file_fr  or o.link_fr or o.file_ru  or o.link_ru or o.file_ar  or o.link_ar or o.file_zh  or o.link_zh %}
-             <span class="fa fa-download"></span>&#160;&#160;{% endif %}
-            {%if o.file_en %}<a href="{{ MEDIA_URL }}{{ o.file_en }}">English</a>&#160;&#160;{% endif %}
+            <span style="font-size: 1.2em; color: #339900;"><i class="fas fa-download"></i></span> &#160;&#160;{% endif %}
+           {%if o.file_en %}<a href="{{ MEDIA_URL }}{{ o.file_en }}">English</a>&#160;&#160;{% endif %}
             {%if o.link_en %}<a href="{{ o.link_en }}">English</a>&#160;&#160;{% endif %}
             {%if o.file_es %}<a href="{{ MEDIA_URL }}{{ o.file_es }}">Espa&ntilde;ol</a>&#160;&#160;{% endif %}
             {%if o.link_es %}<a href="{{ o.link_es }}">Espa&ntilde;ol</a>&#160;&#160;{% endif %}

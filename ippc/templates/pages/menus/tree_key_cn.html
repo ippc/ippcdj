@@ -3,39 +3,50 @@
 {% block pageinfo %}
 {% if type_label %}
 {% else %} 
-	<div class="panel">
-		<h4>{% trans "Countries" %}</h4>
-
-		{% include "countries/country_selector.html" %}
-
-		<h4><a href="/{{ LANGUAGE_CODE }}/countries/all/list-countries/"><i class="icon-list"></i>{% trans "All Countries" %}</a></h4>
-
-		<h4>{% trans "Countries by Region" %}</h4>
-		<ul id="regionsmap"> 
-			<li id="africa"><a href="/countries/africa/list-countries"><span>{% trans "Africa" %}</span></a></li>
-			<li id="asia"><a href="/countries/asia/list-countries"><span>{% trans "Asia" %}</span></a></li>
-			<li id="europe"><a href="/countries/europe/list-countries"><span>{% trans "Europe" %}</span></a></li>
-			<li id="latinamericacaribbean"><a href="/countries/latin-america-and-caribbean/list-countries"><span>{% trans "Latin America &amp; Caribbean" %}</span></a></li>
-			<li id="neareast"><a href="/countries/near-east/list-countries"><span>{% trans "Near East" %}</span></a></li>
-			<li id="northamerica"><a href="/countries/north-america/list-countries"><span>{% trans "North America" %}</span></a></li>
-			<li id="southwestpacific"><a href="/countries/south-west-pacific/list-countries"><span>{% trans "South West Pacific" %}</span></a></li>
-		</ul>
-
-		<h4>{% trans "Key Links &amp; Documents" %}</h4>
-		<ul>
-			<li><a href="/publications/129/" target="_blank">Model Instrument for Adherence to the IPPC</a></li>
-			<li><a href="/publications/21/" target="_blank">IPP Editor - Nomination Request for NPPOs</a></li>
-			<!--li><a href="/publications/47/" target="_blank">IPPC statement of commitment</a></li-->
-			<li><a href="/publications/22/" target="_blank">Role of the IPPC Official Contact Points</a></li>
-			<li><a href="/publications/23/" target="_blank">IPPC Official Contact Point notification form</a></li>
-			<li><a href="/publications/24/" target="_blank">National Pest Reporting through Regional Plant Protection Organizations</a></li>
-			<!--li><a href="https://www.ippc.int/countries/nppodirectory" target="_blank">Complete listing of all IPPC Contact Points in PDF format </a></li-->
-			<!--li><a href="http://www.fao.org/countryprofiles/iso3list/en/?lang=en" target="_blank">FAO Member Nations country codes and names</a></li-->
-			<!--li><a href="http://www.iso.org/iso/country_codes/iso_3166_code_lists/country_names_and_code_elements" target="_blank">List of ISO 2-digit codes </a></li-->
-			<li><a href="/nro-reports-and-statistics" target="_blank">National &amp; Regional Summary Statistics</li>
-			<!--li> <a href="/publications/26/" target="_blank">Editor Guide to the International Phytosanitary Portal</a></li-->
-                        <li><a href="/publications/80405/" target="_blank">National Reporting Obligations Guide</a></li>
-		</ul>
-	</div>
+    <div class="card" style="width: 100%">
+        <div class="card-header">
+          <h5 class="my-0">{% trans "Countries" %}</h5>
+        </div>
+	<ul class="list-group list-group-flush">
+            <li class="list-group-item"><br>
+                {% include "countries/country_selector.html" %}<br>
+                <h4><a href="/{{ LANGUAGE_CODE }}/countries/all/list-countries/"><span style="font-size: 1.2em; color: #339900;"><i class="fas fa-list"></i></span>  {% trans "All Countries" %}</a></h4>
+            </li>
+    </div>
+    <div class="card" style="width: 100%">
+        <div class="card-header">
+            <h5 class="my-0">{% trans "Countries  by Region" %}</h5>
+        </div>
+        <ul id="regionsmap"> 
+                <li id="africa"><a href="/countries/africa/list-countries"><span>{% trans "Africa" %}</span></a></li>
+                <li id="asia"><a href="/countries/asia/list-countries"><span>{% trans "Asia" %}</span></a></li>
+                <li id="europe"><a href="/countries/europe/list-countries"><span>{% trans "Europe" %}</span></a></li>
+                <li id="latinamericacaribbean"><a href="/countries/latin-america-and-caribbean/list-countries"><span>{% trans "Latin America &amp; Caribbean" %}</span></a></li>
+                <li id="neareast"><a href="/countries/near-east/list-countries"><span>{% trans "Near East" %}</span></a></li>
+                <li id="northamerica"><a href="/countries/north-america/list-countries"><span>{% trans "North America" %}</span></a></li>
+                <li id="southwestpacific"><a href="/countries/south-west-pacific/list-countries"><span>{% trans "South West Pacific" %}</span></a></li>
+        </ul>
+    </div>
+   
+    <div class="card" style="width: 100%">
+        <div class="card-header">
+          <h5 class="my-0">{% trans "Key Links &amp; Documents" %}</h5>
+        </div>
+        <ul class="list-group list-group-flush">
+            <li  class="list-group-item"><a href="/publications/129/" target="_blank">Model Instrument for Adherence to the IPPC</a></li>
+            <li  class="list-group-item"><a href="/publications/21/" target="_blank">IPP Editor - Nomination Request for NPPOs</a></li>
+            <!--li><a href="/publications/47/" target="_blank">IPPC statement of commitment</a></li-->
+            <li  class="list-group-item"><a href="/publications/22/" target="_blank">Role of the IPPC Official Contact Points</a></li>
+            <li  class="list-group-item"><a href="/publications/23/" target="_blank">IPPC Official Contact Point notification form</a></li>
+            <li  class="list-group-item"><a href="/publications/24/" target="_blank">National Pest Reporting through Regional Plant Protection Organizations</a></li>
+            <!--li><a href="https://www.ippc.int/countries/nppodirectory" target="_blank">Complete listing of all IPPC Contact Points in PDF format </a></li-->
+            <!--li><a href="http://www.fao.org/countryprofiles/iso3list/en/?lang=en" target="_blank">FAO Member Nations country codes and names</a></li-->
+            <!--li><a href="http://www.iso.org/iso/country_codes/iso_3166_code_lists/country_names_and_code_elements" target="_blank">List of ISO 2-digit codes </a></li-->
+            <li  class="list-group-item"><a href="/nro-reports-and-statistics" target="_blank">National &amp; Regional Summary Statistics</li>
+            <!--li> <a href="/publications/26/" target="_blank">Editor Guide to the International Phytosanitary Portal</a></li-->
+            <li  class="list-group-item"><a href="/publications/80405/" target="_blank">National Reporting Obligations Guide</a></li>
+        </ul>  
+    </div>
+	
 {% endif %}
 {% endblock pageinfo %}

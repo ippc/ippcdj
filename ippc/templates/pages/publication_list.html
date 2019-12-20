@@ -12,10 +12,10 @@
 {% block body_class %}wide{% endblock %}
 
 {% block breadcrumb_menu %}
-<li>
+<li class="breadcrumb-item">
   {# <a href="/{{ LANGUAGE_CODE }}/">{% trans "Home" %}</a> #}
   <a href="javascript:history.go(-1)">{% trans "« Go back" %}</a>
-  <span class="divider">/</span>
+  
 </li>
 <li class="active">{% trans "Publications" %}</li>
 {% endblock %}

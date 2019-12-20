@@ -3,118 +3,119 @@
 
 {%if page.publicationlibrary.id == 346 %}
 
+
 {%if page.publicationlibrary.publications.all%}
-   
-<table class="table table-condensed table-striped table-bordered" id="publications">
-    {# http://datatables.net/blog/Twitter_Bootstrap_2 #}
-    <script type="text/javascript">
-        function toggle_visibility(id) {
+       
 
-        var e = document.getElementById(id);
-                var e2 = document.getElementById('title_' + id);
-                if (e.style.display == 'block'){
-        e.style.display = 'none';
-                e2.style.display = 'block';
-        }
-        else{
-        e2.style.display = 'none';
-                e.style.display = 'block';
-        }
-        }
-
-    </script>
+<table class="table table-hover table-striped dataTable" id="publications" style="margin-top: 10px;margin-left: 0;">
     <thead>
-        <tr>
-            {# {% if publication.document_number %} #}
-            <th style="width:15%;">{% trans "Doc #" %}</th>
-            {# {% endif %} #}
-            <th>{% trans "Title" %}</th>
-            <th>{% trans "Publication date" %}</th>
-            <th style="width:15%;">&#160;</th>
+          <tr>
 
-        </tr>
-    </thead>
-    <tbody>
-
+              <th style="width:15%;color: #810343;">{% trans "Reference" %}</th>
+              <th style="width:578px; color: #810343;"">{% trans "Title" %}</th>
+              <th  style="width:80px;color: #810343;">{% trans "Publication date" %}</th>
+              <th style="color: #810343;">
+                <table>
+                <tr style="background-color: transparent; ">
+                    <td style="width: 42px;border: 0;">EN</td>
+                    <td style="width: 42px;border: 0;">FR</td>
+                    <td style="width: 42px;border: 0;">ES</td>
+                    <td style="width: 42px;border: 0;">AR</td>
+                    <td style="width: 42px;border: 0;">ZH</td>
+                    <td style="width: 42px;border: 0;">RU</td>
+                </tr>
+                </table>
+              </th>
+          </tr>
+      </thead>
+      <tbody>
         {% with page.publicationlibrary.publications.all as publications %}
         {% for publication in publications %}
-        {% if publication.status == 2 and publication.is_version == 0 %}
-        <tr id="media-file-{{ publication.id }}">
+            {% if publication.status == 2 and publication.is_version == 0 %}
+        <tr>
             <td>{{ publication.document_number }}</td>
-            <td><a id="title_{{ publication.id }}" href="{% url 'publication-detail' publication.pk %}">{% if LANGUAGE_CODE != 'en' %}
-        {% if LANGUAGE_CODE == 'es'  and publication.title_es != '' and publication.title_es != None %}
-            {{ publication.title_es }}
-        {% elif LANGUAGE_CODE == 'fr'  and publication.title_fr != '' and publication.title_fr != None%}
-            {{ publication.title_fr }}
-        {% elif LANGUAGE_CODE == 'ru'  and publication.title_ru != '' and publication.title_ru != None%}
-            {{ publication.title_ru }}
-        {% elif LANGUAGE_CODE == 'ar'  and publication.title_ar != '' and publication.title_ar != None%}
-            {{ publication.title_ar }}
-        {% elif LANGUAGE_CODE == 'zh'  and publication.title_zh != '' and publication.title_zh != None%}
-            {{ publication.title_zh }}
-        {% else %}
-            {{ publication.title }}
-        {% endif %}
-     {% else %}
-        {{ publication.title }}
-     {% endif %}</a>
-                <div id="{{ publication.id }}" style="display:none;"><br><br><br>
-                    <a href="{% url 'publication-detail' publication.pk %}">{% if LANGUAGE_CODE != 'en' %}
-        {% if LANGUAGE_CODE == 'es'  and publication.title_es != '' and publication.title_es != None %}
-            {{ publication.title_es }}
-        {% elif LANGUAGE_CODE == 'fr'  and publication.title_fr != '' and publication.title_fr != None%}
-            {{ publication.title_fr }}
-        {% elif LANGUAGE_CODE == 'ru'  and publication.title_ru != '' and publication.title_ru != None%}
-            {{ publication.title_ru }}
-        {% elif LANGUAGE_CODE == 'ar'  and publication.title_ar != '' and publication.title_ar != None%}
-            {{ publication.title_ar }}
-        {% elif LANGUAGE_CODE == 'zh'  and publication.title_zh != '' and publication.title_zh != None%}
-            {{ publication.title_zh }}
-        {% else %}
-            {{ publication.title }}
-        {% endif %}
-     {% else %}
-        {{ publication.title }}
-     {% endif %}</a>
-                    {% if publication.file_en %}
-                    <a href="{{ MEDIA_URL }}{{ publication.file_en }}">En</a>
-                    {% endif %}
-
-                    {% if publication.file_es %}<a href="{{ MEDIA_URL }}{{ publication.file_es }}">Es</a>
-                    {% endif %}
-
-                    {% if publication.file_fr %}
-                    <a href="{{ MEDIA_URL }}{{ publication.file_fr }}"> Fr  </a>
-                    {% endif %}
-
-                    {% if publication.file_ru %}
-                    <a href="{{ MEDIA_URL }}{{ publication.file_ru }}">Ru</a>
-                    {% endif %}
-
-                    {% if publication.file_ar %}
-                    <a href="{{ MEDIA_URL }}{{ publication.file_ar }}"> Ar </a>
-                    {% endif %}
-
-                    {% if publication.file_zh %}
-                    <a href="{{ MEDIA_URL }}{{ publication.file_zh }}">
-                        Zh
-                    </a>
-                    {% endif %}
-                    <br> <br>{{ publication.short_description|richtext_filter|safe }}
-                </div>
+            <td><a href="{% url 'publication-detail' publication.pk %}">
+                    {% if LANGUAGE_CODE != 'en' %}
+                        {% if LANGUAGE_CODE == 'es'  and publication.title_es != '' and publication.title_es != None %}
+                            {{ publication.title_es }}
+                        {% elif LANGUAGE_CODE == 'fr'  and publication.title_fr != '' and publication.title_fr != None%}
+                            {{ publication.title_fr }}
+                        {% elif LANGUAGE_CODE == 'ru'  and publication.title_ru != '' and publication.title_ru != None%}
+                            {{ publication.title_ru }}
+                        {% elif LANGUAGE_CODE == 'ar'  and publication.title_ar != '' and publication.title_ar != None%}
+                            {{ publication.title_ar }}
+                        {% elif LANGUAGE_CODE == 'zh'  and publication.title_zh != '' and publication.title_zh != None%}
+                            {{ publication.title_zh }}
+                        {% else %}
+                            {{ publication.title }}
+                        {% endif %}
+                     {% else %}
+                        {{ publication.title }}
+                     {% endif %}
+                </a> {% if publication.short_description|length > 2 %}
+                <input class="toggle-box" id="identifier-{{ publication.id }}" type="checkbox" style="display:none">
+                <label for="identifier-{{ publication.id }}"></label>
+                <div>
+                {{ publication.short_description|richtext_filter|safe }}
+                </div>{% endif %}
             </td>
-
-
             <td>{{ publication.publication_date|date:"d M Y"  }}</td>
-            <td><a href="#{{ publication.id }}" onclick="javascript:toggle_visibility({{ publication.id }});">{% trans "show/hide Details" %}</td>
-
-        </tr> {% endif %}
+            <td>
+                <table>
+                <tr style="background-color: transparent;  ">
+                    <td style="width: 42px;border: 0;">
+                        {% if publication.file_en %}
+                        <a href="{{ MEDIA_URL }}{{ publication.file_en }}"> <span style="font-size: 1.2em; color: #339900;"><i class="fas fa-check"></i></span></a>
+                        {%else%}
+                        <span style="font-size: 1.2em; color: #810343;"><i class="fas fa-ban"></i></span></i> 
+                        {% endif%} 
+                    </td>
+                    <td style="width: 42px;border: 0;">
+                        {% if publication.file_fr %}
+                            <a href="{{ MEDIA_URL }}{{ publication.file_fr }}"> <span style="font-size: 1.2em; color: #339900;"><i class="fas fa-check"></i></span></a>
+                        {%else%}
+                           <span style="font-size: 1.2em; color: #810343;"><i class="fas fa-ban"></i></span></i>  
+                        {% endif%}
+                    </td>
+                    <td style="width: 42px;border: 0;">
+                        {% if publication.file_es %}
+                            <a href="{{ MEDIA_URL }}{{ publication.file_es }}"> <span style="font-size: 1.2em; color: #339900;"><i class="fas fa-check"></i></span></a>
+                        {%else%}
+                           <span style="font-size: 1.2em; color: #810343;"><i class="fas fa-ban"></i></span></i>  
+                        {% endif%} 
+                    </td>
+                    <td style="width: 42px;border: 0;">
+                        {% if publication.file_ar %}
+                            <a href="{{ MEDIA_URL }}{{ publication.file_ar }}"> <span style="font-size: 1.2em; color: #339900;"><i class="fas fa-check"></i></span></a>
+                        {%else%}
+                           <span style="font-size: 1.2em; color: #810343;"><i class="fas fa-ban"></i></span></i>  
+                        {% endif%} 
+                    </td>
+                    <td style="width: 42px;border: 0;">
+                        {% if publication.file_zh %}
+                            <a href="{{ MEDIA_URL }}{{ publication.file_zh }}"> <span style="font-size: 1.2em; color: #339900;"><i class="fas fa-check"></i></span></a>
+                        {%else%}
+                           <span style="font-size: 1.2em; color: #810343;"><i class="fas fa-ban"></i></span></i>  
+                        {% endif%} 
+                    </td>
+                    <td style="width: 42px;border: 0;"> 
+                        {% if publication.file_ru %}
+                            <a href="{{ MEDIA_URL }}{{ publication.file_ru }}"> <span style="font-size: 1.2em; color: #339900;"><i class="fas fa-check"></i></span></a>
+                        {%else%}
+                           <span style="font-size: 1.2em; color: #810343;"><i class="fas fa-ban"></i></span></i>  
+                        {% endif%} 
+                    </td>
+                </tr>
+                </table>
+            </td>
+        </tr> 
+        {% endif %}
         {% endfor %} {# publication in publications #}
     </tbody>
 </table>
 
 <p align='right'>
-    <a href='/publications/{{page.id}}/files' target='_blank'><i class="icon-download"></i>  Download multiple files</a></p>
+    <a href='/publications/{{page.id}}/files' target='_blank'><span style="font-size: 1.2em; color: #339900;"><i class="fas fa-download"></i></span>  Download multiple files</a></p>
 {% endwith %} {# page.publicationlibrary.publications.all as publications #}
 
 {%endif%}
@@ -124,19 +125,21 @@
 
 {%if page.publicationlibrary.publications.all%}
     
-    {%if page.publicationlibrary.id == 963 or page.publicationlibrary.id ==  507 %}
-        <table class="table table-condensed table-striped table-bordered" id="fcreports">
+    {%if page.publicationlibrary.id == 963 or  page.publicationlibrary.id == 1255  %}<!-- or page.publicationlibrary.id ==  507-->
+        <!--table class="table table-condensed table-striped table-bordered" id="fcreports"-->
+         <table class="table table-hover table-striped table-sm" id="fcreports" style="margin-top: 10px;">
     {% else %}
-        <table class="table table-condensed table-striped table-bordered" id="publications">
+        <!--table class="table table-condensed table-striped table-bordered" id="publications"-->
+         <table class="table table-hover table-striped table-sm table-bordered"  id="publications" style="margin-top: 10px;">
     {% endif %}
 
     {# http://datatables.net/blog/Twitter_Bootstrap_2 #}
     <thead>
         <tr>{%if  page.publicationlibrary.show_doc_colums %}
-            <th style="width:15%;">{% trans "Doc #" %}</th>
+            <th style="width:15%; color: #810343;">{% trans "Doc #" %}</th>
             {% endif %}
             {%if  page.publicationlibrary.show_agenda_colums %}
-            <th style="width:15%;">{% if page.publicationlibrary.id == 999 %}
+            <th style="width:15%; color: #810343;">{% if page.publicationlibrary.id == 999 %}
                   {% trans "Year" %}
                     {%else%}
                         {% trans "Agenda #" %}
@@ -145,12 +148,12 @@
             </th>
             {% endif %}
              {%if  page.publicationlibrary.show_topicnumber_colums %}
-            <th style="width:15%;">{%if page.id == 925%}{% trans "Type" %} {%else%}{% trans "Topic #" %} {% endif %} </th>
+            <th style="width:15%; color: #810343;">{%if page.id == 925%}{% trans "Type" %} {%else%}{% trans "Topic #" %} {% endif %} </th>
             {% endif %}
             
-            <th>{% trans "Title" %}</th>
-            <th>{% trans "Files" %}</th>
-            <th>{% trans "Publication date" %}</th>
+            <th style="color: #810343;">{% trans "Title" %}</th>
+            <th style=" color: #810343;">{% trans "Files" %}</th>
+            <th style="width:15%; color: #810343;" >{% trans "Publication date" %}</th>
         </tr>
     </thead>
     <tbody>
@@ -236,7 +239,7 @@
         {% endif %}
       {% if publication.publicationurl_set.all %} 
         {% for f in publication.publicationurl_set.all %} 
-            <a href="{{f.url_for_more_information}}">{%if  f.description != NULL and  f.description != ''  %}{{ f.description }}{% else %}Link{% endif %}</a>
+            <a href="{{f.url_for_more_information}}">Link</a>
         {% endfor %}
       {% endif %}
       </td>  
@@ -265,8 +268,9 @@
 
 
 <p align='right'>
-    <a href='/publications/{{page.id}}/files' target='_blank'><i class="icon-download"></i>  Download multiple files</a></p>
+    <a href='/publications/{{page.id}}/files' target='_blank'><span style="font-size: 1.2em; color: #339900;"><i class="fas fa-download"></i></span> Download multiple files</a></p>
 {% endwith %} {# page.publicationlibrary.publications.all as publications #}
 
 {%endif%}
+
 {%endif%}

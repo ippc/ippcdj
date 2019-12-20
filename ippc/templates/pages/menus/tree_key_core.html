@@ -1,38 +1,41 @@
 {% load i18n future pages_tags %}
-{# {% block pageinfo %} #}
-<div class="panel">
-	<h4>{% trans "Key Links &amp; Documents" %}</h4>
+{# {% block pageinfo %} #}  
+<div class="card" style="width: 100%">
+    <div class="card-header">
+         <h5>{% trans "Key Links &amp; Documents" %}</h5>
+    </div>
 	{#% get_page "key-documents" "content" %#}
-	<ul>
-	  <li><a href="/core-activities/governance/convention-text/">Convention text &amp; related information</a></li>
-	  <li><a href="/publications/1015/">IPPC Strategic Framework</a></li>
-	  <li><a href="/core-activities/governance/ippc-procedure-manual">IPPC Procedure Manual</a></li>
-	<li><a href="/publications/1086">IPPC Standard Setting Procedure Manual</a></li>
-	  <li><a href="/core-activities/standards-setting/ispms">Adopted Standards (ISPMs)</a></li>
-	  <li><a href="/core-activities/standards-setting/list-topics-ippc-standards">List of topics for IPPC standards</a></li>
-	  <li><a href="/core-activities/standards-setting/development-standards/searchable-pdf-database/">Searchable PDF database</a></li>
-	  <!--li><a href="/core-activities/standards-setting/member-consultation-draft-ispms">Member consultation on draft ISPMs</a></li-->
-          <li><a href="/core-activities/standards-setting/member-consultation-draft-ispms">Current consultations on draft ISPMs</a></li>
-          
-	  <li><a href="/publications/1034/">Local information for meeting participants</a></li>
-	  <li><a href="/publications/1035/">Preferred Hotel Programme</a></li>
-	  <li><a href="/publications/1036/">IPPC criteria for receiving travel assistance</a></li>
-	  <li><a href="/publications/132/">IPPC Style Guide</a></li>
-	  <li><a href="/core-activities/governance/cpm/cpm-rules-of-procedure">CPM Rules of Procedure</a></li>
-	  <li><a href="/static/media/uploads/05_bureau_2017_oct_costcomparisoncpm-2017-09-28.pdf">Cost comparison between holding the CPM at FAO-HQ versus Incheon, Korea</a></li>
-	  <li><a href="/static/media/uploads/template_for_proposals_going_to_cpm_that_have_resource_implications.docx">Template for proposals going to CPM that have resource implications to the budget of the IPPC Secretariat</a></li>
-	</ul>
+      <ul class="list-group list-group-flush">
+	  <li class="list-group-item"><a href="/core-activities/governance/convention-text/">Convention text &amp; related information</a></li>
+	  <li class="list-group-item"><a href="/publications/1015/">IPPC Strategic Framework</a></li>
+	  <li class="list-group-item"><a href="/core-activities/governance/ippc-procedure-manual">IPPC Procedure Manual</a></li>
+          <li class="list-group-item"><a href="/publications/1086">IPPC Standard Setting Procedure Manual</a></li>
+	  <li class="list-group-item"><a href="/core-activities/standards-setting/ispms">Adopted Standards (ISPMs)</a></li>
+	  <li class="list-group-item"><a href="/core-activities/standards-setting/list-topics-ippc-standards">List of topics for IPPC standards</a></li>
+	  <li class="list-group-item"><a href="/core-activities/standards-setting/development-standards/searchable-pdf-database/">Searchable PDF database</a></li>
+	  <li class="list-group-item"><a href="/core-activities/standards-setting/member-consultation-draft-ispms">Current consultations on draft ISPMs</a></li>
+          <li class="list-group-item"><a href="/publications/1034/">Local information for meeting participants</a></li>
+	  <li class="list-group-item"><a href="/publications/1035/">Preferred Hotel Programme</a></li>
+	  <li class="list-group-item"><a href="/publications/1036/">IPPC criteria for receiving travel assistance</a></li>
+	  <li class="list-group-item"><a href="/publications/132/">IPPC Style Guide</a></li>
+	  <li class="list-group-item"><a href="/core-activities/governance/cpm/cpm-rules-of-procedure">CPM Rules of Procedure</a></li>
+	  <li class="list-group-item"><a href="/static/media/uploads/05_bureau_2017_oct_costcomparisoncpm-2017-09-28.pdf">Cost comparison between holding the CPM at FAO-HQ versus Incheon, Korea</a></li>
+	  <li class="list-group-item"><a href="/static/media/uploads/template_for_proposals_going_to_cpm_that_have_resource_implications.docx">Template for proposals going to CPM that have resource implications to the budget of the IPPC Secretariat</a></li>
+	</ul></div>
+        <!--div class="card" style="width: 100%">
+ <div class="card-header">
+         <h5>{% trans "Major Meetings" %}</h5>
+    </div>
+	
 
-	<h4>Major Meetings</h4>
-
-	<ul>
-	  <li><a href="/core-activities/governance/cpm">Commission on Phytosanitary Measures</a></li>
-	  <li><a href="/core-activities/governance/bureau">CPM Bureau</a></li>
-	  <li><a href="/core-activities/governance/strategic-planning-group">Strategic Planning Group</a></li>
-	  <li><a href="/core-activities/standards-setting/standards-committee">Standards Committee (SC)</a></li>
-	  <li><a href="/core-activities/standards-setting/expert-drafting-groups/technical-panels">Technical panels (TPs)</a></li>
-	  <li><a href="/core-activities/standards-setting/expert-drafting-groups/expert-working-groups">Expert working groups (EWGs)</a></li>
-	  <li><a href="/core-activities/dispute-avoidance-dispute-settlement/subsidiary-body-dispute-settlement">Subsidiary Body on Dispute Settlement</a></li>
+	<ul class="list-group list-group-flush">
+	  <li class="list-group-item"><a href="/core-activities/governance/cpm">Commission on Phytosanitary Measures</a></li>
+	  <li class="list-group-item"><a href="/core-activities/governance/bureau">CPM Bureau</a></li>
+	  <li class="list-group-item"><a href="/core-activities/governance/strategic-planning-group">Strategic Planning Group</a></li>
+	  <li class="list-group-item"><a href="/core-activities/standards-setting/standards-committee">Standards Committee (SC)</a></li>
+	  <li class="list-group-item"><a href="/core-activities/standards-setting/expert-drafting-groups/technical-panels">Technical panels (TPs)</a></li>
+	  <li class="list-group-item"><a href="/core-activities/standards-setting/expert-drafting-groups/expert-working-groups">Expert working groups (EWGs)</a></li>
+	  <li class="list-group-item"><a href="/core-activities/dispute-avoidance-dispute-settlement/subsidiary-body-dispute-settlement">Subsidiary Body on Dispute Settlement</a></li>
 	</ul>
-</div>
+</div-->
 {# {% endblock pageinfo %} #}

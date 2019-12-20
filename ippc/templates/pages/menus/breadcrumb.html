@@ -1,22 +1,32 @@
 {% load i18n future pages_tags translate_tags %}
 
+
 {% if on_home %}
-<li>{% trans "Home" %}</li>
+  <!--li class="breadcrumb-item">{% trans "Home" %}</li-->
 {% else %}
 {% for page in page_branch %}
-
-    {% if not has_home and page.is_primary and forloop.first %}
-    <li id="breadcrumb-menu-home">
+ {% if not has_home and page.is_primary and forloop.first %}
+    <!--li class="breadcrumb-item">
         <a href="{% url "home" %}">{% trans "Home" %}</a>
-        <span class="divider">/</span>
-    </li>
+    </li-->
     {% endif %}
 
     {% if page.is_current_or_ascendant %}
     {% if page.is_current %}
-    <li id="breadcrumb-menu-{{ page.html_id }}"
-        class="active">
-        {# {{ page.title }} #}
+  
+        {% if page.is_current and page.content_model == 'link'%}
+    <li class="breadcrumb-item" aria-current="page"> <a href="{{ page.get_absolute_url }}">
+            {# {{ page.title }} #}
+            {% with page.richtextpage|get_object_translation as translated_page %}
+            {% if translated_page.title %}
+                {{ translated_page.title|safe }}
+                {% else %}
+                {{ page.title }}
+            {% endif %}
+            {% endwith %}
+        </a></li>
+    {% else %}
+    <!--li class="breadcrumb-item active">
         {% with page.richtextpage|get_object_translation as translated_page %}
         {% if translated_page.title %}
             {{ translated_page.title|safe }}
@@ -24,9 +34,10 @@
             {{ page.title }}
         {% endif %}
         {% endwith %}
-        </li>
+        </li--> <li class="breadcrumb-item active" aria-current="page"><i class="fas fa-angle-double-down"></i></li>
+    {% endif %}
     {% else %}
-    <li id="breadcrumb-menu-{{ page.html_id }}">
+    <li class="breadcrumb-item">
         <a href="{{ page.get_absolute_url }}">
             {# {{ page.title }} #}
             {% with page.richtextpage|get_object_translation as translated_page %}
@@ -37,7 +48,7 @@
             {% endif %}
             {% endwith %}
         </a>
-        <span class="divider">/</span>
+   
     </li>
     {% endif %}
     {% if page.has_children %}{% page_menu page %}{% endif %}
@@ -45,3 +56,6 @@
 
 {% endfor %}
 {% endif %}
+
+
+      

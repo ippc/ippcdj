@@ -7,7 +7,7 @@
         var e = document.getElementById('div' + id);
         var img = document.getElementById('img' + id);
         for (var i = 1; i < 12; i++) {
-            if (id != 'div' + i) {
+            if (id !=  i) {
                 var e1 = document.getElementById("div" + i);
                 if (e1 != null ){
                  e1.style.display = 'none';
@@ -121,7 +121,8 @@
                          {% endif %} 
                   </h4> </a>
               {% endif %}
-                <p>  {% if LANGUAGE_CODE != 'en' %}
+               <div style="background-color: {{collapsecontent.bg_color_div}}; ">  
+                    {% if LANGUAGE_CODE != 'en' %}
                         {% if LANGUAGE_CODE == 'es'  and collapsecontent.text_es != '' and collapsecontent.text_es != None %}
                             {%if  collapsecontent.html == 1%}
                                 {% autoescape off %}{{collapsecontent.text_es|safe}} {% endautoescape %}
@@ -165,8 +166,8 @@
                             {% else %}
                                 {{ collapsecontent.text_en|richtext_filter|safe }}
                             {% endif %}
-                    {% endif %}   
-                 </p>
+                    {% endif %}   </div>
+              
                 <div id="div{{forloop.counter}}" style="display:none;"> </div>
             {% endif %}
         {% endfor %}

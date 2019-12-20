@@ -22,16 +22,10 @@
        </h1> 
  
 {% if publication.is_version %}
-<dl class="dl-horizontal" style="border: 3px double red;    padding: 0.5em;">
-    
-    
- <dt>&#160;</dt>
-  <dd style="color:red;">old revision</dd>
-
- {% else %}    
+<div class="alert alert-danger">
+    <span class="label label-danger">OLD REVISION</span>
+{% endif %}
 <dl class="dl-horizontal">
-  
-     {% endif %}
         {% if publication.publication_date %}
            <dt>{% trans "Published" %}</dt> 
            <dd>{% blocktrans with sometime=publication.publication_date|date:"D, d M Y, H:i" %}{{ sometime }}{% endblocktrans %}</dd> 
@@ -59,50 +53,27 @@
           <dd>
 
             {% if publication.file_en %}
-            <a href="{{ MEDIA_URL }}{{ publication.file_en }}">
-              <i class="icon-file"></i> 
-                {# {% if file.file.filetype == 'Image' %} #}
-                {#     <img class="media-object" src="{{ MEDIA_URL }}{% thumbnail file.file 64 64 %}"> #}
-                {# {% else %} #}
-                {#     <img class="media-object" src="{{ STATIC_URL }}img/file_icon.png" /> #}
-                {# {% endif %} #}
-              En
-            </a>
+            <span style="font-size: 1.2em; color: #000;"><i class="far fa-file"></i></span>  <a href="{{ MEDIA_URL }}{{ publication.file_en }}">En</a>
+            {% endif %}
+            {% if publication.file_es %}<span style="font-size: 1.2em; color: #000;"><i class="far fa-file"></i></span>  
+            <a href="{{ MEDIA_URL }}{{ publication.file_es }}">Es</a>
             {% endif %}
 
-            {% if publication.file_es %}
-            <a href="{{ MEDIA_URL }}{{ publication.file_es }}">
-              <i class="icon-file"></i> 
-              Es
-            </a>
+            {% if publication.file_fr %}<span style="font-size: 1.2em; color: #000;"><i class="far fa-file"></i></span>
+            <a href="{{ MEDIA_URL }}{{ publication.file_fr }}">Fr</a>
             {% endif %}
 
-            {% if publication.file_fr %}
-            <a href="{{ MEDIA_URL }}{{ publication.file_fr }}">
-              <i class="icon-file"></i> 
-              Fr
-            </a>
-            {% endif %}
-
-            {% if publication.file_ru %}
-            <a href="{{ MEDIA_URL }}{{ publication.file_ru }}">
-              <i class="icon-file"></i> 
-              Ru
-            </a>
+            {% if publication.file_ru %}              <span style="font-size: 1.2em; color: #000;"><i class="far fa-file"></i></span>  
+            <a href="{{ MEDIA_URL }}{{ publication.file_ru }}">Ru</a>
             {% endif %}
 
             {% if publication.file_ar %}
-            <a href="{{ MEDIA_URL }}{{ publication.file_ar }}">
-              <i class="icon-file"></i> 
-              Ar
-            </a>
+           <span style="font-size: 1.2em; color: #000;"><i class="far fa-file"></i></span>   <a href="{{ MEDIA_URL }}{{ publication.file_ar }}">Ar</a>
             {% endif %}
 
             {% if publication.file_zh %}
-            <a href="{{ MEDIA_URL }}{{ publication.file_zh }}">
-              <i class="icon-file"></i> 
-              Zh
-            </a>
+            <span style="font-size: 1.2em; color: #000;"><i class="far fa-file"></i></span>
+            <a href="{{ MEDIA_URL }}{{ publication.file_zh }}">Zh</a>
             {% endif %}
       
           </dd>
@@ -110,15 +81,21 @@
             {% if publication.publicationfile_set.all %}
      <dt>{% trans "Additional files" %}</dt>
      {% for f in publication.publicationfile_set.all %} 
-       <dd><a href="{{MEDIA_URL}}{{f.file.name}}">{{ f.description }}</a></dd>
-     {% endfor %}
+       <dd> <span style="font-size: 1.2em; color: #000;"><i class="far fa-file"></i></span>
+       <a href="{{MEDIA_URL}}{{f.file.name}}">{{ f.description }}</a>&#160;</dd>
+     {% endfor %} </p>
    {% endif %}
 
   {% if publication.publicationurl_set.all %}
     <dt>{% trans "Links" %}</dt>
-    {% for f in publication.publicationurl_set.all %} 
-      <dd><a href="{{f.url_for_more_information}}">{%if  f.description != NULL and  f.description != ''  %}{{ f.description }}{% else %}{{ f.url_for_more_information }}{% endif %}</a></dd>
+    
+      <dd>
+       {% for f in publication.publicationurl_set.all %} <span style="font-size: 1.2em; color: #000;"><i class="fas fa-link"></i></span>
+      <a href="{{f.url_for_more_information}}">{%if  f.description != NULL and  f.description != ''  %}{{ f.description }}{% else %}{{ f.url_for_more_information }}{% endif %}</a>&#160;
     {% endfor %}
+      
+      
+    </dd>
   {% endif %}
           {% if publication.short_description %}
         
@@ -204,6 +181,10 @@
           
           
         </dl>
+{% if publication.is_version %}
+</div>
+{% endif %}
+
    {% if publication.id == 86090 %}
   <iframe src="/static/media/uploads/cpm-participation-guide/index.html" width="1500" height="1000"></iframe>
 {% endif %}  

@@ -1,38 +1,48 @@
 {% load i18n future pages_tags %}
  {% block pageinfo %}
  
- <div class="panel">
-<div class="alert alert-warning" role="alert">
+
+<div class="alert alert-danger" role="alert">
  
- <i class="icon-warning-sign"></i> The Partners area of the IPPC website contains unofficial information only.</div>
+<span style="font-size: 1.2em; "> <i class="fas fa-exclamation-triangle"></i>The Partners area of the IPPC website contains unofficial information only.</span>
+</div>
  
-  
-     
-     
-   
 
-
-
-    <h4>Key documents</h4>
-    <ul>
-        <li><a href="/publications/27/">Reporting through RPPOs</a></li>
-        <li>Nomination Form of the Official Contact Point of the RPPO:
+     {% if page.id != 466 and  page.parent_id != 466 %}<!-- RPPO -->
+                    
+<div class="card" style="width: 100%">
+    <div class="card-header">
+         <h5>{% trans "Key documents" %}</h5>
+    </div>
+	
+       <ul class="list-group list-group-flush">
+                <li class="list-group-item"><span style="font-size: 1.2em; color: #339900;"> <i class="fas fa-file-signature"></i></span><a href="/{{ LANGUAGE_CODE }}/publications/27/">Reporting through RPPOs</a></li>
+        <li  class="list-group-item">Nomination Form of the Official Contact Point of the RPPO:
           
   <ul>
-                    <li><a href="/static/media/files/Arabic _ IPPC Official Contact Point notification form RPPOs ArabicEnglish 1.doc">Arabic</a></li>
-                    <li><a href="/static/media/files/IPPC Official Contact Point notification form ENG RPPOs.doc">English</a></li>
-                    <li><a href="/static/media/files/IPPC Official Contact Point notification form FR RPPOs.doc">French</a></li>
-                    <li><a href="/static/media/files/IPPC Official Contact Point notification form RUS RPPOs.doc">Russian</a></li>
-                    <li><a href="/static/media/files/IPPC Official Contact Point notification form SPANISH RPPOs.doc">Spanish</a></li>
+                    <li style="list-style-type: none;"> <span style="font-size: 1.2em; color: #339900;"> <i class="far fa-file-word"></i></span>  <a href="/static/media/files/Arabic _ IPPC Official Contact Point notification form RPPOs ArabicEnglish 1.doc">Arabic</a></li>
+                    <li style="list-style-type: none;"><span style="font-size: 1.2em; color: #339900;"> <i class="far fa-file-word"></i></span>  <a href="/static/media/files/IPPC Official Contact Point notification form ENG RPPOs.doc">English</a></li>
+                    <li style="list-style-type: none;"><span style="font-size: 1.2em; color: #339900;"> <i class="far fa-file-word"></i></span>  <a href="/static/media/files/IPPC Official Contact Point notification form FR RPPOs.doc">French</a></li>
+                    <li style="list-style-type: none;"><span style="font-size: 1.2em; color: #339900;"> <i class="far fa-file-word"></i></span>  <a href="/static/media/files/IPPC Official Contact Point notification form RUS RPPOs.doc">Russian</a></li>
+                    <li style="list-style-type: none;"><span style="font-size: 1.2em; color: #339900;"> <i class="far fa-file-word"></i></span>  <a href="/static/media/files/IPPC Official Contact Point notification form SPANISH RPPOs.doc">Spanish</a></li>
              </ul>
          </li>
-    </ul>
-    <h4>Major Meetings</h4>
-    <ul>
-        <li><a href="/partners/technical-consultation-among-rppos">Technical Consultation among RPPOs</a></li>
-        <li><a href="/liason/organizations/wto/">World Trade Organization</a></li>
-        <li><a href="/liason/organizations/stdf/">Standard Trade and Development Facility</a></li>
+    </ul>  
+          
+	
+      </div>
+     
+     <div class="card" style="width: 100%">
+    <div class="card-header">
+         <h5>{% trans "Major Meetings" %}</h5>
+    </div>
+    <ul class="list-group list-group-flush">
+        <li class="list-group-item"><a href="/{{ LANGUAGE_CODE }}/core-activities/external-cooperation/partners/technical-consultation-among-rppos/">Technical Consultation among RPPOs</a></li>
+        <!--li class="list-group-item"><a href="/{{ LANGUAGE_CODE }}/external-cooperation/organizations-page-in-ipp/wto/">World Trade Organization</a></li>
+        <li class="list-group-item"><a href="/{{ LANGUAGE_CODE }}/external-cooperation/organizations-page-in-ipp/stdf/">Standard Trade and Development Facility</a></li-->
     </ul>
 
 
- </div>     {% endblock pageinfo %}
+ </div>     </div>
+     {% endif %}
+     {% endblock pageinfo %}

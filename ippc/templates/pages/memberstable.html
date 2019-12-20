@@ -19,7 +19,10 @@
 
   
 {% if  page.id == 321 %} 
- <thead>
+{% autoescape off %}
+                        {{table_sec}}
+                   {% endautoescape %}  
+ <!--thead>
      <tr>
        <th>{% trans "Last Name" %}</th>
        <th>{% trans "First Name" %}</th>
@@ -33,16 +36,16 @@
         <td>{{user.0}}</td>
         <td>{{user.1}}</td>
         <td>{% if user.2 %}
-          <img class="profile-picture" style="margin:0 0 20px 10px;" src="{{ MEDIA_URL }}{% thumbnail user.2 30 30 %}">
+          <img class="profile-picture" style="margin:0 0 20px 10px;" src="{{ MEDIA_URL }}{% thumbnail user.2 50 50 %}">
             {% else %}
-          <a class="profile-picture" style="height:30px; width:30px; background:#eee;"></a>
+          <i class="fas fa-user"> </i>
             {% endif %}</a>
         </td>
         <td>{{user.3}}</td>
     </tr>
   {% endfor %} 
   {% endif %}
-  
+  -->
  {% if  page.id == 350 %} 
   <thead>
      <tr>

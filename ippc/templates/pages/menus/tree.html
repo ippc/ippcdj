@@ -1,48 +1,16 @@
 {% load i18n future pages_tags %}
 
 {% spaceless %}
-{# <div class="treemenu"> #}
+
 {% if page_branch_in_menu %}
 <ul class="nav nav-list navlist-menu-level-{{ branch_level }}">
-    {# treemenu class enables tree dropdown with CSS3 http://stackoverflow.com/a/16664260 #}
   {% for page in page_branch %}
-  {# {% if not has_home and page.is_primary and forloop.first %} #}
-  {# <li class="first{% if on_home %} active{% endif %}" #}
-  {#     id="tree-menu-home"> #}
-  {#     <a href="{% url "home" %}">{% trans "Home" %}</a> #}
-  {# </li> #}
-  {# {% endif %} #}
+
   {% if page.in_menu %}
-  
-  
-  
-  
-  {# =todo: #}
-  {# In workarea sidebar list pages accessible to each user [according to his permissions](http://stackoverflow.com/a/16016717) #}
-  {# and only display page content if he is in the page's permission group. #}
-    {# {% if page.login_required %}  #}
-  {#  #}
-    {#   {% for group in request.user.groups.all %}  #}
-    {#     {% if group in page.get_content_model.groups.all %}  #}
-  {#  #}
-  {#       list of pages accessible to user #}
-  {#        #}
-  {#     {% endif %}  #}
-  {#   {% endfor %}  #}
-  {#  #}
-  {#   {% else %} #}
-  {#  #}
-  {#     nothing #}
-  {#  #}
-  {# {% endif %} #} 
-  
-  
-  
-  
-  {# only show pages in current section #}
+
   {% if page.is_current_or_ascendant or not page.is_primary %}
-  <li class="
-             {% if page.is_current %} active{% endif %}
+  
+ <li class="{% if page.is_current %} active{% endif %}
              {% if not page.is_primary and forloop.first %} first{% endif %}
              {% if forloop.last %} last{% endif %}"
       id="tree-menu-{{ page.html_id }}">
@@ -50,9 +18,15 @@
       {% load translate_tags %}
       
       {% if page.login_required %}
-        {% if user.is_superuser or perms.ippc.change_news  %}
+       {% if user.is_superuser or perms.ippc.change_news  %}
             <a href="{{ page.get_absolute_url }}">
-                {% if page.has_children_in_menu %}<i class="icon-plus"> </i> {% endif %}
+              {% if page.has_children_in_menu %}
+            {% if page.is_current %}
+                <i id="caret" style="font-size: 1.2em;  color: #ffffff" class="fas fa-chevron-down"></i>
+            {%else%}
+                <i id="caret" style="font-size: 1.2em;  color: #00000" class="fas fa-chevron-right"></i>
+            {% endif %}
+        {% endif %} 
                 {% with page.richtextpage|get_object_translation as translated_page %}
                 {% if translated_page.title %}
                     {{ translated_page.title|safe }}
@@ -62,12 +36,16 @@
                 {% endwith %} 
                 </a> 
         {% else %}
-         {#% for group in request.user.groups.all %#} 
-            {#% if group in page.get_content_model.groups.all %#} 
             {% if request.user.groups.all.0 in page.get_content_model.groups.all or request.user.groups.all.1 in page.get_content_model.groups.all or request.user.groups.all.2 in page.get_content_model.groups.all  or request.user.groups.all.3 in page.get_content_model.groups.all or request.user.groups.all.4 in page.get_content_model.groups.all or request.user.groups.all.5 in page.get_content_model.groups.all  or request.user.groups.all.6 in page.get_content_model.groups.all or request.user.groups.all.7 in page.get_content_model.groups.all  %}
       
                 <a href="{{ page.get_absolute_url }}">  
-                  {% if page.has_children_in_menu %}<i class="icon-plus"> </i> {% endif %}
+               {% if page.has_children_in_menu %}
+            {% if page.is_current %}
+                <i id="caret" style="font-size: 1.2em;  color: #ffffff" class="fas fa-chevron-down"></i>
+            {%else%}
+                <i id="caret" style="font-size: 1.2em;  color: #00000" class="fas fa-chevron-right"></i>
+            {% endif %}
+        {% endif %} 
                 {% with page.richtextpage|get_object_translation as translated_page %}
                 {% if translated_page.title %}
                     {{ translated_page.title|safe }}
@@ -81,10 +59,16 @@
          
               {% endif %}
          
-         
-     {% else %}    
+     {% else %}     
      <a href="{{ page.get_absolute_url }}"> 
-      {% if page.has_children_in_menu %}<i class="icon-plus"> </i> {% endif %}
+         {% if page.has_children_in_menu %}
+            {% if page.is_current %}
+                <i id="caret" style="font-size: 1.2em;  color: #ffffff" class="fas fa-chevron-down"></i>
+            {%else%}
+                <i id="caret" style="font-size: 1.2em;  color: #00000" class="fas fa-chevron-right"></i>
+            {% endif %}
+        {% endif %} 
+         
          {% if page.content_model == 'publicationlibrary'%}
             {% with page.publicationlibrary|get_object_translation as translated_page %}
         {% if translated_page.title %}
@@ -121,12 +105,12 @@
     {# wrap the next line with 'if page.is_current_or_ascendant' #}
     {# to only show child pages in the menu for the current page #}
     {% if page.is_current_or_ascendant %}
-        {% if page.has_children_in_menu %}{% page_menu page %}{% endif %}
+        {% if page.has_children_in_menu %} {% page_menu page %}{% endif %}
     {% endif %}
   </li>
   {% endif %} {# page.is_current_or_ascendant or not page.is_primary #}
   
-  
+
   {% endif %}
   {% endfor %}
 </ul>

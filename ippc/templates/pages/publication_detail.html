@@ -1,21 +1,27 @@
 {% extends "base.html" %}
-{% load pages_tags mezzanine_tags i18n future staticfiles accounts_tags %}
+{% load pages_tags mezzanine_tags i18n future staticfiles accounts_tags translate_tags %}
   {% load ippc_tags %}
 {% block meta_title %}{{ publication.title }}{% endblock %}
 
 
 {% block breadcrumb_menu %}
-<li><a href="javascript:history.go(-1)">{% trans "« Go back" %}</a> <span class="divider">/</span> {# <a href="/publications/">{% trans "Publications" %}</a><span class="divider">/</span> #}</li>
-<li class="active">
-    {% if publication %}
-    {{ publication.title }}  {% else %} {% trans "Restricted publication " %}{% endif %}</li>
+<li class="breadcrumb-item"> <a href="{{ publication.library.get_absolute_url }}">   {% with  publication.library.richtextpage|get_object_translation as translated_page %}
+                {% if translated_page.title %}
+                    {{ translated_page.title|safe }}
+                    {% else %}
+                    {{ publication.library.title }}
+                {% endif %}  {% endwith %} </a></li>
+<!--li  class="breadcrumb-item active">
+    {% if publication %}{{ publication.title }}  {% else %} {% trans "Restricted publication " %}{% endif %}
+</li-->
+<li class="breadcrumb-item active" aria-current="page"><i class="fas fa-angle-double-down"></i></li>
 {% endblock %}
 
 
 
 
 {% block local_nav %}
-<div class="well localnav"> 
+<div class="pull-right" style="width: 30%;background-color: #efecec;padding: 10px;border: 1px solid rgba(0,0,0,.125);  border-radius: .25rem;">
     <script type="text/javascript">
     function toggle_visibility_rev(id) {
        var e = document.getElementById(id);
@@ -25,16 +31,16 @@
           e.style.display = 'block';
     }
     </script>
-    <p><a href="javascript:history.go(-1)">{% trans "« Go back" %}</a></p>
+    <p><a href="javascript:history.go(-1)">< {% trans " Go back" %}</a></p>
     {% if user.is_superuser or perms.ippc.change_publication  %}
         {% if user.is_superuser %}
-         <a class="btn btn-small btn-info" href="/admin/ippc/publication/{{publication.id}}"><i class="icon-edit icon-white"></i> Edit as admin</a>     
-         <a class="btn btn-small btn-info" href="/publication/edit/{{publication.id}}"><i class="icon-edit icon-white"></i> Edit</a>     
+         <a class="btn btn-small btn-info" href="/admin/ippc/publication/{{publication.id}}"><span style="font-size: 1.2em; color: #ffffff;"><i class="fas fa-edit"></i></span>  Edit as admin</a> <br>    
+         <a class="btn btn-small btn-info" href="/publication/edit/{{publication.id}}"><span style="font-size: 1.2em; color: #ffffff;"><i class="fas fa-edit"></i></span>  Edit</a>     
         {% endif %}
         {% for group in request.user.groups.all %} 
-            {% if group.name == 'IPPC Secretariat'%}
-            <a class="btn btn-small btn-info" href="/admin/ippc/publication/{{publication.id}}"><i class="icon-edit icon-white"></i> Edit as admin</a>     
-         <a class="btn btn-small btn-info" href="/publication/edit/{{publication.id}}"><i class="icon-edit icon-white"></i> Edit</a>     
+            {% if group.name == 'IPPC Secretariat' and not  user.is_superuser%}
+            <a class="btn btn-small btn-info" href="/admin/ippc/publication/{{publication.id}}"><span style="font-size: 1.2em; color: #ffffff;"><i class="fas fa-edit"></i></span>  Edit as admin</a><br>     
+         <a class="btn btn-small btn-info" href="/publication/edit/{{publication.id}}"><span style="font-size: 1.2em; color: #ffffff;"><i class="fas fa-edit"></i></span>  Edit</a>     
          {% endif %}
         {% endfor %}
         
@@ -60,7 +66,7 @@
                 {% include "pages/publication_detail_block.html" %}  
     {% if  restrictedmessage == 'true' %}
       
-           <p>{% trans "The page is restricted to group members. Please Login  to view the page." %}</p>
+    <div class="alert alert-danger">{% trans "The page is restricted to group members. Please Login  to view the page." %}</div>
       
     {% endif %}
 {% endblock %}

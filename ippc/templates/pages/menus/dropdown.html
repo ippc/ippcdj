@@ -1,25 +1,34 @@
-
-  
-
 {% load i18n future pages_tags %}
 {% spaceless %}
 {% if page_branch_in_menu %}
 
 {% if branch_level == 0 %}
-<ul class="nav nav-collapse pull-left" style="clear:both;">
-    <li{% if page.id == None %} class="active"{% endif %}><a href="/"><span class="icon-home" title="Home">&#160;</span></a></li>
+ <ul class="navbar-nav mr-auto">
+    <li class="nav-item {% if page.id == None %}active{% endif %}"><a href="/" class="nav-link">{% trans "Home" %} <span class="sr-only">(current)</span></a></li>
 
     {% for page in page_branch %}
-    {# {% if not has_home and page.is_primary and forloop.first %} #}
-    {# <li class="{% if on_home %} active{% endif %}" id="dropdown-menu-home"> #}
-    {#     <a href="{% url "home" %}">{% trans "Home" %}</a> #}
-    {# </li> #}
-    {# {% endif %} #}
+   
     {% if page.in_menu %}
-    <li class="dropdown{% if page.is_current_or_ascendant %} active{% endif %}"
-        id="dropdown-menu-{{ page.html_id }}">
-        <a href="{{ page.get_absolute_url }}">
-            
+    
+    {% if  page.title == 'Forum' %}
+       <li class="nav-item-restricted {% if page.has_children_in_menu %}dropdown{% endif %}{% if page.is_current_or_ascendant %} active-restricted{% endif %}"
+        id="dropdown-menu-{{ page.html_id }}"> 
+     {%else%}
+        {%if page.id == 530%}
+          <li class="nav-item-restricted {% if page.has_children_in_menu %}dropdown{% endif %}{% if page.is_current_or_ascendant %} active-restricted{% endif %}"
+            id="dropdown-menu-{{ page.html_id }}"> 
+        {%else%}
+          <li class="nav-item {% if page.has_children_in_menu %}dropdown{% endif %}{% if page.is_current_or_ascendant %} active{% endif %}"
+            id="dropdown-menu-{{ page.html_id }}"> 
+        {%endif%}
+  {%endif%}
+        {%if page.id == 1%}
+        <a  class="nav-link" href="/{{ LANGUAGE_CODE }}/news/category/ippcnews/" >
+        {%else%}
+            <a  class="nav-link" href="{{ page.get_absolute_url }}" ><!--{% if page.has_children_in_menu  and page.id != 3 %}{% endif %}-->
+        {% endif %}
+        
+        
               {% load translate_tags %}
                 {% with page.richtextpage|get_object_translation as translated_page %}
                     {{ translated_page.title|safe }}
@@ -34,24 +43,52 @@
                         {{ translated_page.title|safe }} 
                         {% endwith %}
                 {% endif %}
-            
-            {% if page.has_children_in_menu %}<span class="caret"></span>{% endif %}
         </a>
         {% if page.has_children_in_menu %}{% page_menu page %}{% endif %}
     </li>
     {% endif %}
     {% endfor %}
-    {# <li class="divider-vertical"></li> #}
+    
 </ul>
 {% endif %}
 
 {% if branch_level == 1 %}
 <ul class="dropdown-menu">
     {% for page in page_branch %}
+    {% if page.in_menu %} {%if page.content_model == 'countrypage' %}{%else%}
+    <li class="{% if page.has_children_in_menu %}nav-item dropdown{% endif %}{% if page.is_current_or_ascendant %} active{% endif %}">
+            <a class="dropdown-item" href="{{ page.get_absolute_url }}">
+     {% if page.has_children_in_menu %}<em class="fas fa-angle-down mr-1 mt-1 float-right"></em> {% endif %}
+            {% load translate_tags %}
+                {% with page.richtextpage|get_object_translation as translated_page %}
+                    {{ translated_page.title|safe }} 
+                {% endwith %}
+
+                {# =todo: get Link pages to display text. #}
+                {% if not page.richtextpage %}
+                       
+                  {% with page.link|get_object_translation as translated_page %}
+                        {{ translated_page.title|safe }} 
+                        {% endwith %}
+                {% with page.publicationlibrary|get_object_translation as translated_page %}
+                        {{ translated_page.title|safe }} 
+                        {% endwith %}
+                        {% endif %}</a>
+         {% if page.has_children_in_menu %}{% page_menu page %}{% endif %}
+    </li>{% endif %}
+    {% endif %}
+    {% endfor %}
+</ul>
+{% endif %}
+
+{% if branch_level == 2 %}
+<ul class="dropdown-menu">
+    {% for page in page_branch %}
     {% if page.in_menu %}
-    <li{% if page.is_current_or_ascendant %} class="active"{% endif %}
-        id="dropdown-menu-{{ page.html_id }}">
-        <a href="{{ page.get_absolute_url }}">  
+     <li class="{% if page.has_children_in_menu %}nav-item dropdown{% endif %}{% if page.is_current_or_ascendant %} active{% endif %}">
+   
+            <a  class="dropdown-item" href="{{ page.get_absolute_url }}">
+    {% if page.has_children_in_menu %}<em class="fas fa-angle-down mr-1 mt-1 float-right"></em> {% endif %}
             {% load translate_tags %}
                 {% with page.richtextpage|get_object_translation as translated_page %}
                     {{ translated_page.title|safe }} 
@@ -67,91 +104,42 @@
                         {{ translated_page.title|safe }} 
                         {% endwith %}
                 {% endif %}</a>
+         {% if page.has_children_in_menu %}{% page_menu page %}{% endif %}
     </li>
     {% endif %}
     {% endfor %}
 </ul>
 {% endif %}
 
-{% endif %}
-{% endspaceless %}
-
-
-{# https://groups.google.com/d/msg/mezzanine-users/h1nc86hPTWQ/hqx2nsSlrdMJ #}
-
-
-{% comment %}
-{% load i18n pages_tags %}
-{% spaceless %}
-{% if page_branch_in_menu %}
-
-{% if branch_level == 0 %}
-<ul class="nav nav-collapse pull-left" style="clear:both;">
+{% if branch_level == 3 %}
+<ul class="dropdown-menu">
     {% for page in page_branch %}
-    {% if page.is_primary and forloop.first %}
-    <li class="{% if on_home %} active{% endif %}" id="dropdown-menu-{{ page.html_id }}">
-        <a href="{% url "home" %}">{% trans "Home" %}</a>
-    </li>
-    {# <li class="divider-vertical"></li> #}
-    {% endif %}
     {% if page.in_menu %}
-    {% if page.login_required and request.user.is_authenticated or not page.login_required %}
-    <li class="dropdown{% if page.is_current_or_ascendant %} active{% endif %}"
-        id="dropdown-menu-{{ page.html_id }}">
-        <a href="{{ page.get_absolute_url }}"{% if page.has_children %}data-hover="dropdown" class="dropdown-toggle active"{% endif %}>
-
-
-                {% load translate_tags %}
+    <li class="{% if page.has_children_in_menu %}nav-item dropdown{% endif %}{% if page.is_current_or_ascendant %} active{% endif %}">
+   
+            <a  class="dropdown-item" href="{{ page.get_absolute_url }}">
+   
+            {% load translate_tags %}
                 {% with page.richtextpage|get_object_translation as translated_page %}
-                    {{ translated_page.title|safe }}
+                    {{ translated_page.title|safe }} 
                 {% endwith %}
 
                 {# =todo: get Link pages to display text. #}
                 {% if not page.richtextpage %}
-                  {% trans page.title %}{# &#8599; <i class="icon-share-alt"></i>   #}
-                {% endif %}
-                
-            {% if page.has_children %}<span class="caret"></span>{% endif %}
-        </a>
-        {% if page.has_children %}{% page_menu page %}{% endif %}
+                       
+                  {% with page.link|get_object_translation as translated_page %}
+                        {{ translated_page.title|safe }} 
+                        {% endwith %}
+                {% with page.publicationlibrary|get_object_translation as translated_page %}
+                        {{ translated_page.title|safe }} 
+                        {% endwith %}
+                {% endif %}</a>
+         {% if page.has_children_in_menu %}{% page_menu page %}{% endif %}
     </li>
-    {# <li class="divider-vertical"></li> #}
-    {% endif %}
     {% endif %}
     {% endfor %}
 </ul>
 {% endif %}
-
-{% if branch_level > 0 %}
-  {# {% if not page.title == "Countries" %} #} {# don't show all countries in dropdown #}
-  <ul class="dropdown-menu"{% if branch_level == 1 %} role="menu"{% endif %}>
-      {% for page in page_branch %}
-      {% if page.in_menu %}
-      {% if page.login_required and request.user.is_authenticated or not page.login_required %}
-      <li{% if page.is_current_or_ascendant %} class="active {% if page.has_children %} dropdown-submenu{% endif %}"{% else %}
-              {% if page.has_children %}class="dropdown-submenu"{% endif %}
-              {% endif %}
-          id="dropdown-menu-{{ page.html_id }}">
-          <a href="{{ page.get_absolute_url }}">
-              {% load translate_tags %}
-                {% with page.richtextpage|get_object_translation as translated_page %}
-                    {{ translated_page.title|safe }}
-                {% endwith %}
-
-                {# =todo: get Link pages to display text. #}
-                {% if not page.richtextpage %}
-                  {% trans page.title %}{# &#8599; <i class="icon-share-alt"></i>   #}
-                {% endif %}
-          </a>
-          {% if page.has_children %}{% page_menu page %}{% endif %}
-      </li>
-      {% endif %}
-      {% endif %}
-      {% endfor %}
-  </ul>
-  {# {% endif %} #}
-{% endif %}
-
 {% endif %}
 {% endspaceless %}
-{% endcomment %}
+
