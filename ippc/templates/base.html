@@ -1,28 +1,39 @@
+
 <!doctype html>
 <html lang="{{ LANGUAGE_CODE }}"{% if LANGUAGE_BIDI %} dir="rtl"{% endif %}>
-      {% load pages_tags mezzanine_tags i18n future staticfiles %}
+      {% load pages_tags mezzanine_tags i18n future staticfiles localeurl_tags %}
       <head>
 
         <meta http-equiv="Content-type" content="text/html; charset=utf-8">
-        <meta name="viewport" content="width=device-width">
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"">
         <meta name="robots" content="index,follow">
         <meta name="keywords" content="{% block meta_keywords %}{% endblock %}">
         <meta name="description" content="{% block meta_description %}{% endblock %}">
         <meta name="google-site-verification" content="7gYniolcWgnISXKdGyrk7JeW0RGCtu3cT0VAXZQjm9I" />
- 	   <title>{% block meta_title %}{% endblock %} - {% trans "International Plant Protection Convention" %}</title>
-        <link href="//netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.css" rel="stylesheet">
+        <title>{% block meta_title %}{% endblock %} - {% trans "International Plant Protection Convention" %}</title>
+        <!--link href="//netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.css" rel="stylesheet"-->
         <link rel="shortcut icon" href="{% static "img/favicon.ico" %}">
-              <link rel="stylesheet" type="text/css" href="/static/grappelli/css/widgets.css">
+        <link rel="stylesheet" type="text/css" href="/static/grappelli/css/widgets.css">
         {% ifinstalled mezzanine.blog %}
-        <link rel="alternate" type="application/rss+xml" title="RSS" href="{% url "blog_post_feed" "rss" %}">
-              <link rel="alternate" type="application/atom+xml" title="Atom" href="{% url "blog_post_feed" "atom" %}">
-              {% endifinstalled %}
+            <link rel="alternate" type="application/rss+xml" title="RSS" href="{% url "blog_post_feed" "rss" %}">
+            <link rel="alternate" type="application/atom+xml" title="Atom" href="{% url "blog_post_feed" "atom" %}">
+        {% endifinstalled %}
 
-              {% compress css %}
-              <link rel="stylesheet" href="{% static "css/bootstrap.css" %}">
-              <link rel="stylesheet" href="{% static "css/mezzanine.css" %}">
-              <link rel="stylesheet" href="{% static "css/bootstrap-responsive.css" %}">
-              <link rel="stylesheet" href="{% static "css/ippc20160201_2.css" %}">
+        {% compress css %}
+            <!--link rel="stylesheet" href="{% static "css/bootstrap.css" %}"-->
+            <!--link rel="stylesheet" href="{% static "css/mezzanine.css" %}"-->
+            <link rel="stylesheet" href="{% static "css/bootstrap-responsive.css" %}">
+              <!--link rel="stylesheet" href="{% static "css/ippc20160201_2.css" %}"-->
+             <!-- Font Awesome --> 
+                <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" >
+                <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.2/css/all.css">
+  <!-- Bootstrap core CSS -->
+            <link rel="stylesheet" type="text/css" href="{% static "css/gridipp/bootstrap/css/bootstrap.min.css" %}" >
+            <link href="{% static "css/gridipp/bootstrap/css/animate.css" %}" rel="stylesheet" type="text/css">
+            <!-- Bootstrap  CSS -->
+            <link rel="stylesheet" href="{% static "css/gridipp/style.css" %}">
+            <link rel="stylesheet" href="{% static "css/gridipp/style_1.css" %}">
+
               <link rel="stylesheet" href="{% static "css/chosen.css" %}">
               <link rel="stylesheet" href="{% static "schedule/css/schedule.css" %}" type="text/css" media="screen" />
 
@@ -147,8 +158,27 @@
 
         </script>
         {% endif %}
-        <style type="text/css">
+               <script type="text/javascript">
+                function openNav() {
+                  var divmainbox = document.getElementById('divmainbox');
+                  var divmainsidebox = document.getElementById('divmainsidebox');
+                  var divaction = document.getElementById('divaction');
+                  divmainbox.className = "span8";
+                  divmainsidebox.className = "span4";
+                  divmainsidebox.style.display='block';
+                  divaction.style.display='none';
+                }
 
+                function closeNav() {
+                  var divmainbox = document.getElementById('divmainbox');
+                  var divmainsidebox = document.getElementById('divmainsidebox');
+                  var divaction = document.getElementById('divaction');
+                  divmainbox.className = "span12";
+                  divmainsidebox.style.display='none';
+                  divaction.style.display='block';
+                }
+            </script>
+<style type="text/css">
 #floating_link{
      position: fixed;
      right: 0;
@@ -190,298 +220,383 @@
   background  :url(/static/img/feedback.png)  no-repeat 0 7px ;
 
 }
+</style><!--a id="floating_link" href="/help"><span style=" text-color: red;text-align: vertical"><span></a-->           
+</head>
 
-
-
-
-
-</style><a id="floating_link" href="/help"><span style=" text-color: red;text-align: vertical"><span></a>  
-            
-    </head>
-
-    <body id="{% block body_id %}body{% endblock %}" class="{% block body_class %}{% endblock %}">
-
-
-
-        <div class="navbar navbar-fixed-top">
-            <div class="navbar-inner">
-
-                <div class="container-fluid">
-
-                    {# <p style="margin:0;" class="alert alert-success small">We are currently transitioning to a redesigned website. If you see an error, please check the <a href="https://www.ippc.int/en/faq/#WebsiteIssues">list of known issues in the FAQ</a>.</p> #}
-                    {# language bar #}
-                    {# http://pythonhosted.org/django-localeurl/usage.html #}
-                    {% load localeurl_tags %}
-                    <ul class="nav nav-pills small pull-left languagebar">
-                        {% for lang in LANGUAGES %}
-                        {% ifequal lang.0 LANGUAGE_CODE %}
-                        <li class="active"><a href="#">{{ lang.1 }}</a></li>
+<body id="{% block body_id %}body{% endblock %}" class="{% block body_class %}{% endblock %}">
+        
+<!-- LOGOS/NAVBAR row -------------------------------------------------------------------------------------------------------------------------->
+     
+<div id="row-top">
+    <!--loghi------>	
+    <div class="container">
+   
+         <div class="row">
+            <div class="col-md-12 pull-right text-right">
+                <div class="lang-select">
+                {% for lang in LANGUAGES %}
+                     {% ifequal lang.0 LANGUAGE_CODE %}
+                       <a class="active" href="#">{{ lang.1 }}</a> 
                         {% else %}
-                        <li><a href="{{ request.path|chlocale:lang.0 }}">{{ lang.1 }}</a></li>
-                        {% endifequal %}
+                      <a href="{{ request.path|chlocale:lang.0 }}">{{ lang.1 }}</a>
+                        
+                       
+                        {% endifequal %}{% if forloop.counter == 6 %}
+                           {% else %}  |
+                        {% endif %}
                         {% endfor %}
-                    </ul>
+                        {% nevercache %}
+                         {% include "includes/user_panel.html" %}
+                         {% endnevercache %}
+                </div>  
+            </div>
+       </div>
+        <div class="row">
+            <div class="col-md-8"><a href="http://www.fao.org"><img src="/static/img/FAO-logo.png" alt="FAO" class="logo"></a></div>
+            <div class="pull-right"> 
+                <a  href="/{{ LANGUAGE_CODE }}">
+                    <img src="/static/img/{{ LANGUAGE_CODE }}.png" alt="logo IPPC" class="logo float-right"> 
+                </a>
+            </div>
+        </div> 
+       <div class="row">
+        <div class="col-md-8">
+         
+        </div>
+        <div class="col-md-4">
+            {% search_form "all" %}
+        </div> 
+    </div>
+    </div><!--/.loghi-->  
+       
+    <!--Navbar------>
+    <nav class="navbar navbar-expand-lg navbar-light bg-light" id="main_navbar">
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="container">
+            <div class="collapse navbar-collapse" id="navbarSupportedContent">
+               {% page_menu "pages/menus/dropdown.html" %}
+            </div>
+	</div>
+        
+    </nav>
+</div><!-- ./ row-top-->
 
-                    <div class="nav-collapse collapse">
-                        {# toolbar, user panel, login/logout #}
-                        <div class="pull-right text-right">
-                            {% nevercache %}
-                            {% include "includes/user_panel.html" %}
-                            {% endnevercache %}
-                            {# <div class="panel"> #}
-                                {# {% block right_panel %} #}
-                                {# {% ifinstalled mezzanine.twitter %} #}
-                                {# {% include "twitter/tweets.html" %} #}
-                                {# {% endifinstalled %} #}
-                                {# {% endblock %} #}
-                                {# </div> #}
-                            {# <br> #}
-                            {# {% search_form %} #}
-                        </div>
-                    </div>
-
-                    <a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
-                        <span class="icon-bar"></span>
-                        <span class="icon-bar"></span>
-                        <span class="icon-bar"></span>
-                    </a>
-
-                    <div class="pull-left" style="clear:left; ">
-                      <a href="http://www.fao.org"><img src="/static/img/FAO-logo.png" alt="FAO"></a>
-                    </div>
-
-                    <div class="pull-right" style="clear:right; padding-bottom: 0.2cm; " >
-                        <a  href="/{{ LANGUAGE_CODE }}">
-                            
-                            {% if LANGUAGE_CODE != 'en' %}
-                                {% if LANGUAGE_CODE == 'es'  %}
-                                     <img src="/static/img/es.png" width="420px"> 
-                                {% elif LANGUAGE_CODE == 'fr'  %}
-                                     <img src="/static/img/fr.png" width="420px"> 
-                                {% elif LANGUAGE_CODE == 'ru'   %}
-                                   <img src="/static/img/ru.png" width="420px"> 
-                                {% elif LANGUAGE_CODE == 'ar'  %}
-                                  <img src="/static/img/ar.png" width="420px"> 
-                                 {% elif LANGUAGE_CODE == 'zh'   %}
-                                    <img src="/static/img/zh.png" width="420px"> 
-                                {% else %}
-                                    <img src="/static/img/en.png" width="420px"> 
-                                {% endif %}
-                            {% else %}
-                               <img src="/static/img/en.png" width="420px"> 
-                            {% endif %}
-                        </a>
-                    </div>
-                    
-                    <div class="pull-right" style="clear:both;">
-                    {% search_form "all" %}
-                    </div>
-
-                    <div class="nav-collapse collapse">
-                        {% page_menu "pages/menus/dropdown.html" %}
-                    </div>
-
-                </div> {# /.navbar navbar-fixed-top #}
-            </div> {# /.navbar-inner #}
-        </div> {# /.container-fluid #}
-
-        <div class="container-fluid">
-
-            {% block bread %}
-            <ul class="breadcrumb">
+<div class="container"  style="margin-bottom: none;" >
+   {%if  page.id == None %}
+   {% else %}
+   <div class="col-md-12" style="background-color: #f8f9fa!important; height: 40px">
+           {% block bread %}
+                <ol class="breadcrumb" style="background-color: #f8f9fa; height: 20px">
                 {% spaceless %}
-                {% block breadcrumb_menu %}{% page_menu "pages/menus/breadcrumb.html" %}{% endblock %}
+                {% block breadcrumb_menu %}{%if page.is_primary and page.id != 1 %}{% else %}{% page_menu "pages/menus/breadcrumb.html" %} {% endif %}{% endblock %}
                 {% endspaceless %}
-            </ul>
+                </ol>
             {% endblock bread %}
-
+        </div>
+ {% endif %}
+    
+    <div class="row" >
+        <div class="col-md-12">
             {% nevercache %}
             {% for message in messages %}
             <div class="alert alert-{{ message.tags }}" data-alert="alert">
-                <a class="close" href="#" onclick="$(this).parent().fadeOut('fast');
-                        return false;">×</a>
+                <a class="close" href="#" onclick="$(this).parent().fadeOut('fast'); return false;">×</a>
                 {% if message.message == "Successfully signed up" %}
                 {{ "You have successfully activated your account! <b style='color:#060;'>Please set a new password below &darr;</b>" }}
-                {# {% elif message.message == "Item removed from wishlist" %} #}
-                {# {{ "Item removed from your Favorites" }} #}
                 {% else %}
                 {{ message }}
                 {% endif %}
             </div>
             {% endfor %}
             {% endnevercache %}
+        </div>
+    </div>
+       
+     </div>  
 
-            <h2>{% block title %}{% endblock %}</h2>
 
-        </div> {# /.container-fluid #}
 
-        <div class="container-fluid">
-
-            <div class="row-fluid">
-                <div class="span{% block mainspansize %}{% if page.id != None %}{% if  '/phytosanitary-treatments-tool/' in request.path %}12{% elif  page.publicationlibrary.fullpage == 1 %}12{% else %}8{% endif %}{% else %}12{% endif %}{% endblock mainspansize %} middle">
-                {% block main %}{% endblock %}
-             
-                </div>
-                 {% if page.id != None and page.publicationlibrary.fullpage == 1 %}
-                 {%else%}
-                  <div class="span{% block sidebarspansize %}4{% endblock sidebarspansize %} right" >
-                      {% block local_nav %}
-                        {% block trans %}
-                        {% endblock trans %}
-                        {% endblock local_nav %}
-
-                        {% if page.id == 3 or page.id == 1170%}<!-- country page / stats page -->
-                            {% include "pages/menus/tree_key_cn.html" %}
-                        {% elif page.id == 858 %} <!-- FAQ --> 
-                                <style type="text/css" media="screen">
-                                    h2 {margin:1em 0 0;}
-                                    h3 {font-size:1.3em; line-height:1.5em;}
-                                    h3 a {font-weight:normal;}
-                                    .darkheadings a {color:#000; text-decoration:none; font-weight:bold; font-style:italic;}
-                                </style>
-                                <script type="text/javascript">
-                                    $(document).ready(function() {
-                                        $("div.answer").hide();
-                                        $("h3").click(function() {
-                                            $(this).next().toggle("fast");
-                                            // trying to get the H3 to turn black when clicking: http://api.jquery.com/toggleClass/
-                                            $(this).toggleClass("darkheadings");
-                                            // stopping local anchor from being followed so the page doesn't jump
-                                            // return false;
-                                        });
-
-                                        $(function() {
-                                            if (location.hash != "") {
-                                                // $(location.hash + ":hidden").toggle('fast').prev("h3").toggleClass('darkheadings');
-                                                $(location.hash).next("div").toggle("fast").prev("h3").toggleClass("darkheadings");
-                                            }
-                                        });
-
-                                        $("a.hideall").click(function() {
-                                            $("div.answer").hide("fast");
-                                            $("h3").removeClass("darkheadings");
-                                        });
-                                        $("a.showall").click(function() {
-                                            $("div.answer").show("fast");
-                                            $("h3").addClass("darkheadings");
-                                        });
-                                    });
-                                </script>
-                                <p class="floatright showhideanswers" style="margin-right:3em;">
-                                    <a class="showall" href="#">Show all answers</a><br>
-                                    <a class="hideall" href="#">Hide all answers</a>
-                                </p>
-
-                        {% else %} 
-                            <div class="tree">
+{%if  page.id == None %}
+   {% if request.path == '/en/' or request.path == '/es/' or request.path == '/fr/' or request.path == '/ar/'  or request.path == '/ru/' or request.path == '/zh/' %}
+    <div class="container" >  
+        <div class="row">
+            <div class="col-md-12"> &#160;</div>
+        </div><div class="row">
+            <div class="col-md-12"> <h1 class="h1_home">{% trans "International Plant Protection Convention" %}</h1> </div>
+        </div>
+    </div>
+    {%endif%}
+{%else%}
+    {%if  page.content_model == 'publicationlibrary' %}
+        {%else%}	
+        <div class="container" >  
+         <div class="row">
+             <div class="col-md-12"><h1 class="h1_home">{% block title %}{% endblock %}</h1> </div>
+         </div>
+     </div>
+      {%endif%}
+ {%endif%}     
+<!--/.container-->
+     
+<div class="container">
+   <div class="row" >
+        <!--p class="pull-right"><a id="divaction" href="#" onclick="javascript:openNav();">☰ Open Navigation Menu</a></p-->
+        <div id="divmainbox" 
+        {%if  page.id != None %}
+            {%if  page.content_model == 'publicationlibrary' %}
+		{%if page.publicationlibrary.fullpage == 1 %}
+                    class="col-md-12  underline"
+		{%elif 12col == 1 %}
+                    class="col-md-12 underline"
+		{% elif  '/phytosanitary-treatments-tool/' in request.path%}
+                    class="col-md-12 underline"
+                {% else %}
+			class="col-md-8 underline"
+		{% endif %}
+               
+            {%elif  page.content_model == 'countrypage' %}
+		{%if page.id != 3 %}
+                    {% if  '/countries/'  in request.path  and 8col != 1 %}
+                            class="col-md-12 underline"
+                    {% elif  '/countries/'  in request.path and 8col == 1%}
+                            class="col-md-8 underline"
+                     {% else %}
+                            class="col-md-8 underline"
+                    {% endif %}
+                {% endif %}    
+            {% elif page.content_model == 'link' and page.id == 1361%}
+                {%if 12col == 1 %}
+                  class="col-md-12 underline"    
+               {% else %}
+                class="col-md-8 underline"    
+            {% endif %}
+            {% else %}
+                class="col-md-8 underline"    
+            {% endif %}
+        {%else%} 
+            class="col-md-12 underline"
+        {%endif%}>
+        {% block main %}{% endblock %}
+        </div>
+        
+        {%if  page.id != None %}
+            {%if  page.content_model == 'publicationlibrary' %}
+                {% if  '/phytosanitary-treatments-tool/' in request.path%}
+                   
+                {%elif 12col == 1 %}
+                
+                {%else%}    
+                    
+                    {%if page.publicationlibrary.fullpage == 0 %}
+                    <div id="divmainsidebox"   class="col-md-4 right" >
+                            {% if page.publicationlibrary.side_box != '' and page.publicationlibrary.side_box != None %}
                                 {% page_menu "pages/menus/sidebox.html" %}
-                                {% if page.id == 1389 or page.id == 1393 or page.id == 1114 %}
-                                 {% else %}
-                                         <div class="panel tree">
-                                    {% page_menu "pages/menus/tree.html" %}
-                                </div>
-                                    {% endif %}
-                              
-                            </div>
-
-                            {% if page.id == 522 %}<!-- logo -->
-                                {% include "pages/menus/tree_logos.html" %}
-                            {% elif page.id == 465 or  page.id == 466 or  page.id == 485 or page.parent_id == 466 or page.parent_id == 485 %}<!-- RPPO -->
-                                {% include "pages/menus/tree_key_partners.html" %}
-                            {% elif  page.id == 322 or  page.parent_id == 322 or page.parent_id == 323    or  page.parent_id == 449 or  page.parent_id == 427 or  page.parent_id == 429 or  page.parent_id == 459   or  page.parent_id == 455 or  page.parent_id == 445 %}<!-- Core activities -->
-                                {% include "pages/menus/tree_key_core.html" %}
-                            {% elif page.id == 345 or   page.parent_id == 345  or page.id == 429 %}<!-- SSU and IFU -->
-                                    {% if  '/phytosanitary-treatments-tool/' in request.path %}
-                                    {% elif  '/contributed-resource-list/' in request.path   %}
-                                        {% include "pages/menus/tree_key_core.html" %}
-                                    {% elif  '/contributed-resource-detail/' in request.path   %}
-                                    {% elif	page.id == 368 %}<!--#530???--><!-- List of Topics -->
-                                    {% else %}
-                                        {% include "pages/menus/tree_key_ssu.html" %}
-                                    {% endif %}
                             {% endif %}
-                        {% endif %}    
-                    </div> 
-                 {%endif%}{# /.span4 right #}
+                            
 
-            </div> {# /.container-fluid #}
-        </div> {# /.row-fluid #}
+                            {% if page.id == 925 or page.parent_id == 925 or page.parent_id == 451 %}<!-- nros -->
+                                   
+                                     {% page_menu "pages/menus/tree_new.html" %}
+                                   
+                            {% else %} 
 
-        <footer>
-            <div class="container-fluid">
-                {% page_menu "pages/menus/footer.html" %}
-                <div class="panel">
-                    <div class="row-fluid">
-                        <div class="span3">
-                          <ul class="unstyled">
-                            <li><a href="/contact/">{% trans "Contact us" %}</a><br></li>
-                            <li><a href="/faq/">{% trans "FAQs" %}</a><br></li>
-                            <li><a href="/qa/">{% trans "Q &amp; A" %}</a></li>
-                          </ul>
-                        </div> 
-                        <div class="span3">
-                            <ul class="unstyled">
-                              <li><a href="/legal/">{% trans "IPPC Copyright &amp; Legal Disclaimer" %}</a><br></li>
-                              <li><a href="/logos/">{% trans "Logo policy" %}</a></li>
-                            </ul>
-                        </div> 
-                        <div class="span3">
-                            {# {% trans "IPPC on Social Media:" %}<br> #}
-                          <ul class="unstyled">
-                            <li><a  href="http://www.facebook.com/pages/IPPC-Protecting-the-worlds-plant-resources-from-pests/113230338690380" class="icn-facebook">Facebook</a><br></li>
-                            <li><a href="https://twitter.com/ippcnews" class="icn-twitter">Twitter</a><br>   </li>
-                            <li><a href="https://www.linkedin.com/groups/3175642/profile"  class="fa fa-linkedin" style="padding-left:3px;">&nbsp;&nbsp;&nbsp;Linkedin</a></li><!--class="fa fa-linkedin"-->
-                          </ul>
-                        </div> 
-                        <div class="span3">
-                            {% trans "Newsletters:" %}<br> 
-                            <ul class="unstyled">                            
-                              <li><a href="http://us10.campaign-archive1.com/home/?u=fc3d4d92d71f2fa693910c666&id=bf810c0be2">{% trans "IPPC Newsletters" %}</a></li>
-                              <li><a href="/core-activities/information-exchange/nro/">{% trans "NRO's Updates" %}</a></li>
-                              <!--li><a href="/content/subscribe-ippc-newsletter/">{% trans "Subscribe" %}</a></li-->
-                            </ul>                        
-                          </div>   
+                                    {%if page.publicationlibrary.login_required %}
+                                      <div class="panel tree">
+                                        {% page_menu "pages/menus/tree.html" %}
+                                         </div>
+                                    {%else %} 
+                                       {% page_menu "pages/menus/tree_new.html" %}   
+                                    {% endif %}
 
-                        <!--div class="span12 right muted small">
-                            <p class="text-right">
-                                {% trans "The IPPC Secretariat is hosted &amp; provided by" %} <a href="http://www.fao.org">FAO</a>
-                                <a style="vertical-align:bottom;color:#ffffff;" class="imglink" href="http://www.fao.org"><img class="faologo" src="{% static "img/fao-logo.gif" %}" alt="{% trans "Food and Agriculture Organization Logo" %}" height="58" width="58"></a>
-                         
-                            </p>
-                        </div--> 
-                    </div>  
-                </div>      
+                            {% endif %}
+                            {% if page.id == 345 or   page.parent_id == 345  or page.id == 429 %}<!-- SSU and IFU -->
+                                {% include "pages/menus/tree_key_ssu.html" %}
+                           {% elif  page.id == 322 or page.parent_id == 322 or page.parent_id == 323 or  page.parent_id == 449 or  page.parent_id == 427 or  page.parent_id == 429 or  page.parent_id == 459   or  page.parent_id == 455 or  page.parent_id == 445 %}<!-- Core activities -->
+                                {% include "pages/menus/tree_key_core.html" %}
+                             {% elif page.id == 465 or  page.id == 466 or  page.id == 485 or page.parent_id == 466 or page.parent_id == 485 %}<!-- RPPO -->
+                                {% include "pages/menus/tree_key_partners.html" %}
+                            {% elif  page.id == 1170 or page.id == 925 or page.parent_id == 925 or page.parent_id == 451 %}<!-- country page / stats page -->
+                                {% include "pages/menus/tree_key_cn.html" %}
+                            {% endif %}    
+                    {% endif %}
+                 {% endif %}    
+            {% else %}    
+                {% if  page.id == 530 %}<!-- country page  -->
+                <div id="divmainsidebox"   class="col-md-4 right" > 
+                    <div class="panel tree">
+                    {% page_menu "pages/menus/tree.html" %}</div>
+                     {% endif %} 
+                {% if  page.id == 3 or page.id == 1 %}<!-- country page  -->
+                <div id="divmainsidebox"   class="col-md-4 right" >
+                    {% if  page.id == 3%}
+                        {% include "pages/menus/tree_key_cn.html" %}
+                    {% endif %}
+                {%elif '/calls/' in request.path%}
+                <div id="divmainsidebox"   class="col-md-4 right" >
+               {% elif page.id == 465 or  page.id == 466 or  page.id == 485 or page.parent_id == 466 or page.parent_id == 485 %}<!-- RPPO -->
+               <div id="divmainsidebox"   class="col-md-4 right" >
+                   
+                     {% include "pages/menus/tree_key_partners.html" %}
+                  
+                 {% endif %}
+                
+            {% endif %}
+        {% endif %}
+	
+        
+                    <!--p><a id="divaction" href="#closenav" onclick="javascript:closeNav();"> ☰ Close Sidebar</a></p-->    
+        
+        
+        
+        
+        
+        
+        
+       
+           {% block local_nav %}
+           {% block trans %}
+           {% endblock trans %}
+           {% endblock local_nav %}
 
-                {# /.span5 right muted small #}
-            </div>
+         {%if  page.id != None %}
+            {%if  page.content_model == 'publicationlibrary' %}
+		{%if page.publicationlibrary.fullpage == 0 %}
+                    </div>
+                      
+                {% endif %}
+            {% else %}    
+                {% if  page.id == 530 or page.id == 3 or page.id == 1%}<!-- country page  -->
+                    </div>
+                     {%elif '/calls/' in request.path%}
+               </div>
+              
+                {% endif %}
+            {% endif %}
+        {% endif %}
+  
+           
+        
+     
+    
+                
+       
+        
+
+        {# /.span4 right #}
+
+    </div> {# /.container-fluid #}
+</div> {# /.row-fluid #}
+</div>
+        
+        
+        
+        
+        
+<footer class="bg-light fixed-bottom2"> 
+	
+	<!-- Footer Links -->
+  <div class="container text-center text-md-left">
+
+    <!-- Grid row -->
+    <div class="row">
+
+      <!-- Grid column -->
+      <div class="col-md-3 col-lg-3 col-xl-3 mx-auto mb-3">
+
+        <!-- Content -->
+        <h6>{% trans "Help" %}</h6>
+        <hr style="width: 60px; margin: 0 0 0.8rem 0 ">
+         <p>
+         <a href="/contact/">{% trans "Contact us" %}</a>
+        </p>
+        <!--p>
+          <a href="/sitemap">Sitemap</a>
+        </p-->
+        <p>
+              <a href="/faq/">{% trans "FAQs" %}</a>
+        </p>
+        <!--p>
+            <a href="/qa/">{% trans "Q &amp; A" %}</a>
+        </p-->
+      </div>
+      <!-- Grid column -->
+
+      <!-- Grid column -->
+      <div class="col-md-3 col-lg-3 col-xl-3 mx-auto mb-3">
+
+          <h6>{% trans "Disclaimers" %}</h6>
+        <hr style="width: 60px; margin: 0 0 0.8rem 0 ">
+     
+        <!--p> <a href="/about">{% trans "About us" %}</a></p-->
+        <p> <a href="/legal/">{% trans "IPPC Copyright &amp; Legal Disclaimer" %}</a>
+        </p><p> <a href="/logos/">{% trans "Logo policy" %}</a>
+        </p>
+      
+        
+  
+                     
+      </div>
+      <!-- Grid column -->
+      <!-- Grid column -->
+      <div class="col-md-3 col-lg-3 col-xl-3 mb-md-0 mb-3">
+
+       <h6>{% trans "Subscribe" %}</h6>
+        <hr style="width: 60px; margin: 0 0 0.8rem 0 ">
+		  <p>
+         <p><a href="/news/category/ippcnews/">{% trans "IPPC News" %}</a></p>
+                             <!--p><a href="/core-activities/information-exchange/nro/">{% trans "NRO's Updates" %}</a></p-->
+                           
+       
+       
+        
+     
+      </div>
+      <!-- Grid column -->
+      <!-- Grid column -->
+      <div class="col-md-3 col-lg-3 col-xl-3 mx-auto  mx-auto mb-3">
+
+         <h6>{% trans "Follow us" %}</h6>
+        <hr style="width: 60px; margin: 0 0 0.8rem 0 ">
+		  <p>
+         <!-- Facebook -->
+			  
+          <a class="btn btn-social-icon btn-facebook" href="http://www.facebook.com/pages/IPPC-Protecting-the-worlds-plant-resources-from-pests/113230338690380">
+          <span class="fab fa-facebook"></span>
+        </a>
+          <!-- Twitter -->
+          <a class="btn btn-social-icon btn-twitter" href="https://twitter.com/ippcnews">
+          <span class="fab fa-twitter"></span>
+        </a>
+       
+          <!--Linkedin -->
+          <a class="btn btn-social-icon btn-linkedin" href="https://www.linkedin.com/groups/3175642/profile" >
+          <span class="fab fa-linkedin"></span>
+        </a></p>
+      
+           
+
+      </div>
+      <!-- Grid column -->
 
 
 
+    </div>
+    <!-- Grid row -->
 
+  </div>
+  <!-- Footer Links -->
 
+  <!-- Copyright
+  <div class="footer-copyright text-center py-3 bg-dark text-light">© 2019 Copyright
+  </div>
+  !-- Copyright -->
 
-        </footer><!--footer>
-                <div class="container-fluid">
-                {% page_menu "pages/menus/footer.html" %}
-                <div class="span6 muted left">
-                <p class="text-left"> 
-                    <span title="Home"><a href="/">Homea</a></span> | <a href="/contact/" >Contact us</a> | <a href="/legal/">IPPC Copyright & Legal Disclaimer</a> | <a href="/content/subscribe-ippc-newsletter/">Subscribe to the IPPC Newsletter
-                </p>
-                <p class="text-left">{% trans "IPPC on Social Media:" %} <a href="http://www.facebook.com/pages/IPPC-Protecting-the-worlds-plant-resources-from-pests/113230338690380" class="icn-facebook">Facebook</a> | <a href="https://twitter.com/ippcnews" class="icn-twitter">Twitter</a></p>
-                                </div> {# /.span6 muted left #}
-            
-                                <div class="span5 right muted small">
-                                        <p class="text-right">
-                                    {% trans "The IPPC Secretariat is hosted &amp; provided by" %} <a href="http://www.fao.org">FAO</a>
-                                                <a style="vertical-align:bottom;" class="imglink" href="http://www.fao.org"><img class="faologo" src="{% static "img/fao-logo.gif" %}" alt="{% trans "Food and Agriculture Organization Logo" %}" height="58" width="58"></a>
-                                                <br>
-                                                                                        <a style="margin-right:66px;" href="{% url 'page' 'legal' %}">{% trans "Copyright & Disclaimer" %}</a>
-                                        </p>
-                                </div> {# /.span5 right muted small #}
-                </div>
-        </footer--> {# /.container-fluid #}
+</footer>
+        
 
-        {# {% include "includes/footer_scripts.html" %} #}
         {% compress js %}
 
         {# better country selector using chosen - http://harvesthq.github.io/chosen/ #}
@@ -509,6 +624,28 @@
             ga('send', 'pageview');
 
         </script>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js"></script>
+    <script src="/static/css/gridipp/js/bootnavbar.js" ></script> 
+    <script>
+        $(function () {
+            $('#main_navbar').bootnavbar();
+        })
+      $('#menutree').filter(function() {
+
+  return $.trim($(this).text()) === ''
+
+}).remove();
+    </script>
+    <script type="text/javascript" charset="utf-8">
+$(function() {
+      $('#selectlang').change(function() {
+            window.location.href = $(this).val();
+      });
+});
+</script>
+
 
     </body>
 </html>

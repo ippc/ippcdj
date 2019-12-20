@@ -9,13 +9,13 @@
 {% block body_class %}wide{% endblock %}
 
 {% block breadcrumb_menu %}
-<li><a href="/{{ LANGUAGE_CODE }}/">{% trans "Home" %}</a><span class="divider">/</span></li>
-<li id="breadcrumb-menu-core-activities"><a href="/{{ LANGUAGE_CODE }}/core-activities/">{% trans "Core Activities" %} </a><span class="divider">/</span></li>
-<li id="breadcrumb-menu-core-activities-standards-and-implementation"><a href="/{{ LANGUAGE_CODE }}/core-activities/standards-and-implementation/">{% trans "Standards &amp; Implementation" %} </a><span class="divider">/</span></li>
-<li id="breadcrumb-menu-core-activities-standards-setting"><a href="/{{ LANGUAGE_CODE }}/core-activities/standards-setting/">{% trans "Standard setting" %} </a><span class="divider">/</span></li>
-<li id="breadcrumb-menu-core-activities-standards-setting-list-topics-ippc-standards" class="active"><a href="/{{ LANGUAGE_CODE }}/core-activities/standards-setting/list-topics-ippc-standards/">{% trans "Current List of topics for IPPC standards" %} </a><span class="divider">/</span></li>           
-<li class="active">List of topics database</li>
-
+<!--li><a href="/{{ LANGUAGE_CODE }}/">{% trans "Home" %}</a></li-->
+<li class="breadcrumb-item"><a href="/{{ LANGUAGE_CODE }}/core-activities/">{% trans "Core Activities" %} </a></li>
+<li class="breadcrumb-item"><a href="/{{ LANGUAGE_CODE }}/core-activities/standards-and-implementation/">{% trans "Standards &amp; Implementation" %} </a></li>
+<li  class="breadcrumb-item"><a href="/{{ LANGUAGE_CODE }}/core-activities/standards-setting/">{% trans "Standard setting" %} </a></li>
+<li  class="breadcrumb-item"><a href="/{{ LANGUAGE_CODE }}/core-activities/standards-setting/list-topics-ippc-standards/">{% trans "Current List of topics for IPPC standards" %} </a></li>           
+<!--li class="active">List of topics database</li-->
+<li class="breadcrumb-item active" aria-current="page"><i class="fas fa-angle-double-down"></i></li>
 {% endblock %}
 
 {% block local_nav %}
