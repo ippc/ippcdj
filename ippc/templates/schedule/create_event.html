@@ -11,38 +11,39 @@
 
 
 {% block breadcrumb_menu %}
-<li>
+<li class="breadcrumb-item">
     <a href="/{{ LANGUAGE_CODE }}/">{% trans "Home" %}</a>
-    <span class="divider">/</span>
+   
 </li>
 {% if is_secretariat or user.is_superuser%}
-<li>
+<li class="breadcrumb-item">
     <a href="/year/calendar/">{% trans "Calendar" %}</a>
-    <span class="divider">/</span>
+   
 </li>
 </li>
 {% elif is_contryeditor_1 %}
-<li>
+<li class="breadcrumb-item">
     <a href="/countries/">{% trans "Countries" %}</a>
-    <span class="divider">/</span>
+   
 </li>
-<li>
+<li class="breadcrumb-item">
     <a href="/countries/{{ user.get_profile.country.name|slugify }}/">
         {{ user.get_profile.country.name }}
     </a>
-    <span class="divider">/</span>
+   
 </li>
-<li>
+<li class="breadcrumb-item">
     <a href="/countries/{{ user.get_profile.country.name|slugify }}/calendar/">{% trans "Events" %}</a>
-    <span class="divider">/</span>
+   
 </li>
 {% endif %}
 {% if  event_id   %}
-<li class="active">{% trans "Edit Event" %}</li>
+<li class="breadcrumb-item active">{% trans "Edit Event" %}</li>
 {% else %}
-<li class="active">{% trans "Create New Event" %}</li>
-{% endif %}
+<li class="breadcrumb-item active">{% trans "Create New Event" %}</li>
 
+{% endif %}
+<li class="breadcrumb-item active" aria-current="page"><i class="fas fa-angle-double-down"></i></li>
 {% endblock %}
 
 {% block local_nav %}

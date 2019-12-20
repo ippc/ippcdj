@@ -11,19 +11,18 @@
 {% block body_class %}wide{% endblock %}
 
 {% block breadcrumb_menu %}
-<li><a href="/{{ LANGUAGE_CODE }}/">{% trans "Home" %}</a><span class="divider">/</span></li>
-<li>
+<li class="breadcrumb-item"><a href="/{{ LANGUAGE_CODE }}/">{% trans "Home" %}</a></li>
+<li class="breadcrumb-item">
   <a href="/countries/">Countries</a>
-  <span class="divider">/</span>
+ 
 </li>
-<li>
+<li class="breadcrumb-item">
   <a href="{{ country.get_absolute_url }}">
     {{ country.name }}
   </a>
-  <span class="divider">/</span>
 </li>
-<li class="active">{% trans "Events" %}</li>
-{% endblock %}
+<!--li class="active">{% trans "Events" %}</li-->
+<li class="breadcrumb-item active" aria-current="page"><i class="fas fa-angle-double-down"></i></li>{% endblock %}
 
 {% block local_nav %}
 {% endblock local_nav %}

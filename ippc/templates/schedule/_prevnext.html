@@ -1,11 +1,13 @@
 {% load scheduletags staticfiles %}
 <div class="prevnext">
     <a href="{% prev_url target slug period %}">
-      <img align="top" border="0" src="{% static "schedule/img/left_mod.png" %}"/>
+      <!--img align="top" border="0" src="{% static "schedule/img/left_mod.png" %}"/-->
+      <i id="caret" style="font-size: 1.8em;  color: #4ba10d" class="fas fa-chevron-left"></i>
     </a> 
-    &nbsp; <b>{{period_name}}</b> &nbsp; 
+     <b>{{period_name}}</b>  
     <a href="{% next_url target slug period %}">
-      <img align="top" border="0" src="{% static "schedule/img/right_mod.png" %}"/>
+        <i id="caret" style="font-size: 1.8em;  color: #4ba10d" class="fas fa-chevron-right"></i>
+      <!--img align="top" border="0" src="{% static "schedule/img/right_mod.png" %}"/-->
     </a>
 </div>
 

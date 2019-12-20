@@ -2,76 +2,76 @@
 
 {% load scheduletags i18n %}
 
-
+{% block meta_title %}{% trans "Calendar" %}{% endblock %}
 {% block breadcrumb_menu %}
-<li>
+<li class="breadcrumb-item">
     <a href="/{{ LANGUAGE_CODE }}/">{% trans "Home" %}</a>
-    <span class="divider">/</span>
+  
 </li>
-<li>
+<li class="breadcrumb-item">
     <a href="/year/calendar/">{% trans "Calendar" %}</a>
-    <span class="divider">/</span>
 </li>
-<li class="active">{% trans "Year" %}</li>
+<!--li class="breadcrumb-item active">{% trans "Year" %}</li-->
+<li class="breadcrumb-item active" aria-current="page"><i class="fas fa-angle-double-down"></i></li>
 {% endblock breadcrumb_menu %}
 
 {% block main %}
+<h1>{% trans "Calendar of Events" %}</h1>
 
-<div class="well localnav">
-    {% if user.is_superuser or can_add %} 
-    <a class="btn btn-small btn-info" href="/create/event/calendar/">{% trans "Add Event" %}</a>
-      <br><br><br>  
-     {% endif %}
-  
-    <a href="{% url "month_calendar" calendar.slug %}">
-       {% trans "See Month Calendar" %}
-    </a>
+<div class="row">
+    <div class="col-md-12">
+        <p><a href="{% url "month_calendar" calendar.slug %}">{% trans "See Month Calendar" %}</a></p>
+        <p class="pull-right">
+        {% if user.is_superuser or can_add %} 
+            <a class="btn btn-small btn-info" href="/create/event/calendar/">{% trans "Add Event" %}</a>
+         {% endif %}
+        </p>
+        <br>
+        <p> To check IYPH programme of events, please click <a href="/iyph/chronology/list/">here</a>.</p>
+        <p>  {% prevnext "year_calendar" calendar.slug periods.year "Y" %}</p>
+    </div>      
+</div> 
+<div class="row">
+    <div class="col-md-12">
+    <div class="card bg-light">
+     <div class="card-body">
+      <h6 class="card-title">{% trans "Below you will find all the planned and tentative IPPC meetings. By clicking on the meeting hyperlink (in blue) you will be directed to the meeting page where additional information is presented (e.g. a provisional agenda, a link / attachment of the members etc.). " %}</h6>
+  </div>
+    </div>
+</div>
 </div>
 
-<div class="calendarname"><h1>{% trans "Calendar of Events<" %}/h1></div><br><br>
-
-{% prevnext "year_calendar" calendar.slug periods.year "Y" %}<br><br>
-
-
-{% if current_year == 2019 %}
-    To check IYPH preparations events, please click <a href="/iyph/chronology/list/">here</a>.
-{% endif%}
-{% if current_year == 2020 %}
-    To check IYPH programme of events, please click <a href="/iyph/chronology/list/">here</a>.
-
-{% endif%}
-
- <div class="alert alert-warning"><b>{% trans "Below you will find all the planned and tentative IPPC meetings. By clicking on the meeting hyperlink (in blue) you will be directed to the meeting page where additional information is presented (e.g. a provisional agenda, a link / attachment of the members etc.). " %}</b></div>
-<table  data-url="data1.json"  class="table table-condensed table-striped" id="publications">
-  <thead>
-<th>
-    <tr>
-        <th style="white-space: nowrap">Start date</th>
-        <th style="white-space: nowrap">End date</th>
-        <th>Activity</th>
-        <th>Type</th>
-        <th>Location</th>
-      
-        <th>Register</th>
-    </tr>
+<table  data-url="data1.json"  class="table table-hover table-sm" id="publications">
+    <thead>
+        <tr>
+            <th style="white-space: nowrap">{% trans "Start date" %}</th>
+            <th style="white-space: nowrap">{% trans "End date" %}</th>
+            <th>{% trans "Activity" %}</th>
+            <th>{% trans "Type" %}</th>
+            <th>{% trans "Location" %}</th>
+            {% if user.is_superuser or can_add %}
+                <th>{% trans "Edit" %}</th>
+            {% endif %}
+            <th>{% trans "Register" %}</th>
+        </tr>
   </thead>
   <tbody>
-
     {% for m in months_list %}
-    <tr>  <td colspan="6"><strong>{{m.1}}</strong></td></tr>
+    <tr> <td colspan="7" style="background-color: #f8f9fa;"><h5>{{m.1}}</h5></td></tr>
     {% for e in event_list2 %}
         {% if e.0 == m.0 %}
             {% for event in e.1 %}
 
                 <tr>
-                    <td style="white-space: nowrap"><small>{% blocktrans with event.start|date:"d-m-Y" as start_date %}{{ start_date }}{% endblocktrans %}</small></td>
-                    <td style="white-space: nowrap"><small>{% blocktrans with event.end|date:"d-m-Y" as end_date %}{{ end_date }}{% endblocktrans %}</small></td>
-                    <td>    <a  href="/events/event/{{event.id}}">{{event.title}}</a></td>
+                    <td style="white-space: nowrap">{% blocktrans with event.start|date:"d-m-Y" as start_date %}{{ start_date }}{% endblocktrans %}</td>
+                    <td style="white-space: nowrap">{% blocktrans with event.end|date:"d-m-Y" as end_date %}{{ end_date }}{% endblocktrans %}</td>
+                    <td> <p><a  href="/events/event/{{event.id}}">{{event.title}}</p></a></td>
                     <td>{{event.type_verbose}}</td>
                     <td>{{event.location}} {{event.venuecity}} {{event.venuecountry}}  
                     {% if user.is_superuser or can_add %}
-                    <a class="small pull-right" href="{% url 'edit_event' 'event' event.calendar.slug event.id %}"><i class="icon-edit"></i> Edit</a>  
-                    {% endif %}
+                    <td>
+                        <a class="btn btn-small btn-info  pull-right" href="{% url 'edit_event' 'event' event.calendar.slug event.id %}"><i class="icon-edit icon-white"></i>{% trans "Edit" %}</a>
+                    </td>{% endif %}
                 </td>
                 <td> 
                 {% if  event.can_register and event.groups.all and event.is_not_past_due%}
@@ -79,13 +79,13 @@
                        {% if g1 in event.groups.all %}
                            {% if event.eventparticipants_set.all %} 
                                 {% if  request.user in event.get_array_participants %}
-                                 <a class="btn btn-small btn-warning" href="{% url 'un-register-to-event' event.id %}"><i class="icon-edit icon-white"></i> {% trans "Un-Register to meeting" %}</a>
+                                 <a class="btn btn-small btn-danger" href="{% url 'un-register-to-event' event.id %}"> {% trans "Un-Register" %}</a>
                             {% else %} 
-                    <a class="btn btn-small btn-info" href="{% url 'register-to-event' event.id %}"><i class="icon-edit icon-white"></i> {% trans "Register to meeting" %}</a>
+                    <a class="btn btn-small btn-info" href="{% url 'register-to-event' event.id %}">{% trans "Register" %}</a>
                                 {% endif %}
                             
                             {% else %} 
-                    <a class="btn btn-small btn-info" href="{% url 'register-to-event' event.id %}"><i class="icon-edit icon-white"></i> {% trans "Register to meeting" %}</a>
+                    <a class="btn btn-small btn-info" href="{% url 'register-to-event' event.id %}"> {% trans "Register" %}</a>
                             {% endif %}
                          {% endif %}
                     {% endfor %}   
@@ -106,39 +106,4 @@
       </tbody>
 </table>
 
-<!--div class="tablewrapper">
-    <div class="calendarname">{{ calendar.name }}</div>
-    {% prevnext "year_calendar" calendar.slug periods.year "Y" %}
-    <table align="center">
-    <tr>
-    {% for month in periods.year.get_months %}
-        <td valign="top">
-        <a href="{% url "month_calendar" calendar.slug %}{% querystring_for_date month.start 2 %}">
-            {{month.name}}
-        </a>
-        {% month_table calendar month "small" %}</td>
-        <td width="12">&nbsp;</td>
-        {% ifequal forloop.counter 3  %}
-            </tr>
-            <tr>
-        {% endifequal %}
-        {% ifequal forloop.counter 6  %}
-            </tr>
-            <tr>
-        {% endifequal %}
-        {% ifequal forloop.counter  9 %}
-            </tr>
-            <tr>
-        {% endifequal %}
-    {% endfor %}
-    </tr>
-</table></div>
-<div class="navigation">
-  <a href="{% url "month_calendar" calendar.slug %}">
-    {% trans "Current Month Calendar" %}
-  </a>
-  <a href="{% url "year_calendar" calendar.slug %}">
-    {% trans "Current Year Calendar" %}
-  </a>
-</div-->
 {% endblock %}

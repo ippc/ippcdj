@@ -5,227 +5,104 @@
 {% block meta_title %}{% trans "Event" %}{% endblock %}
 
 {% block breadcrumb_menu %}
-<li>
+<li class="breadcrumb-item">
     <a href="/{{ LANGUAGE_CODE }}/">{% trans "Home" %}</a>
-    <span class="divider">/</span>
 </li>
-
 {% if is_contryeevent %}
-<li>
+<li class="breadcrumb-item">
     <a href="/countries/">{% trans "Countries" %}</a>
-    <span class="divider">/</span>
 </li>
-<li>
+<li class="breadcrumb-item">
     <a href="/countries/{{ country|slugify }}/">
         {{ country }}
     </a>
-    <span class="divider">/</span>
 </li>
-<li>
+<li class="breadcrumb-item">
     <a href="/countries/{{ country|slugify }}/calendar/">{% trans "Events" %}</a>
-    <span class="divider">/</span>
 </li>
 {% else %}
-<li>
+<li class="breadcrumb-item">
     <a href="/year/calendar/">{% trans "Calendar" %}</a>
-    <span class="divider">/</span>
-</li>
 </li>
 {% endif %}
-
-<li class="active">{{event.title}}</li>
-
+<!--li  class="breadcrumb-item active">{{event.title}}</li-->
+<li class="breadcrumb-item active" aria-current="page"><i class="fas fa-angle-double-down"></i></li>
 {% endblock  %}
 
-{% block local_nav %}
-<div class="well localnav">
-    {% if is_contryeevent %}
-    <p><a href="/countries/{{ event.country.name|slugify }}/calendar/">« {% trans "Back to" %}</a></p>
-    {% else %}    
-    <p><a href="/year/calendar/">« {% trans "Back to " %}  {% trans "Calendar" %}</a></p>
-     {% endif %}
-   {% if user.is_superuser %} {# is_secretariat or #}
-    <a class="btn btn-small btn-info" href="/admin/schedule/event/{{ event.id }}"><i class="icon-edit icon-white"></i>Edit as Admin</a><br>
-    {% endif %}
-    
-    {% if is_contryeevent %}
-        {% if is_contryeditor or user.is_superuser %}
-            <a class="btn btn-small btn-info" href="{% url "edit_event" event.country event.calendar.slug event.id %}"><i class="icon-edit icon-white"></i>Edit</a>
-        {% endif %}
-    {% else %}    
-        {% if is_secretariat or user.is_superuser%}
-            <a class="btn btn-small btn-info" href="{% url "edit_event" 'event' event.calendar.slug event.id %}"><i class="icon-edit icon-white"></i>Edit</a><br>
-            <a class="btn btn-small btn-info" href="{% url 'resend-invite' event.id %}"><i class="icon-edit icon-white"></i>Re-send Invitation Email</a>(it will be sent only to not-registered)<br><br>
-            <!--a class="btn btn-small btn-info" href="/work-area/membershiptool/participant/create/{{event.id}}"><i class="icon-edit icon-white"></i> Generate Participants List</a-->
-      <a class="btn btn-small btn-info" href="{% url 'generate-list' event.id %}"><i class="icon-edit icon-white"></i> Generate Participants List</a><br>
-      <a class="btn btn-small btn-info" href="/work-area/participantshortlist/{{event.id }}/create/"><i class="icon-edit icon-white"></i> Generate Participants Short List</a>
- 
-       
-            {% endif %}
-    {% endif %}
-    <br>
-    {% if  event.can_register and event.groups.all and event.is_not_past_due%}
-   
-        {% for g1 in request.user.groups.all %}
-     
-            {%if g1 in event.groups.all %}
-                {% if is_registered %}<br>
-                    <a class="btn btn-small btn-warning" href="{% url 'un-register-to-event' event.id %}"><i class="icon-edit icon-white"></i> {% trans "Un-Register to meeting" %}</a>
-                {% else %} 
-                    <a class="btn btn-small btn-info" href="{% url 'register-to-event' event.id %}"><i class="icon-edit icon-white"></i> {% trans "Register to meeting" %}</a>
-                {% endif %}
-            {% endif%}
-       {% endfor %}   
-    {% endif%}
-</div>
-{% endblock local_nav %}
-
-{% block pageinfo %}
-
-{% endblock pageinfo %}
-
 {% block main %}
-<h1>{{event.title}}</h1> 
-<dl class="dl-horizontal">
-
-    <dt>{% trans "Starts" %}</dt>
-    <dd>
-        <ul class="unstyled nomargin">
-            <li>{% blocktrans with event.start|date:"d-m-Y" as start_date %}{{ start_date }}{% endblocktrans %}</li>
-        </ul>
-    </dd>
-
-
-    <dt>{% trans "Ends" %}</dt>
-    <dd>
-        <ul class="unstyled nomargin">
-            <li>{% blocktrans with event.end|date:"d-m-Y" as end_date %}{{ end_date }}{% endblocktrans %}</li>
-        </ul>
-    </dd>
-    {% if event.description|length > 2 %}
-    <dt>{% trans "Description" %}</dt>
-    <dd>{{event.description|richtext_filter|safe }}</dd>
-    {% endif %}
-
-    {% if event.category_verbose|length > 2%}
-    <dt>{% trans "Category" %}</dt>
-    <dd>
-        <ul class="unstyled nomargin">
-            <li>{{event.category_verbose}}</li>
-        </ul>
-    </dd> 
-    {% endif %}
-    
-    {% if event.type_verbose|length > 2%}
-    <dt>{% trans "Type" %}</dt>
-    <dd>
-        <ul class="unstyled nomargin">
-            <li>{{event.type_verbose}}</li>
-        </ul>
-    </dd>
-    {% endif %}
-    
-    {% if event.topic_numbers.all %}
-    <dt>{% trans "Topic numbers" %}</dt>
-    <dd>
-        <ul class="unstyled nomargin"> 
-        {% for entry in event.topic_numbers.all %}
-             <li>{{entry.title}} ({{entry}}) </li>
-        {% endfor %}</ul>
-    </dd>
-    {% endif %}
-    
-    
-    {% if event.location|length > 2%}
-   <dt>{% trans "Location" %}</dt>
-    <dd>
-        <ul class="unstyled nomargin">
-            <li>{{event.location}}</li>
-        </ul>
-    </dd>
-    {% endif %}
-    
-   {% if event.venuecity|length > 2%}
-   <dt>{% trans "Venue city" %}</dt>
-    <dd>
-        <ul class="unstyled nomargin">
-            <li>{{event.venuecity}}</li>
-        </ul>
-    </dd>
-    {% endif %}
-    
-    {% if event.venuecountry|length > 2%}
-    <dt>{% trans "Venue country" %}</dt>
-    <dd>
-        <ul class="unstyled nomargin">
-            <li>{{event.venuecountry}}</li>
-        </ul>
-    </dd>
-    {% endif %}
-    
-    {% if event.organizer|length > 2%}
-    <dt>{% trans "Organizer" %}</dt>
-    <dd>
-        <ul class="unstyled nomargin">
-            <li>{{event.organizer}}</li>
-        </ul>
-    </dd>
-     {% endif %}
-   
-     {% if event.issuename %}
-    <dt>{% trans "Issue keywords" %}</dt>
-    <dd>&#160;
-        {% for entry in event.issuename.all %}
-    
-        {% for e in entry.issuename.all %}
-            <i class="icon-tag"></i> {{e.name}}
-        {% endfor %} 
-        {% endfor %}
-    </dd>
-    {% endif %}
-
-
-{% if event.eventfile_set.all %}
-    <dt>{% trans "Event files" %}</dt>  <dd> <ul class="unstyled nomargin">
-            {% for f in event.eventfile_set.all %} 
-
-            <li><a href="{{MEDIA_URL}}{{f.file.name}}">{{ f.description }}</a></li>
-            {% endfor %}
-        </ul></dd>
-         {% endif %}
+<div class="row">
+    <div class="col-md-8"><h1>{{event.title}}</h1> 
+        <p><b>{% trans "Starts" %} </b>{% blocktrans with event.start|date:"d-m-Y" as start_date %}{{ start_date }}{% endblocktrans %} </p>
+        <p><b>{% trans "Ends" %} </b>{% blocktrans with event.end|date:"d-m-Y" as end_date %}{{ end_date }}{% endblocktrans %}</p>
+        {% if event.description|length > 2 %}
+            <p><b>{% trans "Description" %} </b>{{event.description|richtext_filter|safe }}</p>
+        {% endif %}
+        {% if event.category_verbose|length > 2%}
+            <p><b>{% trans "Category" %} </b> {{event.category_verbose}}</p> 
+        {% endif %}
+        {% if event.type_verbose|length > 2%}
+            <p><b>{% trans "Type" %} </b> {{event.type_verbose}}</p> 
+        {% endif %}
+        {% if event.topic_numbers.all %}
+            <p><b>{% trans "Topic numbers" %} </b>  <ul class="unstyled nomargin"> 
+                {% for entry in event.topic_numbers.all %}
+                     <li>{{entry.title}} ({{entry}}) </li>
+                {% endfor %}</ul></p> 
+        {% endif %}
+        {% if event.location|length > 2 %}
+            <p><b>{% trans "Location" %} </b>  {{event.location}}</p> 
+        {% endif %}
+        {% if event.venuecity|length > 2 %}
+            <p><b>{% trans "Venue city" %} </b>  {{event.venuecity}}</p> 
+        {% endif %}
+        {% if event.venuecountry|length > 2 %}
+            <p><b>{% trans "Venue country" %} </b>  {{event.venuecountry}}</p> 
+        {% endif %}
+        {% if event.organizer|length > 2 %}
+            <p><b>{% trans "Organizer" %} </b>  {{event.organizer}}</p> 
+        {% endif %}
+        {% if event.issuename.all %}
+        <p><b>{% trans "Issue keywords" %} </b>{% for entry in event.issuename.all %}
+                {% for e in entry.issuename.all %}
+                    <i class="icon-tag"></i> {{e.name}}
+                {% endfor %} 
+                {% endfor %}</p> 
+        {% endif %}
+        {% if event.eventfile_set.all %}
+        <p><b>{% trans "Event files" %} </b> 
+            <ul class="unstyled nomargin">
+                {% for f in event.eventfile_set.all %} 
+                    <li><a href="{{MEDIA_URL}}{{f.file.name}}">{{ f.description }}</a></li>
+                {% endfor %}
+                </ul>
+          </p>
+          {% endif %}
          
 {% if event.eventurl_set.all %}
-    <dt>{% trans "Event websites/urls" %}</dt>
-    <dd> <ul class="unstyled nomargin">
+    <p><b>{% trans "Event websites/urls" %} </b>
+    <ul class="unstyled nomargin">
             {% for u in event.eventurl_set.all %} 
 
             <li> <a href="{{ u.url_for_more_information }}">{{ u.url_for_more_information }}</a></li>
             {% endfor %}  
-        </ul></dd>
+        </ul></p>
     {% endif %}
     
 {% if user.is_superuser or perms.ippc.change_publication  %} 
- <dt>{% trans "User can register" %}</dt> 
- <dd>{{event.can_register}}</dd>
+ <p><b>{% trans "User can register" %} </b> {{event.can_register}}</p>
  {% if event.end_register_date %}
- <dt>{% trans "End registration date" %}</dt> 
- <dd>
- {% blocktrans with event.end_register_date|date:"d-m-Y" as end_reg_date %}{{ end_reg_date }}{% endblocktrans %}
- </dd>
-    {% endif %}
-   {% if event.groups.all %}  
-  <dt>{% trans "Groups that can register" %}</dt> 
- <dd> 
-    {%for g1 in event.groups.all %}{{g1}},
-    {% endfor %}  
- </dd>
-        {% endif %} 
+    <p><b>{% trans "End registration date" %}</b>  {% blocktrans with event.end_register_date|date:"d-m-Y" as end_reg_date %}{{ end_reg_date }}{% endblocktrans %}</p>
+ {% endif %}
+ {% if event.groups.all %}  
+  <p><b>{% trans "Groups that can register" %}</b>  
+    {%for g1 in event.groups.all %}{{g1}},    {% endfor %}  
+ </p>
+   {% endif %} 
 {% if event.eventparticipants_set.all %}
-   <dt>{% trans "Event Participants" %}</dt> 
-    <dd>
-<table class="table"  border="1">
+   <p><b>{% trans "Event Participants" %}</b> 
+    <table    class="table table-hover table-sm" id="publications">
     <thead>
-        <tr class="success" style="background-color:#e6e6e6">
+        <tr  style="background-color:#c2aab6">
             <th class="zzz1">{% trans "User" %}</th>						
             <th>{% trans "Role" %}</th>
             <th>{% trans "Attended" %}</th>
@@ -238,8 +115,8 @@
            </tr>
     </thead>
     <tbody>
-             {% for f in event.eventparticipants_set.all %} 
-<tr>
+      {% for f in event.eventparticipants_set.all %} 
+       <tr>
         <td>{{f.user.prefix}} {{f.user.first_name}} {{f.user.last_name}}  </td>
         <td>{% for r in f.role.all %}{{r}}<br>{% endfor %}</td>
         <td>{{f.participant_attended_verbose}}  </td> 
@@ -248,36 +125,74 @@
         <td>{% if f.representing_country != None %} {{f.representing_country}} {% endif %} </td>
         <td>{% if f.representing_organization != None %} {{f.representing_organization}} {% endif %}</td>
         <td>{% if f.representing_region != None %} {{f.representing_region_verbose}} {% endif %} </td>
-     
-{% endfor %}
-            </tr> 
-           
-       
+       {% endfor %}
+        </tr> 
         </tbody>              
-         </table> 
+       </table> 
 
-
-
-
-
-
-
-
-
-
- 
-      
-
-          
-        </dd>
+     
+        </p>
          {% endif %}
  {% endif %}
 
 
-</dl>
 
+</div>
+    <div class="col-md-4">
+  
+        <div class="card mt-5" style="width: 100%">
+            <div class="card-header">
+                <h3 class="my-0">Event</h3>
+            </div>
+            <ul class="list-group list-group-flush">
+                <li class="list-group-item">
+                    {% if is_contryeevent %}
+                        <p><a href="/countries/{{ event.country.name|slugify }}/calendar/" class="more">< {% trans "Back to" %}</a></p>
+                    {% else %}    
+                        <p><a href="/year/calendar/" class="more">< {% trans "Back to " %}  {% trans "Calendar" %}</a></p>
+                    {% endif %}
+                    {% if user.is_superuser %}
+                        <a class="btn btn-small btn-info" href="/admin/schedule/event/{{ event.id }}"><i class="icon-edit icon-white"></i>Edit as Admin</a><br>
+                    {% endif %}
+                    {% if is_contryeevent %}
+                        {% if is_contryeditor or user.is_superuser %}
+                                <a class="btn btn-small btn-info" href="{% url "edit_event" event.country event.calendar.slug event.id %}"><i class="icon-edit icon-white"></i>Edit</a>
+                        {% endif %}
+                    {% else %}    
+                        {% if is_secretariat or user.is_superuser%}
+                            <a class="btn btn-small btn-info" href="{% url "edit_event" 'event' event.calendar.slug event.id %}"><i class="icon-edit icon-white"></i>Edit</a><br>
+                            <a class="btn btn-small btn-info" href="{% url 'resend-invite' event.id %}"><i class="icon-share icon-white"></i>Re-send Invitation Email</a>(it will be sent only to not-registered )<br><br>
+                            <!--a class="btn btn-small btn-info" href="/work-area/membershiptool/participant/create/{{event.id}}"><i class="icon-edit icon-white"></i> Generate Participants List</a-->
+                            <a class="btn btn-small btn-info" href="{% url 'generate-list' event.id %}"><i class="icon-edit icon-white"></i> Generate Participants List</a><br>
+                            <a class="btn btn-small btn-info" href="/work-area/participantshortlist/{{event.id }}/create/"><i class="icon-edit icon-white"></i> Generate Participants Short List</a>
+                        {% endif %}
+                    {% endif %}
+                    <br>
+                    {% if  event.can_register and event.groups.all and event.is_not_past_due%}
 
+                        {% for g1 in request.user.groups.all %}
 
+                            {%if g1 in event.groups.all %}
+                                {% if is_registered %}<br>
+                                    <a class="btn btn-small btn-danger" href="{% url 'un-register-to-event' event.id %}"><i class="icon-edit icon-white"></i> {% trans "Un-Register to meeting" %}</a>
+                                {% else %} 
+                                    <a class="btn btn-small btn-info" href="{% url 'register-to-event' event.id %}"><i class="icon-edit icon-white"></i> {% trans "Register to meeting" %}</a>
+                                {% endif %}
+                            {% endif%}
+                       {% endfor %}   
+                    {% endif%}
+                </li>
+            </ul>
+        </div>
+  
+    
+   
+   
+{% block pageinfo %}
 
-{% endblock %}
+{% endblock pageinfo %}</div>
+    
+    
+</div>
 
+{% endblock  %}

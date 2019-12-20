@@ -6,15 +6,15 @@
 {% block meta_title %}{% trans "Calendar" %}{% endblock %}
 
 {% block breadcrumb_menu %}
-<li>
+<!--li class="breadcrumb-item">
   <a href="/{{ LANGUAGE_CODE }}/">{% trans "Home" %}</a>
-  <span class="divider">/</span>
-</li>
-<li>
+
+</li-->
+<li class="breadcrumb-item">
   <a href="/year/calendar/">{% trans "Calendar" %}</a>
-  <span class="divider">/</span>
 </li>
-<li class="active">{% trans "Month" %}</li>
+<!--li class="active">{% trans "Month" %}</li-->
+<li class="breadcrumb-item active" aria-current="page"><i class="fas fa-angle-double-down"></i></li>
 {% endblock breadcrumb_menu %}
 
 
