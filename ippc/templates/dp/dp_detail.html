@@ -4,9 +4,9 @@
 {% block meta_title %}{% trans "Draft protocol" %}{% endblock %}
 
 {% block breadcrumb_menu %}
-<li><a href="/{{ LANGUAGE_CODE }}/">{% trans "Home" %}</a><span class="divider">/</span></li>
-<li><a href="/core-activities/expert-consultation-draft-diagnostic-protocols/">DPs</a><span class="divider">/</span></li>
-<li class="active">{{ draftprotocol.title }}</li>
+<li class="breadcrumb-item"><a href="/core-activities/expert-consultation-draft-diagnostic-protocols/">DPs</a></li>
+<!--li class="active">{{ draftprotocol.title }}</li-->
+<li class="breadcrumb-item active" aria-current="page"><i class="fas fa-angle-double-down"></i></li>
 {% endblock %}
 
 {% block local_nav %}

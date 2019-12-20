@@ -10,11 +10,11 @@
 {% block body_class %}wide{% endblock %}
 
 {% block breadcrumb_menu %}
-<li>
+<li class="breadcrumb-item" >
   <a href="/draftprotocol/">{% trans "Draft Protocols" %}</a>
-  <span class="divider">/</span>
 </li>
-<li class="active">{% trans "Editing" %} {{ draftprotocol.title }}</li>
+<li class="breadcrumb-item active">{% trans "Editing" %} {{ draftprotocol.title }}</li>
+<li class="breadcrumb-item active" aria-current="page"><i class="fas fa-angle-double-down"></i></li>
 {% endblock %}
 
 {% block local_nav %}

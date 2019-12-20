@@ -6,11 +6,11 @@
 {% block body_class %}wide{% endblock %}
 
 {% block breadcrumb_menu %}
-<li>
+<li class="breadcrumb-item" >
   <a href="/draftprotocol/">{% trans "Draft Protocols" %}</a>
-  <span class="divider">/</span>
 </li>
-<li class="active">{% trans "Create New" %}</li>
+<li class="breadcrumb-item active">{% trans "Create New" %}</li>
+<li class="breadcrumb-item active" aria-current="page"><i class="fas fa-angle-double-down"></i></li>
 {% endblock %}
 
 {% block local_nav %}

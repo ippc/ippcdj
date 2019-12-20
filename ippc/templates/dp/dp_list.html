@@ -2,20 +2,21 @@
 
 {% block main %}
 
-<p class="pull-right">
+
+<h1>
+ {% trans "Draft Protocols" %}
+</h1> 
+<p>
   {% if  perms.ippc.change_publication or   user.is_superuser%}
   <br>
-  <small><a class="btn btn-small btn-info" href="{% url 'draftprotocol-create' %}">+ {% trans "Add new Draft Protocol" %}</a></small>
+  <a class="btn btn-small btn-info" href="{% url 'draftprotocol-create' %}">+ {% trans "Add new Draft Protocol" %}</a>
   <br>
   {% else %}
   {% endif %}
 </p>
 
-<h1>
-  <small class="normal">{% trans "Draft Protocols" %}</small>
-</h1> 
 {% if latest1 %}
-<table class="table table-condensed table-striped" id="publications">
+<table class="table table-condensed table-striped" id="publications" style="margin-top: 10px;margin-left: 0;">
   <thead>
     <tr>
       <th>{% trans "Title" %}</th>

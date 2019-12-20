@@ -6,9 +6,9 @@
 {% block body_class %}wide{% endblock %}
 
 {% block breadcrumb_menu %}
-<li>
-  <a href="/">{% trans "Home" %}</a><span class="divider">/</span></li>
-  <li class="active">Contact us</li>
+<li class="breadcrumb-item">
+  <a href="/">{% trans "Home" %}</a></li>
+  <li  class="breadcrumb-item active">Contact us</li>
 
 {% endblock %}
 
@@ -24,7 +24,7 @@
   <a href="javascript:history.go(-1)">{% trans "« Cancel and go back" %}</a>
 </p>
 
-<h1><span class="normal">{% trans "Contact IPPC" %}</span> </h1>
+<h1>{% trans "Contact IPPC" %}</h1>
 
 
 
