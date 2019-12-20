@@ -4,14 +4,15 @@
 {% block meta_title %}{% trans "Latest Event Reportings" %}{% endblock %}
 
 {% block breadcrumb_menu %}
-<li><a href="/{{ LANGUAGE_CODE }}/">{% trans "Home" %}</a><span class="divider">/</span></li>
-<li><a href="/countries/">Countries</a><span class="divider">/</span></li>
-<li><a href="/countries/{{eventreporting.country.name|slugify}}/">{{eventreporting.country.name}}</a><span class="divider">/</span></li>
-<li><a href="/countries/{{eventreporting.country.name|slugify}}/eventreporting/{{eventreporting.event_rep_type}}">{{eventreporting.get_event_rep_type_display}}</a><span class="divider">/</span></li>
+<!--li><a href="/{{ LANGUAGE_CODE }}/">{% trans "Home" %}</a></li-->
+<li class="breadcrumb-item"><a href="/countries/">Countries</a></li>
+<li class="breadcrumb-item"><a href="/countries/{{eventreporting.country.name|slugify}}/">{{eventreporting.country.name}}</a></li>
+<li class="breadcrumb-item"><a href="/countries/{{eventreporting.country.name|slugify}}/eventreporting/{{eventreporting.event_rep_type}}">{{eventreporting.get_event_rep_type_display}}</a></li>
 {# This: https://docs.djangoproject.com/en/dev/ref/models/instances/#django.db.models.Model.get_FOO_display #}
-<li class="active">
+<!--li class="active">
   {{ eventreporting.title}}
-</li>
+</li-->
+<li class="breadcrumb-item active" aria-current="page"><i class="fas fa-angle-double-down"></i></li>
 {% endblock %}
 
 {% block local_nav %}

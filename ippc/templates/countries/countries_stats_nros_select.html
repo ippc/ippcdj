@@ -6,11 +6,10 @@
 {% block body_class %}wide{% endblock %}
 
 {% block breadcrumb_menu %}
-<li>
-  <a href="/home">{% trans "Home" %}</a><span class="divider">/</span></li>
-  <li><a href="/work-area/">Workarea</a><span class="divider">/</span></li>
- <li class="active">{% trans "Create New NROs Statistics" %}</li>
 
+  <li class="breadcrumb-item"><a href="/work-area/">Workarea</a></li>
+ <li  class="breadcrumb-item active">{% trans "Create New NROs Statistics" %}</li>
+<li class="breadcrumb-item active" aria-current="page"><i class="fas fa-angle-double-down"></i></li>
 {% endblock %}
 
 {% block local_nav %}

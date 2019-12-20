@@ -9,17 +9,18 @@
 {% block body_class %}wide{% endblock %}
 
 {% block breadcrumb_menu %}
-<li><a href="/{{ LANGUAGE_CODE }}/">{% trans "Home" %}</a><span class="divider">/</span></li>
-<li>
+
+<li class="breadcrumb-item">
   <a href="/countries/">Countries</a>
-  <span class="divider">/</span>
+  
 </li>
-<li>
+<li class="breadcrumb-item">
     <a href="/nro-reports-and-statistics/">Statistics</a>
-    <span class="divider">/</span>
+    
 </li>
 
-<li class="active">{% trans "Summary statistics for National Reporting Obligations: NROs only for  " %} {{prevyear}}   </li>
+<li  class="breadcrumb-item active">{% trans "Summary statistics for National Reporting Obligations: NROs only for  " %} {{prevyear}}   </li>
+<li class="breadcrumb-item active" aria-current="page"><i class="fas fa-angle-double-down"></i></li>
 {% endblock %}
 
 {% block local_nav %}

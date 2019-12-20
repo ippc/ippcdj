@@ -9,28 +9,19 @@
 {% block body_class %}wide{% endblock %}
 
 {% block breadcrumb_menu %}
-<li><a href="/{{ LANGUAGE_CODE }}/">{% trans "Home" %}</a><span class="divider">/</span></li>
-<li>
+<!--li class="breadcrumb-item"><a href="/{{ LANGUAGE_CODE }}/">{% trans "Home" %}</a></li-->
+<li class="breadcrumb-item">
   <a href="/countries/">Countries</a>
-  <span class="divider">/</span>
 </li>
-<!--li>
-  <a href="{{ page.get_absolute_url }}">
-    {# {% with latest|first as first_object %} #}
-    {#   {{ first_object.country.name }} #}
-    {# {% endwith %} #}
-    {{ page.title }}
-  </a>
-  <span class="divider">/</span>
-</li-->
 {%if region_name == 'NPPOs' %}
-<li class="active">{% trans "List of NPPOs of IPPC Contracting parties" %} 
+<li  class="breadcrumb-item active">{% trans "List of NPPOs of IPPC Contracting parties" %} 
 </li>
 {% else %}
-<li class="active">{% trans "Countries List" %} 
-    {% if region_name %}
+<li class="breadcrumb-item active">{% trans "Countries List" %} 
+        {% if region_name %}
   from {{region_name}}
   {% endif %}</li>
+<li class="breadcrumb-item active" aria-current="page"><i class="fas fa-angle-double-down"></i></li>
   {% endif %}
 {% endblock %}
 
@@ -40,6 +31,7 @@
 
 
 {% block main %}
+
 <h1>
 {%if region_name == 'NPPOs' %}
     {% trans "List of NPPOs of IPPC Contracting parties" %} 
@@ -50,7 +42,6 @@
       {% endif %}
  {% endif %}
   </h1> 
-<div class="span7 middle">
 	<p>{% trans "There are currently" %} <strong>{{ number_of_cp }}</strong> {% trans "contracting parties. Visit the" %} <a href="http://www.fao.org/fileadmin/user_upload/legal/docs/004s-e.pdf"> {% trans "FAO Legal</a> website for details." %} </p>
 	{%if region_name == 'NPPOs' %}{% else %}
 <p>
@@ -85,4 +76,4 @@
 {% endif %}
 
 {% endblock %}
-</div>
+

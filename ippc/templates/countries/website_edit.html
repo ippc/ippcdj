@@ -10,21 +10,22 @@
 {% block body_class %}wide{% endblock %}
 
 {% block breadcrumb_menu %}
-<li>
+<li class="breadcrumb-item">
   <a href="/countries/">{% trans "Countries" %}</a>
-  <span class="divider">/</span>
+  
 </li>
-<li>
+<li class="breadcrumb-item">
   <a href="/countries/{{ website.country.country_slug }}/">
       {{ website.country }}
   </a>
-  <span class="divider">/</span>
+  
 </li>
-<li>
+<li class="breadcrumb-item">
   <a href="/countries/{{ website.country.country_slug }}/websites/">{% trans "Websites" %}</a>
-  <span class="divider">/</span>
+  
 </li>
-<li class="active">{% trans "Editing" %} {{ website.title }}</li>
+<li class="breadcrumb-item active">{% trans "Editing" %} {{ website.title }}</li>
+<li class="breadcrumb-item active" aria-current="page"><i class="fas fa-angle-double-down"></i></li>
 {% endblock %}
 
 {% block local_nav %}

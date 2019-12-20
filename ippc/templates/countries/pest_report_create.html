@@ -16,15 +16,12 @@
 </li>
 <li>
   <a href="/countries/{{ user.get_profile.country.name|slugify }}/">
-    {# {% with latest|first as first_object %} #}
-    {#   {{ first_object.country.name }} #}
-    {# {% endwith %} #}
     {{ user.get_profile.country.name }}
   </a>
   <span class="divider">/</span>
 </li>
 <li>
-  <a href="/countries/{{ user.get_profile.country.name|slugify }}/pestreports/">{% trans "Pest Reports" %}</a>
+  <a href="/countries/{{ user.get_profile.country.name|slugify }}/pestfreeareas/">{% trans "Pest Free Area" %}</a>
   <span class="divider">/</span>
 </li>
 <li class="active">{% trans "Create New" %}</li>

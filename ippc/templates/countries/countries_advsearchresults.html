@@ -12,13 +12,12 @@
 {% block body_class %}wide{% endblock %}
 
 {% block breadcrumb_menu %}
-<li><a href="/{{ LANGUAGE_CODE }}/">{% trans "Home" %}</a><span class="divider">/</span></li>
-<li>
+<!--li><a href="/{{ LANGUAGE_CODE }}/">{% trans "Home" %}</a></li-->
+<li class="breadcrumb-item">
   <a href="/countries/">Countries</a>
-  <span class="divider">/</span>
 </li>
 
-<li class="active">{{type_label}} {% trans "list" %}</li>
+<li class="breadcrumb-item active">{{type_label}} {% trans "list" %}</li><li class="breadcrumb-item active" aria-current="page"><i class="fas fa-angle-double-down"></i></li>
 {% endblock %}
 
 {% block local_nav %}
@@ -229,7 +228,7 @@ google.maps.event.addDomListener(window, 'load', initialize);
     
     
  
-<table class="table table-condensed table-striped" id="publications">
+<table class="table table-condensed table-striped" id="publications" style="margin-top: 20px">
   <thead>
     <tr>
       <th>{% trans "Country" %}{{type}}</th>
@@ -270,7 +269,7 @@ google.maps.event.addDomListener(window, 'load', initialize);
         <a class="btn btn-info btn-small" href="/countriescontacts/extractor/">Extract CSV file</a><br>
     </div>
 
-<table data-url="data1.json"  class="table table-condensed table-striped" data-sort-name="country" data-sort-order="asc" id="publications">
+<table data-url="data1.json"  class="table table-condensed table-striped" data-sort-name="country" data-sort-order="asc" id="publications" style="margin-top: 20px">
   <thead>
     <tr>
       <th data-field="country">{% trans "Country" %}{{type}}</th>
@@ -319,7 +318,7 @@ google.maps.event.addDomListener(window, 'load', initialize);
 </table>
 
 {% else %}
-<table class="table table-condensed table-striped" id="publications">
+<table class="table table-condensed table-striped" id="publications" style="margin-top: 20px">
   <thead>
     <tr>
       <th>{% trans "Country" %}{{type}}</th>

@@ -4,12 +4,17 @@
 {% block meta_title %}{% trans "Latest Pest Reports" %}{% endblock %}
 
 {% block breadcrumb_menu %}
-<li><a href="/{{ LANGUAGE_CODE }}/">{% trans "Home" %}</a><span class="divider">/</span></li>
-<li><a href="/countries/">Countries</a><span class="divider">/</span></li>
-<li><a href="/countries/{{report.country.name|slugify}}/">{{report.country.name}}</a><span class="divider">/</span></li>
-<li><a href="/countries/{{report.country.name|slugify}}/pestreports/">Pest Reports</a><span class="divider">/</span></li>
-<li class="active">{{ report.title }}</li>
+<li class="breadcrumb-item"><a href="/{{ LANGUAGE_CODE }}/">{% trans "Home" %}</a></li>
+<li class="breadcrumb-item"><a href="/{{ LANGUAGE_CODE }}/countries/">Countries</a></li>
+<li class="breadcrumb-item"><a href="/{{ LANGUAGE_CODE }}/countries/{{report.country.name|slugify}}/">{{report.country.name}}</a></li>
+<li class="breadcrumb-item"><a href="/{{ LANGUAGE_CODE }}/countries/{{report.country.name|slugify}}/pestreports/">Pest Reports</a></li>
+<!--li  class="breadcrumb-item active">{{ report.title }}</li-->
+<li class="breadcrumb-item active" aria-current="page"><i class="fas fa-angle-double-down"></i></li>
+
+
 {% endblock %}
+
+
 
 {% block local_nav %}
 <div class="well localnav">

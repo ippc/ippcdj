@@ -6,25 +6,22 @@
 {% endblock %}
 
 {% block breadcrumb_menu %}
-<li>
-  <a href="/{{ LANGUAGE_CODE }}/">{% trans "Home" %}</a>
-  <span class="divider">/</span>
-</li>
-<li>
+<li class="breadcrumb-item">
   <a href="/countries/">{% trans "Countries" %}</a>
-  <span class="divider">/</span>
+  
 </li>
-<li>
+<li class="breadcrumb-item">
   <a href="/countries/{{ page.title }}"> {{ page.title }}</a>
-  <span class="divider">/</span>
+  
 </li>
 
-<li class="active">
+<li class="breadcrumb-item active">
     {% trans "Related informations" %}
 </li>
 <li class="pull-right">
   {% include "countries/country_selector.html" %}
 </li>
+<li class="breadcrumb-item active" aria-current="page"><i class="fas fa-angle-double-down"></i></li>
 {% endblock %}
 
 {% block main %}

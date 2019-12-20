@@ -12,21 +12,22 @@
 {% block body_class %}wide{% endblock %}
 
 {% block breadcrumb_menu %}
-<li><a href="/{{ LANGUAGE_CODE }}/">{% trans "Home" %}</a><span class="divider">/</span></li>
-<li>
+<!--li><a href="/{{ LANGUAGE_CODE }}/">{% trans "Home" %}</a></li-->
+<li class="breadcrumb-item">
   <a href="/countries/">Countries</a>
-  <span class="divider">/</span>
+  
 </li>
-<li>
+<li class="breadcrumb-item">
   <a href="{{ page.get_absolute_url }}">
     {# {% with latest|first as first_object %} #}
     {#   {{ first_object.country.name }} #}
     {# {% endwith %} #}
     {{ page.title }}
   </a>
-  <span class="divider">/</span>
+  
 </li>
-<li class="active">{% trans "Pest Free Areas" %}</li>
+<li  class="breadcrumb-item active">{% trans "Pest Free Areas" %}</li>
+<li class="breadcrumb-item active" aria-current="page"><i class="fas fa-angle-double-down"></i></li>
 {% endblock %}
 
 {% block local_nav %}

@@ -4,11 +4,12 @@
 {% block meta_title %}{% trans "Latest News" %}{% endblock %}
 
 {% block breadcrumb_menu %}
-<li><a href="/{{ LANGUAGE_CODE }}/">{% trans "Home" %}</a><span class="divider">/</span></li>
-<li><a href="/countries/">Countries</a><span class="divider">/</span></li>
-<li><a href="/countries/{{countrynews.country.name|slugify}}/">{{countrynews.country.name}}</a><span class="divider">/</span></li>
-<li><a href="/countries/{{countrynews.country.name|slugify}}/countrynews/">countrynews</a><span class="divider">/</span></li>
-<li class="active">{{ countrynews.title }}</li>
+
+<li class="breadcrumb-item"><a href="/countries/">Countries</a></li>
+<li class="breadcrumb-item"><a href="/countries/{{countrynews.country.name|slugify}}/">{{countrynews.country.name}}</a></li>
+<li class="breadcrumb-item"><a href="/countries/{{countrynews.country.name|slugify}}/countrynews/">countrynews</a></li>
+<!--li class="active">{{ countrynews.title }}</li-->
+<li class="breadcrumb-item active" aria-current="page"><i class="fas fa-angle-double-down"></i></li>
 {% endblock %}
 
 {% block local_nav %}

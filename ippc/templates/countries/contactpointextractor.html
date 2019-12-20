@@ -12,13 +12,14 @@
 {% block body_class %}wide{% endblock %}
 
 {% block breadcrumb_menu %}
-<li><a href="/{{ LANGUAGE_CODE }}/">{% trans "Home" %}</a><span class="divider">/</span></li>
-<li>
+<!--li><a href="/{{ LANGUAGE_CODE }}/">{% trans "Home" %}</a></li-->
+<li class="breadcrumb-item">
   <a href="/countries/">Countries</a>
-  <span class="divider">/</span>
+  
 </li>
 
-<li class="active">{{type_label}} {% trans "list" %}</li>
+<li  class="breadcrumb-item active">{{type_label}} {% trans "list" %}</li>
+<li class="breadcrumb-item active" aria-current="page"><i class="fas fa-angle-double-down"></i></li>
 {% endblock %}
 
 {% block local_nav %}

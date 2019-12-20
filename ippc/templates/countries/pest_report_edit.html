@@ -10,24 +10,23 @@
 {% block body_class %}wide{% endblock %}
 
 {% block breadcrumb_menu %}
-<li>
-  <a href="/countries/">{% trans "Countries" %}</a>
-  <span class="divider">/</span>
+<li class="breadcrumb-item">
+  <a href="/{{ LANGUAGE_CODE }}/countries/">{% trans "Countries" %}</a>
+
 </li>
-<li>
-  <a href="/countries/{{ pest_report.country.country_slug }}/">
+<li class="breadcrumb-item">
+  <a href="/{{ LANGUAGE_CODE }}/countries/{{ pest_report.country.country_slug }}/">
     {# {% with latest|first as first_object %} #}
     {#   {{ first_object.country.name }} #}
     {# {% endwith %} #}
     {{ pest_report.country }}
   </a>
-  <span class="divider">/</span>
 </li>
-<li>
-  <a href="/countries/{{ pest_report.country.country_slug }}/pestreports/">{% trans "Pest Reports" %}</a>
-  <span class="divider">/</span>
+<li class="breadcrumb-item">
+  <a href="/{{ LANGUAGE_CODE }}/countries/{{ pest_report.country.country_slug }}/pestreports/">{% trans "Pest Reports" %}</a>
 </li>
-<li class="active">{% trans "Editing" %} {{ pest_report.title }}</li>
+<li  class="breadcrumb-item active">{% trans "Editing" %} {{ pest_report.title }}</li>
+<li class="breadcrumb-item active" aria-current="page"><i class="fas fa-angle-double-down"></i></li>
 {% endblock %}
 
 {% block local_nav %}
