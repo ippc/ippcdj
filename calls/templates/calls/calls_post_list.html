@@ -27,7 +27,7 @@
 {% block breadcrumb_menu %}
 {{ block.super }}
 {% if tag or category or year or month or author %}
-<li>{% spaceless %}
+<li class="breadcrumb-item">{% spaceless %}
 {% if tag %}
     {% trans "Tag:" %} {{ tag }}
 {% else %}{% if category %}
@@ -72,89 +72,92 @@
 
 {% for calls_post in calls_posts.object_list %}
 {% block calls_post_list_post_title %}
-{# {% editable calls_post.title %} #}
-<h4>
-    <a href="{{ calls_post.get_absolute_url }}">
-        {% with calls_post|get_object_translation as translated_page %}
-            {{ translated_page.title|safe }}
-    {% endwith %}
-    </a>
-</h4>
-{# {% endeditable %} #}
-{% endblock %}
-{% block calls_post_list_post_metainfo %}
-{# {% editable calls_post.publish_date %} #}
-<h6>
-    {% trans "Posted " %}
-    {% with calls_post.category.all as categories %}
-    {% if categories %}
-    {% trans "in" %}
-    {% for category in categories %}
-    <a href="{% url "calls_post_list_category" category.slug %}">{{ category }}</a>
-    {% endfor %}
-    {% endif %}
-    {% endwith %}
-   {# {% blocktrans with sometime=calls_post.publish_date|timesince %}{{ sometime }} ago{% endblocktrans %} #}
-   {% blocktrans with thetime=calls_post.publish_date|date:"D, d M Y, H:i" %} <span class="normal">on</span> {{ thetime }}{% endblocktrans %}
-{{category}}</h6>
-{% if calls_post.deadline_date != null %}
-<h6>
+
+<div class="row border-bottom pb-2 mb-2">
+        <!--Grid column-->
+          {% if  calls_post.featured_image %}
+          <div class="col-md-3 mb-4 mb-md-0  pt-2">
+            <!--Image-->
+            <div class="view overlay z-depth-1-half hover-zoomin2">
+                <a href="{{ calls_post.get_absolute_url }}">
+               {#settings.news_USE_FEATURED_IMAGE and #}
+                    <img src="{{ MEDIA_URL }}{% thumbnail calls_post.featured_image 800 800 %}" class="img-fluid mt-1 " alt="">
+               
+                </a>
+            </div>
+
+        </div>
+      {% endif %}
+        <!--Grid column-->
+            {% if  calls_post.featured_image %}
+      
+        <div class="col-md-9 mb-4 mb-md-0">
+            {% else %}
+      <div class="col-md-12 mb-4 mb-md-0">
+                  {% endif %}
+      <h5 class="font-weight-bold ">
+            {% with calls_post|get_object_translation as translated_page %}
+                {{ translated_page.title|safe }}
+            {% endwith %}
+            </h5>
+
+          <p class="text-muted  mb-0">
+            {% trans "Posted " %}
+                {% with calls_post.category.all as categories %}
+                    {% if categories %}
+                        {% trans "in" %}
+                        {% for category in categories %}
+                            <a href="{% url "calls_post_list_category" category.slug %}">{{ category }}</a>
+                        {% endfor %}
+                        {% endif %}
+                {% endwith %}
+                {% blocktrans with thetime=calls_post.publish_date|date:"D, d M Y, H:i" %} <span class="normal">on</span> {{ thetime }}{% endblocktrans %}
+                {% if calls_post.deadline_date != null %}
+<br>
     {% trans "Deadline " %}
    {% blocktrans with thetime=calls_post.deadline_date|date:"D, d M Y, H:i" %} <span class="normal">on</span> {{ thetime }}{% endblocktrans %}
-</h6>
-    {% endif %}
-{# {% endeditable %} #}
+
+    {% endif %}<br>
+                {% with calls_post|get_object_translation as translated_page %}
+                    {% if LANGUAGE_CODE == 'zh' %}
+                        {{ translated_page.content|richtext_filter|safe |truncatechars:100 }} 
+                    {% else %}
+                        {{ translated_page.content|richtext_filter|safe |truncatewords_html:40 }} <!--truncatewords_html:100-->
+                      {% endif %}
+                 {% endwith %}
+            </p>		
+	   <a class="btn btn-sm p-0 " href="{{ calls_post.get_absolute_url }}" role="button">{% trans "Read more" %}<i class="fas fa-angle-double-right ml-2"></i></a>
+
+
+          
+
+        </div>
+        <!--Grid column-->
+
+      </div>
+
+
+
+
+
+
+
 {% endblock %}
 
-{% if calls_post.featured_image %}{#and settings.CALLS_USE_FEATURED_IMAGE and #}
-{% block calls_post_list_post_featured_image %}
-<img class="featured-thumb" src="{{ MEDIA_URL }}{% thumbnail calls_post.featured_image 90 90 %}">
-{% endblock %}
-{% endif %}
 
-{% block calls_post_list_post_content %}
-{# {% editable calls_post.content %} #}
- {% with calls_post|get_object_translation as translated_page %}
-             {{ translated_page.content|richtext_filter|safe |truncatewords_html:100 }}
-      
-    {% endwith %}
 
-{# {% endeditable %} #}
-{% endblock %}
 
-{% block calls_post_list_post_links %}
-<p class="calls-list-detail">
-    {% keywords_for calls_post as tags %}
-    {% if tags %}
-    {% trans "Tags" %}:
-    {% spaceless %}
-    {% for tag in tags %}
-    <a href="{% url "calls_post_list_tag" tag.slug %}" class="tag">{{ tag }}</a>
-    {% endfor %}
-    {% endspaceless %}
-    <br>
-    {% endif %}
-    <a href="{{ calls_post.get_absolute_url }}">{% trans "Continue reading…" %}</a>
-    {# / #}
-    {# {% if settings.COMMENTS_DISQUS_SHORTNAME %} #}
-    {# <a href="{{ calls_post.get_absolute_url }}#disqus_thread" #}
-    {#     data-disqus-identifier="{% disqus_id_for calls_post %}"> #}
-    {#     {% trans "Comments" %} #}
-    {# </a> #}
-    {# {% else %} #}
-    {# <a href="{{ calls_post.get_absolute_url }}#comments"> #}
-    {#     {% blocktrans count comments_count=calls_post.comments_count %}{{ comments_count }} comment{% plural %}{{ comments_count }} comments{% endblocktrans %} #}
-    {# </a> #}
-    {# {% endif %} #}
-</p>
-{% endblock %}
+
+
+
+
+
+
+
 {% endfor %}
 
 {% pagination_for calls_posts %}
 
-{# {% if settings.COMMENTS_DISQUS_SHORTNAME %} #}
-{# {% include "generic/includes/disqus_counts.html" %} #}
-{# {% endif %} #}
 
 {% endblock %}
 

@@ -4,104 +4,90 @@
         <a class="btn btn-small btn-info" href="/admin/calls/callspost/add/">{% trans "Add new call" %}</a><br>
     </div>
 {% endif %}
-{% block calls_recent_posts %}
-{% calls_recent_posts 5 as recent_posts %}
-{% if recent_posts %}
-<div class="panel">
-  <h3>{% trans "Latest" %}</h3>
-  <ul class="unstyled recent-posts">
-  {% for recent_post in recent_posts %}
-  <li><a href="{{ recent_post.get_absolute_url }}"
-      >{{ recent_post.title }}</a></li>
-  {% endfor %}
-  </ul>
-</div>
-{% endif %}
-{% endblock %}
 
+
+{% if calls_post %}
+  
+    <div class="card card-cascade wider" style="width: 100%">
+      <div class="card-body card-body-cascade text-center">
+        <p class="card-text">{% trans "Share this call" %}</p>
+        <a target="_blank" href="http://twitter.com/home?status={{ calls_post.short_url|urlencode }}%20{{ calls_post.title|urlencode }}"><button on type="button" class="btn btn-fb"><i class="fab fa-facebook-f"></i></button></a>
+        <a target="_blank" href="http://facebook.com/sharer.php?u={{ request.build_absolute_uri }}&amp;t={{ calls_post.title|urlencode }}"><button type="button" class="btn btn-tw"><i class="fab fa-twitter"></i></button></a>
+        <a target="_blank" href="https://www.linkedin.com/shareArticle?mini=true&url={{ request.build_absolute_uri }}&title={{ calls_post.title|urlencode }}"><button type="button" class="btn btn-in"><i class="fab fa-linkedin-in"></i></button></a>
+      </div>
+    </div>
+{% endif %}
 {% block calls_months %}
+  <script type="text/javascript" charset="utf-8">
+    $(function() {
+        $('#month').change(function() {
+            window.location.href = $(this).val() + '';
+        });
+        $('#tag').change(function() {
+            window.location.href = $(this).val() + '';
+        });
+    });
+    </script>  
+    
+    {% if calls_post %}
+    {% else %}
+    
 {% calls_months as months %}
-{% if months %}
-<div class="panel">
-  <h3>{% trans "Archive" %}</h3>
-  {% for month in months %}
-      {% ifchanged month.date.year %}
-          {% if not forloop.first %}</ul>{% endif %}
-          <h6>{{ month.date.year }}</h6><ul class="unstyled">
-      {% endifchanged %}
-      <li><a href="{% url "calls_post_list_month" year=month.date.year month=month.date.month %}"
-          >{{ month.date|date:"F" }}</a> ({{ month.post_count }})</li>
-  {% endfor %}
-  </ul>
-</div>
-{% endif %}
-{% endblock %}
-
-{% block calls_categories %}
-{% calls_categories as categories %}
-{% if categories %}
-<div class="panel">
-  <h3>{% trans "Categories" %}</h3>
-  <ul class="unstyled">
-  {% for category in categories %}
-  <li><a href="{% url "calls_post_list_category" category.slug %}"
-      >{{ category }}</a> ({{ category.post_count }})</li>
-  {% endfor %}
-  </ul>
-</div>
-{% endif %}
-{% endblock %}
-
-{% block calls_keywords %}
 {% keywords_for calls.callspost as tags %}
-{% if tags %}
-<div class="panel">
-  <h3>{% trans "Tags" %}</h3>
-  <ul class="unstyled tags">
-  {% for tag in tags %}
-  <li>
-      <a href="{% url "calls_post_list_tag" tag.slug %}"
-          class="tag-weight-{{ tag.weight }}">{{ tag }}</a>
-      ({{ tag.item_count }})
-  </li>
-  {% endfor %}
-  </ul>
-</div>
-{% endif %}
+{% if months %}
+
+<div class="card bg-light" style="width: 100%">
+            <div class="card-body">
+                <h4 class="card-title"><i class="fas fa-archive mr-2"></i><a>{% trans "Calls archive" %}</a></h4>
+                {% if months %}
+                <select class="form-control mt-4 mb-4" id="month">
+                    <option value="" disabled="" selected="">Year</option>
+                    {% for month in months %}
+                        {% ifchanged month.date.year %} 
+                            <option style="font-size: 1px; background-color: #ebebeb;" disabled>&nbsp;</option>
+                            <option style="background-color: #cccccc;" value="" disabled=""><h6>{{ month.date.year }}<small> (<i>{% for aaa in months_for_category1 %}
+                            {%if aaa.0 == month.date.year %}{{aaa.1}}{% endif %}{% endfor %}</i>)</small></h6>  </option> 
+                        {% endifchanged %}
+                        <option value="{% url "calls_post_list_month" year=month.date.year month=month.date.month %}">{{ month.date|date:"F" }}</a> ({{ month.post_count }})</option> 
+                    {% endfor %}
+                </select>
+                {% endif %}
+
+                {% if tags %}
+                <select class="form-control mt-4 mb-4" id="tag">
+                    <option value="" disabled="" selected="">{% trans "Tags" %}</option>
+                    {% for tag in tags %}
+                        <option value="{% url "calls_post_list_tag" tag.slug %}">{{ tag }} ({{ tag.item_count }})</option>
+                    {% endfor %}
+                </select>
+                {% endif %}
+            </div>
+        </div>
+{% endif %}{% endif %}
 {% endblock %}
 
-{# {% block calls_authors %} #}
-{# {% calls_authors as authors %} #}
-{# {% if authors %} #}
-{# <h3>{% trans "Authors" %}</h3> #}
-{# <ul class="unstyled"> #}
-{# {% for author in authors %} #}
-{#     <li><a href="{% url "calls_post_list_author" author.username %}" #}
-{#         >{{ author.get_full_name|default:author.username }}</a> #}
-{#         ({{ author.post_count }})</li> #}
-{# {% endfor %} #}
-{# </ul> #}
-{# {% endif %} #}
-{# {% endblock %} #}
 
 {% block calls_feeds %}
-<div class="panel">
-  <h3>{% trans "Feeds" %}</h3>
+<div class="card mt-5" style="width: 100%">
+    <div class="card-header">
+        <h3 class="my-0">{% trans "Feeds" %}</h3>
+    </div>
+          <ul class="list-group list-group-flush">
   {% if tag %}
-      <a href="{% url "calls_post_feed_tag" tag.slug "rss" %}">{% trans "RSS" %}</a> /
-      <a href="{% url "calls_post_feed_tag" tag.slug "atom" %}">{% trans "Atom" %}</a>
+       <li class="list-group-item"> <a href="{% url "calls_post_feed_tag" tag.slug "rss" %}">{% trans "RSS" %}</a> /
+      <a href="{% url "calls_post_feed_tag" tag.slug "atom" %}">{% trans "Atom" %}</a></li>
   {% endif %}
   {% if category %}
-      <a href="{% url "calls_post_feed_category" category.slug "rss" %}">{% trans "RSS" %}</a> /
-      <a href="{% url "calls_post_feed_category" category.slug "atom" %}">{% trans "Atom" %}</a>
+     <li class="list-group-item">   <a href="{% url "calls_post_feed_category" category.slug "rss" %}">{% trans "RSS" %}</a> /
+      <a href="{% url "calls_post_feed_category" category.slug "atom" %}">{% trans "Atom" %}</a></li>
   {% endif %}
   {% if author %}
-      <a href="{% url "calls_post_feed_author" author.username "rss" %}">{% trans "RSS" %}</a> /
-      <a href="{% url "calls_post_feed_author" author.username "atom" %}">{% trans "Atom" %}</a>
+     <li class="list-group-item">   <a href="{% url "calls_post_feed_author" author.username "rss" %}">{% trans "RSS" %}</a> /
+      <a href="{% url "calls_post_feed_author" author.username "atom" %}">{% trans "Atom" %}</a></li>
   {% endif %}
   {% if not tag and not category and not author %}
-      <a href="{% url "calls_post_feed" "rss" %}">{% trans "RSS" %}</a> /
-      <a href="{% url "calls_post_feed" "atom" %}">{% trans "Atom" %}</a>
+      <li class="list-group-item">  <a href="{% url "calls_post_feed" "rss" %}">{% trans "RSS" %}</a> /
+      <a href="{% url "calls_post_feed" "atom" %}">{% trans "Atom" %}</a></li>
   {% endif %}
 </div>
 {% endblock %}

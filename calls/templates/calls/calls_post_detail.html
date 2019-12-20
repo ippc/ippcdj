@@ -23,9 +23,7 @@
 
 {% block breadcrumb_menu %}
 {{ block.super }}
-<li class="active"> {% with calls_post|get_object_translation as translated_page %}
-            {{ translated_page.title|safe }}
-    {% endwith %}</li>
+ <li class="breadcrumb-item active" aria-current="page"><i class="fas fa-angle-double-down"></i></li>
 {% endblock %}
 
 {# =note: the sidebar is in the filter_panel.html include #}
@@ -35,61 +33,39 @@
 {% if user.is_superuser or perms.calls.add_callspost  %} {#and request.user.get_profile.user_id  == calls_post.user_id#} 
 
     <div class="pull-right">
-        <a class="btn btn-info btn-small" href="/admin/calls/callspost/{{ calls_post.id }}">Edit as Admin</a><br>
+        <a class="btn btn-info btn-small" href="/admin/calls/callspost/{{ calls_post.id }}">{% trans "Edit as Admin" %}</a><br>
     </div>
 {% endif %}
 {% block calls_post_detail_postedby %}
-{# {% editable calls_post.publish_date %} #}
-<h6>
+
+<p>
     {% trans "Posted " %}
-    {% with calls_post.user as author %}
-    <!--a href="{% url "calls_post_list_author" author %}">{{ author.get_full_name|default:author.username }}</a-->
-    {% endwith %}
-    {# {% blocktrans with sometime=calls_post.publish_date|timesince %}{{ sometime }} ago{% endblocktrans %} #}
     {% blocktrans with sometime=calls_post.publish_date|date:"D, d M Y, H:i" %}on {{ sometime }}{% endblocktrans %}    
-</h6>
+</p>
 {% if calls_post.deadline_date != null %}
-<h6>
+<p>
     {% trans "Deadline " %}
    {% blocktrans with thetime=calls_post.deadline_date|date:"D, d M Y, H:i" %} <span class="normal">on</span> {{ thetime }}{% endblocktrans %}
-</h6>
+</p>
     {% endif %}
-{# {% endeditable %} #}
+
 {% endblock %}
-{# {% block calls_post_detail_commentlink %} #}
-{# <p> #}
-{#     {% if calls_post.allow_comments %} #}
-{#         {% if settings.COMMENTS_DISQUS_SHORTNAME %} #}
-{#             (<a href="{{ calls_post.get_absolute_url }}#disqus_thread" #}
-{#                 data-disqus-identifier="{% disqus_id_for calls_post %}">{% spaceless %} #}
-{#                 {% trans "Comments" %} #}
-{#             {% endspaceless %}</a>) #}
-{#         {% else %}(<a href="#comments">{% spaceless %} #}
-{#             {% blocktrans count comments_count=calls_post.comments_count %}{{ comments_count }} comment{% plural %}{{ comments_count }} comments{% endblocktrans %} #}
-{#             {% endspaceless %}</a>) #}
-{#         {% endif %} #}
-{#     {% endif %} #}
-{# </p> #}
-{# {% endblock %} #}
 
 {% block calls_post_detail_featured_image %}
 {% if  calls_post.featured_image %} {#settings.CALLS_USE_FEATURED_IMAGE and#}
-  <p><img src="{{ MEDIA_URL }}{% thumbnail calls_post.featured_image 500 0 %}"></p>
+   <img src="{{ MEDIA_URL }}{% thumbnail calls_post.featured_image 800 400 %}" class="img-fluid mb-1" alt="Responsive image">
 {% endif %}
 {% endblock %}
 
-{# {% if settings.COMMENTS_DISQUS_SHORTNAME %} #}
-{# {% include "generic/includes/disqus_counts.html" %} #}
-{# {% endif %} #}
 
 {% block calls_post_detail_content %}
-{# {% editable calls_post.content %} #}
+
 
 
  {% with calls_post|get_object_translation as translated_page %}
             {{ translated_page.content|richtext_filter|safe  }}
     {% endwith %}
-{# {% endeditable %} #}
+
 {% endblock %}
 
 {% block calls_post_detail_keywords %}
@@ -106,16 +82,9 @@
 {% endif %}
 {% endblock %}
 
-{# {% rating_for calls_post %} #}
-
-{% block calls_post_detail_sharebuttons %}
-{% set_short_url_for calls_post %}
-<a class="btn small primary share-twitter" target="_blank" href="http://twitter.com/home?status={{ calls_post.short_url|urlencode }}%20{{ calls_post.title|urlencode }}">{% trans "Share on Twitter" %}</a>
-<a class="btn small primary share-facebook" target="_blank" href="http://facebook.com/sharer.php?u={{ request.build_absolute_uri }}&amp;t={{ calls_post.title|urlencode }}">{% trans "Share on Facebook" %}</a>
-{% endblock %}
 
 {% block calls_post_previous_next %}
-<ul class="pager">
+<!--ul class="pager">
 {% with calls_post.get_previous_by_publish_date as previous %}
 {% if previous %}
 <li class="previous">
@@ -130,7 +99,7 @@
 </li>
 {% endif %}
 {% endwith %}
-</ul>
+</ul-->
 {% endblock %}
 
 {% block calls_post_detail_related_posts %}
@@ -146,8 +115,6 @@
 {% endif %}
 {% endblock %}
 
-{# {% block calls_post_detail_comments %} #}
-{# {% if calls_post.allow_comments %}{% comments_for calls_post %}{% endif %} #}
-{# {% endblock %} #}
+
 
 {% endblock %}
