@@ -6,83 +6,88 @@
 {% endblock %}
 
 {% block breadcrumb_menu %}
-<li>
+<!--li class="breadcrumb-item">
   <a href="/{{ LANGUAGE_CODE }}/">{% trans "Home" %}</a>
-  <span class="divider">/</span>
+</li-->
+<li class="breadcrumb-item">
+  <a href="/{{ LANGUAGE_CODE }}/about/overview/">{% trans "About" %}</a>
 </li>
-<li>
-  <a href="/partners/">{% trans "Partners" %}</a>
-  <span class="divider">/</span>
+<li class="breadcrumb-item">
+{% if pageparentid == 466 %} 
+  <a href="/{{ LANGUAGE_CODE }}/core-activities/external-cooperation/">{% trans "Partners" %}</a>
+{% else %}
+<li class="breadcrumb-item">
+  <a href="/{{ LANGUAGE_CODE }}/about/ippc-network/">{% trans "IPPC Network" %}</a>
+{% endif %}
 </li>
-<li>
-  <a href="/partners/{{titleparentslug}}/">{{titleparent}}</a>
-  <span class="divider">/</span>
+<li class="breadcrumb-item">
+  <a href="/{{ LANGUAGE_CODE }}/{{titleparentslug}}/">{{titleparent}}</a>
+  
 </li>
 
-<li class="active">
+<!--li  class="breadcrumb-item active">
       {{ page.title }}
-</li>
-
+</li-->
+<li class="breadcrumb-item active" aria-current="page"><i class="fas fa-angle-double-down"></i></li>
 {% endblock %}
 
 {% block main %}
   {% if user.is_superuser %} 
+
   <div class="pull-right">
-      <a class="btn btn-mini btn-info" href="/admin/ippc/partnerspage/{{ page.id }}">Edit page as Admin <small>(also contact point &amp; editors relation)</a><br>
+      <a class="btn btn-small btn-info" href="/admin/ippc/partnerspage/{{ page.id }}">Edit page as Admin(also contact point &amp; editors relation)</a><br>
   </div>
   {% endif %}
   
   {% if perms.ippc.change_partnerspage and request.user.get_profile.partner.id == page.id %}
    <div class="pull-right">
-      <a class="btn btn-mini btn-info" href="/partners/page/edit/{{ page.id }}">Edit page</a><br>
+      <a class="btn btn-small btn-info" href="/partners/page/edit/{{ page.id }}">Edit page</a><br>
   </div>
    
   {% endif %}
   {% for group in request.user.groups.all %}
     {% if group.name == 'IPPC Secretariat' and not user.is_superuser %}
      <div class="pull-right">
-      <a class="btn btn-mini btn-info" href="/partners/page/edit/{{ page.id }}">Edit page</a><br>
+      <a class="btn btn-small btn-info" href="/partners/page/edit/{{ page.id }}">Edit page</a><br>
     </div>
     {% endif %}
     {% endfor %}
-  <h1>
-      {{ page.title }} </h1> 
+    <h1>{{ page.title }} </h1> 
     
     {% if user.is_superuser %}
     <div class="alert alert-warning"> Last edited by {{edituser}} on {{ modify_date|date:"d M Y" }}  </div>  
     {% endif %}
-    
-    
-  <div>   {{ content|richtext_filter|safe }}</div>
+    <div>   {{ content|richtext_filter|safe }}</div>
   
   {% if page.get_content_model.contact_point.username %}
-  <div class="panel contact-info">
-  <h2>{% trans "Contact Point: " %} 
-    <small>
-     {% for entry in page.get_content_model.contact_point.get_profile.contact_type.all %}
-      {{entry}}{% if forloop.last %} {% else %},{% endif %}
-    {% endfor %}
-    </small>
-  </h2>
-    {% include "accounts/account_contactpoint_details.html" %}
-  </div>
+    <div class="card" style="width: 100%">
+          <div class="card-header">
+            <h3 class="my-0">{% trans "Contact Point: " %} 
+        {% for entry in page.get_content_model.contact_point.get_profile.contact_type.all %}
+          {{entry}}{% if forloop.last %} {% else %},{% endif %}
+        {% endfor %}
+       </h3>
+           {% include "accounts/account_contactpoint_details.html" %}
+          </div>
+    </div>  
    {% endif %}
   
- 
+   
+   
 
   {# if there are any editors defined for this country page, only admins can see them here #}
   {% if page.get_content_model.editors.all and user.is_superuser %} 
-  <h3>Editors</h3>
-  <table class="table table-condensed table-striped">
+ 
+  <table class="table table-condensed">
     <thead>
       <tr>
-        <th>{% trans "Name" %}</th>
+        <th> <h3>Editors</h3></th>
       </tr>
     </thead>
     <tbody>
       {% for editor in page.get_content_model.editors.all %}
         <tr>
- <td>{{ editor.get_profile.first_name }} {{ editor.get_profile.last_name }} <a class="btn btn-mini  pull-right" href="/admin/auth/user/{{ editor.get_profile.user_id }}">Edit User as Admin</a><br></td>       </tr>
+ <td>{{ editor.get_profile.first_name }} {{ editor.get_profile.last_name }} <a class="btn btn-small btn-info  pull-right" href="/admin/auth/user/{{ editor.get_profile.user_id }}">Edit User as Admin</a><br></td>       </tr>
       {% endfor %}
     </tbody>
   </table>
@@ -91,23 +96,22 @@
  {# LINKs to add #}
  
  {% if user.is_superuser %}
- <small><a class="btn btn-small btn-info" href="{% url 'partner-publication-create' page.get_content_model.partner_slug %}">+ {% trans "Add new publication" %}</a></small>
- <small><a class="btn btn-small btn-info" href="{% url 'partner-news-create' page.get_content_model.partner_slug %}">+ {% trans "Add new news" %}</a></small>
- <small><a class="btn btn-small btn-info" href="{% url 'partner-websites-create' page.get_content_model.partner_slug %}">+ {% trans "Add new website" %}</a></small>
+<a class="btn btn-small btn-info" href="{% url 'partner-publication-create' page.get_content_model.partner_slug %}">+ {% trans "Add new publication" %}</a>
+<a class="btn btn-small btn-info" href="{% url 'partner-news-create' page.get_content_model.partner_slug %}">+ {% trans "Add new news" %}</a>
+<a class="btn btn-small btn-info" href="{% url 'partner-websites-create' page.get_content_model.partner_slug %}">+ {% trans "Add new website" %}</a>
  {% endif %}
  {% for group in request.user.groups.all %}
     {% if group.name == 'IPPC Secretariat' and not user.is_superuser %}
-<small><a class="btn btn-small btn-info" href="{% url 'partner-publication-create' page.get_content_model.partner_slug %}">+ {% trans "Add new publication" %}</a></small>
-  <small>  <a class="btn btn-small btn-info" href="{% url 'partner-news-create' page.get_content_model.partner_slug %}">+ {% trans "Add new news" %}</a>
-   </small>
-   <small><a class="btn btn-small btn-info" href="{% url 'partner-websites-create' page.get_content_model.partner_slug %}">+ {% trans "Add new website" %}</a></small>
+<small><a class="btn btn-small btn-info" href="{% url 'partner-publication-create' page.get_content_model.partner_slug %}">+ {% trans "Add new publication" %}</a>
+   <a class="btn btn-small btn-info" href="{% url 'partner-news-create' page.get_content_model.partner_slug %}">+ {% trans "Add new news" %}</a>
+  <a class="btn btn-small btn-info" href="{% url 'partner-websites-create' page.get_content_model.partner_slug %}">+ {% trans "Add new website" %}</a>
  {% endif %}
  {% endfor %}
   {% if perms.ippc.add_partnerspublication and request.user.get_profile.partner.name == page.get_content_model.name %}
- <small><a class="btn btn-small btn-info" href="{% url 'partner-publication-create' page.get_content_model.partner_slug %}">+ {% trans "Add new publication" %}</a></small>
-  <small>  <a class="btn btn-small btn-info" href="{% url 'partner-news-create' page.get_content_model.partner_slug %}">+ {% trans "Add new news" %}</a>
-   </small>
-   <small><a class="btn btn-small btn-info" href="{% url 'partner-websites-create' page.get_content_model.partner_slug %}">+ {% trans "Add new website" %}</a></small>
+<a class="btn btn-small btn-info" href="{% url 'partner-publication-create' page.get_content_model.partner_slug %}">+ {% trans "Add new publication" %}</a>
+   <a class="btn btn-small btn-info" href="{% url 'partner-news-create' page.get_content_model.partner_slug %}">+ {% trans "Add new news" %}</a>
+   
+  <a class="btn btn-small btn-info" href="{% url 'partner-websites-create' page.get_content_model.partner_slug %}">+ {% trans "Add new website" %}</a>
  {% endif %}
 
       
@@ -211,7 +215,7 @@
     
     
   </tbody>
-</table>
+</table> 
   {% endif %}
 
  {% endblock %}

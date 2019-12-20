@@ -11,28 +11,30 @@
 {% block body_class %}wide{% endblock %}
 
 {% block breadcrumb_menu %}
-<li><a href="/{{ LANGUAGE_CODE }}/">{% trans "Home" %}</a><span class="divider">/</span></li>
-<li>
+<!--li class="breadcrumb-item"><a href="/{{ LANGUAGE_CODE }}/">{% trans "Home" %}</a><span class="divider">/</span></li-->
+<li class="breadcrumb-item">
   <a href="/core-activities/">{% trans "Core Activities" %}</a>
-  <span class="divider">/</span>
+ 
 </li>
-<li>
+<li class="breadcrumb-item">
   <a href="/core-activities/standards-setting/">{% trans "Standards setting" %}</a>
-  <span class="divider">/</span>
+ 
 </li>
 
-<li>
+<li class="breadcrumb-item">
   <a href="/core-activities/standards-setting/expert-drafting-groups/technical-panels/">{% trans "Technical panels (TPs)" %}</a>
-  <span class="divider">/</span>
+ 
 </li>
-<li>
+<li class="breadcrumb-item">
   <a href="/core-activities/standards-setting/expert-drafting-groups/technical-panels/technical-panel-phytosanitary-treatments/">{% trans "Technical Panel Phytosanitary Treatments (TPPT)" %}</a>
-  <span class="divider">/</span>
+ 
 </li>
 
 
 
-<li class="active">{% trans "IPPC Phytosanitary Treatments search tool" %}</li>
+<!--li class="active">{% trans "IPPC Phytosanitary Treatments search tool" %}</li-->
+
+<li class="breadcrumb-item active" aria-current="page"><i class="fas fa-angle-double-down"></i></li>
 {% endblock %}
 
 {% block local_nav %}
