@@ -8,13 +8,13 @@
 {% block body_class %}wide{% endblock %}
 
 {% block breadcrumb_menu %}
-<li><a href="/{{ LANGUAGE_CODE }}/">{% trans "Home" %}</a><span class="divider">/</span></li>
-<li>
+<li class="breadcrumb-item">
   <a href="/work-area/">Workarea</a>
-  <span class="divider">/</span>
+  
 </li>
+<li class="breadcrumb-item active" aria-current="page"><i class="fas fa-angle-double-down"></i></li>
 
-<li class="active">{% trans "Create Membership List Tool" %}</li>
+
 {% endblock %}
 
 {% block local_nav %}
