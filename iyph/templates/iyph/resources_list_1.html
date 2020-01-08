@@ -98,7 +98,7 @@
       {% for recent_resource in iyph_resources %}
         {% if recent_resource.title != 'IYPH Steering Committee Membership list'  and recent_resource.title != 'IYPH Steering Committee Terms of Reference'  %}
         <tr>
-            <td width="15%">{{recent_resource.start_date|date:"d" }} - {{recent_resource.end_date|date:"d M Y" }}</td>
+            <td width="15%">{% if res_type == '2' %}{{recent_resource.start_date|date:"d M Y" }}{%else %}{{recent_resource.start_date|date:"d" }} - {{recent_resource.end_date|date:"d M Y" }}{% endif %}</td>
             <td width="15%">{{recent_resource.venue}}</td>
             <td width="70%"><a href="/static/media/{{ recent_resource.file }}">{{ recent_resource.title }}</a></td>
         </tr>
