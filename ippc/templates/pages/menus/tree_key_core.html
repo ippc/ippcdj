@@ -1,5 +1,6 @@
 {% load i18n future pages_tags %}
 {# {% block pageinfo %} #}  
+{% if page.id == 1483 %}{%else%}
 <div class="card" style="width: 100%">
     <div class="card-header">
          <h5>{% trans "Key Links &amp; Documents" %}</h5>
@@ -37,5 +38,5 @@
 	  <li class="list-group-item"><a href="/core-activities/standards-setting/expert-drafting-groups/expert-working-groups">Expert working groups (EWGs)</a></li>
 	  <li class="list-group-item"><a href="/core-activities/dispute-avoidance-dispute-settlement/subsidiary-body-dispute-settlement">Subsidiary Body on Dispute Settlement</a></li>
 	</ul>
-</div-->
+</div-->{%enif%}
 {# {% endblock pageinfo %} #}
