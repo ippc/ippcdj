@@ -1,5 +1,5 @@
 {% extends "baseiyph.html" %}
-{% load i18n future mezzanine_tags iyph_tags keyword_tags disqus_tags %}
+{% load i18n future mezzanine_tags keyword_tags disqus_tags %}
 
 {% block meta_title %}{% if page %}{{ page.richtextpage.meta_title }}{% else %}{% trans "Iyph" %}{% endif %}{% endblock %}
 
@@ -34,8 +34,7 @@
     </li>
    
 </ul>
-{% iyph_recent_resources_general as recent_resources %}
-{% iyph_recent_chronology 2 as recent_chronology1 %}
+
 
 <script type="text/javascript">
    //<![CDATA[ 
@@ -96,188 +95,7 @@
         </div>
     </div>
 </div>
-<!-- FIRST ROW ------------------------------------------------------------------->
-<!--div class="row">
-    <div class="col-8" >
-        <div id="myCarousel2" class="carousel slide vertical" data-ride="carousel">
-            <div class="carousel-inner" role="listbox">
-                <div class="item active">
-                    <div class="col-100 height-300" >
-                        <div class="green-box-photo height-300" title="&#169; Maddi Bazzocco from unsplash" style="background-image: url(/static/img/iyph-stc/elements/01_k.jpg)"></div>
-                        <div class="green-box-text height-400">
-                          <div class="padding20">
-                            <h6>{% trans "Key Facts" %}</h6>
-                                  <h3 class="font-light" style="color:white">{% trans "IYPH2020" %}<br>{% trans "Key fact" %} #1</h3>
-                                  <p>{% trans "Plants make up 80 percent of the food we eat and produce 98 percent of the oxygen we breathe." %}</p>
-                          </div>
-                      </div>
-                    </div>
-                </div>
-                <div class="item">
-                    <div class="col-100 height-300" >
-                        <div class="green-box-photo height-300" title="&#169; FAO/Edward Ogolla" style="background-image: url(/static/img/iyph-stc/elements/02_k.jpg)"></div>
-                        <div class="green-box-text height-400">
-                          <div class="padding20">
-                            <h6></h6>
-                            <h3 class="font-light" style="color:white">{% trans "IYPH2020" %}<br>{% trans "Key fact" %} #2</h3>
-                            <p>{% trans "Plant pests are responsible for the loss of up to 40 percent of global food crops, and for trade losses in agricultural products exceeding USD 220 billion annually." %}</p>
-                          </div>
-                      </div>
-                    </div>
-                </div>  
-                <div class="item">
-                       <div class="col-100 height-300" >
-                           <div class="green-box-photo height-300" title="&#169; FAO/Ezequiel Becerra" style="background-image: url(/static/img/iyph-stc/elements/03_k.jpg)"></div>
-                           <div class="green-box-text height-400">
-                             <div class="padding20">
-                               <h6></h6>
-                                     <h3 class="font-light" style="color:white">{% trans "IYPH2020" %}<br>{% trans "Key fact" %} #3</h3>
-                                     <p>{% trans "The annual value of trade in agricultural products has grown almost three-fold over the past decade, largely in emerging economies and developing countries, reaching USD 1.7 trillion." %}</p>
-                             </div>
-                         </div>
-                       </div>
-                   </div>  
-                    <div class="item">
-                        <div class="col-100 height-300" >
-                            <div class="green-box-photo height-300" title="&#169; FAO/Olivier Thuillier" style="background-image: url(/static/img/iyph-stc/elements/04_k.jpg)"></div>
-                            <div class="green-box-text height-400">
-                              <div class="padding20">
-                                <h6></h6>
-                                      <h3 class="font-light" style="color:white">{% trans "IYPH2020" %}<br>{% trans "Key fact" %} #4</h3>
-                                      <p>{% trans "FAO estimates that agricultural production must rise by about 60 percent by 2050 in order to feed a larger and generally richer population. " %}</p>
-                              </div>
-                          </div>
-                        </div>
-                    </div>  
-                    <div class="item">
-                        <div class="col-100 height-300" >
-                            <div class="green-box-photo height-300" title="&#169; FAO/Seyllou Diallo" style="background-image: url(/static/img/iyph-stc/elements/05_k.jpg)"></div>
-                            <div class="green-box-text height-400">
-                              <div class="padding20">
-                                <h6></h6>
-                                      <h3 class="font-light" style="color:white">{% trans "IYPH2020" %}<br>{% trans "Key fact" %} #5</h3>
-                                      <p>{% trans "Climate change is having a big impact on plant health. It threatens to reduce both the quality and quantity of crops, leading to lower yields. Rising temperatures are also exacerbating water scarcity, and changing the relationship between pests, plants and pathogens." %}</p>
-                              </div>
-                          </div>
-                        </div>
-                    </div>  
-                    <div class="item">
-                        <div class="col-100 height-300" >
-                            <div class="green-box-photo height-300" title="&#169; FAO/Mario Marzot" style="background-image: url(/static/img/iyph-stc/elements/06_k.jpg)"></div>
-                            <div class="green-box-text height-400">
-                              <div class="padding20">
-                                <h6></h6>
-                                      <h3 class="font-light" style="color:white">{% trans "IYPH2020" %}<br>{% trans "Key fact" %} #6</h3>
-                                      <p>{% trans "More plant pests are appearing earlier and in places where they were never seen before due to climate change." %}</p>
-                              </div>
-                          </div>
-                        </div>
-                    </div>  
-                    <div class="item">
-                        <div class="col-100 height-300" >
-                            <div class="green-box-photo height-300" title="&#169; Aaron Burden from  unsplash" style="background-image: url(/static/img/iyph-stc/elements/07_k.jpg)"></div>
-                            <div class="green-box-text height-400">
-                              <div class="padding20">
-                                <h6></h6>
-                                      <h3 class="font-light" style="color:white">{% trans "IYPH2020" %}<br>{% trans "Key fact" %} #7</h3>
-                                      <p>{% trans "Beneficial insects are vital for plant health since they pollinate most plants, keep pests in control, maintain soil health, recycle nutrients, and more. However, 80% of the biomass of insects has disappeared in the last 25-30 years." %}</p>
-                              </div>
-                          </div>
-                        </div>
-                    </div>  
-                </div>    
-                <a class="left carousel-controlx" href="#myCarousel2" data-slide="prev"><img src="/static/img/output-onlinepngtools (1).png"></a>
-                <a class="right carousel-controlx" href="#myCarousel2" data-slide="next"><img src="/static/img/output-onlinepngtools.png"></a>
-            </div> 
-        
-       
-        <div class="col-100 gray_bg height-350">
-                  
-          <h6 style="margin-left:20px; margin-bottom:20px">{% trans "Featured Resources" %}</h6>
-           {% if recent_resources %}
-               {% for recent_resource in recent_resources %}
-                   {% if recent_resource.res_type == 3 %}
-                     <div class="col-3" style="margin-left:20px">
-                     <img src="/static/media/{{ recent_resource.image }}" class="cover" />
-                     <h4 class="font-light">
-                         {% if LANGUAGE_CODE != 'en' %}
-        {% if LANGUAGE_CODE == 'es'  and recent_resource.title_es != '' and recent_resource.title_es != None %}
-               <a href="{{ recent_resource.link_es }}">{{recent_resource.title_es}}</a> 
-        {% elif LANGUAGE_CODE == 'fr'  and recent_resource.title_fr != '' and recent_resource.title_fr != None%}
-              <a href="{{ recent_resource.link_fr }}">{{recent_resource.title_fr}}</a> 
-        {% elif LANGUAGE_CODE == 'ru'  and recent_resource.title_ru != '' and recent_resource.title_ru != None%}
-               <a href="{{ recent_resource.link_ru }}">{{recent_resource.title_ru}}</a> 
-        {% elif LANGUAGE_CODE == 'ar'  and recent_resource.title_ar != '' and recent_resource.title_ar != None%}
-              <a href="{{ recent_resource.link_ar }}">{{recent_resource.title_ar}}</a> 
-        {% elif LANGUAGE_CODE == 'zh'  and recent_resource.title_zh != '' and recent_resource.title_zh != None%}
-            <a href="{{ recent_resource.link_zh }}">{{recent_resource.title_zh}}</a> 
-        {% else %}
-            <a href="{{ recent_resource.link }}">{{recent_resource.title}}</a> 
-        {% endif %}
-     {% else %}
-          <a href="{{ recent_resource.link }}">{{recent_resource.title}}</a> 
-     {% endif %}
-                         
-                         
-                         
-                     </h4>
-                 </div>
-                 {% endif%}
-               {% endfor %}
-           
-             {% endif%}
-        
-        </div>
-     </div-->
-      
- <!-- DX col ------------------------------>
-      <!--div class="col-4" >
-      
-          
-     <div class="col-100 gray-box-text height-300" >
-        
-           <img src="/static/img/iyph-stc/elements/homeaction_1.jpg"  title="&#169; FAO"style="padding:0">
-           <div class="padding20">
-        <h2>{% trans "Take action!" %}</h2> 
-          
-          <p>{% trans "Everyone has a role to play in keeping plants healthy!" %}<br />
-          <a href="/iyph/take-action" class="pull-right go">[{% trans "Find out what you can do "%}]</a> </p>
-          </div>
-       </div> 
 
-        {% if recent_chronology1 %}
-        <div class="col-100 gray-box-text event" style="margin-top:22px">
-            <div class="padding20">
-            <h2>{% trans "Events" %}</h2> 
-            {% for chronology in recent_chronology1 %}
-                <h5><a href="{% url 'chronology-detail' chronology.slug %}" style="color:black;">{% with chronology|get_object_translation as translated_page %}{{ translated_page.title|safe }}{% endwith %}</a></h5>
-                <p>{{chronology.venue}}, {{chronology.country}}<br>
-                {{chronology.start_date|date:"d M Y" }}  -  {{chronology.end_date|date:"d M Y" }}
-                </p>
-            {% endfor %}
-            <a href="/iyph/chronology/list" class="pull-right go" >[{% trans "calendar"%}]</a>
-            </div>
-        </div>
-        {% endif %}
-    </div-->
 </div>
 
-<!-- Second ROW ------------------------------------------------------------------->
-    <!--div class="row">
-        <div class="col-12">
-            <h6 style="border-top:4px solid #CCC; display:block; width:100%">{% trans "Multimedia"%}</h6>
-            <div class="col-4">
-                <iframe  class="img-responsive"  src="https://www.youtube.com/embed/tgbNymZ7vqY">  </iframe>
-                <h3>{% trans "IYPH2020 Corporate video" %}</h3>
-            </div>
-            <div class="col-4">
-              <img src="/static/img/images/photo1.jpg" class="img-responsive" />
-              <h3>{% trans "Photo contest"%}</h3>
-            </div>
-            <div class="col-4" >
-                <img src="/static/img/images/photo2.jpg" class="img-responsive" />
-                <h3>{% trans "Infographic"%}</h3>
-            </div>
-        </div>
-    </div-->
 {% endblock %}
