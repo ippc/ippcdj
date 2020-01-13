@@ -29,13 +29,11 @@ urlpatterns = patterns("iyph.views",
     url(r"^(?P<year>\d{4})/(?P<month>\d{1,2})/(?P<slug>.*)/$",    "iyph_post_detail", name="iyph_post_detail_month"),
     url(r"^(?P<year>\d{4})/(?P<slug>.*)/$", "iyph_post_detail", name="iyph_post_detail_year"),
     #---------EVENTS ------------------------------# 
-    url(r'^chronologies/(?P<type>\d+)/create/$', view=chronology_create, name='chronology-create'),
-    url(r'^chronologies/(?P<id>\d+)/edit/$',        view=chronology_edit,        name='chronology-edit'),
-    #url(r'^chronology/list/(?P<type>[\w-]+)/(?P<view>[\w-]+)/$',view=ChronologyListView.as_view(),  name='chronology-list'),#TYPE/MAP/TIMELINE
-    url(r'^chronology/list/$',view=ChronologyListView.as_view(),  name='chronology-list'),
-    url(r"^chronology/(?P<slug>.*)/$", view=ChronologyDetailView.as_view(), name='chronology-detail'),
+   # url(r'^chronologies/(?P<type>\d+)/create/$', view=chronology_create, name='chronology-create'),
+   # url(r'^chronologies/(?P<id>\d+)/edit/$',        view=chronology_edit,        name='chronology-edit'),
+   # url(r'^chronology/list/$',view=ChronologyListView.as_view(),  name='chronology-list'),
+   # url(r"^chronology/(?P<slug>.*)/$", view=ChronologyDetailView.as_view(), name='chronology-detail'),
     #---------committee ------------------------------# 
-    #url(r"^iyph-committee/(?P<type>[\w-]+)/$", view=Page2View.as_view(), name='page-2-detail'),
     url(r"^iyph-international-steering-committee/$", view=Page2View.as_view(), name='page-2-detail'),
     url(r"^iyph-technical-advisory-board/$", view=Page1View.as_view(), name='page-1-detail'),
    
