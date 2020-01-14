@@ -24,305 +24,73 @@
 {# so text if login is required before doing permissions tests #}
 
 {% if page.publicationlibrary.login_required %}
-      {% if user.is_superuser or perms.pages.change_richtextpage %}
-      
-            {{ block.super }}
-            
-            {% if  page.publicationlibrary.id == 581 or page.publicationlibrary.id == 1303  %}
-                {% include "pages/publicationlibrarypoll.html" %}
-            {% endif %}   
-            
-             <!--div class="pull-right">
-    {% if user.is_superuser  or perms.pages.change_richtextpage %}
-          <a class="btn btn-info btn-small" href="/admin/ippc/publicationlibrary/{{ page.id }}"><span style="font-size: 1.2em; color: #ffffff;"><i class="fas fa-edit"></i></span> Edit as Admin</a><br>
-    {% endif %}
-    {% if page.publicationlibrary.id == 777 or page.publicationlibrary.parent_id == 777 %}
-        {% for group in request.user.groups.all %}
-            {% if group.name == 'IFQRG admin' and  perms.ippc.change_publicationlibrary %}
-                <a class="btn btn-info btn-small" href="/admin/ippc/publicationlibrary/{{ page.id }}"><span style="font-size: 1.2em; color: #ffffff;"><i class="fas fa-edit"></i></span> Edit as Admin</a><br>
-            {% endif %}
-        {% endfor %}
-    {% endif %}
-    {% if page.publicationlibrary.id == 790 or page.publicationlibrary.parent_id == 790 %}
-        {% for group in request.user.groups.all %} 
-            {% if group.name == 'PTTEG admin ' and  perms.ippc.change_publicationlibrary %}
-                <a class="btn btn-info btn-small" href="/admin/ippc/publicationlibrary/{{ page.id }}"><span style="font-size: 1.2em; color: #ffffff;"><i class="fas fa-edit"></i></span> Edit as Admin</a><br>
-            {% endif %}
-        {% endfor %}
-    {% endif %}
     {% if user.is_superuser or perms.pages.change_richtextpage %}
-        <a class="btn btn-info btn-small" href="/admin/ippc/publicationlibrary/add/?parent={{ page.id }}"><span style="font-size: 1.2em; color: #ffffff;"><i class="fas fa-plus"></i></span> Add new sub page</a><br>
-    {% endif %}
-    </div-->
-           {% if  page.publicationlibrary.pagefeatured_image != '' %}  
-        
-            {% if page.publicationlibrary.fullpage == 1%}
-                <img src="{{ MEDIA_URL }}{% thumbnail page.publicationlibrary.pagefeatured_image 1140 300 %}" class="img-fluid z-depth-1 mb-4"   {%if  page.publicationlibrary.embedded_image_caption != None and page.publicationlibrary.embedded_image_caption != ''%}title="{{page.publicationlibrary.embedded_image_caption}}"{% endif %} >
-            {% else %}
-                <img src="{{ MEDIA_URL }}{% thumbnail page.publicationlibrary.pagefeatured_image 730 240 %}" class="img-fluid mb-4"  {%if  page.publicationlibrary.embedded_image_caption != None and page.publicationlibrary.embedded_image_caption != ''%}title="{{page.publicationlibrary.embedded_image_caption}}"{% endif %} >
-            {% endif %}
-            <h1 class="h1_home">
-                {% with page.publicationlibrary|get_object_translation as translated_page %}
-                    {{ translated_page.title|safe }}
-                {% endwith %}
-            </h1>
-            
-            <div class="pull-right">
-                   {% if user.is_superuser  or perms.pages.change_richtextpage %}
-                         <a class="btn btn-info btn-small" href="/admin/ippc/publicationlibrary/{{ page.id }}"><span style="font-size: 1.2em; color: #ffffff;"><i class="fas fa-edit"></i></span> Edit as Admin</a><br>
-                   {% endif %}
-                   {% if page.publicationlibrary.id == 777 or page.publicationlibrary.parent_id == 777 %}
-                       {% for group in request.user.groups.all %}
-                           {% if group.name == 'IFQRG admin' and  perms.ippc.change_publicationlibrary %}
-                               <a class="btn btn-info btn-small" href="/admin/ippc/publicationlibrary/{{ page.id }}"><span style="font-size: 1.2em; color: #ffffff;"><i class="fas fa-edit"></i></span> Edit as Admin</a><br>
-                           {% endif %}
-                       {% endfor %}
-                   {% endif %}
-                   {% if page.publicationlibrary.id == 790 or page.publicationlibrary.parent_id == 790 %}
-                       {% for group in request.user.groups.all %} 
-                           {% if group.name == 'PTTEG admin ' and  perms.ippc.change_publicationlibrary %}
-                               <a class="btn btn-info btn-small" href="/admin/ippc/publicationlibrary/{{ page.id }}"><span style="font-size: 1.2em; color: #ffffff;"><i class="fas fa-edit"></i></span> Edit as Admin</a><br>
-                           {% endif %}
-                       {% endfor %}
-                   {% endif %}
-                   {% if user.is_superuser or perms.pages.change_richtextpage %}
-                       <a class="btn btn-info btn-small" href="/admin/ippc/publicationlibrary/add/?parent={{ page.id }}"><span style="font-size: 1.2em; color: #ffffff;"><i class="fas fa-plus"></i></span> Add new sub page</a><br>
-                   {% endif %}
-           </div><br style="clear:both"> 
-                
-        {% elif  page.publicationlibrary.embedded_image != '' %}
-            <h1 class="h1_home">
-                {% with page.publicationlibrary|get_object_translation as translated_page %}
-                    {{ translated_page.title|safe }}
-                {% endwith %}
-           </h1>  
-           <div class="pull-right">
-                {% if user.is_superuser  or perms.pages.change_richtextpage %}
-                      <a class="btn btn-info btn-small" href="/admin/ippc/publicationlibrary/{{ page.id }}"><span style="font-size: 1.2em; color: #ffffff;"><i class="fas fa-edit"></i></span> Edit as Admin</a><br>
-                {% endif %}
-                {% if page.publicationlibrary.id == 777 or page.publicationlibrary.parent_id == 777 %}
-                    {% for group in request.user.groups.all %}
-                        {% if group.name == 'IFQRG admin' and  perms.ippc.change_publicationlibrary %}
-                            <a class="btn btn-info btn-small" href="/admin/ippc/publicationlibrary/{{ page.id }}"><span style="font-size: 1.2em; color: #ffffff;"><i class="fas fa-edit"></i></span> Edit as Admin</a><br>
-                        {% endif %}
-                    {% endfor %}
-                {% endif %}
-                {% if page.publicationlibrary.id == 790 or page.publicationlibrary.parent_id == 790 %}
-                    {% for group in request.user.groups.all %} 
-                        {% if group.name == 'PTTEG admin ' and  perms.ippc.change_publicationlibrary %}
-                            <a class="btn btn-info btn-small" href="/admin/ippc/publicationlibrary/{{ page.id }}"><span style="font-size: 1.2em; color: #ffffff;"><i class="fas fa-edit"></i></span> Edit as Admin</a><br>
-                        {% endif %}
-                    {% endfor %}
-                {% endif %}
-                {% if user.is_superuser or perms.pages.change_richtextpage %}
-                    <a class="btn btn-info btn-small" href="/admin/ippc/publicationlibrary/add/?parent={{ page.id }}"><span style="font-size: 1.2em; color: #ffffff;"><i class="fas fa-plus"></i></span> Add new sub page</a><br>
-                {% endif %}
-        </div>
-        <br style="clear:both"> 
-             {% if page.publicationlibrary.embeddedimage_small == 1 %}
-                <img  class="img-fluid float-left mg-thumbnail mr-2" style="width:150px" src="/static/media/{{page.publicationlibrary.embedded_image}}"  {%if  page.publicationlibrary.embedded_image_caption != None and page.publicationlibrary.embedded_image_caption != ''%}title="{{page.publicationlibrary.embedded_image_caption}}"{% endif %} >
-            {% else %}
-                <img  class="img-fluid float-left img-thumbnail mr-2" style="width:50%" src="/static/media/{{page.publicationlibrary.embedded_image}}"  {%if  page.publicationlibrary.embedded_image_caption != None and page.publicationlibrary.embedded_image_caption != ''%}title="{{page.publicationlibrary.embedded_image_caption}}"{% endif %} >
-            {% endif %}
-        {% else %}
-         <h1 class="h1_home">
-                {% with page.publicationlibrary|get_object_translation as translated_page %}
-                    {{ translated_page.title|safe }}
-                {% endwith %}
-           </h1>  
-           <div class="pull-right">
-                {% if user.is_superuser  or perms.pages.change_richtextpage %}
-                      <a class="btn btn-info btn-small" href="/admin/ippc/publicationlibrary/{{ page.id }}"><span style="font-size: 1.2em; color: #ffffff;"><i class="fas fa-edit"></i></span> Edit as Admin</a><br>
-                {% endif %}
-                {% if page.publicationlibrary.id == 777 or page.publicationlibrary.parent_id == 777 %}
-                    {% for group in request.user.groups.all %}
-                        {% if group.name == 'IFQRG admin' and  perms.ippc.change_publicationlibrary %}
-                            <a class="btn btn-info btn-small" href="/admin/ippc/publicationlibrary/{{ page.id }}"><span style="font-size: 1.2em; color: #ffffff;"><i class="fas fa-edit"></i></span> Edit as Admin</a><br>
-                        {% endif %}
-                    {% endfor %}
-                {% endif %}
-                {% if page.publicationlibrary.id == 790 or page.publicationlibrary.parent_id == 790 %}
-                    {% for group in request.user.groups.all %} 
-                        {% if group.name == 'PTTEG admin ' and  perms.ippc.change_publicationlibrary %}
-                            <a class="btn btn-info btn-small" href="/admin/ippc/publicationlibrary/{{ page.id }}"><span style="font-size: 1.2em; color: #ffffff;"><i class="fas fa-edit"></i></span> Edit as Admin</a><br>
-                        {% endif %}
-                    {% endfor %}
-                {% endif %}
-                {% if user.is_superuser or perms.pages.change_richtextpage %}
-                    <a class="btn btn-info btn-small" href="/admin/ippc/publicationlibrary/add/?parent={{ page.id }}"><span style="font-size: 1.2em; color: #ffffff;"><i class="fas fa-plus"></i></span> Add new sub page</a><br>
-                {% endif %}
-        </div>
-        {% endif %}
+        {{ block.super }}
+        {% if  page.publicationlibrary.id == 581 or page.publicationlibrary.id == 1303  %}
+            {% include "pages/publicationlibrarypoll.html" %}
+        {% endif %}   
+    
+        {% include "pages/publicationlibrary_images.html" %}
         
         {% with page.publicationlibrary|get_object_translation as translated_page %}
-                {{ translated_page.content|richtext_filter|safe }}
-            {% endwith %}
-
-          
-
-
-
-          
-              {% include "pages/publicationtablerestricted.html" %}
-       {% else %}
- 
-              {% if request.user.groups.all.0 in page.get_content_model.groups.all or request.user.groups.all.1 in page.get_content_model.groups.all or request.user.groups.all.3 in page.get_content_model.groups.all or request.user.groups.all.2 in page.get_content_model.groups.all or request.user.groups.all.4 in page.get_content_model.groups.all or request.user.groups.all.5 in page.get_content_model.groups.all or request.user.groups.all.6 in page.get_content_model.groups.all or request.user.groups.all.7 in page.get_content_model.groups.all  %}
-                {{ block.super }}
-                {# {% editable page.publicationlibrary.content %} #}
-
+            {{ translated_page.content|richtext_filter|safe }}
+        {% endwith %}
+        {% include "pages/publicationtablerestricted.html" %}
+   
+    {% else %}
+        {% if request.user.groups.all.0 in page.get_content_model.groups.all or request.user.groups.all.1 in page.get_content_model.groups.all or request.user.groups.all.3 in page.get_content_model.groups.all or request.user.groups.all.2 in page.get_content_model.groups.all or request.user.groups.all.4 in page.get_content_model.groups.all or request.user.groups.all.5 in page.get_content_model.groups.all or request.user.groups.all.6 in page.get_content_model.groups.all or request.user.groups.all.7 in page.get_content_model.groups.all  %}
+            {{ block.super }}
+               
                 {% if  page.publicationlibrary.id == 581 %}
                     {% include "pages/publicationlibrarypoll.html" %}
                 {% endif %}    
             
+            {% include "pages/publicationlibrary_images.html" %}
 
+            {% with page.publicationlibrary|get_object_translation as translated_page %}
+                {{ translated_page.content|richtext_filter|safe }}
+            {% endwith %}
 
-                {% with page.publicationlibrary|get_object_translation as translated_page %}
-                    {{ translated_page.content|richtext_filter|safe }}
-                {% endwith %}
-
-                {# {{ page.publicationlibrary.content|richtext_filter|safe }} #}
-
-
-
-
-                {# {% endeditable %} #}
-                  {% include "pages/publicationtablerestricted.html" %}
-              {% endif %} {# group in request.user.groups.all #}
+              {% include "pages/publicationtablerestricted.html" %}
+          {% endif %} {# group in request.user.groups.all #}
             
-        {% endif %} 
-  {% else %}
-  
-       {{ block.super }}
+    {% endif %} 
+
+{% else %}
+        {{ block.super }}
        
-        {% if  page.publicationlibrary.pagefeatured_image != '' %}  
-        
-            {% if page.publicationlibrary.fullpage == 1%}
-                <img src="{{ MEDIA_URL }}{% thumbnail page.publicationlibrary.pagefeatured_image 1140 300 %}" class="img-fluid z-depth-1 mb-4"   {%if  page.publicationlibrary.embedded_image_caption != None and page.publicationlibrary.embedded_image_caption != ''%}title="{{page.publicationlibrary.embedded_image_caption}}"{% endif %} >
-            {% else %}
-                <img src="{{ MEDIA_URL }}{% thumbnail page.publicationlibrary.pagefeatured_image 730 240 %}" class="img-fluid mb-4"   {%if  page.publicationlibrary.embedded_image_caption != None and page.publicationlibrary.embedded_image_caption != ''%}title="{{page.publicationlibrary.embedded_image_caption}}"{% endif %} >
-            {% endif %}
-            <h1 class="h1_home">
-                {% with page.publicationlibrary|get_object_translation as translated_page %}
-                    {{ translated_page.title|safe }}
-                {% endwith %}
-            </h1>
-            
-            <div class="pull-right">
-                   {% if user.is_superuser  or perms.pages.change_richtextpage %}
-                         <a class="btn btn-info btn-small" href="/admin/ippc/publicationlibrary/{{ page.id }}"><span style="font-size: 1.2em; color: #ffffff;"><i class="fas fa-edit"></i></span> Edit as Admin</a><br>
-                   {% endif %}
-                   {% if page.publicationlibrary.id == 777 or page.publicationlibrary.parent_id == 777 %}
-                       {% for group in request.user.groups.all %}
-                           {% if group.name == 'IFQRG admin' and  perms.ippc.change_publicationlibrary %}
-                               <a class="btn btn-info btn-small" href="/admin/ippc/publicationlibrary/{{ page.id }}"><span style="font-size: 1.2em; color: #ffffff;"><i class="fas fa-edit"></i></span> Edit as Admin</a><br>
-                           {% endif %}
-                       {% endfor %}
-                   {% endif %}
-                   {% if page.publicationlibrary.id == 790 or page.publicationlibrary.parent_id == 790 %}
-                       {% for group in request.user.groups.all %} 
-                           {% if group.name == 'PTTEG admin ' and  perms.ippc.change_publicationlibrary %}
-                               <a class="btn btn-info btn-small" href="/admin/ippc/publicationlibrary/{{ page.id }}"><span style="font-size: 1.2em; color: #ffffff;"><i class="fas fa-edit"></i></span> Edit as Admin</a><br>
-                           {% endif %}
-                       {% endfor %}
-                   {% endif %}
-                   {% if user.is_superuser or perms.pages.change_richtextpage %}
-                       <a class="btn btn-info btn-small" href="/admin/ippc/publicationlibrary/add/?parent={{ page.id }}"><span style="font-size: 1.2em; color: #ffffff;"><i class="fas fa-plus"></i></span> Add new sub page</a><br>
-                   {% endif %}
-           </div><br style="clear:both"> 
-                
-        {% elif  page.publicationlibrary.embedded_image != '' %}
-            <h1 class="h1_home">
-                {% with page.publicationlibrary|get_object_translation as translated_page %}
-                    {{ translated_page.title|safe }}
-                {% endwith %}
-           </h1>  
-           <div class="pull-right">
-                {% if user.is_superuser  or perms.pages.change_richtextpage %}
-                      <a class="btn btn-info btn-small" href="/admin/ippc/publicationlibrary/{{ page.id }}"><span style="font-size: 1.2em; color: #ffffff;"><i class="fas fa-edit"></i></span> Edit as Admin</a><br>
-                {% endif %}
-                {% if page.publicationlibrary.id == 777 or page.publicationlibrary.parent_id == 777 %}
-                    {% for group in request.user.groups.all %}
-                        {% if group.name == 'IFQRG admin' and  perms.ippc.change_publicationlibrary %}
-                            <a class="btn btn-info btn-small" href="/admin/ippc/publicationlibrary/{{ page.id }}"><span style="font-size: 1.2em; color: #ffffff;"><i class="fas fa-edit"></i></span> Edit as Admin</a><br>
-                        {% endif %}
-                    {% endfor %}
-                {% endif %}
-                {% if page.publicationlibrary.id == 790 or page.publicationlibrary.parent_id == 790 %}
-                    {% for group in request.user.groups.all %} 
-                        {% if group.name == 'PTTEG admin ' and  perms.ippc.change_publicationlibrary %}
-                            <a class="btn btn-info btn-small" href="/admin/ippc/publicationlibrary/{{ page.id }}"><span style="font-size: 1.2em; color: #ffffff;"><i class="fas fa-edit"></i></span> Edit as Admin</a><br>
-                        {% endif %}
-                    {% endfor %}
-                {% endif %}
-                {% if user.is_superuser or perms.pages.change_richtextpage %}
-                    <a class="btn btn-info btn-small" href="/admin/ippc/publicationlibrary/add/?parent={{ page.id }}"><span style="font-size: 1.2em; color: #ffffff;"><i class="fas fa-plus"></i></span> Add new sub page</a><br>
-                {% endif %}
-        </div>
-        <br style="clear:both"> 
-             {% if page.publicationlibrary.embeddedimage_small == 1 %}
-                <img  class="img-fluid float-left mg-thumbnail mr-2" style="width:150px" src="/static/media/{{page.publicationlibrary.embedded_image}}"  {%if  page.publicationlibrary.embedded_image_caption != None and page.publicationlibrary.embedded_image_caption != ''%}title="{{page.publicationlibrary.embedded_image_caption}}"{% endif %} >
-            {% else %}
-                <img  class="img-fluid float-left img-thumbnail mr-2" style="width:50%" src="/static/media/{{page.publicationlibrary.embedded_image}}"  {%if  page.publicationlibrary.embedded_image_caption != None and page.publicationlibrary.embedded_image_caption != ''%}title="{{page.publicationlibrary.embedded_image_caption}}"{% endif %} >
-            {% endif %}
-        {% else %}
-         <h1 class="h1_home">
-                {% with page.publicationlibrary|get_object_translation as translated_page %}
-                    {{ translated_page.title|safe }}
-                {% endwith %}
-           </h1>  
-           <div class="pull-right">
-                {% if user.is_superuser  or perms.pages.change_richtextpage %}
-                      <a class="btn btn-info btn-small" href="/admin/ippc/publicationlibrary/{{ page.id }}"><span style="font-size: 1.2em; color: #ffffff;"><i class="fas fa-edit"></i></span> Edit as Admin</a><br>
-                {% endif %}
-                {% if page.publicationlibrary.id == 777 or page.publicationlibrary.parent_id == 777 %}
-                    {% for group in request.user.groups.all %}
-                        {% if group.name == 'IFQRG admin' and  perms.ippc.change_publicationlibrary %}
-                            <a class="btn btn-info btn-small" href="/admin/ippc/publicationlibrary/{{ page.id }}"><span style="font-size: 1.2em; color: #ffffff;"><i class="fas fa-edit"></i></span> Edit as Admin</a><br>
-                        {% endif %}
-                    {% endfor %}
-                {% endif %}
-                {% if page.publicationlibrary.id == 790 or page.publicationlibrary.parent_id == 790 %}
-                    {% for group in request.user.groups.all %} 
-                        {% if group.name == 'PTTEG admin ' and  perms.ippc.change_publicationlibrary %}
-                            <a class="btn btn-info btn-small" href="/admin/ippc/publicationlibrary/{{ page.id }}"><span style="font-size: 1.2em; color: #ffffff;"><i class="fas fa-edit"></i></span> Edit as Admin</a><br>
-                        {% endif %}
-                    {% endfor %}
-                {% endif %}
-                {% if user.is_superuser or perms.pages.change_richtextpage %}
-                    <a class="btn btn-info btn-small" href="/admin/ippc/publicationlibrary/add/?parent={{ page.id }}"><span style="font-size: 1.2em; color: #ffffff;"><i class="fas fa-plus"></i></span> Add new sub page</a><br>
-                {% endif %}
-        </div>
-        {% endif %}
+        {% include "pages/publicationlibrary_images.html" %}
        
         {% with page.publicationlibrary|get_object_translation as translated_page %}
           {{ translated_page.content|richtext_filter|safe }}
         {% endwith %}
-    {%if page.publicationlibrary.collapsecontent.all %} 
-      <div>   {% include "pages/page_extra_content.html" %} </div>
-    {% endif %}
-     <br style="clear:both"> 
-    {%if page.publicationlibrary.committeemeeting.all %}      
-            {% include "pages/meeting_table.html" %} 
-    {% endif %}
-    {% if  page.publicationlibrary.id == 459 %}
-        {% include "pages/irsstext.html" %}
-    {% endif %}    
+        
+        {%if page.publicationlibrary.collapsecontent.all %} 
+          <div>   {% include "pages/page_extra_content.html" %} </div>
+        {% endif %}
+        <br style="clear:both"> 
+        
+        {%if page.publicationlibrary.committeemeeting.all %}      
+                {% include "pages/meeting_table.html" %} 
+        {% endif %}
+        
+        {% if  page.publicationlibrary.id == 459 %}
+            {% include "pages/irsstext.html" %}
+        {% endif %}    
             
-      
-      
-    {% if  page.id == 321 or  page.id == 350 or  page.id == 339 or  page.id == 356 or  page.id == 355 or page.id == 353 or page.id == 354 or   page.id == 357  %} 
-        {% include "pages/memberstable.html" %} 
-    {% endif %} 
+        {% if  page.id == 321 or  page.id == 350 or  page.id == 339 or  page.id == 356 or  page.id == 355 or page.id == 353 or page.id == 354 or   page.id == 357  %} 
+            {% include "pages/memberstable.html" %} 
+        {% endif %} 
 
-    {% if  page.id == 1119 %} 
-        {% include "pages/cooptable.html" %} 
-    {% endif %}
+        {% if  page.id == 1119 %} 
+            {% include "pages/cooptable.html" %} 
+        {% endif %}
 
-    {% include "pages/publicationtable.html" %}
+        {% include "pages/publicationtable.html" %}
     
-    {% if  page.id == 370 %}{# DPs #}
-       {% include "dp/dp_list.html" %}
-    {% endif %} 
+        {% if  page.id == 370 %}{# DPs #}
+           {% include "dp/dp_list.html" %}
+        {% endif %} 
 {% endif %} {# page.publicationlibrary.login_required #}
 
 {% endblock main %}

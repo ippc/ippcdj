@@ -1,0 +1,35 @@
+ {% load mezzanine_tags translate_tags staticfiles i18n %}
+ {% if  page.publicationlibrary.pagefeatured_image != '' %}  
+            {% if page.publicationlibrary.fullpage == 1%}
+                <img src="{{ MEDIA_URL }}{% thumbnail page.publicationlibrary.pagefeatured_image 1140 300 %}" class="img-fluid z-depth-1 mb-4"   {%if  page.publicationlibrary.embedded_image_caption != None and page.publicationlibrary.embedded_image_caption != ''%}title="{{page.publicationlibrary.embedded_image_caption}}"{% endif %} >
+            {% else %}
+                <img src="{{ MEDIA_URL }}{% thumbnail page.publicationlibrary.pagefeatured_image 730 240 %}" class="img-fluid mb-4"  {%if  page.publicationlibrary.embedded_image_caption != None and page.publicationlibrary.embedded_image_caption != ''%}title="{{page.publicationlibrary.embedded_image_caption}}"{% endif %} >
+            {% endif %}
+            <h1 class="h1_home">
+                {% with page.publicationlibrary|get_object_translation as translated_page %}
+                    {{ translated_page.title|safe }}
+                {% endwith %}
+            </h1>
+            {% include "pages/publicationlibrary_access.html" %} <br style="clear:both"> 
+                
+        {% elif  page.publicationlibrary.embedded_image != '' %}
+            <h1 class="h1_home">
+                {% with page.publicationlibrary|get_object_translation as translated_page %}
+                    {{ translated_page.title|safe }}
+                {% endwith %}
+           </h1>  
+          {% include "pages/publicationlibrary_access.html" %} 
+            <br style="clear:both"> 
+            {% if page.publicationlibrary.embeddedimage_small == 1 %}
+                <img  class="img-fluid float-left mg-thumbnail mr-2" style="width:150px" src="/static/media/{{page.publicationlibrary.embedded_image}}"  {%if  page.publicationlibrary.embedded_image_caption != None and page.publicationlibrary.embedded_image_caption != ''%}title="{{page.publicationlibrary.embedded_image_caption}}"{% endif %} >
+            {% else %}
+                <img  class="img-fluid float-left img-thumbnail mr-2" style="width:50%" src="/static/media/{{page.publicationlibrary.embedded_image}}"  {%if  page.publicationlibrary.embedded_image_caption != None and page.publicationlibrary.embedded_image_caption != ''%}title="{{page.publicationlibrary.embedded_image_caption}}"{% endif %} >
+            {% endif %}
+        {% else %}
+            <h1 class="h1_home">
+                {% with page.publicationlibrary|get_object_translation as translated_page %}
+                    {{ translated_page.title|safe }}
+                {% endwith %}
+            </h1>  
+            {% include "pages/publicationlibrary_access.html" %} 
+        {% endif %}
