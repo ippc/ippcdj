@@ -1,0 +1,107 @@
+{% extends "learn/baselearn.html" %}
+
+{% load pages_tags translate_tags mezzanine_tags i18n future staticfiles accounts_tags %}
+
+
+    {% block meta_title %}{% trans "eLearning" %} - {{ course.title}} - Certificate {% endblock %}
+
+    {% block body_class %}wide{% endblock %}
+
+    {% block breadcrumb_menu %}
+        <li>
+            <a href="/{{ LANGUAGE_CODE }}/e-learning/">{% trans "eLearning Home" %}</a>
+            <span class="divider">/</span>
+        </li>
+        <li>
+            <a href="/{{ LANGUAGE_CODE }}/e-learning/courses/">  {% trans "Courses" %}</a>
+            <span class="divider">/</span>
+        <li>
+        <li class="active">Certificate</li>
+    {% endblock %}
+
+    {% block local_nav %}
+    {% endblock local_nav %}
+
+    {% block pageinfo %}
+    {% endblock pageinfo %}
+
+    
+   
+{% block main %}  
+    {% block content %}
+ <div id="content">
+       {% if canseepage %}
+
+ 
+<div class="row-fluid"> 
+    <div class="span9">
+        <div class="panel panel-default"> 
+            <div class="container"></div>
+                <div  class="panel-body" >
+                    <h1>{{course.title}}</h1>
+               
+              {% for aaa in resultss_array %}
+                 <h3>Certificate -- {{aaa.1}} --</h3><p> <b>Course grade</b>: <b style="background-color:{% if aaa.2 == 1 %}#C4F371{% else %}#F39171{% endif %}"> {{aaa.3}}%</b> out of 100%
+                  </p> 
+                   
+                   <table class="table-condensed table-striped table-bordered">
+                       <tr>
+                           <th>Quiz</th>
+                           <th>Done</th>
+                           <th>Grade / 100%</th>
+                       </tr> 
+                        {% for q in aaa.0 %} 
+                       <tr>
+                            <td>{{q.0}}</td>
+                            <td> {% if q.1 == 1 %}&check;{% endif %}</td>
+                            {% if q.2 == 1 %} 
+                                <td style="background-color:#C4F371">
+                            {% else %} 
+                                <td style="background-color:#F39171">
+                            {% endif %}
+                            {{q.3}}%</td>
+                       </tr>
+                    {% endfor %} 
+                   </table> 
+                 
+            <hr>{% endfor %}           
+            </div>
+        </div>   
+    </div> 
+    <div class="span3">
+        {% nevercache %}
+            {% include "learn/userdetailpanel.html" %}
+        {% endnevercache %}
+    </div>
+        
+    </div>
+     
+  
+{% else %}
+
+
+  {% nevercache %}
+            {% include "learn/permissionblock.html" %}
+            {% endnevercache %}
+   
+    
+    {% endif %}
+      
+   
+    </div>
+     
+
+{% endblock %}
+
+{% endblock %}
+
+
+
+
+
+
+
+
+                
+                
+                

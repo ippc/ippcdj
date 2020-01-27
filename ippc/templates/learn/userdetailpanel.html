@@ -25,3 +25,18 @@
                
             </div>
         </div>
+  {% if user.is_superuser %} 
+  <div class="panel panel-default">
+            <div class="panel-heading">
+                <h4 class="panel-title"> {% trans "See certificates and enrolled users" %}</h4>
+            </div>
+            <div class="panel-body">
+                <b>{% trans "Course" %}: </b>
+                          
+                            
+                <a href="/e-learning/courses/certificateall/{{course.id}}/">{{course}}</a> 
+                       
+                                 
+               
+            </div>
+        </div> {% endif %}
