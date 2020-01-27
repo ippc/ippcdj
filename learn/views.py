@@ -555,6 +555,8 @@ def course_certificate(request, id=None):
     course = get_object_or_404(Course,  id=id)
     
     user = request.user
+    print('****')
+    print(user)
     canseecourse=0
     enrolled=0
     quizzes_array=[]
@@ -863,3 +865,87 @@ def requestaccess(request ):
 
                 
     return HttpResponseRedirect("/e-learning/")   
+
+
+@login_required
+@permission_required('learn.add_course', login_url="/accounts/login/")
+def course_certificateall(request, id=None):
+    """ Create certificate  """
+    canseepage=0
+    resultss_array  =[]  
+    user = request.user
+    if user.id ==  1652:
+        canseepage=1
+    
+    course = get_object_or_404(Course,  id=id)
+    enrolledusers=course.enrolledusers
+    for user in enrolledusers.all():
+        quizzes_array=[] 
+        result_array=[] 
+        if course.has_certificate ==1:
+            modules = Module.objects.filter(course=course)
+            q_grade=0
+            quizcount=0
+            done_count=0
+            q_ok_count=0
+            for mod in modules:
+                quiz=None
+                try:
+                    quiz = get_object_or_404(Quiz,  module=mod)
+                except:
+                    quiz=None
+
+                if quiz!=None:
+                    quizcount+=1
+                    questions  =Question.objects.filter(quiz_id=quiz.id)
+                    countquestions=questions.count()
+                    questionMs  =QuestionM.objects.filter(quiz_id=quiz.id)
+                    countquestionMs=questionMs.count()
+                    final_countquestion=countquestionMs+countquestions
+                    done=0
+                    done_count=0
+                    sumresult=0
+                    for q in questions:
+                        results  = QuestionResult.objects.filter(question_id=q.id,quiz_id=quiz.id, userquestion_id=user.id)
+                        if results.count()>0:
+                           done= 1
+                           done_count+=1
+                           sumresult=sumresult+int(results[0].result)
+                        else:
+                           done= 0
+                    for q in questionMs:
+                        results  = QuestionResult.objects.filter(question_id=q.id,quiz_id=quiz.id, userquestion_id=user.id)
+                        if results.count()>0:
+                           done= 1
+                           done_count+=1
+                           sumresult=sumresult+int(results[0].result)
+                        else:
+                           done= 0       
+                    quiz_result=sumresult/final_countquestion
+                    q_ok=0
+                    if quiz_result >= int(quiz.quizgrade):
+                        q_ok=1
+                        q_ok_count+=1
+
+                    quizz_array=[]
+                    quizz_array.append(quiz.title)
+                    quizz_array.append(done)
+                    quizz_array.append(q_ok)
+                    quizz_array.append(quiz_result)
+                    quizzes_array.append(quizz_array)
+                    q_grade=q_grade+quiz_result
+
+            certgrade=  q_grade/ quizcount
+            cert_ok=0
+            if certgrade >= int(course.certificategrade) and done_count==quizcount and q_ok_count==quizcount:
+                cert_ok=1
+            result_array.append(quizzes_array)#0
+            result_array.append(user)#1
+            result_array.append(cert_ok)#2
+            result_array.append(certgrade)#3
+            resultss_array.append(result_array)
+            
+    return render_to_response('learn/certificateall.html', {'course':course,'resultss_array':resultss_array,'canseepage':canseepage,},
+            context_instance=RequestContext(request))
+  
+ 
