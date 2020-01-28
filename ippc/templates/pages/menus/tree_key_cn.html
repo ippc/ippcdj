@@ -27,7 +27,8 @@
                 <li id="southwestpacific"><a href="/countries/south-west-pacific/list-countries"><span>{% trans "South West Pacific" %}</span></a></li>
         </ul>
     </div>
-   
+   {% if  '/countries/statistics/totalnrobyyear/' in request.path%}
+   {%else%}
     <div class="card" style="width: 100%">
         <div class="card-header">
           <h5 class="my-0">{% trans "Key Links &amp; Documents" %}</h5>
@@ -47,6 +48,6 @@
             <li  class="list-group-item"><a href="/publications/80405/" target="_blank">National Reporting Obligations Guide</a></li>
         </ul>  
     </div>
-	
+{% endif %}	
 {% endif %}
 {% endblock pageinfo %}
