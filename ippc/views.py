@@ -16688,6 +16688,7 @@ def nro_stats_files(request):
     
     list_files=None
     list_files1=None
+    list_files12=None
     deleted=''
     msg=''
     
@@ -16728,6 +16729,26 @@ def nro_stats_files(request):
                 msg= msg+' Deleted: '+str(deleted)+'<br>'
 
             info(request, _("Successfully deleted dir!  "+msg))
+        elif request.POST['path12']  and request.POST['secret']:
+            if request.POST['secret'] == 'D8rchul8':
+                path12 = request.POST['path12']
+               # dirnametoremove = request.POST['path12']
+                list_files12 = os.listdir(path12)
+                for ff in list_files12:
+
+                    if os.path.isfile(path12+'/'+ff)      :
+
+                        try:
+                            os.remove(path12+'/'+ff)
+                            deleted='deleted'
+                        except OSError:
+                            deleted='NO-deleted'
+                            pass
+                msg= msg+' Deleted: '+str(deleted)+'<br>'
+            else:
+                msg= msg+' WRONG PASS<br>'
+
+            info(request, _("Successfully deleted all files!  "+msg))    
     
         elif request.FILES['myfile'] and request.POST['path'] and request.POST['path1']:
             myfile = request.FILES['myfile']
