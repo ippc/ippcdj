@@ -46,15 +46,24 @@
      Statistics Path 4(check files)(eg.:/work/projects/ippcdj-env/ippcdj_repo/ippc/templates/countries COPY what is in the prj_dir )<input type="text" name="path4"> <br>
      Statistics file name  (toremove)(eg.:zzz.txt)<input type="text" name="dirnametoremove"> 
      <br><br><br>_________________________________________________________________________________<br><br>
+     Statistics Path 5(check files)(eg.:/work/projects/ippcdj-env/ippcdj_repo/ippc/templates/countries COPY what is in the prj_dir )<input type="text" name="path5"> <br>
+     Statistics file name  (toread)(eg.:zzz.txt)<input type="text" name="filetoread"> 
+     <br><br><br>_________________________________________________________________________________<br><br>
     Statistics Path 1 (to remove)(eg.:/work/projects/ippcdj-env/ippcdj_repo/ippc/templates/countries COPY what is in the prj_dir )<input type="text" name="path1"> <br>
     Statistics Path (eg.:/work/projects/ippcdj-env/ippcdj_repo/ippc/templates/countries COPY what is in the prj_dir ) <input type="text" name="path">  <br>
+     date (date=1532271959 #22 Jul 18) <input type="text" name="date22">  <br>
     Statistics  File <input type="file" name="myfile">
+   <br><br><br>_________________________________________________________________________________<br><br>
+   
 
 
   <div class="form-actions">
      <button type="submit" class="btn btn-info btn-large" tabindex="7">{% trans "Submit" %}</button> or <a href="javascript:history.go(-1)">{% trans "Cancel" %}</a>
    </div>
 </form>
+<div class="alert alert-error"> {% autoescape off %} 
+               {{read}}
+             {% endautoescape %}  </div>
 {{list_files}}
 {%if list_files or  list_files1 %}
  <div class="alert alert-warning">    
