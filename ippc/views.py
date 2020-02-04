@@ -16681,6 +16681,7 @@ def my_tool(request):
         context_instance=RequestContext(request))
 
 from django.core.files.storage import FileSystemStorage
+import sys
 @login_required
 @permission_required('ippc.delete_publication', login_url="/accounts/login/")
 def nro_stats_files(request):
@@ -16691,6 +16692,7 @@ def nro_stats_files(request):
     list_files12=None
     deleted=''
     msg=''
+    read=''
     
     if request.method == 'POST':
         #list
@@ -16715,6 +16717,30 @@ def nro_stats_files(request):
                 msg= msg+' Deleted: '+str(deleted)+'<br>'
             
             info(request, _("Successfully deleted file!  "+msg))
+        
+        elif request.POST['path5'] and request.POST['filetoread']:
+            path5 = request.POST['path5']
+            filetoread = request.POST['filetoread']
+            readl=[]
+              
+            if os.path.isfile(path5+'/'+filetoread)      :
+                msg=msg+'--->File '+path5+'/'+filetoread+' exist! - '
+                
+                try:
+                    fd = open(path5+'/'+filetoread)
+                    readl = fd.readlines()
+                    # Close opened file
+                    #os.close(fd)
+                    fd.close()
+                except OSError:
+                    deleted='NO-red'
+                    pass
+                msg= msg+' read: <br>'
+            for ll in readl:
+                read += str(ll)+'<br>'
+                
+            info(request, _("Successfully read file!  "+msg))
+            
         elif request.POST['path4'] and request.POST['dirnametoremove']:
             path4 = request.POST['path4']
             dirnametoremove = request.POST['dirnametoremove']
@@ -16754,31 +16780,34 @@ def nro_stats_files(request):
             myfile = request.FILES['myfile']
             path1 = request.POST['path1']
             path = request.POST['path']
+            datess=request.POST['date22']
             
-            date=1532271959 #22 Jul 18
+            #date=1532271959 #22 Jul 18
     
             if os.path.isfile(path1+'/'+myfile.name)      :
                 msg=msg+'File '+path1+'/'+myfile.name+' exist! - '
                 stat = os.stat(path1+'/'+myfile.name)
 #                date=1532271959
-#                try:
-#                    date= stat.st_birthtime
-#                except AttributeError:
-#                    # We're probably on Linux. No easy way to get creation dates here,
-#                    # so we'll settle for when its content was last modified.
-#                    try:
-#                          date= stat.st_mtime
-#                    except AttributeError:
-#                        date=1532271959
+                if datess != '':
+                    try:
+                        date= stat.st_birthtime
+                    except AttributeError:
+                        # We're probably on Linux. No easy way to get creation dates here,
+                        # so we'll settle for when its content was last modified.
+                        try:
+                              date= stat.st_mtime
+                        except AttributeError:
+                            date=datess
 #                    
-#                msg= msg+' Date file: '+str(date)+' - '
+                    msg= msg+' Date file: '+str(date)+' - '
                 try:
                     os.remove(path1+'/'+myfile.name)
                     msg= msg+' Deleted: YES - '
                     fs = FileSystemStorage(location=path) #defaults to   MEDIA_ROOT  
                     filename = fs.save(myfile.name, myfile)
                     msg= msg+' SAVED : '+str(myfile.name)+' - '
-                   # os.utime(PROJECT_ROOT+'/'+path1+'/'+myfile.name, (date , date  ))
+                    if datess != '':
+                        os.utime(path1+'/'+myfile.name, (date , date  ))
                   
             
                 except OSError:
@@ -16800,7 +16829,8 @@ def nro_stats_files(request):
             info(request, _("Successfully saved file!!"+msg))
         
         
-        return render_to_response('countries/countries_stats_nros.html', {'list_files':list_files,'list_files1':list_files1,'prj_dir':prj_dir},
+        
+        return render_to_response('countries/countries_stats_nros.html', {'list_files':list_files,'list_files1':list_files1,'prj_dir':prj_dir,'read':read},
              context_instance=RequestContext(request))
     else:
            return render_to_response('countries/countries_stats_nros.html', {'list_files':list_files,'list_files1':list_files1,'prj_dir':prj_dir},
