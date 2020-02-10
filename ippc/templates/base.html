@@ -236,7 +236,7 @@
                 <div class="lang-select">
                 {% for lang in LANGUAGES %}
                      {% ifequal lang.0 LANGUAGE_CODE %}
-                       <a class="active" href="#">{{ lang.1 }}</a> 
+                       <a class="btn-small btn-langs" href="#">{{ lang.1 }}</a> 
                         {% else %}
                       <a href="{{ request.path|chlocale:lang.0 }}">{{ lang.1 }}</a>
                         
