@@ -324,21 +324,79 @@
                                 <div class="card-body " >
                                     <h4 class="card-text text-center">
                                     {% if LANGUAGE_CODE != 'en' %}
-                                         {% if LANGUAGE_CODE == 'es'  and res.file_es != '' and res.file_es != None %}
-                                             <a href="{{ MEDIA_URL }}{{ res.file_es }}" target="_blank">  
-                                         {% elif LANGUAGE_CODE == 'fr'  and res.file_fr != '' and res.file_fr != None%}
-                                             <a href="{{ MEDIA_URL }}{{ res.file_fr }}" target="_blank">  
-                                         {% elif LANGUAGE_CODE == 'ru'  and res.file_ru != '' and res.file_ru != None%}
-                                             <a href="{{ MEDIA_URL }}{{ res.file_ru }}" target="_blank"> 
-                                         {% elif LANGUAGE_CODE == 'ar'  and res.file_ar != '' and res.file_ar != None%}
-                                            <a href="{{ MEDIA_URL }}{{ res.file_ar }}" target="_blank">   {% elif LANGUAGE_CODE == 'ru'  and res.file_ru != '' and res.file_ru != None%}
-                                         {% elif LANGUAGE_CODE == 'zh'  and res.file_zh != '' and res.file_zh != None%}
-                                             <a href="{{ MEDIA_URL }}{{ res.file_zh }}" target="_blank">   
-                                         {% else %}
-                                             <a href="{{ MEDIA_URL }}{{ res.file_en }}" target="_blank">  
+                                        {% if LANGUAGE_CODE == 'es' %}
+                                            {% if res.file_es != '' and res.file_es != None %}
+                                                <a href="{{ MEDIA_URL }}{{ res.file_es }}" target="_blank">  
+                                            {% elif res.link_es != '' and res.link_es != None %}
+                                                <a href="{{ res.link_es }}" target="_blank">  
+                                               {% else %}
+                                         {% if res.file_en != '' and res.file_en != None %}
+                                                <a href="{{ MEDIA_URL }}{{ res.file_en }}" target="_blank">  
+                                            {% elif res.link_en != '' and res.link_en != None %}
+                                                <a href="{{ res.link_en }}" target="_blank">  
+                                            {%endif%} 
+                                     {% endif %}
+                                        {% elif LANGUAGE_CODE == 'fr'%}
+                                            {% if res.file_fr != '' and res.file_fr != None %}
+                                                <a href="{{ MEDIA_URL }}{{ res.file_fr }}" target="_blank">  
+                                            {% elif res.link_fr != '' and res.link_fr != None %}
+                                                <a href="{{ res.link_fr }}" target="_blank">  
+                                               {% else %}
+                                         {% if res.file_en != '' and res.file_en != None %}
+                                                <a href="{{ MEDIA_URL }}{{ res.file_en }}" target="_blank">  
+                                            {% elif res.link_en != '' and res.link_en != None %}
+                                                <a href="{{ res.link_en }}" target="_blank">  
+                                            {%endif%} 
+                                     {% endif %}
+                                        {% elif LANGUAGE_CODE == 'ru'%}
+                                            {% if res.file_ru != '' and res.file_ru != None %}
+                                                <a href="{{ MEDIA_URL }}{{ res.file_ru }}" target="_blank">  
+                                            {% elif res.link_ru != '' and res.link_ru != None %}
+                                                <a href="{{ res.link_ru }}" target="_blank">  
+                                               {% else %}
+                                         {% if res.file_en != '' and res.file_en != None %}
+                                                <a href="{{ MEDIA_URL }}{{ res.file_en }}" target="_blank">  
+                                            {% elif res.link_en != '' and res.link_en != None %}
+                                                <a href="{{ res.link_en }}" target="_blank">  
+                                            {%endif%} 
+                                     {% endif %}
+                                         {% elif LANGUAGE_CODE == 'ar' %}
+                                             {% if res.file_ar != '' and res.file_zh != None %}
+                                                <a href="{{ MEDIA_URL }}{{ res.file_ar }}" target="_blank">  
+                                            {% elif res.link_ar != '' and res.link_ar != None %}
+                                                <a href="{{ res.link_ar }}" target="_blank">  
+                                              {% else %}
+                                         {% if res.file_en != '' and res.file_en != None %}
+                                                <a href="{{ MEDIA_URL }}{{ res.file_en }}" target="_blank">  
+                                            {% elif res.link_en != '' and res.link_en != None %}
+                                                <a href="{{ res.link_en }}" target="_blank">  
+                                            {%endif%} 
+                                     {% endif %}
+                                        {% elif LANGUAGE_CODE == 'zh' %}
+                                            {% if res.file_ar != '' and res.file_zh != None %}
+                                                <a href="{{ MEDIA_URL }}{{ res.file_zh }}" target="_blank">  
+                                            {% elif res.link_zh != '' and res.link_zh != None %}
+                                                <a href="{{ res.link_zh }}" target="_blank">  
+                                              {% else %}
+                                         {% if res.file_en != '' and res.file_en != None %}
+                                                <a href="{{ MEDIA_URL }}{{ res.file_en }}" target="_blank">  
+                                            {% elif res.link_en != '' and res.link_en != None %}
+                                                <a href="{{ res.link_en }}" target="_blank">  
+                                            {%endif%} 
+                                     {% endif %}
+                                        {% else %}
+                                             {% if res.file_en != '' and res.file_en != None %}
+                                                <a href="{{ MEDIA_URL }}{{ res.file_en }}" target="_blank">  
+                                            {% elif res.link_en != '' and res.link_en != None %}
+                                                <a href="{{ res.link_en }}" target="_blank">  
+                                            {%endif%} 
                                          {% endif %}
                                      {% else %}
-                                         <a href="{{ MEDIA_URL }}{{ res.file_en }}" target="_blank">  
+                                         {% if res.file_en != '' and res.file_en != None %}
+                                                <a href="{{ MEDIA_URL }}{{ res.file_en }}" target="_blank">  
+                                            {% elif res.link_en != '' and res.link_en != None %}
+                                                <a href="{{ res.link_en }}" target="_blank">  
+                                            {%endif%} 
                                      {% endif %}
                                   {{res.title}}</a> </h4>
                                 </div>
