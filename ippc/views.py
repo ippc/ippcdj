@@ -16857,21 +16857,21 @@ class  MyToolDetailView(DetailView):
         cursor = db.cursor()
      
         sql = text
+        splitcommenttext=text.splitlines()
+        #print(splitcommenttext)
+        for ssss in splitcommenttext:
+            try:
+               cursor.execute(ssss)
+               str1= cursor.fetchall()
+               result=str1
+               db.commit()
+               msg='OK'
+   
 
-        try:
-            cursor.execute(sql)
-            str1= cursor.fetchall()
-            result=str1
-           
-           
-          
-            db.commit()
-            msg='OK'
-
-
-        except:
-            msg='NOT OK'
-            db.rollback()
+            except MySQLdb.Error as err:
+                print(err)    
+                msg='NOT OK'
+                db.rollback()
 
         db.close()
 
