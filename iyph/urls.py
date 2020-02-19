@@ -34,8 +34,8 @@ urlpatterns = patterns("iyph.views",
    # url(r'^chronology/list/$',view=ChronologyListView.as_view(),  name='chronology-list'),
    # url(r"^chronology/(?P<slug>.*)/$", view=ChronologyDetailView.as_view(), name='chronology-detail'),
     #---------committee ------------------------------# 
-    url(r"^iyph-international-steering-committee/$", view=Page2View.as_view(), name='page-2-detail'),
-    url(r"^iyph-technical-advisory-board/$", view=Page1View.as_view(), name='page-1-detail'),
+    url(r"^iyphisc/$", view=Page2View.as_view(), name='page-2-detail'),
+    url(r"^iyphtab/$", view=Page1View.as_view(), name='page-1-detail'),
    
     
    #---------PHOTO ------------------------------# 
