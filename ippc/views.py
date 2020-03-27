@@ -1385,7 +1385,7 @@ def commenta(request, template="generic/comments.html"):
         notifificationmessage = mail.EmailMessage(subject,text,'ippc@fao.org', emailto_all, ['paola.sentinelli@fao.org'])
         notifificationmessage.content_subtype = "html"
         sent =notifificationmessage.send()
-
+            
         response = redirect(myview.add_cache_bypass(comment.get_absolute_url()))
         # Store commenter's details in a cookie for 90 days.
         for field in myview.ThreadedCommentForm.cookie_fields:
@@ -2267,7 +2267,7 @@ def send_report_notification_message(newitem,type,id,content_type,title,url):
     #print("send!!!")
     emailto_all = ['qingpo.yang@fao.org']
     if type == 0:
-        emailto_all = ['roy@eppo.int','qingpo.yang@fao.org']#'dave.nowell@fao.org',
+        emailto_all = ['roy@eppo.int','qingpo.yang@fao.org','arop.deng@fao.org','mirko.montuori@fao.org']#'dave.nowell@fao.org',
     
     subject=''
     typename=''
@@ -10434,12 +10434,16 @@ def massemailutility_to_send(request):
                    message.content_subtype = "html"
                    sent =message.send()
 
-                   if sent:
-                       email_sent1+=email_not_sentto1[y]+','
-                       text_+='sent to: '+email_not_sentto1[y]+'<br>'
-                       log_report.write("sent to: "+email_not_sentto1[y]+":\n")
-                   else:
-                       eee+=email_not_sentto1[y]+','
+                   email_sent1+=email_not_sentto1[y]+','
+                   text_+='sent to: '+email_not_sentto1[y]+'<br>'
+                   log_report.write("sent to: "+email_not_sentto1[y]+":\n")
+                    #COmmentato 24-3-2020
+                    #if sent:
+                    #   email_sent1+=email_not_sentto1[y]+','
+                    #   text_+='sent to: '+email_not_sentto1[y]+'<br>'
+                    #   log_report.write("sent to: "+email_not_sentto1[y]+":\n")
+                    #else:
+                    #   eee+=email_not_sentto1[y]+','
 
             email.not_sentto = eee
             email.sentto = email_sent1
@@ -11172,6 +11176,182 @@ class AdvancesSearchCNListView(ListView):
             context['counttotal'] =context['items'].count() 
          
         return context
+    
+
+class ReportingSystemSummaryCNListView(ListView):
+    """  ReportingSystemSummaryCNListView list  """
+    context_object_name = 'latest'
+    model = CountryPage
+    template_name = 'countries/countries_reportingsystem_summary.html'
+    
+    def get_context_data(self, **kwargs): # http://stackoverflow.com/a/15515220
+        context = super(ReportingSystemSummaryCNListView, self).get_context_data(**kwargs)
+        context['type'] = self.kwargs['type'] 
+          
+        summary=''
+        curryear=timezone.now().year
+        currmonth=timezone.now().month
+        months=['January','February','March','April','May','June','July','August','September','October','November','December']
+        rangeyear=range(2012,curryear+1)
+
+        for yy in list(reversed(rangeyear)):
+            m_i=1
+            month=''
+            summary+=' <div class="time"><div class="tidate">'+str(yy)+'</div><div class="timatter"><div class="row"></div><div class="row">'
+            for ss in months:
+                summary+='<div class="col-sm-3">'
+                if m_i <10:
+                    month='0'+str(m_i)
+                else:
+                  month=str(m_i)
+                if m_i > currmonth and yy == curryear:
+                    summary+='&#160;'
+                else:  
+                    summary+='<a href="/countries/reportingsystem/all/'+str(yy)+'/'+month+'/">'+str(ss)+'</a>'
+                summary+='</div>'
+                m_i=m_i+1    
+            summary+='</div></div> <div class="clearfix"></div></div>'
+        context['summary'] = summary
+    
+        return context
+    
+    
+class ReportingSystemCNListView(ListView):
+    """  ReportingSystemCNListView list  """
+    context_object_name = 'latest'
+    model = CountryPage
+    template_name = 'countries/countries_reportingsystem.html'
+    
+    def get_context_data(self, **kwargs): # http://stackoverflow.com/a/15515220
+        context = super(ReportingSystemCNListView, self).get_context_data(**kwargs)
+        context['type'] = self.kwargs['type'] 
+          
+        if self.kwargs['type'] == 'all':
+            sel_year=self.kwargs['year']
+            sel_months=self.kwargs['month']
+          
+            context['sel_months'] = sel_months
+            context['sel_year'] = sel_year
+            selmonth=''
+            selnmonth=''
+            if sel_months == '01' :
+                selmonth='1'
+                selnmonth='January'
+            if sel_months == '02' :
+                selmonth='2'
+                selnmonth='February'
+            if sel_months == '03' :
+                selmonth='3'
+                selnmonth='March'
+            if sel_months == '04' :
+                selmonth='4'
+                selnmonth='April'
+            if sel_months == '05' :
+                selmonth='5'
+                selnmonth='May'
+            if sel_months == '06' :
+                selmonth='6'
+                selnmonth='June'
+            if sel_months == '07' :
+                selmonth='7'
+                selnmonth='July'
+            if sel_months == '08' :
+                selmonth='8'
+                selnmonth='August'
+            if sel_months == '09' :
+                selmonth='9'
+                selnmonth='September'
+            if sel_months == '10' :
+                selmonth='10'
+                selnmonth='October'
+            if sel_months == '11' :
+                selmonth='11'
+                selnmonth='November'
+            if sel_months == '12' :
+                selmonth='12'
+                selnmonth='December'
+         
+      
+                
+            context['namemonth'] = selnmonth
+            new_pests=[]
+            up_pests=[]
+            tot_pests=[]
+           
+            pests= PestReport.objects.filter(is_version=False,status=CONTENT_STATUS_PUBLISHED)
+            for p in pests:
+                pest=[]
+                if p.country_id == 199:
+                    print("no")
+                else:
+                    if p.publish_date != None and str(p.publish_date.year) == sel_year :
+                        if str(p.publish_date.month) == selmonth:
+                           new_pests.append(p)
+                           pest.append('new')
+                           pest.append('Pest report')
+                           pest.append(p)
+                           pest.append('pest-report-detail')
+                           tot_pests.append(pest)
+                    if p.modify_date != None and str(p.modify_date.year) == sel_year :
+                        if str(p.modify_date.month) == selmonth:
+                            if p in new_pests:
+                                print('aaaa')
+                            else:      
+                                up_pests.append(p)
+                                pest.append('up')
+                                pest.append('Pest report')
+                                pest.append(p)
+                                pest.append('pest-report-detail')
+                                tot_pests.append(pest)
+        #    for i in range(1,6):
+        #        reps=ReportingObligation.objects.filter(reporting_obligation_type=i,is_version=False)
+        #        for r in reps:
+        #            rep=[]
+        #            if r.publication_date != None and (r.publication_date.year) == sel_year :
+        #                if str(r.publication_date.month) == selmonth:
+        #                   new_pests.append(r)
+        #                   rep.append('new')
+        #                   rep.append(dict(BASIC_REP_TYPE_CHOICES)[i])
+        #                   rep.append(r)
+        #                   rep.append('reporting-obligation-detail')
+        #                   tot_pests.append(rep)
+        #            if r.modify_date != None and str(r.modify_date.year) == sel_year :
+        #                if str(r.modify_date.month) == selmonth:
+        #                    if r in new_pests:
+        #                        print('aaaa')
+        #                    else:      
+        #                        up_pests.append(r)
+        #                        rep.append('up')
+        #                        rep.append(dict(BASIC_REP_TYPE_CHOICES)[i])
+        #                        rep.append(r)
+        #                        rep.append('reporting-obligation-detail')
+        #                        tot_pests.append(rep)
+        #        evrep=EventReporting.objects.filter(event_rep_type=i,is_version=False)
+        #        for e in evrep:
+        #            ev=[]
+        #            if e.publication_date != None and (e.publication_date.year) == sel_year :
+        #                if str(e.publication_date.month) == selmonth:
+        #                   new_pests.append(r)
+        #                   ev.append('new')
+        #                   ev.append(dict(EVT_REP_TYPE_CHOICES)[i])
+        #                   ev.append(e)
+        #                   ev.append('event-reporting-detail')
+        #                   tot_pests.append(ev)
+        #            if e.modify_date != None and str(e.modify_date.year) == sel_year :
+        #                if str(e.modify_date.month) == selmonth:
+        #                    if e in new_pests:
+        #                        print('aaaa')
+        #                    else:      
+        #                        up_pests.append(e)
+        #                        ev.append('up')
+        #                        ev.append(dict(EVT_REP_TYPE_CHOICES)[i])
+        #                        ev.append(e)
+        #                        ev.append('event-reporting-detail')
+        #                        tot_pests.append(ev)
+            context['tot_pests']  = tot_pests
+        return context
+    
+    
 import csv
 from django.http import HttpResponse	
 
@@ -17393,4 +17573,4 @@ class AdvancesSearchResourcesListView(ListView):
             
            
          
-        return context    
+        return context   
