@@ -49,9 +49,9 @@ TopicDetailView,TopicListView,topic_create,topic_edit,topic_translate,WorkshopCe
 B_CertificatesToolListView,B_CertificatesToolDetailView,generate_b_certificates,my_tool,MyToolDetailView,generate_topiclist,\
 MembershipShortListView,generate_shortlist,generate_shortlistparticipant,generate_listNEW1,\
 generate_b_certificatesnew,generate_certificatesnew,CountryStatsSingleListOfRegulatesPestsListView,select_cns_nros_stats,nro_stats_files,contactPointsXML,\
-ContributedResourceListView,  ContributedResourceDetailView,contribuitedresource_create,contribuitedresource_edit,my_tool2,MyTool2DetailView,nro_stats3_files,AdvancesSearchResourcesListView,PublicationMeetingFilesListView
-
-#reporting_obligation_translate,
+ContributedResourceListView,  ContributedResourceDetailView,contribuitedresource_create,contribuitedresource_edit,my_tool2,MyTool2DetailView,nro_stats3_files,AdvancesSearchResourcesListView,PublicationMeetingFilesListView,ReportingSystemCNListView,\
+ReportingSystemSummaryCNListView
+#,subscriptionNewsAutoRegistrationListView, auto_register_subscription_news, auto_register_subscription_approve, auto_register_subscription_delete#reporting_obligation_translate,
 from schedule.periods import Year, Month, Week, Day
 from mezzanine.core.views import direct_to_template
 
@@ -137,6 +137,15 @@ urlpatterns = patterns("",
     url(r'^accounts/autoregister/$',view=auto_register,name='auto-register'),
     url(r'^accounts/autoregister/approve/(?P<id>\d+)/$',view=auto_register_approve,name='auto-register-approve'),
     url(r'^accounts/autoregister/delete/(?P<id>\d+)/$',view=auto_register_delete,name='auto-register-delete'),
+    
+        #---------AUTO-REGISTER-NEWS ------------------------------#    
+    #url(r'^subscriptions/accounts/pendingapproval/$',subscriptionNewsAutoRegistrationListView.as_view(), name='pendingapproval'),
+    #url(r'^subscriptions/accounts/autoregister/$',view=auto_register_subscription_news,name='auto-register'),
+   # url(r'^subscriptions/accounts/autoregister/approve/(?P<id>\d+)/$',view=auto_register_subscription_approve,name='auto-register-subscription-approve'),
+   # url(r'^subscriptions/accounts/autoregister/delete/(?P<id>\d+)/$',view=auto_register_subscription_delete,name='auto-register-subscription-delete'),
+  
+   
+  
    
    #---------EPPO REPORTING------------------------------------
     url(r'^epporeporting/', reporting_trough_eppo, name='reporting_trough_eppo'),
@@ -159,7 +168,7 @@ urlpatterns = patterns("",
     url(r'^forum/', include('forum.urls')),
     url(r'^calls/', include('calls.urls')),
     url(r'^news/', include('news.urls')),
-    url(r'^iyph/', include('iyph.urls')),
+    url(r'^ph/', include('iyph.urls')),
     url(r'^pce/', include('pce.urls')),
     #PHYTO#
     #url(r'^phytosanitary/', include('phytosanitary.urls')),
@@ -260,6 +269,12 @@ urlpatterns = patterns("",
     url(r'^countriescontacts/cp/$',
         view=contactPointsXML,
         name='countriescontacts'),
+     url(r'^countries/reportingsystem/(?P<type>[\w-]+)/(?P<year>\d+)/(?P<month>\d{2})/$',
+        view=ReportingSystemCNListView.as_view(),
+        name='reportingsystem'),    
+     url(r'^countries/reportingsystem-summary/(?P<type>[\w-]+)/$',
+        view=ReportingSystemSummaryCNListView.as_view(),
+        name='reportingsystem'),    
     #----- CAP DEV RES
     url(r'^resources/capacity-development-resources/resources-by-topic/(?P<type>[\w-]+)/$',
         view=AdvancesSearchResourcesListView.as_view(),
