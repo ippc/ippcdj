@@ -122,7 +122,7 @@ def quick_calls(context):
 
 from django.utils import timezone
 from schedule.models import Event,Calendar
-from ippc.models import MediaKitDocument
+from ippc.models import MediaKitDocument, PestReport
 
 from django.shortcuts import get_object_or_404
 @register.as_tag
@@ -158,6 +158,28 @@ def latest_resources(limit=5):
     res_list= MediaKitDocument.objects.filter().order_by('-modify_date')
     return list(res_list[:limit])
 
+import datetime as dt
+
+@register.as_tag
+def latest_pestreports(limit=10):
+  #  curryear=timezone.now().year-1
+   # print(year)
+    pestreport_range=dt.timedelta(days=1)
+    tot_pests=[]     
+    pests_list= PestReport.objects.filter(is_version=False,status=2).order_by('-modify_date')
+    for p in pests_list:
+           pest=[]
+           if p.publish_date != None and p.modify_date-p.publish_date >= pestreport_range :
+                  pest.append(p)
+                  pest.append('up')
+                  tot_pests.append(pest)
+                  
+           elif  p.publish_date != None and p.modify_date-p.publish_date < pestreport_range :
+                pest.append(p)
+                pest.append('new')
+                tot_pests.append(pest)
+
+    return list(tot_pests[:limit])
 # https://gist.github.com/renyi/3596248
 from django import template
 from django.utils import translation
