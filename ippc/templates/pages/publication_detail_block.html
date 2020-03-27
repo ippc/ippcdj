@@ -87,7 +87,7 @@
    {% endif %}
 
   {% if publication.publicationurl_set.all %}
-    <dt>{% trans "Links" %}</dt>
+    <dt>{% if publication.library.id == 1311%}{% trans "Guide is available at" %}{% else %}{% trans "Links" %}{% endif %}</dt>
     
       <dd>
        {% for f in publication.publicationurl_set.all %} <span style="font-size: 1.2em; color: #000;"><i class="fas fa-link"></i></span>
