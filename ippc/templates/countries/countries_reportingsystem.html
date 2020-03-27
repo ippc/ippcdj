@@ -1,0 +1,76 @@
+{% extends "base.html" %}
+{% load pages_tags mezzanine_tags i18n future staticfiles accounts_tags %}
+{% block extra_css %}
+  <link rel="stylesheet" href="{% static "css/DT_bootstrap.css" %}">
+{% endblock %}
+
+{% block meta_title %}
+  {% trans "Reporting System" %}
+{% endblock %}
+
+{% block body_class %}wide{% endblock %}
+
+{% block breadcrumb_menu %}
+<li class="breadcrumb-item"><a href="/countries/">Countries</a></li>
+<li class="breadcrumb-item active">Pest Reports Bulletin</li>
+<li class="breadcrumb-item active" aria-current="page"><i class="fas fa-angle-double-down"></i></li>
+{% endblock %}
+
+{% block local_nav %}
+{% endblock local_nav %}
+
+{% block pageinfo %}
+
+{% endblock pageinfo %}
+{% block main %}
+
+<p class="pull-right">
+  <a href="javascript:history.go(-1)">{% trans "« Go back" %}</a>
+</p>
+
+<h1>
+  <small class="normal">Pest Reports Bulletin: {{namemonth}} {{sel_year}}</small>
+</h1>
+{%if type == 'all' %}
+<p>Please find below the complete list of new or updated Pest Reports submitted by countries in <b> {{namemonth}} {{sel_year}}</b> </p>
+    
+{% if tot_pests %}
+
+    <table class="table" id="reportingsys" style="margin-top: 20px">
+      <thead>
+        <tr>
+          <th>{% trans "Title" %}</th>
+          <th>{% trans "Published" %}</th>
+          <th>{% trans "Updated" %}</th>
+          <th>{% trans "Country" %}</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for object in tot_pests %}
+        <tr>
+       
+          <td>
+             <a href="{% url object.3 object.2.country.country_slug object.2.publish_date|date:'Y' object.2.publish_date|date:'m'  object.2.slug %}">{{ object.2.title }}</a> {%if object.0 == 'new'%}<small><span class="btn-small btn-green" style="width: auto">new</span></small>{% elif object.0 == 'up' %}<small><span class="btn-small btn-orange" style="width: auto">updated</span></small>{% endif %}
+                        <br><b>Pest identity:</b>{{ object.2.pest_identity}}
+         
+          
+          </td>
+          <td>{{ object.2.publish_date|date:"d M Y" }}</td>
+          <td>{{ object.2.modify_date|date:"d M Y" }}</td>
+          <td><a href="{% url 'country' object.2.country.country_slug%}">{{ object.2.country }}</a><br><img src="{{MEDIA_URL}}{{object.2.country.cn_flag}}" width="30px"></td>
+      </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+    {% endif %}
+    
+    
+{% else %}
+    <p>No items available.</p>
+{% endif %}
+
+{% endblock %}
+{% block extra_js %}
+  <script src="{% static "js/jquery.dataTables.js" %}"></script>
+  <script src="{% static "js/DT_bootstrap.js" %}"></script>
+{% endblock %}

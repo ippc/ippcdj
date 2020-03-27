@@ -1,0 +1,46 @@
+{% extends "base.html" %}
+{% load pages_tags mezzanine_tags i18n future staticfiles accounts_tags %}
+{% block extra_css %}
+  <link rel="stylesheet" href="{% static "css/DT_bootstrap.css" %}">
+{% endblock %}
+
+{% block meta_title %}
+  {% trans "Reporting System" %}
+{% endblock %}
+
+{% block body_class %}wide{% endblock %}
+
+{% block breadcrumb_menu %}
+<li class="breadcrumb-item"><a href="/countries/">Countries</a></li>
+<li class="breadcrumb-item active">Pest Reports Bulletin</li>
+<li class="breadcrumb-item active" aria-current="page"><i class="fas fa-angle-double-down"></i></li>
+{% endblock %}
+
+{% block local_nav %}
+{% endblock local_nav %}
+
+{% block pageinfo %}
+
+{% endblock pageinfo %}
+{% block main %}
+
+<p class="pull-right">
+  <a href="javascript:history.go(-1)">{% trans "« Go back" %}</a>
+</p>
+
+<h1>
+  <small class="normal">Pest Reports Bulletin</small>
+</h1> 
+<p>The Pest Reports Bulletins are monthly summaries on Pest Reports submitted by countries.<br>
+   Click on the links below to open the bulletin on new or updated Pest Reports submitted by countries in that month.</p>
+    {% autoescape off %} 
+     {{summary}}
+    {% endautoescape %}
+    
+    
+
+{% endblock %}
+{% block extra_js %}
+  <script src="{% static "js/jquery.dataTables.js" %}"></script>
+  <script src="{% static "js/DT_bootstrap.js" %}"></script>
+{% endblock %}
