@@ -11,7 +11,7 @@
 
 
 {% block mainspansize %}12{% endblock mainspansize %}
-    {% block main %}
+    {% block main %} {% if user.is_superuser %}
     <script type="text/javascript">
         function toggle_visibility(id, id1) {
             var e = document.getElementById(id);
@@ -108,5 +108,6 @@
             {% endif %}
 
         </div>  
-
+  {% else %}   You don't have permissions to see this.
+    {% endif %}
         {% endblock %}
