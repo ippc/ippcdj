@@ -17,7 +17,7 @@
 
 
 
-{% block main %}
+{% block main %}  {% if user.is_superuser %}
 <div class="span8 middle">
     
 <h1>{{ irssactivity.title }}</h1> 
@@ -73,6 +73,7 @@
 </div>
 </div>
 
-
+  {% else %}   You don't have permissions to see this.
+    {% endif %}
 {% endblock %}
 
