@@ -17,6 +17,33 @@
       </div>
     </div>
 {% endif %}
+
+ <div class="card mt-5" style="width: 100%">
+    <div class="card-header">
+        <h3 class="my-0">{% trans "Subscribe" %}</h3>
+    </div>
+    <ul class="list-group list-group-flush">
+        <li class="list-group-item">
+            <b>{% trans "Don't miss the latest Calls" %}</b><br>
+            <br>
+        {% if request.user.is_authenticated %}
+            {% if subscribed %}
+                <u><b>You are already  {% trans "Subscribed to Calls" %}.</b></u>
+                <br>If you want to un-subscribe click the button below:<br>
+                <a class="btn btn-small btn-info" href="/news-un-subscribe/5?return_url={{ request.path }}">{% trans "Un-Subscribe" %}</a>
+            {% else %}
+             <a class="btn btn-small btn-info" href="/news-subscribe/5/?return_url={{ request.path }}">{% trans "Subscribe" %}</a>
+         
+            {% endif %}
+        {% else %}
+          If you have already an IPP account <a class="btn btn-small btn-info" href="/accounts/login/?next=/en/news/category/ippcnews/">{% trans "LOGIN" %}</a> to subscribe. 
+          <br><br>
+          If you don't have an IPP account first <a class="btn btn-small btn-info" href="/accounts/autoregister/?return_url={{ request.path }}">{% trans "REGISTER" %}</a>  to subscribe.
+
+          {% endif %}
+</li>
+    </ul>
+</div>
 {% block calls_months %}
   <script type="text/javascript" charset="utf-8">
     $(function() {

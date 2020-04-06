@@ -48,8 +48,10 @@ def calls_post_list(request, tag=None, year=None, month=None, username=None,
     calls_posts = paginate(calls_posts, request.GET.get("page", 1),
                           settings.CALLS_POST_PER_PAGE,
                           settings.MAX_PAGING_LINKS)
+    subscribed=0
+    subscribed=request.user.groups.filter(name='Calls Notification group').exists()
     context = {"calls_posts": calls_posts, "year": year, "month": month,
-               "tag": tag, "category": category, "author": author}
+               "tag": tag, "category": category, "author": author, "subscribed":subscribed}
     templates.append(template)
     return render(request, templates, context)
 
@@ -63,7 +65,10 @@ def calls_post_detail(request, slug, year=None, month=None, day=None,
     calls_posts = CallsPost.objects.published(
                                      for_user=request.user).select_related()
     calls_post = get_object_or_404(calls_posts, slug=slug)
-    context = {"calls_post": calls_post, "editable_obj": calls_post}
+    subscribed=0
+    subscribed=request.user.groups.filter(name='Calls Notification group').exists()
+
+    context = {"calls_post": calls_post, "editable_obj": calls_post,"subscribed":subscribed}
     templates = [u"calls/calls_post_detail_%s.html" % unicode(slug), template]
     return render(request, templates, context)
 
