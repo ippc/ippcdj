@@ -28,17 +28,32 @@
       </div>
     </div>
 {% endif %}
-
-{% if request.user.is_authenticated %}
  <div class="card mt-5" style="width: 100%">
     <div class="card-header">
         <h3 class="my-0">{% trans "Subscribe" %}</h3>
     </div>
     <ul class="list-group list-group-flush">
-        <li class="list-group-item">{% trans "Don't miss the latest News" %}: <a class="btn btn-small btn-info" href="/news-subscribe?return_url={{ request.path }}">{% trans "Subscribe" %}</a></li>
+        <li class="list-group-item">
+            <b>{% trans "Don't miss the latest " %}{%if category.id == 1 %} News{%elif category.id == 3 %} Announcements{% endif %}</b><br>
+            <br>
+        {% if request.user.is_authenticated %}
+            {% if subscribed %}
+                <u><b> You are already  {% trans "Subscribed to " %}{%if category.id == 1 %} News{%elif category.id == 3 %} Announcements{% endif %}.</b></u>
+                <br>If you want to un-subscribe click the button below:<br>
+                <a class="btn btn-small btn-info" href="/news-un-subscribe/{{category.id}}?return_url={{ request.path }}">{% trans "Un-Subscribe" %}</a>
+            {% else %}
+             <a class="btn btn-small btn-info" href="/news-subscribe/{{category.id}}/?return_url={{ request.path }}">{% trans "Subscribe" %}</a>
+         
+            {% endif %}
+        {% else %}
+          If you have already an IPP account <a class="btn btn-small btn-info" href="/accounts/login/?next=/en/news/category/ippcnews/">{% trans "LOGIN" %}</a> to subscribe. 
+          <br><br>
+          If you don't have an IPP account first <a class="btn btn-small btn-info" href="/accounts/autoregister/?return_url={{ request.path }}">{% trans "REGISTER" %}</a>  to subscribe.
+
+          {% endif %}
+</li>
     </ul>
 </div>
-{% endif %}
 {% if news_post %}
 {% else %}
 {% block news_months %}
