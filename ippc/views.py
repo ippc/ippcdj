@@ -12073,9 +12073,9 @@ def auto_register(request):
          if form.is_valid() and request.POST['captcha'] ==  request.POST['result_element']:
             new_user = form.save(commit=False)
             form.save()
-            info(request, _("Successfully registered to IPPC, the IPPC Team will revise your registration."))
-            subject='A new user has self-registered for IPPC access'  
-            msg='<p>A new user has self-registered for IPPC access.<br><br>Please use the link below to view the list of users pending approval:<br><br><a href="https://www.ippc.int/accounts/pendingapproval/">https://www.ippc.int/accounts/pendingapproval/</a>.'
+            info(request, _("Successfully registered to subscribe to IPPC News, Announcements or Calls, the IPPC Team will revise your subscription."))
+            subject='A new user has self-subscribed for IPPC News, Announcements or Calls'  
+            msg='<p>A new user has self-subscribed for IPPC News, Announcements or Calls.<br><br>Please use the link below to view the list of users pending approval:<br><br><a href="https://www.ippc.int/accounts/pendingapproval/">https://www.ippc.int/accounts/pendingapproval/</a>.'
             message = mail.EmailMessage(subject,msg,'ippc@fao.org', ['ippc-it@fao.org'], ['paola.sentinelli@fao.org'])
             message.content_subtype = "html"
             #print('test-sending')
@@ -12122,6 +12122,17 @@ def auto_register_approve(request, id=None):
             user1.last_name=newuser.lastname
             user1.email=newuser.email
             user1.save()
+            if newuser.subscribe_news == 1:
+                g1=Group.objects.get(name="News Notification group")
+                user1.groups.add(g1)
+            if newuser.subscribe_announcement == 1:
+                g2=Group.objects.get(name="Announcement Notification group")
+                user1.groups.add(g2)
+            if newuser.subscribe_calls == 1:
+                g3=Group.objects.get(name="Calls Notification group")
+                user1.groups.add(g3)
+            
+            
             #set profile
             userp = get_object_or_404(IppcUserProfile, user_id=user1.id)
             userp.first_name=newuser.firstname
@@ -12133,14 +12144,19 @@ def auto_register_approve(request, id=None):
             #sendmessage to new user
             user_email = []
             user_email.append(newuser.email)
-            subject='Activate your account created for you at https://www.ippc.int'  
-            msg='<p>An IPPC account has been created for you.<br><br>Please use the link below to set your password.<br><br><a href="https://www.ippc.int/en/account/password/reset/?next=/en/account/update/">https://www.ippc.int/en/account/password/reset/?next=/en/account/update/</a><br><br>Insert your email address, click on "Password Reset" button and follow instructions to create your password.<br><br>After setting your password, you will be able to log in at https://www.ippc.int .<br><br><br><br>Information Exchange (IPPC) team<br><br><br>he IPPC is an international treaty to secure action to prevent the spread and introduction of pests of plants and plant products, and to promote appropriate measures for their control. It is governed by the Commission on Phytosanitary Measures (CPM) which adopts International Standards for Phytosanitary Measures (ISPMs). The CPM established the IPP as the forum for national reporting and exchange of more general information among the phytosanitary community. The IPPC Secretariat coordinates the activities of the Convention and is hosted by FAO.'
-           
-            
-                
+            subtext=''
+            if newuser.subscribe_news == 1:
+               subtext+=" News"
+            if newuser.subscribe_announcement == 1:
+                subtext+="Announcements"
+	    if newuser.subscribe_calls == 1:
+                subtext+=" Calls"
+	
+            subject='Your subscription to IPPC '+subtext+' has been approved.' 
+            msg='<p>Your subscription to '+subtext+' has been approved. From now on you will receive an automatic notification when one of this item will be posted on our website.<br><br>A related IPPC account has been created for you, please activate it! <br><br>You will need this in case you want to un-subscribe from these notifications. <br><br>To active the account click on the link below to set your password.<br><br><a href="https://www.ippc.int/en/account/password/reset/?next=/en/account/update/">https://www.ippc.int/en/account/password/reset/?next=/en/account/update/</a><br><br>Insert your email address, click on "Password Reset" button and follow instructions to create your password.<br><br>After setting your password, you will be able to log to the IPPC website.<br><br>IPPC Secretariat<br>'
+
             message = mail.EmailMessage(subject,msg,'ippc@fao.org', user_email, ['paola.sentinelli@fao.org'])
             message.content_subtype = "html"
-            #print('test-sending')
             sent =message.send()
             #delete temporary user
             newuser.delete()
@@ -12612,7 +12628,7 @@ def phytosanitarytreatment_edit(request,  id=None, template_name='phytotreatment
     
     
 @login_required
-def subscribe_to_news(request):
+def subscribe_to_news(request,type=None):
     """ subscribe to news """
     #previous_page = request.get('return_url')
     previous_page = request.GET.get('return_url', None)
@@ -12620,19 +12636,72 @@ def subscribe_to_news(request):
     
     #data = {'previous_page': previous_page,}
     user = request.user
-    g1=Group.objects.get(name="News Notification group")
-    c=user.groups.filter(name="News Notification group").count()
+    g1=None
+    c=0
+    typename=''
+    
+    if type == '1':
+        g1=Group.objects.get(name="News Notification group")
+        c=user.groups.filter(name="News Notification group").count()
+        typename='News'
+    elif type == '3':
+        print('dsadadas')
+        g1=Group.objects.get(name="Announcement Notification group")
+        
+        c=user.groups.filter(name="Announcement Notification group").count()
+        typename='Announcements'
+    elif type == '5':
+        g1=Group.objects.get(name="Calls Notification group")
+        c=user.groups.filter(name="Calls Notification group").count()
+        typename='Calls'
     if c==0:
         user.groups.add(g1)
-        info(request, _("Successfully Subcribed to News."))
+        info(request, _("Successfully Subcribed to "+str(typename)+"."))
     else:
-        error(request, _("You are already subcribed to News."))
+        error(request, _("You are already subcribed to "+str(typename)+"."))
     
 
     return redirect('https://www.ippc.int/'+str(previous_page)  )
    # return render(request, "news/news_post_list.html", data)
    # return render_to_response(context_instance=RequestContext(request)) 
    
+
+@login_required
+def unsubscribe_to_news(request,type=None):
+    """ subscribe to news """
+    #previous_page = request.get('return_url')
+    previous_page = request.GET.get('return_url', None)
+   #print(previous_page)
+    
+    #data = {'previous_page': previous_page,}
+    user = request.user
+    g1=None
+    c=0
+    typename=''
+    
+    if type ==  '1':
+        g1=Group.objects.get(name="News Notification group")
+        c=user.groups.filter(name="News Notification group").count()
+        typename='News'
+    elif type == '3':
+        g1=Group.objects.get(name="Announcement Notification group")
+        c=user.groups.filter(name="Announcement Notification group").count()
+        typename='Announcements'
+    elif type == '5':
+        g1=Group.objects.get(name="Calls Notification group")
+        c=user.groups.filter(name="Calls Notification group").count()
+        typename='Calls'
+    if c>0:
+        user.groups.remove(g1)
+        info(request, _("Successfully UN-Subcribed from "+str(typename)+"."))
+    else:
+        error(request, _("You are already UN_Subcribed from "+str(typename)+"."))
+    
+
+    return redirect('https://www.ippc.int/'+str(previous_page)  )
+    ##return redirect('https://www.ippc.int/'+str(previous_page)  )
+   # return render(request, "news/news_post_list.html", data)
+   # return render_to_response(context_instance=RequestContext(request)) 
    
 
 def send_notificationevent_message(id):

@@ -2049,10 +2049,17 @@ class UserAutoRegistration(models.Model):
     firstname = models.CharField(_("First name"), blank=True, null=True,max_length=250,)
     lastname = models.CharField(_("Last name"), blank=True, null=True,max_length=250,)
     email = models.CharField(_("Email"), blank=True, null=True,max_length=250,)
-    organisation = models.CharField(_("Organisation"), blank=True, null=True,max_length=250,)
+    organisation = models.CharField(_("Organization"), blank=True, null=True,max_length=250,)
     country = models.ForeignKey(CountryPage, blank=True, null=True)
-    status = models.IntegerField(_("Publish or Reject"), choices=AUTOREGISTER_CHOICES, default=AUTOREGISTER_1)
+    #summary =  models.CharField(_("describe why you want to subscribe to IPPC News and Calls"), blank=True, null=True,max_length=500,)
+    subscribe_news=  models.BooleanField( verbose_name=_("Subscribe to news"),default=False)
+    subscribe_announcement=  models.BooleanField( verbose_name=_("Subscribe to announcements"),default=False)
+    subscribe_calls=  models.BooleanField( verbose_name=_("Subscribe to calls"),default=False)
     publish_date = models.DateTimeField(_("Publish date"), blank=True, null=True, editable=True)
+    status = models.IntegerField(_("Publish or Reject"), choices=AUTOREGISTER_CHOICES, default=AUTOREGISTER_1)
+    
+    
+ 
     def __unicode__(self):  
         return self.lastname+self.firstname+'.'
     def name(self):
@@ -3361,6 +3368,8 @@ class CollapseContent(Orderable):
                             # 'month': self.publish_date.strftime("%m"),
                             # 'day': self.pub_date.strftime("%d"),
                             'pk': self.pk})
+
+
 class Translatable(models.Model):
     """ Translations of user-generated content - https://gist.github.com/renyi/3596248"""
     lang = models.CharField(max_length=5, choices=settings.LANGUAGES)

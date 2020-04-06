@@ -66,6 +66,10 @@ class UserAutoRegistrationForm(forms.ModelForm):
                 'email',
                 'organisation',
                 'country',
+               # 'summary',
+                'subscribe_news',
+                'subscribe_announcement',
+                'subscribe_calls'
         ]
         exclude = ( 'status', 'publish_date')
 
@@ -940,3 +944,4 @@ class ContributedResourceForm(forms.ModelForm):
 ContributedResourceUrlFormSet  = inlineformset_factory(ContributedResource,  ContributedResourceUrl, extra=1)
 ContributedResourceFileFormSet = inlineformset_factory(ContributedResource,  ContributedResourceFile,extra=1)
 ContributedResourcePhotoFormSet = inlineformset_factory(ContributedResource,  ContributedResourcePhoto,extra=1)
+

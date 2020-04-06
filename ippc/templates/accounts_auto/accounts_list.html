@@ -19,7 +19,7 @@
 {% endblock pageinfo %}
 
 {% block main %}
-    {% if user.is_superuser or perms.ippc.change_publication  %}
+    {% if user.is_superuser %}
           
 <h1>
   <small class="normal">{% trans "List of accounts pending approval" %}</small>
@@ -33,9 +33,11 @@
         <th>{% trans "First name" %}</th>
         <th>{% trans "Last name" %}</th>
         <th>{% trans "Email" %}</th>
-        <th>{% trans "Organisation" %}</th>
+        <th>{% trans "Organization" %}</th>
         <th>{% trans "Country" %}</th>
-        <th>{% trans "Status" %}</th>
+    
+       <th>{% trans "Subscribed to" %}</th>
+       <th>{% trans "Status" %}</th>
         <th>{% trans "registration date" %}</th>
         <th>{% trans "Action" %}</th>
     </tr>
@@ -48,6 +50,11 @@
       <td>{{object.email }}</a></td>
       <td>{{object.organisation }}</a></td>
       <td>{{object.country }}</a></td>
+     
+     <td>{% if object.subscribe_news == 1 %} News{% endif %}
+         {% if object.subscribe_announcement == 1 %}<br> Announcements{% endif %}
+         {% if object.subscribe_calls == 1 %}<br> Calls{% endif %}
+         </td>
       <td>
             
        {% if object.status == 1 %}
