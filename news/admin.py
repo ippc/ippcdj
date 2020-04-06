@@ -5,6 +5,7 @@ from django.contrib import admin
 from django.utils.translation import ugettext_lazy as _
 
 from news.models import NewsPost, NewsCategory,TransNewsPost
+from ippc.models import MassEmailUtilityMessage
 from mezzanine.conf import settings
 from mezzanine.core.admin import DisplayableAdmin, OwnableAdmin,StackedDynamicInlineAdmin
 from django.contrib.auth.models import User,Group
@@ -76,21 +77,15 @@ class NewsPostAdmin(DisplayableAdmin):
             slug1=slugify(request.POST['title'])
             alreadynews = NewsPost.objects.filter(slug__icontains=slug1)
             if alreadynews.count()>0:
-                print(alreadynews[0].slug)
                 old2slug=alreadynews[0].slug
                 intslug=old2slug.replace(slug1+"-","")
                 intslug1=int(intslug)+1
-                
-                print(intslug1)
                 news_slug=slug1+"-"+str(intslug1)
-                # print(news_slug)
-                #slug = alreadynews[0].slug 
             else:
                 news_slug= slug1
            
             obj = form.save(commit=False)
            
-            
             if obj.user_id is None:
                 obj.user = request.user 
                 obj.slug = news_slug 
@@ -105,20 +100,26 @@ class NewsPostAdmin(DisplayableAdmin):
         #new news post send notifications to Secretariat
         if send==True  :
             emailto_all = []
+            emailto_all_news = []
+            emailto_all_announc = []
+            
             group=Group.objects.get(name="News Notification group")
             users = group.user_set.all()
             for u in users:
                user_obj=User.objects.get(username=u)
                user_email=user_obj.email
-               emailto_all.append(str(user_email))
-               #print(user_email)
+               emailto_all_news.append(str(user_email))
+            group2=Group.objects.get(name="Announcement Notification group")
+            users2 = group2.user_set.all()
+            for u in users2:
+               user_obj=User.objects.get(username=u)
+               user_email=user_obj.email
+               emailto_all_announc.append(str(user_email))
             category=None
             try:
                 category=get_object_or_404(NewsCategory, id=request.POST['categories']).title 
             except:
                 print("###################error in category ")
-                
-                    
             
             if(category!=None and (category == 'Announcements' or category == 'IPPC news' )):
                 pdate= request.POST['publish_date_0']
@@ -126,20 +127,50 @@ class NewsPostAdmin(DisplayableAdmin):
                 day_string = d.strftime('%d-%m-%Y')
                 subject=''
                 text=''
-               #subject='IPPC News: a new '+category+' has been posted'      
-          
                 if  category == 'IPPC news':
-                    subject='IPPC News has been posted'     
-                    text='<html><body><p>Dear IPPC User,</p><p>a new IPPC News has been posted on the International Phytosanitary Portal (IPP):<br><br> <b>'+ request.POST['title']+'</b></p><p>You can view it from '+day_string+' at the following url: <a href="http://www.ippc.int/news/'+news_slug+'">https://www.ippc.int/news/'+news_slug+'</a></p><p><br>Kind regards,<br><br>The International Plant Protection Convention Secretariat</p></body></html>'
+                    subject='IPPC News has been posted'   
+                    emailto_all=emailto_all_news
+                    text='<html><body><p>Dear IPPC User,</p><p>a new IPPC News has been posted on the International Phytosanitary Portal (IPP):<br><br> <b>'+ request.POST['title']+'</b></p><p>You can view it from '+day_string+' at the following url: <a href="http://www.ippc.int/news/'+news_slug+'">https://www.ippc.int/news/'+news_slug+'</a></p><p><br>Kind regards,<br><br>The International Plant Protection Convention Secretariat</p><p><br><br>If you want to <b>un-subscribe</b> from the News notifications <b>login to IPP</b>, then go <a href="http://www.ippc.int/news/category/ippcnews/"><b>here</b></a> and click on the button <b>un-subscribe</b>.</p></body></html>'
                 elif  category == 'Announcements':
-                    subject='IPPC announcement has been posted'   
-                    text='<html><body><p>Dear IPPC User,</p><p>a new IPPC announcement has been posted on the International Phytosanitary Portal (IPP):<br><br> <b>'+ request.POST['title']+'</b></p><p>You can view it from '+day_string+' at the following url: <a href="http://www.ippc.int/news/'+news_slug+'">https://www.ippc.int/news/'+news_slug+'</a></p><p><br>Kind regards,<br><br>The International Plant Protection Convention Secretariat</p></body></html>'
+                    subject='IPPC announcement has been posted'
+                    emailto_all=emailto_all_announc
+                    text='<html><body><p>Dear IPPC User,</p><p>a new IPPC announcement has been posted on the International Phytosanitary Portal (IPP):<br><br> <b>'+ request.POST['title']+'</b></p><p>You can view it from '+day_string+' at the following url: <a href="http://www.ippc.int/news/'+news_slug+'">https://www.ippc.int/news/'+news_slug+'</a></p><p><br>Kind regards,<br><br>The International Plant Protection Convention Secretariat</p><p><br><br>If you want to <b>un-subscribe</b> from the Announcements notifications <b>login to IPP</b>, then go <a href="http://www.ippc.int/news/category/announcements/"><b>here</b></a> and click on the button <b>un-subscribe</b>.</p></body></html>'
                 
-             
+                emailto_all_final=''
+                for eee in emailto_all:
+                    emailto_all_final=emailto_all_final+eee+','
                 
-                notifificationmessage = mail.EmailMessage(subject,text,'ippc@fao.org',  emailto_all, ['paola.sentinelli@fao.org'])
+                author = get_object_or_404(User, pk=1652)    
+                ############################################
+                massemail = MassEmailUtilityMessage()
+                massemail.emailfrom = 'ippc@fao.org'
+                massemail.emailto = emailto_all_final
+                massemail.emailtoISO3 = ''
+                massemail.emailcc = ''
+                massemail.subject = subject
+                massemail.messagebody = text
+                massemail.date = datetime.now()
+                massemail.sent = 0
+                massemail.status = 1
+                massemail.not_sentto = emailto_all_final
+                massemail.sentto =  ''
+                massemail.not_senttoISO3 = ''
+                massemail.senttoISO3 = ''
+                massemail.author= author
+                massemail.massmerge = 0
+                
+                massemail.save()
+            
+                subnew='MASS EMAIL STORED:'+subject
+              
+                notifificationmessage = mail.EmailMessage(subnew,text,'ippc@fao.org',  ['paola.sentinelli@fao.org'], ['paola.sentinelli@fao.org'])
                 notifificationmessage.content_subtype = "html"  
                 sent =notifificationmessage.send()
+    
+                #######################################
+                #notifificationmessage = mail.EmailMessage(subject,text,'ippc@fao.org',  emailto_all, ['paola.sentinelli@fao.org'])
+                #notifificationmessage.content_subtype = "html"  
+                #sent =notifificationmessage.send()
         
         return DisplayableAdmin.save_form(self, request, form, change)
 

@@ -48,9 +48,17 @@ def news_post_list(request, tag=None, year=None, month=None, username=None,
     news_posts = paginate(news_posts, request.GET.get("page", 1),
                           settings.NEWS_POST_PER_PAGE,
                           settings.MAX_PAGING_LINKS)
+    subscribed=0
+ 
+    if category.id == 1:
+        subscribed=request.user.groups.filter(name='News Notification group').exists()
+    elif category.id == 3:
+        subscribed=request.user.groups.filter(name='Announcement Notification group').exists()
     context = {"news_posts": news_posts, "year": year, "month": month,
-               "tag": tag, "category": category, "author": author}
+               "tag": tag, "category": category, "author": author, "subscribed":subscribed, }
+    
     templates.append(template)
+  
     return render(request, templates, context)
 
 
@@ -63,7 +71,17 @@ def news_post_detail(request, slug, year=None, month=None, day=None,
     news_posts = NewsPost.objects.published(
                                      for_user=request.user).select_related()
     news_post = get_object_or_404(news_posts, slug=slug)
-    context = {"news_post": news_post, "editable_obj": news_post}
+    
+    category = get_object_or_404(NewsCategory, slug=category)
+     
+    subscribed=0
+ 
+    if category.id == 1:
+        print(category)
+        subscribed=request.user.groups.filter(name='News Notification group').exists()
+    elif category.id == 3:
+        subscribed=request.user.groups.filter(name='Announcement Notification group').exists()
+    context = {"news_post": news_post, "editable_obj": news_post,"subscribed":subscribed,"category":category.id,}
     templates = [u"news/news_post_detail_%s.html" % unicode(slug), template]
     return render(request, templates, context)
 
