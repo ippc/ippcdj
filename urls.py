@@ -41,7 +41,7 @@ reporting_obligation_validate,event_reporting_validate,pest_report_validate,\
 QAQuestionListView, QAQuestionDetailView, QAQuestionAnswersView,question_create,answer_create,\
 FAQsListView, faqcategory_edit,faqcategory_create,faq_edit,faq_create,FAQsItemDetailView,FAQsCategoryDetailView,\
 ContactUsEmailMessageListView,   ContactUsEmailMessageDetailView , contactus_email_send,UserAutoRegistrationListView,auto_register,auto_register_approve,auto_register_delete,\
-IRSSActivityListView,IRSSActivityDetailView,irss_activity_create,irss_activity_edit   ,CountryStatisticsTotalNroByYearListView,subscribe_to_news,NewsStatisticsByYearListView,\
+IRSSActivityListView,IRSSActivityDetailView,irss_activity_create,irss_activity_edit   ,CountryStatisticsTotalNroByYearListView,subscribe_to_news,unsubscribe_to_news,NewsStatisticsByYearListView,\
 UserMembershipHistoryListView,UserMembershipHistoryDetailView,usermembershiphistory_create,usermembershiphistory_edit,MediaKitDocumentListView,CountryStatsSingleLegislationsListView,\
 PhytosanitaryTreatmentDetailView,PhytosanitaryTreatmentListView ,phytosanitarytreatment_create,phytosanitarytreatment_edit,\
 CertificatesToolListView,CertificatesToolDetailView,generate_certificates,MembershipListView,generate_list,generate_replacementlist,generate_listNEW,\
@@ -51,7 +51,7 @@ MembershipShortListView,generate_shortlist,generate_shortlistparticipant,generat
 generate_b_certificatesnew,generate_certificatesnew,CountryStatsSingleListOfRegulatesPestsListView,select_cns_nros_stats,nro_stats_files,contactPointsXML,\
 ContributedResourceListView,  ContributedResourceDetailView,contribuitedresource_create,contribuitedresource_edit,my_tool2,MyTool2DetailView,nro_stats3_files,AdvancesSearchResourcesListView,PublicationMeetingFilesListView,ReportingSystemCNListView,\
 ReportingSystemSummaryCNListView
-#,subscriptionNewsAutoRegistrationListView, auto_register_subscription_news, auto_register_subscription_approve, auto_register_subscription_delete#reporting_obligation_translate,
+#reporting_obligation_translate,
 from schedule.periods import Year, Month, Week, Day
 from mezzanine.core.views import direct_to_template
 
@@ -90,7 +90,8 @@ urlpatterns = patterns("",
     url(r'^sitemap\.xml$', 'django.contrib.sitemaps.views.sitemap', {'sitemaps': sitemaps}),
    
    #-------------- NEWS notification subscribe:
-   url(r'^news-subscribe/$',subscribe_to_news, name='subscribe_to_news'),
+   url(r'^news-subscribe/(?P<type>\d+)/$',subscribe_to_news, name='subscribe_to_news'),
+   url(r'^news-un-subscribe/(?P<type>\d+)/$',unsubscribe_to_news, name='un-subscribe_to_news'),
    
   
    #---------IRSS:--------------------------#    
@@ -137,16 +138,7 @@ urlpatterns = patterns("",
     url(r'^accounts/autoregister/$',view=auto_register,name='auto-register'),
     url(r'^accounts/autoregister/approve/(?P<id>\d+)/$',view=auto_register_approve,name='auto-register-approve'),
     url(r'^accounts/autoregister/delete/(?P<id>\d+)/$',view=auto_register_delete,name='auto-register-delete'),
-    
-        #---------AUTO-REGISTER-NEWS ------------------------------#    
-    #url(r'^subscriptions/accounts/pendingapproval/$',subscriptionNewsAutoRegistrationListView.as_view(), name='pendingapproval'),
-    #url(r'^subscriptions/accounts/autoregister/$',view=auto_register_subscription_news,name='auto-register'),
-   # url(r'^subscriptions/accounts/autoregister/approve/(?P<id>\d+)/$',view=auto_register_subscription_approve,name='auto-register-subscription-approve'),
-   # url(r'^subscriptions/accounts/autoregister/delete/(?P<id>\d+)/$',view=auto_register_subscription_delete,name='auto-register-subscription-delete'),
-  
-   
-  
-   
+ 
    #---------EPPO REPORTING------------------------------------
     url(r'^epporeporting/', reporting_trough_eppo, name='reporting_trough_eppo'),
     url(r'^epporeporting1/', reporting_trough_eppo1, name='reporting_trough_eppo1'),
