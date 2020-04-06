@@ -72,16 +72,18 @@ def news_post_detail(request, slug, year=None, month=None, day=None,
                                      for_user=request.user).select_related()
     news_post = get_object_or_404(news_posts, slug=slug)
     
-    category = get_object_or_404(NewsCategory, slug=category)
-     
+    category_id=0 
+    
+    for c in news_post.categories.all():
+       category_id=c.id
+    
     subscribed=0
  
-    if category.id == 1:
-        print(category)
+    if category_id == 1:
         subscribed=request.user.groups.filter(name='News Notification group').exists()
-    elif category.id == 3:
+    elif category_id == 3:
         subscribed=request.user.groups.filter(name='Announcement Notification group').exists()
-    context = {"news_post": news_post, "editable_obj": news_post,"subscribed":subscribed,"category":category.id,}
+    context = {"news_post": news_post, "editable_obj": news_post,"subscribed":subscribed,"category":category_id}
     templates = [u"news/news_post_detail_%s.html" % unicode(slug), template]
     return render(request, templates, context)
 
