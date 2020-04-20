@@ -20,7 +20,7 @@ PartnersNews,PartnersNewsFile,PartnersNewsUrl, \
 CountryNews,CountryNewsFile,CountryNewsUrl, EmailUtilityMessage, EmailUtilityMessageFile, MassEmailUtilityMessage, MassEmailUtilityMessageFile,\
 DraftProtocol,DraftProtocolFile,DraftProtocolComments,NotificationMessageRelate,Poll,  Poll_Choice,\
 FAQsCategory,FAQsItem,\
-QAQuestion,QAAnswer,ContactUsEmailMessage,UserAutoRegistration,IRSSActivityFile,IRSSActivity,\
+QAQuestion,QAAnswer,ContactUsEmailMessage,UserAutoRegistration,UserAutoRegistrationResources,IRSSActivityFile,IRSSActivity,\
 UserMembershipHistory,PhytosanitaryTreatment,PhytosanitaryTreatmentPestsIdentity,PhytosanitaryTreatmentCommodityIdentity,\
 CertificatesTool,WorkshopCertificatesTool,B_CertificatesTool,Topic,MyTool,TopicAssistants,TopicLeads,TransTopic,NROStats,\
 ContributedResource,ContributedResourceFile,ContributedResourceUrl,ContributedResourcePhoto,MyTool2
@@ -921,9 +921,11 @@ class ContributedResourceForm(forms.ModelForm):
         model = ContributedResource
         fields = [
             'title', 
-            'short_description',
-           
             'publication_date',
+            'status', 
+            'pending_status',
+            'short_description',
+                 
             'organization_providing', 
             'type_of_contact', 
             'contact_email', 
@@ -933,10 +935,10 @@ class ContributedResourceForm(forms.ModelForm):
             'resource_provide_by',
             'featured',
             'tag',
-            
+           
             
             ]
-        exclude = ('author', 'slug', 'publish_date', 'modify_date', 'status', )
+        exclude = ('author', 'slug', 'publish_date', 'modify_date', )
         widgets = {
             'publication_date': AdminDateWidget(),
         }
@@ -945,3 +947,17 @@ ContributedResourceUrlFormSet  = inlineformset_factory(ContributedResource,  Con
 ContributedResourceFileFormSet = inlineformset_factory(ContributedResource,  ContributedResourceFile,extra=1)
 ContributedResourcePhotoFormSet = inlineformset_factory(ContributedResource,  ContributedResourcePhoto,extra=1)
 
+class UserAutoRegistrationResourcesForm(forms.ModelForm):
+    class Meta:
+        model =  UserAutoRegistrationResources
+        fields = [
+                'firstname',
+                'lastname',
+                'email',
+                'organisation',
+                'country',
+                'summary',
+                      ]
+        exclude = ( 'status', 'publish_date')
+
+      

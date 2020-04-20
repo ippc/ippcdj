@@ -2069,6 +2069,26 @@ class UserAutoRegistration(models.Model):
         if not self.id:
             self.publish_date = datetime.today()
         super(UserAutoRegistration, self).save(*args, **kwargs)
+        
+class UserAutoRegistrationResources(models.Model):
+    firstname = models.CharField(_("First name"), blank=True, null=True,max_length=250,)
+    lastname = models.CharField(_("Last name"), blank=True, null=True,max_length=250,)
+    email = models.CharField(_("Email"), blank=True, null=True,max_length=250,)
+    organisation = models.CharField(_("Organization"), blank=True, null=True,max_length=250,)
+    country = models.ForeignKey(CountryPage, blank=True, null=True)
+    summary =  models.CharField(_("Describe why you want to submit Contributed Resources"), blank=True, null=True,max_length=500,)
+    publish_date = models.DateTimeField(_("Publish date"), blank=True, null=True, editable=True)
+    status = models.IntegerField(_("Publish or Reject"), choices=AUTOREGISTER_CHOICES, default=AUTOREGISTER_1)
+    
+    def __unicode__(self):  
+        return self.lastname+self.firstname+'.'
+    def name(self):
+        return self.lastname
+    def save(self, *args, **kwargs):
+        ''' On save, update timestamps '''
+        if not self.id:
+            self.publish_date = datetime.today()
+        super(UserAutoRegistrationResources, self).save(*args, **kwargs)
 
 IRSS_ACT_TYPE_1 = 1
 IRSS_ACT_TYPE_2 = 2
@@ -3115,7 +3135,18 @@ class ContributedResourceTag(models.Model):
         verbose_name_plural = _("ContributedResource Tags")
       
     pass 
+#
+## used by Resource
+PENDINGSTATUS_0 = 0
+PENDINGSTATUS_1 = 1
+PENDINGSTATUS_2 = 2
 
+PENDINGSTATUS_CHOICES = (
+    (PENDINGSTATUS_0, _("Pending")), 
+    (PENDINGSTATUS_1, _("Revised")), 
+    (PENDINGSTATUS_2, _("Final")),
+
+)
 class ContributedResource(Displayable, models.Model):
     """Single Resource to add in a Resources library."""
   
@@ -3125,6 +3156,10 @@ class ContributedResource(Displayable, models.Model):
     # publish_date - provided by mezzanine.core.models.displayable
          
     owner = models.ForeignKey(User, related_name="resourceowner")
+    
+    
+    pending_status = models.IntegerField(_("Pending tatus"), choices=PENDINGSTATUS_CHOICES, default=PENDINGSTATUS_0)
+    
     short_description = models.TextField(_("Short Description"),  blank=True, null=True)
     publication_date = models.DateTimeField(_("Publication date"), blank=True, null=True, editable=True)
     modify_date = models.DateTimeField(_("Modified date"),       blank=True, null=True, editable=False, auto_now=True)

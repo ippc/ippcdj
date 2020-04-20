@@ -15,7 +15,7 @@ PublicationFile,PublicationUrl,ReportingObligation_File,ReportingObligationUrl, 
 DraftProtocol,DraftProtocolComments,NotificationMessageRelate,CommentFile,AnswerVotes,\
 ReportingObligation, BASIC_REP_TYPE_CHOICES, EventReporting, EVT_REP_TYPE_CHOICES,Website,CnPublication,PartnersPublication,PartnersNews, PartnersWebsite,CountryNews, \
 PestFreeArea,ImplementationISPM,REGIONS, IssueKeywordsRelate,CommodityKeywordsRelate,EventreportingFile,ReportingObligation_File,\
-ContactUsEmailMessage,FAQsItem,FAQsCategory,QAQuestion, QAAnswer,UserAutoRegistration,IRSSActivity,IRSSActivityFile,IRSS_ACT_TYPE_CHOICES,\
+ContactUsEmailMessage,FAQsItem,FAQsCategory,QAQuestion, QAAnswer,UserAutoRegistration,UserAutoRegistrationResources,IRSSActivity,IRSSActivityFile,IRSS_ACT_TYPE_CHOICES,\
 TransFAQsCategory,TransFAQsItem,MassEmailUtilityMessage,MassEmailUtilityMessageFile,\
 OCPHistory, PartnersContactPointHistory,CnEditorsHistory,PartnersEditorHistory,UserMembershipHistory,MediaKitDocument,MyTool,\
 PhytosanitaryTreatment,PhytosanitaryTreatmentPestsIdentity,PhytosanitaryTreatmentCommodityIdentity,CertificatesTool,WorkshopCertificatesTool,CPMS,TOPIC_PRIORITY_CHOICES,\
@@ -36,7 +36,7 @@ PartnersNewsUrlFormSet,PartnersNewsForm, PartnersNewsFileFormSet,PartnersWebsite
 EmailUtilityMessageForm,EmailUtilityMessageFileFormSet,MassEmailUtilityMessageForm,MassEmailUtilityMessageFileFormSet,\
 CountryNewsUrlFormSet,CountryNewsForm, CountryNewsFileFormSet,NotificationMessageRelateForm,\
 DraftProtocolForm,  DraftProtocolFileFormSet,DraftProtocolCommentsForm,IppcUserProfileForm,\
-ContactUsEmailMessageForm,FAQsItemForm,FAQsCategoryForm,QAQuestionForm, QAAnswerForm,UserAutoRegistrationForm,IRSSActivityForm,IRSSActivityFileFormSet,\
+ContactUsEmailMessageForm,FAQsItemForm,FAQsCategoryForm,QAQuestionForm, QAAnswerForm,UserAutoRegistrationForm,UserAutoRegistrationResourcesForm,IRSSActivityForm,IRSSActivityFileFormSet,\
 UserMembershipHistoryForm,PhytosanitaryTreatmentForm,PhytosanitaryTreatmentPestsIdentityFormSet,PhytosanitaryTreatmentCommodityIdentityFormSet,\
 CertificatesToolForm,WorkshopCertificatesToolForm, TopicForm ,TransTopicForm, TopicLeadsFormSet,TopicAssistantsFormSet,B_CertificatesToolForm  ,MyToolForm,MyTool2Form,NROStatsForm,\
 ContributedResourceForm, ContributedResourceUrlFormSet, ContributedResourceFileFormSet, ContributedResourcePhotoFormSet
@@ -12179,6 +12179,116 @@ def auto_register_delete(request, id=None):
     
 
 
+class UserAutoRegistrationResourcesListView(ListView):
+    """    UserAutoRegistration List view """
+    context_object_name = 'latest'
+    model = UserAutoRegistrationResources
+    date_field = 'date'
+    template_name = 'accounts_auto/accountsresources_list.html'
+    queryset = UserAutoRegistrationResources.objects.all().order_by('-publish_date')
+
+
+#@login_required
+def auto_registerresources(request):
+    """ auto_registerresources """
+    
+    form =UserAutoRegistrationResourcesForm(request.POST)
+    if request.method == "POST" :
+         if form.is_valid() and request.POST['captcha'] ==  request.POST['result_element']:
+            new_user = form.save(commit=False)
+            form.save()
+            info(request, _("Successfully registered to submit contribute resources."))
+            subject='A new user has self-subscribed to submit contribute resources.'  
+            msg='<p>A new user has self-subscribed to submit contribute resources.<br><br>Please use the link below to view the list of users pending approval:<br><br><a href="https://www.ippc.int/contributed-resource/accounts/pendingapprovalresources/">https://www.ippc.int/contributed-resource/accounts/pendingapprovalresources/</a>.'
+            message = mail.EmailMessage(subject,msg,'ippc@fao.org', ['ippc-it@fao.org'], ['paola.sentinelli@fao.org'])
+            message.content_subtype = "html"
+            #print('test-sending')
+            sent =message.send()
+            
+            return HttpResponseRedirect("/")
+         else:
+            error_captcha=''
+            if not(request.POST['captcha'] == request.POST['result_element'] ) :
+                error_captcha='error'
+                  
+            return render_to_response('accounts_auto/autoregisterresources_create.html', {'form': form,'x_element': request.POST['x_element'],'y_element': request.POST['y_element'],'result_element': request.POST['result_element'] ,'error_captcha':error_captcha},
+            context_instance=RequestContext(request))
+    else:
+         x_element=random.randint(1,10)   
+         y_element=random.randint(1,10)
+         result_element=x_element+y_element
+     
+         form = UserAutoRegistrationResourcesForm()
+# 
+    return render_to_response('accounts_auto/autoregisterresources_create.html', {'form': form ,'x_element':x_element,'y_element':y_element,'result_element':result_element},
+        context_instance=RequestContext(request))
+     
+    
+@login_required
+@permission_required('ippc.change_userautoregistration', login_url="/accounts/login/")
+def auto_registerresources_approve(request, id=None):
+    """  auto registeredresources User approve  """
+    
+    if id:
+       #print('APPROVED')
+        newuser = get_object_or_404(UserAutoRegistrationResources,  pk=id)
+        user_obj=User.objects.filter(email=newuser.email)
+        if user_obj.count()>0:
+            newuser.status=3
+            newuser.save()
+            error(request, _("An user with the same email address is alredy registered in the system."))
+            return HttpResponseRedirect("contributed-resource/accounts/pendingapproval/")
+        else:
+            #create new user
+            user1=User()
+            user1.username=slugify(newuser.firstname+"-"+newuser.lastname).lower()
+            user1.first_name=newuser.firstname
+            user1.last_name=newuser.lastname
+            user1.email=newuser.email
+            user1.save()
+           
+            g1=Group.objects.get(name="Contributed Resources User")
+            user1.groups.add(g1)
+
+                     
+            #set profile
+            userp = get_object_or_404(IppcUserProfile, user_id=user1.id)
+            userp.first_name=newuser.firstname
+            userp.last_name=newuser.lastname
+            userp.country=newuser.country
+            userp.address1=newuser.organisation
+            userp.save()
+              
+            #sendmessage to new user
+            user_email = []
+            user_email.append(newuser.email)
+                     
+            subject='Your subscription to IPPC to submit Contribute Resources has been approved.' 
+            msg='<p>Your subscription to IPPC to submit Contribute Resources has been approved. From now on you can submit resourcse that will be revised by IPPC Secretariat. <br><br>To active the account click on the link below to set your password.<br><br><a href="https://www.ippc.int/en/account/password/reset/?next=/en/account/update/">https://www.ippc.int/en/account/password/reset/?next=/en/account/update/</a><br><br>Insert your email address, click on "Password Reset" button and follow instructions to create your password.<br><br>After setting your password, you will be able to log to the IPPC website.<br><br>IPPC Secretariat<br>'
+
+            message = mail.EmailMessage(subject,msg,'ippc@fao.org', user_email, ['paola.sentinelli@fao.org'])
+            message.content_subtype = "html"
+            sent =message.send()
+            #delete temporary user
+            newuser.delete()
+           
+            info(request, _("Successfully approved user."))
+            return HttpResponseRedirect("contributed-resource/accounts/pendingapprovalresources/")
+       
+
+@login_required
+@permission_required('ippc.delete_userautoregistration', login_url="/accounts/login/")
+def auto_registerresources_delete(request, id=None):
+    """ auto registeredresources User delete   """
+    if id:
+       #print('delete')
+        newuser = get_object_or_404(UserAutoRegistrationResources,  pk=id)
+        newuser.delete()
+     
+        info(request, _("Successfully deleted user."))
+        return HttpResponseRedirect("contributed-resource/accounts/pendingapprovalresources/")
+    
+
             
 class IRSSActivityListView(ListView):
     """   IRSSActivity """
@@ -17486,7 +17596,7 @@ class ContributedResourceListView(ListView):
     allow_future = False
     allow_empty = True
     paginate_by = 500
-
+    
 class ContributedResourceDetailView(DetailView):
     """ Resource detail page """
     model = ContributedResource
@@ -17494,6 +17604,27 @@ class ContributedResourceDetailView(DetailView):
     template_name = 'pages/contributed_resource_detail.html'
     queryset = ContributedResource.objects.filter(status=2)
 
+class ContributedResourcePendingListView(ListView):
+    """
+    Resource
+    """
+    context_object_name = 'latest'
+    model = ContributedResource
+    date_field = 'publish_date'
+    template_name = 'pages/contributed_resource_pending_list.html'
+    queryset = ContributedResource.objects.filter(status=1).order_by('-modify_date', 'title')
+    #ContributedResource.objects.all().order_by('-modify_date', 'title')
+    allow_future = False
+    allow_empty = True
+    paginate_by = 500
+    
+class ContributedResourcePendingDetailView(DetailView):
+    """ Resource detail page """
+    model = ContributedResource
+    context_object_name = 'resource'
+    template_name = 'pages/contributed_resource_pending_detail.html'
+    queryset = ContributedResource.objects.filter(status=1)
+    
 @login_required
 @permission_required('ippc.add_contributedresource', login_url="/accounts/login/")
 def contribuitedresource_create(request):
@@ -17503,6 +17634,11 @@ def contribuitedresource_create(request):
     form = ContributedResourceForm(request.POST or None, request.FILES)
     issueform =IssueKeywordsRelateForm(request.POST)
    
+    cr_admin=request.user.groups.filter(name='Contributed Resources Admin').exists()
+    cr_reviewer=request.user.groups.filter(name='Contributed Resources Reviewer').exists()
+    cr_user=request.user.groups.filter(name='Contributed Resources User').exists()
+  
+	
     if request.method == "POST":
         f_form =  ContributedResourceFileFormSet(request.POST, request.FILES)
         u_form =  ContributedResourceUrlFormSet(request.POST)
@@ -17524,9 +17660,33 @@ def contribuitedresource_create(request):
             p_form.instance = new_resource
             p_form.save()
             info(request, _("Successfully added Contributed Resource."))
-            return redirect("contributed-resource-detail",  slug=new_resource.slug)
+            emailto_all = []
+            emailto_all.append(request.user.email)
+            group=Group.objects.get(id=92)
+            users = group.user_set.all()
+            for u in users:
+                 user_obj=User.objects.get(username=u)
+                 user_email=user_obj.email
+                 emailto_all.append(str(user_email))
+            group2=Group.objects.get(id=106)
+            users2 = group2.user_set.all()
+            for u in users2:
+                 user_obj=User.objects.get(username=u)
+                 user_email=user_obj.email
+                 emailto_all.append(str(user_email))
+            subject='ADDED Contributed Resource on IPP'
+            itemllink="https://www.ippc.int/core-activities/capacity-development/guides-and-training-materials/contributed-resource-detail/"+new_resource.slug
+            textmessage ='<table bgcolor="#FFFFFF" cellspacing="2" cellpadding="2" valign="top" width="100%" style="border-bottom: 1px solid #10501F;border-top: 1px solid #10501F;border-left: 1px solid #10501F;border-right: 1px solid #10501F"> <tr><td width="100%" bgcolor="#FFFFFF">Please be informed that the following COntributed Resource has been added/updated on the <b>International Phytosanitary Portal:</b><br>'+itemllink+'</td></tr><tr bgcolor="#FFFFFF"><td bgcolor="#FFFFFF"></td></tr></table>'
+            message = mail.EmailMessage(subject,textmessage,'ippc@fao.org', emailto_all, ['paola.sentinelli@fao.org'])#emailto_all for PROD, in TEST all to paola#
+            message.content_subtype = "html"
+            sent =message.send()
+            if cr_admin == 1 or cr_reviewer == 1:
+                return redirect("contributed-resource-detail",  slug=new_resource.slug)
+            else:
+                return HttpResponseRedirect("core-activities/capacity-development/guides-and-training-materials/contributed-resource-list/")
+       
         else:
-            return render_to_response('pages/contributed_resource_create.html', {'form': form,'f_form': f_form,'u_form': u_form,'p_form':p_form,'issueform':issueform,  },
+            return render_to_response('pages/contributed_resource_create.html', {'form': form,'f_form': f_form,'u_form': u_form,'p_form':p_form,'issueform':issueform,'cr_admin':cr_admin,'cr_reviewer': cr_reviewer,'cr_user':  cr_user },
              context_instance=RequestContext(request))
     else:
         form = ContributedResourceForm(instance= ContributedResource())
@@ -17536,7 +17696,7 @@ def contribuitedresource_create(request):
         u_form = ContributedResourceUrlFormSet()
         p_form =  ContributedResourcePhotoFormSet()
     
-    return render_to_response('pages/contributed_resource_create.html', {'form': form,'f_form': f_form,'u_form': u_form,'p_form':p_form,'issueform':issueform, },
+    return render_to_response('pages/contributed_resource_create.html', {'form': form,'f_form': f_form,'u_form': u_form,'p_form':p_form,'issueform':issueform,'cr_admin':cr_admin,'cr_reviewer': cr_reviewer,'cr_user':  cr_user },
         context_instance=RequestContext(request))
 
 @login_required
@@ -17545,6 +17705,9 @@ def contribuitedresource_edit(request,id=None, template_name='pages/contributed_
     """ Edit  contribuitedresource """
     user = request.user
     author = user
+    cr_admin=request.user.groups.filter(name='Contributed Resources Admin').exists()
+    cr_reviewer=request.user.groups.filter(name='Contributed Resources Reviewer').exists()
+    cr_user=request.user.groups.filter(name='Contributed Resources User').exists()
   
     if id:
         resource = get_object_or_404(ContributedResource,  pk=id)
@@ -17575,7 +17738,34 @@ def contribuitedresource_edit(request,id=None, template_name='pages/contributed_
             p_form.instance = resource
             p_form.save()
             info(request, _("Successfully updated Contributed Resource."))
-            return redirect("contributed-resource-detail",  slug=resource.slug)
+            if resource.status == 2:
+                emailto_all = []
+                emailto_all.append(resource.user.owner)
+               
+                subject='Contributed Resource published on IPP'
+                itemllink="https://www.ippc.int/core-activities/capacity-development/guides-and-training-materials/contributed-resource-detail/"+new_resource.slug
+                textmessage ='<table bgcolor="#FFFFFF" cellspacing="2" cellpadding="2" valign="top" width="100%" style="border-bottom: 1px solid #10501F;border-top: 1px solid #10501F;border-left: 1px solid #10501F;border-right: 1px solid #10501F"> <tr><td width="100%" bgcolor="#FFFFFF">Please be informed that the following COntributed Resource has been published on the <b>International Phytosanitary Portal:</b><br>'+itemllink+'</td></tr><tr bgcolor="#FFFFFF"><td bgcolor="#FFFFFF"></td></tr></table>'
+                message = mail.EmailMessage(subject,textmessage,'ippc@fao.org', emailto_all, ['paola.sentinelli@fao.org'])#emailto_all for PROD, in TEST all to paola#
+                message.content_subtype = "html"
+                sent =message.send()
+                return redirect("contributed-resource-detail",  slug=resource.slug)
+            else:
+                emailto_all = []
+                emailto_all.append(request.user.email)
+                group=Group.objects.get(id=92)
+                users = group.user_set.all()
+                for u in users:
+                     user_obj=User.objects.get(username=u)
+                     user_email=user_obj.email
+                     emailto_all.append(str(user_email))
+                subject='REVISED Contributed Resource on IPP'
+                itemllink="https://www.ippc.int/core-activities/capacity-development/guides-and-training-materials/contributed-resource-detail/pending/"+new_resource.slug
+                textmessage ='<table bgcolor="#FFFFFF" cellspacing="2" cellpadding="2" valign="top" width="100%" style="border-bottom: 1px solid #10501F;border-top: 1px solid #10501F;border-left: 1px solid #10501F;border-right: 1px solid #10501F"> <tr><td width="100%" bgcolor="#FFFFFF">Please be informed that the following COntributed Resource has been added/updated on the <b>International Phytosanitary Portal:</b><br>'+itemllink+'</td></tr><tr bgcolor="#FFFFFF"><td bgcolor="#FFFFFF"></td></tr></table>'
+                message = mail.EmailMessage(subject,textmessage,'ippc@fao.org', emailto_all, ['paola.sentinelli@fao.org'])#emailto_all for PROD, in TEST all to paola#
+                message.content_subtype = "html"
+                sent =message.send()
+        
+                return redirect("contributed-resource-pending-detail",  slug=resource.slug)
     else:
         form = ContributedResourceForm( instance=resource)
         if resource.issuename.count()>0:
@@ -17588,7 +17778,7 @@ def contribuitedresource_edit(request,id=None, template_name='pages/contributed_
         u_form = ContributedResourceUrlFormSet( instance=resource)
         p_form = ContributedResourcePhotoFormSet(instance=resource)
     return render_to_response(template_name, {
-        'form': form, 'f_form':f_form,'u_form': u_form,'p_form': p_form,   "resource": resource,"issueform":issueform
+        'form': form, 'f_form':f_form,'u_form': u_form,'p_form': p_form,   "resource": resource,"issueform":issueform,'cr_admin':cr_admin,'cr_reviewer': cr_reviewer,'cr_user':  cr_user
         
     }, context_instance=RequestContext(request))  
     
