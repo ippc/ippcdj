@@ -1,0 +1,70 @@
+{% extends "base.html" %}
+{% load pages_tags translate_tags mezzanine_tags i18n future staticfiles accounts_tags %}
+
+{% block meta_title %}{% trans "Register" %} {% endblock %}
+
+{% block body_class %}wide{% endblock %}
+
+{% block breadcrumb_menu %}
+	<li>
+	  <a href="/{{ LANGUAGE_CODE }}/">{% trans "Home" %}</a>
+	  <span class="divider">/</span>
+	</li>
+	
+	<li class="active">
+		<b>{% trans "Register to submit Contributed Resources." %}
+	</li>
+{% endblock %}
+
+{% block local_nav %}
+{% endblock local_nav %}
+
+{% block pageinfo %}
+{% endblock pageinfo %}
+
+{% block mainspansize %}12{% endblock mainspansize %}
+{% block main %}
+
+
+<h1><span class="normal">{% trans "Register to submit Contributed Resources." %}</span> </h1>
+
+<form class="customform" method="POST" action="" enctype="multipart/form-data">
+    {% csrf_token %}
+    <fieldset>
+{% if form.non_field_errors or form.errors %}
+<div class="alert alert-error">{% trans "Please correct the errors below." %}
+<ul>
+{% for error in form.non_field_errors %}
+<li>{{ error }}</li>
+{% endfor %}
+{% for error in form.errors %}
+<li>{{ error }}</li>
+{% endfor %}
+</ul>
+</div>
+{% endif %}
+
+{% fields_for form %}
+ <div class="alert alert-warning">
+           {% trans "This question is for testing whether you are a human visitor and<br>to prevent automated spam submissions." %}<br>
+            {% if error_captcha == 'error'%}
+                <div class="alert alert-error">
+            {% else %} 
+                <div class="alert alert-blu">
+            {% endif %} 
+                 <b>{% trans "Math question" %}:</b>
+                 <span style="font-size: 24px; color: green;">{{x_element}} + {{y_element}} = </span>
+                 <input id="id_captcha" style="width: 20px" name="captcha" type="text" value=""/> 
+                 {% if error_captcha == 'error'%}{% trans " The answer you entered for the CAPTCHA was not correct!" %} {%endif%}
+                 <input name="result_element" type="hidden" value="{{result_element}}"/>
+                 <input name="x_element" type="hidden" value="{{x_element}}"/>
+                 <input name="y_element" type="hidden" value="{{y_element}}"/>
+	        </div> 
+        </div>		
+        <div class="form-actions">
+            <button type="submit" class="btn btn-info btn-large" tabindex="7">{% trans "Register" %}</button> or <a href="javascript:history.go(-1)">{% trans "Cancel" %}</a>
+        </div>
+    </fieldset>
+</form>
+
+{% endblock %}
