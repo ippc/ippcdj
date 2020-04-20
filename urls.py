@@ -49,8 +49,8 @@ TopicDetailView,TopicListView,topic_create,topic_edit,topic_translate,WorkshopCe
 B_CertificatesToolListView,B_CertificatesToolDetailView,generate_b_certificates,my_tool,MyToolDetailView,generate_topiclist,\
 MembershipShortListView,generate_shortlist,generate_shortlistparticipant,generate_listNEW1,\
 generate_b_certificatesnew,generate_certificatesnew,CountryStatsSingleListOfRegulatesPestsListView,select_cns_nros_stats,nro_stats_files,contactPointsXML,\
-ContributedResourceListView,  ContributedResourceDetailView,contribuitedresource_create,contribuitedresource_edit,my_tool2,MyTool2DetailView,nro_stats3_files,AdvancesSearchResourcesListView,PublicationMeetingFilesListView,ReportingSystemCNListView,\
-ReportingSystemSummaryCNListView
+ContributedResourceListView,  ContributedResourceDetailView,ContributedResourcePendingListView,ContributedResourcePendingDetailView,contribuitedresource_create,contribuitedresource_edit,my_tool2,MyTool2DetailView,nro_stats3_files,AdvancesSearchResourcesListView,PublicationMeetingFilesListView,ReportingSystemCNListView,\
+ReportingSystemSummaryCNListView,UserAutoRegistrationResourcesListView,auto_registerresources,auto_registerresources_approve,auto_registerresources_delete
 #reporting_obligation_translate,
 from schedule.periods import Year, Month, Week, Day
 from mezzanine.core.views import direct_to_template
@@ -138,6 +138,11 @@ urlpatterns = patterns("",
     url(r'^accounts/autoregister/$',view=auto_register,name='auto-register'),
     url(r'^accounts/autoregister/approve/(?P<id>\d+)/$',view=auto_register_approve,name='auto-register-approve'),
     url(r'^accounts/autoregister/delete/(?P<id>\d+)/$',view=auto_register_delete,name='auto-register-delete'),
+ #---------AUTO-REGISTER-USER RESOURCES------------------------------#    
+    url(r'^contributed-resource/accounts/pendingapprovalresources/$',UserAutoRegistrationResourcesListView.as_view(), name='index'),
+    url(r'^contributed-resource/accounts/autoregisterresources/$',view=auto_registerresources,name='auto-registerresources'),
+    url(r'^contributed-resource/accounts/autoregisterresources/approve/(?P<id>\d+)/$',view=auto_registerresources_approve,name='auto-registerresources-approve'),
+    url(r'^contributed-resource/accounts/autoregisterresources/delete/(?P<id>\d+)/$',view=auto_registerresources_delete,name='auto-registerresources-delete'),
  
    #---------EPPO REPORTING------------------------------------
     url(r'^epporeporting/', reporting_trough_eppo, name='reporting_trough_eppo'),
@@ -791,7 +796,11 @@ url(r'^external-cooperation/organizations-page-in-ipp/(?P<partner>[\w-]+)/$',   
         view=ContributedResourceListView.as_view(),        name='contributed-resource-list'),
     url(r'^core-activities/capacity-development/guides-and-training-materials/contributed-resource-detail/(?P<slug>[\w-]+)/$',
         view=ContributedResourceDetailView.as_view(), name="contributed-resource-detail"),
-    #create
+    url(r'^core-activities/capacity-development/guides-and-training-materials/contributed-resource-list/pending/$',
+        view=ContributedResourcePendingListView.as_view(),        name='contributed-resource-pending-list'),
+    url(r'^core-activities/capacity-development/guides-and-training-materials/contributed-resource-detail/pending/(?P<slug>[\w-]+)/$',
+        view=ContributedResourcePendingDetailView.as_view(), name="contributed-resource-pending-detail"),
+ #create
     url(r'^core-activities/capacity-development/guides-and-training-materials/contributed-resource-create/$',
         view=contribuitedresource_create, name="contribuited-resource-create"),
     #edit
