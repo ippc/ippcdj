@@ -11,13 +11,16 @@
 
 
 {% block breadcrumb_menu %}
-<li><a href="/{{ LANGUAGE_CODE }}/">{% trans "Home" %}</a><span class="divider">/</span></li>
-<li id="breadcrumb-menu-core-activities"><a href="/{{ LANGUAGE_CODE }}/core-activities/">{% trans "Core Activities" %} </a><span class="divider">/</span></li>
-<li id="breadcrumb-menu-core-activities-standards-and-implementation"><a href="/{{ LANGUAGE_CODE }}/core-activities/standards-and-implementation/">{% trans "Standards &amp; Implementation" %} </a><span class="divider">/</span></li>
-<li id="breadcrumb-menu-core-activities-standards-setting"><a href="/{{ LANGUAGE_CODE }}/core-activities/capacity-development/">{% trans "Implementation and Facilitation" %} </a><span class="divider">/</span></li>
-<li id="breadcrumb-menu-core-activities-standards-sett" class="active"><a href="/{{ LANGUAGE_CODE }}/core-activities/capacity-development/guides-and-training-materials/">{% trans "Implementation and Capacity Development Guides and Training Materials" %} </a><span class="divider">/</span></li> 
-<li class="active"><a href="/{{ LANGUAGE_CODE }}/core-activities/capacity-development/guides-and-training-materials/contributed-resource-list/">{% trans "Contributed Resources list"%} </a><span class="divider">/</span></li>         
-<li class="active">{{ resource.title }}</li>
+
+
+<li class="breadcrumb-item"><a href="/{{ LANGUAGE_CODE }}/core-activities/">{% trans "Core Activities" %} </a></li>
+<li class="breadcrumb-item"><a href="/{{ LANGUAGE_CODE }}/core-activities/standards-and-implementation/">{% trans "Standards &amp; Implementation" %} </a></li>
+<li class="breadcrumb-item"><a href="/{{ LANGUAGE_CODE }}/core-activities/capacity-development/">{% trans "Implementation and Facilitation" %} </a></li>
+<li class="breadcrumb-item"><a href="/{{ LANGUAGE_CODE }}/core-activities/capacity-development/guides-and-training-materials/">{% trans "Implementation and Capacity Development Guides and Training Materials" %} </a></li> 
+<li class="breadcrumb-item"><a href="/{{ LANGUAGE_CODE }}/core-activities/capacity-development/guides-and-training-materials/contributed-resource-list/">{% trans "Contributed Resources Pending list"%} </a></li>         
+<li class="breadcrumb-item active" aria-current="page"><i class="fas fa-angle-double-down"></i></li>
+
+
 {% endblock %}
 
 
@@ -28,12 +31,17 @@
         <p><a href="javascript:history.go(-1)">{% trans "« Go back" %}</a></p>
       
         {% if user.is_superuser or perms.ippc.change_contributedresource  %}
-           <p> {% if user.is_superuser %}
+           <p> 
+            {% if user.is_superuser %}
                <a class="btn btn-small btn-info" href="/admin/ippc/contributedresource/{{resource.id}}"><i class="icon-edit icon-white"></i> Edit as admin</a>     
                <a class="btn btn-small btn-info" href="/core-activities/capacity-development/guides-and-training-materials/contributed-resource-list/edit/{{resource.id}}"><i class="icon-edit icon-white"></i> Edit</a>     
             {% else %}
-              <a class="btn btn-small btn-info" href="/core-activities/capacity-development/guides-and-training-materials/contributed-resource-list/edit/{{resource.id}}"><i class="icon-edit icon-white"></i> Edit</a>     
-           {% endif %}</p>
+               {% for group in request.user.groups.all %} 
+                    {% if group.name == 'IPPC Secretariat' and not  user.is_superuser%}
+                         <a class="btn btn-small btn-info" href="/core-activities/capacity-development/guides-and-training-materials/contributed-resource-list/edit/{{resource.id}}"><i class="icon-edit icon-white"></i> Edit</a>     
+                    {% endif %} 
+                {% endfor %} 
+            {% endif %}</p>
         {% endif %} 
        
 </div> 
