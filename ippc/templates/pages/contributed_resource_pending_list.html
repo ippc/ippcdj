@@ -1,0 +1,88 @@
+{% extends "base.html" %}
+{% load pages_tags mezzanine_tags i18n future staticfiles translate_tags accounts_tags %}
+
+{% block meta_title %}
+  {% trans "Contributed Resources" %}: 
+  {{ page.title }}
+{% endblock %}
+
+
+{% block breadcrumb_menu %}
+<li class="breadcrumb-item"><a href="/{{ LANGUAGE_CODE }}/core-activities/">{% trans "Core Activities" %} </a></li>
+<li class="breadcrumb-item"><a href="/{{ LANGUAGE_CODE }}/core-activities/standards-and-implementation/">{% trans "Standards &amp; Implementation" %} </a></li>
+<li class="breadcrumb-item"><a href="/{{ LANGUAGE_CODE }}/core-activities/capacity-development/">{% trans "Implementation and Facilitation" %} </a></li>
+<li class="breadcrumb-item"><a href="/{{ LANGUAGE_CODE }}/core-activities/capacity-development/guides-and-training-materials/">{% trans "Implementation and Capacity Development Guides and Training Materials" %} </a></li> 
+<li class="breadcrumb-item active" aria-current="page"><i class="fas fa-angle-double-down"></i></li>
+{% endblock %}
+
+{% block local_nav %}
+{% endblock local_nav %}
+
+{% block pageinfo %}
+{% endblock pageinfo %}
+
+{% block main %}
+{% if perms.ippc.change_contributedresource or user.is_superuser  %}
+<p class="pull-right">
+  <a href="javascript:history.go(-1)">{% trans "« Go back" %}</a>
+</p>
+{% if latest %}  
+<h1>{% trans "Contributed Resources Pending Approval" %}</h1> 
+
+<div class="alert alert-warning" role="alert">
+<table class="table table-condensed table-striped table-bordered" id="publications">
+    <thead>
+        <tr>
+            <th>{% trans "Title" %}</th>
+            <th>{% trans "Resource provided by" %}</th>
+            <th>{% trans "Status" %}</th>
+            <th>{% trans "Review status" %}</th>
+            <th>{% trans "Posted date" %}</th>
+        </tr>
+    </thead>
+    <tbody>
+    {% for resource in latest %}
+    <tr id="media-file-{{ resource.id }}">
+        <td>
+            <a id="title_{{ resource.id }}" href="{% url 'contributed-resource-pending-detail' resource.slug %}">{{ resource.title }}</a>
+        </td>
+        <td>
+            {% if  resource.ippc_resource == 1 %}<img src="/static/img/phytosanitary/ippc-resource.gif"> <br>{% endif %} 
+            {% if  resource.resource_provide_by.all %}
+            <ul class="unstyled nomargin">
+                {% for c in resource.resource_provide_by.all %}
+                    <li>{% if  c.provider == 'IPPC' %}<img src="/static/img/phytosanitary/ippc-resource.gif"> {%else%}{{ c.provider  }}{% endif %} <br> </li>
+                    {% empty %}
+                {% endfor %}
+            </ul>  
+            {% endif %}
+        </td>
+        <td>{%if resource.status == 2 %}<b style="color:green;">Published</b>{% else %}<b style="color:red;">DRAFT</b>{% endif %}</td>
+        <td>{%if resource.pending_status == 0 %}<b style="color:red;">Pending</b>{% elif resource.pending_status == 1 %}<b style="color:green;">Revised</b>{% elif resource.pending_status == 2 %}<b style="color:green;">Final</b>{% endif %}</td>
+        <td>{{ resource.publish_date|date:"d M Y"  }}</td>
+    </tr> 
+    {% endfor %} 
+  
+    </tbody>
+</table>
+
+</div>
+ 
+
+
+{% else %}
+    <p>No Resources  available.</p>
+{% endif %}
+<script src="{% static "js/jquery.dataTables.js" %}"></script> 
+<script src="{% static "js/DT_bootstrap.js" %}"></script>
+  
+{% else %}   You don't have permissions to see this.
+{% endif %}
+{% endblock %}
+
+
+ 
+
+
+
+
