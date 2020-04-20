@@ -3077,7 +3077,8 @@ class B_CertificatesTool(models.Model):
 class MyTool(models.Model):
     title = models.CharField(_("Title"), help_text=_("Text appearing in the certificate"), blank=True, null=True, max_length=250)
     mytext = models.TextField(_("mytext"), blank=True, null=True)
-    
+    split = models.BooleanField(verbose_name=_('check to split'), default=False)
+
 class MyTool2(models.Model):
     title = models.CharField(_("Title"), help_text=_("Text appearing in the certificate"), blank=True, null=True, max_length=250)
     nameh = models.CharField(_("NAMEh"), help_text=_("Text appearing in the certificate"), blank=True, null=True, max_length=250)

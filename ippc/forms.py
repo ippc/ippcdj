@@ -855,6 +855,7 @@ class MyToolForm(forms.ModelForm):
         fields = [
             'title', 
             'mytext', 
+             'split', 
          ]
             
             

@@ -17246,23 +17246,32 @@ class  MyToolDetailView(DetailView):
         msg=''
      
         text=mytool.mytext
+        splittext=mytool.split
         db = MySQLdb.connect(DATABASES["default"]["HOST"],DATABASES["default"]["USER"],DATABASES["default"]["PASSWORD"],DATABASES["default"]["NAME"])
         cursor = db.cursor()
      
         sql = text
-        splitcommenttext=text.splitlines()
-        #print(splitcommenttext)
-        for ssss in splitcommenttext:
+        if splittext == 1: 
+            splitcommenttext=text.splitlines()
+            for ssss in splitcommenttext:
+                try:
+                   cursor.execute(ssss)
+                   str1= cursor.fetchall()
+                   result=str1
+                   db.commit()
+                   msg='OK'
+                except MySQLdb.Error as err:
+                    print(err)    
+                    msg='NOT OK'
+                    db.rollback()
+        else:
             try:
-               cursor.execute(ssss)
-               str1= cursor.fetchall()
-               result=str1
-               db.commit()
-               msg='OK'
-   
-
-            except MySQLdb.Error as err:
-                print(err)    
+                cursor.execute(sql)
+                str1= cursor.fetchall()
+                result=str1
+                db.commit()
+                msg='OK'
+            except:
                 msg='NOT OK'
                 db.rollback()
 
