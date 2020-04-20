@@ -14,7 +14,28 @@
 </div>
 {% endif %}
 
-{% fields_for form %}
+{#% fields_for form %#}
+
+{% for f in  form %}
+    {% if f.name == 'status'%}
+        {% if cr_admin == 1 or user.is_superuser%}
+           <b>{{f.label}}&#160;</b><br>{{f}}&#160;{{f.help_text}}<br>
+        {% else %}
+            <input type='hidden' name='{{f.name}}' value='1'>
+        {% endif %}
+    {% elif f.name == 'pending_status'%}
+        {% if cr_admin == 1 or user.is_superuser %}
+           <b>{{f.label}}&#160;</b><br>{{f}}&#160;{{f.help_text}}<br>
+        {% elif cr_reviewer == 1 %}
+            <b>{{f.label}}&#160;</b><br>{{f}}&#160;{{f.help_text}}<br>
+        {% else %}
+        <input type='hidden' name='{{f.name}}' value='0'>
+    
+        {% endif %}
+    {% else %}
+       <b>{{f.label}}&#160;</b><br>{{f}}&#160;{{f.help_text}}<br>
+    {% endif %}
+{% endfor %}
 {% fields_for issueform %}
  <fieldset>
                 <legend>Files</legend>
