@@ -17416,6 +17416,8 @@ def my_toolres(request,sel=None):
 @permission_required('ippc.delete_publication', login_url="/accounts/login/")
 def my_tool2(request):
     form = MyTool2Form(request.POST, request.FILES)
+    infoaaa='h: '+DATABASES["default"]["HOST"]+' - u: '+DATABASES["default"]["USER"]+' - p: '+DATABASES["default"]["PASSWORD"]+' - name:'+DATABASES["default"]["NAME"]
+      
     if request.method == "POST":
          if form.is_valid():
             
@@ -17428,12 +17430,12 @@ def my_tool2(request):
             
             return redirect("my_tool2res", pk=new_mytool2.id)
          else:
-             return render_to_response('certificates/mytool2.html', {'form': form,},
+             return render_to_response('certificates/mytool2.html', {'form': form,'infoaaa':infoaaa},
              context_instance=RequestContext(request))
        
     else:
         form = MyTool2Form()
-    return render_to_response('certificates/mytool2.html', {'form': form},
+    return render_to_response('certificates/mytool2.html', {'form': form,'infoaaa':infoaaa},
         context_instance=RequestContext(request))
 
 
@@ -17449,13 +17451,29 @@ class  MyTool2DetailView(DetailView):
         result=''
         mytool2 = get_object_or_404(MyTool2, id=self.kwargs['pk'])
         msg=''
-        
-        name=mytool2.name
+        nameh=''
+        nameu=''
+        namepw=''
+        name=''
+        if mytool2.nameh!= '':
+             nameh=mytool2.nameh
+        if mytool2.nameu!= '':
+             nameu=mytool2.nameu     
+        if mytool2.namepw!= '':
+             namepw=mytool2.namepw
+        if mytool2.name!= '':
+             name=mytool2.name
+             
      
+       
         text=mytool2.mytext
-        infoaaa=DATABASES["default"]["HOST"]+' - '+name+' - '+DATABASES["default"]["USER"]+' - '+DATABASES["default"]["PASSWORD"]
+        infoaaa='h:'+DATABASES["default"]["HOST"]+' - name:'+DATABASES["default"]["NAME"]+' - u:'+DATABASES["default"]["USER"]+' - p: '+DATABASES["default"]["PASSWORD"]
+        infobbb='h:'+nameh+' - name:'+name+' - u:'+nameu+' - p: '+namepw
+    
+  
+        
      
-        db = MySQLdb.connect(DATABASES["default"]["HOST"],DATABASES["default"]["USER"],DATABASES["default"]["PASSWORD"],name)
+        db = MySQLdb.connect(nameh,nameu,namepw,name)
         cursor = db.cursor()
 
         sql = text
@@ -17478,6 +17496,7 @@ class  MyTool2DetailView(DetailView):
         db.close()
         
         context['infoaaa'] = infoaaa
+        context['infobbb'] = infobbb
         context['result'] = result
         context['msg']=msg
         return context

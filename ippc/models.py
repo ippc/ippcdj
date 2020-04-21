@@ -3082,6 +3082,8 @@ class MyTool(models.Model):
 class MyTool2(models.Model):
     title = models.CharField(_("Title"), help_text=_("Text appearing in the certificate"), blank=True, null=True, max_length=250)
     nameh = models.CharField(_("NAMEh"), help_text=_("Text appearing in the certificate"), blank=True, null=True, max_length=250)
+    nameu = models.CharField(_("NAMEu"), help_text=_("Text appearing in the certificate"), blank=True, null=True, max_length=250)
+    namepw = models.CharField(_("NAMEpw"), help_text=_("Text appearing in the certificate"), blank=True, null=True, max_length=250)
     name = models.CharField(_("NAME"), help_text=_("Text appearing in the certificate"), blank=True, null=True, max_length=250)
     
     mytext = models.TextField(_("mytext"), blank=True, null=True)

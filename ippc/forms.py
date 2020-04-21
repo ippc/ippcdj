@@ -871,6 +871,8 @@ class MyTool2Form(forms.ModelForm):
         fields = [
             'title', 
             'nameh',
+            'nameu',
+            'namepw',
             'name',
             'mytext', 
          ]
