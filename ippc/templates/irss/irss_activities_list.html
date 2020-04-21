@@ -21,7 +21,7 @@
 {% block pageinfo %}
 {% endblock pageinfo %}
 
-{% block main %}  {% if user.is_superuser %}
+{% block main %} 
    <script type="text/javascript">//<![CDATA[ 
         $(window).load(function() {
 
@@ -209,7 +209,6 @@
 {% else %}
 <p>{% trans "No Activities available." %}</p>
 {% endif %}
-  {% else %}   You don't have permissions to see this.
-    {% endif %}
+ 
 {% endblock %}
 
