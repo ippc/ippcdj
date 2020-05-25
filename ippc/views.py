@@ -12545,12 +12545,12 @@ class MediaKitDocumentListView(ListView):
         arraymain.append(innerarray5)
       
         innerarray6=[]
-        innerarray6.append("Guides and Training resources")
+        innerarray6.append("Guides and training materials")
         innerarray6.append(MediaKitDocument.objects.filter(mediakit_type=6).order_by('-_order'))
         arraymain.append(innerarray6)
       
         innerarray7=[]
-        innerarray7.append("Training kits")
+        innerarray7.append("Studies")
         innerarray7.append(MediaKitDocument.objects.filter(mediakit_type=5).order_by('-_order'))
         arraymain.append(innerarray7)
       
