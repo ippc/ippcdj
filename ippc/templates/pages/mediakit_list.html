@@ -83,8 +83,8 @@
       <div class="box"><b><i class="fa fa-map-o" style="font-size:24px"></i><br><br>Brochures<br>&#160;</b></div>
       <div class="box"><b><i class="fa fa-file-text-o " style="font-size:24px"></i><br><br>Factsheets<br>&#160;</b></div>
       <div class="box"><b><i class="fa fa-image" style="font-size:24px"></i><br><br>Advocacy materials</b></div>
-      <div class="box"><b><i class="fa fa-leanpub" style="font-size:24px"></i><br>Guides &<br>Training resources</b></div>
-      <div class="box"><b><i class="fa fa-graduation-cap" style="font-size:24px"></i><br><br>Training kits<br>&#160;</b></div>
+      <div class="box"><b><i class="fa fa-leanpub" style="font-size:24px"></i><br>Guides &<br>Training materials</b></div>
+      <div class="box"><b><i class="fa fa-book" style="font-size:24px"></i><br><br>Studies<br>&#160;</b></div>
     </div>
 
     <div class="right">
@@ -100,7 +100,7 @@
        <td style="  padding:0;">
            <table class="table table-condensed">
     
-        {% for o in obj.1 %}
+         {% for o in obj.1 %}
             {% if forloop.counter|divisibleby:2 %}{% else %}<tr>{% endif %}
             <td style="background-color:#f8f9fa; width: 20px;" align="center">{% if o.image %}<img  src="{{ MEDIA_URL }}{% thumbnail o.image 60 80 %}">{%endif%}&#160;</td>
             <td style="background-color: #f8f9fa; width: 250px"><h6>{{o.title}}</h6>{% if user.is_superuser %}&#160;<a class="small" href="/admin/ippc/mediakitdocument/{{ o.id }}"><span style="font-size: 1.2em; color: #339900;"><i class="fas fa-edit"></i></span> Edit as Admin</a>{% endif %}<br><br>
