@@ -1,4 +1,3 @@
-
 <!doctype html>
 <html lang="{{ LANGUAGE_CODE }}"{% if LANGUAGE_BIDI %} dir="rtl"{% endif %}>
       {% load pages_tags mezzanine_tags i18n future staticfiles localeurl_tags %}
@@ -227,7 +226,7 @@
         
 
 <!-- HOMEPAGE MODAL POP UP-->
-<div class="modal fade d-example-modal-lg" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+<!--div class="modal fade d-example-modal-lg" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
   <div class="modal-dialog modal-lg" role="document">
     <div class="modal-content">
       <div class="modal-header">
@@ -287,9 +286,9 @@ The plant health community can learn a lot from this and that is why it is impor
       </div>
     </div>
   </div>
-</div>
+</div-->
 <!-- CPM 15 MODAL POP UP-->
-<div class="modal fade" id="myModalCPM" tabindex="-1" role="dialog" aria-labelledby="myModalCPMLabel">
+<!--div class="modal fade" id="myModalCPM" tabindex="-1" role="dialog" aria-labelledby="myModalCPMLabel">
   <div class="modal-dialog" role="document">
     <div class="modal-content">
       <div class="modal-header">
@@ -317,7 +316,7 @@ Thanks for your understanding and cooperation.
       </div>
     </div>
   </div>
-</div>
+</div-->
    <!-- end pop up -->	
 
 <!-- LOGOS/NAVBAR row -------------------------------------------------------------------------------------------------------------------------->
@@ -696,12 +695,12 @@ Thanks for your understanding and cooperation.
     $(window).on('load',function(){
         var page='{{request.path}}';
        
-        if (page == '/en/' || page == '/es/' || page == '/fr/' || page == '/ar/' || page == '/ru/' ||  page == '/zh/' ){
+        /*if (page == '/en/' || page == '/es/' || page == '/fr/' || page == '/ar/' || page == '/ru/' ||  page == '/zh/' ){
             $('#myModal').modal('show');
         }
          if (page == '/en/cpm-sessions/cpm-15-2020/' || page == '/es/cpm-sessions/cpm-15-2020/'|| page == '/fr/cpm-sessions/cpm-15-2020/'  || page == '/ar/cpm-sessions/cpm-15-2020/'|| page == '/ru/cpm-sessions/cpm-15-2020/'|| page == '/zh/cpm-sessions/cpm-15-2020/' ){
             $('#myModalCPM').modal('show');
-        }
+        }*/
     });
 </script>
         {# better country selector using chosen - http://harvesthq.github.io/chosen/ #}
