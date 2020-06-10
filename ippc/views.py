@@ -11097,6 +11097,7 @@ class AdvancesSearchCNListView(ListView):
             
         elif self.kwargs['type'] == 'contactpoints':
             context['type_label'] = 'Contact points'
+            context['regions']=REGIONS
             context['users']=User.objects.all()
             context['cns']=CountryPage.objects.all()
          
@@ -11365,7 +11366,7 @@ def contactPointExtractor(request):
     response['Content-Disposition'] = 'attachment; filename="contactpoints.csv"'
 
     writer = csv.writer(response)
-    writer.writerow(['Country', 'Contact Type', 'Prefix', 'First Name','Last Name','Email','Alternate E-mail','Organization','Address'])
+    writer.writerow(['Country','Region', 'Contact Type', 'Prefix', 'First Name','Last Name','Email','Alternate E-mail','Organization','Address'])
     GENDER_CHOICES = (
         (1, "Mr."),
         (2, "Ms."),
@@ -11386,6 +11387,15 @@ def contactPointExtractor(request):
         for o in c.contact_type.all():
             if o.id==1 or o.id==2 or o.id==3 or o.id==4:
                 c_type=o
+        regionname=''    
+        region=-1    
+        if country:
+           region=country.region
+           regionname=ugettext(dict(REGIONS)[region]) 
+        else:
+            if country=='Israel':
+               region=3
+               regionname=ugettext(dict(REGIONS)[region])         
     
         c_gender=''
         for k,v in GENDER_CHOICES:
@@ -11402,7 +11412,7 @@ def contactPointExtractor(request):
         c_organization=c.address1
         c_address=c.address2
         
-        writer.writerow([country,c_type,c_gender, c_first_name.encode('utf-8'), c_last_name.encode('utf-8'),c_email,c_emailalt,c_organization.encode('utf-8'),c_address.encode('utf-8')])
+        writer.writerow([country,regionname,c_type,c_gender, c_first_name.encode('utf-8'), c_last_name.encode('utf-8'),c_email,c_emailalt,c_organization.encode('utf-8'),c_address.encode('utf-8')])
 
     return response	
 

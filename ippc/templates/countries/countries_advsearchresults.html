@@ -273,6 +273,7 @@ google.maps.event.addDomListener(window, 'load', initialize);
   <thead>
     <tr>
       <th data-field="country">{% trans "Country" %}{{type}}</th>
+      <th>{% trans "Region" %}</th>
       <th>{% trans "Type of contact" %}</th>
       <th>{% trans "Prefix" %}</th>
       <th>{% trans "First Name" %}</th>
@@ -285,13 +286,18 @@ google.maps.event.addDomListener(window, 'load', initialize);
   <tbody>
     {% for object in items %}
     <tr>
-      <td> {% for c in cns %}
+      {% for c in cns %}
           
           {% if c.id == object.country_id %}
-          <a href="/{{c.slug}}/">{{c}}</a>
-          {% endif%}
+          <td> <a href="/{{c.slug}}/">{{c}}</a></td>
+         {% for r,v in regions %} 
+          {% if r == c.region %}
+         
+          <td>{{v}}</a></td>
+          {% endif%}{% endfor %}
+           {% endif%}
           
-       {% endfor %}</td>
+       {% endfor %}
       <td>{% for o in object.contact_type.all %}
           {{o}}<br>
        {% endfor %}</td>
