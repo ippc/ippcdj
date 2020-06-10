@@ -50,10 +50,11 @@ def news_post_list(request, tag=None, year=None, month=None, username=None,
                           settings.MAX_PAGING_LINKS)
     subscribed=0
  
-    if category.id == 1:
-        subscribed=request.user.groups.filter(name='News Notification group').exists()
-    elif category.id == 3:
-        subscribed=request.user.groups.filter(name='Announcement Notification group').exists()
+    if category is not None:
+        if category.id == 1:
+            subscribed=request.user.groups.filter(name='News Notification group').exists()
+        elif category.id == 3:
+            subscribed=request.user.groups.filter(name='Announcement Notification group').exists()
     context = {"news_posts": news_posts, "year": year, "month": month,
                "tag": tag, "category": category, "author": author, "subscribed":subscribed, }
     
