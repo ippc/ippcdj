@@ -1,0 +1,22 @@
+   <div class="pull-right">
+        {% if user.is_superuser  or perms.pages.change_richtextpage %}
+              <a class="btn btn-info btn-small" href="/admin/ippc/phytosystempage/{{ page.id }}"><span style="font-size: 1.2em; color: #ffffff;"><i class="fas fa-edit"></i></span> Edit as Admin</a><br>
+        {% endif %}
+        {% if page.phytosystempage.id == 777 or page.phytosystempage.parent_id == 777 %}
+            {% for group in request.user.groups.all %}
+                {% if group.name == 'IFQRG admin' and  perms.ippc.change_phytosystempage %}
+                    <a class="btn btn-info btn-small" href="/admin/ippc/phytosystempage/{{ page.id }}"><span style="font-size: 1.2em; color: #ffffff;"><i class="fas fa-edit"></i></span> Edit as Admin</a><br>
+                {% endif %}
+            {% endfor %}
+        {% endif %}
+        {% if page.phytosystempage.id == 790 or page.phytosystempage.parent_id == 790 %}
+            {% for group in request.user.groups.all %} 
+                {% if group.name == 'PTTEG admin ' and  perms.ippc.change_phytosystempage %}
+                    <a class="btn btn-info btn-small" href="/admin/ippc/phytosystempage/{{ page.id }}"><span style="font-size: 1.2em; color: #ffffff;"><i class="fas fa-edit"></i></span> Edit as Admin</a><br>
+                {% endif %}
+            {% endfor %}
+        {% endif %}
+        {% if user.is_superuser or perms.pages.change_richtextpage %}
+            <a class="btn btn-info btn-small" href="/admin/ippc/phytosystempage/add/?parent={{ page.id }}"><span style="font-size: 1.2em; color: #ffffff;"><i class="fas fa-plus"></i></span> Add new sub page</a><br>
+        {% endif %}
+   </div> <br style="clear:both"> 

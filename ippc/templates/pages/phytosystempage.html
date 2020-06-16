@@ -1,0 +1,79 @@
+{% extends "pages/page.html" %}
+
+{% load mezzanine_tags translate_tags staticfiles i18n %}
+
+{% block extra_css %}
+  <link rel="stylesheet" href="{% static "css/DT_bootstrap.css" %}">
+{% endblock %}
+
+{% block meta_title %}
+  {% with page.phytosystempage|get_object_translation as translated_page %}
+      {{ translated_page.title }}
+  {% endwith %}
+  {# {{ page.phytosystempage.title }} #}
+{% endblock %}
+
+{% block title %}
+  
+{% endblock %}
+
+{% block main %}
+ 
+     
+{# publication libaries may appear in restricted work area or public pages, #}
+{# so text if login is required before doing permissions tests #}
+
+{% if page.phytosystempage.login_required %}
+    {% if user.is_superuser or perms.pages.change_richtextpage %}
+        {{ block.super }}
+        
+    
+        {% include "pages/phytosystempage_images.html" %}
+        
+        {% with page.phytosystempage|get_object_translation as translated_page %}
+            {{ translated_page.content|richtext_filter|safe }}
+        {% endwith %}
+         
+    {% else %}
+        {% if request.user.groups.all.0 in page.get_content_model.groups.all or request.user.groups.all.1 in page.get_content_model.groups.all or request.user.groups.all.3 in page.get_content_model.groups.all or request.user.groups.all.2 in page.get_content_model.groups.all or request.user.groups.all.4 in page.get_content_model.groups.all or request.user.groups.all.5 in page.get_content_model.groups.all or request.user.groups.all.6 in page.get_content_model.groups.all or request.user.groups.all.7 in page.get_content_model.groups.all  %}
+            {{ block.super }}
+               
+              
+            
+            {% include "pages/phytosystempage_images.html" %}
+
+            {% with page.phytosystempage|get_object_translation as translated_page %}
+                {{ translated_page.content|richtext_filter|safe }}
+            {% endwith %}
+
+              {% include "pages/publicationtablerestricted.html" %}
+          {% endif %} {# group in request.user.groups.all #}
+            
+    {% endif %} 
+
+{% else %}
+        {{ block.super }}
+       
+        {% include "pages/phytosystempage_images.html" %}
+       
+        {% with page.phytosystempage|get_object_translation as translated_page %}
+          {{ translated_page.content|richtext_filter|safe }}
+        {% endwith %}
+        
+        {%if page.phytosystempage.collapse2content.all %} 
+          <div>   {% include "pages/page_extra_content2.html" %} </div>
+        {% endif %}
+        <br style="clear:both"> 
+        
+  
+{% endif %} {# page.phytosystempage.login_required #}
+
+{% endblock main %}
+
+{% block extra_js %}
+  <script src="{% static "js/jquery.dataTables.js" %}"></script>
+  <script src="{% static "js/DT_bootstrap.js" %}"></script>
+{% endblock %}
+
+{% block pageinfo %}
+{% endblock pageinfo %}
