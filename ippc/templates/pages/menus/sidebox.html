@@ -2,3 +2,78 @@
 {% if page.publicationlibrary.side_box != '' and page.publicationlibrary.side_box != None %}
     {{page.publicationlibrary.side_box|safe}}
 {% endif %}
+
+   {% with page.phytosystempage.sideboxcontent.all as sideboxcontent %}
+        {% for sideboxcontent in sideboxcontent %}
+       <div class="card mt-5" style="width: 100%">
+            <div class="card-header">
+                <h3 class="my-0">{% if LANGUAGE_CODE != 'en' %}
+                        {% if LANGUAGE_CODE == 'es'  and sideboxcontent.title_es != '' and sideboxcontent.title_es != None %}
+                            {{ sideboxcontent.title_es }}
+                        {% elif LANGUAGE_CODE == 'fr'  and sideboxcontent.title_fr != '' and sideboxcontent.title_fr != None%}
+                            {{ sideboxcontent.title_fr }}
+                        {% elif LANGUAGE_CODE == 'ru'  and sideboxcontent.title_ru != '' and sideboxcontent.title_ru != None%}
+                            {{ sideboxcontent.title_ru }}
+                        {% elif LANGUAGE_CODE == 'ar'  and sideboxcontent.title_ar != '' and sideboxcontent.title_ar != None%}
+                            {{ sideboxcontent.title_ar }}
+                        {% elif LANGUAGE_CODE == 'zh'  and sideboxcontent.title_zh != '' and sideboxcontent.title_zh != None%}
+                            {{ sideboxcontent.title_zh }}
+                        {% else %}
+                            {{ sideboxcontent.title }}
+                        {% endif %}
+                    {% else %}
+                        {{ sideboxcontent.title }}
+                    {% endif %}</h3>
+            </div>
+            <ul class="list-group list-group-flush">
+                <li class="list-group-item">{% if LANGUAGE_CODE != 'en' %}
+                        {% if LANGUAGE_CODE == 'es'  and sideboxcontent.text_es != '' and sideboxcontent.text_es != None %}
+                            {%if  sideboxcontent.html == 1%}
+                                {% autoescape off %}{{sideboxcontent.text_es|safe}} {% endautoescape %}
+                            {% else %}
+                                {{ sideboxcontent.text_es|richtext_filter|safe }}
+                            {% endif %}
+                        {% elif LANGUAGE_CODE == 'fr'  and sideboxcontent.text_fr != '' and sideboxcontent.text_fr != None%}
+                           {%if  sideboxcontent.html == 1%}
+                                {% autoescape off %}{{sideboxcontent.text_fr|safe}} {% endautoescape %}
+                            {% else %}
+                                {{ sideboxcontent.text_fr|richtext_filter|safe }}
+                            {% endif %}
+                        {% elif LANGUAGE_CODE == 'ru'  and sideboxcontent.text_ru != '' and sideboxcontent.text_ru != None%}
+                           {%if  sideboxcontent.html == 1%}
+                                {% autoescape off %}{{sideboxcontent.text_ru|safe}} {% endautoescape %}
+                            {% else %}
+                                {{ sideboxcontent.text_ru|richtext_filter|safe }}
+                            {% endif %}
+                        {% elif LANGUAGE_CODE == 'ar'  and sideboxcontent.text_ar != '' and sideboxcontent.text_ar != None%}
+                            {%if  sideboxcontent.html == 1%}
+                                {% autoescape off %}{{sideboxcontent.text_ar|safe}} {% endautoescape %}
+                            {% else %}
+                                {{ sideboxcontent.text_ar|richtext_filter|safe }}
+                            {% endif %}
+                        {% elif LANGUAGE_CODE == 'zh'  and sideboxcontent.text_zh != '' and sideboxcontent.text_zh != None%}
+                           {%if  sideboxcontent.html == 1%}
+                                {% autoescape off %}{{sideboxcontent.text_zh|safe}} {% endautoescape %}
+                            {% else %}
+                                {{ sideboxcontent.text_zh|richtext_filter|safe }}
+                            {% endif %}
+                        {% else %}
+                           {%if  sideboxcontent.html == 1%}
+                                {% autoescape off %}{{sideboxcontent.text_en|safe}} {% endautoescape %}
+                            {% else %}
+                                {{ sideboxcontent.text_en|richtext_filter|safe }}
+                            {% endif %}
+                        {% endif %}
+                    {% else %}
+                       {%if  sideboxcontent.html == 1%}
+                                {% autoescape off %}{{sideboxcontent.text_en|safe}} {% endautoescape %}
+                            {% else %}
+                                {{ sideboxcontent.text_en|richtext_filter|safe }}
+                            {% endif %}
+                    {% endif %}   
+                </li>
+            </ul>
+        </div>
+        
+        {% endfor %}
+    {% endwith %}  
