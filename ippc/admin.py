@@ -18,7 +18,8 @@ PartnersNews,PartnersNewsFile,PartnersNewsUrl, \
 EppoCode,IssueKeyword, CommodityKeyword,IssueKeywordsRelate,CommodityKeywordsRelate, ContactType, IppcUserProfile,\
 QAQuestion,QAAnswer,FAQsCategory,FAQsItem,IRSSActivity,IRSSActivityFile,TransFAQsCategory,TransFAQsItem,UserMembershipHistory,MediaKitDocument,PhytosanitaryTreatment,PhytosanitaryTreatmentType,\
 StratigicObjective,DraftingBodyType,TransTopic,Topic,\
-ContributedResource,  ContributedResourceFile, ContributedResourcePhoto,ContributedResourceUrl,ProvidedBy,ContributedResourceTag,CommitteeMeeting,CollapseContent
+ContributedResource,  ContributedResourceFile, ContributedResourcePhoto,ContributedResourceUrl,ProvidedBy,ContributedResourceTag,CommitteeMeeting,CollapseContent,\
+PhytosystemPage,SideBoxContent,Collapse2Content,   TransPhytosystemPage 
 #,TransReportingObligation
 
 from django.forms.models import inlineformset_factory
@@ -29,7 +30,7 @@ from django.core import mail
 from django.core.mail import send_mail
 from models import TransRichTextPage, TransLinkPage
 from django_markdown.admin import MarkdownModelAdmin
-
+from mezzanine_pagedown.widgets import PageDownWidget
 from django.shortcuts import get_object_or_404
 
 import autocomplete_light
@@ -256,6 +257,50 @@ class CollapseContentInline(StackedDynamicInlineAdmin):
 class PublicationLibraryAdmin(PageAdmin):
     inlines = (PublicationInline, CollapseContentInline,CommitteeMeetingInline,TransPublicationLibraryPageAdmin,)
 admin.site.register(PublicationLibrary, PublicationLibraryAdmin)
+
+class Collapse2ContentForm(forms.ModelForm):
+    class Meta:
+        model = Collapse2Content
+        widgets = { 
+        'text_en':MarkdownWidget() ,
+        'text_es':MarkdownWidget() ,
+        'text_fr':MarkdownWidget() ,
+        'text_ar':MarkdownWidget() ,
+        'text_zh':MarkdownWidget() ,
+        'text_ru':MarkdownWidget() 
+}
+
+    
+    
+class Collapse2ContentInline(StackedDynamicInlineAdmin):
+    model = Collapse2Content
+    form = Collapse2ContentForm
+
+class SideBoxContentForm(forms.ModelForm):
+    class Meta:
+        model = SideBoxContent
+        widgets = { 
+        'text_en':MarkdownWidget() ,
+        'text_es':MarkdownWidget() ,
+        'text_fr':MarkdownWidget() ,
+        'text_ar':MarkdownWidget() ,
+        'text_zh':MarkdownWidget() ,
+        'text_ru':MarkdownWidget() 
+}
+
+    
+    
+class SideBoxContentInline(StackedDynamicInlineAdmin):
+    model = SideBoxContent
+    form = SideBoxContentForm   
+    
+class TransPhytosystemPageAdmin(StackedDynamicInlineAdmin):
+    model = TransPhytosystemPage
+    fields = ("lang", "title", "content", )
+
+class PhytosystemPageAdmin(PageAdmin):
+    inlines = ( Collapse2ContentInline,SideBoxContentInline, TransPhytosystemPageAdmin,)
+admin.site.register(PhytosystemPage, PhytosystemPageAdmin)
 
 
 #class TransReportingObligationAdmin(StackedDynamicInlineAdmin):

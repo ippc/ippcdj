@@ -3407,7 +3407,101 @@ class CollapseContent(Orderable):
                             # 'day': self.pub_date.strftime("%d"),
                             'pk': self.pk})
 
+class PhytosystemPage(Page, RichText):
+    """
+        Page bucket :
+      
+    """
+    pagefeatured_image = models.ImageField(_("Page Featured Image"),help_text=_("Image size 730px x 240px"), upload_to="files/largefiles/", blank=True)
+    embedded_image = models.ImageField(_("Page Embedded Image"), upload_to="files/largefiles/", blank=True)
+    embeddedimage_small =  models.BooleanField( verbose_name=_("Show small Embedded Image"),default=False)
+    groups = models.ManyToManyField(Group, 
+        verbose_name=_("Groups this library is accessible to"), 
+        related_name='phytosystempagegroups', blank=True, null=True)
+    fullpage =  models.BooleanField( verbose_name=_("Show full page"),default=False)
+    
+    class Meta:
+        verbose_name = _("PhytosystemPage")
+        verbose_name_plural = _("PhytosystemPages")
+        permissions = ( 
+            ("can_view", "View Phytosystem Page"),
+        )
+        
+class Collapse2Content(Orderable):
+    """Single Collapse2Content to add in a PhytosystemPage"""
 
+    class Meta:
+        verbose_name = _("Collapse2Content")
+        verbose_name_plural = _("Collapse2Contents")
+        
+    library = models.ForeignKey("PhytosystemPage", related_name="collapse2content") 
+    title = models.CharField(_("Title"), blank=True, null=True, max_length=250)
+    title_es = models.CharField(_("Title ES"), blank=True, null=True, max_length=250)
+    title_fr = models.CharField(_("Title FR"), blank=True, null=True, max_length=250)
+    title_ru = models.CharField(_("Title RU"), blank=True, null=True, max_length=250)
+    title_ar = models.CharField(_("Title AR"), blank=True, null=True, max_length=250)
+    title_zh = models.CharField(_("Title ZH"), blank=True, null=True, max_length=250)
+    text_en = models.TextField(_("Text en"),  blank=True, null=True)
+    text_es = models.TextField(_("Text es"),  blank=True, null=True)
+    text_fr = models.TextField(_("Text fr"),  blank=True, null=True)
+    text_ar = models.TextField(_("Text ar"),  blank=True, null=True)
+    text_ru = models.TextField(_("Text ru"),  blank=True, null=True)
+    text_zh = models.TextField(_("Text en"),  blank=True, null=True)
+    collapsed =  models.BooleanField( verbose_name=_("Collapsed"),default=True)
+    html =  models.BooleanField( verbose_name=_("in HTML"),default=True)
+    bg_color_div =  models.CharField(_("Background Color DIV"), blank=True, null=True, max_length=50)
+    
+    modify_date = models.DateTimeField(_("Modified date"),
+        blank=True, null=True, editable=False, auto_now=True)
+ 
+    def __unicode__(self):
+        return self.title
+
+    def save(self, *args, **kwargs):
+        """
+        If no title is given when created, create one from the
+        file name.
+        """
+        super(Collapse2Content, self).save(*args, **kwargs)
+        
+   
+                            
+class SideBoxContent(Orderable):
+    """Single Collapse2Content to add in a PhytosystemPage"""
+
+    class Meta:
+        verbose_name = _("SideBoxContent")
+        verbose_name_plural = _("SideBoxContents")
+        
+    library = models.ForeignKey("PhytosystemPage", related_name="sideboxcontent") # related_name=
+    title = models.CharField(_("Title"), blank=True, null=True, max_length=250)
+    title_es = models.CharField(_("Title ES"), blank=True, null=True, max_length=250)
+    title_fr = models.CharField(_("Title FR"), blank=True, null=True, max_length=250)
+    title_ru = models.CharField(_("Title RU"), blank=True, null=True, max_length=250)
+    title_ar = models.CharField(_("Title AR"), blank=True, null=True, max_length=250)
+    title_zh = models.CharField(_("Title ZH"), blank=True, null=True, max_length=250)
+    text_en = models.TextField(_("Text en"),  blank=True, null=True)
+    text_es = models.TextField(_("Text es"),  blank=True, null=True)
+    text_fr = models.TextField(_("Text fr"),  blank=True, null=True)
+    text_ar = models.TextField(_("Text ar"),  blank=True, null=True)
+    text_ru = models.TextField(_("Text ru"),  blank=True, null=True)
+    text_zh = models.TextField(_("Text en"),  blank=True, null=True)
+    html =  models.BooleanField( verbose_name=_("in HTML"),default=True)
+    
+    modify_date = models.DateTimeField(_("Modified date"),
+        blank=True, null=True, editable=False, auto_now=True)
+ 
+    def __unicode__(self):
+        return self.title
+
+    def save(self, *args, **kwargs):
+        """
+        If no title is given when created, create one from the
+        file name.
+        """
+        super(SideBoxContent, self).save(*args, **kwargs)
+        
+        
 class Translatable(models.Model):
     """ Translations of user-generated content - https://gist.github.com/renyi/3596248"""
     lang = models.CharField(max_length=5, choices=settings.LANGUAGES)
@@ -3531,7 +3625,14 @@ class TransTopic(Translatable,   Slugged):
         verbose_name = _("Translated Topic")
         verbose_name_plural = _("Translated Topics")
         ordering = ("lang",)
-
+        
+class TransPhytosystemPage(Translatable, RichText, Slugged):
+    translation = models.ForeignKey(PhytosystemPage, related_name="translation")
+    class Meta:
+        verbose_name = _("Translated PhytosystemPage")
+        verbose_name_plural = _("Translated PhytosystemPages")
+        ordering = ("lang",)
+        #unique_together = ("lang", "translation")
 #
 #class TransReportingObligation(Translatable,   Slugged):
 #    translation = models.ForeignKey(ReportingObligation, related_name="translation")
