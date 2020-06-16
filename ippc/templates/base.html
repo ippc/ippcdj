@@ -439,8 +439,8 @@ Thanks for your understanding and cooperation.
         <!--p class="pull-right"><a id="divaction" href="#" onclick="javascript:openNav();">☰ Open Navigation Menu</a></p-->
         <div id="divmainbox" 
         {%if  page.id != None %}
-            {%if  page.content_model == 'publicationlibrary' %}
-		{%if page.publicationlibrary.fullpage == 1 %}
+            {%if  page.content_model == 'publicationlibrary' or page.content_model == 'phytosystempage' %}
+		{%if page.publicationlibrary.fullpage == 1 or page.phytosystempage.fullpage == 1%}
                     class="col-md-12  underline"
 		{%elif 12col == 1 %}
                     class="col-md-12 underline"
@@ -476,16 +476,19 @@ Thanks for your understanding and cooperation.
         </div>
         
         {%if  page.id != None %}
-            {%if  page.content_model == 'publicationlibrary' %}
+            {%if  page.content_model == 'publicationlibrary' or page.content_model == 'phytosystempage'  %}
                 {% if  '/phytosanitary-treatments-tool/' in request.path%}
                    
                 {%elif 12col == 1 %}
                 
                 {%else%}    
                     
-                    {%if page.publicationlibrary.fullpage == 0 %}
+                    {%if page.publicationlibrary.fullpage == 0 or  page.phytosystempage.fullpage == 0  %}
                     <div id="divmainsidebox"   class="col-md-4 right" >
                             {% if page.publicationlibrary.side_box != '' and page.publicationlibrary.side_box != None %}
+                                {% page_menu "pages/menus/sidebox.html" %}
+                            {% endif %}
+                            {% if page.phytosystempage.sideboxcontent.all %}
                                 {% page_menu "pages/menus/sidebox.html" %}
                             {% endif %}
                             
@@ -555,8 +558,8 @@ Thanks for your understanding and cooperation.
            {% endblock local_nav %}
 
          {%if  page.id != None %}
-            {%if  page.content_model == 'publicationlibrary' %}
-		{%if page.publicationlibrary.fullpage == 0 %}
+            {%if  page.content_model == 'publicationlibrary' or page.content_model == 'phytosystempage'  %}
+		{%if page.publicationlibrary.fullpage == 0 or page.phytosystempage.fullpage == 0%}
                     </div>
                       
                 {% endif %}
