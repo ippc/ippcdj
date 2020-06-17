@@ -17871,3 +17871,15 @@ class AdvancesSearchResourcesListView(ListView):
            
          
         return context   
+
+
+class PhytosystemPageView(ListView):
+    """ 
+
+    """
+    template_name = 'pages/phytosystempage.html'
+    
+    def get_context_data(self, **kwargs): # http://stackoverflow.com/a/15515220
+        context = super(PhytosystemPageView, self).get_context_data(**kwargs)
+
+        return context
