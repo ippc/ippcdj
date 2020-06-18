@@ -10,10 +10,13 @@
         <span style="font-size: 1.2em; color: #ffffff;"><i class="fas fa-edit"></i></span> Edit Account Information</a></td><td></td>
    </tr>
 
-
+    
+    
 {% if user.is_superuser %}  
    <tr><td>  <span style="font-size: 1.2em; color: #000;"><i class="fas fa-user"></i></span>   Create new account</td><td><a  class="btn btn-small btn-info" href="/account/signup/"><span style="font-size: 1.2em; color: #ffffff;"><i class="fas fa-plus"></i></span> Create new account</a> </td><td>  </td></tr>
    <tr><td>  <span style="font-size: 1.2em; color: #000;"><i class="fas fa-user"></i></span>   Check auto-registered users pending approval</td><td> </td><td><a href="/accounts/pendingapproval/"> See list </a> </td></tr>
+   <tr><td>  <span style="font-size: 1.2em; color: #000;"><i class="fas fa-user"></i></span>   DISABLE all users </td><td> <a class="btn btn-small btn-info" href="/work-area/disablealluser/">DISABLE</a></td><td> </td></tr>
+   <tr><td>  <span style="font-size: 1.2em; color: #000;"><i class="fas fa-user"></i></span>   ENABLE all users </td><td><a class="btn btn-small btn-info" href="/work-area/enablealluser/">ENABLE</a>  </td><td></td></tr>
    <tr><td><span style="font-size: 1.2em; color: #000;"><i class="far fa-envelope"></i></span> Email utility</td><td> <a  class="btn btn-small btn-info" href="/emailutility/send/"><span style="font-size: 1.2em; color: #ffffff;"><i class="fas fa-plus"></i></span> Create new message</a></td><td><a href="/emailutility/all/"> See list of sent messages</a></li></tr>
    <tr><td><span style="font-size: 1.2em; color: #000;"><i class="far fa-envelope"></i></span> MASS Email utility</td><td> <a  class="btn btn-small btn-info" href="/massemailutility/send/"><span style="font-size: 1.2em; color: #ffffff;"><i class="fas fa-plus"></i></span> Create new mass message</a> </td><td><a href="/massemailutility/all/"> See list of sent mass messages</a></li></tr> 
    <tr><td><span style="font-size: 1.2em; color: #000;"><i class="far fa-envelope"></i></span> MERGE Email utility</td><td> <a  class="btn btn-small btn-info" href="/mergemassemailutility/send/"><span style="font-size: 1.2em; color: #ffffff;"><i class="fas fa-plus"></i></span>Create new merge message</a> </td><td><a href="/massemailutility/all/"> See list of sent merge messages</a></li></tr>  <tr><td><span style="font-size: 1.2em; color: #000;"><i class="far fa-envelope"></i></span> Contact us mails list</td><td>  </td><td><a  href="/contactusemail/all/"> See list of received messages</a></li></tr>

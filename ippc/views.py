@@ -1315,8 +1315,41 @@ def notification_to_cn(id=None):
     return msg
                 
                         
+@login_required
+@permission_required('ippc.delete_publication', login_url="/accounts/login/")
+def enable_users(request):
+    db = MySQLdb.connect(DATABASES["default"]["HOST"],DATABASES["default"]["USER"],DATABASES["default"]["PASSWORD"],DATABASES["default"]["NAME"])
+    cursor = db.cursor()
+    sql = "update auth_user set is_active=1;"
+    msg="Successfully ENABLED all users."
+    try:
+        cursor.execute(sql)
+        db.commit()
+        info(request, msg)
+    except:
+        db.rollback()
+        error(reques, _("ERROR DISABLED / ENABLED all users."))
+    db.close()   
+    return redirect('/work-area/')
+                         
+@login_required
+@permission_required('ippc.delete_publication', login_url="/accounts/login/")
+def disable_users(request):
+    db = MySQLdb.connect(DATABASES["default"]["HOST"],DATABASES["default"]["USER"],DATABASES["default"]["PASSWORD"],DATABASES["default"]["NAME"])
+    cursor = db.cursor()
+    sql = "update auth_user set is_active=0 where id != 1652;"
+    msg="Successfully DISABLED all users."
    
-
+    try:
+        cursor.execute(sql)
+        db.commit()
+        info(request, msg)
+    except:
+        db.rollback()
+        error(reques, _("ERROR DISABLED / ENABLED all users."))
+    db.close() 
+    return redirect('/work-area/')
+    
 class ReminderMessageListView(ListView):
     """    ReminderMessage List view """
     context_object_name = 'latest'

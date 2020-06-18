@@ -50,7 +50,7 @@ B_CertificatesToolListView,B_CertificatesToolDetailView,generate_b_certificates,
 MembershipShortListView,generate_shortlist,generate_shortlistparticipant,generate_listNEW1,\
 generate_b_certificatesnew,generate_certificatesnew,CountryStatsSingleListOfRegulatesPestsListView,select_cns_nros_stats,nro_stats_files,contactPointsXML,\
 ContributedResourceListView,  ContributedResourceDetailView,ContributedResourcePendingListView,ContributedResourcePendingDetailView,contribuitedresource_create,contribuitedresource_edit,my_tool2,MyTool2DetailView,nro_stats3_files,AdvancesSearchResourcesListView,PublicationMeetingFilesListView,ReportingSystemCNListView,\
-ReportingSystemSummaryCNListView,UserAutoRegistrationResourcesListView,auto_registerresources,auto_registerresources_approve,auto_registerresources_delete
+ReportingSystemSummaryCNListView,UserAutoRegistrationResourcesListView,auto_registerresources,auto_registerresources_approve,auto_registerresources_delete,disable_users,enable_users
 #reporting_obligation_translate,
 from schedule.periods import Year, Month, Week, Day
 from mezzanine.core.views import direct_to_template
@@ -355,6 +355,9 @@ urlpatterns = patterns("",
     url(r'^work-area/b-certificatestool/create/$',view=generate_b_certificates, name='b-certificatestool-create'),
     url(r'^work-area/b-certificatestoolnew/create/$',view=generate_b_certificatesnew, name='b-certificatestoolnew-create'),
     
+    url(r'^work-area/disablealluser/$', disable_users, name='disable_users'),
+    url(r'^work-area/enablealluser/$', enable_users, name='enable_users'),
+  
     #MEMBERSHIT LIST TOOL
     url(r'^work-area/membershiptool/$',      view=MembershipListView.as_view(),     name='membership-list'),###
     #url(r'^work-area/membershiptool/(?P<type>[\w-]+)/create/(?P<id>\d+)/$',      view=generate_list,     name='generate-list'),###
