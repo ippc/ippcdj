@@ -14,25 +14,51 @@
                 }
                 var img1 = document.getElementById("img" + i);
                 if (img1 != null ){
-                    img1.src="/static/img/plusicon_1.png";
+                    img1.src="/static/img/plusiconnew_1.png";
                 }
             }
         }
         if (e.style.display == 'block') {
             e.style.display = 'none';
-            img.src="/static/img/plusicon_1.png";
+            img.src="/static/img/plusiconnew_1.png";
            
         } else {
             e.style.display = 'block';
-            img.src="/static/img/minusicon_1.png";
+            img.src="/static/img/minusiconnew_1.png";
             
         }
     }
 </script>
     {% with page.phytosystempage.collapse2content.all as collapse2contents %}
-        {% for collapse2content in collapse2contents %}
-            {% if collapse2content.collapsed == 1 %}
-                <p><img id="img{{forloop.counter}}" src="/static/img/plusicon_1.png"/>&#160;&#160;<a href="#a"  onclick="javascript:toggle_visibility('{{forloop.counter}}');"><b>
+     {% for collapse2content in collapse2contents %}
+		
+       {% if  collapse2content.text_en == '' and   collapse2content.text_es == ''  and    collapse2content.text_fr == '' and 	  collapse2content.text_ar == '' and 	    collapse2content.text_zh == '' and  collapse2content.text_ru == '' %}
+       {%if collapse2content.title == '.'%}{%else%}  <a><h4 style="color:#009900">
+                        {% if LANGUAGE_CODE != 'en' %}
+                            {% if LANGUAGE_CODE == 'es'  and collapse2content.title_es != '' and collapse2content.title_es != None %}
+                                {{ collapse2content.title_es }}
+                            {% elif LANGUAGE_CODE == 'fr'  and collapse2content.title_fr != '' and collapse2content.title_fr != None%}
+                                {{ collapse2content.title_fr }}
+                            {% elif LANGUAGE_CODE == 'ru'  and collapse2content.title_ru != '' and collapse2content.title_ru != None%}
+                                {{ collapse2content.title_ru }}
+                            {% elif LANGUAGE_CODE == 'ar'  and collapse2content.title_ar != '' and collapse2content.title_ar != None%}
+                                {{ collapse2content.title_ar }}
+                            {% elif LANGUAGE_CODE == 'zh'  and collapse2content.title_zh != '' and collapse2content.title_zh != None%}
+                                {{ collapse2content.title_zh }}
+                            {% else %}
+                                {{ collapse2content.title }}
+                            {% endif %}
+                         {% else %}
+                            {{ collapse2content.title }}
+                         {% endif %} 
+                  </h4> </a>{% endif %} 
+	   {%else%}
+	   
+	   {% if collapse2content.collapsed == 1 %}
+              <div class="card">
+              <div class="card-header">
+               
+                <a href="#a"  onclick="javascript:toggle_visibility('{{forloop.counter}}');"> <h4 class="panel-title">
                     {% if LANGUAGE_CODE != 'en' %}
                         {% if LANGUAGE_CODE == 'es'  and collapse2content.title_es != '' and collapse2content.title_es != None %}
                             {{ collapse2content.title_es }}
@@ -49,9 +75,9 @@
                         {% endif %}
                     {% else %}
                         {{ collapse2content.title }}
-                    {% endif %}</b>
-                </a></p>
-                <div id="div{{forloop.counter}}" style="display:none;background-color: {{collapse2content.bg_color_div}}; ">  
+                    {% endif %}
+                <img id="img{{forloop.counter}}" src="/static/img/plusiconnew_1.png" style="float: right;"/></h4></a></div>
+                <div id="div{{forloop.counter}}" class="collapse" style="display:none;padding:15px;background-color: {{collapse2content.bg_color_div}}; ">  
                   {% if LANGUAGE_CODE != 'en' %}
                         {% if LANGUAGE_CODE == 'es'  and collapse2content.text_es != '' and collapse2content.text_es != None %}
                             {%if  collapse2content.html == 1%}
@@ -99,10 +125,13 @@
                     {% endif %}   
                           
       
-                </div>
+                </div></div>
             {% else %}
-              {%if collapse2content.title == '.'%}{%else%}  <a><h4>
-                        {% if LANGUAGE_CODE != 'en' %}
+              <div class="card">
+                 {%if collapse2content.title == '.'%}{%else%}   
+                   <div class="card-header">
+                     <a><h4 class="panel-title">
+                       {% if LANGUAGE_CODE != 'en' %}
                             {% if LANGUAGE_CODE == 'es'  and collapse2content.title_es != '' and collapse2content.title_es != None %}
                                 {{ collapse2content.title_es }}
                             {% elif LANGUAGE_CODE == 'fr'  and collapse2content.title_fr != '' and collapse2content.title_fr != None%}
@@ -119,9 +148,9 @@
                          {% else %}
                             {{ collapse2content.title }}
                          {% endif %} 
-                  </h4> </a>
+                  </h4></a> </div>
               {% endif %}
-               <div style="background-color: {{collapse2content.bg_color_div}}; ">  
+               <div style="background-color: {{collapse2content.bg_color_div}}; padding:15px;">  
                     {% if LANGUAGE_CODE != 'en' %}
                         {% if LANGUAGE_CODE == 'es'  and collapse2content.text_es != '' and collapse2content.text_es != None %}
                             {%if  collapse2content.html == 1%}
@@ -168,8 +197,12 @@
                             {% endif %}
                     {% endif %}   </div>
               
-                <div id="div{{forloop.counter}}" style="display:none;"> </div>
+                <div id="div{{forloop.counter}}" style="display:none;"> </div> </div>
             {% endif %}
+	   {%endif%}
+	   
+		  
+		
         {% endfor %}
     {% endwith %}  
 {%endif%}

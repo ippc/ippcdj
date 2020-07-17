@@ -4,29 +4,60 @@
 {% endif %}
 
    {% with page.phytosystempage.sideboxcontent.all as sideboxcontent %}
-        {% for sideboxcontent in sideboxcontent %}
-       <div class="card mt-5" style="width: 100%">
-            <div class="card-header">
-                <h3 class="my-0">{% if LANGUAGE_CODE != 'en' %}
-                        {% if LANGUAGE_CODE == 'es'  and sideboxcontent.title_es != '' and sideboxcontent.title_es != None %}
-                            {{ sideboxcontent.title_es }}
-                        {% elif LANGUAGE_CODE == 'fr'  and sideboxcontent.title_fr != '' and sideboxcontent.title_fr != None%}
-                            {{ sideboxcontent.title_fr }}
-                        {% elif LANGUAGE_CODE == 'ru'  and sideboxcontent.title_ru != '' and sideboxcontent.title_ru != None%}
-                            {{ sideboxcontent.title_ru }}
-                        {% elif LANGUAGE_CODE == 'ar'  and sideboxcontent.title_ar != '' and sideboxcontent.title_ar != None%}
-                            {{ sideboxcontent.title_ar }}
-                        {% elif LANGUAGE_CODE == 'zh'  and sideboxcontent.title_zh != '' and sideboxcontent.title_zh != None%}
-                            {{ sideboxcontent.title_zh }}
-                        {% else %}
+
+  {% for sideboxcontent in sideboxcontent %}
+        {% if  sideboxcontent.text_en == '' and   sideboxcontent.text_es == ''  and    sideboxcontent.text_fr == '' and 	  sideboxcontent.text_ar == '' and 	    sideboxcontent.text_zh == '' and  sideboxcontent.text_ru == '' %}
+             {%if sideboxcontent.title == '.'%}{%else%}  <a><h3 class="my-0" style="color:#009900">
+                        {% if LANGUAGE_CODE != 'en' %}
+                            {% if LANGUAGE_CODE == 'es'  and sideboxcontent.title_es != '' and sideboxcontent.title_es != None %}
+                                {{ sideboxcontent.title_es }}
+                            {% elif LANGUAGE_CODE == 'fr'  and sideboxcontent.title_fr != '' and sideboxcontent.title_fr != None%}
+                                {{ sideboxcontent.title_fr }}
+                            {% elif LANGUAGE_CODE == 'ru'  and sideboxcontent.title_ru != '' and sideboxcontent.title_ru != None%}
+                                {{ sideboxcontent.title_ru }}
+                            {% elif LANGUAGE_CODE == 'ar'  and sideboxcontent.title_ar != '' and sideboxcontent.title_ar != None%}
+                                {{ sideboxcontent.title_ar }}
+                            {% elif LANGUAGE_CODE == 'zh'  and sideboxcontent.title_zh != '' and sideboxcontent.title_zh != None%}
+                                {{ sideboxcontent.title_zh }}
+                            {% else %}
+                                {{ sideboxcontent.title }}
+                            {% endif %}
+                         {% else %}
                             {{ sideboxcontent.title }}
-                        {% endif %}
-                    {% else %}
-                        {{ sideboxcontent.title }}
-                    {% endif %}</h3>
-            </div>
-            <ul class="list-group list-group-flush">
-                <li class="list-group-item">{% if LANGUAGE_CODE != 'en' %}
+                         {% endif %}
+                  </h3> </a>
+                {% endif %}
+	     {%else%}
+
+
+              <div class="card">
+                 {%if sideboxcontent.title == '.'%}{%else%}
+                   <div class="card-header">
+                     <a><h3 class="my-0">
+                       {% if LANGUAGE_CODE != 'en' %}
+                            {% if LANGUAGE_CODE == 'es'  and sideboxcontent.title_es != '' and sideboxcontent.title_es != None %}
+                                {{ sideboxcontent.title_es }}
+                            {% elif LANGUAGE_CODE == 'fr'  and sideboxcontent.title_fr != '' and sideboxcontent.title_fr != None%}
+                                {{ sideboxcontent.title_fr }}
+                            {% elif LANGUAGE_CODE == 'ru'  and sideboxcontent.title_ru != '' and sideboxcontent.title_ru != None%}
+                                {{ sideboxcontent.title_ru }}
+                            {% elif LANGUAGE_CODE == 'ar'  and sideboxcontent.title_ar != '' and sideboxcontent.title_ar != None%}
+                                {{ sideboxcontent.title_ar }}
+                            {% elif LANGUAGE_CODE == 'zh'  and sideboxcontent.title_zh != '' and sideboxcontent.title_zh != None%}
+                                {{ sideboxcontent.title_zh }}
+                            {% else %}
+                                {{ sideboxcontent.title }}
+                            {% endif %}
+                         {% else %}
+                            {{ sideboxcontent.title }}
+                         {% endif %}
+                  </h3></a> </div>
+                  {% endif %}
+                   {%if sideboxcontent.text_en|slice:":1" == '#'%}    <div style="background-color: {{sideboxcontent.text_en|slice:":7"}};padding:15px; ">   {% else %}
+                              <div style="padding:15px; ">
+                    {% endif %}
+
+                   {% if LANGUAGE_CODE != 'en' %}
                         {% if LANGUAGE_CODE == 'es'  and sideboxcontent.text_es != '' and sideboxcontent.text_es != None %}
                             {%if  sideboxcontent.html == 1%}
                                 {% autoescape off %}{{sideboxcontent.text_es|safe}} {% endautoescape %}
@@ -59,21 +90,52 @@
                             {% endif %}
                         {% else %}
                            {%if  sideboxcontent.html == 1%}
-                                {% autoescape off %}{{sideboxcontent.text_en|safe}} {% endautoescape %}
+                                {% autoescape off %}
+                                    {%if sideboxcontent.text_en|slice:":1" == '#'%}
+                                         {{sideboxcontent.text_en|slice:"8:"|safe}}
+                                    {% else %}
+                                     {{sideboxcontent.text_en|safe}}
+
+                                    {% endif %}
+                                {% endautoescape %}
                             {% else %}
-                                {{ sideboxcontent.text_en|richtext_filter|safe }}
+                              {%if sideboxcontent.text_en|slice:":1" == '#'%}
+                                 {{sideboxcontent.text_en|slice:"8:"|richtext_filter|safe}}
+                                {% else %}
+                              {{ sideboxcontent.text_en|richtext_filter|safe }}
+                            {% endif %}
+
                             {% endif %}
                         {% endif %}
                     {% else %}
-                       {%if  sideboxcontent.html == 1%}
-                                {% autoescape off %}{{sideboxcontent.text_en|safe}} {% endautoescape %}
+                      {%if  sideboxcontent.html == 1%}
+                                {% autoescape off %}
+                                    {%if sideboxcontent.text_en|slice:":1" == '#'%}
+                                         {{sideboxcontent.text_en|slice:"8:"|safe}}
+                                    {% else %}
+                                     {{sideboxcontent.text_en|safe}}
+
+                                    {% endif %}
+                                {% endautoescape %}
                             {% else %}
-                                {{ sideboxcontent.text_en|richtext_filter|safe }}
+                              {%if sideboxcontent.text_en|slice:":1" == '#'%}
+                                 {{sideboxcontent.text_en|slice:"8:"|richtext_filter|safe}}
+                                {% else %}
+                              {{ sideboxcontent.text_en|richtext_filter|safe }}
+                            {% endif %}
+
                             {% endif %}
                     {% endif %}   
-                </li>
-            </ul>
-        </div>
-        
+                  </div>
+
+                <div id="div{{forloop.counter}}" style="display:none;"> </div> </div>
+          
+	   {%endif%}
+
+
+
+
+
+
         {% endfor %}
-    {% endwith %}  
+    {% endwith %}
