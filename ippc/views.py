@@ -1349,7 +1349,6 @@ def disable_users(request):
         error(reques, _("ERROR DISABLED / ENABLED all users."))
     db.close() 
     return redirect('/work-area/')
-    
 class ReminderMessageListView(ListView):
     """    ReminderMessage List view """
     context_object_name = 'latest'
@@ -2125,7 +2124,8 @@ class PublicationFilesListView(ListView):
             zip_lang1 = "/static/media/tmp/"+"archive_"+str(lang[0])+"_"+ date+".zip"
             zip_lang = zipfile.ZipFile(MEDIA_ROOT+"/tmp/"+"archive_"+str(lang[0])+"_"+ date+".zip", "w")
             for file_path in lang[1]:
-                strfpath=os.path.join('/work/projects/ippcdj-env/public/', '/work/projects/ippcdj-env/public/static/media/')+str(file_path)
+                # strfpath=os.path.join('/work/projects/ippcdj-env/public/', '/work/projects/ippcdj-env/public/static/media/')+str(file_path)
+                strfpath=os.path.join(MEDIA_ROOT, str(file_path))
                 filename = strfpath.split('/');
                 fname=filename[len(filename)-1]
                 zip_lang.write(strfpath, fname)
@@ -2142,7 +2142,7 @@ class PublicationFilesListView(ListView):
         context['zip_all']=zip_all1
         context['zip_all_s']=os.path.getsize(zip_all.filename)
         
-        destination = '/work/projects/ippcdj-env/public/static/media/tmp/'
+        #destination = '/work/projects/ippcdj-env/public/static/media/tmp/'
         src_files = os.listdir(MEDIA_ROOT+"/tmp/")
         for file_name in src_files:
             full_file_name = os.path.join(MEDIA_ROOT+"/tmp/", file_name)
@@ -2211,7 +2211,8 @@ class PublicationMeetingFilesListView(ListView):
             zip_lang1 = "/static/media/tmp/"+"archive_"+str(lang[0])+"_"+ date+".zip"
             zip_lang = zipfile.ZipFile(MEDIA_ROOT+"/tmp/"+"archive_"+str(lang[0])+"_"+ date+".zip", "w")
             for file_path in lang[1]:
-                strfpath=os.path.join('/work/projects/ippcdj-env/public/', '/work/projects/ippcdj-env/public/static/media/')+str(file_path)
+                #strfpath=os.path.join('/work/projects/ippcdj-env/public/', '/work/projects/ippcdj-env/public/static/media/')+str(file_path)
+                strfpath=os.path.join(MEDIA_ROOT, str(file_path))
                 filename = strfpath.split('/');
                 fname=filename[len(filename)-1]
                 zip_lang.write(strfpath, fname)
@@ -2229,7 +2230,7 @@ class PublicationMeetingFilesListView(ListView):
         context['zip_all_s']=os.path.getsize(zip_all.filename)
         
        
-        destination = '/work/projects/ippcdj-env/public/static/media/tmp/'
+        #destination = '/work/projects/ippcdj-env/public/static/media/tmp/'
         src_files = os.listdir(MEDIA_ROOT+"/tmp/")
         for file_name in src_files:
             full_file_name = os.path.join(MEDIA_ROOT+"/tmp/", file_name)
@@ -13212,7 +13213,7 @@ def generate_certificates(request):
     """ Create generate_certificates """
     form = CertificatesToolForm(request.POST)
     certificatedir_template = MEDIA_ROOT+'/certificate_template'
-    img_template=MEDIA_ROOT+'certificate_template/TemplateCertificate2017_XiaBrent.png'
+    img_template=MEDIA_ROOT+'/certificate_template/TemplateCertificate2017_XiaBrent.png'
     fontfile =MEDIA_ROOT+"certificate_template/times.ttf"
   
     g_set=[]
@@ -13464,7 +13465,7 @@ def generate_b_certificatesnew(request):
     """ Create generate_certificates """
     form =B_CertificatesToolForm(request.POST)
     img_template_example="TemplateCertificate2017_Xia_example.jpg"
-    template_path = MEDIA_ROOT+'certificate_template/TemplateCert2017_XIA.docx'
+    template_path = MEDIA_ROOT+'/certificate_template/TemplateCert2017_XIA.docx'
              
     g_set=[]
     for g in Group.objects.filter():
@@ -13502,7 +13503,11 @@ def generate_b_certificatesnew(request):
             new_certificatestool = form.save(commit=False)
             new_certificatestool.creation_date = timezone.now()
             new_certificatestool.author =  request.user
-            
+            try: 
+                os.makedirs(MEDIA_ROOT+'files/b_certificates')
+            except OSError:
+                if not os.path.isdir(MEDIA_ROOT+'files/b_certificates'):
+                    raise
             date = timezone.now().strftime('%Y%m%d%H%M%S')
             certificatedir_new = MEDIA_ROOT+'files/b_certificates/'+date
             zip_all1 ="/static/media/files/b_certificates/certificates_"+ date+".zip"
@@ -13631,7 +13636,7 @@ def generate_b_certificates(request):
     form =B_CertificatesToolForm(request.POST)
     img_template_example="TemplateCertificate2017_Xia_example.jpg"
     certificatedir_template = MEDIA_ROOT+'/certificate_template'
-    img_template=MEDIA_ROOT+'certificate_template/TemplateCertificate2017_Xia.png'
+    img_template=MEDIA_ROOT+'/certificate_template/TemplateCertificate2017_Xia.png'
     fontfile =MEDIA_ROOT+"certificate_template/times.ttf"
   
     g_set=[]
@@ -13671,6 +13676,12 @@ def generate_b_certificates(request):
             new_certificatestool.creation_date = timezone.now()
             new_certificatestool.author =  request.user
             
+            try: 
+                os.makedirs(MEDIA_ROOT+'files/b_certificates')
+            except OSError:
+                if not os.path.isdir(MEDIA_ROOT+'files/b_certificates'):
+                    raise
+                
             date = timezone.now().strftime('%Y%m%d%H%M%S')
             certificatedir_new = MEDIA_ROOT+'files/b_certificates/'+date
             zip_all1 ="/static/media/files/b_certificates/certificates_"+ date+".zip"
