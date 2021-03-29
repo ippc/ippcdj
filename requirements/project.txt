@@ -5,7 +5,7 @@ Mezzanine==1.4.8
 # MySQL-python
 mysql-connector-python
 Pillow==2.1.0 # For Windows needed to install Pillow from http://www.lfd.uci.edu/~gohlke/pythonlibs/
-Pygments==1.6
+Pygments==2.7.4
 South==0.8.4
 argparse==1.1
 bbcode==1.0.16
